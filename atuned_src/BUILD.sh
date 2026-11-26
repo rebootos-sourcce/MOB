@@ -7,6 +7,8 @@
 # MANIFEST is the canonical order. Nothing else may decide it.
 set -e
 cd "$(dirname "$0")"
+# Regenerate full Deep Psyche source records for the shipped knowledge browser.
+node ../tools/build-deep-psyche-app.js
 OUT="${1:-../source.html}"
 MODS=$(grep -v '^[[:space:]]*$' MANIFEST)
 

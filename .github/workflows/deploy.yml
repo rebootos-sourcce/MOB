@@ -188,6 +188,8 @@ jobs:
           for f in $FUNNEL_PAGES; do
             test -s "funnel/dist/$f.html" || { echo "funnel/dist/$f.html missing or empty"; exit 1; }
           done
+      - name: Deep Psyche registry and Knowledge navigation
+        run: node tests/deep-psyche-app.js
       - name: engine gate
         run: node tests/engine.js 2>&1 | tee "$RUNNER_TEMP/gates/engine.log"
       # THE BODY PAGE'S TABLE, held headless, 18 November. Nothing read ANAT,

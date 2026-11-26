@@ -105,7 +105,7 @@ function kbRows(sec){
    than being put in a seat that would be a guess. */
 function kbSeatsOf(x){
  if(x.k==='mask')return ((x.o&&x.o.b)||[]).filter(function(b){return BANDS.indexOf(b)>=0;});
- if(x.k==='dom'||x.k==='band'||x.k==='kind'||x.k==='pole'||x.k==='gloss')return [];
+ if(x.k==='dom'||x.k==='psyche'||x.k==='band'||x.k==='kind'||x.k==='pole'||x.k==='gloss')return [];
  if(x.k==='axcard'&&!(x.o&&x.o.ax))return [];
  return BANDS.indexOf(x.seat)>=0?[x.seat]:[];}
 function kbRowsOf(sec){
@@ -201,6 +201,11 @@ function kbRowsOf(sec){
     the product uses, so the row states it outright rather than being forced
     through a seat that would pick the wrong one. DOMAIN is normalised to the
     strongest lobe, so the percent says so. */
+ /* Generated Deep Psyche records are source-registry references.
+    Visual-only slots stay in the data inventory, not the named domain deck. */
+ if(sec==='psyche'&&typeof DEEP_PSYCHE!=='undefined')
+  DEEP_PSYCHE.records.filter(function(item){return !item.displaySlotOnly;})
+   .forEach(function(item){out.push(kbRow('psyche',item.name,item.type,null,null,null,item));});
  if(sec==='dom') DOMAINS.forEach(function(d,i){
   out.push(kbRow('dom', d.nm, d.r, 'Heart', kbPct100(DOMAIN[i]), d.ic||null, d,
    rootPlain(d.r)||null));});
@@ -355,7 +360,7 @@ function kbRowsOf(sec){
    same eleven decks exactly reversed, and the page opens on the first of
    them. Order only: no key, name or deck changed. */
 const KB_SECS=[['harm','Universal laws'],['seat','The stack'],['card','The cards'],
- ['gate','Laws of Action'],['arch','Archetypes'],['dom','Domains'],['mask','Masks'],
+ ['gate','Laws of Action'],['arch','Archetypes'],['dom','Domains'],['psyche','Deep Psyche'],['mask','Masks'],
  ['law','Laws of Moral Integrity'],['hcx','Hyper complexes'],['sab','Saboteurs'],
  ['fetter','Child emotions'],['addr','Fetters']];
 /* HYPER COMPLEXES GET A DECK, round LY. The six families were written in
@@ -383,7 +388,7 @@ const KB_OF={
  seat:'of the point’s addresses carrying charge',
  card:'of the axis the card releases, where the card names one',
  harm:'of the law kept, where the intake scores it',
- gloss:''};
+ gloss:'',psyche:''};
 
 /* the axis headings on the universal laws, which is the only deck that breaks
    into sections. The words are the book's own: Sat, Chit and Ananda are what
@@ -407,7 +412,7 @@ function kbMatch(row,q){
    identity and the labels are what a person sees. */
 const KB_KIND={node:'Fetter',fetter:'Child emotion',sab:'Saboteur',hcx:'Hyper complex',
  law:'Law of Moral Integrity',dom:'Domain',arch:'Archetype',gate:'Law of Action',
- harm:'Universal law',gloss:'Term',seat:'Point',mask:'Mask',card:'Card',
+ harm:'Universal law',gloss:'Term',seat:'Point',mask:'Mask',psyche:'Deep Psyche',card:'Card',
  axcard:'Card',band:'Band',kind:'Pattern',pole:'Pole',cq:'Formula'};
 
 /* in order is the default, because he ruled that the universal laws go in
@@ -1134,6 +1139,62 @@ function kbAnsCss(){
  ].join('\n');
  document.head.appendChild(st);}
 
+/* One source-backed Deep Psyche record, with traversable typed relations.
+   Show source statuses; a navigation edge is not a causal or canonical claim. */
+function kbPsycheDrill(d){
+ if(!d||typeof DEEP_PSYCHE==='undefined')return;
+ var lookup={};
+ DEEP_PSYCHE.records.forEach(function(r){lookup[r.id]=r;});
+ var detail=(d.description||d.body||'')+
+  (d.clear?' / Clear: '+d.clear:'')+
+  (d.distorted?' / Distorted: '+d.distorted:'');
+ var relationButtons=(d.linkedIds||[]).map(function(id){
+  var other=lookup[id]; if(!other)return '';
+  var edge=(d.relationships||[]).filter(function(e){
+   return (e.fromId===d.id&&e.toId===id)||(e.toId===d.id&&e.fromId===id);
+  })[0];
+  var provenance=edge?(edge.type+' / '+edge.status):'Navigation-only link';
+  return '<button type="button" class="btn" data-dp-link="'+esc(other.id)+'">'
+    +esc(other.name)+' <span class="ad-sub">'+esc(provenance)+'</span></button>';
+ }).join('');
+ var nativeButtons=(typeof kbRowsOf==='function'?(d.nativeNavigationCandidates||[]).map(function(ref,i){
+  var hit=kbRowsOf(ref.kind).filter(function(x){
+   return String(x.t||'').trim().toLowerCase()===String(ref.targetName||ref.name||'').trim().toLowerCase();
+  })[0];
+  if(!hit)return '';
+  return '<button type="button" class="btn" data-dp-native="'+esc(d.id)+'" data-dp-native-index="'+i+'">'
+   +esc(ref.name)+(ref.targetName&&ref.name!=='Controller'?' → '+esc(ref.targetName):'')+' <span class="ad-sub">'+esc(ref.evidenceStatus)+'</span></button>';
+ }):[]).join('');
+ rdShell('<div class="pm-eye">Deep Psyche / '+esc(d.type)+'</div>'
+  +'<div class="ad-nm">'+esc(d.name)+'</div>'
+  +'<div class="ad-sub">'+esc(d.family)+'</div>'
+  +'<div class="pm-eye">Source-defined description</div><p class="ad-p">'+esc(detail)+'</p>'
+  +'<div class="pm-eye">Source status</div><p class="ad-p">'+esc(d.reviewStatus||'unclassified')+'</p>'
+  +((d.sourceRefs||[]).length?'<div class="pm-eye">Source references</div><p class="ad-p">'+esc(d.sourceRefs.join(' / '))+'</p>':'')
+  +(relationButtons?'<div class="pm-eye">Connected records, tap to follow</div>'+relationButtons:'')
+  +(nativeButtons?'<div class="pm-eye">Source-table links into the instrument</div>'+nativeButtons:''));
+}
+/* A connected Deep Psyche record opens the same source-backed drill. */
+addEventListener('click',function(e){
+ var el=e.target&&e.target.closest?e.target.closest('[data-dp-link]'):null;
+ if(!el||typeof DEEP_PSYCHE==='undefined')return;
+ var id=el.getAttribute('data-dp-link');
+ var item=DEEP_PSYCHE.records.filter(function(r){return r.id===id;})[0];
+ if(item)kbOpen({k:'psyche',o:item});
+});
+/* Exact-label navigation into the native app records. */
+addEventListener('click',function(e){
+ var el=e.target&&e.target.closest?e.target.closest('[data-dp-native]'):null;
+ if(!el||typeof DEEP_PSYCHE==='undefined'||typeof kbRowsOf!=='function')return;
+ var record=DEEP_PSYCHE.records.filter(function(r){return r.id===el.getAttribute('data-dp-native');})[0];
+ var index=Number(el.getAttribute('data-dp-native-index'));
+ if(!record||!isFinite(index)||index<0||index%1)return;
+ var ref=(record.nativeNavigationCandidates||[])[index];if(!ref)return;
+ var target=kbRowsOf(ref.kind).filter(function(x){
+  return String(x.t||'').trim().toLowerCase()===String(ref.targetName||ref.name||'').trim().toLowerCase();
+ })[0];
+ if(target)kbOpen(target);
+});
 /* one row, one door. every kind routes to the drill that already exists for it. */
 function kbOpen(x){
  if(!x)return;
@@ -1178,6 +1239,7 @@ function kbOpenIn(x){
  if(x.k==='cq'){runCoreDrill(); return;}
  if(x.k==='gloss'){runKbDrill('Glossary', x.o.t, '', x.o.d); return;}
  if(x.k==='dom'){runDomDrill(x.o); return;}
+ if(x.k==='psyche'){kbPsycheDrill(x.o);return;}
  /* the archetype and the mask drills live in drills.js now, because the
     Field opens them too and one thing has one wording */
  if(x.k==='arch'){runArchDrill(x.o); return;}

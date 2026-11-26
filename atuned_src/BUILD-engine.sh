@@ -3,6 +3,7 @@
 # same file drops into a browser as a plain script.
 set -e
 cd "$(dirname "$0")"
+node ../tools/build-deep-psyche-app.js
 OUT="${1:-../engine.js}"
 MODS=$(grep '^engine/' MANIFEST)
 for f in $MODS; do node --check "$f" || exit 1; done
