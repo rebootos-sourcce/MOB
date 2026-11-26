@@ -73,6 +73,35 @@ function srcVoiceGraph(text,record,opts){
 /* Stage 3: actual Source intelligence is a constrained READ of Source's
  * evidence ledger and record graph. The model can decide how to speak but
  * may never promote a read to an independently measured CQ or a diagnosis. */
+/* Read one explicitly requested public catalog relationship. This is not
+ * a profile trace, a semantic equivalence, or a personal reading. The
+ * registry supplies the evidence; missing or ambiguous links yield none.
+ */
+function srcKnowledgePair(db){
+ if(!db||!Array.isArray(db.records))return [];
+ var a=db.records.filter(function(r){return r&&r.id==='domain:01';});
+ var b=db.records.filter(function(r){return r&&r.id==='blueprint:personal-model';});
+ if(a.length!==1||b.length!==1)return [];
+ var from=a[0],to=b[0];
+ if(from.name!=='Knowledge'||to.name!=='Personal Blueprint'||from.displaySlotOnly||to.displaySlotOnly)return [];
+ if(!Array.isArray(from.linkedIds)||!Array.isArray(to.linkedIds)||
+    !from.linkedIds.includes(to.id)||!to.linkedIds.includes(from.id))return [];
+ function edges(r){
+  return (Array.isArray(r.relationships)?r.relationships:[]).filter(function(e){
+   return e&&e.fromId===from.id&&e.toId===to.id&&
+    e.type==='versioned_domain_to_blueprint_model'&&
+    e.status==='SOURCE_LEVEL_STRUCTURE_VERSIONED_NO_EQUIVALENCE'&&
+    e.reciprocalRequired===true&&typeof e.sourceRef==='string'&&e.sourceRef.trim();
+  });
+ }
+ var left=edges(from),right=edges(to);
+ if(left.length!==1||right.length!==1||left[0].sourceRef!==right[0].sourceRef)return [];
+ if(!/^[a-f0-9]{64}$/.test(from.sourceEvidenceDigest||'')||
+    !/^[a-f0-9]{64}$/.test(to.sourceEvidenceDigest||''))return [];
+ return [{from:from.id,to:to.id,relationship:left[0].type,source:left[0].sourceRef,
+  status:left[0].status,scope:'PUBLIC_CATALOG_ONLY',personalReading:false,
+  evidenceDigests:[from.sourceEvidenceDigest,to.sourceEvidenceDigest]}];
+}
 function srcVoiceIntelligence(text,record,opts){
  var o=opts||{}, t=String(text||'');
  var v=srcVoiceGraph(t,record,o);
@@ -93,6 +122,12 @@ function srcVoiceIntelligence(text,record,opts){
   return {voice:v.voice,intelligence:out};}
  /* Read user-attributed narrative over a bounded explicit session window.
   * No historic raw journal or user identifiers leave this function. */
+ if(o.knowledgeGraphPilot===true){
+  out.knowledgeEvidence=[];
+  if(/\bknowledge domain\b/i.test(t)&&/\bpersonal blueprint\b/i.test(t)&&
+     /\b(?:relat\w*|connect\w*|link\w*)\b/i.test(t)&&
+     typeof DEEP_PSYCHE!=='undefined')out.knowledgeEvidence=srcKnowledgePair(DEEP_PSYCHE);
+ }
  var userTurns=Array.isArray(o.turns)?o.turns.slice(-11).filter(function(x){return typeof x==='string';}):[];
  if(userTurns[userTurns.length-1]!==t)userTurns.push(t);
  out.narrative=srcVoiceNarrative(userTurns);

@@ -170,6 +170,52 @@ for(const bad of [null,'',' ','00','0.0','-0','1e0','9007199254740992']){
  nativeClick({target:{closest:()=>({getAttribute:key=>key==='data-dp-native'?'mapping:arch18:01':bad})}});
  assert.strictEqual(nativeOpened,null,'Malformed native index selected a route: '+String(bad));
 }
+// The dormant intelligence seam reads the same public registry, not a
+// fabricated relationship or a profile trace.
+const E=require(path.join(ROOT,'engine.js'));
+const question='How is the Knowledge domain related to the Personal Blueprint?';
+const profile=E.blankProfile('PRIVATE_NAME_SENTINEL');
+profile.id='PRIVATE_ID_SENTINEL';
+const before=JSON.stringify(profile);
+const result=E.srcVoiceIntelligence(question,profile,{knowledgeGraphPilot:true}).intelligence;
+assert.strictEqual(result.knowledgeEvidence.length,1);
+const proof=result.knowledgeEvidence[0];
+const knowledge=by.get('domain:01'),blueprint=by.get('blueprint:personal-model');
+const edge=knowledge.relationships.find(e=>e.type==='versioned_domain_to_blueprint_model'&&e.toId===blueprint.id);
+assert.strictEqual(proof.source,edge.sourceRef);
+assert.strictEqual(proof.status,edge.status);
+assert.strictEqual(proof.scope,'PUBLIC_CATALOG_ONLY');
+assert.strictEqual(proof.personalReading,false);
+assert.deepStrictEqual(proof.evidenceDigests,[knowledge.sourceEvidenceDigest,blueprint.sourceEvidenceDigest]);
+assert.strictEqual(result.coherence,'NOT_MEASURED');
+assert.strictEqual(result.graphStatus,'CONSENT_REQUIRED');
+assert(!JSON.stringify(result).includes(profile.name)&&!JSON.stringify(result).includes(profile.id));
+assert.strictEqual(JSON.stringify(profile),before);
+assert(!E.srcVoiceIntelligence(question,profile,{}).intelligence.knowledgeEvidence);
+assert.deepStrictEqual(E.srcVoiceIntelligence('How does the Knowledge domain relate to my mood?',profile,{knowledgeGraphPilot:true}).intelligence.knowledgeEvidence,[]);
+assert(!E.srcVoiceIntelligence('I want to die. '+question,profile,{knowledgeGraphPilot:true}).intelligence.knowledgeEvidence);
+// Mutate only a test fixture: absence, ambiguity, unqualified edges and
+// missing reciprocal provenance must return no relationship.
+const voiceSource=fs.readFileSync(path.join(app,'engine/voice_intelligence.js'),'utf8');
+const pairSource=voiceSource.match(/function srcKnowledgePair\(db\)\{[\s\S]*?\n\}/);
+assert(pairSource,'Public evidence lookup missing');
+const pairScope={};
+vm.runInNewContext(pairSource[0],pairScope,{timeout:5000});
+const fixture=()=>JSON.parse(JSON.stringify({records:[knowledge,blueprint]}));
+const pair=pairScope.srcKnowledgePair;
+assert.strictEqual(pair(fixture()).length,1);
+for(const change of [
+ d=>d.records.pop(),
+ d=>d.records.push(d.records[0]),
+ d=>{d.records[0].linkedIds=[];},
+ d=>{d.records[1].relationships=[];},
+ d=>{d.records[0].relationships.find(e=>e.type==='versioned_domain_to_blueprint_model').status='UNREVIEWED';},
+ d=>{d.records[1].relationships.find(e=>e.type==='versioned_domain_to_blueprint_model').sourceRef='Different evidence';},
+ d=>{d.records[0].sourceEvidenceDigest='';},
+ d=>{d.records[0].displaySlotOnly=true;}
+]){
+ const d=fixture();change(d);assert.strictEqual(pair(d).length,0,'Invalid source relationship accepted');
+}
 const sourceHtml=path.join(ROOT,'source.html');
 if(process.env.CI)assert(fs.existsSync(sourceHtml),'CI acceptance requires a built source.html');
 if(fs.existsSync(sourceHtml)){
