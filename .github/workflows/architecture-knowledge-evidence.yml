@@ -1,0 +1,27 @@
+name: Architecture public knowledge evidence seam
+on:
+  push:
+    branches: [integration/architecture-knowledge-evidence-20261126]
+permissions:
+  contents: read
+jobs:
+  evidence:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: npm install --no-audit --no-fund --no-save typescript@5.9.3
+      - name: Rebuild source and engine
+        run: ./atuned_src/BUILD-engine.sh && ./atuned_src/BUILD.sh && ./funnel/BUILD-single.sh
+      - name: Verify public catalog and existing intelligence contracts
+        run: |
+          node tests/deep-psyche-app.js
+          node tests/source-voice-intelligence.js
+          node tests/source-evidence-bus.js
+          node tests/evidence.js
+          python3 .claude/skills/atuned-voice/check.py --objections
