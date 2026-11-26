@@ -827,11 +827,14 @@ function authCheck(){
  /* The boot check may return after the person opens another record.
     Its paid-plan reply must not apply to the newly selected record. */
  var record=typeof CURP==='undefined'?null:CURP;
+ /* The boot /v1/me and explicit plan reads share one freshness order.
+    A newer response always wins, even across these two entrypoints. */
+ var requestId=authPlanRead._requestId=(authPlanRead._requestId||0)+1;
  AUTH_PLAN_READ_AT=Date.now();
  return authCall('GET','/v1/me',null,s.token).then(function(r){
   // A late boot response must not resurrect a signed-out or replaced session.
   var current=authSession();
-  if(!current||current.token!==s.token||(typeof CURP==='undefined'?null:CURP)!==record)return 'stale';
+  if(authPlanRead._requestId!==requestId||!current||current.token!==s.token||(typeof CURP==='undefined'?null:CURP)!==record)return 'stale';
   var acc=r.body&&r.body.account;
   var redraw=function(){
    if(typeof S!=='undefined'&&typeof TAB!=='undefined'&&S.tab===TAB.SETTINGS
