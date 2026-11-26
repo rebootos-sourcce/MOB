@@ -115,6 +115,26 @@ async function delayedReads(){
  finishFirst(answer);older=await work;
  ok(!latest.ok&&latest.took==='unread'&&older.took==='stale'&&takes===2&&arms===2,
   'unread newest response cannot be overwritten by an older paid reply');
+ /* The boot and manual refresh both read /v1/me. They must share an
+    ordering rule, or a late startup reply can replace a newer plan. */
+ let pendingReplies=[];
+ ctx.authCall=()=>{requests++;return new Promise(resolve=>pendingReplies.push(resolve));};
+ session=sessionA;ctx.CURP=recordA;
+ let oldTakes=takes,oldBoots=boots,oldArms=arms;
+ work=ctx.authCheck();newer=ctx.authPlanRead();
+ pendingReplies[1](answer);latest=await newer;
+ pendingReplies[0](answer);older=await work;
+ ok(older==='stale'&&latest.ok&&latest.took==='live'
+   &&takes===oldTakes+1&&boots===oldBoots&&arms===oldArms+1,
+  'newer explicit plan check supersedes stale boot billing');
+ pendingReplies=[];
+ oldTakes=takes;oldBoots=boots;oldArms=arms;
+ work=ctx.authPlanRead();newer=ctx.authCheck();
+ pendingReplies[1](answer);latest=await newer;
+ pendingReplies[0](answer);older=await work;
+ ok(latest==='ok'&&older.took==='stale'
+   &&takes===oldTakes&&boots===oldBoots+1&&arms===oldArms+1,
+  'newer boot billing supersedes stale explicit plan read');
 }
 /* Test the actual import UI seam without a browser or network. The only
    accepted source of payment is the authenticated reader, never imported JSON. */
