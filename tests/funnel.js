@@ -440,7 +440,7 @@ const SIZE = c => '"' + c.t + '" ' + c.w + 'x' + c.h
       last = at;
       await page.evaluate(() => { const s = STEPS[state.screen]; if (s && s.type === 'interstitial') document.getElementById('int-' + s.afterBlock).click(); });
       await page.keyboard.press('ArrowRight');
-      for (const b of await page.$('button:visible')) {
+      for (const b of await page.$$('button:visible')) {
         const d = await b.evaluate(e => ({ id: e.id, cls: e.className, off: e.disabled, t: e.textContent.trim().slice(0, 40) }));
         if (d.off || /scale-stop/.test(d.cls) || d.id === 'backBtn') continue;
         pressed.add(d.id || d.t);
