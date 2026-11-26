@@ -407,7 +407,7 @@ if(require.main===module){
     try{ await p.waitForTimeout(600);
      await p.evaluate(()=>{ if(typeof OB!=='undefined'&&OB.open&&typeof obClose==='function')obClose(); });
      await p.waitForTimeout(150);}catch(e){}};
-   const browser=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+   const browser=await chromium.launch({executablePath:process.env.CHROME||chromium.executablePath()});
 require('./net.js').guardBrowser(browser);
    try{ await feedbackGate(browser,FILE,ok,booted); }catch(e){ FAIL++; console.log('  FAIL the gate threw: '+e.stack); }
    await browser.close();}

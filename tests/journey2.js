@@ -65,7 +65,7 @@ const SHOTS=process.env.JY2_SHOTS||'';
 const PLACEHOLDER=/\b(TODO|TBD|FIXME|lorem|ipsum|placeholder|undefined|NaN|null)\b|\[object/i;
 
 (async()=>{
-const browser=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+const browser=await chromium.launch({executablePath:process.env.CHROME||chromium.executablePath()});
 require('./net.js').guardBrowser(browser);
 
 for(const [W,H] of WIDTHS){

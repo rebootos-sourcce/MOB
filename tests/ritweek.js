@@ -70,7 +70,7 @@ const MUTANTS={
 
 if(require.main===module)(async()=>{
  const {chromium}=require('playwright');
- const browser=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+ const browser=await chromium.launch({executablePath:process.env.CHROME||chromium.executablePath()});
  require('./net.js').guardBrowser(browser);
  const {FULL_SIGHT}=require('./seed.js');
  /* Monday 23 February 2026 at local noon, the fixed day flowtools.js runs

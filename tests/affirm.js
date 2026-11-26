@@ -34,7 +34,7 @@ const path = require('path');
 const { chromium } = require('playwright');
 const ROOT = path.resolve(__dirname, '..');
 const SRC = process.env.AFFIRM_HTML ? path.resolve(process.env.AFFIRM_HTML) : path.join(ROOT, 'source.html');
-const CHROME = process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome';
+const CHROME = process.env.CHROME || chromium.executablePath();
 
 let PASS = 0, FAIL = 0;
 const ok = (c, m) => { if (c) { PASS++; console.log('  ok    ' + m); } else { FAIL++; console.log('  FAIL  ' + m); } };

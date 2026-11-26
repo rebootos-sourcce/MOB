@@ -145,7 +145,7 @@ const rows = p => p.evaluate(() => ({ me: SRC_CHAT.filter(r => r.w === 'me').map
 const fast = p => p.evaluate(() => { SRC_TAIL_MS = 90; });
 
 (async () => {
-  const browser = await chromium.launch({ executablePath: process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+  const browser = await chromium.launch({ executablePath: process.env.CHROME || chromium.executablePath() });
   require('./net.js').guardBrowser(browser);
 
   /* ---------------------------------------------------------------- 1 */

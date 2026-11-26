@@ -186,7 +186,7 @@ const WALK_TABLE=`(function(name){
  walk(v,name,0); return out;})`;
 
 (async()=>{
-const b=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+const b=await chromium.launch({executablePath:process.env.CHROME||chromium.executablePath()});
 require('./net.js').guardBrowser(b);
 const found=new Map();   /* word|string -> {where:Set} */
 let KB=[];

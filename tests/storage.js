@@ -50,7 +50,7 @@ const fs = require('fs'), path = require('path'), os = require('os');
 const { chromium } = require('playwright');
 const ROOT = path.resolve(__dirname, '..');
 const SRC = process.env.STORAGE_HTML ? path.resolve(process.env.STORAGE_HTML) : path.join(ROOT, 'source.html');
-const CHROME = process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome';
+const CHROME = process.env.CHROME || chromium.executablePath();
 const SHOTS = process.env.SHOTS || '';
 
 let n = 0, XF = 0; const fails = [];

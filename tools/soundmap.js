@@ -42,7 +42,7 @@ function wav(x){
  for(let i=0;i<n;i++){ const v=Math.max(-1,Math.min(1,x[i])); b.writeInt16LE(Math.round(v*32767),44+i*2); }
  return b;}
 (async()=>{
- const br=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+ const br=await chromium.launch({executablePath:process.env.CHROME||chromium.executablePath()});
  const pg=await br.newPage({viewport:{width:1600,height:1000}});
  await pg.goto(FILE,{waitUntil:'load'}); await booted(pg);
  const D=await pg.evaluate(async({SR,wantWav})=>{

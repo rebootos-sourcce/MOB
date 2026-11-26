@@ -6,7 +6,7 @@ const D=path.join(__dirname,'..'), OUT=path.join(D,'shots');
 const files={r1:'r1-level.html',r2:'r2-instruments.html',r3:'r3-axis.html',r4:'r4-mirror.html'};
 (async()=>{
  const only=process.argv[2]&&process.argv[2]!=='all'?process.argv[2]:null, tag=process.argv[3]||'';
- const b=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+ const b=await chromium.launch({executablePath:process.env.CHROME||chromium.executablePath()});
  for(const [id,f] of Object.entries(files)){
   if(only&&only!==id)continue; if(!fs.existsSync(path.join(D,f)))continue;
   for(const [w,h,who] of [[1600,1000,''],[390,844,'diane'],[390,844,'tomas'],[390,844,'blank']]){

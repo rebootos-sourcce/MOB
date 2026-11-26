@@ -69,7 +69,7 @@ const BARE=function(root){
  return bare;};
 
 (async()=>{
- const b=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+ const b=await chromium.launch({executablePath:process.env.CHROME||chromium.executablePath()});
 require('./net.js').guardBrowser(b);
  for(const [W,H] of [[1600,1000],[390,844]]){
   console.log('\n=== '+W+' ===');

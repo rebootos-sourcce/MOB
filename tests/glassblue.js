@@ -74,7 +74,7 @@ const BASE = process.env.GLASSBLUE_BASELINE ? path.resolve(process.env.GLASSBLUE
 const PRINT = !!process.env.GLASSBLUE_PRINT;
 const ONLY = process.env.GLASSBLUE_ONLY ? process.env.GLASSBLUE_ONLY.split(',').map(x => x.trim()) : null;
 const want = n => !ONLY || ONLY.includes(String(n));
-const CHROME = process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome';
+const CHROME = process.env.CHROME || chromium.executablePath();
 
 let PASS = 0, FAIL = 0;
 const ok = (c, m) => { if (c) { PASS++; console.log('  ok    ' + m); } else { FAIL++; console.log('  FAIL  ' + m); } };

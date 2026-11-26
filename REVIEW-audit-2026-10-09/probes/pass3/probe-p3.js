@@ -20,7 +20,7 @@ const STORY = 'My father shouted at me on the porch at Marrowgate Lane and I was
 const STORY2 = 'Second entry added later: the kitchen at Marrowgate Lane, I felt afraid and tight in my chest.';
 const ACC = { id: 'acc_probe', research_id: 'rsh_probe', plan: 1, email: 'probe@example.invalid' };
 const J = x => JSON.stringify(x);
-const CHROME = process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome';
+const CHROME = process.env.CHROME || chromium.executablePath();
 
 (async () => {
   const browser = await chromium.launch({ executablePath: CHROME });

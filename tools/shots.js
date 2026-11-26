@@ -28,7 +28,7 @@ const TABS=[['discover',0],['summary',1],['field',2],['energy',3],['analytics',4
  ['masks',11],['intake-page',13]];
 (async()=>{
  fs.mkdirSync(OUT,{recursive:true});
- const b=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+ const b=await chromium.launch({executablePath:process.env.CHROME||chromium.executablePath()});
  const p=await b.newPage({viewport:{width:W,height:H}});
  const errs=[];
  p.on('pageerror',e=>errs.push(String(e.message)));

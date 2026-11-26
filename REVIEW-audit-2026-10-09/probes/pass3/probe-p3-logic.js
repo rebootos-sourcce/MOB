@@ -9,7 +9,7 @@ const SRC = path.resolve(process.argv[2]), OUT = process.argv[3];
 const WORKER = 'https://atuned-api.lance-o-powell.workers.dev';
 const ACC = { id: 'acc_probe', research_id: 'rsh_probe', plan: 1, email: 'probe@example.invalid' };
 const J = x => JSON.stringify(x);
-const CHROME = process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome';
+const CHROME = process.env.CHROME || chromium.executablePath();
 const STORY = 'My father shouted at me on the porch at Marrowgate Lane and I was furious and ashamed. Probe marker seven seven three one.';
 
 (async () => {

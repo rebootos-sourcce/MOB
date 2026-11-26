@@ -25,7 +25,7 @@ const ROUTE={
  field:()=>{setTab(TAB.FIELD); render();},
  avatar:()=>{setTab(TAB.INTAKE); if(typeof avSub==='function')avSub('becoming'); render();}};
 (async()=>{
- const b=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+ const b=await chromium.launch({executablePath:process.env.CHROME||chromium.executablePath()});
  for(const [W,H] of [[1600,1000],[390,844]]){
   console.log('\n=== '+W+' ===');
   const p=await b.newPage({viewport:{width:W,height:H}});

@@ -5,7 +5,7 @@ const fs = require('fs'), path = require('path');
 const SRC = path.resolve(process.argv[2]), OUT = process.argv[3];
 const WORKER = 'https://atuned-api.lance-o-powell.workers.dev';
 const J = x => JSON.stringify(x);
-const CHROME = process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome';
+const CHROME = process.env.CHROME || chromium.executablePath();
 (async () => {
   const browser = await chromium.launch({ executablePath: CHROME });
   const cx = await browser.newContext({ viewport: { width: 1600, height: 1000 } });

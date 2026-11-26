@@ -9,7 +9,7 @@ const path=require('path'),{chromium}=require('playwright');
 const N=+process.argv[2]||30, FILE='file://'+path.resolve(process.argv[3]||'source.html')+'?dev=1';
 const boot=p=>p.waitForFunction(()=>document.documentElement.getAttribute('data-boot')==='ok',null,{timeout:60000});
 (async()=>{
- const b=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+ const b=await chromium.launch({executablePath:process.env.CHROME||chromium.executablePath()});
  let lost=0, t0=Date.now(); const notes=[];
  for(let i=0;i<N;i++){
   const cx=await b.newContext({viewport:{width:1600,height:1000}});

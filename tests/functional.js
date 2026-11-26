@@ -60,7 +60,7 @@ const booted=async p=>{
  await p.evaluate(()=>{if(typeof CONE!=='undefined')CONE.climb=false;});};
 const ok=(c,m)=>{if(c)PASS++;else{FAIL++;console.log('  FAIL '+m);}};
 (async()=>{
-const browser=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+const browser=await chromium.launch({executablePath:process.env.CHROME||chromium.executablePath()});
 require('./net.js').guardBrowser(browser);
 /* BY NAME, NEVER BY POSITION. Seven checks in this file said loadP(8) and
    meant Gordon, the heaviest case in the roster. The roster grew to fifteen

@@ -8,7 +8,7 @@ const STORY2='I was humiliated in the meeting and I said nothing. I felt small a
 const booted=async p=>{try{await p.waitForFunction(()=>document.body.classList.contains('booted'),null,{timeout:15000});}catch(e){}};
 const J=x=>JSON.stringify(x);
 (async()=>{
- const browser=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+ const browser=await chromium.launch({executablePath:process.env.CHROME||chromium.executablePath()});
  const ctx=await browser.newContext({viewport:{width:1600,height:1000}});
  const page=await ctx.newPage(); const errs=[];
  page.on('pageerror',e=>errs.push(e.message));

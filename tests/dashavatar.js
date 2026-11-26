@@ -72,7 +72,7 @@ console.log('\n=== the 21 questions, each through the ten points ===');
 (async()=>{
  const {chromium}=require('playwright');
  const FILE='file://'+path.resolve(process.env.ATUNED_FILE||'source.html')+'?dev=1';
- const b=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+ const b=await chromium.launch({executablePath:process.env.CHROME||chromium.executablePath()});
  require('./net.js').guardBrowser(b);
  const p=await b.newPage({viewport:{width:1600,height:1000}});
  const errs=[]; p.on('pageerror',e=>errs.push(String(e.message)));

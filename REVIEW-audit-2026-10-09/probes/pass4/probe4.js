@@ -33,7 +33,7 @@ const loop=()=>{
     patterns:L.patterns.map(x=>({name:x.name,addr:x.address,state:x.state,by:x.by,named:x.named,stories:x.stories,lines:x.lines,truths:x.truths,said:x.said}))};
 };
 (async()=>{
- const browser=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+ const browser=await chromium.launch({executablePath:process.env.CHROME||chromium.executablePath()});
 
  /* ---------------- A. the onboarding route, through the real door ---------------- */
  if(!process.env.SKIP_A){

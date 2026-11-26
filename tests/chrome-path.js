@@ -5,10 +5,16 @@
    at chromium.launch before its first check, which reads as the gate being
    broken when it is only the machine that differs.
 
-   The fix is one expression, process.env.CHROME || '<that path>', so the
-   sandbox runs exactly as before with CHROME unset and CI points CHROME at
-   its own browser. This scan holds tests/, tools/ and funnel/ to it, by two
-   rules, and prints each breach as FAIL file:line with the rule it broke.
+   The fix is one expression, process.env.CHROME || chromium.executablePath(),
+   so CI points CHROME at its own browser and a run with CHROME unset takes
+   the browser Playwright itself installed. It was process.env.CHROME ||
+   '<that path>' until 18 November 2026, and that fallback rotted: the
+   sandbox's Playwright moved to chromium-1243, chromium-1194 was removed,
+   and every documented gate command died at launch with CHROME unset while
+   this scan still passed, because the dead path was the approved one. So no
+   path is approved any more. This scan holds tests/, tools/ and funnel/ to
+   that, by two rules, and prints each breach as FAIL file:line with the
+   rule it broke.
    It has to be a scan and not a habit, because a bare literal that slips
    back in still passes here, where every gate is written and run, and only
    breaks on the runner nobody is watching.
@@ -19,7 +25,7 @@
    chromium_headless_shell-1194, a path built as '/opt/pw-browsers/chromium-'
    plus a revision, and one put together by path.join out of 'pw-browsers'
    and 'chrome-linux'. Review B found each of them passing. So the first rule
-   is: a line that, with every approved expression cut out of it, still names
+   is: a line that names
    pw-browsers, chromium- and a digit, chromium_headless_shell or
    chrome-linux is an offender. The needle is pw-browsers and not
    /opt/pw-browsers because path.join writes the directory without a slash.
@@ -41,10 +47,10 @@
    read past the end of its own line, so a wrong guess costs one line and not
    the rest of the file.
 
-   Two spacings are approved, || bare and || with a space each side, because
-   the files it covers are written both ways and the replacement keeps each
-   line's own idiom. Nothing else is: a double quoted path, the fallback
-   written first, or a different binary under chromium-1194 all fail.
+   The expression is written with || bare and with || spaced, keeping each
+   file's own idiom. Neither spelling names a path, so the first rule never
+   sees it, and any literal path at all, the old chromium-1194 one included,
+   fails.
 
    The root is this file's own parent and never the working directory, so a
    run from the wrong place cannot pass by scanning nothing, and a missing
@@ -57,7 +63,6 @@ const fs=require('fs'),path=require('path');
 const ROOT=path.resolve(__dirname,'..');
 const SELF=path.resolve(__filename);
 const NEEDLE=/pw-browsers|chromium-\d|chromium_headless_shell|chrome-linux/;
-const APPROVED=/(?<![\w$])process\.env\.CHROME(?:\|\|| \|\| )'\/opt\/pw-browsers\/chromium-1194\/chrome-linux\/chrome'/g;
 const LAUNCH=/\bchromium\s*\.\s*launch(?:PersistentContext)?\s*\(/g;
 let files=0,launches=0,offenders=0,missing=0;
 const fail=(p,line,why)=>{offenders++;console.log('FAIL '+path.relative(ROOT,p)+':'+line+' '+why);};
@@ -96,7 +101,7 @@ const walk=dir=>{
   if(NEEDLE.test(src)){
    files++;
    src.split('\n').forEach((line,i)=>{
-    if(NEEDLE.test(line.replace(APPROVED,'')))fail(p,i+1,'names the browser outside the approved expression');
+    if(NEEDLE.test(line))fail(p,i+1,'names a browser path; use process.env.CHROME||chromium.executablePath()');
    });
   }
   if(!/\.[cm]?js$/.test(name))continue;

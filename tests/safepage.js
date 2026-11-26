@@ -164,7 +164,7 @@ const look = p => p.evaluate(() => {
 });
 
 (async () => {
-  const browser = await chromium.launch({ executablePath: process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+  const browser = await chromium.launch({ executablePath: process.env.CHROME || chromium.executablePath() });
   require('./net.js').guardBrowser(browser);
   const SAY = await (async () => { const p = await open(browser, 800, 600);
     const s = await p.evaluate(() => ({ entry: CRISIS_SAY.entry, now: CRISIS_SAY.entryNow, reach: CRISIS_SAY.reach }));
