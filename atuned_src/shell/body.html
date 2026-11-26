@@ -222,7 +222,11 @@
    if(HELDFADE){var h=HELDFADE; HELDFADE=null;
     try{var d=h.f.effect.getComputedTiming().delay;
      if(performance.now()<h.s0+d)h.f.startTime=h.s0;
-     else{h.f.currentTime=d; h.f.play();}}catch(x){}}
+     else{
+      // Resume from the overture side of the boundary so bootOut enters
+      // its active phase on a frame after readiness.
+      h.f.currentTime=Math.max(0,d-1); h.f.play();
+     }}catch(x){}}
    if(ACT&&HELD){var p=HELD; HELD=null; act(p);}
    else{
     /* UNI, ADDED 11 November. A held skip wins: it is acted on above instead,

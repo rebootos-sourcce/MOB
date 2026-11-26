@@ -95,6 +95,18 @@ function srcVoiceIntelligence(text,record,opts){
   * No historic raw journal or user identifiers leave this function. */
  var userTurns=Array.isArray(o.turns)?o.turns.slice(-11).filter(function(x){return typeof x==='string';}):[];
  if(userTurns[userTurns.length-1]!==t)userTurns.push(t);
+ /* Explicit catalog pilot. The manuscript relationship remains research-only
+  * outside this test path and provides no evidence about the user's profile. */
+ if(o.knowledgeGraphPilot===true && /\bknowledge domain\b/i.test(t) &&
+    /\b(?:relat\w*|connect\w*|link\w*)\b/i.test(t)){
+  out.knowledgeEvidence=[{
+   from:'domain:01',
+   to:'blueprint:personal-model',
+   relationship:'versioned domain to blueprint model',
+   source:'Mechanics of Being v336, Chapter 12, Somatic Psychology Stack',
+   status:'RESEARCH_PILOT'
+  }];
+ }
  out.narrative=srcVoiceNarrative(userTurns);
  /* The TULA episode reader is a pure report of explicit user turns. A rank
   * refers to the exact source adjective, never to CQ, profile or curve height. */

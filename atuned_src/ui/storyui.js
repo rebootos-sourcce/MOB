@@ -2829,6 +2829,14 @@ function srcGauge(top){
    person, with no status-line ring to it. */
 function srcNone(){
  return 'I can’t place this one yet. Tell me what your body did, and where.';}
+function srcKnowledgePilotReply(text){
+ if(new URLSearchParams(location.search).get('sourceKnowledgePilot')!=='1'||
+    typeof srcVoiceIntelligence!=='function')return '';
+ var report=srcVoiceIntelligence(text,null,{knowledgeGraphPilot:true});
+ var evidence=report.intelligence.knowledgeEvidence;
+ if(!evidence||!evidence.length)return '';
+ return 'The research graph links the Knowledge domain to the Personal Blueprint as a structural reference. The source is '+evidence[0].source+'.';
+}
 function srcPaint(){
  var h=document.getElementById('stsrc'); if(!h)return;
  var heard=srcHeardNow();
@@ -2959,7 +2967,15 @@ function srcPaint(){
     defect this gate exists for, and with Talk on speak a reply to each.
     Typed words there become a turn when the next spoken one lands, which
     syncs first (srcTurnCommit), or at Commit. */
- if(STV.chat&&turn.move!=='safe'){cur=srcChatCur(turn,heard,q,ask); if(!document.getElementById('sttext'))srcChatSync(); fresh=srcChatNote(cur);
+ if(STV.chat&&turn.move!=='safe'){
+  cur=srcChatCur(turn,heard,q,ask);
+  if(!document.getElementById('sttext')){
+   srcChatSync();
+   var lastUserTurn=SRC_CHAT.slice().reverse().find(function(row){return row.w==='me';});
+   var pilotReply=lastUserTurn&&srcKnowledgePilotReply(lastUserTurn.t);
+   if(pilotReply)cur={w:'src',key:'knowledge|blueprint',q:pilotReply,mv:'listen',rg:0,bd:null};
+  }
+  fresh=srcChatNote(cur);
   /* EVERY REPLY SPOKEN, BOTH WAYS IN. REVERSES 11 November. Ruled 13
      November, his words: "it needs to do speech to speech, text to
      speech. It needs to do them all." The 10 November ruling only ever
