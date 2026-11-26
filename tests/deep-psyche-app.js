@@ -30,6 +30,35 @@ for(const ref of nativeCandidates){
  else assert.strictEqual(ref.evidenceStatus,'EXACT_LABEL_NAVIGATION_NOT_CANONICAL_EQUIVALENCE');
 }
 const by=new Map(db.records.map(x=>[x.id,x]));
+/* Verify the real scored archetype roster rather than inventing aliases for
+   source archetypes with no native card. Three occurrences per source name:
+   the candidate itself, its ARCH18 tuple and its ARCHDOM mapping. */
+const canonSource=fs.readFileSync(path.join(app,'engine/data/canon.js'),'utf8');
+const archSource=canonSource.match(/const ARCH=\[[\s\S]*?\];/);
+assert(archSource,'Native ARCH deck not found');
+const nativeArch=vm.runInNewContext(archSource[0]+'\nARCH;');
+const nativeArchNames=new Set(nativeArch.map(x=>x.nm));
+assert.strictEqual(nativeArchNames.size,12,'Scored archetype roster changed; re-audit source-only routes');
+const expectedSourceOnly=['Healer','Hero','Mentor','Orphan','Shadow','Shapeshifter'];
+const sourceOnly=nativeCandidates.filter(x=>x.nativeDeckStatus==='SOURCE_ONLY_ARCHETYPE');
+assert.strictEqual(sourceOnly.length,18,'Unresolved native occurrences must be explicitly classified');
+for(const name of expectedSourceOnly){
+ const entries=sourceOnly.filter(x=>x.name===name);
+ assert.strictEqual(entries.length,3,'Expected three source-only occurrences for '+name);
+ assert(entries.every(x=>x.kind==='arch'&&!x.targetName),'No invented native alias for '+name);
+ assert(!nativeArchNames.has(name),'Re-audit source-only classification after deck expansion: '+name);
+ const candidate=db.records.find(x=>x.type==='archetype_candidate'&&x.name===name);
+ assert(candidate,'Missing accessible source record: '+name);
+ const rows=db.records.filter(x=>(x.nativeNavigationCandidates||[]).some(ref=>ref.name===name&&ref.nativeDeckStatus==='SOURCE_ONLY_ARCHETYPE'));
+ assert.strictEqual(rows.length,3);
+ assert(rows.filter(x=>x.id!==candidate.id).every(x=>x.linkedIds.includes(candidate.id)),
+  'Both mapping rows must retain a path to their source archetype: '+name);
+}
+for(const ref of nativeCandidates.filter(x=>x.kind==='arch')){
+ assert.strictEqual(ref.nativeDeckStatus==='SOURCE_ONLY_ARCHETYPE',!nativeArchNames.has(ref.targetName||ref.name),
+  'Source-only classification must match actual scored roster: '+ref.name);
+}
+
 /* The source registry retains literal research notes; the shipped drill
    must not present statistical sample notation as reader-facing copy. */
 const displayFields=['description','body','clear','distorted'];
@@ -126,6 +155,23 @@ const unmatched=by.get('mapping:arch18:01').nativeNavigationCandidates.filter(re
 assert.strictEqual(unresolvedCount,unmatched.length,
  'Every unmatched native candidate needs a visible noninteractive status');
 
+/* Source-only rows are visible as such and are not native click targets.
+   Their existing connected-record buttons are the source-backed route. */
+drillContext.kbRowsOf=kind=>kind==='arch'?nativeArch.map(a=>({k:'arch',t:a.nm})): [];
+for(const row of db.records.filter(x=>(x.nativeNavigationCandidates||[]).some(ref=>ref.nativeDeckStatus==='SOURCE_ONLY_ARCHETYPE'))){
+ drillContext.kbPsycheDrill(row);
+ assert(rendered.includes('Source record only; not in the scored archetype deck'),
+  'Source-only status not rendered: '+row.id);
+ const i=row.nativeNavigationCandidates.findIndex(ref=>ref.nativeDeckStatus==='SOURCE_ONLY_ARCHETYPE');
+ assert(!rendered.includes('data-dp-native="'+row.id+'" data-dp-native-index="'+i+'"'),
+  'Source-only route must never present a native click target: '+row.id);
+ if(row.type==='mapping_record'){
+  const name=row.nativeNavigationCandidates[i].name;
+  const candidate=db.records.find(x=>x.type==='archetype_candidate'&&x.name===name);
+  assert(rendered.includes('data-dp-link="'+candidate.id+'"'),
+   'Source record must remain reachable from mapping: '+row.id);
+ }
+}
 /* Execute source-backed click routing against the actual generated record. */
 const nativeClickSource=ui.match(/\/\* Exact-label navigation into the native app records\. \*\/[\s\S]*?\n\}\);/);
 assert(nativeClickSource,'Native click event handler missing');
