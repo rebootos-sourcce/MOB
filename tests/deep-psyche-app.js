@@ -43,6 +43,26 @@ for(const original of registry.records){
  assert(delivered.depthReviewStatus?.structuralStatus==='PASS',
   'Depth structural review missing: '+original.id);
 }
+/* Deliberately remove one pair's evidence while keeping other relationships.
+   This must never be accepted as complete provenance. */
+function missingPairProvenance(row,linkedId){
+ return !row.relationships.some(e=>
+  (e.fromId===row.id&&e.toId===linkedId)||
+  (e.toId===row.id&&e.fromId===linkedId));
+}
+for(const row of db.records){
+ for(const linkedId of row.linkedIds)
+  assert(!missingPairProvenance(row,linkedId),'Pair provenance missing: '+row.id+' -> '+linkedId);
+}
+const manyLinks=db.records.find(row=>row.linkedIds.length>1);
+assert(manyLinks,'Expected multi-link record for negative evidence fixture');
+const deletedId=manyLinks.linkedIds[0];
+const damaged={...manyLinks,relationships:manyLinks.relationships.filter(e=>
+ !((e.fromId===manyLinks.id&&e.toId===deletedId)||
+   (e.toId===manyLinks.id&&e.fromId===deletedId)))};
+assert(damaged.relationships.length>0,'Negative fixture must retain unrelated evidence');
+assert(missingPairProvenance(damaged,deletedId),
+ 'Negative fixture did not detect missing per-pair provenance');
 for(const x of db.records){
  for(const link of x.linkedIds){
   const other=by.get(link);
