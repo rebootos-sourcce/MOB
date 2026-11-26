@@ -1263,7 +1263,7 @@ function recordLinkBoot(){
    var e=(importError()||['it was refused']).join('. ');
    /* a colon and the reason as the boundary wrote it: capitalising it turned
       the field path axes.Fear.held into a name the record does not have */
-   recordLinkSay('Not loaded from the link: '+e+'. The imported plan was reset to Free. Sign in to check any paid tier with the server.'+still,'fail');
+   recordLinkSay('Not loaded from the link: '+e+'. Nothing else was touched.'+still,'fail');
    return null;}
   /* read now, before the redraws below can run anything else */
   var copied=importCopied();
@@ -1295,7 +1295,7 @@ function recordLinkBoot(){
      random journey id, reuses an existing session, and never sends the story
      or name; the app still owns the record and the release itself. */
   if(typeof authFunnelStart==='function')authFunnelStart();
-  recordLinkSay('Loaded '+(np.name||'the record')+' from the link'+(copied?' as a second copy, since this record is already on this device':'')+'. Nothing else was touched.'+still,
+  recordLinkSay('Loaded '+(np.name||'the record')+' from the link'+(copied?' as a second copy, since this record is already on this device':'')+'. The imported plan was reset to Free. Sign in to check any paid tier with the server.'+still,
    still?'fail':'');
   return np;});}
 function profileSheet(){
