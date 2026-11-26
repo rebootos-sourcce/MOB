@@ -91,6 +91,11 @@ async function delayedReads(){
  ok(await work==='stale'&&keeps===0&&boots===0,'late boot success cannot replace the new session');
  session=sessionA;work=ctx.authCheck();session=sessionB;pending({ok:false,status:401});
  ok(await work==='stale'&&forgets===0,'late boot 401 cannot sign out a newer session');
+ session=sessionA;ctx.CURP=recordA;work=ctx.authCheck();ctx.CURP=recordB;
+ pending(answer);
+ ok(await work==='stale'&&boots===0&&keeps===0&&arms===1,
+  'late boot response cannot apply paid billing to a newly opened record');
+ ctx.CURP=recordA;
  /* Two valid reads for the same signed-in account and record can race.
     Returning the older paid response last must never replay old billing. */
  session=sessionA;ctx.CURP=recordA;
