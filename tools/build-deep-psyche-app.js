@@ -75,6 +75,14 @@ function displayCopy(value){
  if(typeof value!=='string')return value;
  return value.replace(/\bn\s*=\s*14\b/g,'fourteen');
 }
+// The canonical registry retains the exact research claim. In the shipped
+// projection only, express the visual-slot count in words; never imply
+// that the fourteen positions are approved domain records.
+function projectSourceClaims(r){
+ const visualCountClaim='The Psyche Map visualization declares a Blueprint Domains layer with n=14. This supports fourteen visualization positions only; it does not supply fourteen canonical domain names or prove a fourteen-record denominator.';
+ return (r.sourceClaims||[]).map(claim=>r.slotOnly&&claim===visualCountClaim?
+  claim.replace('with n=14.','with a count of fourteen.'):claim);
+}
 const out={
  schema:'atuned.deep_psyche.shipped_app.v1',
  sourceRegistryVersion:registry.version,
@@ -92,7 +100,7 @@ const out={
     (Array.isArray(r.decoherentExpression)?r.decoherentExpression[0]:null)||null),
   reviewStatus:r.status||null,
   sourceRefs:r.sourceRefs||[],
-  sourceClaims:r.sourceClaims||[],
+  sourceClaims:projectSourceClaims(r),
   relationships:r.relationships||[],
   nativeNavigationCandidates:nativeNavigationCandidates(r),
   relationshipAudit:r.relationshipAudit||null,
