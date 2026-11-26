@@ -2330,6 +2330,15 @@ function pImport(txt,keepId){
  var o; try{ o=JSON.parse(txt); }catch(e){ IMPORT_ERR=['not valid JSON']; return null; }
  var v=validateProfile(o);
  if(!v.ok){ IMPORT_ERR=v.errs; return null; }
+ /* A BACKUP IS A RECORD OF WORK, NOT PROOF OF PAYMENT. J11: a pasted
+    plan:{tier:'four',status:'active'} used to open every paid sight layer.
+    A JSON file, URL fragment and sync snapshot are all user-editable; even
+    a syntactically valid plan in them cannot carry billing authority.
+    Start from the engine's canonical free plan. A legitimate signed-in
+    subscription is applied separately by ui/auth.js from /v1/me, and
+    offline imports remain free until the server can verify them.
+    This is a client display boundary, not a substitute for server gates. */
+ v.profile.plan=blankProfile('Imported').plan;
  /* A RECORD THAT REACHED THIS BOUNDARY IS NEVER A BLANK FIRST RUN. The
     onboarding tour exists for a person with nothing read yet; the quiz
     link, a pasted record and a restored file all carry a real story
