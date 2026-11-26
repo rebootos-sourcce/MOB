@@ -21040,6 +21040,13 @@ function validateProfile(o,ctx){
   if(o.story.draft!==undefined&&o.story.draft!==null){
    var sd=vStr(errs,'story.draft',o.story.draft);
    if(sd!==null&&sd.trim())p.story.draft=sd;}
+  if(o.story.draftVerdicts!==undefined){
+   var dv=vEntryVerdicts(errs,'story.draftVerdicts',o.story.draftVerdicts);
+   if(dv&&dv.length){
+    if(!p.story.draft)errs.push('story.draftVerdicts requires a draft');
+    else p.story.draftVerdicts=dv;
+   }
+  }
   /* THE REPLY LINE'S OWN DRAFT, round of 28 October: a reply typed and not
      yet sent, held the same way the entry's own draft is. Same rule, same
      reason: only a string, never capped, missing or empty is no draft. */
@@ -29329,14 +29336,14 @@ function evLedger(text,entries,o){
     to drop. A verdict that is not one of the four answers is refused here by
     name and never applied. */
  (o.verdicts||[]).forEach(function(v){
-  var r=evVerdictOk(v);
+  var r=evVerdictOk(v,true);
   if(!r.ok){out.verdicts.push({seat:v&&v.seat, refused:r.why}); return;}
   var c=out.claims[v.seat]||(out.claims[v.seat]=mk(v.seat,null));
   var to=EV_VERDICT[v.v], from=c.state||'unknown';
   /* the same answer twice is the same state, and anything else must be an
      arrow EV_MOVES draws, so the table is the rule and not a comment */
   if(from!==to&&!evCan(from,to)){out.verdicts.push({seat:v.seat, v:v.v, refused:'no move from '+from+' to '+to}); return;}
-  c.verdict={v:v.v, fix:v.v==='fix'?String(v.fix).trim():null};
+  c.verdict={v:v.v, fix:v.v==='fix'&&v.fix?String(v.fix).trim():null};
   c.state=to;
   out.verdicts.push({seat:v.seat, v:v.v});});
  Object.keys(out.claims).forEach(function(k){var c=out.claims[k];
@@ -29418,11 +29425,11 @@ function srcOutputV1Candidate(c,out){
   chakra_candidates:EV_PLACEABLE.indexOf(c.state)>=0?[c.band]:[],
   law_candidate_ids:[]};}
 /* a verdict the ledger will take, or the reason it will not */
-function evVerdictOk(v){
+function evVerdictOk(v,allowStored){
  if(!v||typeof v!=='object')return {ok:false, why:'a verdict is an object'};
  if(!K2BAND[v.seat])return {ok:false, why:'no point called '+JSON.stringify(v.seat)};
  if(!EV_VERDICT.hasOwnProperty(v.v))return {ok:false, why:'the answers are yes, no, fix and unsure, not '+JSON.stringify(v.v)};
- if(v.v==='fix'&&!String(v.fix||'').trim())return {ok:false, why:'a correction needs the person\'s own words'};
+ if(v.v==='fix'&&!String(v.fix||'').trim()&&!(allowStored===true&&v.fix===undefined))return {ok:false, why:'a correction needs the person\'s own words'};
  return {ok:true};}
 /* ADD A VERDICT, returning the new list and never touching the one given.
    The one door into a person state. */
@@ -29468,7 +29475,7 @@ var EV_KEEP_FIX=false;
 function evKept(verdicts,ledger){
  var claims=(ledger&&ledger.claims)||{}, out=[], at={};
  (verdicts||[]).forEach(function(v){
-  if(!evVerdictOk(v).ok)return;
+  if(!evVerdictOk(v,true).ok)return;
   var c=claims[v.seat]; if(!c||!(c.mentions>0))return;
   var row={seat:v.seat, v:v.v};
   if(v.v==='fix'&&EV_KEEP_FIX)row.fix=String(v.fix).trim();

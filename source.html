@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v3540 87090495 2026-11-28 08:03"><head><meta charset="utf-8">
+<html lang="en" data-build="v3541 6ecab339 2026-11-28 08:04"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -33075,6 +33075,13 @@ function validateProfile(o,ctx){
   if(o.story.draft!==undefined&&o.story.draft!==null){
    var sd=vStr(errs,'story.draft',o.story.draft);
    if(sd!==null&&sd.trim())p.story.draft=sd;}
+  if(o.story.draftVerdicts!==undefined){
+   var dv=vEntryVerdicts(errs,'story.draftVerdicts',o.story.draftVerdicts);
+   if(dv&&dv.length){
+    if(!p.story.draft)errs.push('story.draftVerdicts requires a draft');
+    else p.story.draftVerdicts=dv;
+   }
+  }
   /* THE REPLY LINE'S OWN DRAFT, round of 28 October: a reply typed and not
      yet sent, held the same way the entry's own draft is. Same rule, same
      reason: only a string, never capped, missing or empty is no draft. */
@@ -41392,14 +41399,14 @@ function evLedger(text,entries,o){
     to drop. A verdict that is not one of the four answers is refused here by
     name and never applied. */
  (o.verdicts||[]).forEach(function(v){
-  var r=evVerdictOk(v);
+  var r=evVerdictOk(v,true);
   if(!r.ok){out.verdicts.push({seat:v&&v.seat, refused:r.why}); return;}
   var c=out.claims[v.seat]||(out.claims[v.seat]=mk(v.seat,null));
   var to=EV_VERDICT[v.v], from=c.state||'unknown';
   /* the same answer twice is the same state, and anything else must be an
      arrow EV_MOVES draws, so the table is the rule and not a comment */
   if(from!==to&&!evCan(from,to)){out.verdicts.push({seat:v.seat, v:v.v, refused:'no move from '+from+' to '+to}); return;}
-  c.verdict={v:v.v, fix:v.v==='fix'?String(v.fix).trim():null};
+  c.verdict={v:v.v, fix:v.v==='fix'&&v.fix?String(v.fix).trim():null};
   c.state=to;
   out.verdicts.push({seat:v.seat, v:v.v});});
  Object.keys(out.claims).forEach(function(k){var c=out.claims[k];
@@ -41481,11 +41488,11 @@ function srcOutputV1Candidate(c,out){
   chakra_candidates:EV_PLACEABLE.indexOf(c.state)>=0?[c.band]:[],
   law_candidate_ids:[]};}
 /* a verdict the ledger will take, or the reason it will not */
-function evVerdictOk(v){
+function evVerdictOk(v,allowStored){
  if(!v||typeof v!=='object')return {ok:false, why:'a verdict is an object'};
  if(!K2BAND[v.seat])return {ok:false, why:'no point called '+JSON.stringify(v.seat)};
  if(!EV_VERDICT.hasOwnProperty(v.v))return {ok:false, why:'the answers are yes, no, fix and unsure, not '+JSON.stringify(v.v)};
- if(v.v==='fix'&&!String(v.fix||'').trim())return {ok:false, why:'a correction needs the person\'s own words'};
+ if(v.v==='fix'&&!String(v.fix||'').trim()&&!(allowStored===true&&v.fix===undefined))return {ok:false, why:'a correction needs the person\'s own words'};
  return {ok:true};}
 /* ADD A VERDICT, returning the new list and never touching the one given.
    The one door into a person state. */
@@ -41531,7 +41538,7 @@ var EV_KEEP_FIX=false;
 function evKept(verdicts,ledger){
  var claims=(ledger&&ledger.claims)||{}, out=[], at={};
  (verdicts||[]).forEach(function(v){
-  if(!evVerdictOk(v).ok)return;
+  if(!evVerdictOk(v,true).ok)return;
   var c=claims[v.seat]; if(!c||!(c.mentions>0))return;
   var row={seat:v.seat, v:v.v};
   if(v.v==='fix'&&EV_KEEP_FIX)row.fix=String(v.fix).trim();
@@ -70716,6 +70723,7 @@ function stCommit(){
  if(showRefuse('story'))return {ok:false,why:'example'};
  /* asked of the words, not of the page, so the tutorial's and the first
     run's commits through here are held the same way (stSafe, above) */
+ srcCheckVerdictText();
  var safe=srcSafe(ST_TEXT);
  var vkept=SRC_VERDICTS.length?evKept(SRC_VERDICTS,evLedger(ST_TEXT,[],{verdicts:SRC_VERDICTS})):[];
  var parsed=vkept.length?parseStory(ST_TEXT,vkept):ST_PARSED;
@@ -70780,7 +70788,8 @@ function stCommit(){
      when it is these words: onboarding commits its own text through here,
      and a half written story waiting on the Story page is not its to clear. */
   var wasDraft=CURP.story.draft===ST_TEXT;
-  if(wasDraft)delete CURP.story.draft;
+  var savedDraftVerdicts=wasDraft?CURP.story.draftVerdicts:null;
+  if(wasDraft){delete CURP.story.draft; delete CURP.story.draftVerdicts;}
   /* Commit always sends whatever is in the reply line first (see ap.onclick
      below), so by the time an entry is pushed SRC_CDRAFT is already empty;
      this only clears what a reload might still be holding from before. */
@@ -70799,7 +70808,12 @@ function stCommit(){
      report, which is the line probe 6 then read off the release. */
   if(typeof YOU_T!=='undefined'&&YOU_T){clearTimeout(YOU_T);YOU_T=null;}
   if(saved){pSnap(); STV.unsaved=null;}
-  else{ STV.unsaved=entT; if(wasDraft)CURP.story.draft=ST_TEXT; }}
+  else{ STV.unsaved=entT;
+   if(wasDraft){
+    CURP.story.draft=ST_TEXT;
+    if(savedDraftVerdicts)CURP.story.draftVerdicts=savedDraftVerdicts;
+   }
+  }}
  /* NOT SAVED: THE ENTRY STAYS IN THIS SESSION AND THE WORDS STAY IN THE BOX.
     The same answer relAnswer and obCommit give a refused save, the write kept
     in memory and said to be off the record, so onboarding's first run still
@@ -70878,10 +70892,17 @@ function stDraft(){
  if(!stMine())return;
  if(CURP)ST_OWN=CURP;
  if(!CURP||!CURP.story||(typeof S!=='undefined'&&S.who!==0))return;
+ srcCheckVerdictText();
  var v=(ST_TEXT&&ST_TEXT.trim())?ST_TEXT:null,
   r=(typeof SRC_CDRAFT==='string'&&SRC_CDRAFT.trim())?SRC_CDRAFT:null, moved=false;
  if((CURP.story.draft||null)!==v){ if(v===null)delete CURP.story.draft; else CURP.story.draft=v; moved=true; }
  if((CURP.story.reply||null)!==r){ if(r===null)delete CURP.story.reply; else CURP.story.reply=r; moved=true; }
+ var verdicts=v&&SRC_VERDICTS.length?evKept(SRC_VERDICTS,evLedger(v,[],{verdicts:SRC_VERDICTS})):[];
+ if(JSON.stringify(CURP.story.draftVerdicts||[])!==JSON.stringify(verdicts)){
+  if(verdicts.length)CURP.story.draftVerdicts=verdicts;
+  else delete CURP.story.draftVerdicts;
+  moved=true;
+ }
  if(!moved)return;
  stDraftStop(); STV.draftT=setTimeout(stDraftSave,500);}
 function stDraftStop(){ if(STV.draftT){clearTimeout(STV.draftT); STV.draftT=null;} }
@@ -70906,7 +70927,10 @@ function stDraftBack(){
  if(!stMine())return;
  if(!CURP||!CURP.story||(typeof S!=='undefined'&&S.who!==0))return;
  if(!ST_TEXT&&typeof CURP.story.draft==='string'){
-  ST_TEXT=CURP.story.draft; ST_PARSED=ST_TEXT.trim()?parseStory(ST_TEXT):null; ST_OWN=CURP;}
+  ST_TEXT=CURP.story.draft; ST_PARSED=ST_TEXT.trim()?parseStory(ST_TEXT):null; ST_OWN=CURP;
+  SRC_VERDICTS=Array.isArray(CURP.story.draftVerdicts)?CURP.story.draftVerdicts.slice():[];
+  SRC_VERDICT_TEXT=SRC_VERDICTS.length?ST_TEXT.trimEnd():'';
+ }
  if(!SRC_CDRAFT&&typeof CURP.story.reply==='string'){SRC_CDRAFT=CURP.story.reply; ST_OWN=CURP;}}
 /* THE OPEN RECORD CHANGED UNDER THE JOURNAL, 3 November. Called at the head
    of render() (ui/ui.js), stRender and stFieldPaint, so every route CURP
@@ -71502,7 +71526,21 @@ function srcLog(k,seat){
 /* a new entry is a new conversation: the built question quoted the last one.
    The thread goes with it, and so does a reply still in the line, which on a
    commit has already been sent into the entry and on Clear is cleared. */
-function srcFresh(){SRC_DQ='';SRC_DW='';SRC_DN=0;SRC_DNONE=false;SRC_LOG=[];SRC_DK=[];SRC_VET=null;SRC_VERDICTS=[];SRC_VENT=false;SRC_ASK_K='';SRC_FROM=0;SRC_VFIX='';SRC_VFIXT='';SRC_VK='';
+var SRC_VERDICT_TEXT='';
+/* A verdict belongs to the words already present when it was given. Appending
+   a turn preserves it. Rewriting that text clears it before any reading. */
+function srcCheckVerdictText(){
+ if(SRC_VERDICT_TEXT&&!ST_TEXT.startsWith(SRC_VERDICT_TEXT)){
+  SRC_VERDICTS=[]; SRC_VERDICT_TEXT='';
+ }
+}
+function srcLandVerdicts(verdicts){
+ SRC_VERDICTS=verdicts;
+ SRC_VERDICT_TEXT=ST_TEXT.trimEnd();
+ stDraft();
+ if(STV.draftT)stDraftSave();
+}
+function srcFresh(){SRC_VERDICT_TEXT='';SRC_DQ='';SRC_DW='';SRC_DN=0;SRC_DNONE=false;SRC_LOG=[];SRC_DK=[];SRC_VET=null;SRC_VERDICTS=[];SRC_VENT=false;SRC_ASK_K='';SRC_FROM=0;SRC_VFIX='';SRC_VFIXT='';SRC_VK='';
  SRC_CHAT=[];SRC_CPRESS=false;SRC_CDRAFT='';
  /* a new entry is a new conversation, so it is greeted once again and the
     short lines a press said before are free to be said */
@@ -72502,7 +72540,7 @@ function srcIntentLand(v){
      is not cleared when the move changes, so "that is not me" after a
      throat guess turned down the root. */
   var L=srcLedgerNow(), seat=srcLastSeat()||(SRC_VET&&SRC_VET.cand&&SRC_VET.cand.target)||L.thread;
-  if(seat){var r=evVerdict(SRC_VERDICTS,seat,'no'); if(r.ok)SRC_VERDICTS=r.verdicts;}}
+  if(seat){var r=evVerdict(SRC_VERDICTS,seat,'no'); if(r.ok)srcLandVerdicts(r.verdicts);}}
  return it;}
 /* UNI'S ONE OWNER, 9 November. Three places would otherwise push her: a
    turn landing here, the record moving under render(), and stRender
@@ -72781,7 +72819,7 @@ function srcVerdictWire(h){
   var sel='[data-srcv="'+v+'"][data-seat="'+seat+'"]';
   if(v==='fix'){SRC_VFIX=SRC_VFIX===seat?'':seat; SRC_VFIXT='';
    srcPaint(); var t=document.getElementById('srcvfix'); if(t)t.focus(); else again(sel); return;}
-  var r=evVerdict(SRC_VERDICTS,seat,v); if(r.ok)SRC_VERDICTS=r.verdicts;
+  var r=evVerdict(SRC_VERDICTS,seat,v); if(r.ok)srcLandVerdicts(r.verdicts);
   if(SRC_VFIX===seat){SRC_VFIX=''; SRC_VFIXT='';}
   again(sel);};});
  var ta=document.getElementById('srcvfix');
@@ -72793,7 +72831,7 @@ function srcVerdictWire(h){
   /* an empty box is not a correction: evVerdictOk refuses it, and the box
      stays open with the focus in it rather than claiming anything landed */
   if(!r.ok){if(t)t.focus(); return;}
-  SRC_VERDICTS=r.verdicts; SRC_VFIX=''; SRC_VFIXT='';
+  srcLandVerdicts(r.verdicts); SRC_VFIX=''; SRC_VFIXT='';
   again('[data-srcv="fix"][data-seat="'+seat+'"]');};});}
 function srcThread(turn,heard,cur,acts,why){
  var ents=srcHistoryEntries(), pr=null, last=-1;
@@ -118542,5 +118580,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="008644480"></div>
+<div id="eof" hidden data-len="008645982"></div>
 </body></html>

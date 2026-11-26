@@ -1839,6 +1839,7 @@ function stCommit(){
  if(showRefuse('story'))return {ok:false,why:'example'};
  /* asked of the words, not of the page, so the tutorial's and the first
     run's commits through here are held the same way (stSafe, above) */
+ srcCheckVerdictText();
  var safe=srcSafe(ST_TEXT);
  var vkept=SRC_VERDICTS.length?evKept(SRC_VERDICTS,evLedger(ST_TEXT,[],{verdicts:SRC_VERDICTS})):[];
  var parsed=vkept.length?parseStory(ST_TEXT,vkept):ST_PARSED;
@@ -1903,7 +1904,8 @@ function stCommit(){
      when it is these words: onboarding commits its own text through here,
      and a half written story waiting on the Story page is not its to clear. */
   var wasDraft=CURP.story.draft===ST_TEXT;
-  if(wasDraft)delete CURP.story.draft;
+  var savedDraftVerdicts=wasDraft?CURP.story.draftVerdicts:null;
+  if(wasDraft){delete CURP.story.draft; delete CURP.story.draftVerdicts;}
   /* Commit always sends whatever is in the reply line first (see ap.onclick
      below), so by the time an entry is pushed SRC_CDRAFT is already empty;
      this only clears what a reload might still be holding from before. */
@@ -1922,7 +1924,12 @@ function stCommit(){
      report, which is the line probe 6 then read off the release. */
   if(typeof YOU_T!=='undefined'&&YOU_T){clearTimeout(YOU_T);YOU_T=null;}
   if(saved){pSnap(); STV.unsaved=null;}
-  else{ STV.unsaved=entT; if(wasDraft)CURP.story.draft=ST_TEXT; }}
+  else{ STV.unsaved=entT;
+   if(wasDraft){
+    CURP.story.draft=ST_TEXT;
+    if(savedDraftVerdicts)CURP.story.draftVerdicts=savedDraftVerdicts;
+   }
+  }}
  /* NOT SAVED: THE ENTRY STAYS IN THIS SESSION AND THE WORDS STAY IN THE BOX.
     The same answer relAnswer and obCommit give a refused save, the write kept
     in memory and said to be off the record, so onboarding's first run still
@@ -2001,10 +2008,17 @@ function stDraft(){
  if(!stMine())return;
  if(CURP)ST_OWN=CURP;
  if(!CURP||!CURP.story||(typeof S!=='undefined'&&S.who!==0))return;
+ srcCheckVerdictText();
  var v=(ST_TEXT&&ST_TEXT.trim())?ST_TEXT:null,
   r=(typeof SRC_CDRAFT==='string'&&SRC_CDRAFT.trim())?SRC_CDRAFT:null, moved=false;
  if((CURP.story.draft||null)!==v){ if(v===null)delete CURP.story.draft; else CURP.story.draft=v; moved=true; }
  if((CURP.story.reply||null)!==r){ if(r===null)delete CURP.story.reply; else CURP.story.reply=r; moved=true; }
+ var verdicts=v&&SRC_VERDICTS.length?evKept(SRC_VERDICTS,evLedger(v,[],{verdicts:SRC_VERDICTS})):[];
+ if(JSON.stringify(CURP.story.draftVerdicts||[])!==JSON.stringify(verdicts)){
+  if(verdicts.length)CURP.story.draftVerdicts=verdicts;
+  else delete CURP.story.draftVerdicts;
+  moved=true;
+ }
  if(!moved)return;
  stDraftStop(); STV.draftT=setTimeout(stDraftSave,500);}
 function stDraftStop(){ if(STV.draftT){clearTimeout(STV.draftT); STV.draftT=null;} }
@@ -2029,7 +2043,10 @@ function stDraftBack(){
  if(!stMine())return;
  if(!CURP||!CURP.story||(typeof S!=='undefined'&&S.who!==0))return;
  if(!ST_TEXT&&typeof CURP.story.draft==='string'){
-  ST_TEXT=CURP.story.draft; ST_PARSED=ST_TEXT.trim()?parseStory(ST_TEXT):null; ST_OWN=CURP;}
+  ST_TEXT=CURP.story.draft; ST_PARSED=ST_TEXT.trim()?parseStory(ST_TEXT):null; ST_OWN=CURP;
+  SRC_VERDICTS=Array.isArray(CURP.story.draftVerdicts)?CURP.story.draftVerdicts.slice():[];
+  SRC_VERDICT_TEXT=SRC_VERDICTS.length?ST_TEXT.trimEnd():'';
+ }
  if(!SRC_CDRAFT&&typeof CURP.story.reply==='string'){SRC_CDRAFT=CURP.story.reply; ST_OWN=CURP;}}
 /* THE OPEN RECORD CHANGED UNDER THE JOURNAL, 3 November. Called at the head
    of render() (ui/ui.js), stRender and stFieldPaint, so every route CURP
@@ -2625,7 +2642,21 @@ function srcLog(k,seat){
 /* a new entry is a new conversation: the built question quoted the last one.
    The thread goes with it, and so does a reply still in the line, which on a
    commit has already been sent into the entry and on Clear is cleared. */
-function srcFresh(){SRC_DQ='';SRC_DW='';SRC_DN=0;SRC_DNONE=false;SRC_LOG=[];SRC_DK=[];SRC_VET=null;SRC_VERDICTS=[];SRC_VENT=false;SRC_ASK_K='';SRC_FROM=0;SRC_VFIX='';SRC_VFIXT='';SRC_VK='';
+var SRC_VERDICT_TEXT='';
+/* A verdict belongs to the words already present when it was given. Appending
+   a turn preserves it. Rewriting that text clears it before any reading. */
+function srcCheckVerdictText(){
+ if(SRC_VERDICT_TEXT&&!ST_TEXT.startsWith(SRC_VERDICT_TEXT)){
+  SRC_VERDICTS=[]; SRC_VERDICT_TEXT='';
+ }
+}
+function srcLandVerdicts(verdicts){
+ SRC_VERDICTS=verdicts;
+ SRC_VERDICT_TEXT=ST_TEXT.trimEnd();
+ stDraft();
+ if(STV.draftT)stDraftSave();
+}
+function srcFresh(){SRC_VERDICT_TEXT='';SRC_DQ='';SRC_DW='';SRC_DN=0;SRC_DNONE=false;SRC_LOG=[];SRC_DK=[];SRC_VET=null;SRC_VERDICTS=[];SRC_VENT=false;SRC_ASK_K='';SRC_FROM=0;SRC_VFIX='';SRC_VFIXT='';SRC_VK='';
  SRC_CHAT=[];SRC_CPRESS=false;SRC_CDRAFT='';
  /* a new entry is a new conversation, so it is greeted once again and the
     short lines a press said before are free to be said */
@@ -3625,7 +3656,7 @@ function srcIntentLand(v){
      is not cleared when the move changes, so "that is not me" after a
      throat guess turned down the root. */
   var L=srcLedgerNow(), seat=srcLastSeat()||(SRC_VET&&SRC_VET.cand&&SRC_VET.cand.target)||L.thread;
-  if(seat){var r=evVerdict(SRC_VERDICTS,seat,'no'); if(r.ok)SRC_VERDICTS=r.verdicts;}}
+  if(seat){var r=evVerdict(SRC_VERDICTS,seat,'no'); if(r.ok)srcLandVerdicts(r.verdicts);}}
  return it;}
 /* UNI'S ONE OWNER, 9 November. Three places would otherwise push her: a
    turn landing here, the record moving under render(), and stRender
@@ -3904,7 +3935,7 @@ function srcVerdictWire(h){
   var sel='[data-srcv="'+v+'"][data-seat="'+seat+'"]';
   if(v==='fix'){SRC_VFIX=SRC_VFIX===seat?'':seat; SRC_VFIXT='';
    srcPaint(); var t=document.getElementById('srcvfix'); if(t)t.focus(); else again(sel); return;}
-  var r=evVerdict(SRC_VERDICTS,seat,v); if(r.ok)SRC_VERDICTS=r.verdicts;
+  var r=evVerdict(SRC_VERDICTS,seat,v); if(r.ok)srcLandVerdicts(r.verdicts);
   if(SRC_VFIX===seat){SRC_VFIX=''; SRC_VFIXT='';}
   again(sel);};});
  var ta=document.getElementById('srcvfix');
@@ -3916,7 +3947,7 @@ function srcVerdictWire(h){
   /* an empty box is not a correction: evVerdictOk refuses it, and the box
      stays open with the focus in it rather than claiming anything landed */
   if(!r.ok){if(t)t.focus(); return;}
-  SRC_VERDICTS=r.verdicts; SRC_VFIX=''; SRC_VFIXT='';
+  srcLandVerdicts(r.verdicts); SRC_VFIX=''; SRC_VFIXT='';
   again('[data-srcv="fix"][data-seat="'+seat+'"]');};});}
 function srcThread(turn,heard,cur,acts,why){
  var ents=srcHistoryEntries(), pr=null, last=-1;
