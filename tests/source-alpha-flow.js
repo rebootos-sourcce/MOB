@@ -170,6 +170,55 @@ async function main() {
     verify('equal', restored.optedIn, false);
     verify('deepEqual', errors, []);
     console.log('Correction, Commit, graph replay, browser reload, and Release handoff passed');
+    await page.evaluate(() => {
+      const prior = 'I keep checking their work because I think I will be blamed.';
+      const p = parseStory(prior);
+      CURP.story.entries.push({ t: '2026-10-02T12:00:00.000Z', text: prior,
+        imprints: p.imprints.length, bands: p.bands, lex: LEX_VERSION });
+      setTab(TAB.STORY);
+      STV.dash = true;
+      stRender();
+      if (!STV.typed) stType();
+    });
+    await page.locator('#sttext').fill(checking);
+    await page.locator('#srchistory').check();
+    await page.evaluate(() => {
+      stType();
+      document.getElementById('stapply').click();
+    });
+
+    const draft = 'I know I can choose when to check every detail myself.';
+    const eligibility = await page.evaluate(() => {
+      const current = CURP.story.entries.at(-1);
+      const earlier = CURP.story.entries.at(-2);
+      return {
+        withConsent: srcCheckingReframe(CURP, current.t, true),
+        withoutConsent: srcCheckingReframe(CURP, current.t, false),
+        oneStory: srcCheckingReframe({ story: { entries: [current] } }, current.t, true),
+        declined: srcCheckingReframe({ story: { entries: [
+          earlier, { ...current, verdicts: [{ seat: 'root', v: 'fix' }] }
+        ] } }, current.t, true)
+      };
+    });
+    verify('deepEqual', eligibility, { withConsent: draft, withoutConsent: null, oneStory: null, declined: null });
+    const keptBefore = await page.evaluate(() => affKept());
+    verify('equal', await page.locator('#afft').count(), 0);
+    await page.getByRole('button', { name: 'That fits. Draft a reframe' }).click();
+    verify('equal', await page.locator('#afft').inputValue(), draft);
+    verify('equal', await page.locator('#affrows li').count(), 0);
+    verify('equal', await page.locator('#affadd').isDisabled(), true);
+
+    await page.locator('#afft').fill('I know I can choose when to ask for a second pair of eyes.');
+    await page.locator('#affgo').click();
+    verify('equal', await page.locator('#affrows li').count(), 7);
+    verify('match', await page.locator('#affrows').textContent(), /ask for a second pair of eyes/);
+    verify('deepEqual', await page.evaluate(() => affKept()), keptBefore);
+    await page.locator('#affadd').click();
+    const savedReframe = await page.evaluate(() => affKept());
+    verify('equal', savedReframe?.rows.length, 7);
+    verify('ok', savedReframe?.rows.every(row => row.core.includes('ask for a second pair of eyes')));
+    verify('deepEqual', errors, []);
+    console.log('Confirmed pattern opens an editable reframe and leaves saving to the person');
     console.log('===== ' + passed + ' passed, 0 failed =====');
   } finally {
     await browser.close();
