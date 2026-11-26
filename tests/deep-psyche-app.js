@@ -137,6 +137,22 @@ drillContext.kbPsycheDrill(by.get('mapping:arch18:01'));
 assert(rendered.includes('Controller <span') && rendered.includes('S02 / need for control'));
 nativeClick({target:{closest:()=>({getAttribute:key=>key==='data-dp-native'?'mapping:arch18:01':'1'})}});
 assert.strictEqual(nativeOpened,s02);
+// Ambiguous labels and malformed indices must not choose a first match.
+const ambiguous=[{k:'sab',t:'Micromanager'},{k:'sab',t:'Micromanager'}];
+drillContext.kbRowsOf=clickScope.kbRowsOf=kind=>kind==='sab'?ambiguous:[];
+drillContext.kbPsycheDrill(by.get('mapping:arch18:01'));
+assert(!rendered.includes('data-dp-native="mapping:arch18:01" data-dp-native-index="1"'),
+ 'Ambiguous native target was rendered as actionable');
+nativeOpened=null;
+nativeClick({target:{closest:()=>({getAttribute:key=>key==='data-dp-native'?'mapping:arch18:01':'1'})}});
+assert.strictEqual(nativeOpened,null,'Ambiguous native target opened the first match');
+const first=by.get('mapping:arch18:01').nativeNavigationCandidates[0];
+clickScope.kbRowsOf=kind=>kind===first.kind?[{k:kind,t:first.targetName||first.name}]:[];
+for(const bad of [null,'',' ','00','0.0','-0','1e0','9007199254740992']){
+ nativeOpened=null;
+ nativeClick({target:{closest:()=>({getAttribute:key=>key==='data-dp-native'?'mapping:arch18:01':bad})}});
+ assert.strictEqual(nativeOpened,null,'Malformed native index selected a route: '+String(bad));
+}
 const sourceHtml=path.join(ROOT,'source.html');
 if(process.env.CI)assert(fs.existsSync(sourceHtml),'CI acceptance requires a built source.html');
 if(fs.existsSync(sourceHtml)){

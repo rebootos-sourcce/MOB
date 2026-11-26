@@ -1158,10 +1158,10 @@ function kbPsycheDrill(d){
     +esc(other.name)+' <span class="ad-sub">'+esc(provenance)+'</span></button>';
  }).join('');
  var nativeButtons=(typeof kbRowsOf==='function'?(d.nativeNavigationCandidates||[]).map(function(ref,i){
-  var hit=kbRowsOf(ref.kind).filter(function(x){
+  var matches=kbRowsOf(ref.kind).filter(function(x){
    return String(x.t||'').trim().toLowerCase()===String(ref.targetName||ref.name||'').trim().toLowerCase();
-  })[0];
-  if(!hit)return '<div class="ad-sub" data-dp-unresolved="'+esc(d.id)+'" data-dp-native-index="'+i+'">'
+  });
+  if(matches.length!==1)return '<div class="ad-sub" data-dp-unresolved="'+esc(d.id)+'" data-dp-native-index="'+i+'">'
    +esc(ref.name)+' / Native link awaiting verification</div>';
   return '<button type="button" class="btn" data-dp-native="'+esc(d.id)+'" data-dp-native-index="'+i+'">'
    +esc(ref.name)+(ref.targetName&&ref.name!=='Controller'?' → '+esc(ref.targetName):'')+' <span class="ad-sub">'+esc(ref.evidenceStatus)+'</span></button>';
@@ -1188,13 +1188,15 @@ addEventListener('click',function(e){
  var el=e.target&&e.target.closest?e.target.closest('[data-dp-native]'):null;
  if(!el||typeof DEEP_PSYCHE==='undefined'||typeof kbRowsOf!=='function')return;
  var record=DEEP_PSYCHE.records.filter(function(r){return r.id===el.getAttribute('data-dp-native');})[0];
- var index=Number(el.getAttribute('data-dp-native-index'));
- if(!record||!isFinite(index)||index<0||index%1)return;
+ var rawIndex=el.getAttribute('data-dp-native-index');
+ if(!record||typeof rawIndex!=='string'||! /^(0|[1-9][0-9]*)$/.test(rawIndex))return;
+ var index=Number(rawIndex);
+ if(!Number.isSafeInteger(index))return;
  var ref=(record.nativeNavigationCandidates||[])[index];if(!ref)return;
- var target=kbRowsOf(ref.kind).filter(function(x){
+ var targets=kbRowsOf(ref.kind).filter(function(x){
   return String(x.t||'').trim().toLowerCase()===String(ref.targetName||ref.name||'').trim().toLowerCase();
- })[0];
- if(target)kbOpen(target);
+ });
+ if(targets.length===1)kbOpen(targets[0]);
 });
 /* one row, one door. every kind routes to the drill that already exists for it. */
 function kbOpen(x){
