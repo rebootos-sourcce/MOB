@@ -1134,12 +1134,15 @@ function recordImportHtml(p){
    person restoring their own backup, or opening their own quiz link, could
    read as Free and be told to sign in when they already had. Read the plan
    again right now instead of waiting on that timer, and say so, rather than
-   send someone who is signed in off to sign in again. */
+   send someone who is signed in off to sign in again. The tail opens with
+   the period that ends its caller's "Loaded X" sentence: both callers
+   append it straight after the name, and tests/golden.js and
+   tests/recordlink.js read that period. */
 function recordPlanTail(){
  if(typeof authSession==='function'&&authSession()){
   if(typeof authPlanRead==='function')authPlanRead();
-  return ' The imported plan was reset to Free. Checking your plan with the server.';}
- return ' The imported plan was reset to Free. Sign in to check any paid tier with the server.';}
+  return '. The imported plan was reset to Free. Checking your plan with the server.';}
+ return '. The imported plan was reset to Free. Sign in to check any paid tier with the server.';}
 /* THE IMPORT, WIRED. Every write that can fail reports rather than claiming
    success, which is the standing rule in this product. `after` is called only on
    a load that landed, so a host that draws the record's own name can redraw it
