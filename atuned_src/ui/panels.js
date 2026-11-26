@@ -1125,6 +1125,21 @@ function recordImportHtml(p){
   +'<p class="sh-p sh-impmsg" id="'+p+'impmsg"></p>'
   +'<input type="file" id="'+p+'impfile" accept="application/json,.json" hidden>'
   +'</div>';}
+/* A LOAD RESETS THE PLAN TO FREE ON PURPOSE (see pImport's own comment,
+   engine/schema.js): the record's stored plan is never trusted, only the
+   server's. For someone signed OUT that is the whole story, and the message
+   says to sign in. It used to say the same thing to someone already signed
+   IN, who then waited on the ordinary hourly timer (AUTH_PLAN_EVERY_MS,
+   ui/auth.js) before their own paid layers came back -- so a signed-in
+   person restoring their own backup, or opening their own quiz link, could
+   read as Free and be told to sign in when they already had. Read the plan
+   again right now instead of waiting on that timer, and say so, rather than
+   send someone who is signed in off to sign in again. */
+function recordPlanTail(){
+ if(typeof authSession==='function'&&authSession()){
+  if(typeof authPlanRead==='function')authPlanRead();
+  return ' The imported plan was reset to Free. Checking your plan with the server.';}
+ return ' The imported plan was reset to Free. Sign in to check any paid tier with the server.';}
 /* THE IMPORT, WIRED. Every write that can fail reports rather than claiming
    success, which is the standing rule in this product. `after` is called only on
    a load that landed, so a host that draws the record's own name can redraw it
@@ -1152,7 +1167,7 @@ function recordImportWire(p,after){
      first and the message goes onto whatever element is on the screen when it
      is read, which is what impSay does by looking the id up at call time. */
   if(typeof after==='function')after(np);
-  impSay('Loaded '+(np.name||'the record')+(copied?' as a second copy, since this record is already on this device':'')+'. The imported plan was reset to Free. Sign in to check any paid tier with the server.');};
+  impSay('Loaded '+(np.name||'the record')+(copied?' as a second copy, since this record is already on this device':'')+recordPlanTail());};
  var ig;
  if((ig=$(p+'keepsave'))&&typeof keepFile==='function')ig.onclick=function(){keepFile();};
  if((ig=$(p+'impgo')))ig.onclick=function(){impRun(($(p+'imp')||{}).value||'');};
@@ -1295,7 +1310,7 @@ function recordLinkBoot(){
      random journey id, reuses an existing session, and never sends the story
      or name; the app still owns the record and the release itself. */
   if(typeof authFunnelStart==='function')authFunnelStart();
-  recordLinkSay('Loaded '+(np.name||'the record')+' from the link'+(copied?' as a second copy, since this record is already on this device':'')+'. The imported plan was reset to Free. Sign in to check any paid tier with the server.'+still,
+  recordLinkSay('Loaded '+(np.name||'the record')+' from the link'+(copied?' as a second copy, since this record is already on this device':'')+recordPlanTail()+still,
    still?'fail':'');
   return np;});}
 function profileSheet(){
