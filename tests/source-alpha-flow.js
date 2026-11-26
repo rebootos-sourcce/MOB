@@ -6,6 +6,12 @@ const { pathToFileURL } = require('node:url');
 const { chromium } = require('playwright');
 const { guardBrowser } = require('./net.js');
 
+let passed = 0;
+function verify(method, ...args) {
+  assert[method](...args);
+  passed++;
+}
+
 const app = pathToFileURL(path.resolve(process.env.ATUNED_FILE || 'source.html'));
 app.search = '?dev=1';
 const checking = 'If I don’t check every detail myself, the whole thing falls apart.';
@@ -57,8 +63,8 @@ async function main() {
       stType();
       return { reply: SRC_SHOWN, ms: performance.now() - start };
     });
-    assert.equal(typed.reply, reflection);
-    assert.equal(await page.evaluate(() => SRC_LOG.length), 0);
+    verify('equal', typed.reply, reflection);
+    verify('equal', await page.evaluate(() => SRC_LOG.length), 0);
     console.log('Typed reflection and pause passed, ' + typed.ms.toFixed(1) + ' ms to render');
 
     const notes = await page.evaluate(() => {
@@ -69,15 +75,30 @@ async function main() {
         bands: parsed.bands, lex: LEX_VERSION, ob: { yes: [addr], no: [] } };
       CURP.story.entries.push(entry);
       const off = srcConfirmedStoryAddresses(text, CURP);
+      const older = 'I keep checking their work because I think I will be blamed.';
+      const example = { story: { entries: [{ text: older }] } };
+      const historyOff = srcCheckingHistory(ST_TEXT, example, false);
+      const historyOn = srcCheckingHistory(ST_TEXT, example, true);
+      example.story.entries[0].verdicts = [{ seat: 'sacral', v: 'no' }];
+      const historyDeclined = srcCheckingHistory(ST_TEXT, example, true);
+      const story = { text: 'I am afraid. I am angry.', verdicts: [{ seat: 'root', v: 'no' }] };
+      const root = parseStory('I am afraid.').imprints.find(im => im.node != null).node;
+      const allowedPick = srcStoryReleaseIntegrity(story, [addr]);
+      const blockedPick = srcStoryReleaseIntegrity(story, [addr, root]);
       const on = srcConfirmedStoryAddresses(text, CURP, { allowProfile: true });
       const rejected = srcConfirmedStoryAddresses(text, CURP, { allowProfile: true,
         verdicts: [{ seat: 'solar', v: 'no' }] });
       stType();
-      return { addr, off, on, rejected };
+      return { addr, off, on, rejected, historyOff, historyOn, historyDeclined, allowedPick, blockedPick };
     });
-    assert.deepEqual(notes.off, []);
-    assert.deepEqual(notes.on, [notes.addr]);
-    assert.deepEqual(notes.rejected, []);
+    verify('deepEqual', notes.off, []);
+    verify('deepEqual', notes.on, [notes.addr]);
+    verify('deepEqual', notes.rejected, []);
+    verify('equal', notes.historyOff, false);
+    verify('equal', notes.historyOn, true);
+    verify('equal', notes.historyDeclined, false);
+    verify('equal', notes.allowedPick.ok, true);
+    verify('deepEqual', notes.blockedPick, { ok: false, blocked: ['truth'] });
     const history = page.locator('#srchistory');
     await history.check();
     await page.evaluate(() => stType());
@@ -89,9 +110,9 @@ async function main() {
       return { text: ST_TEXT, reply: SRC_SHOWN, optedIn: SRC_HISTORY_PROFILE === CURP,
         read: !!SRC_HISTORY_READ, hushed: ST_HUSH, rows: SRC_CHAT.length };
     });
-    assert.match(landed.reply, /confirmed in an earlier entry/, JSON.stringify(landed));
+    verify('match', landed.reply, /confirmed in an earlier entry/, JSON.stringify(landed));
     await page.waitForFunction(() => SRC_VOICE.said.includes('confirmed in an earlier entry') && !ST_HUSH);
-    assert.ok(voice.some(line => line.includes('confirmed in an earlier entry')), JSON.stringify(voice));
+    verify('ok', voice.some(line => line.includes('confirmed in an earlier entry')), JSON.stringify(voice));
     console.log('Opted-in graph lookup and voice reply passed, ' + (Date.now() - voiceStart) + ' ms through test speech');
 
     const result = await page.evaluate(() => {
@@ -122,16 +143,16 @@ async function main() {
         release: offer.take.map(node => node.b), fromLast: offer.fromLast,
         runStory: RUN.storyT, runPlaces: RUN.pick.map(node => node.b) };
     });
-    assert.match(result.last.text, /I am afraid\. I am angry\./);
-    assert.deepEqual(result.last.verdicts, [{ seat: 'root', v: 'no' }]);
-    assert.equal(result.before, result.after);
-    assert.ok(result.angerAfter > result.angerBefore);
+    verify('match', result.last.text, /I am afraid\. I am angry\./);
+    verify('deepEqual', result.last.verdicts, [{ seat: 'root', v: 'no' }]);
+    verify('equal', result.before, result.after);
+    verify('ok', result.angerAfter > result.angerBefore);
     for (const bands of [result.preview, result.report, result.reloaded, result.release, result.runPlaces]) {
-      assert.ok(bands.length > 0);
-      assert.ok(bands.every(band => band === 'Solar'), JSON.stringify(bands));
+      verify('ok', bands.length > 0);
+      verify('ok', bands.every(band => band === 'Solar'), JSON.stringify(bands));
     }
-    assert.ok(result.fromLast);
-    assert.equal(result.runStory, result.last.t);
+    verify('ok', result.fromLast);
+    verify('equal', result.runStory, result.last.t);
 
     await page.reload();
     await page.waitForFunction(() => document.body.classList.contains('booted'));
@@ -142,13 +163,14 @@ async function main() {
       return { text: last?.text, verdicts: last?.verdicts, fear: S.charge.Fear || 0,
         anger: S.charge.Anger || 0, optedIn: SRC_HISTORY_PROFILE === CURP };
     });
-    assert.equal(restored.text, result.last.text);
-    assert.deepEqual(restored.verdicts, result.last.verdicts);
-    assert.equal(restored.fear, result.after);
-    assert.equal(restored.anger, result.angerAfter);
-    assert.equal(restored.optedIn, false);
-    assert.deepEqual(errors, []);
+    verify('equal', restored.text, result.last.text);
+    verify('deepEqual', restored.verdicts, result.last.verdicts);
+    verify('equal', restored.fear, result.after);
+    verify('equal', restored.anger, result.angerAfter);
+    verify('equal', restored.optedIn, false);
+    verify('deepEqual', errors, []);
     console.log('Correction, Commit, graph replay, browser reload, and Release handoff passed');
+    console.log('===== ' + passed + ' passed, 0 failed =====');
   } finally {
     await browser.close();
   }

@@ -2773,9 +2773,11 @@ function srcHistoryLine(row){
  var hit=SRC_HISTORY_READ;
  if(!hit||hit.row!==row||hit.verdictKey!==verdictKey){
   var kept=srcConfirmedStoryAddresses(row.t,CURP,{allowProfile:true,verdicts:SRC_VERDICTS});
-  hit=SRC_HISTORY_READ={row:row,verdictKey:verdictKey,connected:kept.length>0};
+  var checking=!Object.keys(storyDeclinedSeats(SRC_VERDICTS)).length&&srcCheckingHistory(row.t,CURP,true);
+  hit=SRC_HISTORY_READ={row:row,verdictKey:verdictKey,connected:kept.length>0,checking:checking};
  }
- return hit.connected?' This connects to a pattern you confirmed in an earlier entry.':'';
+ if(hit.connected)return ' This connects to a pattern you confirmed in an earlier entry.';
+ return hit.checking?' You’ve described checking in another entry, too.':'';
 }
 function srcPaint(){
  var h=document.getElementById('stsrc'); if(!h)return;
@@ -2810,6 +2812,16 @@ function srcPaint(){
  var latest=STV.chat&&!act&&(turn.move==='listen'||turn.move==='ask')?srcLatestUserTurn():null;
  var reflection=latest?srcCheckingReflection(latest.t):'';
  var history=srcHistoryLine(latest);
+ if(reflection||history){
+  var check=srcIntegrityDecision({
+   truth:!!latest&&(!reflection||!Object.keys(storyDeclinedSeats(SRC_VERDICTS)).length),
+   transparency:!history||SRC_HISTORY_PROFILE===CURP,
+   nonHarm:!srcSafe(ST_TEXT),
+   patience:!SRC_PASSED&&!SRC_VENT
+  });
+  if(!check.ok){reflection=''; history='';}
+ }
+
  if(reflection||history){
   turn={move:'listen',reflection:reflection,history:history};
  }
@@ -3074,7 +3086,7 @@ function srcPaint(){
    +(STV.crisis&&!STV.chat?'':crisisReachBtn('st-crxline'))+'</div>';
  if(boxOpen&&STV.chat&&CURP&&!showOnly()&&turn.move!=='safe'){
   o+='<label class="ob-dim"><input id="srchistory" type="checkbox"'
-   +(SRC_HISTORY_PROFILE===CURP?' checked':'')+'> Use confirmed patterns from my past entries</label>';
+   +(SRC_HISTORY_PROFILE===CURP?' checked':'')+'> Use my past entries to connect patterns</label>';
  }
  h.innerHTML=o;
  var historyDoor=h.querySelector('#srchistory');
@@ -4850,7 +4862,17 @@ function stRelPanel(){
   /* the entry is named only when the panel is reading the last commit's own
      addresses: not a bank pick, not a draft still being typed, not the three
      heaviest held, none of which came from one entry */
-  relPick(M.sel.map(function(n){return n.i;}),M.fromLast&&STV.lastT?{story_t:STV.lastT}:null);
+  var ids=M.sel.map(function(n){return n.i;}), storyT=M.fromLast?STV.lastT:null;
+  if(!M.bank){
+   var entries=(CURP&&CURP.story&&CURP.story.entries)||[];
+   var entry=M.fromLast?entries.find(function(item){return item.t===storyT;}):{text:ST_TEXT,verdicts:SRC_VERDICTS};
+   if(!srcStoryReleaseIntegrity(entry,ids).ok){
+    stRelPanel();
+    status('The reading changed. Review the current Release selection.', 'fail');
+    return;
+   }
+  }
+  relPick(ids,storyT?{story_t:storyT}:null);
   var begin=document.getElementById('relgo'); if(begin)begin.click();};
 }
 
