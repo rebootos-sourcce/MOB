@@ -77,9 +77,14 @@ async function door(page){
    calling srcIntro here reads exactly the same decision the dead chain
    used to. */
 async function openIntro(page){
- await page.waitForSelector('#loginb-go',{timeout:8000});
- await page.evaluate(()=>{loginClose();});
- await page.evaluate(()=>{srcIntro(function(){ if(typeof obOpen==='function')obOpen(false); });});}
+ /* The direct intro path needs a booted app. The login button has its own
+    visibility assertions in door(), independent of this legacy animation. */
+ await page.waitForFunction(()=>document.body.classList.contains('booted')
+  &&typeof srcIntro==='function'&&typeof loginClose==='function',null,{timeout:15000});
+ await page.evaluate(()=>{
+  loginClose();
+  srcIntro(function(){ if(typeof obOpen==='function')obOpen(false); });
+ });}
 /* every caption's arrival, stamped from the intro's own start, by watching
    the class each one gains, so the gate reads the beats the page shows */
 async function watch(page){
@@ -211,14 +216,22 @@ for(const [W,H] of [[1600,1000],[390,844]]){
  ok(fit.sw<=fit.w,'no sideways scroll'+at);
  const ob0=await page.evaluate(()=>!!(OB&&OB.open));
  ok(!ob0,'nothing opens the first card but the button'+at);
-/* sampled every frame through the exit, so the overlap is seen whatever
-    the timer jitter: some frame must hold the first card and the intro both */
- await page.evaluate(()=>{ window.__OV=[]; const f=()=>{ const i=!!document.getElementById('srcintro');
-  window.__OV.push({ob:!!(OB&&OB.open),intro:i}); if(i)requestAnimationFrame(f); }; requestAnimationFrame(f); });
+ /* Watch the sheet itself become visible. Frame sampling can miss the
+    short overlap when a loaded browser skips a frame. */
+ await page.evaluate(()=>{
+  const sheet=document.getElementById('ob');
+  window.__OV=false;
+  const observer=new MutationObserver(()=>{
+   if(sheet.style.display==='flex'&&OB.open){
+    window.__OV=!!document.getElementById('srcintro');
+    observer.disconnect();
+   }
+  });
+  observer.observe(sheet,{attributes:true,attributeFilter:['style']});
+ });
  await page.click('#srcintro .sx-own');
- await page.waitForTimeout(540);
- const ov=await page.evaluate(()=>window.__OV);
- ok(ov.some(x=>x.ob&&x.intro),'the first card arrives under the face as it leaves, '+ov.filter(x=>x.ob&&x.intro).length+' frames of overlap'+at);
+ await page.waitForFunction(()=>OB.open&&!document.getElementById('srcintro'));
+ ok(await page.evaluate(()=>window.__OV),'the first card becomes visible before the intro leaves'+at);
  const s1=await page.evaluate(()=>({ob:!!(OB&&OB.open), intro:!!document.getElementById('srcintro'), st:SrcFace.state(),
   home:!!(document.getElementById('srcface')&&document.getElementById('srcface').closest('#stuni')),
   story:S.tab===TAB.STORY}));

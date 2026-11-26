@@ -7124,6 +7124,17 @@ console.log('\n=== the seat tone is binaural, and it is the seat\'s own ===');
  await pick();
  await tp.click('#reltone'); await toneSaved(true);
  const s1=await sw(), b1=await bed(), k1=await kept();
+ const exclusive=await tp.evaluate(()=>{
+  const stored=JSON.parse(localStorage.getItem(PKEY)||'[]').find(r=>r.id===CURP.id);
+  return stored&&stored.ui.tone===true&&stored.ui.voice===false&&!relVoiceWanted();
+ });
+ ok(exclusive,'binaural and voice changes persist together');
+ const legacyVoice=await tp.evaluate(()=>{
+  CURP.ui.voice=true;
+  try{return relVoiceWanted();}
+  finally{CURP.ui.voice=false;}
+ });
+ ok(!legacyVoice,'a legacy record with both flags set follows its explicit binaural choice');
  const said1=await tp.evaluate(()=>document.getElementById('status').textContent);
  ok(s1&&s1.checked==='true'&&k1===true,'a press turns it on and it is saved to the record, '
   +JSON.stringify([s1&&s1.checked,k1]));
@@ -7194,6 +7205,11 @@ console.log('\n=== the seat tone is binaural, and it is the seat\'s own ===');
  const b9=await bed();
  ok(b9.on&&b9.carrier===want[1].hz,'and turned back on it returns at the seat the card is on, '
   +JSON.stringify(b9));
+ await tp.click('#relvoice'); await toneSaved(false); await bedOffWait();
+ const voiceOnly=await tp.evaluate(()=>relVoiceWanted()&&!relToneOn());
+ ok(voiceOnly,'Voice stops the running binaural bed and persists tone off');
+ await tp.click('#reltone'); await toneSaved(true); await bedOnWait(want[1].hz);
+
  /* STOP ENDS IT, AND THE CHANNEL IS PUT TO SLEEP ONCE THE FADE IS OVER */
  await tp.click('#relstop'); await tp.waitForTimeout(150);
  const b10=await bed(), end=await tp.evaluate(()=>({phase:RUN.phase,sw:!!document.getElementById('reltone')}));

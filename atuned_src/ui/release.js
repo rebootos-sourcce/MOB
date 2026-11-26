@@ -731,7 +731,8 @@ function relMMSS(sec){
    run giving up on the voice after a failure, so one dead server costs one
    line and not one per line. A new run asks again. */
 function relVoiceWanted(){
- return !(typeof CURP!=='undefined'&&CURP&&CURP.ui&&CURP.ui.voice===false);}
+ /* Older records can have both flags set. Honor their explicit tone choice. */
+ return !relToneOn()&&!(typeof CURP!=='undefined'&&CURP&&CURP.ui&&CURP.ui.voice===false);}
 function relVoiceCan(){
  return typeof studioCan==='function'&&studioCan();}
 function relVoiceOn(){ return relVoiceWanted()&&relVoiceCan(); }
@@ -3862,9 +3863,10 @@ function relRender(){
     open; this ships the two-row shape because it is the smaller, additive
     change over what is already drawn. */
  if((b=document.getElementById('reltone')))b.onclick=function(){
-  var on=!relToneOn();uiSet('tone',on);
-  if(on&&relVoiceWanted()){
-   uiSet('voice',false);RUN.studioLost=false;
+  var on=!relToneOn(), wasVoice=relVoiceWanted();
+  uiSet('tone',on,'voice');
+  if(on&&wasVoice){
+   RUN.studioLost=false;
    var live=RUN.open&&!RUN.paused&&(RUN.phase==='welcome'||RUN.phase==='opening'||RUN.phase==='run'
      ||(RUN.phase==='done'&&RUN.cool<COOLING.length));
    if(live)relStep(); else {speakStop();relRender();}
@@ -3878,8 +3880,7 @@ function relRender(){
     calls relTone, which reads the now-false tone and stops the bed itself,
     so nothing further is needed here for that half. */
  if((b=document.getElementById('relvoice')))b.onclick=function(){
-  var on=!relVoiceWanted();uiSet('voice',on);
-  if(on)uiSet('tone',false);
+  var on=!relVoiceWanted();uiSet('voice',on,'tone');
   RUN.studioLost=false;
   var live=RUN.open&&!RUN.paused&&(RUN.phase==='welcome'||RUN.phase==='opening'||RUN.phase==='run'
     ||(RUN.phase==='done'&&RUN.cool<COOLING.length));

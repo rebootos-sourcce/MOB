@@ -6,6 +6,15 @@ read off the repository and the gate runs, not recalled. "Pushed" means on
 since round PH: plain words, as if he is ten, no fixed headings; questions only
 when blocked (round PD).
 
+## Analytics and binaural release closure, 26 November
+
+- Keep Model 2 CQ. Reconcile the historical formula proposal and Analytics research with the production contract.
+- Walk chart, pattern, fetter and breadcrumbs. Make F open the focused or hovered reading and B return a step.
+- Keep stereo synthesis. Verify seat retuning, 6 Hz Release, 10 Hz Reframe, silence, and exclusive Voice and Binaural across both release entry points.
+- Reproduce the Source intro gate failure, fix its cause, then verify the required gates and deployed commit.
+- Track physical headphone listening and the decision on library assets separately.
+
+
 ## RD. The funnel creative direction TDD, mapped to the code, and its production order (round RD, 3 October)
 
 His words: "a priority item ... review this three times. strategize its production ... build. give me the

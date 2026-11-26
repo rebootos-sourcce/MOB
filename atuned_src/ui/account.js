@@ -1016,10 +1016,12 @@ function accAccountDelete(){
  return true;}
 /* ONE WRITER FOR THE UI PREFERENCES ON THE PROFILE, so a missing ui object on
    an older profile is filled here rather than at nine call sites. */
-function uiSet(k,v){
+function uiSet(k,v,exclusive){
  if(!CURP)return false;
  if(!CURP.ui||typeof CURP.ui!=='object')CURP.ui={};
- CURP.ui[k]=v; pSave();
+ CURP.ui[k]=v;
+ if(v&&exclusive)CURP.ui[exclusive]=false;
+ pSave();
  if(!statusSaved())return false;
  applyUiPrefs(); return true;}
 function applyUiPrefs(){

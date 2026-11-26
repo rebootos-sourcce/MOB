@@ -1363,15 +1363,17 @@ function anaGo(k,nm,fromPage){
 function anaRedraw(inRail){
  var was=RD_INRAIL; RD_INRAIL=!!inRail;
  try{if(S.tab===TAB.ANALYTICS)anaRender(); else anaDrill();}finally{RD_INRAIL=was;}}
+function anaBack(i){
+ if(!ANA_TRAIL[i])return;
+ ANA_PICK=ANA_TRAIL[i]; ANA_TRAIL=ANA_TRAIL.slice(0,i);
+ anaRedraw(true);}
 addEventListener('click',function(e){
  var t=e.target&&e.target.closest?e.target.closest('[data-ana],[data-anacrumb]'):null;
  if(!t)return;
  var inPage=!!t.closest('#ana'), inDrill=!!t.closest('#rdrill');
  if(!inPage&&!inDrill)return;
  if(t.hasAttribute('data-anacrumb')){
-  var i=+t.getAttribute('data-anacrumb'); if(!ANA_TRAIL[i])return;
-  ANA_PICK=ANA_TRAIL[i]; ANA_TRAIL=ANA_TRAIL.slice(0,i);
-  anaRedraw(true);
+  anaBack(+t.getAttribute('data-anacrumb'));
   return;}
  /* REAL SOUND, SILENT BY DEFAULT: sfx() (ui/sound.js) already is; this is
     the one real user gesture that opens a reading from the treemap, the
@@ -1393,6 +1395,23 @@ addEventListener('click',function(e){
 /* a bubble and the identification block are not buttons, so Enter and Space
    press them the way they press a button */
 addEventListener('keydown',function(e){
+ var key=e.key.toLowerCase(), target=e.target;
+ if(S.tab===TAB.ANALYTICS&&(key==='f'||key==='b')){
+  if(e.repeat||e.ctrlKey||e.altKey||e.metaKey||e.shiftKey
+    ||(target&&target.closest&&target.closest('input,textarea,select,[contenteditable]')))return;
+  if(key==='b'&&ANA_TRAIL.length){
+   e.preventDefault();
+   anaBack(ANA_TRAIL.length-1);
+   return;}
+  if(key!=='f')return;
+  var step=target&&target.closest&&target.closest('#ana [data-ana], #rdrill [data-ana]');
+  if(!step){
+   var hovered=document.querySelectorAll('#ana [data-ana]:hover, #rdrill [data-ana]:hover');
+   step=hovered[hovered.length-1];}
+  if(step){
+   e.preventDefault();
+   step.dispatchEvent(new MouseEvent('click',{bubbles:true}));}
+  return;}
  if(e.key!=='Enter'&&e.key!==' ')return;
  var t=e.target; if(!t||!t.getAttribute||t.tagName==='BUTTON')return;
  if(t.getAttribute('role')!=='button'||!t.hasAttribute('data-ana'))return;

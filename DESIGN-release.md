@@ -1,5 +1,17 @@
 # DESIGN-release. The release flow, as something a person hears.
 
+## 26 November binaural implementation
+
+Release uses two synthesized sine tones, one per stereo channel. The carrier
+follows the active pattern's seat. The two tones differ by 6 Hz during Release
+and 10 Hz during Reframe. Voice and Binaural each turn the other off, and both
+can be off. The Release and Story switches save the paired preference in one
+write. An older profile with both flags set uses its explicit Binaural choice.
+
+Sound-library asset selection remains open. The browser gate measures the
+stereo signal. A physical headphone check is a separate acceptance step.
+
+
 Sound seat. Written against `TASKS.md` 0c2, the prototype at
 `proto/release/index.html`, and the book at `index.html`.
 
