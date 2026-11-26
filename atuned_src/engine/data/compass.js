@@ -83,7 +83,7 @@ const MIRROR=[
     open question, logged as thinking and not as a ruling. */
  {k:'IL', q:'Light', seat:'Heart',
   up:'Grace',   upd:'Love generated from within. Freely given. No transaction. Light that has a source.',
-  dn:'False Light', dnd:'Pride as false light. Shine performed for reflection, not generated from Source.',
+  dn:'Shadow', dnd:'Pride as false light. Shine performed for reflection, not generated from Source.',
   ask:'Does this person’s warmth cost them anything, or does it require an audience?', ic:'M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1M12 8a4 4 0 110 8 4 4 0 010-8', dic:'M12 4l2.4 5.2 5.6.6-4.2 3.8 1.2 5.6L12 16.4 6.99 19.2l1.2-5.6L4 9.8l5.6-.6z'},
  {k:'DE', q:'Desire and will', seat:'Sacral',
   up:'Devotion', upd:'Will surrendered to Source. Desire as devotion. Wanting that moves toward something beyond the self.',
@@ -187,7 +187,7 @@ const BLUEPRINT=[
  {nm:'Extractive Control', d:'Cold, structured adversarial behaviour. Organised extraction. Order in service of control, not governance. The King inverted.'},
  {nm:'Manipulation', d:'Hot, chaotic, consuming. Appetite without direction. Destruction as the byproduct of appetite, not the goal. The Creator inverted.'},
  {nm:'Engineered Chaos', d:'Lies and disorder from within. It works from inside something whole to break it, instead of attacking from outside.'},
- {nm:'False Light', d:'Pride that cuts a person off from Source. The most capable way of working against coherence, and the hardest to spot, because it uses the words of coherence to serve decoherence.'}];
+ {nm:'Shadow', d:'Pride that cuts a person off from Source. The most capable way of working against coherence, and the hardest to spot, because it uses the words of coherence to serve decoherence.'}];
 
 /* ---- THE NINE CIRCLES, THE DESCENT ----
    Depth, governor, the pattern and where it sits in the body. The
@@ -255,7 +255,7 @@ const IC_NEW={
 IC_NEW['Free Flow']=IC_NEW['Krishna'];
 IC_NEW['Duty']=IC_NEW['Rama'];
 IC_NEW['Non Resistance']=IC_NEW['Lao Tzu'];
-IC_NEW['Clear Conduction']=IC_NEW['Akhenaten'];
+IC_NEW['Clarity']=IC_NEW['Akhenaten'];
 /* cold, structured extraction. the crown inverted, because that is what the
    codex calls it: order in service of control rather than governance */
 IC_NEW['Extractive Control']='M19 16.5l-3.6-4.2L12 18.5l-3.4-6.2L5 16.5v-9h14zM5 20h14';
@@ -386,16 +386,76 @@ PATHS.forEach(function(p){p.ic=icOf(p.up); p.dic=icOf(p.dn);});
 
    NO CODEX LINE. The codex gives none of the three an upd or a dnd, so none
    is written here; the panel a press opens is the behaviour pair in
-   engine/data/teachers_recipes.js. The opposites are the document's own
-   proposals, marked proposed, each with the text it names to check them
-   against. The keys are identity and are never reused. */
+   engine/data/teachers_recipes.js. The opposites were first the document's
+   own proposals (DESIGN-teachers.md section 2), each marked proposed and
+   each with a text named to check it against, and never checked against
+   that text directly. Below is that checking. The keys are identity and are
+   never reused.
+
+   THE THREE STORIES, CHECKED AND PROMOTED, ROUND 18 NOVEMBER. His words,
+   over the Compass: "For clear conduction, honesty, and natural growth, we
+   need to go get their original names... go out to the internet, do our
+   research. We have rules for our research... do your deep dive 4 times,
+   create your records for your 3-path stories... so you get to the
+   mechanic and the behavior." The same bar PATHS held Kaliya, Ravana and
+   Shu and Hu to (round KE, above): a named figure out of the tradition the
+   teacher himself belongs to, read against the text directly and not
+   invented, the mechanic stated and not only the name. Each of the three
+   below is now read off its text and not off the document's memory of it,
+   so each moves from:'proposed' to from:'research'.
+
+     Sabotage, Akhenaten's own inversion   Apep (Apophis), the serpent of
+     the Duat. Not an outside attacker: every night Ra's barque has to cross
+     the underworld, and Apep works on the crossing itself, drinking down
+     the river ahead of the boat so the water it needs to move on is gone.
+     The gods who ride with the barque, chief among them Set, spear, bind
+     and cut him before the river runs again and the boat can go on. He is
+     never settled: the Amduat's seventh hour and the Book of Gates both
+     tell the same crossing, bound and cut one night and whole again the
+     next, which is why temple practice kept a rite (Papyrus Bremner-Rhind's
+     "Book of Overthrowing Apep") to do the same binding every day rather
+     than once. The behaviour the figure names: stopping a flow from inside
+     the channel it needs, at the root of the crossing, not as a blow from
+     outside it. Amduat, hour seven; Book of Gates, the same voyage.
+     DESIGN-teachers.md section 2 read Apep as "light taken in and nothing
+     handed on," the photo negative of the sun disc whose rays end in open
+     hands on Akhenaten's own mark, and the text checks against that line.
+
+     Deception, Zoroaster's own inversion   Druj, the Lie. Yasna 30.3-6:
+     the twin spirits, at the beginning, in thought and word and deed,
+     chose differently, Spenta Mainyu to Asha (truth, the word Zoroaster's
+     pole already carries) and Angra Mainyu to Druj. Yasna 31 carries the
+     same choice forward as a judgement each person still makes. The
+     mechanic is in the order of that triad: thought first, then word, then
+     deed, so a choice made at the thought is what the word and the deed
+     then carry, which is why Druj reads as a direction taken and lived
+     from rather than one false sentence. DESIGN-teachers.md section 2
+     narrows the figure on purpose, away from Set's structural betrayal
+     (already Moses's, at the same seat, Order) and onto the word itself:
+     the false word spoken, and the true word kept back. Yasna 30.3-6,
+     continued in Yasna 31.
+
+     Forced Growth, Confucius's own inversion   The farmer of Song, unnamed
+     in the text, in Mencius 2A2. Worried his shoots were slow, he went out
+     and pulled on every one to stretch it, came home worn out and told his
+     household "today I helped the sprouts grow." His son went to the field
+     and found them all withered. Mencius sets this beside the opposite
+     fault, the farmer who never weeds at all, to make one argument: a
+     thing that grows does so at its own pace, and force applied to speed
+     it kills it rather than feeding it. Confucius makes the coherent half
+     of the same pair without a word of force at all: "Does Heaven speak?
+     Yet the four seasons run their course and the hundred things are
+     born" (Analects 17.19), nature read off what it does and not off
+     anything it says. The mechanic: the hand meant to help is the hand
+     that breaks the root's hold on the ground. Mencius 2A2; Analects
+     17.19. */
 const HOME_POLES=[
- {k:'SA', q:'Light', up:'Clear Conduction', dn:'Sabotage', home:null,
-  from:'proposed', src:'the nightly voyage texts, the Amduat and the Book of Gates'},
+ {k:'SA', q:'Light', up:'Clarity', dn:'Sabotage', home:null,
+  from:'research', src:'Amduat, hour seven, and the Book of Gates’ own telling of the same voyage'},
  {k:'TU', q:'Truth', up:'Honesty', dn:'Deception', home:'Throat',
-  from:'proposed', src:'Yasna 30 and 31'},
+  from:'research', src:'Yasna 30.3-6, continued in Yasna 31'},
  {k:'NA', q:'Nature', up:'Natural Growth', dn:'Forced Growth', home:'Crown',
-  from:'proposed', src:'Mencius 2A2, and Analects 17.19'}];
+  from:'research', src:'Mencius 2A2, and Confucius’ own line at Analects 17.19'}];
 /* the marks. Honesty (Zoroaster's), Confucius and Deception (the Lie's) are
    the design's own, ported from mockups/teachers/imprint.html. Sabotage (Apep)
    and Forced Growth (the farmer) had none anywhere, so they are drawn here,
@@ -539,6 +599,154 @@ function compassPoleLines(m,end){
  if(a&&a.length)return a;
  var d=end==='dn'?m.dnd:m.upd;
  return d?[[d,'']]:[];}
+
+/* ---- WHERE EACH TEACHER OPENS, BY COHERENCE. RULED 21 NOVEMBER ----
+   His words, on the open reserved calls: "let's give them numbers. I'm going
+   to have you make this up. You're going to give them numbers according to
+   their chakra, but maxed out... we just don't know how they're spaced out.
+   So I'm going to have you just space them out... and then we'll make the
+   adjustments after we review the software." And on CQ's slow rise, the same
+   day: "we're looking for accuracy, not to feed people's egos." So these are
+   a FIRST PASS, his to move, and nothing below is a calibration.
+
+   THE CLIMB STARTS WHERE THE DESCENT ENDS. circleAt reads a person under CQ
+   41 as somewhere in the nine circles and above it as descending nowhere, so
+   a teacher, who is a coordinate on the upward cone, is met above 41 and
+   never inside a circle. 41 to 100 is cut into seven equal bands, one per
+   seat in BANDS order, Root lowest and Crown highest, each about 8.4 wide.
+   If he rules Limbo a 40 to 60 band (open, the round 3 mockups' question D),
+   CQ_CLIMB_FLOOR moves to 60, every number here is out of its band, and
+   tests/engine.js says which. It is not read by circleAt, whose 41 is its
+   own literal; the gate holds the two equal rather than this pass rewriting
+   circleAt.
+
+   MAXED OUT reads as the top of the band. Each teacher sits on the highest
+   whole number still inside his seat's band, so reaching him takes nearly
+   all of that seat's stretch. Where a seat holds two, the second is two
+   below, and the lower one is the one whose quality the higher one stands
+   on: Trust (felt knowing) before Light (love freely given) at the Heart,
+   Honesty (the true word) before Order (law others stand inside, which a
+   false word cannot hold up) at the Throat, Natural Growth before Jesus at
+   the Crown, because "that would be Jesus at the very top." 99 and not 100,
+   because clamp makes 100 the ceiling of the scale and not a place. The
+   Crown holds three, with Akhenaten below, and steps of two put the third
+   at 95, under the band's midpoint of about 95.8, which is not maxed out:
+   the first cut did exactly that and the gate caught it. So the Crown steps
+   are two and then one, 99, 97, 96, and Jesus keeps the clear step above.
+
+   THE TEAM'S PICKS, EACH HIS TO CORRECT BY ONE NUMBER:
+     Akhenaten (SA) has no seat. The codex puts him at the Sat apex, "maximum
+       Sat", so he is placed in the Crown band between Natural Growth and
+       Jesus, at 97. CLIMB_SEAT_PICK carries that placement so it is read
+       as a pick and not as his seat.
+     The three paths on no axis, Free Flow, Duty and Non Resistance (FL, AL,
+       HO), have no seat and are not stations on a vertical climb: Non
+       Resistance is literally "perpendicular to the vertical axes", and "all
+       five end at the same Source." So they open at 42, the first whole
+       number out of the descent, and are not ranked against each other.
+     The two paths that are an axis read twice (AW, BO) open with their axis.
+     A teacher once reached does not relock on a bad week. That is
+     DESIGN-teachers.md 6d's existing rule, "nothing goes down", and this
+     pass does not change it; the board's relock question stays his.
+
+   ONE RULE THIS REPLACES, named once. DESIGN-teachers.md 6b says an unlock
+   reads what a person did and never a reading of them, and CQ is a reading.
+   His ruling above is newer and places teachers by CQ; the Lines reaches in
+   6c (Say it, Walk it, Hold it) are untouched and still read only what was
+   done. The climb on the Compass tab (clSvg, ui/cone.js, 21 November) is
+   the screen that reads POLE_UNLOCK: each teacher is a station at its own
+   number there, and the path is lit to the highest CQ a person has stood at. */
+const CQ_CLIMB_FLOOR=41;
+const CLIMB_SEAT_PICK={SA:'Crown'};
+const POLE_UNLOCK={CH:49, DE:57, PO:66, TR:72, IL:74, TU:81, OR:83, PE:91,
+ NA:96, SA:97, RE:99, FL:42, AL:42, HO:42};
+/* the two codex paths read the perception and light axes, the same way
+   POLE_MEANS does above, so a change there is a change here */
+POLE_UNLOCK.AW=POLE_UNLOCK.PE; POLE_UNLOCK.BO=POLE_UNLOCK.IL;
+/* the CQ band a seat's teachers open inside, or null for a seat not in BANDS */
+function compassBandOf(seat){
+ var i=BANDS.indexOf(seat); if(i<0)return null;
+ var w=(100-CQ_CLIMB_FLOOR)/BANDS.length;
+ return {seat:seat, lo:CQ_CLIMB_FLOOR+i*w, hi:CQ_CLIMB_FLOOR+(i+1)*w};}
+/* the seat a pole climbs at: an axis's own seat, a home pole's home, the
+   team's pick for a pole with neither, or null for a path */
+function compassClimbSeat(k){
+ var m=compassPoleOf(k); if(!m)return null;
+ return m.seat||m.home||CLIMB_SEAT_PICK[k]||null;}
+function compassUnlockOf(k){
+ return Object.prototype.hasOwnProperty.call(POLE_UNLOCK,k)?POLE_UNLOCK[k]:null;}
+
+/* ---- SEPARATION AND UNION, AT THE CROWN. RULED 21 NOVEMBER ----
+   His words: "Separation and union, put it at the crown." The pair is from
+   his Drive document "Little Book of Reprogramming SOURCE" and was in no
+   file of this repository until now.
+
+   WHY THIS IS A ROW AND NOT A TENTH CHILD EMOTION. A fetter in this engine is
+   one value per address, n.cf, set once by core.js and read only through
+   codeEmotionOf, out of the nine in CODE_EMOTION; there is no pair shape
+   anywhere, and Crown's Anger, Sad, Disgust, Shame and Apathy are counts of
+   its addresses by that value. Making Separation a tenth value means moving
+   some Crown addresses off the one they carry, which changes every reading
+   with Crown charge, and the nine are enumerated across about two dozen
+   files (the wheel's ring, the codes, the colours). Union is not a fetter at
+   all, it is the end the release moves toward. So the pair is recorded here,
+   at the seat, as data no reading yet consumes, and whether addresses carry
+   it (88 Doubt Of God and 106 Rejection Of Unity already name Separation as
+   their distortion) is the next, separate decision.
+   dn is the fetter end and up the released end, the way MIRROR names its
+   two ends. The Unity law already sits at the Crown, which is the same
+   quality as Union read as a law. */
+const SEAT_FETTER_PAIR=[{seat:'Crown', dn:'Separation', up:'Union',
+ src:'Little Book of Reprogramming SOURCE'}];
+
+/* ---- WHICH LAWS BELONG TO WHICH TEACHER. RULED 21 NOVEMBER ----
+   His words: "I want my agent team to research and review and assign which
+   laws of integrity go to which teachers. It's going to be pretty obvious.
+   And then anything that's incorrect, I'll adjust after I review in
+   software." The laws become the affirmations and their opposites the
+   behaviours to release, so a law here is a teacher's affirmation later.
+
+   THE JOIN IS THE SEAT, and every law goes to a teacher at the seat SI
+   already gives it; tests/engine.js holds that. Four seats hold one
+   teacher and are not a judgement (Root Elijah, Sacral Ramakrishna, Solar
+   Musashi, the third eye Buddha). Three hold two, and those are the TEAM'S
+   JUDGEMENT, read off each law's own words (funnelquiz.js st, intake.js's
+   phrase) against each pole's own lines, not guessed blind:
+     Heart. Light (IL, Grace: "freely given. No transaction") takes
+       Generosity, "give without a ledger", and Forgiveness, "put it down",
+       the debt released without collecting, which is grace by definition.
+       Trust (TR, Communion: "felt knowing. The heart as the instrument")
+       takes Compassion, "feel it without fixing it", and Aesthetic Beauty,
+       which is Rumi's own quality on the master list ("Beauty. The nervous
+       system recognising coherent structure").
+     Throat. Honesty (TU) takes Truth, which this file already gave it (its
+       mark is the Truth law's plumb line, read off SI), and Transparency,
+       "my real reasons... not a version for an audience", the true word not
+       kept back, which is Deception's own opposite. Order (OR, Moses) takes
+       Justice, the beam balance, "law that creates freedom."
+     Crown. Natural Growth (NA) takes Nature, which HOME_POLES already seats
+       there by that quality. Transmutation (RE, Jesus at the Crown) takes
+       Unity, "part of one field", love as what everything reorganises
+       around, and Awareness, which is that pole's own question: "can this
+       person change what they believe when what they live through says
+       otherwise?"
+   TWO THINGS THE SEAT JOIN DOES NOT SETTLE, named for his review: the Duty
+   law sits at the Solar and goes to Musashi, while Duty is also the word
+   printed on Rama's path pole, which has no seat; and Awareness goes to the
+   Crown although the master list calls Buddha "wisdom and awareness" at the
+   third eye. Both follow the seat, as instructed, and each is one key to
+   move. The key is the pole's, which is identity, never a printed name. */
+const LAW_TEACHER={
+ Truth:'TU', Transparency:'TU', Justice:'OR',
+ Unity:'RE', Awareness:'RE', Nature:'NA',
+ Presence:'PE', Humility:'PE', Equanimity:'PE',
+ Compassion:'TR', 'Aesthetic Beauty':'TR', Forgiveness:'IL', Generosity:'IL',
+ Courage:'PO', Duty:'PO', Responsibility:'PO', Accountability:'PO',
+ Temperance:'DE', Detachment:'DE',
+ 'Non-Harm':'CH', Patience:'CH'};
+/* a teacher's laws, by pole key, in SI's own order */
+function compassLawsOf(k){
+ return SINAMES.filter(function(n){return LAW_TEACHER[n]===k;});}
 /* CASCADE HAS NO ICONS AND THAT IS DELIBERATE. Nothing in the build renders
    it, so an icon there would be a path nobody draws, which is the same class
    of dead weight as the release animation that sat in the frame loop for
@@ -691,7 +899,7 @@ const DESCENT=[
  d:'the structure gives way downward and stays down',
  content:{
   inferred:false,
-  inferenceBasis:'The family name, its one-line description and its seat at the root are explicitly source-defined in HCX_LIB; the sub field\'s "depression · BPD · anxiety" is this product\'s own translation label naming three distinct DSM-5 categories, a mood disorder, a personality disorder and a category of anxiety disorders, and is not a claim that they are one clinical construct. The behavioral template below is a research-informed expansion built from literature on the three named conditions, their documented comorbidity, and their own internal structure, not a diagnosis of any of them.',
+  inferenceBasis:'The family name, its one-line description and its point at the root are explicitly source-defined in HCX_LIB; the sub field\'s "depression · BPD · anxiety" is this product\'s own translation label naming three distinct DSM-5 categories, a mood disorder, a personality disorder and a category of anxiety disorders, and is not a claim that they are one clinical construct. The behavioral template below is a research-informed expansion built from literature on the three named conditions, their documented comorbidity, and their own internal structure, not a diagnosis of any of them.',
   behavior:'May show low mood, loss of interest, and fatigue that does not lift on its own, though a reanalysis of 3,703 outpatients found more than a thousand distinct symptom combinations meeting a clinical case definition of depression, so this is one picture among many rather than a fixed profile; may show a pervasive pattern of unstable mood, relationships, and self-image with impulsivity and a strong fear of abandonment, and where a depressive period sits inside this pattern specifically, a 35-study meta-analysis found it running with more anger, hostility, and self-criticism than depression on its own, though with high variation across the studies pooled, not simply a quieter version of the same low mood; may show excessive, hard-to-control worry about several areas of life most days, measured mainly through screening tools whose own factor structure is not settled in the literature. These are three different presentations, each internally variable in its own research base, and a field read as Collapse does not mean all three are present, or present at clinical severity, in any one person.',
   triggerMechanism:'A perceived loss, rejection, uncontrollable stressor, or threat to safety or belonging can start a downward move that does not find a floor. In the three named conditions this looks different (abandonment and invalidation in BPD, loss and perceived failure in depression, uncertainty and threat in anxiety disorders), but the shared shape this family tracks is charge dropping at the root and staying down rather than discharging or resolving. Where depression or anxiety sit alongside the BPD pattern, the literature ties the overlap to worse impulsivity, anger, and hopelessness rather than to one shared trigger, so the shared shape above is this family\'s own organizing idea and not a mechanism the clinical research states directly. This is a working formulation, not a universal cause, and not a substitute for an individual clinical assessment.',
   livedExample:'A person waits for a reply that does not come. The wait does not stay the size of the thing itself: it grows until it is the only thing in the room, and when the mood drops under it, the mood does not come back up once the message finally arrives.',
@@ -789,8 +997,8 @@ const DESCENT=[
   oppositeName:'Regulated Range', oppositeId:'opposite:Dysregulation', oppositeDefinition:'A working range that flexes with real demand and still returns to a steady middle: energy, mood and attention that rise and fall with circumstance without overshooting past function, and a felt sense of returning to baseline rather than crashing past it.',
   oppositeStatus:'inferred-working-counterpart; not asserted as a canonical one-to-one opposite',
   confidence:0.5,
-  crosswalk:'This entry corresponds to HCX_LIB\u2019s own Dysregulation hyper complex (engine/data/nodes.js, sub:"bipolar \u00b7 ADHD", seat Sacral) by name only: it is a DESCENT-table correspondence read inside the gated dark read, never a fetter, saboteur or complex parentage link, and compute() builds no fam or pair tie for it the way it does for Sociopathy and Psychopathy, so no edge is fabricated. But the gate it would sit behind fires only on "both at once" (outward shape and organized control, the harm-to-others malignancy reading Narcissism, Machiavellianism, Sociopathy and Psychopathy share), and nothing in this research supports reading bipolar disorder or ADHD as an other-directed harm pattern, so this table, behind this gate, would itself assert a correspondence the record does not support. HCXCARD.dysregulation (engine/data/hcxcard.js) already carries equivalent behavioral content to every person carrying the pattern, with no malignancy gate and no clinical name, which is the alternative placement named in the pass D finding below.',
-  falsification:'A practitioner checking this correspondence against a specific person would look for: no distinct days-to-weeks mood episode that departs from the person\u2019s own baseline (disconfirms the bipolar half); no attentional or hyperactivity-impulsivity pattern present since before age 12 (disconfirms the ADHD half); a predominantly inattentive presentation with no high or expansive pole ever reported, which this entry\u2019s "overshoots at both ends" image does not fit, and which covers roughly a fifth to a third of ADHD cases; swings that track an identifiable external cause, sleep loss, a medication change, a medical condition such as thyroid or perimenopause, or substance use, and resolve when that cause is addressed rather than recurring on their own; a better fit with borderline personality disorder\u2019s affective lability, which the De Prisco et al 2023 meta-analysis found more strongly evidenced against emotion dysregulation than the ADHD comparison (6 studies, n=1001, against 3 studies, n=232); and, most basically, a story that does not corroborate the swing at all, since the hyper complex is computed from two saboteurs at a seat and can fire without the person\u2019s own account matching the shape this entry describes. Any one of these is reason to treat the correspondence as not holding for that person, and the practice line above should be withheld rather than offered on a correspondence that does not hold.',
+  crosswalk:'This entry corresponds to HCX_LIB\u2019s own Dysregulation hyper complex (engine/data/nodes.js, sub:"bipolar \u00b7 ADHD", point Sacral) by name only: it is a DESCENT-table correspondence read inside the gated dark read, never a fetter, saboteur or complex parentage link, and compute() builds no fam or pair tie for it the way it does for Sociopathy and Psychopathy, so no edge is fabricated. But the gate it would sit behind fires only on "both at once" (outward shape and organized control, the harm-to-others malignancy reading Narcissism, Machiavellianism, Sociopathy and Psychopathy share), and nothing in this research supports reading bipolar disorder or ADHD as an other-directed harm pattern, so this table, behind this gate, would itself assert a correspondence the record does not support. HCXCARD.dysregulation (engine/data/hcxcard.js) already carries equivalent behavioral content to every person carrying the pattern, with no malignancy gate and no clinical name, which is the alternative placement named in the pass D finding below.',
+  falsification:'A practitioner checking this correspondence against a specific person would look for: no distinct days-to-weeks mood episode that departs from the person\u2019s own baseline (disconfirms the bipolar half); no attentional or hyperactivity-impulsivity pattern present since before age 12 (disconfirms the ADHD half); a predominantly inattentive presentation with no high or expansive pole ever reported, which this entry\u2019s "overshoots at both ends" image does not fit, and which covers roughly a fifth to a third of ADHD cases; swings that track an identifiable external cause, sleep loss, a medication change, a medical condition such as thyroid or perimenopause, or substance use, and resolve when that cause is addressed rather than recurring on their own; a better fit with borderline personality disorder\u2019s affective lability, which the De Prisco et al 2023 meta-analysis found more strongly evidenced against emotion dysregulation than the ADHD comparison (6 studies, n=1001, against 3 studies, n=232); and, most basically, a story that does not corroborate the swing at all, since the hyper complex is computed from two saboteurs at a point and can fire without the person\u2019s own account matching the shape this entry describes. Any one of these is reason to treat the correspondence as not holding for that person, and the practice line above should be withheld rather than offered on a correspondence that does not hold.',
   trustBoundary:'This content, the behavioral template, the confidence number, the research sources and passes, and above all the clinical cluster name carried privately on HCX_LIB as sub ("bipolar \u00b7 ADHD", printed to nobody per engine/data/hcxcard.js\u2019s own comment) sits in the same consequential class CLAUDE.md already names for a practitioner\u2019s sight of somatic and psychological self report: it needs explicit consent, a visible list of who has sight, and revocation, never a silent default. Before a practitioner is granted sight of it, the client should be told, in plain words, that a research-informed structural correspondence exists on this pattern, that it is not a diagnosis, what it is based on, and that they can revoke the grant at any time. A practitioner who has sight of it must never state it to the client as a diagnosis of bipolar disorder or ADHD, never use the cluster name with the client at all, never treat the engine\u2019s computed presence of the pattern as sufficient evidence on its own without checking it against the falsification signs above and the client\u2019s own account, and never work the structural layer directly: DESCENT_REFER\u2019s own line already holds for this entry exactly as it holds for the other four, work at the address, say plainly that the structural layer is not worked here, and refer to a licensed clinician alongside, not instead.',
   reviewStatus:'external-research-pass-A-done, external-research-pass-B-done, external-research-pass-C-done, external-research-pass-D-done. All four passes complete; this is the final draft for human review, not yet written to any file. Pass D traced the tie into the real engine and confirmed no fabricated edge, named concrete falsification signs, and stated the consent and trust boundary, but it did not resolve, and explicitly hands to the owner, whether the bipolar-ADHD bundle should be one hyper complex or two, and whether this entry belongs in the malignancy-gated DESCENT table at all rather than an ungated surface like HCXCARD.dysregulation, which already exists with equivalent content and no clinical name. That placement call, not a research pass, is what would move confidence or kind. Confidence is left at 0.5, unmoved, consistent with passes A through C.',
   researchSources:['https://www.nimh.nih.gov/health/topics/bipolar-disorder','https://www.nimh.nih.gov/health/topics/attention-deficit-hyperactivity-disorder-adhd','https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9567078/','https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9403243/','https://pubmed.ncbi.nlm.nih.gov/25406047/','https://pubmed.ncbi.nlm.nih.gov/33515607/','https://pubmed.ncbi.nlm.nih.gov/21278822/','https://pmc.ncbi.nlm.nih.gov/articles/PMC7027938','https://pubmed.ncbi.nlm.nih.gov/31792363/','https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9464828/','https://core-prod.cambridgecore.org/core/services/aop-cambridge-core/content/view/A87DE2F2846B9019656A97ECA842B901/S003329172300243Xa.pdf/emotion_dysregulation_in_bipolar_disorder_compared_to_other_mental_illnesses_a_systematic_review_and_metaanalysis.pdf','https://pmc.ncbi.nlm.nih.gov/articles/4282137','https://www.ajmc.com/view/emotional-dysregulation-and-executive-dysfunction-in-patients-with-adhd-and-bipolar-disorder','https://eprints.whiterose.ac.uk/id/eprint/183369/1/Attention-DeficitHyperactivity%20Disorder%20Predominantly%20Inattentive%20SubtypePresentation%20Research%20Progress%20and%20Translational%20St.pdf','https://chadd.org/about-adhd/adhd-quick-facts-adhd-presentations/','https://www.nature.com/articles/s41398-021-01666-3','https://resolve.cambridge.org/core/journals/european-psychiatry/article/does-temperamental-instability-support-a-continuity-between-bipolar-ii-disorder-and-major-depressive-disorder/CC0750BAF0C64183F751504434175FCA','https://cambridge.org/core/journals/european-psychiatry/article/does-bipolar-disorder-differ-from-other-mental-illnesses-in-terms-of-emotion-dysregulation-a-systematic-review-and-metaanalysis/BA6413AA6D21BF1035E53E02EEE14E04','https://archive-ouverte.unige.ch/unige:89042'],
@@ -852,6 +1060,147 @@ const DESCENT=[
     finding:'The crosswalk is exact and not invented: HCX_LIB\u2019s Dissociation row is built from the two saboteurs the library itself ties to it, Hyper-Rational and Escapist, and compute() compounds them into the Dissociation hyper complex only when both have formed and their paired weight reaches the same 6.5 gate every hyper complex uses; were this wired into this table it would be read exactly the way Sociopathy already reads Predatory, never a new kind of edge. Because malig in this engine is computed from CQ alone rather than an independent outward-harm measure, the dark gate can fire for this withdrawal-shaped family on low coherence alone, the same as for an outward-pointing family, which the falsification checks above account for. No practitioner-sight machinery for this content exists yet: CLAUDE.md requires explicit consent, a visible list of who has sight, and revocation before any practitioner sees a person\u2019s self report, and engine/practitioner.js\u2019s own header says none of the three is built, so this object is not ship-ready for any screen, practitioner included, until that grant exists; the one piece of this family already reaching a screen, HCX_LIB\u2019s d line, reaches only the person it is about, and the product\u2019s own ruling keeps the clinical correspondence off that same screen by name.'}
   ]
  }},
+ /* THE REST OF THE ROSTER, ADDED 21 NOVEMBER. His words: "for compass
+    descent unreachable, there should be way more than 8 entries. You should
+    have Charon as whatever its behavior name is, Geryon as whatever its
+    behavior name is, Cerberus as whatever its name is, etc."
+
+    Every row below is a figure from the Pass 1 roster in
+    reviews/shadow-figure-research-2026-10-30.md, shown by the behaviour
+    word this product ALREADY prints for it somewhere else (the CIRCLES by
+    field, a MIRROR or HOME_POLES or PATHS dn, a BLUEPRINT nm), never by the
+    figure's name, per the 30 October ruling. No word here is new. The d
+    line is the same figure's own line from the same table.
+
+    THESE ARE REFERENCE ROWS, THE SAME PRECEDENT AS DYSREGULATION AND
+    DISSOCIATION ABOVE. No fam and no pair, so descentHeld() never holds one
+    and darkRead() never chooses one as the step. The dark read lists them
+    and never lights one. Whether any of them is a super complex, a pair of
+    hyper complexes, is his open call (TASKS.md round SM, SM9 and SM16) and
+    nothing here answers it.
+
+    LEFT OUT ON PURPOSE. Manipulation (Baal): the narrative review's own
+    call was to show nothing until an opposite is documented, and that is
+    honoured here. The Harpies, Nimrod and Ephialtes: no table in the engine
+    carries them, so there is no shipped word to reuse. Satan frozen, the
+    ninth governor: it is Lucifer at the ninth circle, so Shadow carries it.
+
+    THE TEAM'S PICK, under his 21 November ruling to stop the blockers from
+    building. His to correct on the live app, by one word per row. */
+ {nm:'Gatekeeping', kind:'circle governor',
+  d:'Threshold paralysis. Cannot cross what cannot be measured. The rational mind forever preparing to arrive.',
+  content:{inferred:true,
+   inferenceBasis:'Name-correspondence reference row. The shown word and its d line are already shipped elsewhere in this build: CIRCLES circle 1 (Limbo), by:\'Gatekeeping\', and MIRROR TR\'s dn, accepted 17 November (DECISIONS.md). d is TR\'s own dnd. The figure behind it, Charon, is a trace name from reviews/shadow-figure-research-2026-10-30.md, Pass 1 roster, and is never printed. Added 21 November 2026 as the team’s own pick, from already ruled material with no new word.',
+   crosswalk:'No fam and no pair, the same precedent Dysregulation and Dissociation set: read by name only through descentStep(), never held by descentHeld(), never chosen by darkRead(), so it is listed in the dark read and never lit. No fetter, saboteur or complex parentage is invented. Its code in engine/data/codes.js exists because the codes gate needs every DESCENT name to resolve to a structure, and that filing is not a ruling on its tier.',
+   reviewStatus:'team-pick-21-november; open to the owner on the live app; no research pass of its own, the word and the line are both reused'}},
+ {nm:'Judgment', kind:'circle governor',
+  d:'Grandiose entitlement. Appointing the self arbiter of all things.',
+  content:{inferred:true,
+   inferenceBasis:'Name-correspondence reference row. The shown word and its d line are already shipped elsewhere in this build: CIRCLES circle 2 (Lust), by:\'Judgment\', accepted 17 November as a circle governor (DECISIONS.md). d is circle 2\'s own p with its clinical first word and its person word taken out, so it names a pattern and not a person. The figure behind it, Minos, is a trace name from reviews/shadow-figure-research-2026-10-30.md, Pass 1 roster, and is never printed. Added 21 November 2026 as the team’s own pick, from already ruled material with no new word.',
+   crosswalk:'No fam and no pair, the same precedent Dysregulation and Dissociation set: read by name only through descentStep(), never held by descentHeld(), never chosen by darkRead(), so it is listed in the dark read and never lit. No fetter, saboteur or complex parentage is invented. Its code in engine/data/codes.js exists because the codes gate needs every DESCENT name to resolve to a structure, and that filing is not a ruling on its tier.',
+   reviewStatus:'team-pick-21-november; open to the owner on the live app; no research pass of its own, the word and the line are both reused'}},
+ {nm:'Insatiability', kind:'circle governor',
+  d:'Consumption as substitution. Appetite replacing connection. Each mouth feeds and none is filled.',
+  content:{inferred:true,
+   inferenceBasis:'Name-correspondence reference row. The shown word and its d line are already shipped elsewhere in this build: CIRCLES circle 3 (Gluttony), by:\'Insatiability\', accepted 17 November (DECISIONS.md). d is circle 3\'s own p. The figure behind it, Cerberus, is a trace name from reviews/shadow-figure-research-2026-10-30.md, Pass 1 roster, and is never printed. Added 21 November 2026 as the team’s own pick, from already ruled material with no new word.',
+   crosswalk:'No fam and no pair, the same precedent Dysregulation and Dissociation set: read by name only through descentStep(), never held by descentHeld(), never chosen by darkRead(), so it is listed in the dark read and never lit. No fetter, saboteur or complex parentage is invented. Its code in engine/data/codes.js exists because the codes gate needs every DESCENT name to resolve to a structure, and that filing is not a ruling on its tier.',
+   reviewStatus:'team-pick-21-november; open to the owner on the live app; no research pass of its own, the word and the line are both reused'}},
+ {nm:'Possessiveness', kind:'circle governor',
+  d:'Scarcity identity. Accumulation as self proof. Worth measured in possession.',
+  content:{inferred:true,
+   inferenceBasis:'Name-correspondence reference row. The shown word and its d line are already shipped elsewhere in this build: CIRCLES circle 4 (Greed), by:\'Possessiveness\', accepted 17 November (DECISIONS.md). d is circle 4\'s own p. The figure behind it, Plutus, is a trace name from reviews/shadow-figure-research-2026-10-30.md, Pass 1 roster, and is never printed. Added 21 November 2026 as the team’s own pick, from already ruled material with no new word.',
+   crosswalk:'No fam and no pair, the same precedent Dysregulation and Dissociation set: read by name only through descentStep(), never held by descentHeld(), never chosen by darkRead(), so it is listed in the dark read and never lit. No fetter, saboteur or complex parentage is invented. Its code in engine/data/codes.js exists because the codes gate needs every DESCENT name to resolve to a structure, and that filing is not a ruling on its tier.',
+   reviewStatus:'team-pick-21-november; open to the owner on the live app; no research pass of its own, the word and the line are both reused'}},
+ {nm:'Reactivity', kind:'circle governor',
+  d:'Charge split at the root. Outward as rage or inward as paralysis. The same current, no clean exit.',
+  content:{inferred:true,
+   inferenceBasis:'Name-correspondence reference row. The shown word and its d line are already shipped elsewhere in this build: CIRCLES circle 5 (Wrath and sloth), by:\'Reactivity\', and MIRROR CH\'s dn, accepted 17 November (DECISIONS.md). d is CH\'s own dnd. The figure behind it, Phlegyas, is a trace name from reviews/shadow-figure-research-2026-10-30.md, Pass 1 roster, and is never printed. Added 21 November 2026 as the team’s own pick, from already ruled material with no new word.',
+   crosswalk:'No fam and no pair, the same precedent Dysregulation and Dissociation set: read by name only through descentStep(), never held by descentHeld(), never chosen by darkRead(), so it is listed in the dark read and never lit. No fetter, saboteur or complex parentage is invented. Its code in engine/data/codes.js exists because the codes gate needs every DESCENT name to resolve to a structure, and that filing is not a ruling on its tier.',
+   reviewStatus:'team-pick-21-november; open to the owner on the live app; no research pass of its own, the word and the line are both reused'}},
+ {nm:'Vengeance', kind:'circle governor',
+  d:'The map takes the place of the ground, for good. The belief system is guarded against any experience that contradicts it.',
+  content:{inferred:true,
+   inferenceBasis:'Name-correspondence reference row. The shown word and its d line are already shipped elsewhere in this build: CIRCLES circle 6 (Heresy), by:\'Vengeance\', and MIRROR RE\'s dn, accepted 17 November (DECISIONS.md). d is RE\'s own dnd. The figure behind it, The Furies, is a trace name from reviews/shadow-figure-research-2026-10-30.md, Pass 1 roster, and is never printed. Added 21 November 2026 as the team’s own pick, from already ruled material with no new word.',
+   crosswalk:'No fam and no pair, the same precedent Dysregulation and Dissociation set: read by name only through descentStep(), never held by descentHeld(), never chosen by darkRead(), so it is listed in the dark read and never lit. No fetter, saboteur or complex parentage is invented. Its code in engine/data/codes.js exists because the codes gate needs every DESCENT name to resolve to a structure, and that filing is not a ruling on its tier.',
+   reviewStatus:'team-pick-21-november; open to the owner on the live app; no research pass of its own, the word and the line are both reused'}},
+ {nm:'Violence', kind:'circle governor',
+  d:'Against others, against the self, against order. The pattern has escaped containment.',
+  content:{inferred:true,
+   inferenceBasis:'Name-correspondence reference row. The shown word and its d line are already shipped elsewhere in this build: CIRCLES circle 7, by:\'Violence\', accepted 17 November (DECISIONS.md). d is circle 7\'s own p. The figure behind it, the Minotaur, is a trace name from reviews/shadow-figure-research-2026-10-30.md, Pass 1 roster, and is never printed. Added 21 November 2026 as the team’s own pick, from already ruled material with no new word.',
+   crosswalk:'No fam and no pair, the same precedent Dysregulation and Dissociation set: read by name only through descentStep(), never held by descentHeld(), never chosen by darkRead(), so it is listed in the dark read and never lit. No fetter, saboteur or complex parentage is invented. Its code in engine/data/codes.js exists because the codes gate needs every DESCENT name to resolve to a structure, and that filing is not a ruling on its tier.',
+   reviewStatus:'team-pick-21-november; open to the owner on the live app; no research pass of its own, the word and the line are both reused'}},
+ {nm:'Fraud', kind:'circle governor',
+  d:'Engineered surface. Beautiful above, serpentine beneath. Perception itself weaponised.',
+  content:{inferred:true,
+   inferenceBasis:'Name-correspondence reference row. The shown word and its d line are already shipped elsewhere in this build: CIRCLES circle 8, by:\'Fraud\', and MIRROR PE\'s dn. Ruled 30 October, his words "Geryon is fraud" (TASKS.md round SM, SM15). d is PE\'s own dnd. The figure behind it, Geryon, is a trace name from reviews/shadow-figure-research-2026-10-30.md, Pass 1 roster, and is never printed. Added 21 November 2026 as the team’s own pick, from already ruled material with no new word.',
+   crosswalk:'No fam and no pair, the same precedent Dysregulation and Dissociation set: read by name only through descentStep(), never held by descentHeld(), never chosen by darkRead(), so it is listed in the dark read and never lit. No fetter, saboteur or complex parentage is invented. Its code in engine/data/codes.js exists because the codes gate needs every DESCENT name to resolve to a structure, and that filing is not a ruling on its tier.',
+   reviewStatus:'team-pick-21-november; open to the owner on the live app; no research pass of its own, the word and the line are both reused'}},
+ {nm:'Shadow', kind:'inversion',
+  d:'Pride as false light. Shine performed for reflection, not generated from Source.',
+  content:{inferred:true,
+   inferenceBasis:'Name-correspondence reference row. The shown word and its d line are already shipped elsewhere in this build: MIRROR IL\'s dn and BLUEPRINT\'s Shadow row, the word the vocabulary sweep settled (DECISIONS.md, "Grace against Shadow"), which replaced the 17 November False Light. d is IL\'s own dnd. The figure behind it, Lucifer, is a trace name from reviews/shadow-figure-research-2026-10-30.md, Pass 1 roster, and is never printed. Added 21 November 2026 as the team’s own pick, from already ruled material with no new word.',
+   crosswalk:'No fam and no pair, the same precedent Dysregulation and Dissociation set: read by name only through descentStep(), never held by descentHeld(), never chosen by darkRead(), so it is listed in the dark read and never lit. No fetter, saboteur or complex parentage is invented. Its code in engine/data/codes.js exists because the codes gate needs every DESCENT name to resolve to a structure, and that filing is not a ruling on its tier.',
+   reviewStatus:'team-pick-21-november; open to the owner on the live app; no research pass of its own, the word and the line are both reused'}},
+ {nm:'Compulsive Craving', kind:'inversion',
+  d:'Craving without closure. Appetite that cannot satisfy. Having never resolves the wanting.',
+  content:{inferred:true,
+   inferenceBasis:'Name-correspondence reference row. The shown word and its d line are already shipped elsewhere in this build: MIRROR DE\'s dn, accepted 17 November (DECISIONS.md). d is DE\'s own dnd. The figure behind it, Asmodeus, is a trace name from reviews/shadow-figure-research-2026-10-30.md, Pass 1 roster, and is never printed. Added 21 November 2026 as the team’s own pick, from already ruled material with no new word.',
+   crosswalk:'No fam and no pair, the same precedent Dysregulation and Dissociation set: read by name only through descentStep(), never held by descentHeld(), never chosen by darkRead(), so it is listed in the dark read and never lit. No fetter, saboteur or complex parentage is invented. Its code in engine/data/codes.js exists because the codes gate needs every DESCENT name to resolve to a structure, and that filing is not a ruling on its tier.',
+   reviewStatus:'team-pick-21-november; open to the owner on the live app; no research pass of its own, the word and the line are both reused'}},
+ {nm:'Engineered Chaos', kind:'inversion',
+  d:'Chaos engineered to prevent coherence. Betrayal as systemic strategy. Disruption from inside trusted systems.',
+  content:{inferred:true,
+   inferenceBasis:'Name-correspondence reference row. The shown word and its d line are already shipped elsewhere in this build: MIRROR OR\'s dn and BLUEPRINT\'s Engineered Chaos row, accepted 17 November (DECISIONS.md). d is OR\'s own dnd. The figure behind it, Set, is a trace name from reviews/shadow-figure-research-2026-10-30.md, Pass 1 roster, and is never printed. Added 21 November 2026 as the team’s own pick, from already ruled material with no new word.',
+   crosswalk:'No fam and no pair, the same precedent Dysregulation and Dissociation set: read by name only through descentStep(), never held by descentHeld(), never chosen by darkRead(), so it is listed in the dark read and never lit. No fetter, saboteur or complex parentage is invented. Its code in engine/data/codes.js exists because the codes gate needs every DESCENT name to resolve to a structure, and that filing is not a ruling on its tier.',
+   reviewStatus:'team-pick-21-november; open to the owner on the live app; no research pass of its own, the word and the line are both reused'}},
+ {nm:'Sacrificial Extraction', kind:'inversion',
+  d:'Power that extracts from others. The machine that must be fed. Discipline that others pay for.',
+  content:{inferred:true,
+   inferenceBasis:'Name-correspondence reference row. The shown word and its d line are already shipped elsewhere in this build: MIRROR PO\'s dn, accepted 17 November (DECISIONS.md). d is PO\'s own dnd. The figure behind it, Moloch, is a trace name from reviews/shadow-figure-research-2026-10-30.md, Pass 1 roster, and is never printed. Added 21 November 2026 as the team’s own pick, from already ruled material with no new word.',
+   crosswalk:'No fam and no pair, the same precedent Dysregulation and Dissociation set: read by name only through descentStep(), never held by descentHeld(), never chosen by darkRead(), so it is listed in the dark read and never lit. No fetter, saboteur or complex parentage is invented. Its code in engine/data/codes.js exists because the codes gate needs every DESCENT name to resolve to a structure, and that filing is not a ruling on its tier.',
+   reviewStatus:'team-pick-21-november; open to the owner on the live app; no research pass of its own, the word and the line are both reused'}},
+ {nm:'Extractive Control', kind:'inversion',
+  d:'Cold, structured adversarial behaviour. Organised extraction. Order in service of control, not governance. The King inverted.',
+  content:{inferred:true,
+   inferenceBasis:'Name-correspondence reference row. The shown word and its d line are already shipped elsewhere in this build: BLUEPRINT\'s Extractive Control row, accepted 17 November as the word that replaced Malak (DECISIONS.md). d is that row\'s own d. The figure behind it, Malak, is a trace name from reviews/shadow-figure-research-2026-10-30.md, Pass 1 roster, and is never printed. Added 21 November 2026 as the team’s own pick, from already ruled material with no new word.',
+   crosswalk:'No fam and no pair, the same precedent Dysregulation and Dissociation set: read by name only through descentStep(), never held by descentHeld(), never chosen by darkRead(), so it is listed in the dark read and never lit. No fetter, saboteur or complex parentage is invented. Its code in engine/data/codes.js exists because the codes gate needs every DESCENT name to resolve to a structure, and that filing is not a ruling on its tier.',
+   reviewStatus:'team-pick-21-november; open to the owner on the live app; no research pass of its own, the word and the line are both reused'}},
+ {nm:'Deception', kind:'inversion',
+  d:'The smaller thing said to keep the room warm. The plumb line broken and turned aside.',
+  content:{inferred:true,
+   inferenceBasis:'Name-correspondence reference row. The shown word and its d line are already shipped elsewhere in this build: HOME_POLES TU\'s dn. Ruled 30 October, his words "is the lie instead of that is deception, more appropriate word, or deceiver" (TASKS.md round SM, SM13, opposite Honesty at SM14). d joins TU\'s own recipe line in teachers_recipes.js and the Lie\'s mark as the narrative review describes it. The figure behind it, Druj, is a trace name from reviews/shadow-figure-research-2026-10-30.md, Pass 1 roster, and is never printed. Added 21 November 2026 as the team’s own pick, from already ruled material with no new word.',
+   crosswalk:'No fam and no pair, the same precedent Dysregulation and Dissociation set: read by name only through descentStep(), never held by descentHeld(), never chosen by darkRead(), so it is listed in the dark read and never lit. No fetter, saboteur or complex parentage is invented. Its code in engine/data/codes.js exists because the codes gate needs every DESCENT name to resolve to a structure, and that filing is not a ruling on its tier.',
+   reviewStatus:'team-pick-21-november; open to the owner on the live app; no research pass of its own, the word and the line are both reused'}},
+ {nm:'Sabotage', kind:'inversion',
+  d:'Light taken in and nothing passed on.',
+  content:{inferred:true,
+   inferenceBasis:'Name-correspondence reference row. The shown word and its d line are already shipped elsewhere in this build: HOME_POLES SA\'s dn, accepted 17 November (DECISIONS.md). d is SA\'s own recipe line in teachers_recipes.js, "Take it in and pass nothing on", read as a pattern rather than an instruction. The figure behind it, Apep, is a trace name from reviews/shadow-figure-research-2026-10-30.md, Pass 1 roster, and is never printed. Added 21 November 2026 as the team’s own pick, from already ruled material with no new word.',
+   crosswalk:'No fam and no pair, the same precedent Dysregulation and Dissociation set: read by name only through descentStep(), never held by descentHeld(), never chosen by darkRead(), so it is listed in the dark read and never lit. No fetter, saboteur or complex parentage is invented. Its code in engine/data/codes.js exists because the codes gate needs every DESCENT name to resolve to a structure, and that filing is not a ruling on its tier.',
+   reviewStatus:'team-pick-21-november; open to the owner on the live app; no research pass of its own, the word and the line are both reused'}},
+ {nm:'Forced Growth', kind:'inversion',
+  d:'The shoot pulled up to help it grow. The hand meant to help breaks the root.',
+  content:{inferred:true,
+   inferenceBasis:'Name-correspondence reference row. The shown word and its d line are already shipped elsewhere in this build: HOME_POLES NA\'s dn, accepted 17 November (DECISIONS.md). d is NA\'s own recipe line in teachers_recipes.js and the mechanic in compass.js\'s own note over HOME_POLES. The figure behind it, the farmer of Song, is a trace name from reviews/shadow-figure-research-2026-10-30.md, Pass 1 roster, and is never printed. Added 21 November 2026 as the team’s own pick, from already ruled material with no new word.',
+   crosswalk:'No fam and no pair, the same precedent Dysregulation and Dissociation set: read by name only through descentStep(), never held by descentHeld(), never chosen by darkRead(), so it is listed in the dark read and never lit. No fetter, saboteur or complex parentage is invented. Its code in engine/data/codes.js exists because the codes gate needs every DESCENT name to resolve to a structure, and that filing is not a ruling on its tier.',
+   reviewStatus:'team-pick-21-november; open to the owner on the live app; no research pass of its own, the word and the line are both reused'}},
+ {nm:'Poisoning', kind:'inversion',
+  d:'Flow held in one pool until it turns to poison. The river still runs, and nothing downstream can drink from it.',
+  content:{inferred:true,
+   inferenceBasis:'Name-correspondence reference row. The shown word and its d line are already shipped elsewhere in this build: PATHS FL\'s dn, accepted 17 November (DECISIONS.md). d is FL\'s own dnd. The figure behind it, Kaliya, is a trace name from reviews/shadow-figure-research-2026-10-30.md, Pass 1 roster, and is never printed. Added 21 November 2026 as the team’s own pick, from already ruled material with no new word.',
+   crosswalk:'No fam and no pair, the same precedent Dysregulation and Dissociation set: read by name only through descentStep(), never held by descentHeld(), never chosen by darkRead(), so it is listed in the dark read and never lit. No fetter, saboteur or complex parentage is invented. Its code in engine/data/codes.js exists because the codes gate needs every DESCENT name to resolve to a structure, and that filing is not a ruling on its tier.',
+   reviewStatus:'team-pick-21-november; open to the owner on the live app; no research pass of its own, the word and the line are both reused'}},
+ {nm:'Coercive Abduction', kind:'inversion',
+  d:'Learning and power with no line held. The law is known and crossed, because the wanting outranks it.',
+  content:{inferred:true,
+   inferenceBasis:'Name-correspondence reference row. The shown word and its d line are already shipped elsewhere in this build: PATHS AL\'s dn, accepted 17 November (DECISIONS.md). d is AL\'s own dnd with its person word taken out. The figure behind it, Ravana, is a trace name from reviews/shadow-figure-research-2026-10-30.md, Pass 1 roster, and is never printed. Added 21 November 2026 as the team’s own pick, from already ruled material with no new word.',
+   crosswalk:'No fam and no pair, the same precedent Dysregulation and Dissociation set: read by name only through descentStep(), never held by descentHeld(), never chosen by darkRead(), so it is listed in the dark read and never lit. No fetter, saboteur or complex parentage is invented. Its code in engine/data/codes.js exists because the codes gate needs every DESCENT name to resolve to a structure, and that filing is not a ruling on its tier.',
+   reviewStatus:'team-pick-21-november; open to the owner on the live app; no research pass of its own, the word and the line are both reused'}},
+ {nm:'Forced Alteration', kind:'inversion',
+  d:'Haste that means well. Openings forced into what was whole, one a day, until it died.',
+  content:{inferred:true,
+   inferenceBasis:'Name-correspondence reference row. The shown word and its d line are already shipped elsewhere in this build: PATHS HO\'s dn, accepted 17 November (DECISIONS.md). d is HO\'s own dnd with its person words taken out. The figure behind it, Shu and Hu, is a trace name from reviews/shadow-figure-research-2026-10-30.md, Pass 1 roster, and is never printed. Added 21 November 2026 as the team’s own pick, from already ruled material with no new word.',
+   crosswalk:'No fam and no pair, the same precedent Dysregulation and Dissociation set: read by name only through descentStep(), never held by descentHeld(), never chosen by darkRead(), so it is listed in the dark read and never lit. No fetter, saboteur or complex parentage is invented. Its code in engine/data/codes.js exists because the codes gate needs every DESCENT name to resolve to a structure, and that filing is not a ruling on its tier.',
+   reviewStatus:'team-pick-21-november; open to the owner on the live app; no research pass of its own, the word and the line are both reused'}},
  /* A SUPER COMPLEX, AND ONE PARTICULAR ONE. The kind stands: he ruled it a
     super complex. What 0e53d037 struck was it standing as a flat kind lit for
     anybody, and pair is the fix: it is held only where compute() finds both

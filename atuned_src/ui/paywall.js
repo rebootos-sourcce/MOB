@@ -10,14 +10,30 @@
    Icons, I can hover over the icons and get information on what features I
    may be missing."
 
-   WHAT IT IS. A sheet over whatever screen the person is on, three paid cards
-   and a Practitioner strip under them. Each card leads on its patterns a
-   month, then its price, then the six rings a tier can open, solid in the
-   accent where the tier opens that layer and a grey ring where it does not.
-   Solid against outline is a change of shape, so colour is never the only
-   sign, and one colour serves every card: tiers rank by how much is lit and
-   never by hue. Every ring, the number and the Practitioner name are buttons
-   that open one short card on hover, on keyboard focus and on a tap.
+   WHAT IT IS. A sheet over whatever screen the person is on, five cards,
+   the whole price ladder in one row: tier zero (Free) and then tier one,
+   tier two, tier three and Practitioner. RULED 21 NOVEMBER, the owner's own
+   words: "we should do 5 columns, right? So tier 0 and then tier 1, 2, 3,
+   4." Free used to sit out of the grid as a quiet badge in the header; it
+   is card one now, the same shape as every paid card, so a person reads the
+   whole ladder at once instead of a badge plus four cards. That reverses
+   only where Free sits, not the 19 November ruling that put Practitioner in
+   the row itself ("the paywall needs all 4 tiers"), reversing the second
+   cut's own choice to carry Practitioner as a slim strip under the other
+   three. Each card leads on its patterns a month, then its price, then the
+   six rings a tier can open, solid in the accent where the tier opens that
+   layer and a grey ring where it does not. Solid against outline is a change
+   of shape, so colour is never the only sign, and one colour serves every
+   card: tiers rank by how much is lit and never by hue. Every ring and every
+   number are buttons that open one short card on hover, on keyboard focus
+   and on a tap. Practitioner's own card carries two more: its name is the
+   same kind of button, carrying the ladder's own cohort sentence
+   (PLAN_BY.four.d), since patterns and sight alone say nothing about what
+   actually sets it apart from tier three (nothing: same grant, same sees,
+   the one rung priced on the cohort suite instead); and, 21 November, a
+   groups icon beside that name, his own words: "their difference is that
+   they get to add groups. So the groups icon needs to be added to this as
+   well."
 
    THE ROUTE, Emmy's recommendation and the change the rest of the design sits
    on. A locked ring anywhere in the app used to send a person to Billing, a
@@ -122,7 +138,6 @@ var PW_W={
     sentences in one tooltip is more than one idea (the voice gate's
     tooltip-one-idea flag), which is the split the coordinator gave. */
  pat:'Each pattern is one line said at one place in your body. Some lines share their words.',
- prac:'Everything in tier three, plus cohorts of people you lead.',
  foot:'Charged monthly. Stop anytime from Billing, on the payment page.',
  refund:'Charged in the last seven days? Write to hello@atuned.world and we refund it in full.',
  billing:'Billing',
@@ -139,7 +154,8 @@ var PW_W={
  giftTl:'Open on your gift',
  gift:function(){ return ['Your gift: '+GIFT_N+' ','patterns',', no card. Everything is open.']; },
  /* the same fact for somebody paying, with no claim about a card */
- giftPaid:'Your gift is not used up yet. Everything is open until it is.'};
+ giftPaid:'Your gift is not used up yet. Everything is open until it is.',
+ groups:'Add groups. Lead other people through their own release.'};
 /* 1,200 and not 1200, the way the tiers page prints it (ptN, ui/plans.js) */
 function pwN(n){ return String(n).replace(/\B(?=(\d{3})+(?!\d))/g,','); }
 /* a ring's name, off SIGHT: "the masks" is Masks on a ring */
@@ -165,11 +181,14 @@ var PW_SOON=pwSvg('<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>');
 var PW_HERE=pwSvg('<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.2"/>');
 var PW_SEES=pwSvg('<circle cx="12" cy="12" r="9"/><path d="M8.2 12.3l2.6 2.6 5-5.4"/>');
 var PW_X=pwSvg('<circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/>');
-/* Practitioner has no mark in the product yet: one ring leading three, drawn
-   in the chain's own line (the mockup's PRAC_D) */
-var PW_PRAC=pwSvg('<path d="M12 3.6a3 3 0 110 6 3 3 0 010-6M5.4 14.4a2.4 2.4 0 110 4.8 2.4 2.4 0 010-4.8'
- +'M12 15.6a2.4 2.4 0 110 4.8 2.4 2.4 0 010-4.8M18.6 14.4a2.4 2.4 0 110 4.8 2.4 2.4 0 010-4.8'
- +'M10.4 9.2L6.6 14.6M12 9.6v6M13.6 9.2l3.8 5.4"/>');
+/* THE GROUPS ICON, 21 November, his own words: "their difference is that
+   they get to add groups. So the groups icon needs to be added to this as
+   well." Two rings, not one, same stroke language as every other icon here
+   (ring, not fill). It sits beside Practitioner's own tappable name, which
+   already carries the one fact that card has over tier three (PLAN_BY.four.d,
+   the comment above pwCard explains why); this adds the icon beside it,
+   it does not replace it. */
+var PW_GROUPS=pwSvg('<circle cx="9" cy="12.5" r="5"/><circle cx="15" cy="11.5" r="5"/>');
 function pwLock(){ return pwSvg(typeof LOCK_PATH!=='undefined'?LOCK_PATH:''); }
 
 /* ---- the pieces ---- */
@@ -203,9 +222,23 @@ function pwCard(pl,r,pay){
   act='<button type="button" class="pw-go'+(door?'':' quiet')+'" data-pwbuy="'+esc(r.k)+'" aria-label="'
    +esc((free?'Start ':'Move to ')+nm+', $'+r.price+' a '+r.per)+'">'
    +'<span class="pw-lg">'+esc((free?'Start ':'Move to ')+nm)+'</span><span class="pw-sh">'+esc(free?'Start':'Move up')+'</span></button>';}
- var nid='pwn'+r.k;
+ var nid='pwn'+r.k, dnid='pwd'+r.k;
  return '<section class="pw-c'+(door?' door':'')+(r.now?' now':'')+'" data-pt="'+esc(r.k)+'" aria-label="'+esc(r.nm)+'">'
-  +'<div class="pw-top"><div class="pw-cn">'+esc(r.nm)+'</div>'
+  +'<div class="pw-top">'
+  /* PRACTITIONER'S CARD CARRIES ONE MORE THING. Its number and sight read
+     exactly like tier three's own, since that is the real arithmetic
+     (DECISIONS.md, "it carries the same twelve hundred as tier three... it
+     sees what tier three sees"), so what actually sets the card apart has
+     to be said somewhere, and the ladder's own sentence (PLAN_BY.four.d) is
+     the one place it has ever lived. A tappable name with the same hover,
+     focus and tap behaviour every other button on this sheet already has
+     is that place now, in the same spot a plain name sat when there were
+     only three cards. */
+  +(r.lead?'<div class="pw-cnr"><button type="button" class="pw-cn pw-cnd" data-pwtip="'+dnid+'" aria-describedby="'+dnid+'"><span class="pw-u">'+esc(r.nm)+'</span></button>'
+    +'<span class="pw-vh" id="'+dnid+'">'+esc(r.d)+'</span>'
+    +'<button type="button" class="pw-grp" data-pwtip="'+dnid+'g" aria-describedby="'+dnid+'g" aria-label="'+esc(PW_W.groups)+'">'+PW_GROUPS+'</button>'
+    +'<span class="pw-vh" id="'+dnid+'g">'+esc(PW_W.groups)+'</span></div>'
+    :'<div class="pw-cn">'+esc(r.nm)+'</div>')
   +'<button type="button" class="pw-hl" data-pwtip="'+nid+'" aria-describedby="'+nid+'"><span class="pw-big pw-num">'+pwN(r.grant)+'</span>'
   +'<span class="pw-pl">new <span class="pw-u">patterns</span> a '+esc(r.per)+'</span></button>'
   +'<span class="pw-vh" id="'+nid+'">'+esc(PW_W.pat)+'</span></div>'
@@ -213,16 +246,6 @@ function pwCard(pl,r,pay){
   +'<div class="pw-rgs">'+sightRows().map(function(g){
     return pwRing(pl,g,r.sees.some(function(s){return s.k===g.k;}));}).join('')+'</div>'
   +'<div class="pw-act">'+act+'</div></div></section>';}
-
-function pwPrac(r,pay){
- var act=r.now?'<span class="pw-here">'+PW_HERE+'<span>'+esc(PW_W.here)+'</span></span>'
-  :((pay&&r.buy)?'<button type="button" class="pw-go quiet" data-pwbuy="'+esc(r.k)+'">'+esc('Move to '+planNmIn(PLAN_BY[r.k]))+'</button>'
-  :'<span class="pw-shut">'+PW_SOON+'<span>'+esc(PW_W.soon)+'</span></span>');
- return '<div class="pw-prac" data-pt="'+esc(r.k)+'"><span class="pw-pdk">'+PW_PRAC+'</span>'
-  +'<button type="button" class="pw-pn" data-pwtip="pwptp" aria-describedby="pwptp"><span class="pw-u">'+esc(r.nm)+'</span></button>'
-  +'<span class="pw-vh" id="pwptp">'+esc(PLAN_BY[r.k].d)+'</span>'
-  +'<span class="pw-pp"><span class="pw-num">$'+esc(r.price)+'</span> a '+esc(r.per)+'</span>'
-  +'<span class="pw-pw">'+esc(PW_W.prac)+'</span>'+act+'</div>';}
 
 function pwFoot(pl){
  var live=planState(pl)==='live', signed=pwSigned();
@@ -251,21 +274,20 @@ function pwHtml(){
  PW_ID=0;
  var pl=pwPlan(), rows=planLadder(pl), pay=pwPayOpen(), now=planOf(pl);
  if(pwGift())return pwGiftHtml(pl);
- var free=rows.filter(function(r){return r.k==='free';})[0];
- var cards=rows.filter(function(r){return r.k!=='free'&&!r.lead;});
- var prac=rows.filter(function(r){return r.lead;})[0];
+ /* FIVE COLUMNS, 21 November, his own words: "we should do 5 columns, right?
+    So tier 0 and then tier 1, 2, 3, 4." Free used to be a quiet badge in the
+    header, never a card (see the removed comment this replaces); it is now
+    tier 0, the same card shape as every paid tier, in ladder order, so the
+    whole price ladder reads as one row instead of a badge plus three cards
+    plus a fourth that was already added 19 November. */
+ var cards=rows;
  return '<div class="pw-sheet" role="dialog" aria-modal="true" aria-labelledby="pwt1" tabindex="-1">'
   +'<header class="pw-hd"><button type="button" class="pw-x" id="pwx" aria-label="'+esc(PW_W.close)+'">'+PW_X+'</button>'
   +'<h2 class="pw-t1" id="pwt1">'+esc(PW_W.title)+'</h2>'
-  /* FREE IS A QUIET MARKER, NEVER A CARD. On a paid tier the marker moves onto
-     that tier's own card. */
-  +(now.k==='free'&&free?'<div class="pw-here pw-quiet">'+PW_HERE+'<span><b>'+esc(PW_W.here)+'</b> '
-    +esc(free.nm+', '+free.grant+' patterns a '+free.per)+'</span></div>':'')
   /* a payer inside the gift: the gift's line beside the paying sheet (pwGift) */
   +(pwPaidInGift()?'<div class="pw-here pw-quiet pw-gline"><span>'+esc(PW_W.giftPaid)+'</span></div>':'')
   +'</header>'
   +'<div class="pw-cards">'+cards.map(function(r){return pwCard(pl,r,pay);}).join('')+'</div>'
-  +(prac?pwPrac(prac,pay):'')
   +pwFoot(pl)+'</div>';}
 
 /* ---- the one tooltip the sheet has: hover, keyboard focus, or a tap ---- */
@@ -320,7 +342,7 @@ function paywallOpen(k,back){
   document.body.appendChild(PW.el); pwWireOnce();}
  PW.el.hidden=false; PW.open=true;
  document.body.classList.add('pw-on');
- pwDraw();
+ pwDraw(); pwDockRoom();
  /* FOCUS GOES TO THE DIALOG, not to its first button. A screen reader reads
     the title from there, the next Tab reaches Close, and a pointer that opened
     the sheet does not find a focus ring drawn on a control it never touched */
@@ -342,6 +364,31 @@ function paywallClose(){
  var b=PW.back; PW.back=null;
  if(b&&b.isConnected&&typeof b.focus==='function'){try{b.focus({preventScroll:true});}catch(e){}}}
 function paywallIsOpen(){ return PW.open; }
+/* ROOM FOR THE MESSAGE DOCK, 21 November. Start pressed while signed out
+   answers "Sign in first" through status(), and status() writes into the
+   one dock, fixed at the bottom centre of the screen at z 94 (component.js,
+   head.html). This sheet's foot, Billing, Sign in, Terms and Privacy, also
+   sits at the bottom centre, under it at z 92, so for the dock's three
+   seconds and its fade the refusal was painted over the very link it names.
+   Measured on a real press, three runs at 1600 and three at 390: every
+   sample with the dock up overlapped Sign in, and at 390 all four links.
+   Not a race and not a z-index slip: the dock's comment lists every fixed
+   thing at the bottom it has to clear, and the paywall was not on it.
+   Raising the dock would only move it onto the Start buttons, so the sheet
+   makes the room instead: while the dock shows, the sheet's bottom padding
+   is the distance from its own bottom edge to the dock's top, plus one 12px
+   step, so the foot rises clear of the message for exactly as long as the
+   message is up. Read off the two real boxes, not a typed height, because
+   the dock wraps to three lines at 390 and two at 1600. A ResizeObserver
+   on the dock calls this when it appears, rewraps and goes (display:none
+   reads as zero), and paywallOpen calls it once for a message already up. */
+function pwDockRoom(){
+ if(!PW.el)return;
+ var d=document.getElementById('msgdock'), s=PW.open&&PW.el.querySelector('.pw-sheet'),
+  r=d&&d.getBoundingClientRect(), room=0;
+ if(s&&r&&r.height>0)room=Math.max(0,Math.ceil(s.getBoundingClientRect().bottom-r.top+12));
+ PW.el.classList.toggle('pw-dock',room>0);
+ PW.el.style.setProperty('--pw-dock',room+'px');}
 
 function pwWireOnce(){
  PW.el.addEventListener('click',function(e){
@@ -382,7 +429,10 @@ function pwWireOnce(){
    var i=f.indexOf(document.activeElement);
    if(e.shiftKey&&(i<=0)){e.preventDefault(); f[f.length-1].focus();}
    else if(!e.shiftKey&&(i<0||i===f.length-1)){e.preventDefault(); f[0].focus();}}},true);
- addEventListener('resize',function(){if(PW.open)pwTipHide();});}
+ addEventListener('resize',function(){if(PW.open){pwTipHide(); pwDockRoom();}});
+ var dk=document.getElementById('msgdock');
+ if(dk&&typeof ResizeObserver==='function')
+  new ResizeObserver(function(){if(PW.open)pwDockRoom();}).observe(dk);}
 
 /* ---- the sheet's own rules, injected once, the way plans.js and lock.js
    carry theirs, because the shell stylesheet is held by another seat ---- */
@@ -396,6 +446,9 @@ function pwCss(){
      show the screen behind through the cards. */
   '.pw-scrim{position:fixed;inset:0;z-index:92;background:rgba(5,6,9,.78)}',
   '.pw-scrim[hidden]{display:none}',
+  /* the dock's room, pwDockRoom: three classes so it outranks the sheet's
+     own padding at every width, the phone rule included */
+  '.pw-scrim.pw-dock .pw-sheet{padding-bottom:var(--pw-dock,0px)}',
   '.pw-sheet{position:absolute;inset:12px;display:flex;flex-direction:column;padding:16px 28px 4px;',
   ' border-radius:var(--r,16px);color:var(--ink);background:linear-gradient(var(--panel),var(--panel)),var(--bg);overflow:hidden;outline:none}',
   '.pw-ri{fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;display:block}',
@@ -413,14 +466,39 @@ function pwCss(){
   '.pw-here svg{width:20px;height:20px;flex:none}',
   '.pw-here.pw-quiet{background:var(--panel-2);color:var(--mid);font-weight:400}',
   '.pw-here.pw-quiet b{color:var(--ink);font-weight:600}',
-  /* three cards, the height of the sheet */
-  '.pw-cards{flex:1;min-height:0;display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:14px}',
+  /* FIVE CARDS, 21 November, his own words: "we should do 5 columns, right?
+     So tier 0 and then tier 1, 2, 3, 4." Free used to sit out of the grid as
+     a quiet header badge; it is card one now, same shape as the rest, so the
+     whole ladder reads as one row. Was four (19 November: was three,
+     Practitioner its own slim strip below them, .pw-prac, since removed);
+     see the header comment. */
+  '.pw-cards{flex:1;min-height:0;display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:14px}',
   '.pw-c{background:var(--panel-2);border-radius:var(--r,16px);padding:28px 32px;display:flex;flex-direction:column;',
-  ' justify-content:space-between;min-height:0;min-width:0}',
+  ' justify-content:space-between;min-height:0;min-width:0;container-type:inline-size}',
   '.pw-cn{font-size:20px;font-weight:600;color:var(--mid)}',
+  /* the groups icon sits beside Practitioner's own name, not under it; the
+     pair reads as one line at the top of the card like every other card's
+     bare name does */
+  '.pw-cnr{display:flex;align-items:center;gap:6px}',
+  '.pw-grp{background:none;border:0;padding:0;display:flex;align-items:center;justify-content:center;',
+  ' min-height:44px;min-width:44px;cursor:help;color:var(--mid)}',
+  '.pw-grp:hover,.pw-grp.tipped{color:var(--ink)}',
+  '.pw-grp svg{width:22px;height:22px}',
+  /* A NAME IS STILL A TARGET. Practitioner's own name doubles as the button
+     that opens its card's one extra tooltip (above), and a text-sized
+     button alone measured 79 by 24, under the 44 by 44 atuned-ux floor
+     every other control on this sheet already holds to. inline-flex and a
+     floor on both axes, not padding, so the visible word does not grow. */
+  '.pw-cnd{background:none;border:0;padding:0;text-align:left;cursor:help;display:inline-flex;align-items:center;min-height:44px;min-width:44px}',
   /* level one, the patterns: a button, because the number carries its meaning */
   '.pw-hl{display:block;text-align:left;background:none;border:0;padding:0;margin:6px 0 0;cursor:help;border-radius:var(--r-xs,8px)}',
-  '.pw-hl .pw-big{display:block;font-size:min(136px,13.6vh);line-height:.98;font-weight:600;letter-spacing:-.035em;color:var(--ink)}',
+  /* THE WIDTH FLOOR, 19 November. Four cards narrowed each one against the
+     three this was tuned for, and the tallest real figure, "1,200" (tier
+     three and Practitioner both), ran off the card's own right edge: the
+     cap was only ever a height, 13.6vh, with nothing checking it still fit
+     the card it sat in. cqw reads the card's own width (container-type
+     above), not the viewport's, so the same rule holds at any card count. */
+  '.pw-hl .pw-big{display:block;font-size:min(136px,13.6vh,21cqw);line-height:.98;font-weight:600;letter-spacing:-.035em;color:var(--ink)}',
   '.pw-hl .pw-pl{display:block;font-size:24px;color:var(--mid);margin-top:6px}',
   '.pw-u{text-decoration:underline dotted;text-decoration-color:var(--mid);text-underline-offset:5px;text-decoration-thickness:2px}',
   '.pw-hl:hover .pw-pl,.pw-hl.tipped .pw-pl{color:var(--ink)}',
@@ -470,18 +548,6 @@ function pwCss(){
   ' font-size:18px;font-weight:500;text-align:center}',
   '.pw-shut svg{width:20px;height:20px;flex:none}',
   '.pw-act .pw-here{font-size:18px;min-height:60px}',
-  /* Practitioner, one slim row under the three */
-  '.pw-prac{display:flex;align-items:center;gap:16px;margin-top:12px;min-height:60px;padding:0 20px 0 14px;',
-  ' border-radius:var(--r-s,11px);background:var(--sunk);color:var(--mid);font-size:16px}',
-  '.pw-pdk{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;',
-  ' box-shadow:inset 0 0 0 2px var(--dim);color:var(--dim);flex:none}',
-  '.pw-pdk svg{width:24px;height:24px}',
-  '.pw-pn{background:none;border:0;padding:0 2px;min-height:44px;font-size:17px!important;font-weight:600;color:var(--ink)!important;cursor:help}',
-  '.pw-pp{color:var(--ink)}',
-  '.pw-pp .pw-num{font-weight:600}',
-  '.pw-pw{flex:1}',
-  '.pw-prac .pw-shut,.pw-prac .pw-here{min-height:44px;font-size:16px;padding:0}',
-  '.pw-prac .pw-go{width:auto;min-height:44px;font-size:16px!important}',
   /* the foot, one line */
   '.pw-ft{display:flex;align-items:center;justify-content:center;gap:4px 14px;flex-wrap:wrap;font-size:14px;color:var(--mid);margin-top:2px}',
   '.pw-ft p{margin:0}',
@@ -547,9 +613,33 @@ function pwCss(){
   ' .pw-t1{font-size:21px;flex-basis:100%;padding-top:10px}',
   ' .pw-hd .pw-here.pw-quiet{margin-left:-46px;min-height:32px;padding:0 12px;font-size:14px;margin-top:6px}',
   ' .pw-here svg{width:16px;height:16px}',
-  ' .pw-cards{grid-template-columns:1fr;grid-auto-rows:1fr;gap:8px;margin-top:8px}',
+  /* FOUR REAL CARDS NO LONGER FIT FOUR EQUAL SQUEEZED ROWS, 19 November.
+     Three cards plus Practitioner's own slim strip fit one screen at this
+     width; four full cards (each still carrying six real 44px ring targets
+     and a 44px action, atuned-ux's own floor, neither allowed to shrink)
+     do not, by real measured content height, not a guess: forcing them into
+     equal rows push every card's own action button clean past its card's
+     bottom edge. grid-auto-rows:auto gives each card the height its real
+     content needs; overflow-y:auto lets this one region scroll while the
+     header and foot stay put, the same flex:1/min-height:0 pattern this
+     rule already used to keep the sheet itself (not this region) from
+     scrolling. align-content:start is not decoration: grid's own default
+     (normal, which behaves as stretch) redistributes whatever space
+     .pw-cards has left, from its own flex:1 height, back across the auto
+     rows evenly, recreating the exact squeeze auto was meant to end; start
+     packs the four cards at their own real height from the top and leaves
+     the rest as the scrollable overflow it actually is. */
+  ' .pw-cards{grid-template-columns:1fr;grid-auto-rows:auto;align-content:start;gap:8px;margin-top:8px;overflow-y:auto}',
+  /* min-height:auto UNDOES THE BASE RULE'S min-height:0, 19 November. That
+     0 is right on desktop, where .pw-cards sizes its row by flex:1 and a
+     card's own content never has to contribute to a height nothing asks
+     it for. Here .pw-cards' rows are auto, sized FROM each card's content,
+     and 0 lies to that measurement: the card reported no minimum, so the
+     row came back too short, and the card's own three real areas (top,
+     the six rings, the action) outgrew the box the row then gave it,
+     overflowing it by exactly the gap, measured, not guessed. */
   ' .pw-c{display:grid;grid-template-columns:1fr auto;grid-template-areas:"top pr" "rg rg" "act act";align-content:space-between;',
-  '  padding:10px 12px 10px 14px;border-radius:var(--r-s,11px);row-gap:4px}',
+  '  padding:10px 12px 10px 14px;border-radius:var(--r-s,11px);row-gap:4px;min-height:auto}',
   ' .pw-top{grid-area:top}',
   ' .pw-low{display:contents}',
   ' .pw-cn{font-size:14px}',
@@ -569,14 +659,6 @@ function pwCss(){
   ' .pw-go .pw-lg{display:none}',
   ' .pw-go .pw-sh{display:inline}',
   ' .pw-shut svg{width:16px;height:16px}',
-  ' .pw-prac{margin-top:8px;min-height:48px;gap:8px;padding:0 10px 0 6px;font-size:13px;flex-wrap:nowrap}',
-  ' .pw-pdk{width:34px;height:34px}',
-  ' .pw-pdk svg{width:20px;height:20px}',
-  ' .pw-pn{font-size:14px!important;padding:0}',
-  ' .pw-pw{display:none}',
-  ' .pw-pp{flex:1}',
-  ' .pw-prac .pw-shut,.pw-prac .pw-here{font-size:13px;gap:5px}',
-  ' .pw-prac .pw-shut svg{width:15px;height:15px}',
   ' .pw-ft{font-size:13px;gap:0 6px;margin-top:0}',
   ' .pw-links a,.pw-links button{padding:0 7px;font-size:13px!important}',
   ' .pw-rf{font-size:12.5px}',

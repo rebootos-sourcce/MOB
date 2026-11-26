@@ -12,9 +12,14 @@
    still asserted the old shape would be asserting a product this repository
    no longer ships. This file is the new shape's own gate.
 
-   WHAT IT WALKS, both through the real door (ui/login.js), never through
-   ?dev=1, because "login through a real release" is the thing asked for and
-   a flag that skips the door would be skipping the thing under test:
+   WHAT IT WALKS, never through ?dev=1, because "a real release, from a
+   real browser state" is the thing asked for and a flag that skips the
+   login card entirely would be skipping real state the test depends on.
+   UPDATED 18 November: the real door (ui/login.js) no longer opens this
+   sheet at all, so its own mechanics below are opened directly, obOpen,
+   on the same real page; a separate block holds what the real door does
+   now, straight to the dashboard, and the login card itself is still
+   closed the same way on every walk below:
 
      1  a fresh Guest profile through every onboarding step to a real
         release, reading the real engine's own output at the mirror and
@@ -80,8 +85,6 @@
    Run from the repository root. Exits non zero on any failure.
    ============================================================ */
 const {chromium}=require('playwright');
-/* the intro between the door and the first card, walked: tests/intro.js */
-const {throughIntro}=require('./intro.js');
 const path=require('path');
 const FILE='file://'+path.resolve(process.env.ATUNED_FILE||'source.html');
 let PASS=0,FAIL=0;
@@ -102,22 +105,31 @@ const REAL_STORY='I felt tight in my chest when my boss yelled at me and I could
 const browser=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
 require('./net.js').guardBrowser(browser);
 
-console.log('=== onboarding reaches a real release, through the real door, on a fresh profile ===');
+console.log('=== onboarding reaches a real release, opened directly, on a fresh profile ===');
+/* THE REAL DOOR NO LONGER OPENS THIS SHEET, 18 November: his words, "once you
+   get past the initial attuned intro, it goes straight to your dashboard...
+   we're just getting rid of the second tutorial stuff." ui/login.js's
+   loginEnter no longer calls srcIntro or obOpen; see the new block below,
+   "the real door goes straight to the dashboard", for that. The sheet's own
+   mechanics below (the walk, the mirror, the release hand off, F4/F5, What
+   changed, reload persistence, Your patterns) are still real product, still
+   reachable from Settings/Account (#acob, obOpen(true)) or from a resumed
+   walk, so this opens it directly, obOpen(false), a non replay first run,
+   rather than through a door that no longer leads here. */
 {
  const page=await browser.newPage({viewport:{width:1600,height:1000}});
  const errs=[]; page.on('pageerror',e=>errs.push(e.message));
  await page.goto(FILE,{waitUntil:'load'}); await booted(page);
- /* THE REAL DOOR. No ?dev=1: this is the login card ui/login.js draws on a
-    first visit. Guest is gone, 12 November, the owner's own instruction,
-    and this gate is not the one testing login itself (tests/boot.js and
-    tests/functional.js hold that), so it closes the door the same way the
-    app's own dev harness does rather than drive a real sign in here. */
+ /* No ?dev=1: this is the login card ui/login.js draws on a first visit.
+    Guest is gone, 12 November, the owner's own instruction, and this gate is
+    not the one testing login itself (tests/boot.js and tests/functional.js
+    hold that), so it closes the door the same way the app's own dev harness
+    does rather than drive a real sign in here, then opens the sheet itself. */
  await page.waitForSelector('#loginb-go',{timeout:8000});
- await page.evaluate(()=>{loginClose(); if(typeof loginEnter==='function')loginEnter();});
- await throughIntro(page);
+ await page.evaluate(()=>{loginClose(); if(typeof obOpen==='function')obOpen(false);});
  await page.waitForTimeout(300);
  const opened=await page.evaluate(()=>!!(typeof OB!=='undefined'&&OB.open));
- ok(opened,'a fresh profile meets the onboarding sheet behind the real door');
+ ok(opened,'a fresh profile\'s onboarding sheet opens, a real non replay first run');
 
  const step=async()=>page.evaluate(()=>({h:(document.querySelector('.ob-h')||{}).textContent,
   step:OB.step,dots:document.querySelectorAll('.ob-dot').length}));
@@ -201,9 +213,9 @@ console.log('=== onboarding reaches a real release, through the real door, on a 
  ok(mirror.rows.every(r=>r.guess===!!mirror.inf[r.i]&&r.said===!mirror.inf[r.i]),
   'every address is tagged a guess exactly when parseStory marks it inferred: '
    +mirror.rows.map(r=>r.i+(r.guess?'g':'')+(r.said?'s':'')+'/'+mirror.inf[r.i]).join(' '));
- ok(mirror.rows.filter(r=>r.guess).every(r=>/The engine.s guess, from your (Heart|Solar|Sacral|Root|Throat|3rd Eye|Crown) seat/.test(r.text)),
+ ok(mirror.rows.filter(r=>r.guess).every(r=>/The engine.s guess, from your (Heart|Solar|Sacral|Root|Throat|3rd Eye|Crown) point/.test(r.text)),
   'and every guess says it is the engine\'s guess and names the seat it came from');
- ok(/A seat is one of seven places/.test(mirror.text)&&/An address is one exact place/.test(mirror.text),
+ ok(/An assemblage point, or point, is one of seven places/.test(mirror.text)&&/An address is one exact place/.test(mirror.text),
   'seat and address carry their plain meaning on the card, round PO');
  /* ONE ANSWER PER ADDRESS. */
  ok(mirror.global===0,'there is no single global "That is me" confirming every address at once');
@@ -416,13 +428,17 @@ console.log('=== onboarding reaches a real release, through the real door, on a 
   .map(e=>({m:e.metric,v:e.value,p:e.pattern_id,s:e.story_t})));
  ok(vback.length>0&&JSON.stringify(vback)===JSON.stringify(said.ev.map(e=>({m:e.m,v:e.v,p:e.p,s:e.s}))),
   'every answer comes back after the reload, linked to the same addresses and entry: '+vback.length);
- await page.waitForSelector('#loginb-go',{timeout:8000}).catch(()=>{});
- await page.evaluate(()=>{if(typeof LOGIN!=='undefined'&&LOGIN.open){loginClose(); if(typeof loginEnter==='function')loginEnter();}});
- await throughIntro(page,600);
- await page.waitForTimeout(300);
- /* and the next visit opens that end card, never the welcome again (F13) */
- const replay=await page.evaluate(()=>({open:!!(typeof OB!=='undefined'&&OB.open),step:OB.step,end:OB_END}));
- ok(replay.open&&replay.step===replay.end,'and the welcome sheet does not replay on the next visit: the end of the first run opens, '
+ /* F13's own resume still stands: a walk that reached its end card and was
+    never explicitly closed opens there again, not from the welcome, on the
+    next obOpen(false). This used to be read through the real door's own
+    next-visit reopen; that vehicle is gone, 18 November (loginEnter no
+    longer calls obOpen at all, so it never reopens anything), and the real
+    door going straight to the dashboard on every visit, first or next, is
+    the new block below. What survives here is obBegin's own resume logic,
+    still real and still reachable, read by calling it directly. */
+ const replay=await page.evaluate(()=>{obOpen(false);
+  return {open:!!(typeof OB!=='undefined'&&OB.open),step:OB.step,end:OB_END};});
+ ok(replay.open&&replay.step===replay.end,'and a direct open resumes at the end of the first run, never the welcome, '
   +JSON.stringify(replay));
  /* YOUR PATTERNS, after the reload: the answer is on each released
     pattern's row as what the person said, and the graph counts it as
@@ -446,6 +462,56 @@ console.log('=== onboarding reaches a real release, through the real door, on a 
  ok(lp.rows.every(r=>r.evFor===0&&r.evAgainst===0),'and never counts it as evidence for or against');
  ok(lp.evEdges===0,'and the graph holds no evidence edge for it, got '+lp.evEdges);
  ok(/"Something moved" after 1 release/.test(lp.rail),'Summary\'s zone prints it on the row, in the question\'s own words');
+ await page.close();
+}
+
+console.log('\n=== the real door goes straight to the dashboard, 18 November ===');
+/* HIS WORDS: "once you get past the initial attuned intro, it goes straight
+   to your dashboard. We're not using any of this, these two systems
+   anymore... We're just getting rid of the second tutorial stuff." The two
+   systems are Source's own example read (ui/srcintro.js) and this sheet
+   (ui/onboard.js); the "initial attuned intro" is the boot/loading
+   animation (bootUni, ui/panels.js), untouched, named only to say it still
+   runs before any of this. ui/login.js's loginEnter no longer calls srcIntro
+   or obOpen on a fresh profile: it marks the profile onboarded, the same
+   guarded way obClose already does leaving the sheet on its own first
+   frame, saves it, lands once on Summary (tabLandFirst), and renders.
+   Checked against the build before this change, where a fresh profile
+   behind this same door meets #srcintro, then #ob, instead. */
+{
+ const page=await browser.newPage({viewport:{width:1600,height:1000}});
+ const errs=[]; page.on('pageerror',e=>errs.push(e.message));
+ await page.goto(FILE,{waitUntil:'load'}); await booted(page);
+ await page.waitForSelector('#loginb-go',{timeout:8000});
+ await page.evaluate(()=>{loginClose(); if(typeof loginEnter==='function')loginEnter();});
+ await page.waitForTimeout(500);
+ const d=await page.evaluate(()=>({
+  srcintro:!!document.getElementById('srcintro'),
+  ob:!!(typeof OB!=='undefined'&&OB.open),
+  obHost:!!document.getElementById('ob')&&document.getElementById('ob').style.display!=='none',
+  obDom:['[data-obpick]','[data-obfeel]','[data-obplace]','#obtext','.ob-card','.obx-slot']
+   .filter(sel=>document.querySelector(sel)).length,
+  onboarded:!!(CURP&&CURP.ui&&CURP.ui.onboarded),
+  landed:!!(typeof STORE!=='undefined'&&STORE.get&&STORE.get(TAB_LANDED_KEY)),
+  tab:(typeof S!=='undefined')?S.tab:null,
+  tabIsSummary:(typeof S!=='undefined'&&typeof TAB!=='undefined')?S.tab===TAB.SUMMARY:false}));
+ ok(!d.srcintro,'no Source example read opens behind the door any more');
+ ok(!d.ob&&!d.obHost,'no onboarding sheet opens either, '+JSON.stringify(d));
+ ok(d.obDom===0,'and none of its DOM (ask/settle/feel/body/story/mirror/bridge) is anywhere on the page, found '+d.obDom);
+ ok(d.onboarded,'the profile is marked onboarded at once, the same flag a replay sets on its own leave');
+ ok(d.landed&&d.tabIsSummary,'the one-time landing still runs, straight onto the dashboard (Summary), tab '+d.tab);
+ ok(errs.length===0,'no script error: '+errs.slice(0,3).join(' | '));
+
+ /* a second launch of the same device is no different: nothing left to
+    flip, nothing opens, the dashboard is wherever the person left it */
+ await page.reload({waitUntil:'load'}); await booted(page);
+ const again=await page.evaluate(()=>!!(document.getElementById('login')
+  &&getComputedStyle(document.getElementById('login')).display!=='none'));
+ if(again)await page.evaluate(()=>{loginClose(); if(typeof loginEnter==='function')loginEnter();});
+ await page.waitForTimeout(300);
+ const d2=await page.evaluate(()=>({srcintro:!!document.getElementById('srcintro'),
+  ob:!!(typeof OB!=='undefined'&&OB.open)}));
+ ok(!d2.srcintro&&!d2.ob,'and a later visit opens neither sheet either, '+JSON.stringify(d2));
  await page.close();
 }
 
@@ -676,12 +742,12 @@ console.log('\n=== F4: the mirror says which addresses are guesses, on the revie
  const diane=await read('I snapped at my co-founder in front of the team and I cannot stop replaying it.');
  ok(diane.stated===0&&diane.inferred>0,'Diane\'s sentence is all inferred by parseStory itself, '+diane.inferred+' inferred, '+diane.stated+' stated');
  ok(diane.saidTags===0&&diane.guessTags===diane.rows,'and every address on her mirror is tagged a guess, none as her words');
- ok(/^At your (Solar|Sacral|3rd Eye|Heart|Root|Throat|Crown) seat\./.test(diane.lead),
+ ok(/^At your (Solar|Sacral|3rd Eye|Heart|Root|Throat|Crown) point\./.test(diane.lead),
   'with nothing stated, each seat leads, not an address name, got "'+diane.lead.slice(0,40)+'"');
  ok(/snapped/.test(diane.text),'and the seat is tied to her own word that put weight there');
  ok(!/around the word/i.test(diane.text),'never "around the word" for a word she did not say');
  ok(diane.rows===diane.seats,'one address per seat shows, the rest behind a button that says how many: rows '+diane.rows+' seats '+diane.seats);
- ok(/more guesses at this seat/.test(diane.text),'and that button says they are guesses');
+ ok(/more guesses at this point/.test(diane.text),'and that button says they are guesses');
  ok(diane.entries===0,'nothing is written while she reads it');
 
  const marcus=await read('My partner says I am impossible to work with. She is probably right and I am still angry about it.');
@@ -693,7 +759,7 @@ console.log('\n=== F4: the mirror says which addresses are guesses, on the revie
 
  const angela=await read('My mother died last spring and I keep feeling her in my chest when I try to sleep.');
  ok(angela.stated===0&&angela.guessTags===angela.rows,'Angela\'s bereavement is all guesses and says so');
- ok(/The engine.s guess, from your Heart seat/.test(angela.text),'in the review\'s own words: the engine\'s guess, from your Heart seat');
+ ok(/The engine.s guess, from your Heart point/.test(angela.text),'in the review\'s own words: the engine\'s guess, from your Heart seat');
  const ang2=await page.evaluate(()=>{
   OB.more[OB.read[0].id]=true; obRender();
   const r=[...document.querySelectorAll('[data-obrow]')].find(x=>/Martyrdom/.test(x.innerText));
@@ -874,8 +940,12 @@ console.log('\n=== Is this a crisis, on the welcome and after it (16 October) ==
   const acts=await page.evaluate(()=>[...document.querySelectorAll('#login .ob-acts .btn')].map(b=>b.textContent));
   ok(JSON.stringify(acts)==='["Log in","Create account"]','its two ways in are unchanged, Guest removed'+at+', '+JSON.stringify(acts));
 
-  /* the first run's stage, every step, and the Story page it can reach */
-  await page.evaluate(()=>{loginClose(); if(typeof loginEnter==='function')loginEnter();}); await throughIntro(page); await page.waitForTimeout(500);
+  /* the first run's stage, every step, and the Story page it can reach.
+     THE REAL DOOR NO LONGER OPENS THE SHEET, 18 November: loginEnter goes
+     straight to the dashboard now. This check is not about the door, only
+     about the stage once a sheet is open, so it opens one directly the same
+     way the stage-mechanics block below already does for a replay. */
+  await page.evaluate(()=>{loginClose(); if(typeof obOpen==='function')obOpen(false);}); await page.waitForTimeout(500);
   ok(await none('#ob [data-crisis]')&&await none('#ob .obx-crx'),'no crisis door anywhere on the first run\'s stage'+at);
   const arrive=await page.evaluate(()=>({h:(document.querySelector('#ob .ob-card .ob-h')||{}).textContent,
    acts:[...document.querySelectorAll('#ob .ob-card .ob-acts .btn')].map(b=>b.textContent)}));

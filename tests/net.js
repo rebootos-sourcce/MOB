@@ -17,7 +17,14 @@
    tests/functional.js) registers later, and Playwright takes the
    latest registered route first, so its own answer wins.
 
-   Only the voice route is answered. Nothing else is touched here.
+   Only the voice route is answered. Nothing else is touched here, except one
+   flag: a page opened from file:// in a gate is standing in for the hosted
+   copy, because this route answers for the server, so every page it guards
+   also carries window.SRC_VOICE_STANDIN = true. Without it the page would
+   refuse the voice up front, as a real downloaded copy now does (the voice
+   server turns an origin of null away on purpose, CLAUDE.md 29 October;
+   ui/storyui.js, srcVoiceWhyNot). A gate that needs the real file case sets
+   SRC_VOICE_STANDIN = false after the page has loaded (tests/stksay.js).
    ============================================================ */
 const WAV = (() => {
   const rate = 8000, n = 240, b = Buffer.alloc(44 + n, 128);
@@ -32,10 +39,11 @@ function answer(route) {
   if (route.request().method() === 'OPTIONS') return route.fulfill({ status: 204, headers: CORS });
   return route.fulfill({ status: 200, headers: Object.assign({ 'content-type': 'audio/wav' }, CORS), body: WAV });
 }
+const STANDIN = () => { window.SRC_VOICE_STANDIN = true; };
 function guardBrowser(browser) {
   const newPage = browser.newPage.bind(browser), newContext = browser.newContext.bind(browser);
-  browser.newPage = async function () { const p = await newPage.apply(null, arguments); await p.route(ROUTE, answer); return p; };
-  browser.newContext = async function () { const c = await newContext.apply(null, arguments); await c.route(ROUTE, answer); return c; };
+  browser.newPage = async function () { const p = await newPage.apply(null, arguments); await p.route(ROUTE, answer); await p.addInitScript(STANDIN); return p; };
+  browser.newContext = async function () { const c = await newContext.apply(null, arguments); await c.route(ROUTE, answer); await c.addInitScript(STANDIN); return c; };
   return browser;
 }
 module.exports = { guardBrowser, WAV };

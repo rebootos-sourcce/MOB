@@ -145,7 +145,7 @@ SUITES.doc=function(E,ok,say){
  const v=E.validateProfile(rec);
  ok(!v.ok&&has(v.errs,'language_confidence')&&has(v.errs,'A reading is not a score'),'and refuses it with the reason: '+J((v.errs||[]).slice(0,1)));
  const cs=E.DLY_CANON.filter(c=>c.t===null).map(c=>c.w);
- say&&say('  canon words with no wisdom school entry yet, content for the copy seat: '+cs.join(', '));};
+ say&&say('  canon words with no knowledge base entry yet, content for the copy seat: '+cs.join(', '));};
 
 SUITES.shape=function(E,ok){
  /* D1: the key, the blank, an older record, and the round trip */
@@ -203,14 +203,14 @@ SUITES.shape=function(E,ok){
  bad(s=>{s.days[0].st[0].rung='0.9';},'.rung is not one of','a rung that is a number');
  bad(s=>{s.days[0].st[0].ev=[{type:'rumour',id:'x'}];},'names no kind of evidence this build holds','a reference to no kind of evidence');
  bad(s=>{s.days[0].st[0].ev=[{type:'law',id:5}];},'names no kind of evidence this build holds','a reference whose id is not text');
- bad(s=>{s.days[0].st[0].ev=[{type:'kb',id:'Nonsense'}];},'names no entry in the wisdom school','a wisdom school reference to nothing');
+ bad(s=>{s.days[0].st[0].ev=[{type:'kb',id:'Nonsense'}];},'names no entry in the knowledge base','a knowledge base reference to nothing');
  bad(s=>{s.days[0].st[0].ev=[{type:'law',id:'Spite'}];},'names no law','a law that is not one of the 21');
  /* the chain's four rungs joined the graph's types on 22 October
     (engine/trace.js), and a day still may not cite one: its graph is read
     with no reading and holds no rung. Refused as before, now by name. */
  (E.TRACE_CHAIN||[]).forEach(t=>bad(s=>{s.days[0].st[0].ev=[{type:t,id:'Judge'}];},'names a rung of the chain','a reference to a '+t));
  ok(Array.isArray(E.TRACE_CHAIN)&&E.TRACE_CHAIN.length>0,'the chain is exported, so the check above walked something');
- bad(s=>{s.days[0].st[0].links=['Nonsense'];},'is not a term in the wisdom school','a link to no glossary term');
+ bad(s=>{s.days[0].st[0].links=['Nonsense'];},'is not a term in the knowledge base','a link to no glossary term');
  bad(s=>{s.days[0].st[0].read=[{addr:5000,band:'Heart'}];},'is not one of the addresses','an address that does not exist');
  bad(s=>{s.days[0].st[0].text=s.days[0].st[0].text+' It was 77.';},'prints 77, which is not one of its arguments','a digit that is not an argument');
  bad(s=>{s.days[0].st[0].a=['Pat'];},'carries the person\'s name','the person\'s own name in an argument');
@@ -236,7 +236,7 @@ SUITES.shape=function(E,ok){
  bad(s=>{s.events[iset].text='';},'.text is empty','an empty aim');
  bad(s=>{s.events[iset].text='   ';},'.text is empty','an aim of spaces');
  bad(s=>{s.events[iset].text='y'.repeat(E.DLY_CAP.aim+1);},'the cap is '+E.DLY_CAP.aim,'an aim over 200, never cut');
- bad(s=>{s.events[iset].domain='spleen';},'is not a seat or a side','a domain that is neither a seat nor a side');
+ bad(s=>{s.events[iset].domain='spleen';},'is not a point or a side','a domain that is neither a seat nor a side');
  bad(s=>{const c=clone(s.events[iset]); c.seq=s.events.length+1; s.events.push(c);},'is a second aim for','a second aim for one day');
  bad(s=>{s.events[ians].kind='missed';},'.kind is not one of','a mark that is missed');
  bad(s=>{const c=clone(s.events[ians]); c.seq=s.events.length+1; s.events.push(c);},'is a second answer for','a second mark for one aim');
@@ -449,6 +449,28 @@ SUITES.compose=function(E,ok,say){
  const c1read=c1.st.filter(s=>s.k!=='why'), c1edu=c1.st.filter(s=>s.k==='why');
  ok(c1read.length<=1&&c1read.every(s=>/\.h$/.test(s.tpl)&&/^So far/.test(s.text)),'one entry is at most one sentence and it is the hedged one: '+J(c1read.map(s=>s.text)));
  ok(c1edu.length<=1&&c1edu.every(s=>s.tpl==='why.edu'),'and at most one education line, naming a canon word used above: '+J(c1edu.map(s=>s.text)));
+ /* SEVERAL ENTRIES ON ONE DAY ARE NOT ONE ENTRY. The rung is once because the
+    entries share a day, and the sentence used to be picked on the rung, so
+    two and three entries logged on 9 March each read "So far one entry". The
+    count expected is read off the fixture's own entries, never typed. */
+ [2,3].forEach(n=>{
+  const wd=world(E,{mut:(p,f)=>{p.history=[]; p.rituals=[]; p.meter.firsts=[]; p.avatar=null;
+   p.story.entries=Array.from({length:n},(_,i)=>f.ent(-1+i/48,TXT_C));}});
+  const got=wd.p.story.entries.length, cd=E.dlyCompose(wd.p,NOW).st.filter(s=>/^show\.seat/.test(s.tpl));
+  ok(cd.length>0&&cd.every(s=>s.tpl==='show.seat.day.h'&&s.text.indexOf('So far '+got+' entries')===0&&!/one entry/.test(s.text)),
+   got+' entries on one day name '+got+' entries and never one: '+J(cd.map(s=>s.text)));});
+ /* THE CUE SENTENCE HAD THE SAME DEFECT. Its rung counts days too, so TXT_B,
+    which carries words that read as aversion, logged two and three times on
+    9 March read "So far one entry". One entry must keep that wording, so the
+    fix cannot be passed by never saying it. Counts read off the fixture. */
+ [1,2,3].forEach(n=>{
+  const wd=world(E,{mut:(p,f)=>{p.history=[]; p.rituals=[]; p.meter.firsts=[]; p.avatar=null;
+   p.story.entries=Array.from({length:n},(_,i)=>f.ent(-1+i/48,TXT_B));}});
+  const got=wd.p.story.entries.length, cd=E.dlyCompose(wd.p,NOW).st.filter(s=>/^show\.cue/.test(s.tpl));
+  if(got===1)ok(cd.length===1&&cd[0].tpl==='show.cue.h'&&/^So far one entry, /.test(cd[0].text),
+   'one entry carrying a cue still reads one entry: '+J(cd.map(s=>s.text)));
+  else ok(cd.length===1&&cd[0].tpl==='show.cue.day.h'&&cd[0].text.indexOf('So far '+got+' entries, all from ')===0&&!/one entry/.test(cd[0].text),
+   got+' entries on one day carrying a cue name '+got+' entries and never one: '+J(cd.map(s=>s.text)));});
  const wr=world(E,{mut:(p,f)=>{p.story.entries=[]; p.rituals=[]; p.meter.firsts=[]; p.avatar=null; p.history=[f.row(-1,50,'Throat',0)];}}), cr=E.dlyCompose(wr.p,NOW);
  /* same split as c1/c1edu above: today.read also says "the Throat seat",
     DLY_CANON's own word for Chakra, so it too may now earn a why.edu line
@@ -472,7 +494,7 @@ SUITES.compose=function(E,ok,say){
  ok(!eduDay.length||!eduNext.some(s=>s.a[0]===eduDay[0].a[0]),'and the same word is not explained again the next day');
  /* the canon words link to their entry, and the gaps are named */
  ok(E.DLY_CANON.filter(x=>x.t).every(x=>E.GLOSS.some(g=>g.t===x.t)),'every canon word that points at the wisdom school points at an entry that exists');
- const withLink=c.st.filter(s=>/\bseats?\b/i.test(s.text));
+ const withLink=c.st.filter(s=>/\bpoints?\b/i.test(s.text));
  ok(withLink.length>0&&withLink.every(s=>s.links.indexOf('Chakra')>=0),'a sentence that says seat links to its entry: '+J(withLink.map(s=>s.links)));
  ok(c.st.every(s=>s.links.every(t=>E.GLOSS.some(g=>g.t===t))),'and every link is a glossary term');
  /* THE AIM, WITH NO LOSS WORDING */
@@ -529,7 +551,7 @@ SUITES.compose=function(E,ok,say){
  const wav=world(E,{mut:(p,f)=>{p.history=[]; p.rituals=[]; p.meter.firsts=[]; p.story.entries=[f.ent(-1,TXT_C),f.ent(-2,TXT_C),f.ent(-3,TXT_C)];
   p.avatar.pairs[0].seat=cseat; p.avatar.reviewedAt=at(-1);}});
  const av2=E.dlyCompose(wav.p,NOW).st.filter(s=>s.tpl==='show.avatar');
- ok(av2.length===1&&/touched the .* seat 3 times\. Your avatar has a line written for that seat\./.test(av2[0].text)&&av2[0].ev[0].type==='avatar'&&av2[0].read.length>0,
+ ok(av2.length===1&&/touched the .* point 3 times\. Your avatar has a line written for that point\./.test(av2[0].text)&&av2[0].ev[0].type==='avatar'&&av2[0].read.length>0,
   'an avatar line whose seat three entries touched is one sentence that cites the line and the entries and keeps their addresses: '+J(av2.map(s=>s.text)));
  const wdq=bare((p,f)=>{p.history=[f.row(-8,50,'Heart',0),f.row(-1,50,'Heart',0)]; p.history[1].dq=25;});
  const cdq=E.dlyCompose(wdq.p,NOW).st;
@@ -637,7 +659,7 @@ SUITES.ground=function(E,ok){
  ok(gs.notes.some(n=>n.rule==='grounded_language'&&n.phrase==='soul evolution')&&gs.notes.some(n=>n.rule==='canon_no_entry'&&n.word==='soul')&&gs.notes.some(n=>n.rule==='canon_no_entry'&&n.word==='spiritual'),
   'with the phrase and the two canon words that have no wisdom school entry yet named as notes: '+J(gs.notes));
  const seat=Object.assign(clone(base),{links:[]}), ns=E.dlyNotes(seat);
- ok(ns.some(n=>n.rule==='canon_unlinked'&&n.word==='seat'&&n.term==='Chakra'),'a canon word with an entry that is not linked is a note, so the page can point at it');
+ ok(ns.some(n=>n.rule==='canon_unlinked'&&n.word==='point'&&n.term==='Chakra'),'a canon word with an entry that is not linked is a note, so the page can point at it');
  ok(E.dlyNotes(base).length===0,'and a sentence that links its canon words has no note');
  const en=Object.assign(clone(base),{text:'Your energy and your charge and the source are noted.',links:[]});
  ok(E.dlyNotes(en).filter(n=>n.rule==='canon_unlinked').map(n=>n.word).sort().join()==='charge,source'&&E.dlyNotes(en).some(n=>n.rule==='canon_no_entry'&&n.word==='energy'),
@@ -890,6 +912,10 @@ const MUTANTS=[
   from:"if(have.indexOf(d)<0)errs.push(", to:"if(false)errs.push("},
  {suite:'ground', what:'the language list is ignored (no note is made for any of the seven phrases)',
   from:"if(text.indexOf(ph)>=0)out.push({rule:'grounded_language', phrase:ph});", to:""},
+ {suite:'compose', what:'several entries on one day are called one entry again',
+  from:"else if(s.n===1)cands.push(dlyCand('show.seat.h'", to:"else if(true)cands.push(dlyCand('show.seat.h'"},
+  {suite:'compose', what:'several entries on one day carrying a cue are called one entry again',
+  from:"else if(c.ents===1)cands.push(dlyCand('show.cue.h'", to:"else if(true)cands.push(dlyCand('show.cue.h'"},
  {suite:'compose', what:'an unread record composes text',
   from:"if(dlyUnread(p,opt.r)){", to:"if(false){"},
  {suite:'ground', what:'penalty language is allowed',

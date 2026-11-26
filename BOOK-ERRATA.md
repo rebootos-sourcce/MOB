@@ -558,3 +558,43 @@ than a sequence:
 already holds and changes no membership, because reordering a set whose
 membership is in question would be two changes wearing one commit. The order
 and the membership move together or not at all.
+
+## The Nine Child Emotions, And Which Opposite The Lyceum Says
+
+Added 20 November, round LY, when the wisdom school was filled. The app names
+each child emotion's opposite in `CHILD` (`engine/data/canon.js`, the `opp`
+field). The book names it in the title of its own entry, rows E60 to E68 of
+`HARM` (`engine/data/kb.js`). They agree on two and the card for those two now
+prints the book's entry word for word, unmarked because it is quoted:
+
+    Shame     Worth        E62 "Shame · Worth"
+    Disgust   Acceptance   E63 "Disgust · Acceptance"
+
+The agreement is read, not listed: `childBookSays` in `ui/drills.js` prints the
+book's text only when the title is exactly the emotion and `CHILD`'s own
+opposite. So whichever table moves when he rules, the card follows with no
+code change.
+
+**Four disagree. The card keeps "No meaning on file yet." until he rules.**
+
+    Emotion   App (CHILD opp)   Book (HARM title)       Book line that bears on it
+    Fear      Trust             Safety   E60            "The nerve is running a survival program."
+    Anger     Equanimity        Calm     E61            "Calm is what remains when the compressed will finds its outlet."
+    Apathy    Vitality          Joy      E64            "Joy is not happiness. It is aliveness."
+    Sad       Joy               Happy    E66            "Sad and Happy are the same axis at opposite ends."
+
+Taking the book's word moves `CHILD.opp` and every surface that prints it.
+Keeping the app's word leaves the book as the side that moves. Either way,
+Joy can name only one opposite: the app gives it to Sad, the book to Apathy.
+
+**Three the book marks pending.** E65 Shock: "Coherent pole pending
+confirmation." E67 Surprise and E68 Anticipation: "Somatic address and
+coherent pole pending confirmation." The app already says Groundedness,
+Readiness and Presence, ruled 14 September in the comment above `CHILD`. For
+Surprise and Anticipation the book also leaves the body address open, so
+`CHILD`'s "Upper chest and back" and "Below the heart" are unconfirmed too.
+The ways it can go: confirm the app's words and add them to the book, wait for
+the book and keep the gap, or show the app's word marked as not yet in the
+book.
+
+**Whose call: his, and open.** No answer was picked for any of the seven.

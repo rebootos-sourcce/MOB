@@ -249,6 +249,13 @@ function unp(term,label,ctx){
    readings in the rail were drawn in colours meant for a black panel. Every
    value written by JS rather than by a token had the same fault, which is why
    the rail looked washed while the sheet looked right. */
+/* THE LIGHTINGS WHOSE BODY CARRIES THE GLASS WHITE CLASS. Glass blue is Glass
+   white with its neutral greys moved toward blue (shell/head.html), so it
+   stands where Glass white stands: the light palette, the light ink, the
+   paper stage. setLighting in ui/panels.js reads this list to put the
+   glasswhite class on both, and the ladders below read it so a third member
+   is one entry here and not a hunt for every comparison to the string. */
+const GLASSWHITE_KIN=['glasswhite','glassblue'];
 /* AND IT KNEW ABOUT TWO OUT OF THREE. Glass white is paper, #E8E7E2 under
    rails at sixty two percent white, and it fell through to the dark palette,
    so every seat colour on it was drawn for a black panel: Connection's icon
@@ -258,7 +265,7 @@ function unp(term,label,ctx){
    which is where the Glass white stage was taken on, with its ink and wash. */
 function seatCol(b){
  var P = S.theme==='lumen' ? PAL_VIVID
-       : S.theme==='snow'||S.theme==='glasswhite' ? PAL_LIGHT
+       : S.theme==='snow'||GLASSWHITE_KIN.indexOf(S.theme)>=0 ? PAL_LIGHT
        : PAL;
  return P[b]||'var(--gold)';}
 /* THE ICON GRIDS, PUNCHED UP FIFTEEN PERCENT. The owner: "all our normal
@@ -678,7 +685,7 @@ function rbRow(q,nm,pct,raw,o){
   if(read)sv=o.cells.map(cl);
   var bl=read?rbBlock(sv,o.held):-1;
   if(read)sub='<em class="rb-sub'+(bl<0?'':' bk')+'"'+(bl<0?'':' style="--bc:'+seatCol(BANDS[bl])+'"')+'>'
-   +(bl<0?'no seat blocked':'blocked at '+esc((o.names||BANDS)[bl]))+'</em>';
+   +(bl<0?'no point blocked':'blocked at '+esc((o.names||BANDS)[bl]))+'</em>';
   track='<span class="rb-t rb-cells" aria-hidden="true">'
    +BANDS.map(function(b,i){return '<i class="rb-cell'+(i===bl?' bk':'')+'" style="--sc:'+seatCol(b)+'">'
     +'<b style="transform:scaleY('+(sv?sv[i]:0).toFixed(4)+')"></b></i>';}).join('')
@@ -689,12 +696,19 @@ function rbRow(q,nm,pct,raw,o){
  else track='<span class="rb-t" aria-hidden="true"><s style="left:25%"></s><s style="left:50%"></s><s style="left:75%"></s>'
   +'<i class="rb-f" style="width:'+w+'%"></i><em class="rb-h"></em></span>';
  var c=read?(o.col||rbCol(p,o.bad)):'var(--dim)';
- return '<button type="button" class="kb rbar'+cls+(read?'':' off')+'" data-q="'+q+'" data-w="'+p.toFixed(2)+'"'
+ /* A GATE'S BAR IS THIS BAR. o.gate names the gate it stands for, 18
+    November, the Psyche panel's Action section: the row carries data-gate and
+    the .gate-r class the delegated click reads (ui/ui.js) and no data-q, so a
+    press opens the gate's own drill and not a reading it is not one of. o.side
+    is which side of the law it stands on, 'higher' or 'lower', for the hatch
+    the broken fill wears in head.html. Nothing else about the row differs. */
+ return '<button type="button" class="kb rbar'+cls+(read?'':' off')+(o.gate?' gate-r':'')+'" '
+  +(o.gate?'data-gate="'+esc(o.gate)+'"'+(o.side?' data-side="'+esc(o.side)+'"':''):'data-q="'+q+'"')+' data-w="'+p.toFixed(2)+'"'
   +(o.fk?' data-fk="'+o.fk+'"':'')+(o.bad?' data-bad="1"':'')
   +(sv?' data-s="'+sv.map(function(v){return v.toFixed(3);}).join(',')+'"':'')
   +' data-v="'+esc(raw)+'" style="--c:'+c+'"'
   +(o.title?' data-tip-k="'+esc(nm)+'" data-tip="'+esc(o.title)+'"':'')
-  +' aria-label="'+esc(rbAria(nm,raw,read,o.title,'Opens the reading.'))+'">'
+  +' aria-label="'+esc(rbAria(nm,raw,read,o.title,o.gate?'Opens the action.':'Opens the reading.'))+'">'
   +'<span class="rb-row"><span class="rb-n">'+rbIcon(o.ic)+esc(nm)+'</span>'+sub
   +'<span class="rb-v">'+esc(raw)+'</span></span>'
   +track+seats
@@ -709,8 +723,11 @@ function rbRow(q,nm,pct,raw,o){
    reading is and never per frame. */
 function rbRate(r){
  var d=document.getElementById('fdock'); if(!d)return;
- var dq=clamp((+(r&&r.DQ)||0)/100,0,1);
- d.style.setProperty('--rate',lerp(PUL_LO,PUL_HI,dq).toFixed(3));}
+ var dq=clamp((+(r&&r.DQ)||0)/100,0,1), v=lerp(PUL_LO,PUL_HI,dq).toFixed(3);
+ d.style.setProperty('--rate',v);
+ /* the Action bars in the left rail's Psyche panel are rbRow's own bars and
+    sweep at the same rate, though they stand outside the dock (18 November) */
+ var g=document.getElementById('gaterows'); if(g)g.style.setProperty('--rate',v);}
 /* ============================================================
    WHAT A BAR DOES, ONE LANGUAGE. Three verbs and no others, every one of them
    an opacity or a transform except the fill's own width, which the gate reads
@@ -980,7 +997,18 @@ function rbPair(k,o){
  if(read&&o.band){var b0=clamp(Math.min(o.band[0],o.band[1]),0,100), b1=clamp(Math.max(o.band[0],o.band[1]),0,100);
   if(b1-b0>0.05)band='<i class="rb2-band" style="left:'+(100-b1).toFixed(2)+'%;width:'+(b1-b0).toFixed(2)+'%"></i>';}
  var drift=read&&L.sw;
- return '<span class="rb2'+(read?'':' off')+'" data-pair="'+k+'" style="--lc:'+L.c+';--rc:'+R.c+';--sc:'+sc+'">'
+ /* DATA-FIGFIXED, 20 November. The figure printed in the middle is the
+    dominant pole's own share, and equals the lean this bar draws, except
+    when the caller hands over its own fig (fetBar and stkPolar's pattern
+    rows): a held-less-installed amount or a chain weight, on its own scale,
+    never the lean's position. The two are different quantities sharing one
+    widget on purpose (the comment above rbPairFig says so), so a reader that
+    checks the printed number against the drawn lean needs to know which
+    case it is looking at without guessing from the numbers alone. This bit
+    is that fact, carried on the markup the way the arc's own dasharray
+    already carries a ring's. tests/pct.js reads it rather than assume. */
+ return '<span class="rb2'+(read?'':' off')+'" data-pair="'+k+'"'+(o.fig!==undefined?' data-figfixed="1"':'')
+  +' style="--lc:'+L.c+';--rc:'+R.c+';--sc:'+sc+'">'
   +'<span class="rb2-ln" aria-hidden="true">'+pole(L,'l')
   +'<span class="rb2-f">'+(sd<0?rbIcon('chevL'):'')+'<b class="rb2-v">'+esc(rbPairFig(o))+'</b>'+(sd>0?rbIcon('chevR'):'')+'</span>'
   +pole(R,'r')+'</span>'
@@ -1141,7 +1169,7 @@ function unreadNow(){try{return !!compute().unread;}catch(e){return false;}}
 function crNode(n,size,o){o=o||{};
  var f=fmtPct('weight',n.sq);
  return cr(n.b, pct('weight',n.sq)||0, Object.assign({size:size||'sm', raw:f,
-  label:n.k, title:n.k+', '+n.b.toLowerCase()+' seat. '+(f!==PCT_DASH?f+' left after the opposite':'Nothing held.')},o));}
+  label:n.k, title:n.k+', '+n.b.toLowerCase()+' point. '+(f!==PCT_DASH?f+' left after the opposite':'Nothing held.')},o));}
 /* An address row. analytics.js and drills.js each carried a byte identical
    copy of this markup, a filled dot plus a bare number, while crNode sat
    unused. crNode was built for exactly this: the ring carries the seat colour
@@ -1229,7 +1257,7 @@ function crBadge(band,pct,o){
 function crbNode(n,size,o){o=o||{};
  var f=fmtPct('weight',n.sq);
  return crBadge(n.b, pct('weight',n.sq)||0, Object.assign({size:size||'sm', raw:f,
-  title:n.k+', '+n.b.toLowerCase()+' seat. '+(f!==PCT_DASH?f+' left after the opposite':'Nothing held.')},o));}
+  title:n.k+', '+n.b.toLowerCase()+' point. '+(f!==PCT_DASH?f+' left after the opposite':'Nothing held.')},o));}
 /* a saboteur, complex, hyper or super complex, on the registry's chain kind.
    hot:p.w>=9 stays as the caller's word, and cr() keeps it off the arc because
    the figure is a percent; overshot is said in the title. */
@@ -1238,23 +1266,9 @@ function crPat(p,size,o){o=o||{};
  return cr(b, pct('chain',p.w)||0, Object.assign({size:size||'md', raw:f, label:p.nm,
   hot:p.w>=9||!!p.over,
   title:p.nm+', weight '+f+(p.over?', overshot':'')},o));}
-function leaves(o){if(!o||!o.parts)return o?[o]:[];
- var a=[],sn={};(function dig(x){if(x.parts)x.parts.forEach(dig);
-  else if(!sn[x.i]){sn[x.i]=1;a.push(x);}})(o);return a;}
-/* THE FAMILY A PATTERN BELONGS TO, AND ITS RECORD. 4 November, his live
-   reaction to the pattern drill: the words must come "from the records", and
-   "built from 5 held addresses" is "a big no". A saboteur and a complex name
-   their family in hcx, a hyper complex is its family; the record is HCX_LIB's
-   d, the line that already prints on every hover of a hyper complex. An
-   overshoot family has no row there, and its sentence is the one compute()
-   gives the same family (engine/compute.js, FAMS), read the same way here
-   off FAM_POLE so the two cannot word it differently. */
-function patFam(o){
- var nm=!o?'':o.kind==='hy'?o.nm:(o.hcx||''); if(!nm)return null;
- var h=HCX_LIB.filter(function(x){return x.nm===nm;})[0];
- if(h)return {nm:nm,d:h.d};
- var base=Object.keys(FAM_POLE).filter(function(k){return FAM_POLE[k]===nm;})[0];
- return base?{nm:nm,d:'the fix for '+base.toLowerCase()+', done past the point where it helps'}:null;}
+/* leaves() and patFam() live in engine/insight.js now, 18 November: the
+   Insight composer needs them and the engine may not read a renderer. Same
+   names, same bodies, so every caller below still finds them. */
 
 /* ============================================================
    CANVAS UTILITIES
@@ -1298,7 +1312,14 @@ const lerp=(a,b,t)=>a+(b-a)*t;
    ink reads 1.06 to 1 on Snow, carried by the halo. That is Snow's own
    question and is left as shipped. Anything that must match the ground and
    not the lighting reads stageLight() below, as rings.js does. */
-const LIGHT=()=>S.theme==='snow'||S.theme==='glasswhite';
+const LIGHT=()=>S.theme==='snow'||GLASSWHITE_KIN.indexOf(S.theme)>=0;
+/* GLASS BLUE'S PAPER. The canvases carry a few light colours of their own: the
+   pale a quiet node washes toward, the plate behind a label, the halo a word
+   is stroked on. They are warm on Glass white because its stage is #F2F1EC,
+   and they would sit as warm patches on Glass blue's #E9EEF3 stage, so each
+   asks COOL() and takes its blue twin. Glass white and Snow read the same
+   values they always did. */
+const COOL=()=>S.theme==='glassblue';
 /* what the Field's canvas actually sits on, read off the stage the way
    frMount in rings.js reads it. The stage carries no transition, so the
    answer is settled the moment the lighting's class lands. */
@@ -1322,7 +1343,7 @@ function bc(b){
          : PAL;
  return hx(P[b]);}
 function nodeCol(n){const base=bc(n.b),ld=clamp(n.disp/10,0,1);
- return mixc(mixc(base,LIGHT()?[238,236,230]:[150,160,180],.74),base,Math.pow(ld,.55));}
+ return mixc(mixc(base,LIGHT()?(COOL()?[229,234,240]:[238,236,230]):[150,160,180],.74),base,Math.pow(ld,.55));}
 /* ---- the one status writer ----
    Every surface reports through here so the wording, the timing and the
    announcement behave the same way wherever they come from.

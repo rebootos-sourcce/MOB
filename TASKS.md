@@ -33576,14 +33576,27 @@ lead the same day. The Account header email from that commit is ported; the
 bypass is not.
 
 - [ ] **PB1. P2. Returning account bypass of the opening, parked at
-      `claude/p1e-bypass-parked` (`743df63`).** Blocked on: profile sync is
-      dead code on main (`ui/auth.js:189` `typeof profiles==='function'` is
-      never true; `authProfileSync` always skips and would throw at `:222`).
-      Do not enable it as is: it uploads the whole profile, which contradicts
-      the privacy words. Needs a sync and consent design first.
+      `claude/p1e-bypass-parked` (`743df63`).** Blocked on: device sync,
+      below (DS1). **This note was stale**: it said profile sync was dead
+      code because of a `:189` bug; that has since been replaced by a real,
+      wired sync (`authProfileSync`, `profileSyncImport`), gated behind one
+      constant, `PROFILE_SYNC_ENABLED=false`, in `ui/auth.js`. Still do not
+      enable it as is, same reason as before: it uploads the whole profile,
+      which contradicts the privacy words, and needs consent copy first.
 - [ ] **PB2. P2. A refused pull says nothing to the person** (`ui/auth.js:246`,
       `:264`). `authProfileSync` returns `{state:'refused'}` when `pImport`
       does not take the record the server sent, and no `status()` line says so.
+- [ ] **DS1. Device sync, scheduled post alpha.** His words, 18 November:
+      "Add the device sync post alpha." See `DECISIONS.md`, "Device sync,
+      scheduled post alpha." The wiring already exists (`authProfileSync`,
+      `profileSyncImport`, `ui/auth.js`), one constant away
+      (`PROFILE_SYNC_ENABLED`). Real work left: write and get his approval
+      on the consent/privacy copy a sign in on a second device needs, flip
+      the constant, wire a one-time consent moment, then PB1 and PB2 above
+      unblock. Not alpha work; do not start building it before alpha closes.
+      Tonight's fix in this area is only the honest sign-in message
+      (`authSyncNote`, commit `4ef5c88c`) saying why a new device starts
+      empty, not the sync itself.
 
 ## Audit Dev 1 to 6, consolidated, 9 October
 
@@ -33887,7 +33900,7 @@ Named SU and not SQ: SQ1 to SQ5 and SR1 to SR6 are already item numbers earlier 
 
   **What this means for his words.** "That should not have gone away" is correct as a ruling to keep the feature, but as a report of current fact it does not hold up against the live system right now: the relay he actually uses is live, wired, and accepting feedback into his Discord channel today. If he is still not seeing entries, the next real step is not a code fix but asking him directly, with the drawing: which channel he is checking, and whether he has sent anything through the app itself (the profile menu row, not a direct API call) since this was last looked at. **Open for him: is Reboot-OS, the other product, also supposed to have its own Discord feedback relay** (its own channel, its own webhook), separate from Atuned's, given PR #2 lives there and never shipped anything? Nothing was built toward that without his answer. One open item, not acted on: Reboot-OS PR #2 sits open and stale; worth his own call on closing it, since merging it fixes nothing and keeping it open as "the relay" is exactly the mislabeling that likely produced this task.
 - [x] **SV2 closed, 4 November. The five unreviewed Reboot-OS psyche-hierarchy branches, read.** All 5 are drafts or self-described blocked/provisional, none a clean yes to port. Closest to usable: a standalone saboteur-scoring tool (its own tests run 6/6), waiting on one call from him (does a score count on crossing a line, or only fully inside a band). The rest: one nerve-to-body-location branch whose own checks never ran; one plain duplicate of canon already held elsewhere; one written audit report with no code to port. None collide with anything ported this session. Nothing ported; this was a read-only pass.
-- [ ] **SV3. P1, blocked on him. Ruler's domain: Imperium or Power.** His first ruling was Imperium. He then reopened it with a genuine question; a team member wrote "Ruled: Power" on research alone with no closing word from him, which was wrong, corrected in `DECISIONS.md` under "Ruler's domain: Imperium or Power, still his to close, 4 November". Both readings are real and disagree (his own plain-English sense of the words favors Imperium; the book's technical definitions favor Power). PR #177's one open item stays open until he says which. Not landed.
+- [x] **SV3. CLOSED 21 November, his own words: "Ruler is Imperium."** The archetype to domain port from PR #177 lands with Ruler resolved to Imperium; see `DECISIONS.md`, "Ruler's domain is Imperium. Ruled 21 November". What follows is the item as it stood. **SV3. P1, blocked on him. Ruler's domain: Imperium or Power.** His first ruling was Imperium. He then reopened it with a genuine question; a team member wrote "Ruled: Power" on research alone with no closing word from him, which was wrong, corrected in `DECISIONS.md` under "Ruler's domain: Imperium or Power, still his to close, 4 November". Both readings are real and disagree (his own plain-English sense of the words favors Imperium; the book's technical definitions favor Power). PR #177's one open item stays open until he says which. Not landed.
 - [ ] **SV4. Needs design first. Double bind detection.** Recorded in `DECISIONS.md` under "Double bind detection and a hold button for felt versus computed, 4 November". A felt-versus-computed disagreement shown uniquely, with an icon, in the bank and the vault. Not started: needs a seat for where "bank" and "vault" mean in this product's own language, and a visual spec, before any engine work.
 - [ ] **SV5. Needs design first. A hold button for felt versus computed, at release.** Same entry in `DECISIONS.md`. Keeps a detected pattern through a release instead of letting the release clear it, then runs detection again; a pattern that keeps surfacing across runs is the one to trust. Not started: needs the release flow's own seat to decide where the button sits.
 - [x] **SV6 closed, 4 November. Archetype to root, the definitional method: 6 of 12 held, 4 changed, 2 open.** Full table and reasoning in `DECISIONS.md` under "Archetype to root, the definitional method: 6 held, 4 changed, 2 open, 4 November", and on the status board. The old "finish the 30 blueprint" option is withdrawn, his own words, not raised again. His ruling wanted on the 4 that changed (the Outlaw/Rebel, Magician, Ruler, Innocent) and the 2 real ties (Jester, the Orphan/Everyman); the 6 held rows stand as answered.
@@ -33904,6 +33917,7 @@ Named SU and not SQ: SQ1 to SQ5 and SR1 to SR6 are already item numbers earlier 
   - **A real discrepancy, flagged, not resolved: `srcVoiceCanon` and `srcVoiceEvidenceBus`, marked completed on this tracker (#88, #89 above), do not exist anywhere on `main`.** Grepped the whole checkout, case insensitive, every extension, zero matches. Either that work lives on an unmerged branch or the completion mark was wrong. Dispatched to find out (SV12).
 - [x] **SV11 closed, 4 November. The 6 hyper-complex family records wired in, PR #179.** New `engine/data/hcxcard.js`, same pattern as the 33 saboteur cards, read by `ui/drills.js` into five labeled sections a person already recognizes from elsewhere in the app. Nothing authored, ported as written, with 3 sentences swapped off the project's own banned-word list ("framework"). Checked live in a real browser against the source text, word for word. Engine 6617/0, full browser gate suite clean. Draft, his to merge.
 - [x] **SV12 closed, 4 November. Found: real, sound, unmerged. The completion mark was wrong as a claim about `main`.** `srcVoiceCanon` and `srcVoiceEvidenceBus` are real: commit `639f2033` ("Wire the real 96-pattern content library into the sniffer's intelligence layer", 1 November) and commit `edd64721` ("Wire the evidence bus into the engine: the sniffer's intelligence layer now has a real graph/dashboard seam", 2 November), both on branch `source-voice-sniffer-readonly-20261031`, open draft PR #163 against `main`, never merged. Not a fabricated completion: the work was done and the commit messages are the near-exact source of #88/#89's wording. The gap is that it landed on a draft branch and the tracker was marked done as if it had landed on `main`. Verified directly, not from the PR's own claims: extracted `atuned_src` from the branch tip (`aa449a80`) into an isolated scratch build, re-ran `BUILD-engine.sh`, confirmed the rebuilt `engine.js` is byte identical to the one committed on the branch (the PR's own earlier "generated products are stale" warning no longer holds at tip), ran the full `tests/engine.js` suite against it clean: 6509 passed, 0 failed, 10 expected red, same convention as `main`'s own runs. Also ran the five Source-voice-specific tests (`source-voice-intelligence.js`, `source-evidence-bus.js`, `voice-sniffer.js`, `source-voice-narrative.js`, `source-voice-charge-cycle.js`) directly against that engine: all five pass. `check.py --objections` on that tree: 18 non-blocking findings, 0 that stop a build, same as `main`'s own standard. Not run, for lack of a browser toolchain and disk headroom in this pass: `tests/functional.js`, `tests/design.js`, `tests/collide.js`, `tests/funnel.js`, `tests/boot.js`, `tools/monitor.js`. Not merged in this pass: PR #163 is 77 commits, still marked draft by its own run of authors across every one of its iterations ("This PR must remain draft until all gates and runtime wiring are verified"), carries real open items beyond #88/#89 (no live production caller wires `srcVoiceIntelligence` into the voice UI yet, ancestry and CQDQ grading explicitly deferred, real microphone/audio behaviour unverified), and reads consent-scoped personal narrative evidence, which this project's own precedent (PR #149, Celestial Avatar, "explicitly not for merge without his review") treats as needing the owner's look before it lands on `main`, not a unilateral merge to close a tracker line. #88 and #89 are corrected: they were true as commits, false as a claim about `main`. Dispatched: his call whether PR #163 goes to review and merge now that its engine half is independently confirmed sound, or stays held with the rest of Source AI voice.
+- [x] **SV12 answered, 17 November. #88 and #89 are on a branch cut from `main` now, dormant and unmerged: `revive/source-voice-layer`.** His answer to the SV12 question: "Revive it and put a note next to it for when we review it. I don't quite know what it's doing anymore, the 96 pattern, but let's add it." Ported by file from `aa449a80` (the voice prototype's last commit, PR #163, closed 8 November), never by cherry pick, because most of those commits rewrite the generated products. What a person sees or hears: nothing. No file under `ui/` or `shell/` calls `srcVoiceCanon`, `srcVoicePattern`, `srcVoiceIntelligence` or `srcVoiceEvidenceBus`, so nothing prints, speaks, asks or writes from them. One adaptation: an entry `srcSafe` stops is read as nothing by the layer, with a test, because the prototype read it and handed packets for the ritual and release targets to the bus. The note he asked for sits at the top of every file the layer adds, and the open questions for the review are in `DECISIONS.md`, "The voice prototype's read only layer, revived, 17 November". Open: the five tests are not in a workflow yet, so `tools/orphans.js` fails them by name until the integrator adds the step. Not touched here, another seat's lines: SK11 and SK12 above still read `[ ]` though `srcOutputV1Candidate` is in `engine/evidence.js`.
 
 This round is not closed until SV1 through SV3 land with real commits and SV4, SV6 and SV8 have a seat or a ruling. Written here the same round it happened, per SU9.
 
@@ -34062,7 +34076,8 @@ rail's visual language. SW1, SW2, SW4 and SW6 need scoping before any build.
   before pushing: #178 engine 6879/0, #179 engine 6884/0 (both new SABOP
   and HC test groups intact), #183 engine 6899/0 plus its own flowtools.js
   gate 181/0. products.js clean on all three post-rebuild.
-  **Not merged, on purpose:** #177, Ruler's domain (Imperium or Power) is
+  **Not merged, on purpose:** #177 (closed 21 November: "Ruler is Imperium", ported onto main
+  by hand because main was re-rooted on 11 November and the branch shares no history with it), Ruler's domain (Imperium or Power) was
   still genuinely open, his call, not folded into a blanket merge. #182,
   mid-revision right now (round 3 in flight). #149 and #164 are his.
 
@@ -34202,24 +34217,28 @@ The result, after the fix and the re-run, is `SIM-YEAR-10000.md`, on `main`. Fou
 
 **Addendum to round SZ, same night.** 18 more findings from the same sweep, each reproduced and confirmed by the same three-refuter process, narrow enough to fix but not yet fixed. Logged here rather than left only in a report nobody reopens, per this file's own rule. Not built. His call on sequencing.
 
-- [ ] **SZA1.** The boundary looks up keys in plain objects, so a name like `toString` or `constructor` gets through, and one such name crashes the Ritual tab while another hides the record on the next boot. `atuned_src/engine/schema.js:1603`.
-- [ ] **SZA2.** `riseLevers` ignores the named-address layer (`S.addr`), so the law lever it reports overstates the gain by about 26 times for anyone whose story named a place. `atuned_src/engine/rise.js:160`.
-- [ ] **SZA3.** Daily Summary says "So far one entry" when several entries actually back the sentence. `atuned_src/engine/daily.js:661`.
+- [x] **SZA1, closed 19 November.** The boundary looks up keys in plain objects, so a name like `toString` or `constructor` gets through, and one such name crashes the Ritual tab while another hides the record on the next boot. `atuned_src/engine/schema.js:1603`. Fixed alongside SZA8, SZA13 and SZA14 below, all four in the same file and the same pass: `K2BAND` in `sniff.js`, `PLAN_BY`, `PLAN_LIVE` and `PLAN_DEAD` in `plan.js`, and the old law name table inside the boundary are now built with `Object.create(null)`, so none of them can answer a lookup with an Object method the record never wrote. Reproduced first: `history[0].lawNow.constructor` loaded and round tripped, a plan status of "constructor" read as live. `tests/engine.js` group SB18, 20 new checks, each one fails with its own fix reverted. 7391 passed, 0 failed, against the 7371 baseline. Branch `fix/schema-boundary-save-2026-11-18`, commit `f52c7246`, PR #207, open and draft, not merged. The Reboot-OS server keeps its own copy of this table for the pay cycle test (`atuned/server/test/e2e/mob-plan.js`) and had the same hole; hand patched the same way, pin moved, Reboot-OS PR #84, open and draft, not merged.
+- [x] **SZA2, closed 19 November.** `riseLevers` ignores the named-address layer (`S.addr`), so the law lever it reports overstates the gain by about 26 times for anyone whose story named a place. `atuned_src/engine/rise.js:160`. Fixed: the held charge sum inside `riseLevers` now adds `S.addr`, the same order `compute.js` already uses. Measured, not just estimated: with `S.addr` weight 5 on Heart and laws at 4, the law lever claimed +0.1595 where the real recompute (`seatTrans`) moved +0.0056, about 28.6 times less; with every law already at 10, where the move changes nothing, it still claimed +0.1101. Three new checks, group 36g, fail twice against the old code. 7374 passed, 0 failed. Branch `fix/rise-addr-layer-2026-11-18`, commit `3fc6f8d6`, PR #212, open and draft, not merged. Open question flagged, not decided here: whether a release should also drain `S.addr`, since `ui/release.js` currently does not.
+- [x] **SZA3, closed 19 November.** Daily Summary says "So far one entry" when several entries actually back the sentence. `atuned_src/engine/daily.js:661`. Fixed: the sentence was picked by rung, which counts separate days, not entries, so several same-day entries still read "one entry". A new hedged template, `show.seat.day.h`, is picked instead once the real count is more than one. 7376 passed, 0 failed against the then baseline of 7371 (5 new checks, a bite proves the suite catches the old wording). Branch `fix/daily-summary-count-2026-11-18`, commit `6ed92264`, PR #210, open and draft, not merged. The Daily Summary's cue sentence ("So far one entry... carried words that read as aversion") had the identical defect and was not part of this line's original wording; closed the same night on a branch built on top of this one: `show.cue.day.h`, 7382 passed, 0 failed against that same baseline, branch `fix/daily-cue-count-2026-11-18`, commit `700b8ed5`, PR #211 (based on PR #210, review together), open and draft, not merged. Both branches rebased the same night onto the vocab sweep that landed on `main` meanwhile (`seat` renamed to `point` across this file's other templates): `show.seat.day.h` now says `point` to match its siblings, re-verified clean against the new baseline (`tests/engine.js` 7873 passed and 7879 passed after the two branches respectively, `tests/daily.js` 462 and 468 passed, both 0 failed), commits `6bd27546` and `5cc9920b`.
 - [x] **SZA4, closed 13 November.** A capitalised first word with no subject drops the writer's own feeling, read as "may not be about you". `atuned_src/engine/sniff.js:599`. Fixed: whoKnown's lists (WHO_OPENER and the rest) name only the singular ("morning", "day", "week"), so a plain plural opener ("Mornings were awful.") matched nothing and read as an unrecognised name. One extra check against the word with a trailing s stripped, never recursed further, now catches the plural of anything already known; a genuinely unknown name (Sarah, Mark) is unaffected and still correctly held as unclear, confirmed directly against the built engine.
 - [x] **SZA5, closed 13 November.** A Turkish capital İ throws off every `normMap` offset after it in the same entry: wrong highlights, broken sentence bounds, a feeling wrongly read as denied. `atuned_src/engine/sniff.js:309`. Fixed: normMap read one source character at a time and assumed `.toLowerCase()` always hands back exactly one character; U+0130 (İ) lower-cases in JS to two characters (i plus a combining dot above), which grew `body` by two while `bm` only grew by one, desyncing every later offset in the entry. İ and its lowercase partner ı (U+0131, dotless i, which also never lands in a-z on its own) are now folded to plain ASCII i before the per-character loop runs, with a defensive guard keeping only the first character if any future case ever expands past one.
 - [x] **SZA6, closed 13 November.** The lean reads "It wasn't my fault" as accountability taken and "He didn't hit me" as harm by another, the plain negation flipping the read. `atuned_src/engine/verp.js:419`. Fixed: LEANNEG only listed uncontracted negators (not/never/no/...); leanNorm keeps apostrophes (unlike sniff.js's LAW_NEG and sourceai.js's SRC_NEG, whose input has them stripped first), so contracted forms like "didn't"/"wasn't" survived as their own tokens but never matched the table. Added the 14 contracted forms, spelled with apostrophes to match leanNorm's actual output.
-- [ ] **SZA7.** Crisis panel's "Talk it through" bypasses the quiz's own 21-answer gate, so a blank or partial reading is printed and packed into the app link it hands over. `funnel/quiz.html:1235`.
-- [ ] **SZA8.** The Character page's last chosen mask is dropped on every reload, because the import boundary's own UI allow-list never names `ui.chmask`. `atuned_src/engine/schema.js:1261`.
-- [ ] **SZA9.** `parseStory` runs in time that grows with the square of the entry's length once the text has no sentence punctuation, which is the ordinary shape of dictated speech. `atuned_src/engine/sourceai.js:99`.
-- [ ] **SZA10.** The Chinese year animal is printed as settled on the Li Chun day even when the record's own stated window straddles that solar term. `atuned_src/engine/birth.js:104`.
-- [ ] **SZA11.** The table's daylight saving rule switches on the calendar date rather than the actual 2 a.m. clock change, so a birth in the hours before the change can get the wrong offset and the wrong rising sign. `atuned_src/engine/astro.js:167`.
-- [ ] **SZA12.** Karmic debt on a whole name never fires when the running total passes through 13, 14, 16 or 19 on its way down rather than landing on one. `atuned_src/engine/numerology.js:105`.
-- [ ] **SZA13.** "New" in the intake's profile panel moves the person onto a profile that was never saved, with nothing said. `atuned_src/engine/schema.js:657`.
-- [ ] **SZA14.** `pSnap` leaves a phantom history row behind on every refused save, and the next good save commits all of them at once. `atuned_src/engine/schema.js:678`.
-- [ ] **SZA15.** An outbox key holding non-list JSON makes feedback Send throw, keep nothing, and say nothing to the person who pressed it. `atuned_src/engine/outbox.js:46`.
-- [ ] **SZA16, systemic, his call on fixing in place.** Every browser gate's documented default Chromium path (a Playwright revision number baked into `tests/chrome-path.js` and 77 other files) points at a revision no longer installed anywhere this session could check, so the gate commands this file itself documents crash at launch unless `CHROME` is set by hand. Confirmed real: `tests/funnel.js` and `tests/recordlink.js` both threw "Failed to launch chromium because executable doesn't exist" tonight before `CHROME=/opt/pw-browsers/chromium` was set. Every gate run logged in round SZ above used that override. Fix is a scan across the repo for the bare literal, one expression (`process.env.CHROME || <path>`), not touched tonight because it crosses every gate file at once and deserves its own pass.
-- [ ] **SZA17.** `hostfree.py`, the engine's own host-free guard, erases every template literal interpolation before it scans, and does not know `WebSocket`, `globalThis` or `indexedDB` by name, so a real reach for the host inside a template string or through one of those three names would pass the guard clean. `atuned_src/hostfree.py:10`.
-- [ ] **SZA18.** The feedback relay accepts a body that becomes too long for Discord once its own backtick-escaping runs, contradicting the ceiling it states for itself. `functions/feedback.js:128`.
+- [x] **SZA4 continued, closed 19 November.** The 13 November fix above only taught `whoKnown` the plural of a word it already knew. A bug sweep the same night found a wider gap in the same function: a capitalised opener with no subject at all, past tense and common in dictated speech, still read as possibly someone else's feeling. "Felt furious all day.", "Was furious all day.", "Got furious all day." and five more all read no charge, where "I felt furious all day." and the lowercase form both read Solar charge. `WHO_OPENER` gains one row: feel, felt, feeling, was, been, being, got, getting, woke, spent, kind, kinda, sort, pretty, super, bit, kept, went. A real name in the same place ("Sarah felt furious all day.") is still correctly held as unclear. 13 new checks, 9 fail with the row removed. `tests/engine.js` 7384 passed, 0 failed. The same sweep re-checked the Turkish İ half of SZA5 and found it still holds; it had no test of its own, so one was added rather than touching code that no longer has the defect. Branch `fix/sniff-story-reading-2026-11-18`, commit `75161312`, PR #208, open and draft, not merged.
+- [x] **SZA6 continued, closed 19 November.** The 13 November fix above added the contracted negators with a straight apostrophe. The same night's sweep found `leanNorm` turns a curly apostrophe (the one a phone or a Mac types by default) into a space rather than a straight one, so "wasn't" with a curly mark became "wasn t" and matched nothing in either spelling. Fixed: `leanNorm` now folds a curly apostrophe to straight before anything else runs, and `LEANNEG` gains the no-apostrophe spelling of every contraction it already had, plus "can't"/"cant", which the 13 November pass had not listed either. 16 new checks, 13 fail with the fix removed. `tests/engine.js` 7387 passed, 0 failed. Flagged, not fixed: `sniff.js`'s own `lawNorm` likely has the identical curly-apostrophe gap; it is not exported, so it could not be checked directly. Branch `fix/verp-lean-negation-2026-11-18`, commit `16a76ebe`, PR #209, open and draft, not merged.
+- [x] **SZA7, closed 19 November, found moot.** Crisis panel's "Talk it through" bypasses the quiz's own 21-answer gate, so a blank or partial reading is printed and packed into the app link it hands over. `funnel/quiz.html:1235`. Reproduced first against the old quiz (commit `534a3572`): at 0, 5 and 20 of 21 answers, "Talk it through" then "Skip to my record" built a working `#r=` record link every time. Against current `funnel/quiz.html`, the bug does not reproduce: the crisis panel was turned off on `89777423` and the whole quiz was replaced on `7d474400`, which has no crisis panel and no `viewStory` at all. Nothing in the file needed changing; what was missing was a check that keeps the bypass from coming back. One new check in `tests/funnel.js` drives the quiz from 0, 5 and `TOTAL_Q-1` answers and asserts no results screen and no `#r=` link can be reached; proven against a deliberately broken copy of the quiz, which fails it 9 times. `tests/funnel.js` 288 passed, 0 failed (was 276). Branch `fix/crisis-quiz-gate-2026-11-18`, commit `ac332a76`, PR #217, open and draft, not merged.
+- [x] **SZA8, closed 19 November.** The Character page's last chosen mask is dropped on every reload, because the import boundary's own UI allow-list never names `ui.chmask`. `atuned_src/engine/schema.js:1261`. Fixed in the same pass and PR as SZA1: `validateProfile` now keeps `ui.chmask` when it names a real mask (checked against the full `MASKS` table, not only the shown ones, since one writer uses the full list) and refuses it by name otherwise. Covered by the 20 SB18 checks cited under SZA1. Branch `fix/schema-boundary-save-2026-11-18`, commit `f52c7246`, PR #207, open and draft, not merged.
+- [x] **SZA9, closed 20 November.** `parseStory` runs in time that grows with the square of the entry's length once the text has no sentence punctuation, which is the ordinary shape of dictated speech. `atuned_src/engine/sourceai.js:99`. Fixed: the four per-hit scans that crossed the whole clause (clauseFloor, clauseCeil, sniffTense's slices, sniffDeny's word filter) and srcNegated's prefix split now read a boundary list and phrase lists built once per normalised copy, with binary searches in place of walks. Measured best of three on 16,000 characters: 193 ms unpunctuated against 37 ms punctuated on main, 42 against 40 after. parseStory's whole output is byte identical before and after on 8,071 texts. `tests/engine.js` group SZA9 holds the search against the old walks typed out and the punctuated against unpunctuated ratio, which fails on the old sniffer. Commit `cf5317eb` on `main`.
+- [x] **SZA10, closed 19 November.** The Chinese year animal is printed as settled on the Li Chun day even when the record's own stated window straddles that solar term. `atuned_src/engine/birth.js:104`. Fixed: the Li Chun solve moves into its own function, `lichun(y)`, and `chineseYear` now runs it through `atSpan`, the same both-ends-of-the-window check the sun and moon signs already use; when the window crosses Li Chun the year, animal and element all read null rather than one guessed answer. Reproduced first: an untimed birth on 2021-02-03 (window crossing Li Chun 2021, 14:51 UTC) read Rat with full confidence; Ox was just as possible. Extended into `ui/personas.js` and `ui/summary.js`, which would otherwise have printed "null null" to a person; confirmed in a real browser. 6 new checks. 7377 passed, 0 failed. Browser gates boot, monitor, collide, funnel and design all passed; `functional.js` did not finish in its time limit, and the 2 failures it logged before stopping were confirmed to also happen on untouched main under the same load. Branch `fix/birth-lichun-2026-11-18`, commit `356b0fa0`. Superseded the same night: commit `c12a49ed` landed on `main` independently with the same fix, routing `chineseYear` through `atSpan` the same way. PR #213 closed, not merged. Not carried over and worth a separate look: whether `main`'s fix also updates `ui/personas.js`'s rail row and `ui/summary.js`'s chip the way this branch did, or whether those two screens still print a bare null.
+- [x] **SZA11, closed 19 November.** The table's daylight saving rule switches on the calendar date rather than the actual 2 a.m. clock change, so a birth in the hours before the change can get the wrong offset and the wrong rising sign. `atuned_src/engine/astro.js:167`. Fixed: each named `PLACE` row now carries its IANA zone name and `birthJD` routes it through `zoneOffsets`, the same zone-aware path a typed-in zone already uses, rather than the calendar-date `usDST`/`euDST` rule. Reproduced first: Chicago at 00:15 on 14 March 2010 read UTC-5 where it was really UTC-6, printing Scorpio Rising where the sky said Sagittarius. The zone path also carries real history the hand rules never had (Colorado and New Mexico before 1966, US all-year summer time in 1974, and others), so some ordinary days move too, each toward the published rule; for US places from 1987 on, only the change-day hours move. One new check, five cases, fails on the four before-the-change cases on the old code. 7372 passed, 0 failed. Branch `fix/astro-dst-2026-11-18`, commit `f78882aa`. Superseded the same night: commit `5fbb31b6` landed on `main` independently with the same fix, every `PLACE` row carrying its IANA zone and `birthJD` routing through it, and goes further (the person's own named zone outranks the city's, an untimed birth's span widens correctly across a change inside the day). Re-ran this branch's own repro against `main`'s engine to confirm rather than trust the diff: Chicago 2010-03-14 00:15 now reads -6, 2010-11-07 00:30 reads -5, both correct. PR #214 closed, not merged.
+- [x] **SZA12, closed 19 November.** Karmic debt on a whole name never fires when the running total passes through 13, 14, 16 or 19 on its way down rather than landing on one. `atuned_src/engine/numerology.js:105`. Fixed: `numDebt` now walks the reduction one step at a time and stops at the first debt number it lands on, rather than checking only the starting total. Reproduced first: a name totalling 85 (which reduces 85 to 13 to 4) read debt null; a control name totalling 63, which never touches a debt number, correctly read null both before and after. 5 new checks; the 85 and 67 cases fail against the old code. 7376 passed, 0 failed. Branch `fix/numerology-karmic-debt-2026-11-18`, commit `c12e90dd`, PR #215, open and draft, not merged.
+- [x] **SZA13, closed 19 November.** "New" in the intake's profile panel moves the person onto a profile that was never saved, with nothing said. `atuned_src/engine/schema.js:657`. Fixed in the same pass and PR as SZA1: the New handler in `ui/intakeui.js` now goes through `profCreate`, which saves or rolls back, and a refusal is said on the status line ("Nothing was started. Could not save: QuotaExceededError."). Reproduced first in a real Chromium page with storage made to refuse writes: the profile list went from 1 to 2, the open profile moved to the new one, and the status line stayed empty. Covered by the 20 SB18 checks cited under SZA1. Branch `fix/schema-boundary-save-2026-11-18`, commit `f52c7246`, PR #207, open and draft, not merged.
+- [x] **SZA14, closed 19 November.** `pSnap` leaves a phantom history row behind on every refused save, and the next good save commits all of them at once. `atuned_src/engine/schema.js:678`. Fixed in the same pass and PR as SZA1: `pSnap` now records the history length before it pushes and cuts back to that length if the save is refused, so no phantom row survives to be committed by the next good save. The intake Save button and the avatar story commit, which each called `pSave();pSnap();` as two separate calls, now call `pSaveSnap()`, one save instead of two. Covered by the 20 SB18 checks cited under SZA1. Branch `fix/schema-boundary-save-2026-11-18`, commit `f52c7246`, PR #207, open and draft, not merged.
+- [x] **SZA15, closed 19 November.** An outbox key holding non-list JSON makes feedback Send throw, keep nothing, and say nothing to the person who pressed it. `atuned_src/engine/outbox.js:46`. Fixed alongside SZA18 below, same file pair, same pass. Reproduced first, and worse than written here: a stored value of `{}`, `7`, `true` or `null` threw a TypeError and lost the words; a stored plain string answered "queued" while writing `"abc[object Object]"` over the key; bytes that failed to parse were overwritten with no copy kept. `obStore` now copies anything that is not a real list, unchanged, to a time-stamped key of its own, reads it back to prove it landed, and only then clears the outbox; a copy that cannot be saved is refused by name rather than overwritten. 43 new checks across seven bad stored values; 38 fail against the old code. 7414 passed, 0 failed. Branch `fix/outbox-feedback-robustness-2026-11-18`, commit `2f4c4625`, PR #216, open and draft, not merged.
+- [x] **SZA16, closed 19 November, systemic.** Every browser gate's documented default Chromium path (a Playwright revision number baked into `tests/chrome-path.js` and 77 other files) points at a revision no longer installed anywhere this session could check, so the gate commands this file itself documents crash at launch unless `CHROME` is set by hand. Confirmed real: `tests/funnel.js` and `tests/recordlink.js` both threw "Failed to launch chromium because executable doesn't exist" before `CHROME=/opt/pw-browsers/chromium` was set. 93 files found and fixed, more than the 77 first counted, read the count off the run and not off this line: the fallback is now `process.env.CHROME || chromium.executablePath()`, Playwright's own answer to which browser this install actually has, so it tracks the next upgrade with no file to edit. `tests/chrome-path.js` itself no longer approves any hardcoded pw-browsers path; it fails by name if one returns. With `CHROME` unset: `collide.js` 943 passed, `boot.js` 29 passed, `funnel.js` 276 passed, all 0 failed. `functional.js` hit a one hour limit on a busy machine with 3 unexplained FAIL lines, not yet confirmed against main; a clean rerun is still owed before this line is read as fully closed on that one gate. `tests/engine.js` 7371 passed, 0 failed, unchanged. Branch `fix/chrome-path-sweep-2026-11-18`, commit `cf934748`, PR #219, open and draft, not merged.
+- [x] **SZA17, closed 19 November.** `hostfree.py`, the engine's own host-free guard, erases every template literal interpolation before it scans, and does not know `WebSocket`, `globalThis` or `indexedDB` by name, so a real reach for the host inside a template string or through one of those three names would pass the guard clean. `atuned_src/hostfree.py:10`. Fixed: strings and templates are now read in one pass that keeps every `${}` slot and scans it as code, and the host-name list gains `WebSocket`, `globalThis`, `indexedDB`, `EventSource` and `importScripts`. Reproduced first against six separate one-line additions to a copy of the real engine, every one of which the old guard called clean. 14 new fixture files in `tests/fixtures/hostfree/` now run inside `BUILD-engine.sh` before the real scan; put the old guard back and it passes a known violation, exit 1. The real engine tree still scans clean, and `tests/engine.js` is unchanged at 7371 passed, 0 failed. Branch `fix/hostfree-blindspots-2026-11-18`, commit `869fefb0`. Superseded the same night: commit `45df7ca6` landed on `main` independently with a stronger rewrite of the whole file (one left to right pass instead of a chain of regular expressions, its own `--self-test`, and more host names than this branch added). PR #218 closed, not merged.
+- [x] **SZA18, closed 19 November.** The feedback relay accepts a body that becomes too long for Discord once its own backtick-escaping runs, contradicting the ceiling it states for itself. `functions/feedback.js:128`. Fixed in the same pass and file pair as SZA15. Reproduced first: a body of 4000 backtick characters measured 8008 characters once escaped for Discord, against Discord's own 4096 limit, and `fbValidate` accepted it. The escape is now one function, `fbFenced`; the length check measures its own output, so the check and the message actually sent cannot disagree. Covered by the checks cited under SZA15, plus a copy of the relay with the old measurement put back, which the suite catches. Branch `fix/outbox-feedback-robustness-2026-11-18`, commit `2f4c4625`, PR #216, open and draft, not merged.
+
+**Landed on `main`, 20 November, and why this list needed it.** Every SZA line above marked closed on 19 November with "PR ... open and draft, not merged" was closed on a branch, not in the product. Ten of the 18 had never reached `main`. They are on `main` now, each ported by file onto the current tree, each reproduced on `main` first by its own new checks failing, then passing: SZA12 `9d34a2c7`, SZA2 `937c7655`, SZA3 `a44ae59f` and `77c3748b`, SZA15 and SZA18 `e0268744`, SZA1, SZA8, SZA13 and SZA14 `55f0e2d7` (the SB18 band check now asks for "point", the word the boundary has used since the vocabulary merge), SZA9 `cf5317eb` (new, above), SZA4 continued `24acfb4b`, SZA6 continued `6bd7634b`. PRs #207, #208, #209, #210, #211, #212, #215 and #216 are superseded by those commits and can be closed. `tests/engine.js` 8014 passed, 0 failed on the combined tree. Still open: **SZA16** is not closed. Its branch (`cf934748`, PR #219) swaps the dead chromium-1194 fallback for `chromium.executablePath()`, but this sandbox's Playwright is 1.56.1, whose own answer is that same dead 1194 path, while the installed browser is 1243. So the fix changes nothing here; the gates run only with `CHROME` set, as CLAUDE.md already says. The real fix is the Playwright package and the browser agreeing, an environment change, not a code one. Found in passing and not fixed here: `tests/honeststatus.js` fails one check identically on `main` and on this work (an undo by the chord while storage refuses never says what it took back), and that gate is in no workflow.
 
 ## Round TA, 5 November. His word: post up everything so he can review on atuned.world, then keep going without waiting.
 
@@ -34792,6 +34811,8 @@ scroll.
 
   **Re-checked 11 November, after the crisis door itself was removed** (his ruling, "if you can't fix it in 1 batch, turn it off in 1 batch": `crisisBtn`/`crisisReachBtn`/`crisisFloor` in `atuned_src/ui/crisis.js` now return `''`). The round's own handshake document assumed this would make #138 moot, reasoning there would be "no crisis conversation path left to time out after." That reasoning does not hold: the self-harm phrase itself still trips `srcSafe` and still renders `#stsafe`'s own line in the live conversation (that was never gated by the door, which only ever added a button beside it), so the same sequence this case describes still runs, now with no button in the row at all. Re-run clean on the post-removal build: the timeout still reproduces, at 390 only, unchanged. This **confirms** #138 was never caused by the door's own markup, and it is **not struck**. Still open, still not root caused.
 
+  **Root caused, 17 November (wave 2, track T5). Not a click race: Bank is not on screen at 390, and the fix is a product call, not a test one.** `tests/safepage.js` alone on `c2bf52a2` still printed the held line at 390 and nowhere else. Playwright's own log for the timeout reads "element is not visible" for all five seconds, not "intercepts pointer events", and the Bank button (`#stapply`, which is where Commit went on 13 November) measures 0 by 0 there. It sits inside `#stls`, and the stacked Full Dashboard hides that list (`shell/head.html`, `.st-flow:not([data-focus="read"]) .st-ls{display:none}`) until the flow's focus is `read`. On a phone the only thing that sets that is a tap inside the Imprints chart or list (`stWire`, `ui/storyui.js`), and the List door the same sheet shows for it (`.st-flow:not([data-focus="read"]) .st-open{display:inline-flex}`) has no element: nothing in `atuned_src` makes a `.st-open`. At 1600 the three columns sit side by side and Bank is on screen at once, which is why only 390 ever failed. The first note above, "measures fully visible", described a build where Commit lived in the bar. A tap on the chart (it stands about 2,460 px down the page at 390) brings Bank to 69 by 44 and the press then keeps the spoken words exactly, leaves the line, sends no request and lets the next entry start, so the four safety checks the held case had been hiding at 390 now run there and pass. What stays held is the finding itself: **a person on a phone in the Full Dashboard has no visible door to Bank.** That is the owner's call (restore a List door, or put Bank somewhere that is always on screen), so it is not built here and `ui/storyui.js` is untouched. Question for him, written open: "On a phone, Bank, the button that saves what you wrote, is hidden until you tap the Imprints chart, which sits at the very bottom of the page, and the 'List' button that used to open it is gone. Do you want that button back near the writing box, or do you want Bank itself to stay on screen?"
+
 ## Round WC, 14 November. The profile-switch audit he asked for, run as a workflow, 18 real findings confirmed, most of one shape fixed at the one root cause
 
 He asked, after the Dashboard widget round: "if i select a profile, review
@@ -34927,6 +34948,24 @@ same markup is visibly colourful and correct at 1600. Screenshots:
 side) in this round's own scratch directory. Whoever picks this up should
 start by comparing computed styles on one `.st-pl` pill between 1600 and
 390 rather than re-deriving the repro above.
+
+**Resolved, 17 November (wave 2, track T5): not a paint defect. The capture
+could not see the rail, and the rail is now held in pixels.** Measured on
+`c2bf52a2` at 390 on Lance 100, the same profile: the rail's own screenshot
+lights 49 percent of its pixels and all 54 of its pills draw something over
+their own ground; at 1600 it is 42 percent and the same 54. At 390 the
+document does not scroll, the body does (document scrollHeight 844, body
+scrollHeight 2639), and the rail sits at 1671 px, below the first screen.
+`tools/shots.js` takes the first screen only (`fullPage:false`), so a crop at
+the rail's coordinates falls outside the image and reads solid ground, which
+is the "no pill, no label" of the note above. The same note's 21,099
+characters were markup (`innerHTML.length`, 21,309 now), not text: the rail
+carries 60 characters of text, icon only, since 13 November. What was missing
+was a check that reads pixels, because every check on the rail read the DOM:
+`stRailPixelGate` in `tests/stfull.js` now counts lit pixels of the rail and
+of each pill at both widths, the way `tools/monitor.js` counts the Field's
+canvas, and was shown to fail on a build whose rail is clipped away with
+`clip-path` (box, markup and computed styles intact) before it was trusted.
 
 ## Round WD, 14 November. His "same family" check on the six widgets, and the two real breaks it found
 
@@ -35209,3 +35248,128 @@ the last of those re-run clean start to finish after an earlier attempt
 was discarded for running concurrently with a rebuild. `engine.js` is
 unaffected (no engine file touched this round) and stayed at its last
 confirmed-clean count.
+
+
+## Round WI, 18 November. The Avatar's Purpose view without rails, and Archetypes hidden
+
+His words: "for the avatar purpose, let's remove the left and right rail. And
+let's hide the archetype tab under avatar... And then let's add this to the
+plate." The ruling and the plain account of the hidden view are in
+`DECISIONS.md`, 18 November.
+
+- [x] WI1 Purpose draws neither rail and the centre takes the row, at 1600
+  and 390 (`shell/head.html`, beside the fold rules). Held by
+  `tests/avatarpurpose.js`.
+- [x] WI2 Archetypes hidden behind `AV_ARCH_SHOWN` in `ui/avatarui.js`: no
+  pill, the Discover Avatar card opens Becoming, the Character page's twelve
+  are marks, a stale view paints Becoming. Code, data and saved ratings kept.
+- [ ] WI3 Becoming's rails go when the Avatar page redesign takes them off
+  everywhere (in flight, strategy only). Not touched here.
+- [ ] WI4 His call, open: the 1 to 5 rating was the only place a person could
+  say how much of an archetype they are on the Avatar page, and the Impact box
+  and the "How it runs through you" rows are shown nowhere else. Bring them
+  back, move them, or let them go. Nothing replaces them now.
+- [ ] WI5 His call, open: with Archetypes hidden, the Discover Avatar card
+  opens Becoming. Becoming or Purpose.
+- [ ] WI6 Found on the way, not fixed: `avSig` (ui/avatarui.js) does not
+  include `AV.sub`, so a door that sets the view and calls only `render()`
+  leaves the old view painted. Only the Character door did that, and it is a
+  mark while the view is hidden; it matters again if `AV_ARCH_SHOWN` goes back
+  on.
+- [ ] WI7 Found on the way, not fixed: at 390 the Purpose figure's left label
+  "Community" is cut at the screen's left edge, before and after this change.
+- [ ] WI8 Found on the way, not fixed: on Purpose at 1600 without rails the
+  figure is top aligned and not sticky, so a block under it sits empty while
+  the right column runs on (the symmetry ruling of 16 November). A layout call
+  for the Avatar redesign.
+## Round WP, 18 November. The Psyche panel holds Matrix, Superego and Action
+
+His words, twice, are in DECISIONS.md, "The Psyche panel holds Matrix,
+Superego and Action, and nothing else". The first read of them, "strip the
+panel to a matrix", was wrong, and he said so: everything under the word
+Psyche is in scope, and the panel is Matrix, Superego as four symbols, and
+Action as six bars.
+
+- [x] **WP1. Built on `fix/psyche-panel-rework`, not yet merged.** The book's
+  levels, Child emotions with its sliders, The chain with Outside the chain,
+  and every sub heading and paragraph of Superego and Laws of Action are out of
+  the Field's left rail. Superego is four ring symbols in one row with a
+  percent each. Action is six bars drawn by `rbRow`, the bar the CQ, vitality,
+  energy and flow rows use. `tests/psychepanel.js` holds it.
+- [x] **WP2. SV22's Psyche half, the hold on PR #188 and the TA4 and TA8
+  tension are closed by WP1.** The 3 October ruling only asked to add the
+  superego, which stays, so there was never a clash. PR #188 and PR #203 can be
+  closed when this merges.
+- [x] **WP3. SW5 is superseded.** "A visual on the left rail showing the chain
+  connected": he says get rid of the chain.
+- [ ] **WP4. SW2 is still open and the sliders did not wait for it.** The funnel
+  quiz asks none of the nine child emotions and the Intake's Emotional axes feed
+  nothing, so nothing a person types moves their nine charges except the four
+  letter seed and their stories.
+- [ ] **WP5. Entitlement reads the dash for everybody. First question to him.**
+  Its address, the unnamed Root address, has no child emotion, and the charge
+  at it is 0 for all sixteen people the engine carries (measured 18 November).
+  Keep four with the crown unlit (built), show three, or wire it (he names a
+  child emotion for address 8, or moves the amplifier to address 38). His
+  ruling on that address is open; the costs are in DECISIONS.md.
+- [ ] **WP6. A reading of the four defences from a person's own words.** The
+  Superego figure is the charge held at the defence's place in the body. The
+  engine's lean reader already has word lists that touch Justification and
+  Entitlement; nothing counts Perfectionism or Obsession.
+- [ ] **WP7. One phrase reads as a full Action bar.** A floor before a figure
+  shows would have to move the gate drill and the Journal with it.
+- [ ] **WP8. Awareness the reading and Awareness the gate share a rail.** Each
+  hover says its own meaning. A rename is his call.
+- [ ] **WP9. The wheel's dot colours lost their legend.** Hovering a dot names
+  its tier. Whether the colours need a line of their own is open.
+- [x] **WP10. The skeptic's four findings on WP1, closed 18 November.** A press
+  on a Superego symbol opens a card headed with the defence and its sentence
+  (WP5 and WP6 stay his call); the Matrix caption carries the meaning of child
+  emotions; the field anchor's card says what it is; the entry for the chain
+  was cut because no screen asked for it; `tests/psychepanel.js` (F) fails on
+  any entry the round added that nothing asks for.
+
+## Round DR. The descent roster, 21 November
+
+His words: "for the compass, for compass descent unreachable, there should be
+way more than 8 entries. You should have Charon as whatever its behavior name
+is, Geryon as whatever its behavior name is, Cerberus as whatever its name is,
+etc."
+
+- [x] **DR1. Built: nineteen reference rows on `DESCENT`**, before
+  Psychopathy, which stays last. Each figure on the Pass 1 roster in
+  `reviews/shadow-figure-research-2026-10-30.md` that already has a shipped
+  behaviour word somewhere in this build is shown by that word and by its own
+  existing line, never by the figure's name. The eight circle governors read
+  off `CIRCLES`' `by` field (Gatekeeping, Judgment, Insatiability,
+  Possessiveness, Reactivity, Vengeance, Violence, Fraud), and the rest off the
+  `MIRROR`, `HOME_POLES`, `PATHS` and `BLUEPRINT` words accepted 17 November
+  (Shadow, Compulsive Craving, Engineered Chaos, Sacrificial Extraction,
+  Extractive Control, Deception, Sabotage, Forced Growth, Poisoning, Coercive
+  Abduction, Forced Alteration). None has a `fam` or `pair`, the precedent
+  Dysregulation and Dissociation set, so the dark read lists them and never
+  lights one. Codes X35 to X53 in `engine/data/codes.js` exist only because
+  the codes gate needs every DESCENT name to resolve.
+  **This is the team's own best-judgment pick**, under his 21 November
+  ruling to stop the blockers from building, from already researched and
+  already ruled material with no new word. His to correct on the live app.
+- [x] **DR2. A pick named once.** The research file's 31 October narrative
+  review proposed Borrowed light (Lucifer), Bottomless want (Asmodeus),
+  Inside job (Set) and Others pay (Moloch). His 17 November acceptance is
+  later and is what the Compass already prints, so the rows use those words
+  (Shadow, Compulsive Craving, Engineered Chaos, Sacrificial Extraction) and a
+  figure never shows under two words. Druj is Deception, his 30 October word
+  (SM13).
+- [ ] **DR3. His: Baal.** Left out on the narrative review's own call, show
+  nothing until an opposite is documented. Its shipped word since 17 November
+  is Manipulation. One row to add if he wants it.
+- [ ] **DR4. Not added, nothing to reuse.** The Harpies, Nimrod and
+  Ephialtes are in no table in the engine. Satan frozen is Lucifer at the
+  ninth circle, carried by Shadow.
+
+## Round XA, 21 November. Ruler is Imperium, and the Let Go list is in
+
+- [x] **XA1. Ruler's domain closed, his words: "Ruler is Imperium."** SV3 closed. PR #177's archetype to domain port (`engine/archdom.js`, `engine/data/archdom.js`, `tools/regen-archetype-domain.cjs`, its 21 engine checks) brought onto main by hand on branch `ruler-imperium-letgo`, because main was re-rooted on 11 November and the PR branch shares no history with it. Snapshot regenerated at Reboot-OS `c58058c` (no row changed against the PR's `5347415`); generator `--check` MATCH, `--self-test` 9 passed, 0 failed.
+- [x] **XA2. The Let Go list, wired.** Cues in the engine (`letgoCues`, on `sniffStory().letgo`, no charge) and sixteen packs in the Wisdom school, each saved as a text file. Bundled, the team's default, recorded in `DECISIONS.md`. 28 engine checks.
+- [ ] **XA3. Open, not built: whether a Let Go match should ever move a reading.** Today it is shown to nothing and weighs nothing. Giving a matched phrase charge at its seat is a ruling on the reading.
+- [ ] **XA4. Open, found in passing: the first press on a fold in the Wisdom school does nothing in Chromium under Playwright; the second opens it.** Measured on the existing "Across every point" fold, which this round does not touch, the same as on the first cut of the packs. Not chased; the packs moved to buttons for another reason (an even grid) and open on the first press.

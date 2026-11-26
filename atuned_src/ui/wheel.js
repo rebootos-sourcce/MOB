@@ -292,7 +292,7 @@ function coreOpen(){return Math.max(coreLayerA(0),coreLayerA(1),coreLayerA(2));}
 /* and what it has resolved, by name. The names fed the line under the depth
    bar until BA2 cut that line. They stay, because the functional gate holds
    the order the layers arrive in by them. */
-const CORE_LAYER_NM=['the triad','the seven seats','the twenty one laws'];
+const CORE_LAYER_NM=['the triad','the seven assemblage points','the twenty one laws'];
 function coreResolved(){
  var n='';
  for(var i=0;i<CORE_STEP.length;i++) if(coreLayerA(i)>0.5)n=CORE_LAYER_NM[i];
@@ -413,7 +413,7 @@ function solCore(r,base){
     inside reads as inside. A dark base goes under it first, because a wash
     over the wheel's own web would let the chords show through the sphere. */
  if(open>0){g.beginPath();g.arc(CX,CY,cr0,0,TAU);
-  g.fillStyle=rgba(LIGHT()?[250,249,245]:[16,17,25],0.90*open);g.fill();}
+  g.fillStyle=rgba(LIGHT()?(COOL()?[247,250,254]:[250,249,245]):[16,17,25],0.90*open);g.fill();}
  g.beginPath();g.arc(CX,CY,cr0,0,TAU);g.fillStyle=rgba(gc,1-open*0.62);g.fill();
  g.lineWidth=Math.max(1.2,cr0*.05);g.strokeStyle=rgba(mixc(gc,[0,0,0],.45),.9);g.stroke();
  coreInside(r,cr0);
@@ -584,7 +584,7 @@ function verpArrows(cr0){
  if(!evid) V=V.map(function(v){return {k:v.k,nm:v.nm,side:v.side,mult:v.mult,d:v.d,pct:0,n:0};});
  var hi=V.filter(function(v){return v.side==='higher';});
  var lo=V.filter(function(v){return v.side==='lower';});
- var ink=INK(), bgc=LIGHT()?[248,247,243]:[23,25,34];
+ var ink=INK(), bgc=LIGHT()?(COOL()?[246,249,253]:[248,247,243]):[23,25,34];
  /* THE FAN SCALES WITH THE WHEEL, AND IS SPREAD UNTIL NOTHING IN IT TOUCHES,
     16 November. Every size here was a fixed pixel (a 13 disc, a 22 by 12
     pill, a 0.72 radian step, 34 past the core) tuned at 1600, where U is
@@ -735,7 +735,7 @@ const VIEWS=[
      DQ... neither is Shadow's weight." One word for one quantity, so this
      reads charge weight, DQ's own name, not Shadow's. */
   tip:'What you are carrying, and where. The core is coherence, the ring is your 108 addresses and 4 field anchors, the wash is charge weight.'},
- {k:'B',nm:'Patterns',  layers:'charge, plus the seats named, the fetters and the saboteurs',
+ {k:'B',nm:'Patterns',  layers:'charge, plus the points named, the fetters and the saboteurs',
   tip:'The nine fetters and the saboteurs running on top of the charge. Each bead is one, and the threads show which addresses built it.'},
  {k:'C',nm:'Chains',    layers:'patterns, plus complexes, hyper, super, archetypes',
   tip:'How a pattern compounds. Saboteur into complex into hyper complex into super complex, inward, each built from the one outside it.'},
@@ -1298,7 +1298,7 @@ function drawWheel0(r,L){
     collide gate, which holds every label inside it at every depth. */
  R_EDGE=(L===3)?R.dom:shellR;
  /* the halo a word inside the ring is stroked on, the stage's own ground */
- const halo=LIGHT()?'rgba(250,250,247,.88)':'rgba(16,16,16,.82)';
+ const halo=LIGHT()?(COOL()?'rgba(247,250,254,.88)':'rgba(250,250,247,.88)'):'rgba(16,16,16,.82)';
 
  /* --- chain chords, C and D --- */
  PUL.length=0;
@@ -1311,7 +1311,17 @@ function drawWheel0(r,L){
     weight/tension tier() machinery built for a thing that compounds. D
     gates it the same way lay() gates everything else: drawn only while
     fetters or their fade is still live. */
- if(D.fetters&&D.addresses){
+ /* AND NOT ON AN UNREAD FIELD, 21 November. Every other bead tier iterates
+    r.sabs, r.cxs, r.hys or r.sups, which compute() leaves empty when nothing
+    has been read, so those tiers fall silent on their own. The fetters iterate
+    CHILD, a fixed table of nine, so on a blank device they drew nine coloured
+    beads and a 0.14 alpha chord from every one of the 108 addresses into them.
+    Lance reported it from a screenshot as data points trying to render with no
+    profile selected, and it was: measured in a real Chromium on a blank
+    profile, unread true, every fetter's charge 0, nine fet targets on the
+    wheel. This gates on r.unread for the reason the law ticks below do: a read
+    field with a fetter at nought is still structure and still draws. */
+ if(D.fetters&&D.addresses&&!r.unread){
   var fetA2=LA.fetters.v;
   CHILD.forEach(function(c){
    var held=Math.min(1,(S.charge[c.nm]||0)/10), al=(0.14+held*0.34)*fetA2;
@@ -1529,9 +1539,19 @@ function drawWheel0(r,L){
     The tier is coherence said as a word, which was the fourth printing. */
 
  /* --- archetypes, C and D --- */
+ /* NOT ON AN UNREAD FIELD, 21 November, the follow up to the fetters above.
+    A blank profile carries the schema's default soul, arcs [0,1] and doms
+    [0] (engine/schema.js, from:'default'), and r.aff and DOMAIN are bumps
+    centred on it, so a person who had entered nothing saw the first
+    archetype lit as their lead at 12 o'clock, the second as their second,
+    and the first domain selected. Measured on a blank profile: unread true,
+    pi 0, si 1, aff[0] 1, doms [0]. That says something about them nobody
+    has said, which is what CLAUDE.md's unread ruling exists to stop. Both
+    rings draw at their floor on unread and keep their targets, as the law
+    ticks do, so an arc can still be pressed. */
  lay('archetypes',()=>{for(let j=0;j<12;j++){
-  const a0=j*30/360*TAU-Math.PI/2,a1=a0+30/360*TAU,v=r.aff[j],am=(a0+a1)/2;
-  const lead=j===r.pi,sec=j===r.si;
+  const a0=j*30/360*TAU-Math.PI/2,a1=a0+30/360*TAU,v=r.unread?0:r.aff[j],am=(a0+a1)/2;
+  const lead=!r.unread&&j===r.pi,sec=!r.unread&&j===r.si;
   arcP(R.arch-U*.016,R.arch,a0+.012,a1-.012);
   g.fillStyle=rgba(gc,lead?.55+v*.4:sec?.28+v*.28:.05+v*.1);g.fill();
   /* inward from the ring's own inner edge. Outward from 0.048 inside it, the
@@ -1649,10 +1669,11 @@ function drawWheel0(r,L){
     stage and not on LIGHT(), because on Snow the two disagree and the stage
     is right: the ring sits on #101010 there and already read 5.51, which the
     Snow palette would have taken down. Lumen draws as it shipped. */
+ /* the default domain is not lit on unread either, see the archetype ring */
  lay('domains',()=>{const rootP=S.theme==='lumen'?null:(stageLight()?PAL_LIGHT:PAL);
  for(let d=0;d<19;d++){
   const a0=d*(TAU/19)-Math.PI/2,a1=a0+TAU/19,am=a0+TAU/38,rn=DOMAINS[d].r;
-  const c=hx(rootP?rootP[ROOTSEAT[rn]]:ROOTCOL[rn]),sel=S.doms.indexOf(d)>=0,v=DOMAIN[d];
+  const c=hx(rootP?rootP[ROOTSEAT[rn]]:ROOTCOL[rn]),sel=!r.unread&&S.doms.indexOf(d)>=0,v=r.unread?0:DOMAIN[d];
   arcP(R.dom-U*.012,R.dom,a0+.008,a1-.008);g.fillStyle=rgba(c,sel?.95:.08+v*.45);g.fill();
   /* round its own nineteenth of the ring, just inside it, for the seat
      names' reason. Radially outward from the ring these were the furthest
@@ -1778,12 +1799,13 @@ function drawWheel0(r,L){
     unlike a saboteur's own object which compute() rebuilds each call; CHILD
     needs no such rebuild because it carries no per-frame reading of its
     own, only S.charge beside it. Size reads real held charge, same pattern
-    every other bead already scales by its own weight. All nine draw always
-    (there are only nine, and a fetter has nothing to be "not running":
+    every other bead already scales by its own weight. All nine draw on any
+    read field, and none on an unread one (there are only nine, and a fetter has nothing to be "not running":
     trace.js's own words, "carries no address-level content of its own", so
     there is no running/not-running split to draw here the way a saboteur
     has one). */
- lay('fetters',()=>{CHILD.forEach(c=>bead(c,R.fet,4.2+Math.min(1,(S.charge[c.nm]||0)/10)*2.4,bc(c.seat)));
+ /* the beads go silent on unread with their chords, see FETTER CHORDS above */
+ lay('fetters',()=>{if(r.unread)return;CHILD.forEach(c=>bead(c,R.fet,4.2+Math.min(1,(S.charge[c.nm]||0)/10)*2.4,bc(c.seat)));
   if(L===1)CHILD.forEach(c=>nameplate(c,R.fet,bc(c.seat),5.4));});
  lay('saboteurs',()=>{r.sabs.forEach(s=>bead(s,R.sab,5.4,bc(s.parts[0].b)));
   /* B names the saboteurs, because they are the layer. C and D name only the
@@ -1815,7 +1837,7 @@ function drawSig(r){
  /* and the layer set, because two sets can need the same room: Blueprint with
     the laws off draws at the same effView as Blueprint with them on */
  return [effView(),Object.keys(layVisible()).sort().join('.'),S.tab,S.who,S.hover&&S.hover.k,S.pin&&(S.pin.nm||S.pin.k),
-         LIGHT()?1:0,S.zoom.toFixed(3),S.panx|0,S.pany|0,
+         LIGHT()?1:0,S.theme,S.zoom.toFixed(3),S.panx|0,S.pany|0,
          d.toFixed(3),r.CQ.toFixed(3)].join('|');}
 function draw(r){
  /* The ease used to be a flat .14 of the remaining distance per frame, which

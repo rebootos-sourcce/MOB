@@ -423,5 +423,72 @@ g('EV11 · SK3, behaviour is evidence on the ledger and never a claim, on the wh
  ok(JSON.stringify(srcBehave('My mum kept putting things off.').map(r=>r.said))==='["other"]'&&!evLedger('My mum kept putting things off.',[],{}).behave.delay,
   'someone else\'s behaviour is kept as theirs and is not listed as the writer\'s');}
 
+g('SK13 · what the microphone may hand in, three more acts, a short leash for vent and move on, and what it can say back (18 November)');
+{const {srcAct,srcIntent,srcSafe}=E, srcNoise=E.srcNoise||(()=>null), srcEcho=E.srcEcho||(()=>null), srcSpot=E.srcSpot||(()=>null), a=t=>{const r=srcAct(t);return r&&r.act;}, it=t=>{const r=srcIntent(t);return r&&r.intent;};
+ /* the door. Every word on the noise list is a word the sniffer reads nothing in, so the door never
+    refuses a feeling, and "mhm", "uh huh", "hmm" and "mm" are a yes.
+    CORRECTED 19 November, run 1862's own gates-fast failure: this group is dated 18 November, the
+    same wave-b era ui/storyui.js's own comment already named and overrode for this exact word
+    ("wave-b's own integration note... added hm, hmm, hmmm, mm, mmm and huh back onto this list, is
+    not carried forward... would break the gate already merged and green on main"). hmm and mm move
+    to the not-noise list below, the third and last place carrying the stale ruling (ui/storyui.js's
+    ST_FILLER and tests/srcconvo.js were the other two, already fixed this session). */
+ ok(['uh','um','umm','oh','the','a','you','I','so','oh so','the a','uh um'].every(t=>srcNoise(t)),
+  'a lone filler or function word the recogniser caught, or two of them, is noise');
+ ok(['yes','no','okay','sure','maybe','fine','afraid','boss','mhm','uh huh','mm hmm','hmm','mm','bye','hello','thanks','tired','guilty','what','who','how','why','so what','sorry','wait','help'].every(t=>!srcNoise(t)),
+  'a short answer, a greeting, a feeling, and a yes in sounds are not noise');
+ ok(!srcNoise("I don't know")&&!srcNoise('not really')&&!srcNoise('I guess')&&!srcNoise('I am so afraid')&&!srcNoise('the boss'),
+  'two and three word answers that carry a word that means something are kept: '+['I don\'t know','not really','I guess','the boss'].map(t=>srcNoise(t)).join());
+ ok(!srcNoise('uh oh the')&&!srcNoise('what is it')&&!srcNoise('so I I I'),'and three words of anything are speech, not noise');
+ ok(!srcNoise('what is this')&&!srcNoise('is this on')&&!srcNoise('who are you')&&!srcNoise('how are you')&&!srcNoise('never mind'),
+  'a question to Source AI is made of words on the list and is not noise: what is this, is this on');
+ ok(!srcNoise('I want to die')&&!srcNoise('kill myself')&&srcSafe('I want to die')&&!srcNoise('the end of me, I want to die'),
+  'the door to help is never noise, whatever the list says');
+ /* and not by the three I tried: every phrase the safe table carries, said alone and with a noise word on either side */
+ const safeAll=[].concat.apply([],(E.SAFE_WORDS||[]).map(r=>r.say||[]));
+ ok(safeAll.length>0&&safeAll.every(w=>!srcNoise(w)&&!srcNoise('uh '+w+' um')),'every phrase the safe table carries is a turn and never noise, alone or between two ums: '+safeAll.length+' phrases');
+ ok(srcNoise('')&&srcNoise('   ')&&srcNoise('...'),'and nothing at all is noise');
+ const noiseRead=(E.SRC_NOISE||['(the list is not there)']).filter(w=>{const p=parseStory(w);return (p.hits&&p.hits.length)||(p.imprints&&p.imprints.length);});
+ ok(noiseRead.length===0,'no word on the noise list is one the sniffer reads at a seat or as a charge: '+JSON.stringify(noiseRead));
+ /* the echo */
+ const L='Hello, Lance. What are we talking about today?';
+ ok(['Hello Lance','what are we talking about today','talking about today','what are we','Hello Lance what are we talking about','we talking about'].every(t=>srcEcho(t,L)),
+  'a run of two words or more of the line, from any part of it, is its echo');
+ ok(!srcEcho('today',L)&&!srcEcho('hello',L)&&!srcEcho('my boss called me in again',L)&&!srcEcho('I was talking about my boss today',L)&&!srcEcho('',L)&&!srcEcho('hello',''),
+  'a single word of it, a sentence of the person\'s own, and an empty line are not');
+ ok(srcEcho('what are we talking about uh today',L)&&!srcEcho('we are talking about my boss today ok',L)===true,
+  'three words or more of which four in five are its own are its echo, and a person\'s sentence that borrows a few is not');
+ /* three acts */
+ ok(a('You keep repeating yourself.')==='complain'&&a('You already asked me that')==='complain'&&a('you just said that')==='complain'&&a('stop repeating')==='complain',
+  'a complaint that it repeats is heard');
+ ok(a('he asked the same question again and again')===null&&a('I keep repeating myself to her')===null,'and the same words about someone else are a story');
+ ok(a('Thank you.')==='thanks'&&a('Thanks!')==='thanks'&&a('thanks a lot')==='thanks','thanks is heard');
+ ok(a('No thanks')===null&&a('I said thanks and then she left')===null&&a('she said thank you to him')===null,'and a no thanks, or a thanks inside a story, is not');
+ ok(a('Thanks for nothing, he said.')===null&&a('Bye, she said.')===null&&a('You keep saying that I should relax.')===null&&a('You keep saying that')==='complain'&&a('Thanks, I said')===null,
+  'and a thanks or a goodbye that someone in the story said, or a complaint longer than a complaint to Source AI runs, is a story');
+ ok(a('Bye.')==='bye'&&a('Goodbye')==='bye'&&a('That is all')==='bye'&&a('good night')==='bye','a goodbye is heard');
+ ok(a('that is all he said to me')===null&&a('I said bye to her')===null&&a('she said bye')===null,'and a bye inside a story is not');
+ ok(a('Hello, can you hear me?')==='check'&&a('hello')==='greet'&&a('okay')==='brief','the four that were there still read as they did');
+ /* vent and move on, short turns, and not about someone else */
+ ok(it('I wish my mother would just listen to me')===null&&it('I just want to talk about my day')===null&&it('My dad told me to stop talking at dinner')===null,
+  'a wish about someone else, the start of a story, and what a father said are not a request to vent or to stop');
+ ok(it('I told her I need to vent about work, my boss yelled at me for an hour and I could not say anything back')===null&&it('I told her I need to vent')===null,
+  'a request said about the past, or inside a long story, is not one');
+ ok(it('Just listen.')==='vent'&&it('I just want to vent')==='vent'&&it('Let me vent')==='vent','and a short request to be heard still is');
+ ok(it('Never mind.')==='move_on'&&it("Let's move on.")==='move_on'&&it('Drop it.')==='move_on'&&it('Okay that is enough')==='move_on'&&it('Can we move on?')==='move_on'
+  &&it('Stop asking')==='move_on'&&it("I can't move on from him")===null,'the exits that were missing are heard, and grief about moving on is still not one');
+ ok(it('Never mind the cost, I just felt sick the whole way home')===null&&it('Drop it in the bin, he said, and I froze')===null&&it('That is enough of that, my boss yelled at me')===null,
+  'and an exit that opens a longer sentence about something else is a story: Move on is final for the entry, so it is read only in a short turn');
+ /* what it can say back */
+ const sp=t=>{const r=srcSpot(t);return r&&(r.kind+':'+r.words);};
+ ok(sp('My boss gave my idea to someone else.')==='who:My boss'&&sp('My sister called last night.')==='who:My sister'&&sp('Her mother yelled at me')==='who:Her mother',
+  'a person in the story is said back with the word that claims them, in the letters the person typed');
+ ok(sp('I froze.')==='did:I froze'&&sp('He walked off and I just left.')==='did:I just left'&&sp('I snapped at my kids.')==='did:I snapped',
+  'and a thing the person did, in "I" and the verb');
+ ok(sp('Yeah so I had a weird day')===null&&sp('Afraid all night')===null&&sp('I did not say anything')===null&&sp('I want to die')===null&&sp('')===null,
+  'and nothing it does not hold, a pronoun, a phrase span, or the door to help');
+ const afraid=srcHear('Afraid all night.\nStill afraid when he called.',null).top;
+ ok(afraid&&afraid.words.length===1,'the same word in two cases is one word: '+JSON.stringify(afraid&&afraid.words));}
+
 console.log('\n===== '+P+' passed, '+F+' failed =====');
 process.exit(F?1:0);

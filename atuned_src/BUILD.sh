@@ -160,3 +160,15 @@ python3 ../tools/slim.py "$OUT" "$(dirname "$OUT")/atuned-slim.html"
 # tools/products.js in gates-fast fails a commit whose products disagree.
 # Resolved against the repo root, which an absolute path passes through.
 node ../tools/pack.js "$(cd "$(dirname "$OUT")" && pwd)/atuned-slim.html" "$(cd "$(dirname "$OUT")" && pwd)/atuned-packed.html"
+
+# THE FUNNEL TOO, ON EVERY BUILD, 21 November. funnel/dist/atuned-quiz.html
+# carries engine.js inlined and every funnel page carries the tokens.css this
+# build just wrote, so they are build products of this run as much as the
+# packed file is. They were a third command a seat had to remember, and on 21
+# November seats rebuilt engine.js and source.html without it often enough that
+# "committed build products match their source" in gates-fast read red after
+# merge upon merge, with the quiz one engine behind every time. The stamp was
+# never the cause: tools/products.js sets it aside. Run last, so the quiz
+# carries the engine.js and tokens.css that sit beside it now. Under half a
+# second. ATUNED_NO_FUNNEL=1 skips it, for a caller that runs it itself.
+if [ -z "${ATUNED_NO_FUNNEL:-}" ]; then ../funnel/BUILD-single.sh; fi

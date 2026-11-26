@@ -685,9 +685,17 @@ function pSave(){ if(!CURP)return false; saveProfile(CURP);
  if(PROFILES.indexOf(CURP)<0){ SAVE_OK=false; SAVE_ERR='NotARecord'; return false; }
  return pPersist(); }
 /* checked before the push, so a history nobody can read does not grow */
+/* AND A REFUSED WRITE TAKES ITS ROW BACK OUT. The row was pushed and left in
+   memory when pPersist failed, so the next save that did land wrote it to disk
+   with a timestamp from a moment the person was told nothing was saved, and a
+   second press after a refusal wrote two. pSaveSnap below already rolled its
+   staged row back; this is the same truncation. */
 function pSnap(){ if(!CURP)return false;
  if(PROFILES.indexOf(CURP)<0){ SAVE_OK=false; SAVE_ERR='NotARecord'; return false; }
- CURP.history.push(snapshot(CURP)); return pPersist(); }
+ var n=CURP.history.length;
+ CURP.history.push(snapshot(CURP));
+ if(!pPersist()){ CURP.history.length=n; return false; }
+ return true; }
 /* COMMIT A RECORD AND ITS SNAPSHOT IN ONE STORE WRITE. A finished release
    changes the working state and then snapshots it. Calling pSave followed
    by pSnap wrote twice: the first write could land while the second failed,
@@ -944,7 +952,7 @@ function vRitual(errs,i,x){
  q.band='';
  if(x.band!==undefined&&x.band!==''){
   if(BANDS.indexOf(x.band)>=0)q.band=x.band;
-  else errs.push(path+'.band is not a seat: '+x.band);}
+  else errs.push(path+'.band is not a point: '+x.band);}
  /* A STEP NAMES A PRACTICE OR IT NAMES NOTHING, and ritSteps drops what it
     cannot find, so an unnamed step reads on the surface as a ritual with fewer
     steps than it was saved with. A list longer than the library is not a
@@ -1076,14 +1084,14 @@ var ENT_VERDICT_KEYS=['seat','v','fix'];
 function vEntryVerdicts(errs,path,x){
  if(!Array.isArray(x)){errs.push(path+' is not a list'); return null;}
  if(x.length>evKeptMax()){errs.push(path+' holds '+x.length+', which is more than the '
-  +evKeptMax()+' seats there are'); return null;}
+  +evKeptMax()+' points there are'); return null;}
  var bad=errs.length, out=[], seen={};
  x.forEach(function(r,j){
   var rp=path+'['+j+']';
   if(!r||typeof r!=='object'||Array.isArray(r)){errs.push(rp+' is not an object'); return;}
   var b0=errs.length;
   vKeys(errs,rp,r,ENT_VERDICT_KEYS);
-  if(!K2BAND[r.seat])errs.push(rp+'.seat names no seat: '+r.seat);
+  if(!K2BAND[r.seat])errs.push(rp+'.seat names no point: '+r.seat);
   else if(seen[r.seat])errs.push(rp+' repeats '+r.seat);
   if(!EV_VERDICT.hasOwnProperty(r.v))errs.push(rp+'.v is not an answer: '+r.v);
   var q={seat:r.seat, v:r.v};
@@ -1127,7 +1135,7 @@ function vEntry(errs,i,x){
   if(!x.bands||typeof x.bands!=='object'||Array.isArray(x.bands))
    errs.push(path+'.bands is not an object');
   else Object.keys(x.bands).forEach(function(k){
-   if(!K2BAND[k]){errs.push(path+'.bands names no seat: '+k); return;}
+   if(!K2BAND[k]){errs.push(path+'.bands names no point: '+k); return;}
    var v=vRange(errs,path+'.bands.'+k,x.bands[k],0,1e6);
    if(v!==null)q.bands[k]=v;});}
  /* THE LEXICON THAT READ IT, 19.B6. Missing is an entry from before the stamp
@@ -1148,7 +1156,7 @@ function vEntry(errs,i,x){
   if(!Array.isArray(x.asked))errs.push(path+'.asked is not a list');
   else if(x.asked.length>srcAskedMax())
    errs.push(path+'.asked holds '+x.asked.length+', which is more than the '
-    +srcAskedMax()+' kinds and seats there are');
+    +srcAskedMax()+' kinds and points there are');
   else{
    var ak=[];
    x.asked.forEach(function(r,j){
@@ -1158,7 +1166,7 @@ function vEntry(errs,i,x){
     Object.keys(r).forEach(function(k){
      if(['k','seat','a'].indexOf(k)<0){errs.push(ap+' may not carry '+k);bad++;}});
     if(SRC_KINDS.indexOf(r.k)<0){errs.push(ap+'.k is not a question kind: '+r.k);bad++;}
-    if(r.seat!==null&&!K2BAND[r.seat]){errs.push(ap+'.seat names no seat: '+r.seat);bad++;}
+    if(r.seat!==null&&!K2BAND[r.seat]){errs.push(ap+'.seat names no point: '+r.seat);bad++;}
     if(SRC_OUTCOMES.indexOf(r.a)<0){errs.push(ap+'.a is not an outcome: '+r.a);bad++;}
     if(!bad)ak.push({k:r.k, seat:r.seat, a:r.a});});
    q.asked=ak;}}
@@ -1352,7 +1360,20 @@ function validateProfile(o,ctx){
   /* a key missing from this list is dropped on every load, so the switch
      would read on for one session and off after a reload with nothing said */
   ['quiet','model','tone','voice','buzz','practitioner','sfx','sfxoff','onboarded','tutorialSeen','paidWelcomed','studio'].forEach(function(k){
-   if(o.ui[k]!==undefined)p.ui[k]=!!o.ui[k];});}
+   if(o.ui[k]!==undefined)p.ui[k]=!!o.ui[k];});
+  /* THE ONE TEXT PREFERENCE, the Character page's last open mask, written by
+     uiSet('chmask') from ui/character.js, ui/drills.js and ui/storyui.js. The
+     list above is booleans only and never named it, so it was written to disk
+     on every pick and dropped on every load, and the page opened on Child
+     again after each reload: the exact failure the comment on that list
+     describes. It is a mask's name or it is refused by name. The roster is
+     MASKS and not MASKS_READ because ui/drills.js writes from MASKS; a hidden
+     mask is still a real one, and chLast in ui/character.js already opens the
+     first readable mask when the one kept is not shown. */
+  if(o.ui.chmask!==undefined&&o.ui.chmask!==null){
+   if(typeof o.ui.chmask==='string'&&MASKS.some(function(m){return m.nm===o.ui.chmask;}))
+    p.ui.chmask=o.ui.chmask;
+   else errs.push('ui.chmask is not a mask: '+JSON.stringify(o.ui.chmask).slice(0,40));}}
  /* the seed is a stated type, so it is one of sixteen or it is nothing. */
  if(o.seed&&typeof o.seed==='object'){
   if(!seedValid(o.seed.type))errs.push('seed type '+o.seed.type+' is not one of the sixteen');
@@ -1534,7 +1555,7 @@ function validateProfile(o,ctx){
     .map(function(x){var q={be:x.be, notbe:x.notbe};
      if(x.seat!==undefined&&x.seat!==null){
       if(BANDS.indexOf(x.seat)>=0)q.seat=x.seat;
-      else errs.push('avatar.pairs seat '+JSON.stringify(x.seat)+' is not a seat');}
+      else errs.push('avatar.pairs point '+JSON.stringify(x.seat)+' is not a point');}
      /* THE PAIR'S ID, round RB, S2. Kept when it is one; refused by name when
         it is something else, because a weight kept against a pair is found by
         it. Missing is an older pair and is given one below. */
@@ -1592,7 +1613,7 @@ function validateProfile(o,ctx){
   if(o.avatar.tags!==undefined&&o.avatar.tags!==null){
    if(!obj(o.avatar.tags))errs.push('avatar.tags is not an object');
    else Object.keys(o.avatar.tags).forEach(function(b){var t=o.avatar.tags[b];
-    if(BANDS.indexOf(b)<0){errs.push('avatar.tags names '+JSON.stringify(b)+', which is not a seat'); return;}
+    if(BANDS.indexOf(b)<0){errs.push('avatar.tags names '+JSON.stringify(b)+', which is not a point'); return;}
     if(!obj(t)){errs.push('avatar.tags.'+b+' is not an object'); return;}
     var q={add:[],off:[]}, bad=false;
     ['add','off'].forEach(function(f){var a=t[f]; if(a===undefined)return;
@@ -1699,7 +1720,11 @@ function validateProfile(o,ctx){
    var lp='history['+i+'].lawNow';
    if(typeof x.lawNow!=='object'||Array.isArray(x.lawNow))errs.push(lp+' is not an object');
    else{
-    var WAS={}; Object.keys(LAW_WAS).forEach(function(k){WAS[LAW_WAS[k]]=k;});
+    /* no prototype: on a plain object WAS.constructor is Object itself, so a
+       key of "constructor" or "toString" read as an old law name and was kept
+       under the function's text as its key. pImport took it and the next boot
+       loaded it back. A key that names no law is refused by name. */
+    var WAS=Object.create(null); Object.keys(LAW_WAS).forEach(function(k){WAS[LAW_WAS[k]]=k;});
     var lw={};
     Object.keys(x.lawNow).forEach(function(k){
      var nm=SINAMES.indexOf(k)>=0?k:(WAS[k]||null);
@@ -2305,6 +2330,15 @@ function pImport(txt,keepId){
  var o; try{ o=JSON.parse(txt); }catch(e){ IMPORT_ERR=['not valid JSON']; return null; }
  var v=validateProfile(o);
  if(!v.ok){ IMPORT_ERR=v.errs; return null; }
+ /* A BACKUP IS A RECORD OF WORK, NOT PROOF OF PAYMENT. J11: a pasted
+    plan:{tier:'four',status:'active'} used to open every paid sight layer.
+    A JSON file, URL fragment and sync snapshot are all user-editable; even
+    a syntactically valid plan in them cannot carry billing authority.
+    Start from the engine's canonical free plan. A legitimate signed-in
+    subscription is applied separately by ui/auth.js from /v1/me, and
+    offline imports remain free until the server can verify them.
+    This is a client display boundary, not a substitute for server gates. */
+ v.profile.plan=blankProfile('Imported').plan;
  /* A RECORD THAT REACHED THIS BOUNDARY IS NEVER A BLANK FIRST RUN. The
     onboarding tour exists for a person with nothing read yet; the quiz
     link, a pasted record and a restored file all carry a real story

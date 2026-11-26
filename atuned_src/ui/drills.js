@@ -82,11 +82,21 @@ function rdOpen(){
     length of one drill (RD_INRAIL, set by pmAnswer for the shelf's rows).
     A press on the stage never sets it, so the rule above holds for every
     one of those exactly as it did. */
- if((beside||RD_INRAIL)&&sec&&sec.scrollIntoView){
-  try{sec.scrollIntoView({block:'start',behavior:REDUCED?'auto':'smooth'});}
-  catch(e){sec.scrollIntoView();}}
+ /* THE ANSWER A PRESS IS BROUGHT TO IS THE READING, 18 November. Selection is the
+    last block of the rail now, under the stack, and Insight is the first, so
+    bringing the card into view scrolled the reading, the thing a person pressed
+    to read, off the top of the rail. Where the Insight section is on screen it
+    is the target; where it is not (the Story, the Summary and the Character
+    page keep only Selection) the card is, as it always was. */
+ var go=sec;
+ try{var iz=document.querySelector('.lsec[data-rail="right"][data-sec="you"]');
+  if(iz&&iz.getBoundingClientRect().height>0)go=iz;}catch(e){}
+ if((beside||RD_INRAIL)&&go&&go.scrollIntoView){
+  try{go.scrollIntoView({block:'start',behavior:REDUCED?'auto':'smooth'});}
+  catch(e){go.scrollIntoView();}}
  return b;}
 function rdClose(){ANA_PICK=null;S.pin=null;
+ if(typeof insClear==='function')insClear();
  /* AND BODY'S PICK GOES DOWN WITH THE ANSWER, now that Body answers here. The
     way back is where every surface puts its pick down, the Field's S.pin and
     Analytics' ANA_PICK above, and Body's was missing because Body never
@@ -149,8 +159,13 @@ function rdCase(h){
     &&t.split(/\s+/).length<=4&&/^[A-Z0-9]/.test(t);
    return '<div class="'+cls+(label?'':' plain')+'">'+body+'</div>';});}
 function rdShell(h){
+ /* WHAT THE DOOR SAID IT WAS OPENING BECOMES THE SELECTION, 18 November. A door
+    announces itself with insDoor (ui/insightui.js) just before it calls this,
+    and a card that never did leaves the selection empty, so the Insight reading
+    can never name one thing while Selection shows another. */
+ if(typeof insTake==='function')insTake();
  h=rdCase(h);
- var b=rdOpen(); if(!b)return;
+ var b=rdOpen(); if(!b){if(typeof insRefresh==='function')insRefresh();return;}
  var backTo=(typeof TABDEF!=='undefined'&&typeof S!=='undefined')
   ? (TABDEF.filter(function(t){return t.k===S.tab;})[0]||{}).nm : '';
  b.innerHTML='<div class="rd-card">'
@@ -167,7 +182,9 @@ function rdShell(h){
   +h
   +'<button class="btn" id="rdx" style="margin-top:14px">Close</button></div>';
  var x=document.getElementById('rdx'); if(x)x.onclick=rdClose;
- var k=document.getElementById('rdback'); if(k)k.onclick=rdClose;}
+ var k=document.getElementById('rdback'); if(k)k.onclick=rdClose;
+ /* the reading and the stack follow the card that was just opened, in place */
+ if(typeof insRefresh==='function')insRefresh();}
 /* ESCAPE LEAVES, the same as every other sheet in this product. It is bound
    once rather than per drill, and it only fires when a drill is actually open,
    so it never eats an escape another surface wanted. */
@@ -178,8 +195,30 @@ addEventListener('keydown',function(e){
  rdClose();});
 /* addrRow lives in component.js, beside the component it renders. */
 
+function runDrillRail(o){
+ var lv=leaves(o).slice().sort(function(a,b){return (+b.sq||0)-(+a.sq||0);});
+ var TN={sup:'Super complex',hy:'Hyper complex',cx:'Complex',sab:'Saboteur'};
+ var h='<div class="pm-eye">'+(TN[o.kind]||'Pattern')+(o.over?', overshot':'')+'</div>'
+  +'<div class="ad-nm">'+esc(traceSummaryBase(o.nm))+'</div>'
+  +'<div class="ad-sub">'+esc(fmtPct('chain',o.w))+(o.auth?'. '+esc(o.auth):'')+'</div>'
+  +(o.kind==='sab'&&o.unnamed?'<div class="ad-sub">Inferred. The library has no name for this cluster, so it is named for its point and its child emotion.</div>':'')
+  +'<div class="pm-eye">Addresses</div><div class="ad-rows">'
+  +lv.slice(0,8).map(addrRow).join('')
+  +(lv.length>8?'<div class="pm-more">and '+(lv.length-8)+' more</div>':'')+'</div>';
+ rdShell(h);}
 function runDrill(o){
  if(!o){rdClose();return;}
+ /* THE RAIL'S CARD IS IDENTITY ONLY, 18 November: the name, the kind and the
+    percent, and the addresses under it as rows that open the address drill.
+    What it used to print beyond that, The opposite, What happens, The
+    sentence it runs, What becomes available, Next move, Runs under and Made
+    of, was Source AI's reading borrowed into the wrong section (his words:
+    "the information that's within that selection panel looks like it's
+    borrowing some information from the insight panel"), and it is composed
+    into the Insight reading now, from the same records (engine/insight.js). The
+    Wisdom school opens this same door to say what a pattern is, and there the
+    full card stays as it was. */
+ if(!(typeof kbAnsOn==='function'&&kbAnsOn())){runDrillRail(o);return;}
  var lv=leaves(o), bs=[], fets=[];
  lv.forEach(function(n){if(bs.indexOf(n.b)<0)bs.push(n.b);
   if(n.cf&&fets.indexOf(n.cf)<0)fets.push(n.cf);});
@@ -190,7 +229,7 @@ function runDrill(o){
  var h='<div class="pm-eye">'+(TN[o.kind]||'Pattern')+(o.over?', overshot':'')+'</div>'
   +'<div class="ad-nm">'+esc(o.nm)+'</div>'
   +(o.auth?'<div class="ad-sub">'+esc(o.auth)+'</div>':'')
-  +(o.kind==='sab'&&o.unnamed?'<div class="ad-sub">Inferred. The library has no name for this cluster, so it is named for its seat and its child emotion.</div>'
+  +(o.kind==='sab'&&o.unnamed?'<div class="ad-sub">Inferred. The library has no name for this cluster, so it is named for its point and its child emotion.</div>'
    :(o.kind==='sab'&&SAB_PI.indexOf(o.nm)>=0?'<div class="ad-sub">One of the ten Positive Intelligence saboteurs, after Shirzad Chamine'
      +(SAB_PI_AS[o.nm]?', who calls it the '+esc(SAB_PI_AS[o.nm]):'')+'.</div>':''))
   /* HOW IT RUNS THROUGH YOU, FROM THE RECORD. 4 November, his live reaction
@@ -281,8 +320,9 @@ function runDrill(o){
      edged block he called "an old legacy design" on the Flow cards. And
      Feeds up said a second time what the Insight box above it already says,
      "It runs inside Predatory". So the drill ends on Made of. traceSummary
-     is not dropped: insightSay in ui/ui.js reads the stack it resolves and
-     quotes the records it finds, which is the job he gave the summary box.
+     is not dropped: insightRead (engine/insight.js, from 18 November) reads the
+     same records and quotes the lines it finds, which is the job he gave the
+     summary box.
      The address drill's blend in nodeDrillHtml and the fetter drill's
      tsBlockHtml were left as they landed, read then as different surfaces,
      and that was wrong: the ruling (DECISIONS.md, "The selection summary
@@ -304,7 +344,7 @@ function runDrill(o){
    Analytics shows the same card inside its trail (ui/analytics.js), so there
    is one card and two doors, not two cards. o.ana marks the held rows so a
    press on one stays inside the Analytics trail. */
-function runLawDrill(l){if(l)rdShell(lawDrillHtml(l));}
+function runLawDrill(l){if(l){insDoor('law',l.nm);rdShell(lawDrillHtml(l));}}
 function lawDrillHtml(l,o){
  o=o||{};
  var v=S.law[l.nm], seg=W.filter(function(n){return n.b===l.b;});
@@ -338,7 +378,7 @@ function lawDrillHtml(l,o){
      mechanism: a law's seat relief scales down what is held there, so a shut
      law leaves more of the charge held. DESIGN-tooltip-copy.md, example 6. */
   +(!read?'Not read yet.'
-   :v<4?'This law is <b>shut</b>. A shut law lets more charge stay held at its seat.'
+   :v<4?'This law is <b>shut</b>. A shut law lets more charge stay held at its point.'
    :v>=7?'This law is <b>open</b>. It is one of the things carrying your coherence.'
    :'Working but not strong. It holds in some places and slips in others.')
   /* the count of what is held is the fact. Against the seat's total it is a
@@ -391,9 +431,12 @@ function anchorSeat(n){return !n?null:n.b==='Field-Above'?'Crown':n.b==='Field-B
 function anchorSays(n){var s=anchorSeat(n); if(!s)return null;
  var p=Math.max(0,Math.min(100,Math.round((n.sq||0)*10)));
  return 'No nerve sits under it, so it holds no charge of its own and no saboteur forms here. '
-  +'It carries the average weight of the '+s.toLowerCase()+' seat it extends, <b>'+p+'%</b>. '
+  +'It carries the average weight of the '+s.toLowerCase()+' point it extends, <b>'+p+'%</b>. '
   +'That weight counts in decoherence, your total shadow, and nowhere in the chain.';}
-function runNodeDrill(n){if(n)rdShell(nodeDrillHtml(n));}
+/* o.amp names a Superego defence when the press came from one of its four
+   symbols (renderAmplifiers, ui/ui.js), and the card then says which defence
+   it opened for. See the header below. */
+function runNodeDrill(n,o){if(n){insDoor('addr',null,n.i);rdShell(nodeDrillHtml(n,o));}}
 function nodeDrillHtml(n,o){
  o=o||{};
  var c=CHILD.filter(function(x){return x.nm===n.cf;})[0]||{};
@@ -401,8 +444,37 @@ function nodeDrillHtml(n,o){
  var owners=[].concat(r.sups,r.hys,r.cxs,r.sabs).filter(function(o){return leaves(o).indexOf(n)>=0;});
  /* The header read "Address 007, root". The index is a storage key and a
     person's Scarcity is not 007 to them. The seat is what carries meaning. */
- var h='<div class="pm-eye">'+esc(n.b)+'</div>'
-  +'<div class="ad-nm">'+esc(n.k)+'</div>'
+ /* A PRESS ON A SUPEREGO SYMBOL SAYS WHICH DEFENCE IT IS. 18 November, the
+    skeptic's finding on the Psyche round: the card opened headed "Solar,
+    Arrogance" and never said Justification, so a person who pressed the
+    balance and read 54% could take the card for a reading of Justification,
+    which the figure is not. Its own figure is the charge left at the address
+    the book seats the defence at, and the card now opens on the defence's
+    name and on the one sentence the meaning table keeps for it, the same one
+    the symbol's hover carries (unpackOf, engine/data/gloss.js), so the figure
+    is defined in the place it is opened and is never described a second way.
+    Nothing is invented here: the sentence is read off the table.
+
+    An address with no name yet is shown as the engine's own helper shows it,
+    "Unnamed, Root 08" (charAddrName, engine/charfield.js), and never as the
+    key it is stored under, which is what the title printed for Entitlement's
+    address until now. The card says why no story reaches it and stops there:
+    "this one is an open ruling" is the team's own word, and it was being
+    printed to a person under a heading it does not belong to. The eyebrow
+    names the seat the way the rest of the product does, "the solar seat"
+    (anchorSays, above), and not "at the solar". */
+ var amp=o.amp?String(o.amp):'', ampSay=amp?unpackOf(amp,'superego'):'';
+ var unnamed=/_Unnamed$/.test(n.k);
+ /* a field anchor says what it is in the place a seat is named for every other
+    address: its bucket key, Field-Above, is storage and not a word for a person
+    (engine/data/gloss.js, 'field anchor', is the sentence on hover and tap) */
+ var anchor=anchorSeat(n), fa=anchor?unpackOf('field anchor'):'';
+ var h=amp
+   ?'<div class="pm-eye plain">'+esc(amp)+', at the '+esc(String(n.b).toLowerCase())+' point</div>'
+   :anchor
+   ?'<div class="pm-eye plain" data-tip-k="Field anchor" data-tip="'+esc(fa)+'">Field anchor, '+(n.b==='Field-Above'?'above':'below')+' the body</div>'
+   :'<div class="pm-eye">'+esc(n.b)+'</div>';
+ h+='<div class="ad-nm'+(unnamed?' plain':'')+'">'+esc(unnamed?charAddrName(n.k):n.k)+'</div>'
   /* V21. The sentence read "Held 5.4, opposite installed 0.0, net SQ 5.4.
      Distorts as Self-rejection.", three variable names and a one noun
      behaviour, which is the string he pressed and could not read. Each figure
@@ -410,11 +482,16 @@ function nodeDrillHtml(n,o){
      left of the held state after the opposite is in. DESIGN-tooltip-copy.md,
      example 1. */
   +'<div class="ad-sub">'+esc(n.n||'just outside the body')+(n.a?' · '+esc(n.a):'')+'</div>'
+  +(ampSay?'<p class="ad-p amp-say">'+esc(ampSay)+'</p>':'')
   /* both ends of the pole, the same bar the codex row draws. Round JQ. */
   +(typeof poleDrillHead==='function'?poleDrillHead(n):'')
-  /* no fetter has a meaning on file, only the one word it shows up as, so in
-     the wisdom school it says so (kbGap) */
-  +(anchorSeat(n)?'':kbGap())
+  /* no fetter had a meaning on file, only the one word it shows up as, so the
+     wisdom school printed the gap on all 108 (kbGap). Each now has one line
+     composed from its own row (ADDR_SAY, engine/data/kbsay.js), and since it
+     is composed and not the book's it wears the Source AI mark. Still only in
+     the wisdom school, where the gap printed: the Field's rail card is
+     identity only on his 18 November ruling (runFetterDrill, below). */
+  +(anchorSeat(n)?'':kbSaid(addrSay(n),true))
   +'<div class="pm-eye">How it runs through you</div><p class="ad-p">'
   /* a field anchor's d is the word "field", a category and not a behaviour,
      so it never reaches "It shows up as field." */
@@ -428,7 +505,8 @@ function nodeDrillHtml(n,o){
     +c.nm+' itself lives mainly at the '+c.addr.toLowerCase()+(c.loc?', in the '+esc(c.loc):'')
     +'. '+((S.replace[c.nm]||0)>=4?'You have '+c.opp.toLowerCase()+' partly installed.'
       :c.opp+' is what fills this address once it is emptied.')
-   :'A field address, with no poled axis under it. This one is an open ruling.')+'</p>'
+   :anchor?'A field address, with no poled axis under it. This one is an open ruling.'
+   :'No feeling is seated at this address yet, so no story can put charge here.')+'</p>'
   /* in the Analytics trail, the feeling and the seat under this address are
      the next two steps down, round RB */
   +(o.ana&&typeof anaTraceRows==='function'?anaTraceRows(n):'')
@@ -544,12 +622,18 @@ addEventListener('click',function(e){
 
    The drill is the one place a range is printed (the 14 October ruling),
    and every number in it carries its meaning in the same sentence. */
+/* NO FRACTIONS, 18 November (NO-FRACTIONS-AUDIT.md, finding S04, found in
+   the source and not by the live walk, which never opened the drill with
+   some laws open and some still closed). "4 of 21 laws are answered" and
+   "With 12 of 21 laws answered" were both a measure of the person as a
+   fraction; both become the percent of the 21 laws answered, through the
+   portion kind (engine/pct.js). */
 function coreRangeSay(r){
  if(r.unread)return '';
  var sp=cqSpan(), of=sp.of;
  if(!sp.enough)return '<p class="ad-p">There are not enough answers yet to give a range. <b>'
-  +sp.answered+'</b> of '+of+' laws are answered.</p>';
- if(!sp.complete)return '<p class="ad-p">With <b>'+sp.answered+'</b> of '+of+' laws answered, the finished figure lands between <b>'
+  +fmtPct('portion',sp.answered/of)+'</b> of the laws are answered.</p>';
+ if(!sp.complete)return '<p class="ad-p">With <b>'+fmtPct('portion',sp.answered/of)+'</b> of the laws answered, the finished figure lands between <b>'
   +fmtPct('cq',sp.lo)+'</b> and <b>'+fmtPct('cq',sp.hi)+'</b>. It is <b>'+fmtPct('cq',sp.lo)
   +'</b> if every law still open is answered at nothing, and <b>'+fmtPct('cq',sp.hi)+'</b> if every one is answered at ten.</p>';
  var rg=cqRange(r.CQ);
@@ -563,6 +647,7 @@ function coreRangeSay(r){
    :rg.hi>=100?'The figure sits near the top of that range, because the scale stops at 100%.'
    :'The figure sits near the bottom of that range, because the scale stops at nothing.')+'</p>';}
 function runCoreDrill(){
+ insDoor('core');
  var r=compute();
  /* THE FIGURE LIVES HERE, ONE TAP DOWN, WITH ITS RANGE. 15 October, under
     the owner's 14 October ruling: no bare score on a daily surface. The
@@ -603,7 +688,7 @@ function runCoreDrill(){
   +fmtPct('radiance',r.radiance)+'</b>. The field is the geometry of that '
   +'radiance. It is harmonic, so patterns sit at registers rather than '
   +'anywhere, and what radiates outward tends to carry the colour of the '
-  +'loudest seat. The core takes its colour from the coherence ramp, so '
+  +'loudest point. The core takes its colour from the coherence ramp, so '
   +'saturation and size are coherence and nothing else.</p>'
   +gatesBlock(null);
  rdShell(h);}
@@ -652,6 +737,7 @@ function gatesBlock(focus){
 function runGatesDrill(k){
  var V=verpRead(), v=V.filter(function(x){return x.k===k;})[0];
  if(!v){runCoreDrill();return;}
+ insDoor('gates',k);
  var o=V.filter(function(x){return x.k===VERP_VS[k];})[0], up=v.side==='higher';
  var read=V.some(function(x){return x.n>0;});
  var h='<div class="pm-eye">'+(up?'Right action':'Wrong action')+'</div>'
@@ -688,7 +774,7 @@ function runQDrill(q){
   h='<div class="pm-eye">Segment depth</div><div class="ad-nm">SQ '+fmtPct('weight',r.SQm)+' mean</div>'
    +'<div class="pm-eye">How it is built</div><p class="ad-p">The charge held at one address, from nothing to 100%. '
    +'Each segment of the shell is drawn to its own depth, so the wheel is 112 segments side by side. The mean is across the addresses that hold anything.</p>'
-   +'<div class="pm-eye">Heaviest seat</div><p class="ad-p"><b>'+esc(r.darkB)+'</b> at <b>'+fmtPct('weight',r.darkV)+'</b>. Click a segment on the wheel to read one address.</p>';}
+   +'<div class="pm-eye">Heaviest point</div><p class="ad-p"><b>'+esc(r.darkB)+'</b> at <b>'+fmtPct('weight',r.darkV)+'</b>. Click a segment on the wheel to read one address.</p>';}
  else {
   var inst=CHARGES.filter(function(c){return (S.replace[c]||0)>=4;});
   h='<div class="pm-eye">Pole</div><div class="ad-nm">'+fmtPct('pole',r.poleMean)+' on average</div>'
@@ -698,7 +784,7 @@ function runQDrill(q){
       every address in the body. DESIGN-tooltip-copy.md, example 7. */
    +'<div class="pm-eye">How it is built</div><p class="ad-p">Each child emotion has an opposite. Fear turns to trust, and anger to equanimity, a steady calm. '
    +'Release empties an address and the opposite fills it. The pole is how far the opposite outweighs the charge at each address, from nothing to 100%, averaged across every address in your body.</p>'
-   +'<div class="pm-eye">Installed</div><p class="ad-p">'+(inst.length?inst.map(function(c){
+   +'<div class="pm-eye">'+unp('installed','Installed')+'</div><p class="ad-p">'+(inst.length?inst.map(function(c){
      var o=CHILD.filter(function(x){return x.nm===c;})[0];return esc(o.opp)+' over '+esc(c);}).join(', ')+'.':'Nothing installed yet.')+'</p>';}
  rdShell(h);}
 
@@ -723,7 +809,12 @@ function runXYZDrill(){
    +fmtPct('charge',S.charge.Apathy||0)+'</b>, shadow weight <b>'+fmtPct('dq',r.DQ)+'</b>.','vitality'],
   ['Awareness',r.Y,'3rd Eye','law reach against distortion. Law reach <b>'+fmtPct('lawseat',r.It)
    +'</b>, distortion <b>'+fmtPct('distortion',r.dist)+'</b>.','awareness'],
-  ['Will',r.Z,'Root','integrity carried through a clear segment. Integrity <b>'+fmtPct('integrity',r.Ig)
+  /* r.Ig is not the integrity the table defines, which is the laws kept and
+     is CQ: it is the law mean lifted by the poles and pulled down by
+     overshoot, so it says that here rather than borrowing the word, the same
+     ruling as the Compass paragraph (ui/cone.js), 18 November */
+  ['Will',r.Z,'Root','your laws carried through a clear segment. Your laws, lifted by what is '+unp('installed','installed')
+   +' and pulled down by '+unp('overshoot','overshoot')+', read <b>'+fmtPct('integrity',r.Ig)
    +'</b>, mean depth <b>'+fmtPct('weight',r.SQm)+'</b>.','will']];
  var mean=(r.X+r.Y+r.Z)/3;
  var low=A.slice().sort(function(a,b){return a[1]-b[1];})[0];
@@ -747,6 +838,7 @@ function runXYZDrill(){
    whole and not summarised, and the address it landed on is named with what
    it is standing on and what it costs. */
 function runAtomDrill(n,x){
+ insDoor('atom','Imprint');
  var d=''; try{d=new Date(x.t).toLocaleDateString(undefined,
    {year:'numeric',month:'long',day:'numeric'});}catch(e){d='';}
  var cf=CHILD.filter(function(y){return y.nm===n.cf;})[0];
@@ -790,11 +882,11 @@ function runFlowDrill(){
  var h='<div class="pm-eye">Flow</div><div class="ad-nm">'+(r.unread?'not read yet'
     :fmtPct('flow',f)+' reaches the crown')+'</div>'
   +'<div class="pm-eye">How it is built</div><p class="ad-p">'
-  +'The seven seats pass signal in series, root upward. Each one passes a share '
-  +'and the column carries the product of all seven, so one shut seat closes '
+  +'The seven assemblage points pass signal in series, root upward. Each one passes a share '
+  +'and the column carries the product of all seven, so one shut point closes '
   +'the column whatever the six above it are doing. This is the number the Body '
   +'page draws as a channel, and where it pinches is where the work is.</p>'
-  +'<div class="pm-eye">Seat by seat</div><div class="ad-rows">'
+  +'<div class="pm-eye">Point by point</div><div class="ad-rows">'
   +seats.slice().reverse().map(function(s){
     /* one figure per row, the pass as the registry prints it; the end of
        the row said the same figure again in a second unit */
@@ -804,12 +896,13 @@ function runFlowDrill(){
   +'<div class="pm-eye">Where it stops</div><p class="ad-p">'
   +(stop?'The column closes at the <b>'+esc(String(stop.p.n).toLowerCase())+'</b>, which is '
     +'carrying <b>'+stop.hot+'</b> address'+(stop.hot===1?'':'es')+'. Clear those and the '
-    +'seats above it open with them.'
-   :'No seat is holding enough to close the column.')+'</p>';
+    +'points above it open with them.'
+   :'No point is holding enough to close the column.')+'</p>';
  rdShell(h);}
 
 /* BALANCE. which way the field discharges, and what it is built from. */
 function runBalDrill(){
+ insDoor('bal','Balance');
  var r=compute(), b=r.balance;
  var sx=CURP&&CURP.who?CURP.who.sex:'';
  var SXN={m:'male',f:'female',o:'other'}[sx]||'';
@@ -865,6 +958,7 @@ function runBalDrill(){
 /* the eyebrow follows the bar's name for the layer, GO in TASKS.md: a press on
    Assemblage Points and then on a band of it must not answer under "Seat" */
 function runSeatDrill(c){
+ insDoor('seat',c&&c.b);
  var h='<div class="pm-eye">Assemblage point</div><div class="ad-nm">'+esc(c.b)+'</div>'
   +'<div class="ad-sub">'+esc(c.nv)+'</div>'
   +'<div class="pm-eye">What encodes here</div><p class="ad-p">'+esc(c.d)+'</p>'
@@ -878,17 +972,36 @@ function runSeatDrill(c){
  rdShell(h);}
 
 function runFetterDrill(c){
+ insDoor('fet',c.nm);
  var held=S.charge[c.nm]||0, inst=S.replace[c.nm]||0;
  var at=W.filter(function(n){return n.cf===c.nm;});
+ /* THE RAIL'S CARD IS IDENTITY ONLY, 18 November. His words, on this card's
+    "Back to the field, child emotion Apathy" block: "That's the information
+    that seems like it belongs in the insight panel, not there." Where it sits,
+    Both halves and Which way it leans are Source AI's reading now (railInsight,
+    ui/insightui.js, composed in engine/insight.js from CHILD and the two
+    charge tables), so this card keeps the name, its opposite and the addresses
+    it runs. The Wisdom school opens this same door to answer what a child
+    emotion is, and there the whole card stays, because nothing else on that
+    page says it. */
+ if(!(typeof kbAnsOn==='function'&&kbAnsOn())){
+  var sh='<div class="pm-eye">Child emotion</div><div class="ad-nm">'+esc(c.nm)+'</div>'
+   +'<div class="ad-sub">toward '+esc(c.opp)+'</div>'
+   +'<div class="pm-eye">Addresses</div><div class="ad-rows">'
+   +at.slice(0,10).map(addrRow).join('')
+   +(at.length>10?'<div class="pm-more">and '+(at.length-10)+' more</div>':'')+'</div>';
+  rdShell(sh); return;}
  var h='<div class="pm-eye">Child emotion</div><div class="ad-nm">'+esc(c.nm)+'</div>'
   +'<div class="ad-sub">toward '+esc(c.opp)+'</div>'
   /* the book's entry for each of the nine is on file as a universal law,
-     "Fear · Safety" and the rest. Four name a different opposite from
-     CHILD's (Fear, Anger, Apathy, Sad) and three name none and say it is
-     pending (Shock, Surprise, Anticipation), so it is not printed on a card
-     that says "toward Trust".
-     Until that is ruled the card says it has no meaning on file. */
-  +kbGap()
+     "Fear · Safety" and the rest, printed unmarked because it is quoted
+     (childBookSays). Six now agree with CHILD, his 21 November ruling.
+     Shock, Surprise and Anticipation have no pole in the book, so for them
+     the card printed the gap; they carry their two named forms instead
+     (childSubHtml), and a card that lists them must not also say it has
+     no meaning on file. */
+  +(childBookSays(c)||!(c.sub&&c.sub.length)?kbSaid(childBookSays(c),false):'')
+  +childSubHtml(c)
   +'<div class="pm-eye">Where it sits</div><p class="ad-p">'+esc(c.addr)+', at '+esc(c.loc)
   +'. Seated at the '+esc(c.seat).toLowerCase()+'.</p>'
   +'<div class="pm-eye">Both halves</div><p class="ad-p">Held <b>'+fmtPct('charge',held)+'</b>. '
@@ -932,6 +1045,29 @@ function runSabDrill(s){
   +'<div class="pm-eye">Made of</div><div class="ad-rows">'+nodes.map(addrRow).join('')+'</div>';
  rdShell(h);}
 
+/* A HYPER COMPLEX THE READING IS NOT CARRYING, round LY. The six families had
+   their line (HCX_LIB.d) and a whole researched card (HCXCARD, through
+   kbHcxBlock) and no deck to be found from, so the wisdom school could only
+   reach them through a saboteur's "It belongs to the ... family". The deck is
+   kbRowsOf('hcx'); a running one opens runDrill like a running saboteur does,
+   and this is the card for one that is not. Nothing here is new writing:
+   the line is HCX_LIB's own, the card is kbHcxBlock's, and what feeds it is
+   read off ALL_SAB by family name. sub is never printed, the same rule
+   kbSabLinked keeps: it is a diagnostic name. */
+function runHcxDrill(f){
+ if(!f)return;
+ var cap=function(t){return t.charAt(0).toUpperCase()+t.slice(1);};
+ var feeds=ALL_SAB.filter(function(s){return s.hcx===f.nm;});
+ var h='<div class="pm-eye">Hyper complex, not running</div><div class="ad-nm">'+esc(f.nm)+'</div>'
+  +'<div class="ad-sub">Held at the '+esc(f.b==='3rd Eye'?'3rd eye':String(f.b).toLowerCase())+'</div>'
+  +'<div class="pm-eye">What it is</div><p class="ad-p">'+esc(cap(f.d))+'.</p>'
+  +'<div class="pm-eye">What it would take</div><p class="ad-p">It forms when two complexes of this '
+  +'family run at once, or one runs hard. Yours are not carrying enough for it to form.</p>'
+  +kbHcxBlock(f.nm)
+  +(feeds.length?'<div class="pm-eye">Fed by '+feeds.length+' saboteurs</div><p class="ad-p">'
+   +feeds.map(function(s){return esc(s.nm);}).join(', ')+'.</p>':'');
+ rdShell(h);}
+
 /* THE DOMAIN, read clear and read distorted. The book prints both readings
    for all nineteen. Four are under a different name in the engine, and the
    drill says both rather than picking one, because that ruling is not mine.
@@ -963,7 +1099,7 @@ function domReadHtml(d){
    +'<div class="pm-eye">Read distorted</div><p class="ad-p">'+esc(def.x)+'</p>';}
  else h+='<div class="pm-eye">What it is</div><p class="ad-p">'+esc(d.d||'')+'</p>';
  return h;}
-function runDomDrill(d){rdShell(domReadHtml(d));}
+function runDomDrill(d){insDoor('dom',d&&d.nm);rdShell(domReadHtml(d));}
 
 /* THE ARCHETYPE AND THE MASK, one drill each, for Knowledge and the Field.
 
@@ -977,6 +1113,7 @@ function runDomDrill(d){rdShell(domReadHtml(d));}
    where this person sits, read off the same compute() the wheel draws from. */
 function runArchDrill(a){
  if(!a)return;
+ insDoor('arch',a.nm);
  var j=ARCH.indexOf(a), r=compute(), at=(S.arcs||[]).indexOf(j);
  /* THE SENTENCE WAS ON FILE AND NOT PRINTED. ARCH carries two lines for each
     of the twelve, v, the four words the Knowledge row shows under the name,
@@ -993,11 +1130,12 @@ function runArchDrill(a){
      down." Affinity, the soul map's lean, still orders the twelve and is
      printed nowhere (engine/archexpr.js). */
   h+='<div class="pm-eye">Where you sit</div><p class="ad-p">Expressed <b>'
-   +fmtPct('archetype',archExpr(j))+'</b>. Charge held at its seat pulls it down, and a release lifts it.'
+   +fmtPct('archetype',archExpr(j))+'</b>. Charge held at its point pulls it down, and a release lifts it.'
    +(at===0?' Set as your primary.':at>0?' Set as one of yours.':'')+'</p>';
  rdShell(h);}
 function runMaskDrill(m){
  if(!m)return;
+ insDoor('mask',m.nm);
  var b=m.b||m.bands||[], seats=b.join(' and ');
  /* EVERY MASK ANSWERED WITH THE SAME PARAGRAPH. It is about what a mask is
     in general, and it was the whole of "What it is" for all five, so Child
@@ -1010,7 +1148,7 @@ function runMaskDrill(m){
   +(own?'<div class="pm-eye">What it is</div><p class="ad-p">'+esc(own)+'</p>':kbGap())
   +'<div class="pm-eye">What a mask is</div><p class="ad-p">'
   +'A mask is not a fault and it is not a stage you failed to leave. It is a '
-  +'shape held in front of the seats it covers, and it costs what holding it '
+  +'shape held in front of the points it covers, and it costs what holding it '
   +'costs. This one sits over the '+esc(seats)+'. Its charge is '
   +'read from the story, never from a question about your age.</p>';
  var r=compute(), ring=(r.maskRing||[]).filter(function(x){return x.nm===m.nm;})[0];
@@ -1050,9 +1188,17 @@ function runMaskDrill(m){
    records the day a person was handed "depression, BPD and anxiety" about
    themselves as a subtitle. */
 function kbSabBlock(nm){
- /* an inferred saboteur has no entry in the book, so in the wisdom school it
-    says it has no meaning on file rather than printing nothing under a name */
- var def=SABDEF[KB_KEY(nm)]; if(!def)return kbGap();
+ /* an inferred saboteur has no entry in the book and cannot have one, since
+    the book names 33 and these are built from a seat and a child emotion
+    (UNNAMED, engine/core.js). It printed the gap on all thirteen; each now
+    has one line composed from that pair (INFER_SAY, engine/data/kbsay.js),
+    marked as Source AI's because it is not the book's. kbSaid keeps it to
+    the wisdom school, where the gap was, and a name with no line still
+    prints the gap. No kbSabLinked here: it reads SAB_LIB, which holds no
+    inferred one, and would say the body map is missing for a pattern whose
+    addresses the card already lists under Made of. */
+ var def=SABDEF[KB_KEY(nm)];
+ if(!def)return INFER_SAY.hasOwnProperty(nm)?kbSaid(INFER_SAY[nm],true):kbGap();
  var c=(typeof SABCARD!=='undefined'&&SABCARD[KB_KEY(nm)])||{};
  var h=c.h||def.d, n=c.n||def.i;
  return (h?'<div class="pm-eye">What happens</div><p class="ad-p">'+esc(h)+'</p>':'')
@@ -1108,6 +1254,50 @@ var KB_NOTE='No meaning on file yet.';
 function kbGap(){
  return (typeof kbAnsOn==='function'&&kbAnsOn())
   ?'<div class="pm-eye">What it is</div><p class="ad-p">'+KB_NOTE+'</p>':'';}
+/* WHAT IT IS, WHERE THE GAP STOOD, round LY. The same place and the same rule
+   as kbGap: only while a wisdom school answer is open, and the gap itself
+   when t is empty, so a row with nothing on file is never padded. composed
+   says the line is Source AI's and not the book's, and then it wears the one
+   mark and the src-ai treatment, never the icon alone (the 15 November
+   ruling, srcMark in ui/storyui.js). Its tip says what this line was written
+   from: the house tip says "from your words and your reading", and a
+   definition of Scarcity is written from neither, so printing that tip here
+   would be the mark telling a person something false about itself. */
+var KB_SAID_TIP='Source AI wrote this line from what the instrument holds about this one thing. It is not quoted from the book.';
+function kbSaid(t,composed){
+ if(!(typeof kbAnsOn==='function'&&kbAnsOn()))return '';
+ if(!t)return kbGap();
+ return '<div class="pm-eye">What it is</div>'
+  +(composed&&typeof srcMark==='function'
+   ?'<p class="ad-p src-ai">'+srcMark(KB_SAID_TIP)+'<span class="src-ai-t">'+esc(t)+'</span></p>'
+   :'<p class="ad-p">'+esc(t)+'</p>');}
+/* THE BOOK'S OWN ENTRY FOR A CHILD EMOTION, only where the book and CHILD
+   name the same opposite. HARM's emotion rows are titled "Shame · Worth", so
+   the two agree when the title is exactly the emotion and CHILD's own opp.
+   Read, not listed: on 20 November that was Shame and Disgust, and on 21
+   November CHILD moved to the book's opposite for Fear, Anger, Apathy and
+   Sad, so it is six, with no change here. Shock, Surprise and Anticipation
+   have no pole in the book, so for those this returns ''. */
+/* THE NAMED FORMS OF A CHILD EMOTION THAT IS NOT A SIMPLE PAIR, CHILD's
+   `sub` (engine/data/canon.js), his 21 November ruling. Only in the Wisdom
+   school, where the whole card shows, and only for a row that carries them.
+   Each form names its valence in words beside it (CHILD_VAL), because a
+   label never stands alone. Excitement and Anxious are his; the other four
+   are the team's, so the lines wear the Source AI mark the way ADDR_SAY's
+   composed lines do, and the mark is unpacked on hover by its own tip. */
+function childSubHtml(c){
+ if(!(c&&c.sub&&c.sub.length)||!(typeof kbAnsOn==='function'&&kbAnsOn()))return '';
+ var mark=typeof srcMark==='function'?srcMark(KB_SAID_TIP):'';
+ return '<div class="pm-eye">Two forms it runs as</div>'
+  +c.sub.map(function(f){
+   return '<p class="ad-p src-ai">'+mark+'<span class="src-ai-t"><b>'+esc(f.nm)+'</b>, '
+    +esc((CHILD_VAL[f.val]||'').charAt(0).toLowerCase()+(CHILD_VAL[f.val]||'').slice(1))
+    +' '+esc(f.d)+'</span></p>';}).join('');}
+function childBookSays(c){
+ if(!c||!c.opp)return '';
+ var want=c.nm+' · '+c.opp;
+ for(var i=0;i<HARM.length;i++)if(HARM[i].a==='emotion'&&HARM[i].t===want)return HARM[i].d||'';
+ return '';}
 /* the meaning of one of the 21 laws, read off the universal law of the same
    name. SI and HARM's spirit axis are one set by name (kbRowsOf builds the
    Moral Integrity deck by walking one into the other), so the text is held
@@ -1234,6 +1424,7 @@ function runHomePoleDrill(p){
   +'<div class="ad-sub">opposite '+esc(p.dn)+'</div>'
   +'<p class="ad-p">No behaviours are written for this teacher yet.</p>');}
 function runPoleDrill(end){
+ insDoor('pole',end==='dn'?'The downward cone':'The upward cone');
  var up=(end!=='dn'), r=compute();
  var h='<div class="pm-eye">'+(up?'The upward cone':'The downward cone')+'</div>'
   +'<div class="ad-nm">'+(up?'Eight qualities at full expression':'The same eight, inverted')+'</div>'
@@ -1362,7 +1553,7 @@ function runPoleDrill(end){
     sat inside the downward branch on its first write, so the upward roster
     had no way through to the thing it describes. */
  h+='<div class="ad-act">'
-  +'<button class="btn pri" id="rdcone">Go to the path</button>'
+  +'<button class="btn pri" id="rdcone">Go to the compass</button>'
   +(up?'':'<button class="btn" id="rdsee">Start from a sentence</button>')
   +'</div>';
  rdShell(h);
@@ -1523,7 +1714,7 @@ function runAvatarDrill(){
   /* THE PROMISE WAS FALSE, round RB, S3 (BECOMING-AUDIT.md R11): no journal
      prompt ever asked these two questions. The Avatar page is where a pair is
      written, one seat at a time. */
-  h+='<p class="ad-p">Nothing written yet. Write it on the Avatar page, one seat at a time. '
+  h+='<p class="ad-p">Nothing written yet. Write it on the Avatar page, one point at a time. '
    +'Say how you are on your best day, and how you are on a bad one.</p>';}
  if(av.built){
   var d=avatarDaysLeft(av);
@@ -1547,7 +1738,7 @@ function runAvPair(i){
  if(g2){
   h+='<div class="pm-eye">Where that sits</div>'
    +'<p class="ad-p">The '+String(g2.seat).toLowerCase()+', carrying <b>'
-   +fmtPct('weight',g2.load)+'</b>. On the axis between the two poles of that seat you read <b>'
+   +fmtPct('weight',g2.load)+'</b>. On the axis between the two poles of that point you read <b>'
    +fmtPct('axis',g2.at)+'</b>.</p>';
   var grp=W.filter(function(n){return n.b===g2.seat;})
    .sort(function(a,b){return b.sq-a.sq;}).slice(0,5);
@@ -1720,6 +1911,7 @@ function runMirrorDrill(k){
 
 /* the compass on the right of the stage. it was a picture with no door. */
 function runCompassDrill(){
+ insDoor('path','Compass');
  var r=compute(), cq=Math.max(0,Math.min(100,r.CQ));
  /* the band formula stood here as a second copy of renderPol2's, kept only to
     print "the swing, 11 points". With the figure gone it had no reader, and a
@@ -1730,7 +1922,7 @@ function runCompassDrill(){
  var me=r.unread?null:TIER_BY[r.tier];
  /* in percent, percent phase 2 slice 4: CQ prints as a percent, so
     the scale it is read against does too */
- var h='<div class="pm-eye">The path</div><div class="ad-nm">'
+ var h='<div class="pm-eye">The compass</div><div class="ad-nm">'
   +(r.unread?'not read yet':'CQ '+fmtPct('cq',cq)+', '+tierSay(r).toLowerCase())+'</div>'
   +'<div class="pm-eye">How to read it</div><p class="ad-p">The line runs from nothing at the base to 100% at the crown, and the word changes every 10%. '
   +'Above '+MEDIAN+'% your energy builds more than it costs. Below '+MEDIAN+'% it costs more than it builds. '
@@ -1782,12 +1974,12 @@ function runCellDrill(c,rw){
   +'<div class="ad-sub">'+D.r+' cluster, '+cf.addr.toLowerCase()+'</div>'
   +'<div class="pm-eye">What the crossing does</div><p class="ad-p">'
   +(seg.length
-   ? 'This domain seats <b>'+seg.length+'</b> address'+(seg.length===1?'':'es')+' on the '
+   ? 'This domain holds <b>'+seg.length+'</b> address'+(seg.length===1?'':'es')+' on the '
      +cf.nm.toLowerCase()+' axis, <b>'+held.length+'</b> of them held.'
      +(affine?' This is a <b>1.3× affinity pair</b>: running '+D.r+' makes you more '
        +'susceptible here, and that multiplier is where distortion comes from.'
        :' No affinity multiplier applies to this pair.')
-   : 'No address sits at this crossing. '+D.nm+' does not seat the '+cf.nm.toLowerCase()
+   : 'No address sits at this crossing. '+D.nm+' does not reach the '+cf.nm.toLowerCase()
      +' axis, so the cell is structurally empty rather than merely clear.')+'</p>';
  if(seg.length)h+='<div class="pm-eye">Addresses here</div><div class="ad-rows">'
   +seg.slice().sort(function(a,b){return b.sq-a.sq;}).slice(0,8).map(addrRow).join('')+'</div>';

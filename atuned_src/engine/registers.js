@@ -38,9 +38,9 @@ const REG_MAP=[
  ['registers.complexes','mob',['CODE_STRUCT'],'coded here and never stored. compute() pairs two saboteurs of one family, and some of these sit across two or three'],
  ['registers.hyper_complexes','mob',['CODE_STRUCT','HCX_LIB'],'coded here. By the family arithmetic here, most of them land a rung higher, as a super complex'],
  ['registers.amplifiers','ported',['AMPLIFIER'],'no table here had them. The nerve is read off NODES'],
- ['registers.archetypes','mob',['ARCH18'],'canon.json gives each archetype two saboteurs and two seats, ARCH18 one of each, and the pairings differ'],
+ ['registers.archetypes','mob',['ARCH18'],'canon.json gives each archetype two saboteurs and two points, ARCH18 one of each, and the pairings differ'],
  ['registers.jungian','mob',['ARCH'],'canon.json has Orphan, Outlaw and Caretaker where ARCH has Everyman, Rebel and Caregiver'],
- ['registers.masks','mob',['MASKS'],'the two lists of masks differ in members and in seats'],
+ ['registers.masks','mob',['MASKS'],'the two lists of masks differ in members and in points'],
  ['registers.axes','mob',['VERP'],'its axes are the six gates here, taken in pairs. Here the word axes means the nine child emotions'],
  ['registers.domains','mob',['DOMAINS','DOMDEF'],'canon.json files its domains in four families and has no Provision, and DOMAINS and DOMDEF name four of them two ways'],
  ['registers.laws','mob',['SI','HARM'],'canon.json numbers its laws another way, in four groups, and names some of them otherwise'],
@@ -49,6 +49,7 @@ const REG_MAP=[
  ['registers.charge_routing','ported',['CHARGE_QUADRANT'],'no table here had it'],
  ['registers.derived_measures','ported',['DERIVED_MEASURE'],'no table here had them. The descriptions stay in the vendored file, because one breaks the claims rules for anything that ships'],
  ['registers.astrology_overlay','ported',['ASTRO_OVERLAY'],'no table here had it. Display only, by one of canon.json\'s own locks'],
+ ['registers.complexDeep','ported',['CX_DEEP'],'the content CODE_STRUCT left for phase two. Each row takes the code of the complex it deepens, and none of it is canon or a diagnosis, by its own review state'],
  ['meta','held',['CODE_SOURCES'],'who issued the file, and its version. CODE_SOURCES cites both, and the gate holds the md5'],
  ['locks','mob',[],'rules, each one held where this repository holds it. Some are contradicted here by the arithmetic or the labels, and the plan lists which'],
  ['formula','mob',['TIERDEF'],'CQ is made another way here, the measured laws summed, with other bands'],
@@ -121,7 +122,46 @@ function regDiffInto(canon,out){
   Object.keys(ASTRO_OVERLAY).forEach(function(k){
    if(!own(A,k)){no('astrology_overlay: this table has '+j(k)+', and canon.json does not'); return;}
    if(Array.isArray(ASTRO_OVERLAY[k])||!isObj(A[k])){if(j(ASTRO_OVERLAY[k])!==j(A[k]))no('astrology_overlay: '+k+' is '+j(A[k])+' in canon.json and '+j(ASTRO_OVERLAY[k])+' here'); return;}
-   keyed('astrology_overlay '+k,ASTRO_OVERLAY[k],A[k],null);});}}
+   keyed('astrology_overlay '+k,ASTRO_OVERLAY[k],A[k],null);});}
+ /* the deep records, each compared whole. c is not canon.json's, so it is
+    held apart: it must be the code CODE_STRUCT files at the row canon.json's
+    complexes register gives that name, which is what keeps a reordered or
+    renamed register from pinning one complex's text on another. */
+ if(has('complexDeep','keys')){
+  var cxRows=Array.isArray(R.complexes)?R.complexes.map(function(r){return Array.isArray(r)?r[0]:null;}):[], mine={}, theirs={};
+  CX_DEEP.forEach(function(r){var o={};
+   Object.keys(r).forEach(function(k){if(k!=='c')o[k]=r[k];}); mine[r.nm]=o;
+   var at=cxRows.indexOf(r.nm), s=CODE_STRUCT.filter(function(x){return x[2]==='complex'&&x[3]===at;})[0];
+   if(at<0)no('complexDeep: '+j(r.nm)+' is not a row of canon.json\'s complexes register');
+   else if(!s||s[0]!==r.c)no('complexDeep: '+j(r.nm)+' carries '+j(r.c)+', and CODE_STRUCT codes row '+at+' of the complexes '+(s?j(s[0]):'nothing'));});
+  /* canon.json's rows with the named amendments applied, so the two words
+     CX_DEEP_AMEND lists are the only ones allowed to differ */
+  Object.keys(R.complexDeep).forEach(function(nm){
+   var at=cxRows.indexOf(nm), s=CODE_STRUCT.filter(function(x){return x[2]==='complex'&&x[3]===at;})[0];
+   theirs[nm]=s?cxAmend(s[0],R.complexDeep[nm]):R.complexDeep[nm];});
+  keyed('complexDeep',mine,theirs,null);}}
+
+/* cxAmend(code,record) is canon.json's record with CX_DEEP_AMEND's rows for
+   that code applied, a copy, the record handed in untouched. A row whose
+   field is not a string is left alone, and regDiff then names the record. */
+function cxAmend(c,rec){
+ var o=JSON.parse(JSON.stringify(rec));
+ CX_DEEP_AMEND.forEach(function(a){
+  if(a.c!==c||typeof o[a.f]!=='string')return;
+  o[a.f]=o[a.f].slice(0,a.at)+a.put+o[a.f].slice(a.at+a.cut);});
+ return o;}
+
+/* cxDeep(x) IS THE DEEP RECORD OF ONE COMPLEX, by its code or by any name the
+   codes door resolves to a structure, so canon.json's Rigidity and this
+   repository's Unbending both answer with X09's. A structure that is not a
+   complex, a hyper complex like Psychopathy, answers null, as does anything
+   the door refuses: its deep record is DESCENT's, never this table's. It
+   hands back a copy, so a caller can never write into the port. */
+function cxDeep(x){
+ var c=typeof x==='string'&&/^X\d\d$/.test(x)?x:null;
+ if(!c){var r=codeOf(x,{kind:'structure'}); if(!r||!r.ok)return null; c=r.code;}
+ var row=CX_DEEP.filter(function(d){return d.c===c;})[0];
+ return row?JSON.parse(JSON.stringify(row)):null;}
 
 function ladderPlaces(w){
  var k=codeKey(w), out=[];

@@ -7,9 +7,10 @@
    ============================================================ */
 if(typeof module!=='undefined'&&module.exports){
  module.exports={
-  /* data */      NODES:NODES, SAB_LIB:SAB_LIB, HCX_LIB:HCX_LIB, SAB33:SAB33, SAB_PI:SAB_PI, SAB_PI_AS:SAB_PI_AS, GATEGLYPH:GATEGLYPH,
+  /* data */      NODES:NODES, SAB_LIB:SAB_LIB, HCX_LIB:HCX_LIB, SAB33:SAB33, SAB_PI:SAB_PI, SAB_PI_AS:SAB_PI_AS, GATEGLYPH:GATEGLYPH, SUPEREGO_IC:SUPEREGO_IC,
                   APC:APC, APC_REL:APC_REL, APC_EMB:APC_EMB,
-                  SABDEF:SABDEF, SABCARD:SABCARD, HCXCARD:HCXCARD, DOMDEF:DOMDEF, GLOSS:GLOSS, HARM:HARM,
+                  SABDEF:SABDEF, SABCARD:SABCARD, HCXCARD:HCXCARD, ADDR_SAY:ADDR_SAY, INFER_SAY:INFER_SAY, addrSay:addrSay, DOMDEF:DOMDEF, GLOSS:GLOSS, HARM:HARM,
+                  PATTERN96:PATTERN96, PATTERN96_BY_LAYER:PATTERN96_BY_LAYER, RESEARCHANCHOR:RESEARCHANCHOR,
   /* meter */    meterFirst:meterFirst,
   /* percent */  PCT_KIND:PCT_KIND, PCT_DASH:PCT_DASH, pct:pct, fmtPct:fmtPct, pctMove:pctMove,
                  pctHue:pctHue, PCT_HUE0:PCT_HUE0, PCT_HUE_STEP:PCT_HUE_STEP, PCT_DAC:PCT_DAC,
@@ -17,6 +18,8 @@ if(typeof module!=='undefined'&&module.exports){
                  srcNegated:srcNegated, srcPrior:srcPrior, srcRung:srcRung,
                  srcHyperSeats:srcHyperSeats,
                  srcHear:srcHear, srcHear:srcHear, srcPrior:srcPrior, srcTurn:srcTurn,
+                 srcVoiceSniff:srcVoiceSniff, srcVoiceNarrative:srcVoiceNarrative, srcVoiceChargeCycle:srcVoiceChargeCycle, SRC_TULA_LADDERS:SRC_TULA_LADDERS,
+                 srcVoiceGraph:srcVoiceGraph, srcVoiceIntelligence:srcVoiceIntelligence, srcVoiceCanon:srcVoiceCanon, srcVoicePattern:srcVoicePattern, srcVoiceEvidenceBus:srcVoiceEvidenceBus,
                  SRC_DIM_ORDER:SRC_DIM_ORDER, SRC_DIM_CUE:SRC_DIM_CUE, SRC_DO:SRC_DO,
                  srcDims:srcDims, srcNext:srcNext,
                  SRC_BEHAVE:SRC_BEHAVE, SRC_BEHAVE_ORDER:SRC_BEHAVE_ORDER, SRC_BEHAVE_DIM:SRC_BEHAVE_DIM,
@@ -35,11 +38,16 @@ if(typeof module!=='undefined'&&module.exports){
                  EV_PLACEABLE:EV_PLACEABLE, EV_GUESSABLE:EV_GUESSABLE, QC_GUESS:QC_GUESS, evSeamState:evSeamState, srcOutputV1Candidate:srcOutputV1Candidate,
                  SRC_INTENT:SRC_INTENT, SRC_INTENT_ORDER:SRC_INTENT_ORDER, SRC_INTENT_SHORT:SRC_INTENT_SHORT, srcIntent:srcIntent,
                  SRC_SHIFT_PAIR:SRC_SHIFT_PAIR, SRC_ACT:SRC_ACT, SRC_ACT_ORDER:SRC_ACT_ORDER, SRC_ACT_SHORT:SRC_ACT_SHORT, srcAct:srcAct,
+                 SRC_INTENT_MAXW:SRC_INTENT_MAXW, SRC_ACT_MAXW:SRC_ACT_MAXW, SRC_REPORT:SRC_REPORT, SRC_NOISE:SRC_NOISE, SRC_NOISE_MAX:SRC_NOISE_MAX, srcNoise:srcNoise, srcEcho:srcEcho,
+                 SRC_SPOT_WHO:SRC_SPOT_WHO, SRC_SPOT_DO:SRC_SPOT_DO, srcSpot:srcSpot,
   /* qcheck */    SRC_FAMILY:SRC_FAMILY, QC_GRADE:QC_GRADE, QC_QWORDS:QC_QWORDS, QC_WORDS:QC_WORDS,
                  QC_JARGON:QC_JARGON, QC_CAUSE:QC_CAUSE, QC_FORCE:QC_FORCE, QC_LABELS:QC_LABELS,
                  QC_AGAIN:QC_AGAIN, QC_LANDS:QC_LANDS, qcGrade:qcGrade, qcSyl:qcSyl, qcCanon:qcCanon, qcPlaces:qcPlaces,
                  srcVet:srcVet, srcVetSay:srcVetSay, srcChoose:srcChoose, qcFamilyOf:qcFamilyOf, srcFamilyCands:srcFamilyCands,
                  SRC_RESTATE:SRC_RESTATE, srcRestate:srcRestate,
+  /* insight */  insightRead:insightRead, insightRelease:insightRelease, insightResolve:insightResolve,
+                 insightText:insightText, INS_HEAD:INS_HEAD, INS_MAX:INS_MAX, INS_LIST:INS_LIST,
+                 INS_WORD:INS_WORD, INS_CAP:INS_CAP, patFam:patFam,
   /* undo */     undoPush:undoPush, undoPop:undoPop, undoDepth:undoDepth,
                  redoPop:redoPop, redoDepth:redoDepth, redoPeek:redoPeek,
                   undoPeek:undoPeek, undoClear:undoClear, UNDO_MAX:UNDO_MAX,
@@ -51,6 +59,11 @@ if(typeof module!=='undefined'&&module.exports){
                  purposeRefuse:purposeRefuse, avatarFill:avatarFill,
                  avatarDaysLeft:avatarDaysLeft, avatarGap:avatarGap,
                  avatarProgress:avatarProgress, AV_MONTH:AV_MONTH,
+                 wholeOf:wholeOf, wholeDays:wholeDays, wholeGround:wholeGround,
+                 avatarBecoming:avatarBecoming, avatarPotential:avatarPotential, AV_POT_STOPS:AV_POT_STOPS,
+                 WHOLE_W:WHOLE_W, WHOLE_DAYS:WHOLE_DAYS, WHOLE_OWNER_LINES:WHOLE_OWNER_LINES,
+                 WHOLE_OWNER_CLOSED:WHOLE_OWNER_CLOSED, WHOLE_R_LINE:WHOLE_R_LINE,
+                 WHOLE_MEANS:WHOLE_MEANS, wholeSay:wholeSay,
                  AV_PULL:AV_PULL, avatarMarks:avatarMarks, avatarPull:avatarPull,
                  avatarRank:avatarRank, avatarWhy:avatarWhy,
   /* purpose */  purposeBlank:purposeBlank, purposeReady:purposeReady,
@@ -84,13 +97,14 @@ if(typeof module!=='undefined'&&module.exports){
                  GOVERN:GOVERN, quadrant:quadrant, outwardShare:outwardShare, organisedShare:organisedShare, ORG_W:ORG_W,
                  FAM_OUT:FAM_OUT, FAM_IN:FAM_IN, GOV_ORG:GOV_ORG, GOV_MAL:GOV_MAL, GOV_ANGEL:GOV_ANGEL,
   /* labels */   TIERDEF:TIERDEF, TIER_BY:TIER_BY, tierOf:tierOf, TIERCOL:TIERCOL,
+                 NODESTATE_PROPOSED:NODESTATE_PROPOSED, NERVESTATE:NERVESTATE, nerveStateOf:nerveStateOf,
                  MEDIAN:MEDIAN, MEDIAN_LO:MEDIAN_LO, MEDIAN_HI:MEDIAN_HI,
                  medianRange:medianRange, tierTop:tierTop, tierRange:tierRange,
   /* astro */     julianDay:julianDay, sunLon:sunLon, moonLon:moonLon, gmst:gmst,
                   ascendant:ascendant, signOf:signOf, degInSign:degInSign,
                   gateOf:gateOf, designJD:designJD, birthJD:birthJD, bornYMD:bornYMD, bornHM:bornHM, PLACE:PLACE,
                   usDST:usDST, euDST:euDST, zoneOffsets:zoneOffsets, zonePoint:zonePoint, ZONEPT:ZONEPT,
-                  GATE_WHEEL:GATE_WHEEL, GATE_ARC:GATE_ARC,
+                  GATE_WHEEL:GATE_WHEEL, GATE_ARC:GATE_ARC, GATE_ANCHOR:GATE_ANCHOR, GATE_START:GATE_START,
                   chineseYear:chineseYear, spiritualOf:spiritualOf,
   /* catalog */   C3_VERB:C3_VERB, C3_STEM:C3_STEM, C3_TRUTH:C3_TRUTH,
                   C3_BAND:C3_BAND, C3_LADDER:C3_LADDER, C3_POLE:C3_POLE, C3_BILATERAL:C3_BILATERAL,
@@ -99,8 +113,8 @@ if(typeof module!=='undefined'&&module.exports){
                   CARDSET:CARDSET, CARD_OPEN:CARD_OPEN, CARD_SHUT:CARD_SHUT, CARD_STEP:CARD_STEP,
                   AXCARD:AXCARD, AXC_UN:AXC_UN, CARD_BY:CARD_BY, AXC_BY:AXC_BY,
                   cardLine:cardLine, cardDepth:cardDepth, axLine:axLine, addrLine:addrLine, relLine:relLine, c3Band:c3Band,
-                  HARM_AX:HARM_AX, KB_RENAME:KB_RENAME, KB_KEY:KB_KEY, INFER_NOUN:INFER_NOUN,
-                  SABAUTH:SABAUTH, ARCH18:ARCH18, CHILD:CHILD, CHARGES:CHARGES,
+                  HARM_AX:HARM_AX, HARM_FILM:HARM_FILM, KB_RENAME:KB_RENAME, KB_KEY:KB_KEY, INFER_NOUN:INFER_NOUN,
+                  SABAUTH:SABAUTH, ARCH18:ARCH18, CHILD:CHILD, CHILD_VAL:CHILD_VAL, CHARGES:CHARGES,
                   DOMAINS:DOMAINS, ARCH:ARCH, ARCH_CREDIT:ARCH_CREDIT, SI:SI, SINAMES:SINAMES, MASKS:MASKS, MASKS_READ:MASKS_READ,
                   BANDS:BANDS, PAL:PAL, ROOTD:ROOTD, ROOTCOL:ROOTCOL, AFFIN:AFFIN,
                   PRACTICE:PRACTICE, EXPR:EXPR, PMBANDS:PMBANDS, FLOWSEAT:FLOWSEAT, seatHz:seatHz,
@@ -113,6 +127,7 @@ if(typeof module!=='undefined'&&module.exports){
   /* the ladder */MARKS:MARKS, ladderRead:ladderRead, markDays:markDays, BACK_GAP:BACK_GAP, ledgerRead:ledgerRead,
                   intentionRead:intentionRead, INTENT_DAYS:INTENT_DAYS,
                   streakRead:streakRead, pracDays:pracDays, pracDay:pracDay, STREAK_MEANS:STREAK_MEANS,
+                  remindDue:remindDue, REMIND_GAP:REMIND_GAP, ladderKeep:ladderKeep,
   /* indexes */   W:W, BY:BY, ALL_SAB:ALL_SAB, S:S,
   /* the six families' paired opposite, core.js. Reachable as a browser global
      and absent from the contract, so a headless caller had no route to it but
@@ -120,7 +135,7 @@ if(typeof module!=='undefined'&&module.exports){
      copy the engine already keeps, not a second one to drift from it. */
                   FAM_POLE:FAM_POLE,
   /* soul */      buildSoul:buildSoul, affinity:affinity, bandIg:bandIg,
-  /* engine */    compute:compute, suscAll:suscAll, balance:balance, OUTWARD:OUTWARD, INWARD:INWARD,
+  /* engine */    compute:compute, bodyTop3:bodyTop3, suscAll:suscAll, balance:balance, OUTWARD:OUTWARD, INWARD:INWARD,
   /* the child pattern, and the reading of it that is assumed. Both exported,
      because a gate that cannot reach the constant cannot tell whether the
      count it read belongs to the reading it thinks it is looking at. */
@@ -223,7 +238,12 @@ if(typeof module!=='undefined'&&module.exports){
                   unpackAll:unpackAll, unpackOf:unpackOf, unpackKey:unpackKey,
                   compassPoleOf:compassPoleOf, compassPoleLines:compassPoleLines, POLE_MEANS:POLE_MEANS,
                   HOME_POLES:HOME_POLES, compassOffAxis:compassOffAxis,
-  /* sniffer */   scanStory:scanStory, normMap:normMap, maskedRuns:maskedRuns, maskedSay:maskedSay, clauseFloor:clauseFloor, marksOf:marksOf, parseStory:parseStory, applyStory:applyStory, applyStoryAddr:applyStoryAddr, uniFromParsed:uniFromParsed,
+  /* the 21 November rulings: where a teacher opens by CQ, the Crown's fetter
+     pair, and which laws belong to which teacher */
+                  CQ_CLIMB_FLOOR:CQ_CLIMB_FLOOR, CLIMB_SEAT_PICK:CLIMB_SEAT_PICK, POLE_UNLOCK:POLE_UNLOCK,
+                  compassBandOf:compassBandOf, compassClimbSeat:compassClimbSeat, compassUnlockOf:compassUnlockOf,
+                  SEAT_FETTER_PAIR:SEAT_FETTER_PAIR, LAW_TEACHER:LAW_TEACHER, compassLawsOf:compassLawsOf,
+  /* sniffer */   scanStory:scanStory, normMap:normMap, maskedRuns:maskedRuns, maskedSay:maskedSay, clauseFloor:clauseFloor, clauseCeil:clauseCeil, marksOf:marksOf, parseStory:parseStory, applyStory:applyStory, applyStoryAddr:applyStoryAddr, uniFromParsed:uniFromParsed,
                   wordsOf:wordsOf, unmarkedOf:unmarkedOf,
                   sniffDeny:sniffDeny, NEG_NOT_DENY:NEG_NOT_DENY, storyHits:storyHits,
                   asideOf:asideOf, asideSay:asideSay,
@@ -289,7 +309,7 @@ if(typeof module!=='undefined'&&module.exports){
                   NORM_APOS:NORM_APOS,
                   pathOf:pathOf, seatOf:seatOf, SEATXY:SEATXY, PATHSEAT:PATHSEAT,
   /* birth */     sunSign:sunSign, moonSign:moonSign, risingSign:risingSign,
-                  lifePath:lifePath, spiritual:spiritual, converge:converge,
+                  lifePath:lifePath, bornAge:bornAge, exampleAge:exampleAge, exampleWho:exampleWho, exampleRecord:exampleRecord, spiritual:spiritual, converge:converge, birthSuggest:birthSuggest, LP2ARCH:LP2ARCH, bornAsBirth:bornAsBirth,
                   /* the rest of the module. they were reachable as browser
                      globals but absent from the contract, so nothing outside
                      a page could test them. */
@@ -331,7 +351,7 @@ if(typeof module!=='undefined'&&module.exports){
   /* the trace graph, engine/trace.js. The vocabularies and the rule table
      are exported so the gate asserts them against the document rather than
      against a copy typed into the test. */
-                  TRACE_V:TRACE_V, TRACE_ALG:TRACE_ALG, TRACE_NODE_TYPES:TRACE_NODE_TYPES, TRACE_CHAIN:TRACE_CHAIN,
+                  TRACE_V:TRACE_V, TRACE_ALG:TRACE_ALG, TRACE_NODE_TYPES:TRACE_NODE_TYPES, TRACE_CHAIN:TRACE_CHAIN, TRACE_ABOVE:TRACE_ABOVE, TRACE_DERIVED:TRACE_DERIVED, TRACE_SHADOW:TRACE_SHADOW,
                   TRACE_EDGE_TYPES:TRACE_EDGE_TYPES, TRACE_SRC:TRACE_SRC, TRACE_RULES:TRACE_RULES,
                   TRACE_LOOP:TRACE_LOOP, TRACE_INVERSE:TRACE_INVERSE, TRACE_SYMMETRIC:TRACE_SYMMETRIC,
                   TRACE_CAUSE_SRC:TRACE_CAUSE_SRC, TRACE_PROMOTE:TRACE_PROMOTE, TRACE_TABLE:TRACE_TABLE,
@@ -375,6 +395,8 @@ if(typeof module!=='undefined'&&module.exports){
                   practiceReleasePlan:practiceReleasePlan, practiceReleaseVerify:practiceReleaseVerify,
                   practiceTraceIntents:practiceTraceIntents, practiceIntentOk:practiceIntentOk,
                   practiceFromLegacy:practiceFromLegacy, practicePatternOk:practicePatternOk,
+                  practicePlanCheck:practicePlanCheck, practiceSchedCheck:practiceSchedCheck,
+                  PR_PLANS_CAP:PR_PLANS_CAP, PR_SCHED_CAP:PR_SCHED_CAP, RIT_MISS:RIT_MISS,
                   PR_SRC:PR_SRC, PR_LIFE:PR_LIFE, PR_CLASS:PR_CLASS, PR_STEP:PR_STEP, PR_EV_ST:PR_EV_ST,
                   PR_EVID_SOURCE:PR_EVID_SOURCE, PR_EVID_TYPE:PR_EVID_TYPE, PR_OUT_ST:PR_OUT_ST,
                   PR_MISS:PR_MISS, PR_ADAPT:PR_ADAPT, PR_EVENTS:PR_EVENTS, PR_NODE:PR_NODE, PR_EDGE:PR_EDGE,
@@ -421,6 +443,11 @@ if(typeof module!=='undefined'&&module.exports){
      writers and the one count */
                   RELHIT_V:RELHIT_V, RELHIT_STATES:RELHIT_STATES, RELHIT_CMDS:RELHIT_CMDS,
                   RELHIT_MODES:RELHIT_MODES, RELHIT_LOG_MAX:RELHIT_LOG_MAX,
+  /* its spoken half: the phrases, the floor, the pure parser and the one
+     writer a heard phrase goes through. The microphone is not here. */
+                  RELHIT_VOICE_PHRASES:RELHIT_VOICE_PHRASES, RELHIT_VOICE_FLOOR:RELHIT_VOICE_FLOOR,
+                  RELHIT_VOICE_COLLIDES:RELHIT_VOICE_COLLIDES, RELHIT_VOICE_RAW_MAX:RELHIT_VOICE_RAW_MAX,
+                  relHitHear:relHitHear, relHitVoice:relHitVoice,
                   relHitBlank:relHitBlank, relHitPat:relHitPat, relHitValidate:relHitValidate,
                   relHitExecute:relHitExecute, relHitDecide:relHitDecide,
                   relHitSession:relHitSession, relHitState:relHitState, relHitCount:relHitCount,
@@ -442,6 +469,7 @@ if(typeof module!=='undefined'&&module.exports){
                   CHARGE_LADDER:CHARGE_LADDER, AMPLIFIER:AMPLIFIER, BODY_QUADRANT:BODY_QUADRANT,
                   ORGAN:ORGAN, CHARGE_QUADRANT:CHARGE_QUADRANT, DERIVED_MEASURE:DERIVED_MEASURE,
                   ASTRO_OVERLAY:ASTRO_OVERLAY, REG_MAP:REG_MAP, regDiff:regDiff, ladderPlaces:ladderPlaces,
+                  CX_DEEP:CX_DEEP, CX_DEEP_AMEND:CX_DEEP_AMEND, cxDeep:cxDeep, cxAmend:cxAmend,
   /* util */      clamp:clamp, leaves:(typeof leaves==='function'?leaves:null)
  };
 }

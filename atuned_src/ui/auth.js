@@ -329,11 +329,29 @@ function authProfileSync(){
   if(!rr.ok){PROFILE_SYNC_BUSY=false;return {state:'retry',status:rr.status};}
 
   /* First association with an account is deliberately conservative. */
+  /* ALWAYS KEEP THE HIGHER NUMBER, accounts-badges. Both pulls below used to
+     import the remote profile whole, so a device with the newer stamp and
+     the shorter record took every badge the other had earned off it.
+     ladderKeep (engine/ladder.js) carries the ritual list and the ground
+     opened across from this side, and names any mark it cannot carry; while
+     it names one nothing is pulled and nothing is pushed, because the rule
+     for a record conflict is still the owner's to pick. Read on the pull
+     only: a push sends this side, which is the higher one by then, and
+     holding it as well would leave the higher record unable to leave. */
+  var keep=remote&&typeof ladderKeep==='function'?ladderKeep(local,remote,Date.now()):null;
+  if(keep&&!keep.lost.length)keep.remote=keep.kept;
+  /* the hash a pull records is the server's copy and not the kept one, so a
+     pull that carried this side's rituals across differs from it on the next
+     pass and is pushed, and the other device gets the union too. Where
+     nothing was carried the two are the same text, as before. */
+  var remoteText=remote?JSON.stringify(remote):'';
   if(meta.accountId!==identity){
    if(remote){
+    if(keep&&keep.lost.length){PROFILE_SYNC_BUSY=false;return {state:'held',lost:keep.lost};}
+    if(keep)remote=keep.remote;
     var pulled=profileSyncImport(remote,remoteVersion);
     if(!pulled.ok){PROFILE_SYNC_BUSY=false;return {state:'refused'};}
-    return profileSyncHash(pulled.text).then(function(remoteHash){
+    return profileSyncHash(remoteText).then(function(remoteHash){
      profileSyncMetaSave({accountId:identity,version:remoteVersion,hash:remoteHash,updated:pulled.updated});
      PROFILE_SYNC_BUSY=false;
      if(typeof render==='function')render();
@@ -349,9 +367,11 @@ function authProfileSync(){
    var lu=local.updated?Date.parse(local.updated):0;
    var ru=remote.updated?Date.parse(remote.updated):0;
    if(ru>lu){
+    if(keep&&keep.lost.length){PROFILE_SYNC_BUSY=false;return {state:'held',lost:keep.lost};}
+    if(keep)remote=keep.remote;
     var pulled2=profileSyncImport(remote,remoteVersion);
     if(!pulled2.ok){PROFILE_SYNC_BUSY=false;return {state:'refused'};}
-    return profileSyncHash(pulled2.text).then(function(remoteHash2){
+    return profileSyncHash(remoteText).then(function(remoteHash2){
      profileSyncMetaSave({accountId:identity,version:remoteVersion,hash:remoteHash2,updated:pulled2.updated});
      PROFILE_SYNC_BUSY=false;
      if(typeof render==='function')render();
@@ -537,6 +557,27 @@ function authPwWhy(pw,isNew){
    sentence to show, and kept is false when the browser would not hold the
    session, which is still a sign in and is said as one that ends on reload. */
 var AUTH_UNKEPT=' Storage is blocked in this browser, so the sign in ends on reload.';
+/* THE FIRST THING A DEVICE SEES OF AN OLDER ACCOUNT IS NOTHING, AND THAT IS
+   NOT SAID ANYWHERE, 18 November: his words, after signing in on a device
+   with no local record and reading a blank Dashboard, "my account's not
+   being set up." It is not a broken sign in. PROFILE_SYNC_ENABLED is still
+   false (owner ruling, above: sync is not part of alpha until privacy copy,
+   consent and retention are approved together), so a sign in never pulls a
+   story onto a device that does not already hold one; the record stays
+   wherever it was written. "Signed in as X." said that truthfully and said
+   nothing about why the screen behind it was empty, which read as broken
+   rather than as the device's own first run. This does not turn sync on; it
+   only stops the silence. authSyncNote names the real condition (this
+   account has never been seen on this device, read off the same identity
+   key profileSyncMeta already keys sync by) rather than guessing from
+   whether the profile looks empty, which would be wrong for a returning
+   device with a real, full record. */
+function authSyncNote(acc,mail){
+ if(PROFILE_SYNC_ENABLED)return '';
+ var identity=(typeof acc.id==='string'&&acc.id)||String(mail||'').toLowerCase();
+ var seen=false;
+ try{ seen=profileSyncMeta().accountId===identity; }catch(e){}
+ return seen?'':' Your story stays on this device; it does not come over from another one yet.';}
 function authEnter(route,mail,pw){
  var bad=authFieldsWhy(mail,pw,route==='signup');
  if(bad)return Promise.resolve({ok:false, say:bad});
@@ -548,6 +589,7 @@ function authEnter(route,mail,pw){
   var held=authHold(b,mail);
   return {ok:true, kept:held.kept,
    say:(route==='signup'?'Account created. ':'')+'Signed in as '+held.s.email+'.'
+    +(route==='signin'?authSyncNote(acc,mail):'')
     +(held.kept?'':AUTH_UNKEPT)};});}
 /* A SESSION THE SERVER HANDED BACK, HELD, and everything a sign in starts.
    Out of authEnter because a reset answers the same {token, account} and is a

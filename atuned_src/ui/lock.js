@@ -254,7 +254,10 @@ function readSeenSig(r){
  var one=function(x){return x?x.nm+'~'+Math.round((+x.w||0)*10)+'('+(Array.isArray(x.parts)?x.parts:[]).map(function(q){
   return q?(q.i!=null?q.i:q.nm):'';}).join(' ')+')':'';};
  var all=function(l){return (Array.isArray(l)?l:[]).map(one).join(',');};
- return [all(r.sabs),all(r.cxs),all(r.hys),all(r.sups),r.psychopathy?r.psychopathy.named+one(r.psychopathy):''].join('|');}
+ /* and what the climb above the chain reads (engine/trace.js, traceAboveRead):
+    the masks' weights and the first and second archetype */
+ var ring=(Array.isArray(r.maskRing)?r.maskRing:[]).map(function(m){return m?m.nm+'~'+Math.round((+m.w||0)*10):'';}).join(',');
+ return [all(r.sabs),all(r.cxs),all(r.hys),all(r.sups),r.psychopathy?r.psychopathy.named+one(r.psychopathy):'',ring,r.pi+'/'+r.si].join('|');}
 
 /* THE DOORS. A page that is locked has its button in the bar greyed too, so the
    lock is on the way in as well as on the page. Painted on every render and in
