@@ -8753,6 +8753,17 @@ g('PO · unpack every symbol: the meaning table and the pole meanings');
    'each of the four defences has its own mark, plain path data, and no mark stands for a defence the Field does not draw');
   ok(FOURD.every(n=>/^[A-Z][a-z]+ is /.test(T['superego:'+n.toLowerCase()]||'')&&T['superego:'+n.toLowerCase()].indexOf(n)===0),
    'each defence has a sentence that opens on its own name');
+  /* EVERY AMPLIFIER ROW, NOT ONLY THE FOUR THE PANEL DRAWS. Judgment and
+     Comparison rejoined AMPLIFIER as rows five and six with no superego:
+     sentence, so unpackOf(nm,'superego') fell through to '' and a drill opened
+     on either address by any route said nothing about the defence (the board's
+     superego-two-symbols-unexplained, fixed at fc67a0df). The check above holds
+     FOURD only, a typed list, so it stayed green across that hole and would
+     again. This one reads the table. */
+  {const bare=E.AMPLIFIER.filter(a=>{const s=unpackOf(a.nm,'superego');
+    return s!==T['superego:'+a.nm.toLowerCase()]||s.indexOf(a.nm+' is ')!==0;}).map(a=>a.nm);
+   ok(E.AMPLIFIER.length>FOURD.length&&bare.length===0,
+    'every one of the '+E.AMPLIFIER.length+' amplifier rows has its own superego sentence, opening on its name, bare: '+JSON.stringify(bare));}
   /* the figure under a symbol is the charge held at its place, and the sentence says so and nothing larger */
   ok(FOURD.every(n=>/the charge held at its place in the body|no story reaches its place in the body yet/.test(T['superego:'+n.toLowerCase()])),
    'every defence sentence says its figure is the charge at its place in the body, never how much of the defence a person shows');
@@ -8788,6 +8799,15 @@ g('PO · unpack every symbol: the meaning table and the pole meanings');
   const via=E.GLOSS.filter(g=>T[g.t.toLowerCase()]===first(g)), left=E.GLOSS.filter(g=>!T[g.t.toLowerCase()]);
   ok(via.length>0,'the glossary reaches the meaning table: '+via.length+' GLOSS words carry their own first sentence, '
    +'and these carry none: '+JSON.stringify(left.map(g=>g.t)));}
+ /* EVERY PAYWALL RING'S MEANING IS IN THIS TABLE. pwMean (ui/paywall.js)
+    tries the ring's name, then singular, and falls back to SIGHT's own lock
+    line when none resolves, which is what the registers ring did until
+    fc67a0df gave 'register' its entry (the board's paywall-registers-no-entry).
+    A fallback is still a sentence on screen, so the page gate's tip check
+    stayed green while the ring read a second source. This holds the table end. */
+ {const sing=g=>{const nm=g.nm.replace(/^the /,''); return [nm,nm.replace(/es$/,''),nm.replace(/s$/,'')];};
+  const bare=E.SIGHT.filter(g=>g.built!==false&&!sing(g).some(t=>unpackOf(t))).map(g=>g.k);
+  ok(E.SIGHT.length>0&&bare.length===0,'every built paywall ring has its own meaning in the table, none falls back to its lock line, bare: '+JSON.stringify(bare));}
  ok(unpackOf('Brow','seat')===T['seat:3rd eye']&&unpackKey('Virgo','sign')==='sign:virgo'&&unpackOf('nothing at all')==='',
   'the lookup folds case, reads Brow as the 3rd Eye, and returns nothing for a term it does not hold');
  /* THE FOURTH RUNG AND THE TOP ARE TWO WORDS, ruled 23 October (DECISIONS.md,

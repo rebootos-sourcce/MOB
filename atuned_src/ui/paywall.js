@@ -161,8 +161,11 @@ function pwN(n){ return String(n).replace(/\B(?=(\d{3})+(?!\d))/g,','); }
 /* a ring's name, off SIGHT: "the masks" is Masks on a ring */
 function pwName(g){ var s=g.nm.replace(/^the /,''); return s.charAt(0).toUpperCase()+s.slice(1); }
 /* A RING'S MEANING IS THE GLOSSARY'S, the one table of what a term means, read
-   singular because that is how it is keyed. The registers have no entry, so
-   they say SIGHT's own sentence, which is the lock's. */
+   singular because that is how it is keyed. g.what is a fallback for a ring
+   the table has no entry for, and no built ring should reach it: the
+   registers did, and read SIGHT's lock line from a second source until
+   fc67a0df keyed 'register' in UNPACK_BASE. tests/engine.js and
+   tests/paywall.js now fail on any ring that falls back. */
 function pwMean(g){
  var nm=g.nm.replace(/^the /,''), t=[nm,nm.replace(/es$/,''),nm.replace(/s$/,'')], i, m='';
  if(typeof unpackOf==='function')for(i=0;i<t.length&&!m;i++)m=unpackOf(t[i]);

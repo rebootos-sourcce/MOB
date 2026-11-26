@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v3515 8132b51f 2026-11-26 20:56"><head><meta charset="utf-8">
+<html lang="en" data-build="v3517 3541a346 2026-11-26 23:21"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -107060,8 +107060,11 @@ function pwN(n){ return String(n).replace(/\B(?=(\d{3})+(?!\d))/g,','); }
 /* a ring's name, off SIGHT: "the masks" is Masks on a ring */
 function pwName(g){ var s=g.nm.replace(/^the /,''); return s.charAt(0).toUpperCase()+s.slice(1); }
 /* A RING'S MEANING IS THE GLOSSARY'S, the one table of what a term means, read
-   singular because that is how it is keyed. The registers have no entry, so
-   they say SIGHT's own sentence, which is the lock's. */
+   singular because that is how it is keyed. g.what is a fallback for a ring
+   the table has no entry for, and no built ring should reach it: the
+   registers did, and read SIGHT's lock line from a second source until
+   fc67a0df keyed 'register' in UNPACK_BASE. tests/engine.js and
+   tests/paywall.js now fail on any ring that falls back. */
 function pwMean(g){
  var nm=g.nm.replace(/^the /,''), t=[nm,nm.replace(/es$/,''),nm.replace(/s$/,'')], i, m='';
  if(typeof unpackOf==='function')for(i=0;i<t.length&&!m;i++)m=unpackOf(t[i]);
@@ -114503,8 +114506,13 @@ function stkAmpRow(a,n,r,L,selKey,ctx){
  var key='amp:'+n.i, f=fmtPct('weight',n.sq), p=Math.max(0,Math.min(100,pct('weight',n.sq)||0));
  var can=insightCanRelease({kind:'addr',i:n.i},r,ctx);
  var tip=!n.cf?'No feeling is mapped to this address yet, so a release cannot run here.':'';
+ /* the title said the defence's name and nothing else, over a row that
+    already prints the name, so on this level of the stack a defence was a
+    bare label. A pattern row's title is its sentence (stkPatternRow, above),
+    and this is the same: the one the rail's Superego symbol carries. */
+ var says=unpackOf(a.nm,'superego')||a.nm;
  return '<div class="'+stkRowClass(key,L,selKey,{kind:'addr',i:n.i})+'">'+stkNsHtml(n.sq,a.nm,f)
-  +'<button type="button" class="stk-r stk-am" data-amp="'+n.i+'" title="'+esc(a.nm)+'"'
+  +'<button type="button" class="stk-r stk-am" data-amp="'+n.i+'" title="'+esc(says)+'"'
   +(tip?' data-tip-k="'+esc(a.nm)+'" data-tip="'+esc(tip)+'"':'')+'>'
   +'<span class="rb-row"><span class="rb-n"><span class="stk-nm">'+esc(a.nm)+'</span></span><span class="rb-v">'+esc(f)+'</span></span>'
   +'<span class="rb-t" aria-hidden="true" style="--c:'+seatCol(n.b)+'"><s style="left:25%"></s><s style="left:50%"></s><s style="left:75%"></s>'
@@ -116930,5 +116938,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="008527792"></div>
+<div id="eof" hidden data-len="008528343"></div>
 </body></html>

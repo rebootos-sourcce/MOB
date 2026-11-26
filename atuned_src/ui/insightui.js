@@ -416,8 +416,13 @@ function stkAmpRow(a,n,r,L,selKey,ctx){
  var key='amp:'+n.i, f=fmtPct('weight',n.sq), p=Math.max(0,Math.min(100,pct('weight',n.sq)||0));
  var can=insightCanRelease({kind:'addr',i:n.i},r,ctx);
  var tip=!n.cf?'No feeling is mapped to this address yet, so a release cannot run here.':'';
+ /* the title said the defence's name and nothing else, over a row that
+    already prints the name, so on this level of the stack a defence was a
+    bare label. A pattern row's title is its sentence (stkPatternRow, above),
+    and this is the same: the one the rail's Superego symbol carries. */
+ var says=unpackOf(a.nm,'superego')||a.nm;
  return '<div class="'+stkRowClass(key,L,selKey,{kind:'addr',i:n.i})+'">'+stkNsHtml(n.sq,a.nm,f)
-  +'<button type="button" class="stk-r stk-am" data-amp="'+n.i+'" title="'+esc(a.nm)+'"'
+  +'<button type="button" class="stk-r stk-am" data-amp="'+n.i+'" title="'+esc(says)+'"'
   +(tip?' data-tip-k="'+esc(a.nm)+'" data-tip="'+esc(tip)+'"':'')+'>'
   +'<span class="rb-row"><span class="rb-n"><span class="stk-nm">'+esc(a.nm)+'</span></span><span class="rb-v">'+esc(f)+'</span></span>'
   +'<span class="rb-t" aria-hidden="true" style="--c:'+seatCol(n.b)+'"><s style="left:25%"></s><s style="left:50%"></s><s style="left:75%"></s>'
