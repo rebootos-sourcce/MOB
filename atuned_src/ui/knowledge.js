@@ -1162,7 +1162,7 @@ function kbPsycheDrill(d){
    return String(x.t||'').trim().toLowerCase()===String(ref.targetName||ref.name||'').trim().toLowerCase();
   })[0];
   if(!hit)return '<div class="ad-sub" data-dp-unresolved="'+esc(d.id)+'" data-dp-native-index="'+i+'">'
-   +esc(ref.name)+' / Native link awaiting verification</div>';
+   +esc(ref.name)+(ref.nativeDeckStatus==='SOURCE_ONLY_ARCHETYPE'?' / Source record only; not in the scored archetype deck':' / Native link awaiting verification')+'</div>';
   return '<button type="button" class="btn" data-dp-native="'+esc(d.id)+'" data-dp-native-index="'+i+'">'
    +esc(ref.name)+(ref.targetName&&ref.name!=='Controller'?' → '+esc(ref.targetName):'')+' <span class="ad-sub">'+esc(ref.evidenceStatus)+'</span></button>';
  }):[]).join('');
