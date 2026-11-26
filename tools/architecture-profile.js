@@ -45,7 +45,7 @@ async function main(){
     const graph=E.traceFromRecord(p,[],reading);
     const repeat=E.traceFromRecord(p,[],reading);
     assert.equal(JSON.stringify(graph),JSON.stringify(repeat),'graph derivation changed for identical input');
-    const keys=new Set(graph.nodes.map(x=>x.key));
+    const keys=new Set(graph.nodes.map(x=>E.traceKey(x.type,x.id)));
     assert.equal(keys.size,graph.nodes.length,'duplicate graph node keys');
     const calc=bench(()=>E.compute());
     const trace=bench(()=>E.traceFromRecord(p,[],reading));
