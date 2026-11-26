@@ -206,7 +206,14 @@ for(const [W,H] of [[1600,1000],[390,844]]){
   const errs=[]; page.on('pageerror',e=>errs.push(e.message));
   await page.goto(FILE,{waitUntil:'load'}); await booted(page);
   await page.waitForSelector('#loginb-go',{timeout:8000});
-  await page.evaluate(()=>{loginClose(); if(typeof loginEnter==='function')loginEnter();}); await throughIntro(page); await page.waitForTimeout(300);
+  /* THE REAL DOOR NO LONGER OPENS THIS SHEET, 18 November: loginEnter goes
+     straight to the dashboard now (see tests/onboarding2.js and
+     tests/srcintro.js, fixed the same night). This gate is about the first
+     release inside the sheet, not about the door, so it opens the sheet
+     directly, the same non replay first run obOpen(false) always was;
+     throughIntro has nothing to skip since the example-read screen never
+     shows on this path either. */
+  await page.evaluate(()=>{loginClose(); if(typeof obOpen==='function')obOpen(false);}); await page.waitForTimeout(300);
   await page.click('[data-ob="next"]'); await page.waitForTimeout(80);
   await page.click('[data-obpick="2"]'); await page.waitForTimeout(80);
   await page.click('[data-ob="next"]'); await page.waitForTimeout(80);

@@ -16,7 +16,7 @@ function lensEastern(r){
  var b=r.darkB||'Root';
 
  /* ROUND PO. Sanskrit names and seed sounds, said as what they are. */
- return {t:'Eastern',a:b,b:unpackOf(String(b).toLowerCase(),'yoga'),c:'the seat carrying the most'};}
+ return {t:'Eastern',a:b,b:unpackOf(String(b).toLowerCase(),'yoga'),c:'the point carrying the most'};}
 function lensDesign(r){
  var a=ARCH[r.pi]||{nm:''};
  return {t:'Design',a:a.nm,b:'defined at the '+(r.darkB||'Root').toLowerCase()+', '
@@ -208,8 +208,11 @@ function sumUn(term,ctx){
  var s=unpackOf(term,ctx);
  return s?'<span class="s-un">'+esc(s)+'</span>':'';}
 function sumStory(r){
+ /* the reading sumBirth holds, which is the person's own when they typed a
+    birth. converge asked for the roster name alone, and only a reference case
+    has one in BIRTH, so the blueprint paragraph never opened for anyone real. */
  var nm2=(PEOPLE[S.who]||{}).nm||'You';
- var C=converge(nm2,r), e=C?C.e:null;
+ var B=sumBirth(), C=B.sp?converge(B.p.nm,r,B.sp):null, e=C?C.e:null;
  var held=W.filter(function(n){return n.sq>=4;}).sort(function(a,b){return b.sq-a.sq;});
  var named=r.sabs.filter(function(s){return s.named;}).sort(function(a,b){return b.score-a.score;});
  var loud=[].concat(r.sups,r.hys,r.cxs,r.sabs).sort(function(a,b){return b.w-a.w;})[0];
@@ -242,11 +245,19 @@ function sumStory(r){
      thing the blueprint is read from: the sun, the date as a number, the name as
      a number, and what is running now. A person can see where each claim comes
      from, which is the point of unpacking it. */
-  p.push('The blueprint you were born on reads '+sumB(e.sunEl,rootPlain(elRoot)||null,e.sunEl)
-   +', which is the '+rootB(elRoot)+' '+unp('root')+', on life path '+sumB(String(e.lp),null,'life path')+', the one who '
+  /* A SUN THAT WAS NOT READ HAS NO ELEMENT. A person's own birth reaches this
+     now, and a date alone on a day the sun changed sign leaves the element
+     null, which printed "reads null" and then "the blueprint says nothing,
+     these differ". The element clause and its comparison are left out and the
+     paragraph says what would settle it, the way converge's open bucket does. */
+  var sunGap='The element is not read: the sun changed sign that day, and '
+   +(e.needsTime?'a birth time':'a birth time zone')+' settles which. ';
+  p.push('The blueprint you were born on '+(elRoot
+    ?'reads '+sumB(e.sunEl,rootPlain(elRoot)||null,e.sunEl)+', which is the '+rootB(elRoot)+' '+unp('root')+', on life path '
+    :'runs on life path ')+sumB(String(e.lp),null,'life path')+', the one who '
    +esc(e.lpMean||'runs')+'. '
    +sumUn('blueprint')+' '+sumUn('symbolic reading')
-   +'<span class="s-blk">'+(e.sun?sumUn('sun sign')+' '+sumUn(e.sun,'sign')+' ':'')+sumUn(e.sunEl)+' '+sumUn(elRoot.toLowerCase())+'</span>'
+   +'<span class="s-blk">'+(elRoot?(e.sun?sumUn('sun sign')+' '+sumUn(e.sun,'sign')+' ':'')+sumUn(e.sunEl)+' '+sumUn(elRoot.toLowerCase()):esc(sunGap))+'</span>'
    +'<span class="s-blk">'+sumUn('life path')+' '+sumUn('path:'+e.lp)
    +(num?' Your full name carries an expression of <b>'+num.expression+'</b>, and numerology claims that '
      +'one '+esc(numSays('expression',num.expression))+'. '+sumUn('expression'):'')+'</span>'
@@ -255,7 +266,8 @@ function sumStory(r){
       paragraph has just said what it means, three lines up, and saying it
       again was the 14 to 18 words Sofia and Angela read twice */
    +sumUn('running')+' '+(elRoot===rootNow?'':sumUn(rootNow.toLowerCase())+' ')+sumUn('archetype:'+arch.toLowerCase())+' '
-   +(elRoot===rootNow
+   +(!elRoot?''
+    :elRoot===rootNow
      /* A CAUSE IS NOT A READING. The blueprint says one thing and the field
         runs another, and the instrument can say they differ. It cannot say
         why, and "something was installed on top" was a story about a person
@@ -279,8 +291,8 @@ function sumStory(r){
    +fmtPct('weight',held[0].sq)+'.'
    +(loud?' The biggest thing compounding on it is <b>'+esc(loud.nm)+'</b>.':'')
    +(stop?' Flow stops at the '+seatB(String(stop.p.n).toLowerCase(),stop.p.b,String(stop.p.n).toLowerCase(),'seat')
-     +', which is where the charge is dense enough to close the seat.'
-    :' No seat is closed, so what is held is not yet stopping flow.')
+     +', which is where the charge is dense enough to close the point.'
+    :' No point is closed, so what is held is not yet stopping flow.')
    /* ROUND RG. "Shadow weight is 54" was a bare figure under a term nobody
       on this page had been told. The term carries its sentence now. */
    +' '+unp('shadow weight','Shadow weight')+' is '+fmtPct('dq',r.DQ)+'.'
@@ -319,7 +331,7 @@ function sumStory(r){
        return '<b>'+esc(x.pair.be)+'</b>';}).join(' and ')
      +(blocked.length>1?' are not passing. The charge named above sits under them.'
                        :' is not passing. The charge named above sits under it.')
-   : ' Every seat your avatar depends on is passing.';
+   : ' Every point your avatar depends on is passing.';
  }else{
   gapLine=' No avatar has been stated, so there is nothing to measure this against. '
    +'Say who you are becoming and this paragraph names what stands in the way.';}
@@ -469,7 +481,7 @@ function sumSeats(){
     screen." A label names the slot, and this slot is the four seats carrying
     the most, sorted by load. "In the body" is already the axes' eyebrow on
     this page, and ui/mapshelf.js already calls the top one "Heaviest seat". */
- return '<div class="pm-eye">Heaviest seats</div>'+seats.map(function(x){
+ return '<div class="pm-eye">Heaviest points</div>'+seats.map(function(x){
    /* and a seat says what a closed one does rather than the word closed */
    return sumStructRow(x.p.n,
     x.held?'shut, so charge sits under it':'open, so charge passes through',
@@ -567,13 +579,20 @@ function sumChips(C){
     engine/data/gloss.js: what the placement is, then what the sign claims. */
  function say(){return Array.prototype.slice.call(arguments).filter(Boolean).join(' ');}
  var out='<div class="s-chips">';
- out+=chip('sign',e.sun,uni(ZGLYPH[e.sun]||'*'),e.sun,'',
+ /* THE SUN AND THE GENE KEY ARE LEFT OFF WHEN THEY WERE NOT READ, as the moon
+    and the rising already are. Only reference cases reached this strip until
+    a person's own birth was routed into converge, and every one of them has a
+    time, so a date alone on a day the sun changed sign would have printed a
+    chip reading null, and a gene key reading null.null, the same defect
+    renderSpirit records. What is missing is named in the comparison. */
+ if(e.sun)out+=chip('sign',e.sun,uni(ZGLYPH[e.sun]||'*'),e.sun,'',
   say(unpackOf('sun sign'),unpackOf(e.sun,'sign')));
  if(e.moon)out+=chip('sign',e.moon,uni(ZGLYPH[e.moon]||'*'),e.moon,'moon',
   say(unpackOf('moon sign'),unpackOf(e.moon,'sign')));
  if(e.rising)out+=chip('sign',e.rising,uni(ZGLYPH[e.rising]||'*'),e.rising,'rising',
   say(unpackOf('rising sign'),unpackOf(e.rising,'sign')));
- out+=chip('celem',e.celem,svgI(CELEM_IC[e.celem]||CELEM_IC.Earth),e.celem+' '+e.chinese,'',
+ /* no chip for a year the hour decides (chineseYear, engine/birth.js) */
+ if(e.chinese)out+=chip('celem',e.celem,svgI(CELEM_IC[e.celem]||CELEM_IC.Earth),e.celem+' '+e.chinese,'',
   say(unpackOf(e.chinese,'animal'),unpackOf(e.celem,'year')));
  out+=chip('lp',e.lp,'<span class="s-num-g">'+e.lp+'</span>','Life path',String(e.lp),
   say(unpackOf('life path'),unpackOf('path:'+e.lp)));
@@ -582,7 +601,7 @@ function sumChips(C){
   e.hd.profile?('profile '+e.hd.profile):'unresolved',
   e.hd.unresolved?say(unpackOf('design'),'The type needs the full bodygraph and is not computed. The profile is.')
    :say(unpackOf('design'),unpackOf('profile')));
- out+=chip('gk',e.gk.gate,svgI(GATE_IC),
+ if(e.gk.gate!=null)out+=chip('gk',e.gk.gate,svgI(GATE_IC),
   'Gene key',e.gk.gate+'.'+e.gk.line,say(unpackOf('gene key'),unpackOf('gate')));
  return out+'</div>';}
 function sumConverge(C){
@@ -605,8 +624,8 @@ function sumConverge(C){
      person's own names, which is the useful half of the same sentence. */}
  return out;}
 function sumSpirit(r){
- var nm2=(PEOPLE[S.who]||{}).nm||'You';
- var C=converge(nm2,r);
+ /* the person's own reading, for the reason sumStory gives */
+ var B=sumBirth(), C=B.sp?converge(B.p.nm,r,B.sp):null;
  if(!C)return '<div class="s-spirit"><div class="pm-eye">The spiritual layer</div>'
   /* HS sweep: the refusal keeps what is missing and what would put it in.
      The tail on what is stored and why explained the section. */
@@ -676,7 +695,21 @@ function sumRender(){
  sumWire();
  /* and its side column, today's summary, off the same reading. A paint and
     never a write: the day is frozen by sumDayOpen, after this returns. */
- if(typeof sumDayPaint==='function')sumDayPaint(r);}
+ if(typeof sumDayPaint==='function')sumDayPaint(r);
+ sumRunPaint(r);
+ sumHelloWire();}
+
+/* THE RAIL'S TALK BUTTON (#sumhello, shell/body.html). It goes to the
+   Journal and presses the hello there, in that order: stHello mounts her into
+   #stuni, which only exists once the Journal has rendered, so pressing it
+   first from here would find no host and park her again (stUniSync's own
+   first branch). setTab renders the surface it lands on before it returns. */
+function sumHelloWire(){
+ var b=document.getElementById('sumhello'); if(!b||b.dataset.wired)return;
+ b.dataset.wired='1';
+ b.addEventListener('click',function(){
+  setTab(TAB.STORY);
+  if(typeof stHello==='function')stHello();});}
 
 /* NOTHING READ YET IS ITS OWN PAGE.
 
@@ -776,9 +809,7 @@ function sumUnread(r){
 /* one profile's birth reading and name numbers, read once per render and
    handed to every piece that needs them */
 function sumBirth(){
- var p=PEOPLE[S.who]||PEOPLE[0], sp=spiritual(p.nm);
- if(!sp&&CURP&&CURP.who&&CURP.who.born&&CURP.who.born.date){var bn=CURP.who.born;
-  sp=spiritualOf({d:bn.date, t:(bn.timeUnknown?'':(bn.time||'')), p:bn.place||'', z:bn.zone||''});}
+ var p=PEOPLE[S.who]||PEOPLE[0], sp=spiritual(p.nm)||spiritualOf(bornAsBirth(CURP));
  /* the name's numbers only off a name that is somebody's, for the reason
     spNumRows gives: a blank profile's roster name is the word You */
  var full=numFullName(CURP)||(typeof FULLNAME!=='undefined'&&FULLNAME[p.nm])||'';
@@ -997,8 +1028,16 @@ function sumWho(r,B,full){
  /* A NAME IS ENTERED OR IT IS NOT. A blank profile carries the roster word
     You, which is a default and not somebody, so it never counts. */
  if(!full&&!(B.sp||B.N||sumRealName()))return '';
+ /* THE GIFT SITS UNDER THE NAME AGAIN, 20 November, because the column it
+    moved to is gone. His words on the live page: "where it says oscillating
+    50%, just get rid of that entirely." That was sumStatus(), the band, its
+    state and "Where it goes", and the gift rode inside it, so deleting the
+    band without moving the gift would have taken the one line tests/gift.js
+    holds on a new person's first screen off the page with it. Under the plate
+    it is above the fold at 390 as well, where inside the side column it sat
+    at 918 on an 844 screen (TASKS.md #137). */
  return sgZone('who','Who this is',
-  full?sumPlate(r,B):'<div class="s-plate sg-plain"><div class="s-pl-l">'+sumNameBlock(B,false)+'</div></div>');}
+  full?sumPlate(r,B)+sumGift():'<div class="s-plate sg-plain"><div class="s-pl-l">'+sumNameBlock(B,false)+'</div></div>');}
 /* THE BAND AND THE GIFT, MOVED OFF THE NAME AND INTO THE INFORMATION COLUMN.
    Read once, at the top of the drivers card (sg-side), next to "What drives
    it" rather than crowding the plate. Both pieces are unchanged, only their
@@ -1007,7 +1046,13 @@ function sumWho(r,B,full){
    so it still finds it here), and sumGift() still writes #sumgift with the
    same id and the same sentence tests/gift.js reads on a brand new person's
    first screen (inView at scroll 0 holds: this column sits above the fold
-   at the widths that gate opens at). */
+   at the widths that gate opens at).
+   NO CALLER SINCE 20 NOVEMBER. His words: "where it says oscillating 50%,
+   just get rid of that entirely." That is this block, the band's word, its
+   state and Where it goes, so sumFull stopped calling it and the gift moved
+   under the plate (sumWho). Kept rather than deleted on the same footing as
+   sumOutput below: free for a surface that wants the band, and the tier's
+   colour still reads on the plate's own ring. */
 function sumStatus(r,B){
  var t=TIER_BY[r.tier]||null;
  /* no band line at all while CQ is still filling: "N laws to answer" was
@@ -1054,7 +1099,7 @@ function sumDrivers(B,r){
    existed and already read real data (engine/astro.js); it only went
    unlabelled before. */
 function sumMarks(B,r){
- var C=B.sp?converge(B.p.nm,r):null;
+ var C=B.sp?converge(B.p.nm,r,B.sp):null;
  return C?'<div class="sg-marks" data-grp="marks"><div class="pm-eye">The celestial layer</div>'
   +sumChips(C)+'</div>':'';}
 /* a zone is a heading with a mark and one body. The heading names the slot and
@@ -1247,7 +1292,7 @@ function sumSaid(x){
  if(!SUM_SAID||!x)return false;
  return SUM_SAID.indexOf(String(x).replace(/\s+/g,' ').trim())>=0;}
 function sumFull(r){
- var B=sumBirth(), C=B.sp?converge(B.p.nm,r):null;
+ var B=sumBirth();
  var story=sumStory(r), drv;
  SUM_SAID=sumPlain(story);
  try{drv=sumDrivers(B,r);}finally{SUM_SAID=null;}
@@ -1276,6 +1321,7 @@ function sumFull(r){
     and sumNum sat collapsed in a closed <details> at the foot of the page;
     both read the same way, just no longer hidden. */
  return sumWho(r,B,true)
+  +sumToday()
   /* THE CENTRE IS THE STORY. Ruled. The reading built from a person's own
      words, in the instrument's voice. It stands on the first screen, left of
      the roots, and the phone reads it before them. The drivers card and the
@@ -1285,37 +1331,87 @@ function sumFull(r){
     +'<section class="sg-card sg-story" data-grp="story">'
      +'<div class="s-readbox sg-flat">'+story+'</div></section>'
    +'</div>'
-   +'<div class="sg-side">'+sumStatus(r,B)+drv+'</div>'
+   +'<div class="sg-side">'+drv+'</div>'
   +'</div>'
   /* the patterns block follows the lead on every width. On a phone it was
      lifted above the story by an order rule written before it existed. */
-  +(typeof sumLoopSlot==='function'?sumLoopSlot(r):'')
-  +sumMarks(B,r)
-  +'<div class="sg-two sg-even">'
-   +'<section class="sg-card" data-grp="run">'+sgHead('run','What is running')
-    +sumBlueprint()
-    +'<div class="sg-gap">'+sumArch(r)+'</div>'
-    +'<div class="sg-gap"><div class="pm-eye">Masks</div>'+sumMasks(r,0,3)+'</div>'
-    +'<div class="sg-gap">'+sumChain(r)+'</div>'
-    +sgFold('masks','All masks',sumMasks(r,3,99)||'')
-   +'</section>'
-   +'<section class="sg-card" data-grp="cost">'+sgHead('cost','What it costs')
-    +sumGlance(r,true)
-    +'<div class="sg-gap"><div class="pm-eye">In the body</div>'+sumNine()+'</div>'
-    +sgFold('seats','Heaviest seats',sumSeats())
-    +sgFold('bind','Binds',sumBind())
-    +sgFold('ig','Integrity over time',sumIg(r))
-   +'</section>'
-  +'</div>'
-  /* NUMEROLOGY, EXPOSED, not folded. Same sumNum() call this page already
-     made, inside a closed <details> at the very bottom; now a card on the
-     page itself, so Path, Expression, Soul urge, Personality, Birthday and
-     Maturity read without a tap. */
-  +sgZone('numerology','Numerology',sumNum(r,true),'sg-card')
-  +'<div class="sg-folds">'
-   +sgFold('lens','Four lenses',sumLens(r,true))
-   +(C?sgFold('conv','Birth comparison',sumConverge(C)):'')
-  +'</div>';}
+  +(typeof sumLoopSlot==='function'?sumLoopSlot(r):'');}
+ /* AND THE PAGE ENDS AT YOUR PATTERNS, 20 November, his words: "everything
+    beneath your patterns... what's running is moving to the left panel. And
+    then the rest of that looks like it's in analytics." Under it stood the
+    celestial strip (sumMarks), What is running, What it costs, Numerology and
+    the Four lenses and Birth comparison folds. Every one of them is still
+    drawn somewhere a person can reach: the celestial placements and every
+    numerology number are the left rail's Root Energetics, which this tab now
+    shows flat (shell/head.html, "THE SUMMARY'S LEFT RAIL IS ONE FLAT
+    READING"); the blueprint and the archetypes are the rail's own grids; the
+    masks are the rail's new What is running (sumRunPaint below); the nine,
+    the seats, the binds and integrity over time are Analytics. Only the calls
+    went. The functions stay, because Analytics, the unread page and the gates
+    still call sumNum, sumMarks, sumGlance and sumIg by name. sumLoopSlot
+    stays, because Your patterns has had no other home since 14 November and
+    deleting it here would delete it from the product. The converge() this
+    function opened with went too: the Birth comparison fold was its only
+    reader on this page. */
+
+/* ============================================================
+   TODAY, IN THE CENTRE, 21 November. The Summary redesign's brief asked for
+   the centre to open on a daily snapshot: today's date and a short read of
+   where the person's record stands today. That read already existed and was
+   already frozen once a day: engine/daily.js composes it and ui/daily.js
+   paints it into #sumday. It sat in the right rail's Today section, so the
+   centre opened on the blueprint, which is the one part of this page that
+   does not change from one day to the next.
+
+   So the host moves, and nothing about what fills it does. #sumday keeps its
+   id, its class and its painter (sumDayPaint, called from sumRender right
+   after this string lands), so the freeze, the aim, its marks and the past
+   days work exactly as they did in the rail. It is a move and not a copy:
+   the rail's section is gone (shell/body.html), because the same frozen
+   sentences printed twice on one screen is the duplicate the daily gate
+   already refuses.
+
+   The date is the engine's own day and word (dlyDay, dlyDayWord), the same
+   day a record freezes under, so the heading and the sentences under it can
+   never be about two different days. It is the only new string here, and it
+   is a label. An empty day takes the whole section with it (dl-empty,
+   sumDayPaint), the way the rail's section went, rather than leaving a date
+   over nothing.
+   ============================================================ */
+function sumToday(){
+ var d=(typeof dlyDay==='function')?dlyDay(Date.now()):null;
+ return '<section class="sg-z sg-today" data-grp="today" aria-labelledby="sg-h-today">'
+  +sgHead('today','Today')
+  +'<div class="sg-card sg-today-c">'
+   +(d?'<p class="sg-date"><time datetime="'+esc(d)+'">'+esc(dlyDayWord(d))+'</time></p>':'')
+   +'<div id="sumday" class="dl"></div>'
+  +'</div></section>';}
+
+/* ============================================================
+   WHAT IS RUNNING, IN THE LEFT RAIL. Moved off the foot of the Summary on
+   the same ruling. The rail's own grids already carry what that card printed
+   first, the blueprint (#roots, #doms) and the two archetypes (#ar1), so
+   copying sumBlueprint and sumArch across would print each of them twice on
+   one screen. The masks are the one part the rail did not carry, so that is
+   all that moves: the first three as the rows they always were, and the rest
+   one tap down under the fold they always had. sumChain is not carried. He
+   named the chain as junk on 18 November, in the Psyche ruling recorded at
+   shell/body.html, and this is that same chain.
+
+   Painted from sumRender, so it is always the reading this page holds, and
+   emptied on an unread page, where there is nothing running to show and a
+   stale list would be a reading of somebody else.
+   ============================================================ */
+function sumRunPaint(r){
+ var h=document.getElementById('sumrun'); if(!h)return;
+ var body=r&&!r.unread?sumMasks(r,0,3):'';
+ h.innerHTML=body?body+sgFold('masks','All masks',sumMasks(r,3,99)||''):'';
+ var sec=h.closest?h.closest('.lsec'):null;
+ if(sec)sec.classList.toggle('sum-empty',!body);
+ /* the rows keep data-mask, so the one listener the page body uses opens them
+    here too, rather than a second copy of its routing */
+ if(!h.dataset.wired){h.dataset.wired='1'; h.addEventListener('click',sumClick);
+  h.addEventListener('toggle',sumFoldKeep,true);}}
 
 /* ============================================================
    "THE HEAVIEST OF THE NINE IS SAD AT YOUR WEIGHT OF 97" IS GONE. Ruled 3
@@ -1428,9 +1524,15 @@ function sumWire(){
  /* a fold remembers that it was opened through the next repaint, because
     the surface is rewritten whole whenever a reading changes. toggle does not
     bubble, so it is caught on the way down. */
- h.addEventListener('toggle',function(ev){var d=ev.target;
-  if(d&&d.getAttribute&&d.getAttribute('data-fold'))SUM_OPEN[d.getAttribute('data-fold')]=d.open;},true);
- h.addEventListener('click',function(ev){
+ h.addEventListener('toggle',sumFoldKeep,true);
+ h.addEventListener('click',sumClick);}
+/* NAMED, 20 November, and nothing in them changed. They were the two
+   anonymous handlers above, and What is running moved to the left rail
+   (sumRunPaint) carrying rows whose data-mask this routing already answers,
+   so the rail attaches the same two functions rather than a copy of them. */
+function sumFoldKeep(ev){var d=ev.target;
+ if(d&&d.getAttribute&&d.getAttribute('data-fold'))SUM_OPEN[d.getAttribute('data-fold')]=d.open;}
+function sumClick(ev){
   var b=ev.target.closest?ev.target.closest('[data-sout],[data-sp],[data-num],[data-arch],[data-dom],[data-seat],[data-mask],[data-gl],[data-igspan]'):null;
   if(!b)return;
   /* the integrity chart's own span. It repaints the surface rather than the
@@ -1471,4 +1573,4 @@ function sumWire(){
   if(b.hasAttribute('data-gl'))return runCoreDrill();
   /* an archetype or a mask has no drill of its own yet, so the core reading is
      the honest destination rather than a button that does nothing. */
-  return runCoreDrill();});}
+  return runCoreDrill();}

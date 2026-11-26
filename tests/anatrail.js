@@ -73,8 +73,11 @@ async function anaTrailGate(browser,FILE,ok,booted){
     shown:document.getElementById('rdrill').style.display!=='none'}));};
   for(const [sel,k] of [['#ana .ana-tile[data-ana="met|dq"]','met'],['#ana .ana-g','cell'],['#ana .ana-g-h','seat'],
     ['#ana .ana-g-r','axis'],['#ana .ana-rung[data-ana="rung|sab"]','rung'],['#ana .ana-lw','law'],
-    ['#ana g[data-ana^="seat|"]','seat'],['#ana g[data-ana^="axis|"]','axis'],['#ana g[data-ana^="dom|"]','dom'],
-    ['#ana g[data-ana^="arch|"]','arch'],['#ana g[data-ana^="mask|"]','mask'],['#ana g[data-ana^="chain|"]','chain']]){
+    ['#ana g[data-ana^="seat|"]','seat'],['#ana g[data-ana^="axis|"]','axis'],
+    /* masks, domains and archetypes are squarified treemap cells now, round
+       ana-treemap, buttons and not bubbles, so they are found by their lens */
+    ['#ana .ana-tm-cell[data-lens="dom"]','dom'],['#ana .ana-tm-cell[data-lens="arch"]','arch'],
+    ['#ana .ana-tm-cell[data-lens="mask"]','mask'],['#ana g[data-ana^="chain|"]','chain']]){
    const o=await open(sel);
    ok(o.k===k&&o.shown&&o.n>60,'AT1: '+tag+sel+' opens its '+k+' card in Selection, '+JSON.stringify(o));}
 
@@ -84,10 +87,11 @@ async function anaTrailGate(browser,FILE,ok,booted){
      the 18 rows, so the Caregiver's card put Pleaser at the heart. What it
      should say is read here off SAB_LIB and the node table, not through the
      helper the card uses. ---- */
-  {const ds=await pg.$$eval('#ana g[data-ana^="arch|"]',gs=>gs.map(g=>g.getAttribute('data-ana')));
+  {/* the archetypes are treemap cells now, round ana-treemap, not bubbles */
+   const ds=await pg.$$eval('#ana .ana-tm-cell[data-lens="arch"]',gs=>gs.map(g=>g.getAttribute('data-ana')));
    const off=[];
    for(const d of ds){
-    const o=await open('#ana g[data-ana="'+d+'"]');
+    const o=await open('#ana .ana-tm-cell[data-ana="'+d+'"]');
     if(o.missing||o.k!=='arch'){off.push(d+' did not open, '+JSON.stringify(o)); continue;}
     const r=await pg.evaluate(()=>{const nm=(ANA_PICK||{}).nm;
      const a18=ARCH18.filter(x=>x[0]===nm||(nm==='Rebel'&&x[0]==='Outlaw'))[0];

@@ -14,8 +14,11 @@
    What is held, read off the page and never typed:
 
      SN1  every place the rung prints says super complex: the Field bar's
-          switch, the stack tab, Summary's chain, Analytics' ring and its
-          card, and a pattern drill
+          switch, the stack tab, Analytics' ring and its card, and a pattern
+          drill. Summary's chain held this too until cd55089c retired it
+          outright, 20 November ("Summary: flat left rail from celestial to
+          archetype, centre ends at Your patterns"); SN1 now holds that it
+          stayed gone rather than that it still says the right word.
      SN2  on every tab TABDEF names, with a person whose reading reaches the
           rung, the word character stands only on the Character page, its
           door, its rail section, the Play section's title that names that
@@ -84,19 +87,20 @@ async function stackNameGate(browser,FILE,ok,booted){
   ok(caught&&clean,'SN2: '+tag+'the reader catches a stray "Character layer" put on the Field, and lets it go once it is gone');
 
   /* ---- SN1, the Field: the bar's switch and the stack's tab ---- */
-  /* THE TAB IS ICONS ONLY NOW, 14 November: "I just want icons, not full
-     words, on one horizontal row." textContent is a count digit or nothing,
-     so the word SN1 checks for is read off aria-label, the same reachable
-     name title already carried before, and title is checked too since
-     both say the word now. */
+  /* THE TAB IS A LEVEL HEADER NOW, 18 November. The five tabs went with the
+     nested cascade ("Let's unnest them"), and the stack is six levels under
+     the Insight reading, each a header with its symbol, its word and its count.
+     The rung's header carries the word in its aria-label, where the tab did,
+     and SN1 holds the same two things of it: it says Super complexes, and no
+     part of it says Character. */
   const field=await pg.evaluate(()=>{
    const b=document.querySelector('[data-fb="character"]');
-   const t=document.querySelector('#stack .stk-t[data-st="sup"]');
+   const t=document.querySelector('#stack .stk-lv[data-lv="sup"] .stk-lh');
    return {bar:b?b.getAttribute('aria-label'):null, tab:t?t.getAttribute('aria-label'):null,
-    tabTip:t?t.getAttribute('title'):null};});
+    tabTip:t?t.getAttribute('data-tip'):null};});
   ok(field.bar==='Super complexes','SN1: '+tag+'the Field bar\'s innermost switch is Super complexes, got '+JSON.stringify(field.bar));
-  ok((w<600&&field.tab===null)||(!!field.tab&&/^Super/.test(field.tab)&&!/character/i.test(field.tab+' '+field.tabTip)),
-   'SN1: '+tag+'the stack\'s tab for the rung reads Super, got '+JSON.stringify(field));
+  ok((w<600&&field.tab===null)||(!!field.tab&&/^Super complexes/.test(field.tab)&&!/character/i.test(field.tab+' '+field.tabTip)),
+   'SN1: '+tag+'the stack\'s level for the rung reads Super complexes, got '+JSON.stringify(field));
 
   /* ---- SN1, a pattern drill on the rung ---- */
   const drill=await pg.evaluate(()=>{
@@ -106,12 +110,15 @@ async function stackNameGate(browser,FILE,ok,booted){
    return {sup:/\bsuper[- ]complex(es)?\b/i.test(s),character:/\bcharacter\b/i.test(s),head:s.slice(0,80)};});
   ok(drill.sup&&!drill.character,'SN1: '+tag+'the rung\'s own drill names it a super complex and never Character, '+JSON.stringify(drill));
 
-  /* ---- SN1, Summary's chain ---- */
+  /* ---- SN1, Summary's chain, retired outright, 20 November (cd55089c) ----
+     sumChain lost its only caller that day, named in CLAUDE.md's own
+     account of the round: "sumChain is not carried. He named the chain as
+     junk on 18 November... this is that same chain." There is no rung
+     word on the Summary left to mislabel, so this holds that .s-chain
+     stays gone rather than asserting a count the page no longer prints. */
   const sum=await pg.evaluate(()=>{setTab(TAB.SUMMARY); render();
-   return [...document.querySelectorAll('.s-chain .s-ch')].map(e=>e.textContent.replace(/\s+/g,' ').trim());});
-  /* the count and its word sit in one span with no space, "2super" */
-  ok(sum.length>0&&sum.some(s=>/^\d+\s*super$/.test(s))&&!sum.some(s=>/character/i.test(s)),
-   'SN1: '+tag+'Summary\'s chain counts the rung as super, got '+JSON.stringify(sum));
+   return !!document.querySelector('.s-chain');});
+  ok(!sum,'SN1: '+tag+'Summary\'s chain is retired and has not come back, '+JSON.stringify(sum));
 
   /* ---- SN1, Analytics: the ring and its card ---- */
   await pg.evaluate(()=>{setTab(TAB.ANALYTICS); render();});

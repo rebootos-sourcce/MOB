@@ -2,10 +2,12 @@
    THE FIRST RUN, WALKED END TO END, AT BOTH WIDTHS. F13.
 
    tests/journey.js holds the journey record headlessly, against the engine.
-   This file walks it in a real Chromium, through the real door (ui/login.js,
-   Guest), the way a stranger meets it, at 1600 by 1000 and at 390 by 844, and
-   reloads the page part way through on purpose, because a first run a person
-   loses to a reload is a first run that did not work.
+   This file walks it in a real Chromium, opened directly on the login card's
+   own close (ui/login.js no longer opens this sheet itself, 18 November;
+   see door() below and tests/onboarding2.js's own block on that), at 1600 by
+   1000 and at 390 by 844, and reloads the page part way through on purpose,
+   because a first run a person loses to a reload is a first run that did not
+   work.
 
    WHAT A FINISHED FIRST RUN IS, and each line below is asserted:
 
@@ -41,8 +43,6 @@
    is how its mutants are run. Exits non zero on any failure.
    ============================================================ */
 const {chromium}=require('playwright');
-/* the intro between the door and the first card, walked: tests/intro.js */
-const {throughIntro}=require('./intro.js');
 const path=require('path');
 const FILE='file://'+path.resolve(process.env.ATUNED_FILE||'source.html');
 const WIDTHS=(process.env.JY2_WIDTHS||'1600x1000,390x844').split(',').map(s=>s.split('x').map(Number));
@@ -99,13 +99,22 @@ for(const [W,H] of WIDTHS){
  const shot=async(name)=>{ if(!SHOTS)return; try{ await page.waitForTimeout(2600); await page.screenshot({path:path.join(SHOTS,W+'-'+name+'.png')}); }catch(e){} };
  const placeholders=async(where)=>{const s=await st(); ok(!PLACEHOLDER.test(s.card),tag+where+' carries no placeholder word: '
   +((s.card.match(PLACEHOLDER)||[''])[0]));};
- /* THROUGH THE DOOR, the way the app's own dev harness does: Guest is gone,
-    12 November, the owner's own instruction, and this gate is not the one
-    testing login (tests/boot.js and tests/functional.js hold that). A
-    reload meets the door again, so every reload comes back through it. */
+ /* THE REAL DOOR NO LONGER OPENS THIS SHEET, 18 November: ui/login.js's
+    loginEnter goes straight to the dashboard now (tests/onboarding2.js
+    holds that, and its own new block). This file is the walk's own resume
+    mechanics end to end, which are real whenever something opens the sheet
+    directly, so the login card is still closed the same way the app's own
+    dev harness does, and the sheet is opened the same guarded way loginEnter
+    itself used to: only while the first run is not yet marked onboarded,
+    which is also exactly what lets a reload resume mid walk instead of
+    reopening the welcome card from scratch. */
  const door=async()=>{await booted(page);
   const open=await page.evaluate(()=>typeof LOGIN!=='undefined'&&LOGIN.open);
-  if(open){await page.evaluate(()=>{loginClose(); if(typeof loginEnter==='function')loginEnter();}); await throughIntro(page,600); await page.waitForTimeout(350);}};
+  if(open)await page.evaluate(()=>{loginClose();});
+  const st0=await page.evaluate(()=>({onboarded:!!(CURP&&CURP.ui&&CURP.ui.onboarded),
+   open:!!(typeof OB!=='undefined'&&OB.open)}));
+  if(!st0.onboarded&&!st0.open)await page.evaluate(()=>{if(typeof obOpen==='function')obOpen(false);});
+  await page.waitForTimeout(350);};
  const reload=async()=>{await page.waitForTimeout(250); await page.reload({waitUntil:'load'}); await door();};
  /* FROM WHEREVER THE SHEET IS, ON TO A STEP, the way a person would press it.
     Used after a reload that did not resume, so the walk can go on and every
@@ -328,9 +337,15 @@ console.log('\n=== a walk the tutorial door left: the same resume, the same end 
  const click=async(sel)=>{try{await page.click(sel,{timeout:4000}); await page.waitForTimeout(90); return true;}
   catch(e){return page.evaluate(s=>{const b=document.querySelector(s); if(b){b.click(); return true;} return false;},sel);}};
  const rec=()=>page.evaluate(()=>(typeof CURP!=='undefined'&&CURP&&CURP.journey)?JSON.parse(JSON.stringify(CURP.journey)):null);
+ /* see the first loop's own door() above for why this no longer goes
+    through loginEnter: the real door never opens this sheet any more. */
  const door=async()=>{await booted(page);
   const open=await page.evaluate(()=>typeof LOGIN!=='undefined'&&LOGIN.open);
-  if(open){await page.evaluate(()=>{loginClose(); if(typeof loginEnter==='function')loginEnter();}); await throughIntro(page,600); await page.waitForTimeout(350);}};
+  if(open)await page.evaluate(()=>{loginClose();});
+  const st0=await page.evaluate(()=>({onboarded:!!(CURP&&CURP.ui&&CURP.ui.onboarded),
+   open:!!(typeof OB!=='undefined'&&OB.open)}));
+  if(!st0.onboarded&&!st0.open)await page.evaluate(()=>{if(typeof obOpen==='function')obOpen(false);});
+  await page.waitForTimeout(350);};
  await page.goto(FILE+'?dev=1',{waitUntil:'load'}); await booted(page);
  const made=await page.evaluate(story=>{
   const lg=journeyLog(CURP,'tutorial_started',null,{door:'tutorial'});

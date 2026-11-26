@@ -131,10 +131,13 @@ var DLY_NOTE_PHRASES=['divine energy','cosmic destiny','soul evolution','spiritu
 /* THE CANON WORDS, the owner's own, and the wisdom school entry each one
    points at. A word with no entry has t null, and that is content for the copy
    seat and not a defect here: a search of the wisdom school on 1 October
-   finds no entry for soul, spiritual or energy. seat points at Chakra, whose
-   entry begins "A seat." */
+   finds no entry for soul, spiritual or energy. point points at Chakra, the
+   entry that says the chakra is an assemblage point. */
 var DLY_CANON=[{w:'soul',t:null},{w:'spiritual',t:null},{w:'source',t:'Source'},{w:'energy',t:null},
- {w:'seat',t:'Chakra'},{w:'charge',t:'Charge'},{w:'coherence',t:'Coherence'},{w:'address',t:'Address'}];
+ /* w is the word as a sentence prints it, so it follows the screen: the
+    sentences say point since 18 November ("Change seat and chakra to just
+    point"), and a w left at seat matched nothing and linked nothing. */
+ {w:'point',t:'Chakra'},{w:'charge',t:'Charge'},{w:'coherence',t:'Coherence'},{w:'address',t:'Address'}];
 
 /* ---------------- the templates ----------------
    src is the strongest provenance a template may carry, and a statement may be
@@ -150,26 +153,28 @@ var DLY_CANON=[{w:'soul',t:null},{w:'spiritual',t:null},{w:'source',t:'Source'},
    plus .h, used when the evidence is one record (show_uncertainty).
    @aim and @aims print DLY_AIM_WORD. */
 var DLY_TPL=[
- {id:'today.read', src:'known', k:'today', text:'Your latest saved reading is from {0}. The {1} seat carried the most weight in it.'},
- {id:'show.seat', src:'inferred', k:'showing', text:'In the last {0} days, entries touched the {1} seat on {2} separate days.'},
- {id:'show.seat.h', src:'inferred', k:'showing', text:'So far one entry, from {0}, touched the {1} seat.'},
- {id:'show.seat.new', src:'inferred', k:'showing', text:'In the last {0} days, entries touched the {1} seat. In the {2} days before that, none did.'},
+ {id:'today.read', src:'known', k:'today', text:'Your latest saved reading is from {0}. The {1} point carried the most weight in it.'},
+ {id:'show.seat', src:'inferred', k:'showing', text:'In the last {0} days, entries touched the {1} point on {2} separate days.'},
+ {id:'show.seat.h', src:'inferred', k:'showing', text:'So far one entry, from {0}, touched the {1} point.'},
+ {id:'show.seat.day.h', src:'inferred', k:'showing', text:'So far {2} entries, all from {0}, touched the {1} point.'},
+ {id:'show.seat.new', src:'inferred', k:'showing', text:'In the last {0} days, entries touched the {1} point. In the {2} days before that, none did.'},
  {id:'show.cue', src:'inferred', k:'showing', text:'Words that read as {1} came up {2} times across {3} entries in the last {0} days. They are counted here and not quoted.'},
  {id:'show.cue.h', src:'inferred', k:'showing', text:'So far one entry, from {0}, carried words that read as {1}. They are counted here and not quoted.'},
+ {id:'show.cue.day.h', src:'inferred', k:'showing', text:'So far {2} entries, all from {0}, carried words that read as {1}. They are counted here and not quoted.'},
  {id:'show.opened', src:'known', k:'showing', text:'{1} addresses were opened for the first time in the last {0} days. The latest was on {2}.'},
  {id:'show.opened.1', src:'known', k:'showing', text:'An address was opened for the first time in the last {0} days, on {1}.'},
  {id:'show.ritual', src:'known', k:'showing', text:'In the last {0} days you set {1} rituals and marked {2} done. Both counts are your own entries.'},
  {id:'show.ritual.1', src:'known', k:'showing', text:'In the last {0} days you set one ritual and marked {1} done. Both counts are your own entries.'},
- {id:'show.avatar', src:'inferred', k:'showing', text:'Entries in the last {0} days touched the {1} seat {2} times. Your avatar has a line written for that seat.'},
- {id:'show.avatar.h', src:'inferred', k:'showing', text:'So far one entry, from {0}, touched the {1} seat, where your avatar has a line written.'},
- {id:'intf.seat', src:'known', k:'interfering', text:'The {1} seat carried the most weight in {2} saved readings in the last {0} days.'},
- {id:'chg.heavy', src:'known', k:'changing', text:'The seat carrying the most weight moved from {0} on {1} to {2} on {3}.'},
+ {id:'show.avatar', src:'inferred', k:'showing', text:'Entries in the last {0} days touched the {1} point {2} times. Your avatar has a line written for that point.'},
+ {id:'show.avatar.h', src:'inferred', k:'showing', text:'So far one entry, from {0}, touched the {1} point, where your avatar has a line written.'},
+ {id:'intf.seat', src:'known', k:'interfering', text:'The {1} point carried the most weight in {2} saved readings in the last {0} days.'},
+ {id:'chg.heavy', src:'known', k:'changing', text:'The point carrying the most weight moved from {0} on {1} to {2} on {3}.'},
  {id:'chg.law', src:'known', k:'changing', text:'Your answer for {0} moved {1} between {2} and {3}, across {4} saved readings.'},
  {id:'chg.cq', src:'known', k:'changing', text:'Across {1} saved readings in the last {0} days, your coherence moved {2}.'},
  {id:'chg.cq.level', src:'known', k:'changing', text:'Across {1} saved readings in the last {0} days, your coherence stayed level.'},
  {id:'chg.dq', src:'known', k:'changing', text:'Across {1} saved readings in the last {0} days, the charge held at your addresses moved {2}.'},
  {id:'chg.dq.level', src:'known', k:'changing', text:'Across {1} saved readings in the last {0} days, the charge held at your addresses stayed level.'},
- {id:'att.seat', src:'inferred', k:'attention', text:'In the last {0} days, the {1} seat has {2} separate days of evidence behind it, the most of any seat.'},
+ {id:'att.seat', src:'inferred', k:'attention', text:'In the last {0} days, the {1} point has {2} separate days of evidence behind it, the most of any point.'},
  {id:'aim.fold', src:'known', k:'aim', text:'In the last {0} days you wrote {1} @aims and marked {2} kept, {3} partly kept, {4} not kept and {5} unknown.'},
  {id:'aim.fold.1', src:'known', k:'aim', text:'You wrote one @aim in the last {0} days, on {1}, and marked it {2}.'},
  {id:'try.avatar', src:'known', k:'try', text:'Your avatar was last reviewed on {0}. A monthly review is due.'},
@@ -254,9 +259,9 @@ function dlyRefWhy(type,id){
  if(typeof type!=='string'||typeof id!=='string'||!id.length||id.length>DLY_CAP.id)
   return 'names no kind of evidence this build holds';
  if(/[\u0000-\u001f]/.test(id))return 'carries a control character';
- if(type==='kb')return dlyGloss(id)?null:'names no entry in the wisdom school: '+id;
+ if(type==='kb')return dlyGloss(id)?null:'names no entry in the knowledge base: '+id;
  if(type==='law')return SINAMES.indexOf(id)>=0?null:'names no law: '+id;
- if(type==='avatar')return (BANDS.indexOf(id)>=0||id==='review')?null:'names no seat: '+id;
+ if(type==='avatar')return (BANDS.indexOf(id)>=0||id==='review')?null:'names no point: '+id;
  if(type==='aim')return /^sum:\d{4}-\d{2}-\d{2}$/.test(id)?null:'names no day: '+id;
  if(type==='history'||type==='ritualday')return isNaN(Date.parse(id))?'is not a date: '+id:null;
  if(type==='first')return null;
@@ -269,7 +274,8 @@ function dlyRefWhy(type,id){
     October, and the grounding still hands it none, for the reason given
     there). Refused by name, so a day citing a rung
     is somebody's decision and not a side effect of a vocabulary growing. */
- if(TRACE_CHAIN.indexOf(type)>=0)return 'names a rung of the chain, which a day does not cite: '+type;
+ /* and the rungs above it, 21 November (TRACE_ABOVE), for the same reason */
+ if(TRACE_DERIVED.indexOf(type)>=0)return 'names a rung of the chain, which a day does not cite: '+type;
  if(TRACE_NODE_TYPES.indexOf(type)>=0)return null;
  return 'names no kind of evidence this build holds';}
 function dlyStValid(errs,path,x,names){
@@ -310,14 +316,14 @@ function dlyStValid(errs,path,x,names){
    dlyKeys(errs,p2,r,['addr','band']);
    var a=dlyInt(errs,p2+'.addr',r.addr,0,1e4);
    if(a!==null&&!BY[a]){errs.push(p2+'.addr is '+a+', which is not one of the addresses'); a=null;}
-   if(BANDS.indexOf(r.band)<0)errs.push(p2+'.band is not a seat: '+JSON.stringify(r.band));
+   if(BANDS.indexOf(r.band)<0)errs.push(p2+'.band is not a point: '+JSON.stringify(r.band));
    else if(a!==null)o.read.push({addr:a,band:r.band});});}
  o.links=[];
  if(x.links!==undefined&&x.links!==null){
   if(!Array.isArray(x.links))errs.push(path+'.links is not a list');
   else if(x.links.length>DLY_CAP.links)errs.push(path+'.links holds '+x.links.length+', more than '+DLY_CAP.links);
   else x.links.forEach(function(t,j){
-   if(typeof t!=='string'||!dlyGloss(t))errs.push(path+'.links['+j+'] is not a term in the wisdom school: '+JSON.stringify(t));
+   if(typeof t!=='string'||!dlyGloss(t))errs.push(path+'.links['+j+'] is not a term in the knowledge base: '+JSON.stringify(t));
    else o.links.push(t);});}
  /* A DIGIT IN A SENTENCE IS A DIGIT IN AN ARGUMENT. A sealed sentence prints a
     number only because a template was handed it, so a number that is not one
@@ -403,7 +409,7 @@ function dlyEvValid(errs,path,x,i,days,state){
  if(T==='aim_set'){
   o.text=dlyStr(errs,path+'.text',x.text,DLY_CAP.aim);
   if(x.domain!==undefined&&x.domain!==null&&BANDS.indexOf(x.domain)<0&&PUR_SIDES.indexOf(x.domain)<0)
-   errs.push(path+'.domain is not a seat or a side: '+JSON.stringify(x.domain));
+   errs.push(path+'.domain is not a point or a side: '+JSON.stringify(x.domain));
   o.domain=(x.domain===undefined)?null:x.domain;
   if(state.set[x.sid])errs.push(path+' is a second aim for '+x.sid+', and a day has one');
   state.set[x.sid]=1;}
@@ -839,11 +845,21 @@ function dlyComposeIn(p,now,opt){
   var rd=dlyRead(ctx,s.idx,s.seat), ev=dlyStoryEv(s.ids);
   if(s.rung==='windowed')cands.push(dlyCand('show.seat.new','showing',[s.span,s.seat,s.base],ev,'inferred','windowed',{read:rd,dom:s.seat}));
   else if(s.rung==='repeated')cands.push(dlyCand('show.seat','showing',[s.span,s.seat,s.days],ev,'inferred','repeated',{read:rd,dom:s.seat}));
-  else cands.push(dlyCand('show.seat.h','showing',[dlyDayWord(s.last),s.seat],ev,'inferred','once',{read:rd,dom:s.seat}));});
+  /* the rung is once when the entries sit on one day, and that is a count of
+     days, not of entries. Picking the sentence on the rung printed "one entry"
+     over two and three entries logged the same day, so the sentence is picked
+     on s.n, the entries themselves, and the rung stays once either way. */
+  else if(s.n===1)cands.push(dlyCand('show.seat.h','showing',[dlyDayWord(s.last),s.seat],ev,'inferred','once',{read:rd,dom:s.seat}));
+  else cands.push(dlyCand('show.seat.day.h','showing',[dlyDayWord(s.last),s.seat,s.n],ev,'inferred','once',{read:rd,dom:s.seat}));});
  (by.cue||[]).forEach(function(c){
   var rung=(c.ents>=2&&c.days>=2)?'repeated':'once', ev=dlyStoryEv(c.ids);
   if(rung==='repeated')cands.push(dlyCand('show.cue','showing',[c.span,c.nm,c.total,c.ents],ev,'inferred','repeated'));
-  else cands.push(dlyCand('show.cue.h','showing',[dlyDayWord(c.last),c.nm],ev,'inferred','once'));});
+  /* the same defect the seat sentence above had: rung once means the entries
+     share one day, and the sentence was picked on the rung, so two and three
+     entries logged on 9 March with the same cue each read "So far one entry".
+     It is picked on c.ents, the entries that carried the cue, instead. */
+  else if(c.ents===1)cands.push(dlyCand('show.cue.h','showing',[dlyDayWord(c.last),c.nm],ev,'inferred','once'));
+  else cands.push(dlyCand('show.cue.day.h','showing',[dlyDayWord(c.last),c.nm,c.ents],ev,'inferred','once'));});
  (by.opened||[]).forEach(function(o){
   if(o.n===1)cands.push(dlyCand('show.opened.1','showing',[o.span,dlyDayWord(o.latest)],o.ev,'known','once'));
   else cands.push(dlyCand('show.opened','showing',[o.span,o.n,dlyDayWord(o.latest)],o.ev,'known','repeated'));});

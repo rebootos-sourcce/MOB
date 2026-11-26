@@ -87,11 +87,12 @@ const ev=async(pg,fn,arg)=>{try{return await pg.evaluate(fn,arg);}catch(e){retur
    return out;});
   ok(r.c0==='First run Mark one ritual done.','a blank record\'s Compass names the next mark and what it takes, got '+JSON.stringify(r.c0));
   /* 4 November, round RB: the line under the next mark moved off the Ritual
-     page's visible text into the mark's own tooltip (rvTip), so the Ongoing
-     goal card now names the mark alone and carries what it takes one press
-     away, same sentence, same place `data-tip` always holds it. */
+     page's visible text into the mark's own tooltip (rvTip), so the Goal
+     card (named Ongoing goal until the 21 November rename) now names the
+     mark alone and carries what it takes one press away, same sentence,
+     same place `data-tip` always holds it. */
   ok(/Next mark ?First run\b/.test(r.g0||'')&&!/Mark one ritual done\./.test(r.g0||'')&&!/You marked/.test(r.g0||''),
-   'and the Ongoing goal names the mark alone, nothing in the past tense, got '+JSON.stringify(r.g0&&r.g0.slice(-120)));
+   'and the Goal card names the mark alone, nothing in the past tense, got '+JSON.stringify(r.g0&&r.g0.slice(-120)));
   ok(/data-tip="Mark one ritual done\./.test(r.t0||''),
    'and the Compass line it used to print inline is still there, one press away, got '+JSON.stringify((r.t0||'').match(/data-tip="[^"]*"/)));
   ok(/^Seven days Practise on seven days\./.test(r.c1||'')&&!/on the record/.test(r.c1||''),

@@ -89,7 +89,7 @@ var PCT_KIND={
              say:'identification, how much of the person the instrument has measured'},
  /* data/compass.js:484, where a person sits on a compass axis */
  axis:      {lo:0, hi:100, src:'engine/data/compass.js', find:'return Math.round(clamp(clear*0.62+honest*0.38,0,1)*100);}',
-             say:'the position on a path axis'},
+             say:'the position on a compass axis'},
  /* core.js sab33Detect, how closely the feelings fit a saboteur's defined
     ranges: the ramp's confidence, nought to one (sabConfidence clamps it,
     data/canon.js), as a percent. It was the staircase's fit until P1-6 of
@@ -167,7 +167,7 @@ var PCT_KIND={
     exists to stop. This is a law mean read seat by seat, nothing a person
     committed to or carried out. */
  lawseat:   {lo:0, hi:10, src:'engine/compute.js', find:'- JQ*0.30,0,10);',
-             say:'the same laws read seat by seat, up the body'},
+             say:'the same laws read point by point, up the body'},
  /* ladder.js, intentionRead. Ruled 25 September, "you either did the thing
     you said you were gonna do or you didn't", said against done over the
     last seven days, no charge read into it. Wired in 28 October: the
@@ -230,10 +230,10 @@ var PCT_KIND={
              say:'how hard the shadow drags'},
  /* ui/map.js:202, a seat's held charge over its addresses, out of ten */
  seatload:  {lo:0, hi:1, src:'ui/map.js', find:'var load=hot.reduce(function(a,n){return a+n.sq;},0)/Math.max(1,seg.length)/10;',
-             say:'the load a seat carries'},
+             say:'the load a point carries'},
  /* ui/map.js:203, what a seat passes on */
  pass:      {lo:0, hi:1, src:'ui/map.js', find:'pass:Math.max(0,1-load*1.35)',
-             say:'what one seat passes on'},
+             say:'what one point passes on'},
  /* ui/map.js:206, the product of the seven passes, root to crown */
  flow:      {lo:0, hi:1, src:'ui/map.js', find:'function flSpeed(){var s=1;flSeats().slice().reverse().forEach(function(x){s*=x.pass;});return s;}',
              say:'flow, what gets from the root to the crown'},
@@ -244,11 +244,22 @@ var PCT_KIND={
     affinity (engine/core.js:403, an archetype against the strongest) and share
     (ui/summary.js:438, a share of all twelve) were both the soul map's lean,
     printed three ways for one archetype, and neither moves with a story or a
-    release. affinity still orders first and second; nothing prints it. A
-    quiz self report is the one route where a story moves it, through this
-    same seat figure (engine/core.js, affinity). */
+    release. affinity still orders first and second; it prints now too, as
+    archshare below, since the 21 November decision put both readings on the
+    same screen. A quiz self report is the one route where a story moves this
+    one, through the same seat figure (engine/core.js, affinity). */
  archetype: {lo:0, hi:1, src:'engine/archexpr.js', find:'return s?clamp(1-s.mean,0,1):null;}',
-             say:'how fully an archetype is expressed, dragged by the charge at its seat'},
+             say:'how fully an archetype is expressed, dragged by the charge at its point'},
+ /* THE OTHER HALF OF THE SAME 21 November DECISION, HIS OWN WORDS: "add an
+    option for both ways, 100% meaning the whole and a percent based off of
+    the individual item." archetype above is the individual item; this is
+    the whole, affinity (engine/core.js) read a second way, each archetype's
+    share of what all twelve add up to rather than of the strongest one,
+    so the twelve numbers sum to 1 and read like a real competition's
+    results. engine/archexpr.js's affinityShare is the one place that sum is
+    taken; nothing here repeats it. */
+ archshare: {lo:0, hi:1, src:'engine/archexpr.js', find:'return sum>0?a.map(function(v){return v/sum;}):a.map(function(){return 1/a.length;});}',
+             say:'an archetype\'s share of all twelve, against each other rather than against the strongest one'},
  /* core.js:394, each domain against the strongest. The floor of .08 is drawn
     (the petal never vanishes), so lo stays 0 and the floor reads 8%. */
  domain:    {lo:0, hi:1, src:'engine/core.js', find:'DOMAIN=DOMAIN.map(v=>.08+.92*v/mx);',
@@ -267,13 +278,31 @@ var PCT_KIND={
  /* charfield.js:60, how closed a seat reads on the Character page, a smooth
     step clamped to nought and one */
  closed:    {lo:0, hi:1, src:'engine/charfield.js', find:'function charSmooth(a,b,v){var t=clamp((v-a)/(b-a),0,1);',
-             say:'how closed a seat is, the shadow at that seat'},
+             say:'how closed a point is, the shadow at that point'},
  /* charfield.js:160, closedness times a share, so never above it */
  leak:      {lo:0, hi:1, src:'engine/charfield.js', find:'o.lk[k]=sh*(.55+.45*(1-c));',
-             say:'how much a seat leaks'},
- /* ui/avatarui.js:624, the mean of the avatar's closures */
- complete:  {lo:0, hi:1, src:'ui/avatarui.js', find:'var overall=cs.length?cs.reduce(function(s,v){return s+v;},0)/cs.length:null;',
-             say:'the avatar\'s percent complete'},
+             say:'how much a point leaks'},
+ /* engine/avatar.js wholeOf, the Avatar's one percent, 18 November: "we're
+    going to use the word whole." Already a whole number 1 to 100 or null,
+    so it rides on nought to a hundred and null prints the dash. WIRED IN,
+    21 November: avState().overall (ui/avatarui.js) used to be complete's
+    own mean below instead, which never read CURP.rituals at all, so a
+    ritual marked done could not move the hero's own percent; confirmed
+    broken, then fixed, in tests/avatarwhole.js. overall is wholeOf's pct
+    now, divided back to complete's own nought-to-one range so every
+    existing caller (avArc's fraction, ritstage.js's own *100) still reads
+    it unchanged. complete below is the mean that is left, one row or one
+    area's own closure, never the hero's own figure again. */
+ whole:     {lo:0, hi:100, src:'engine/avatar.js', find:'var pct=v===1?100:Math.min(99,Math.max(1,Math.round(100*v)));',
+             say:'how much of who you are becoming you have built'},
+ /* the mean of one area's own rows' closures, AV_AREAS' own per-seat badge;
+    not the hero's own circle, which is whole above. MOVED, 21 November
+    (dw-avatar-helper): the mean is avatarBecoming's now, in engine/avatar.js,
+    the one call the Avatar page and the Discover card both read, and its
+    bound is the clamp on each pair's closure, cited here, so a mean of
+    clamped values cannot leave nought to one either. */
+ complete:  {lo:0, hi:1, src:'engine/avatar.js', find:'var c=Math.max(0,Math.min(1,1-x.gap.load/s)), b=x.pair.seat||x.gap.seat;',
+             say:'one seat\'s own mean closure, not the avatar\'s whole figure'},
  /* engine/seed.js seedShare, how much of what the nine axes carry is still
     the stated four letter type, against how far the person has moved it
     since. Added with the ui/intakeui.js sweep of percent phase 3: it hand

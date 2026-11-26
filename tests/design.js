@@ -56,6 +56,7 @@ const shell=await page.evaluate(()=>({
  arcs:document.querySelectorAll('#ar1 .ib').length,
  laws:document.querySelectorAll('#laws .nf').length,
  axes:document.querySelectorAll('#chg .nf').length,
+ chg:!!document.getElementById('chg'),
  mx:document.querySelectorAll('#mx button').length,
  tabdef:TABDEF.length,
  eshelf:!!document.getElementById('eshelf')}));
@@ -76,9 +77,17 @@ ok(shell.depths===shell.views&&shell.views>0,shell.views+' depths declared, '+sh
 ok(shell.doms===19,'19 domains, got '+shell.doms);
 ok(shell.arcs===12,'12 archetypes, got '+shell.arcs);
 ok(shell.laws===21,'21 law fields, got '+shell.laws);
-ok(shell.axes===18,'18 axis fields (9 held + 9 opposite), got '+shell.axes);
+/* CHANGED 18 NOVEMBER, his words: "I also asked you to remove the child
+   emotions because we're going to have the person do self-reporting in the
+   diagnostic." This said eighteen axis fields, the nine held and the nine
+   opposite, in the left rail's Child emotions section. The section and its
+   host are gone, so it asks that there are none and no host left behind. */
+ok(shell.axes===0&&!shell.chg,'no axis fields and no host for them: Child emotions left the left rail, 18 November, got '+shell.axes);
 ok(shell.mx===171,'171 matrix cells, got '+shell.mx);
-ok(shell.eshelf,'#eshelf element exists');
+/* THE ENERGY SHELF LEFT THE RAIL, 18 November: Flow, Seats, Running now and the
+   Laws are not under Selection on any tab. This held that #eshelf existed. It
+   holds that it does not, in the same place, so the count is unchanged. */
+ok(!shell.eshelf,'#eshelf element is gone, the repeat blocks left the rail');
 console.log('  shell:',JSON.stringify(shell));
 /* EVERY DEPTH IS ON THE SCREEN, NOT ONLY IN THE DOCUMENT. The count above read
    four for six days while three of the four sat past the right edge: the depth
@@ -120,8 +129,8 @@ const FOLDOF={};
 /* indexed by the TAB integer, not by position, which is the rule this repo
    keeps relearning. 5 is Intake and it is not swept here. */
 /* 0 is the journal page, named Discover since 23 October */
-const TABN=['Discover','Summary','Field','Energy','Analytics','Intake','Wisdom school',
- 'Games','Path','Settings','Ritual','Character','Practitioner','Intake page'];
+const TABN=['Discover','Summary','Field','Energy','Analytics','Intake','Knowledge base',
+ 'Games','Compass','Settings','Ritual','Character','Practitioner','Intake page'];
 /* 11 is the Character page, LP, in the host the Masks door had (LE). It sits
    over the same stage as the Body, so the two are the pair most likely to
    show through each other, and both are swept */
@@ -441,6 +450,42 @@ console.log('\n=== 9 \u00b7 four lightings, each its own ===');
     colour carries the whole hierarchy, so it gets a colour strong enough to. */
  ok(lit.Flat.accent!==lit.Dark.accent,'and Flat states its own, because it has nothing else');
  ok(lit.Snow.accent!==lit.Dark.accent,'and deepens on paper');
+ /* THE LIGHTING PICKER HOLDS NO PARAGRAPH, 17 November, his words: "under the
+    lighting, there's a bunch of text. We don't need that. The user can explore
+    and figure out what kind of lighting scenario they want. When I, whichever
+    one they change, they see the name." The paragraph is gone from the shell
+    (shell/body.html) and nothing held it gone, so a well meant sentence put
+    back under the row would have passed every gate here. It also described
+    four lightings on a menu of seven, which is the defect of a count typed
+    into prose. What the menu is allowed to carry is its header, one button
+    for each entry of LIGHTINGS, and at most the name of a lighting. The name
+    itself is on each button's own title, and the bar's button says which is
+    on after a choice. Every press is a real one: the menu opens from the bar's
+    button, a choice closes it, and the list is read off LIGHTINGS. */
+ const LNAMES=await p4.evaluate(()=>LIGHTINGS.map(t=>t[1]));
+ const pk=[];
+ for(let i=0;i<LNAMES.length;i++){
+  await p4.click('#lightbtn',{timeout:5000});
+  const opened=await p4.evaluate(()=>{
+   const m=document.getElementById('lightmenu'), cl=m.cloneNode(true);
+   cl.querySelectorAll('.gmenu-hd,svg').forEach(e=>e.remove());
+   const bs=[...m.querySelectorAll('#themes button')];
+   return {shown:!m.hidden&&m.getBoundingClientRect().height>0, paras:m.querySelectorAll('p').length,
+    rest:cl.textContent.replace(/\s+/g,' ').trim(), titles:bs.map(b=>b.title),
+    labels:bs.map(b=>b.getAttribute('aria-label')||'')};});
+  await p4.click('#themes button:nth-child('+(i+1)+')',{timeout:5000});
+  await p4.waitForTimeout(120);
+  const after=await p4.evaluate(()=>{const b=document.getElementById('lightbtn');
+   return {title:b.title, label:b.getAttribute('aria-label'), exp:b.getAttribute('aria-expanded')};});
+  pk.push({nm:LNAMES[i],opened,after});}
+ const loose=pk.filter(x=>!x.opened.shown||x.opened.paras!==0||!(x.opened.rest===''||LNAMES.indexOf(x.opened.rest)>=0))
+  .map(x=>x.nm+': '+JSON.stringify({shown:x.opened.shown,paras:x.opened.paras,rest:x.opened.rest.slice(0,60)}));
+ ok(pk.length>0&&loose.length===0,'the lighting picker is a header and its buttons and holds no paragraph, only at most a name, on every one of '
+  +LNAMES.length+' lightings, '+loose.join(' | '));
+ ok(JSON.stringify(pk[0].opened.titles)===JSON.stringify(LNAMES)&&pk[0].opened.labels.every((l,i)=>l.indexOf(LNAMES[i])===0),
+  'each lighting button carries its own name as its title and in its accessible name, '+JSON.stringify({titles:pk[0].opened.titles,want:LNAMES,labels:pk[0].opened.labels}));
+ const wrongName=pk.filter(x=>x.after.title!=='Lighting, '+x.nm||x.after.label!=='Lighting, '+x.nm||x.after.exp!=='false').map(x=>x.nm+': '+JSON.stringify(x.after));
+ ok(wrongName.length===0,'a choice closes the menu and the bar\'s button names the lighting picked, '+wrongName.join(' | '));
  await p4.close();
 }
 
@@ -483,7 +528,7 @@ console.log('\n=== 9 \u00b7 four lightings, each its own ===');
   return {btns:lb?lb.querySelectorAll('button').length:0,shown:lb?getComputedStyle(lb).display!=='none':false};});
  ok(row.btns===0&&!row.shown,'the Body has no layer row, '+JSON.stringify(row));
  for(const [k,label,want] of [['addr','Addresses',null],['masks','Masks',null],['sab','Saboteurs','sabs'],
-   ['cx','Complexes','cxs'],['hy','Hyper complexes','hys'],['flow','Flow',null]]){
+   ['cx','Complexes','cxs'],['hy','Hyper complexes','hys'],['flow','Flow',null],['heat','Charge',null]]){
   const m=await p5.evaluate(([k,want])=>{const r=compute(),b=document.querySelector('#bmov [data-bmov="'+k+'"]');
    return {has:!!b,pill:b&&b.querySelector('.fb-v')?b.querySelector('.fb-v').textContent:null,
     n:want?r[want].length:null,on:b?b.getAttribute('aria-pressed'):null};},[k,want]);
@@ -924,15 +969,22 @@ console.log('\n=== the alarm law ===');
     like that it says I am 88 per cent embodied and the colour is not
     symbolic. We have got our ten tiers now, we should have colours that
     reflect those tiers." */
+ /* RE-POINTED 20 November, off '.s-pband b' and onto the plate's own ring.
+    The band was sumStatus(), the "Oscillating / Searching / Where it goes"
+    block, and he ruled it off the Summary in his words: "where it says
+    oscillating 50%, just get rid of that entirely." The tier's colour did not
+    leave with it: sumPlate draws the Coherence ring in TIERCOL[r.tier]
+    (ui/summary.js), so the ruling this gate holds is held on the one mark
+    on the page that still carries it. Same assertion, same colour. */
  const tc=await page.evaluate(()=>{
   const r=compute();
-  const e=document.querySelector('.s-pband b');
+  const e=document.querySelector('#sumbody .s-plate .cr .arc circle:last-child');
   return {tier:r.tier, want:TIERCOL[r.tier]||null,
-    got:e?getComputedStyle(e).color:null};});
+    got:e?getComputedStyle(e).stroke:null};});
  ok(tc.want!==null,'every tier has a colour, missing for '+tc.tier);
  const hex2rgb=h=>'rgb('+[1,3,5].map(i=>parseInt(h.substr(i,2),16)).join(', ')+')';
  ok(tc.got===hex2rgb(tc.want),
-   'and the band on the plate wears it, wanted '+hex2rgb(tc.want)+' got '+tc.got);
+   'and the ring on the plate wears it, wanted '+hex2rgb(tc.want)+' got '+tc.got);
 }
 
 /* ============================================================
@@ -1283,7 +1335,7 @@ console.log('\n=== a sentence in a label class carries plain ===');
  console.log('  '+drills+' drills opened across '+drillNames.length+' openers');
 }
 
-console.log('\n=== the child treatment holds on all seven lightings ===');
+console.log('\n=== the child treatment holds on every lighting LIGHTINGS names ===');
 /* WHAT THIS SCORES, AND WHY IT IS NOT THE THING GATE 9 REFUSES TO SCORE.
 
    Gate 9 says in its own words that it does not score contrast per lighting,
@@ -1587,9 +1639,15 @@ console.log('\n=== the release runs to its end in silence, and says what it spea
   if(!go)return {go:false,setup:setup};
   go.click();
   const t0=Date.now();
-  while(!(RUN.phase==='done'&&RUN.cool>=COOLING.length)&&Date.now()-t0<90000)
+  /* Four-way Chromium contention outlasted the fixed 90s deadline on the
+     full default dose (four blocks x 100 passes); three solo runs passed.
+     Do not loosen the every-line, cooldown, or meter assertions below.
+     Allow up to 450ms per required line under load, never below 90s.
+     An actually stuck run will still time out and fail the same checks. */
+  const limitMs=Math.max(90000,plan.length*dose*450);
+  while(!(RUN.phase==='done'&&RUN.cool>=COOLING.length)&&Date.now()-t0<limitMs)
    await new Promise(r=>setTimeout(r,50));
-  const out={go:true,setup:setup,plan:plan,dose:dose,lpc:LINES_PER_CH,
+  const out={go:true,setup:setup,plan:plan,dose:dose,lpc:LINES_PER_CH,limitMs:limitMs,
    seen:window.__relSeen.slice(),spoken:spoken,opening:OPENING.slice(),cooling:COOLING.slice(),
    stem:C3_STEM,phase:RUN.phase,cool:RUN.cool,ms:Date.now()-t0,
    eye:(document.querySelector('#rel .pm-eye')||{}).textContent||'',
@@ -1628,7 +1686,7 @@ console.log('\n=== the release runs to its end in silence, and says what it spea
   ok(head&&head.text.indexOf(q.stem)===0,
    'the first statement opens on the six channels: '+(head?head.text:'none'));
   ok(JSON.stringify(cool)===JSON.stringify(q.cooling),'and the cooldown shows every line: '+cool.join(' / '));
-  ok(q.phase==='done'&&/Released/.test(q.eye),'the run completes to Released, '+q.phase+' '+q.eye);
+  ok(q.phase==='done'&&/Released/.test(q.eye),'the run completes to Released, '+q.phase+' '+q.eye+' ('+q.ms+'ms / '+q.limitMs+'ms budget)');
   ok(q.spent===q.plan.length,'and charges exactly the plan it was shown, '+q.spent+' of '+q.plan.length);
   ok(q.spoken.length===0&&q.bed.ctx==='none','and with the sound off nothing was spoken and no audio channel '
    +'was opened, '+q.spoken.length+' lines, context '+q.bed.ctx);

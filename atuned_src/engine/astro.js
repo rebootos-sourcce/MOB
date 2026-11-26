@@ -98,27 +98,55 @@ function degInSign(lon){return _norm(lon)%30;}
 /* ---- the I Ching wheel ----
    64 gates around 360 degrees, so a gate is 5.625 wide and a line is
    0.9375. The wheel does not run 1 to 64 in order: it runs in the
-   sequence below, and the sequence starts at 0 degrees Aries.
+   sequence below, and where the sequence sits on the zodiac is fixed
+   by GATE_ANCHOR, not by 0 degrees Aries.
 
-   RULING NEEDED. This order is the one in general circulation and it
-   decides every gene key and every Human Design gate the product
-   prints. It is the one table here that is a claim about someone
-   else's system rather than about the sky, so it is isolated in one
-   place, named, and asserted in the gate test against a known chart.
-   Correct it here and everything downstream moves with it. */
+   RULED 18 November 2026, the owner's card "Apply the gene key wheel
+   anchor in SOURCE". The order was right and the anchor was not. This
+   wheel was laid with gate 25 starting at 0 degrees Aries, so every
+   gate boundary sat at a multiple of 5.625 from 0. The wheel Human
+   Design and the Gene Keys both read begins gate 41, line 1, at 2
+   degrees 00 minutes of Aquarius, which puts gate 25 at 28 degrees 15
+   minutes of Pisces, 1.75 degrees before 0 Aries. So every gate and
+   line this product printed was read off a wheel turned 1.75 degrees,
+   nearly two lines: inside about a third of every gate the gate itself
+   was the previous one, and the line was wrong almost everywhere.
+   Checked against published boundaries (gate 25 from 28 15 Pisces to
+   3 52 Aries, gate 27 from 2 00 Taurus, the solar plexus run from 18 51
+   Aquarius to 28 15 Pisces) and against three public charts whose
+   personality and design sun the old wheel misread and this one reads
+   as published: Ra Uru Hu 51.5 over 61.1, Barack Obama 33.6 over 2.2,
+   Steve Jobs 55.6 over 9.3. tests/engine.js holds all of it, with the
+   sources named there.
+
+   The table and the anchor cannot drift apart because the start is not
+   typed: it is derived from where gate 41 sits in the table. Reorder
+   the table and the start moves with it; only the order and the one
+   published degree are claims. */
 const GATE_WHEEL=[25,17,21,51,42,3,27,24,2,23,8,20,16,35,45,12,
  15,52,39,53,62,56,31,33,7,4,29,59,40,64,47,6,
  46,18,48,57,32,50,28,44,1,43,14,34,9,5,26,11,
  10,58,38,54,61,60,41,19,13,49,30,55,37,63,22,36];
 const GATE_ARC=360/64;                       /* 5.625 degrees */
+/* the longitude where gate 41, line 1 begins: 2 degrees 00 of Aquarius,
+   the start of the Human Design year */
+const GATE_ANCHOR=302;
+/* where the first entry of the table, gate 25, begins: 358.25, which is
+   28 degrees 15 of Pisces. Every value here is a multiple of an eighth
+   of a degree, so this is exact in binary and a boundary lands exactly. */
+const GATE_START=_norm(GATE_ANCHOR-GATE_WHEEL.indexOf(41)*GATE_ARC);
 
-/* a longitude to its gate and line. */
+/* a longitude to its gate and line. lon is the longitude as given,
+   normalised, and arc is how far into its gate it sits, as before. */
 function gateOf(lon){
  var L=_norm(lon);
- var i=Math.floor(L/GATE_ARC);
- var within=L-i*GATE_ARC;
+ /* measured from the wheel's own start, not from 0 Aries, which is the
+    whole of the ruling above */
+ var a=_norm(L-GATE_START);
+ var i=Math.floor(a/GATE_ARC);
+ var within=a-i*GATE_ARC;
  return {gate:GATE_WHEEL[i%64], line:Math.floor(within/(GATE_ARC/6))+1,
-  lon:L, arc:within};}
+  lon:_norm(lon), arc:within};}
 
 /* The design sun sits 88 degrees of SOLAR ARC before the birth sun,
    not 88 days. Those differ by a couple of days because the earth
@@ -140,17 +168,28 @@ function designJD(jd){
    that year. This is the part everyone skips, and skipping it is not
    a small error: one hour of offset moves the ascendant about fifteen
    degrees, which is half a sign. Latitude matters for the same reason.
-   A record with no place gets no ascendant rather than a guessed one. */
+   A record with no place gets no ascendant rather than a guessed one.
+   EACH CITY CARRIES ITS TIME ZONE, z, 18 November, and birthJD reads the
+   offset from it before it reads the two hand written rules below. Those
+   rules put a reference case an hour out: Wren, 1959 in Portland, was read
+   at -7 where the clocks said -8, and Abraham, 1951 in Boulder, at -6 where
+   Colorado kept no daylight saving that year and the clocks said -7. Boston
+   in April 1980 read -4 where it was -5, because the US branch applies the
+   1987 rule to every earlier year, and Oaxaca is marked as never saving
+   daylight where Mexico did from 1996 to 2022. The same Intl table the
+   named zone already used (below) holds every one of those. The hand rules
+   stay as the fallback for a runtime with no Intl, which is the only place
+   they are still read. */
 const PLACE={
- 'Asheville, NC': {lat:35.595, lon:-82.552, tz:-5, dst:'us'},
- 'Chicago, IL':   {lat:41.878, lon:-87.630, tz:-6, dst:'us'},
- 'Portland, OR':  {lat:45.515, lon:-122.679,tz:-8, dst:'us'},
- 'Santa Fe, NM':  {lat:35.687, lon:-105.938,tz:-7, dst:'us'},
- 'Boulder, CO':   {lat:40.015, lon:-105.271,tz:-7, dst:'us'},
- 'Boston, MA':    {lat:42.360, lon:-71.059, tz:-5, dst:'us'},
- 'Oaxaca, MX':    {lat:17.073, lon:-96.727, tz:-6, dst:'none'},
- 'Lisbon, PT':    {lat:38.722, lon:-9.139,  tz:0,  dst:'eu'},
- 'Greenwich, CT': {lat:41.027, lon:-73.629, tz:-5, dst:'us'}};
+ 'Asheville, NC': {lat:35.595, lon:-82.552, tz:-5, dst:'us', z:'America/New_York'},
+ 'Chicago, IL':   {lat:41.878, lon:-87.630, tz:-6, dst:'us', z:'America/Chicago'},
+ 'Portland, OR':  {lat:45.515, lon:-122.679,tz:-8, dst:'us', z:'America/Los_Angeles'},
+ 'Santa Fe, NM':  {lat:35.687, lon:-105.938,tz:-7, dst:'us', z:'America/Denver'},
+ 'Boulder, CO':   {lat:40.015, lon:-105.271,tz:-7, dst:'us', z:'America/Denver'},
+ 'Boston, MA':    {lat:42.360, lon:-71.059, tz:-5, dst:'us', z:'America/New_York'},
+ 'Oaxaca, MX':    {lat:17.073, lon:-96.727, tz:-6, dst:'none', z:'America/Mexico_City'},
+ 'Lisbon, PT':    {lat:38.722, lon:-9.139,  tz:0,  dst:'eu', z:'Europe/Lisbon'},
+ 'Greenwich, CT': {lat:41.027, lon:-73.629, tz:-5, dst:'us', z:'America/New_York'}};
 
 /* US daylight saving. The start moved in 2007 from the first Sunday in
    April to the second in March, and the end from the last Sunday in
@@ -327,7 +366,9 @@ function birthJD(bt){
     unknown offset already uses. jd stays noon, so nothing that does not
     check the span moves in this change. */
  var last=23+59/60;
- var zo=bt.z?zoneOffsets(bt.z,y,m,d,hrs):null;
+ /* the person's own zone first, then the city's (PLACE, 18 November) */
+ var zn=bt.z||(pl&&pl.z)||'';
+ var zo=zn?zoneOffsets(zn,y,m,d,hrs):null;
  if(zo){
   off=zo[0]; dst=null;
   var zspan=zo.length>1?[julianDay(y,m,d,hrs-Math.max(zo[0],zo[1])),
@@ -335,13 +376,13 @@ function birthJD(bt){
   /* the day's ends each at their own offset, since the clocks can change
      inside it, and at the offset that makes the day widest if they did at
      either end */
-  if(!timed){ var z0=zoneOffsets(bt.z,y,m,d,0), z1=zoneOffsets(bt.z,y,m,d,last);
+  if(!timed){ var z0=zoneOffsets(zn,y,m,d,0), z1=zoneOffsets(zn,y,m,d,last);
    zspan=[julianDay(y,m,d,0-Math.max.apply(null,z0)), julianDay(y,m,d,last-Math.min.apply(null,z1))];}
   /* A place the table names is the exact horizon and keeps it. Otherwise
      the zone's own representative point stands in, which is what lets a
      person outside the nine cities have a Rising at all. */
-  return {jd:julianDay(y,m,d,hrs-off), place:pl||zonePoint(bt.z), timed:timed, offset:off, dst:dst,
-   span:zspan, zone:bt.z};}
+  return {jd:julianDay(y,m,d,hrs-off), place:pl||zonePoint(zn), timed:timed, offset:off, dst:dst,
+   span:zspan, zone:zn};}
  /* A PLACE THIS TABLE DOES NOT NAME IS AN UNKNOWN OFFSET, NOT OFFSET ZERO.
     The line above reads a missing place as Greenwich, so a clock time typed
     in Auckland was treated as the same clock time in London, thirteen hours

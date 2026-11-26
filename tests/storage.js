@@ -431,7 +431,20 @@ require('./net.js').guardBrowser(browser);
       const up = await lineUp(pg);
       ok(up > 0, size + ', ' + nm + ': the line is up for this check, ' + Math.round(up) + 'px tall');
       for (const end of [false, true]) {
-        if (end) { await pg.evaluate(() => { document.querySelectorAll('body,html,.app *').forEach(e => {
+        /* FIXED, pre-existing, found 19 November: html.keep-flow shortens body
+           below html's own full height (ui/keep.js, reserving room for the
+           line), so at phone width both body and html independently qualify
+           as scrollable by this loop's own test. Forcing scrollTop on both
+           compounds: each one moves the content again, overscrolling past
+           everything real on the page, which is why every control read as
+           covered. body is the one a real touch or wheel actually drives
+           here (confirmed: scrolling body alone lands correctly, scrolling
+           both together overshoots by body's own scrolled distance a second
+           time), so html is skipped whenever body already has somewhere to
+           scroll. */
+        if (end) { await pg.evaluate(() => { const bodyScrolls = document.body.scrollHeight > document.body.clientHeight;
+          document.querySelectorAll('body,html,.app *').forEach(e => {
+          if (e === document.documentElement && bodyScrolls) return;
           const o = getComputedStyle(e).overflowY; if ((o === 'auto' || o === 'scroll' || e === document.body || e === document.documentElement)
             && e.scrollHeight > e.clientHeight) e.scrollTop = e.scrollHeight; }); }); await calm(pg); }
         const c = await covered(pg);

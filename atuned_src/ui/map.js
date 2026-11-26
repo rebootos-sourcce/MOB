@@ -958,7 +958,6 @@ function renderMap(r){
   var bx=sv.getBoundingClientRect(), u=Math.min(bx.width,bx.height)/sv.viewBox.baseVal.width;
   if(u>0)host.querySelectorAll('.pm-seatn').forEach(function(t){
    t.style.fontSize=(13/u).toFixed(3)+'px';});})();
- renderShelf(r,seats,speed,stop,dom,loadedTot,marks);
  /* the gutter rows are gone, and so is the handler that answered for them */
  /* both controls write the same value. The row answers for the keyboard, the
     figure answers for the pointer, and painting the region already selected
@@ -1224,13 +1223,13 @@ var BMNERVE=[[
  [15,"Stellate ganglion, C7 to T1",48.3,19.7,0.45],
  [15,"Stellate ganglion, C7 to T1",51.7,19.7,0.45],
  [15,"Ganglion impar, the end of both chains",50,52,0.45],
- [16,"Crown seat",50,4.98,1.7],
- [17,"Third eye seat",50,10.57,1.7],
- [18,"Throat seat",50,20.91,1.7],
- [19,"Heart seat",50,30.51,1.7],
- [20,"Solar seat",50,40.21,1.7],
- [21,"Sacral seat",50,47.02,1.7],
- [22,"Root seat",50,53.55,1.7],
+ [16,"Crown point",50,4.98,1.7],
+ [17,"Third eye point",50,10.57,1.7],
+ [18,"Throat point",50,20.91,1.7],
+ [19,"Heart point",50,30.51,1.7],
+ [20,"Solar point",50,40.21,1.7],
+ [21,"Sacral point",50,47.02,1.7],
+ [22,"Root point",50,53.55,1.7],
  [23,"","M50.9,53.55 L50.9,47.02"],
  [24,"","M50.9,47.02 L50.9,40.21"],
  [25,"","M50.9,40.21 L50.9,30.51"],
@@ -1443,36 +1442,34 @@ function bmNm(nm){return String(nm||'').replace(/^Back of (\w)/,function(m,c){re
    That ruling came for 16 on 12 November, the owner's "get ours to alignment
    with the professional", and only where the atlas he sent gives the level
    itself: 16 is in ANAT at L1 now, figure.js says on which page, and a row
-   here as well would draw it twice. This heading counted them, 28, and the
+   here as well would draw it twice. 8 moved the same way on 21 November, a
+   real vertebral level the atlas gives, cited in figure.js. Later that day
+   eight more went, on the owner's ruling that every address with real
+   material is placed and the words come after: 40 onto the aorta's side at
+   L1, the five neck rows (57, 68, 70, 72, 74) once ANATSPINE gained the two
+   neck knots off BMSPINE below, and 23 and 46 at the levels the atlas
+   brackets them by. figure.js cites each. What is left here has no level or
+   landmark on a page read. This heading counted them, 28, and the
    count is gone for the reason CLAUDE.md gives: BMPROP's length is the
    answer. */
 var BMPROP=[
  {ids:[7],pts:[[44.2,47.2],[55.8,47.2]],s:"Iliohypogastric and ilioinguinal branches, above the inguinal ligament"},
- {ids:[8],pts:[[50,45.2]],s:"Cauda equina, the L2 to S1 roots in the lumbar cistern"},
  {ids:[10,20],pts:[[47,60],[53,60]],s:"Obturator nerve, through the obturator foramen into the inner thigh"},
  {ids:[15],pts:[[48.5,43.4],[51.5,43.4]],s:"Lumbar sympathetic chain, on the front and side of the lumbar vertebral bodies"},
- {ids:[23],pts:[[48.2,51.8],[51.8,51.8]],s:"Pudendal plexus, S2 to S4, low in the pelvis"},
  {ids:[25],pts:[[48.6,49.6],[51.4,49.6]],s:"Uterovaginal plexus, the lower part of the inferior hypogastric plexus"},
  {ids:[27],pts:[[48.4,50.4],[51.6,50.4]],s:"Pelvic splanchnic roots, leaving S2 to S4 through the sacral foramina"},
  {ids:[31],pts:[[46.93,52.32],[53.07,52.32]],s:"Ilioinguinal nerve, at the superficial inguinal ring"},
  {ids:[34],pts:[[48,37.6],[52,37.6]],s:"Greater splanchnic nerve, T5 to T9, down beside the vertebral bodies to the crus at T12"},
  {ids:[35],pts:[[51,43]],s:"Aortic plexus, on the front of the abdominal aorta left of the midline, L1 to L3"},
  {ids:[37],pts:[[47.4,39],[52.6,39]],s:"Lesser splanchnic nerves, T10 to T11, to the aorticorenal ganglia"},
- {ids:[40],pts:[[50.3,41.3]],s:"Superior mesenteric plexus, round the artery's origin at L1"},
  {ids:[41],pts:[[56.8,38.2]],s:"Splenic plexus, along the splenic artery, upper left of the abdomen"},
  {ids:[42],pts:[[52.4,40.2]],s:"Pancreatic plexus, over the body of the pancreas, left of centre"},
- {ids:[46],pts:[[48,35.8],[52,35.8]],s:"Anterior cutaneous branches of the thoraco-abdominal nerves, T7 to T9, under the xiphoid"},
  {ids:[47],pts:[[45.2,37]],s:"Hepatic branch of the anterior vagal trunk, to the liver"},
  {ids:[48],pts:[[46.6,38.8]],s:"Hepatic plexus, along the hepatic artery"},
  {ids:[51],pts:[[48.8,28.6],[51.2,28.6]],s:"The two vagus nerves in the thorax, beside the oesophagus"},
  {ids:[52],pts:[[51.3,32.4]],s:"Thoracic aortic plexus, on the descending aorta"},
- {ids:[57],pts:[[45.6,30.2],[54.4,30.2]],s:"Phrenic nerves, C3 to C5, down each side of the pericardium"},
  {ids:[60],pts:[[43.5,24.8],[56.5,24.8]],s:"Pectoral nerves, once called the anterior thoracic nerves"},
- {ids:[61],pts:[[47.4,26.6],[52.6,26.6]],s:"Pulmonary branches of the vagus, at the roots of the lungs"},
- {ids:[68],pts:[[48.8,16.4],[51.2,16.4]],s:"Pharyngeal branch of the vagus, level with C2 to C3"},
- {ids:[70],pts:[[47.6,15],[52.4,15]],s:"Glossopharyngeal nerve, below the angle of the jaw"},
- {ids:[72],pts:[[48.1,17.9],[51.9,17.9]],s:"Cervical sympathetic ganglia, beside C2 to C7"},
- {ids:[74],pts:[[44.4,21.4],[55.6,21.4]],s:"Nerve to subclavius, C5 to C6, under the clavicle"}];
+ {ids:[61],pts:[[47.4,26.6],[52.6,26.6]],s:"Pulmonary branches of the vagus, at the roots of the lungs"}];
 /* WHICH SURFACE EACH ADDRESS BELONGS ON, the spec's split (question C, which
    he answered "C, definitely": both, the far one faint). Inside the skull is
    head, drawn on the front. The back is what is reached from behind: the
@@ -1512,8 +1509,18 @@ function bmPlaces(){
    93.674 units, so a 5 cm cell is 2.68 units: the resolution the spec
    settled on from three sources that agree (section 5). 20 by 36 cells cover
    each view. The back view is drawn 74 units right of the front. */
+/* THE PANELS. Two figures side by side are two panels, each half the well. The
+   one shared fit spanned 154 world units, 14 either side of the two figures
+   and 22 between them, so each figure had 77 of them. A panel fits its figure
+   to those same 77 (BMPANW), a margin of 12.5 units either side of a figure 52
+   wide, which makes every body exactly the size it was at every width, and
+   only moves it to the middle of its half. BMSPLIT is the world's own line
+   between the two figures, the middle of the gap, and only decides which
+   panel a world point belongs to. */
+var BMPANW=77, BMSPLIT;
 var BMCM=175/93.674, BMU=5/BMCM, BMXA=50-10*BMU, BMYA=2, BMCOLS=20, BMROWS=36, BMF=10,
     BMFW=BMCOLS*BMF, BMFH=BMROWS*BMF, BMOX=74, BMTAU=Math.PI*2, BMSABMAX=8;
+BMSPLIT=(76+BMOX+24)/2;
 
 /* THE FOUR SWITCHES, as built and as measured (HE). Going from Pattern to
    Pain dulls the nerve and seat map and raises the heat; each switch does it
@@ -1588,7 +1595,12 @@ function bmSeatC(b){return bmHex(PMC[b]||'#9A9CA4');}
    Not S: S is the product's, and the prototype's S would have shadowed it. */
 var BM={mode:'pattern',variant:'C',amode:'A4',brush:6,face:'front',
  pg:0,ph:0,tr:null,hoverReg:null,hoverCell:null,hoverSab:null,hoverPlace:null,hoverView:0,traceT0:0,
- cam:{x:0,y:0,z:1},camT:null,W:0,H:0,dpr:1,z0:1,dirty:true,t:0,phone:false,raf:0,last:0,
+ /* THE CAMERAS ARE THE PANELS', ONE EACH. pan[0] is the Front's panel and
+    pan[1] the Back's, and each holds its own camera, its own fly target and
+    its own fitted zoom (bmMkPan). pa is the one being drawn or answered: set
+    by bmAct, and read only by the drawing code. Anything outside a draw names
+    its panel, so a read can never quietly come from the other one. */
+ pan:[bmMkPan(0),bmMkPan(1)],pa:null,adv:true,W:0,H:0,dpr:1,dirty:true,t:0,phone:false,raf:0,last:0,
  cv:null,sv:null,well:null,ok:false,drag:null,tipOn:0,cab:{},sabs:[],who:null,
  /* PAIN IS HELD IN MEMORY, PER PROFILE, AND IS NOT SAVED. Saving it is a new
     field in the profile, which is schema v2 and his, and painted pain is
@@ -1600,14 +1612,27 @@ var BM={mode:'pattern',variant:'C',amode:'A4',brush:6,face:'front',
     Pain is not in here, because Pain is BM.mode and has been since the
     prototype; its circle reads and writes that. Session only, the same as
     the paint. The three that open on are the three the figure drew before
-    the bar existed, so the first sight of the page did not change. */
- ov:{on:{addr:1,masks:1,sab:1,cx:0,hy:0,flow:0}},hubs:[]};
+    the bar existed, so the first sight of the page did not change. Heat, the
+    charge as heat, opens on as a fourth, 22 November: the request was to
+    turn the heat map into this map, and a heat map one press away is the
+    unreachable layer over again (bmChargeRebuild). */
+ ov:{on:{addr:1,masks:1,sab:1,cx:0,hy:0,flow:0,heat:1}},hubs:[]};
 
 /* ---------- the figure, built once, the first time the map is shown ----------
    Not at load: the page opens on the Field, and nothing here is wanted until
    the Body page is. */
 var BMG=null;
 function bmVX(v){return v?BMOX:0;}
+/* A PANEL: where it stands in the well (x0 and w in page pixels, dx0 and dx1
+   the same in the canvas's own pixels, so a clip lands on whole ones), the
+   centre its camera aims at (cx), the camera and the place it is flying to,
+   the fitted zoom that is its floor (z0), and the svg over it (sv). The sk*
+   fields are the still layer's memory of the camera it was last drawn for, so
+   a panel is redrawn on its own camera moving and the other is left alone. */
+function bmMkPan(i){return {i:i,x0:0,w:0,cx:0,dx0:0,dx1:0,cam:{x:0,y:0,z:1},camT:null,z0:1,sv:null,
+ skx:NaN,sky:NaN,skz:NaN,skx0:NaN,skw:NaN,vx:NaN,vy:NaN,vz:NaN,vw:NaN,vh:NaN};}
+BM.pa=BM.pan[0];
+var BMV0=[0],BMV1=[1],BMV01=[0,1];
 function bmInit(host){
  if(BMG)return BMG;
  var G={};
@@ -1615,6 +1640,7 @@ function bmInit(host){
  G.body=[0,1].map(function(v){var p=new Path2D();
   p.addPath(raw,new DOMMatrix().translate(PMTX+bmVX(v),PMTY).scale(PMS));return p;});
  G.probe=document.createElement('canvas').getContext('2d');
+ G.bbox=bmBodyBox(G);
  /* the approved figure's classes, and the seat each dashed ring and flow
     segment stands for, read off its own stroke, which is PAL to the digit */
  var ofCol={};Object.keys(PAL).forEach(function(b){ofCol[PAL[b].toUpperCase()]=b;});
@@ -1645,9 +1671,26 @@ function bmInit(host){
  G.heat=[0,1].map(function(){var c=document.createElement('canvas');c.width=BMFW;c.height=BMFH;return c;});
  G.mask=[0,1].map(function(){var c=document.createElement('canvas');c.width=BMFW;c.height=BMFH;return c;});
  G.fieldVer=0;
+ /* the charge's own field, its seat per pixel and its picture: apart from
+    the paint's, because the two readings are never merged (bmChargeRebuild) */
+ G.cfield=[new Float32Array(BMFW*BMFH),new Float32Array(BMFW*BMFH)];
+ G.cseat=[new Uint8Array(BMFW*BMFH),new Uint8Array(BMFW*BMFH)];
+ G.cpal=[];
+ G.cheat=[0,1].map(function(){var c=document.createElement('canvas');c.width=BMFW;c.height=BMFH;return c;});
  G.masks=bmMaskGeo(G);
  bmRoutes(G,host);
  return (BMG=G);}
+/* THE FIGURE'S OWN EXTENT, measured and not typed: the front body drawn once
+   at eight pixels a unit and read back for its first and last lit rows and
+   columns. The fit centres on it, so "centred" means the drawn body and not
+   the box a constant said it would stand in. Once, when the figure is built. */
+function bmBodyBox(G){
+ var K=8, X0=20, X1=80, Y0=0, Y1=100, c=document.createElement('canvas'); c.width=(X1-X0)*K; c.height=(Y1-Y0)*K;
+ var g=c.getContext('2d'); g.setTransform(K,0,0,K,-X0*K,-Y0*K); g.fill(G.body[0]);
+ var d=g.getImageData(0,0,c.width,c.height).data, w=c.width, x0=1e9,y0=1e9,x1=-1,y1=-1;
+ for(var y=0;y<c.height;y++)for(var x=0;x<w;x++){if(d[(y*w+x)*4+3]>127){
+  if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y;}}
+ return [X0+x0/K,Y0+y0/K,X0+(x1+1)/K,Y0+(y1+1)/K];}
 function bmIn(G,v,x,y){return G.probe.isPointInPath(G.body[v],x+bmVX(v),y);}
 /* a spine level to figure height, off the back figure's own labels */
 function bmLvY(lv){var m={};BMSPINE.forEach(function(s){m[s.lv]=s.y;});
@@ -1746,6 +1789,64 @@ function bmRegVal(r){var b=r.box,m=0,P=BM.paint[r.v];
  for(var i=0;i<P.length;i++){var v=P[i];if(!v)continue;var x=BMXA+(i%BMCOLS+.5)*BMU,y=BMYA+(((i/BMCOLS)|0)+.5)*BMU;
   if(x>=b[0]&&x<=b[2]&&y>=b[1]&&y<=b[3]&&v>m)m=v;}return m;}
 function bmMarkVals(){BMG.reg.forEach(function(r){r.val=bmRegVal(r);});}
+
+/* ---------- the charge, as heat on the figure ----------
+   THE HEAT MAP WAS ON THE PAGE NOBODY COULD REACH. His words, round GO,
+   BODY-MAP-SPEC.md section 0: "that nerve chakra and this system with a heat
+   map merge as one". The reading's heat (the Nummenmaa treatment in
+   renderMap above, one continuous field per seat, clipped to the skin) lives
+   in the seven layers' renderer, and that renderer has been unreachable since
+   round KV took its row away. The figure that replaced it drew a field only
+   for pain a person paints, so the one map on the page showed where the
+   charge sat as rings and dots and never as heat. This is that heat, on this
+   figure, through the same grid the paint uses, so a press, a paint, an
+   address and the heat land on one set of coordinates (spec 1A, item 3).
+
+   Three things are decided here and each is the team's pick, correctable:
+     the scale   absolute, the engine's own 0 to 10 per address, never
+                 normalised to the person's busiest place. pmHeat normalises
+                 and so the hottest seat always read full, which is question
+                 K's K1; this is K2, the team's lean, so a patch this bright
+                 means the same charge on every profile.
+     the merge   max, never the sum, the rule the paint already holds: two
+                 addresses at six side by side are still a six, and a sum
+                 would report charge nobody carries.
+     the hue     the seat of the heaviest address under the pixel, because
+                 colour means seat everywhere else in the product. The pain
+                 ramp stays pain's own, so the two readings never share a
+                 colour (question K's K3), and this field steps back as the
+                 pain comes up rather than mixing with it.
+   Built only when a charge moves, never for a frame. */
+var BMCH={sig:'',sd:0.85,maxA:.5};
+function bmChargeRebuild(){
+ var G=BMG, sig=[], i;
+ G.places.forEach(function(p){var ch=0;p.ids.forEach(function(id){var q=BY[id].sq||0;if(q>ch)ch=q;});sig.push(ch.toFixed(2));});
+ sig=sig.join(',');
+ if(sig===BMCH.sig)return; BMCH.sig=sig;
+ var sd=BMCH.sd*BMF, R=Math.ceil(sd*2.6), two=2*sd*sd;
+ [0,1].forEach(function(v){
+  var Fd=G.cfield[v], Sd=G.cseat[v]; Fd.fill(0);
+  G.places.forEach(function(p){
+   if(!bmSolidOn(p,v))return;
+   var ch=0,seat=null;p.ids.forEach(function(id){var q=BY[id].sq||0;if(q>=ch){ch=q;seat=BY[id].b;}});
+   if(ch<0.05)return;
+   var cx=(bmPlaceX(p,v)-BMXA)/BMU*BMF, cy=(p.y-BMYA)/BMU*BMF, si=G.cpal.indexOf(seat);
+   if(si<0){G.cpal.push(seat);si=G.cpal.length-1;}
+   for(var y=Math.max(0,Math.floor(cy-R));y<=Math.min(BMFH-1,Math.ceil(cy+R));y++)
+    for(var x=Math.max(0,Math.floor(cx-R));x<=Math.min(BMFW-1,Math.ceil(cx+R));x++){
+     var dx=x+.5-cx,dy=y+.5-cy,val=ch*Math.exp(-(dx*dx+dy*dy)/two),j=y*BMFW+x;
+     if(val>Fd[j]){Fd[j]=val;Sd[j]=si;}}});
+  var g=G.cheat[v].getContext('2d'),img=g.createImageData(BMFW,BMFH),d=img.data;
+  var cols=G.cpal.map(bmSeatC);
+  for(i=0;i<Fd.length;i++){var val=Fd[i],o=i*4;if(val<0.05){d[o+3]=0;continue;}
+   var c=cols[Sd[i]]||BMC.dim;
+   d[o]=c[0];d[o+1]=c[1];d[o+2]=c[2];d[o+3]=255*BMCH.maxA*Math.pow(val/10,0.8);}
+  g.putImageData(img,0,0);});}
+/* the heaviest single address on the figure, for the circle's ring and pill */
+function bmChargeTop(){
+ var top=null;(BMG&&BMG.places||[]).forEach(function(p){p.ids.forEach(function(id){var n=BY[id];
+  if(n&&(n.sq||0)>0&&(!top||n.sq>top.sq))top=n;});});
+ return top;}
 
 /* ---------- the six masks, as pixels on the figure ----------
    CH in TASKS.md, his words: "the masks are what block the character, and
@@ -1931,7 +2032,7 @@ function bmDrawMasks(g,vs,dt){
     switch that was left on, in a store or a state restored from before the
     plan lapsed, must not draw what the plan cannot see. */
  if(!BM.ov.on.masks||!lockSees('mask')||vs.indexOf(0)<0||!BMG.masks||!BM.r)return;
- var sd=Math.max(2,Math.round(BMMP*BM.cam.z*0.7)), hold=bmHoldMask(), hov=BM.hoverMask;
+ var Pm=BM.pa, sd=Math.max(2,Math.round(BMMP*Pm.cam.z*0.7)), hold=bmHoldMask(), hov=BM.hoverMask;
  /* painting is the one job that wants the body clear, so they step back */
  var A=1-0.7*BM.pg;
  g.setTransform(BM.dpr,0,0,BM.dpr,0,0);
@@ -1947,7 +2048,7 @@ function bmDrawMasks(g,vs,dt){
   var lit=Math.floor(k.shown), part=k.shown-lit, on=(hold===k.nm||hov===k.nm);
   var rd=bmMaskRead(k,BM.r), box={};
   k.sl.forEach(function(p){var s=bmW2S(p.x,p.y);
-   if(s[0]<-sd||s[1]<-sd||s[0]>BM.W+sd||s[1]>BM.H+sd)return;
+   if(s[0]<Pm.x0-sd||s[1]<-sd||s[0]>Pm.x0+Pm.w+sd||s[1]>BM.H+sd)return;
    /* i is the pixel's place in draw order, not the place's, so an empty
       place between two blocks stays empty while the blocks fill */
    var i=rd.at[p.q], a=(i==null)?.08:i<lit?.66:i===lit?.08+.58*part:.08;
@@ -1976,7 +2077,7 @@ function bmMaskHits(r){
  var g=BM.sv&&BM.sv.querySelector('[data-bmmasks]'); if(!g||!BMG||!BMG.masks)return;
  /* off, a mask is not drawn, so it is not a thing that can be pressed */
  if(!BM.ov.on.masks||!lockSees('mask')){g.innerHTML='';return;}
- var hmin=BM.z0>2?44/BM.z0:0, pl=function(n,w){return n+' '+(n===1?w:w==='story'?'stories':w+'s');};
+ var z0=BM.pan[0].z0, hmin=z0>2?44/z0:0, pl=function(n,w){return n+' '+(n===1?w:w==='story'?'stories':w+'s');};
  g.innerHTML=BMG.masks.map(function(k){var b=k.box,rd=bmMaskRead(k,r);
   var h=Math.max(b[3]-b[1],hmin), y=(b[1]+b[3])/2-h/2;
   /* a count and not a count against a total, CO-05: "31 of 48" reads as a
@@ -2153,7 +2254,7 @@ function bmHubRefresh(r){
       eight complexes sat half on top of each other down the torso. The step
       is the mark's own width at the fitted view, and the free spot nearest
       its own height wins, above or below. */
-   var d=(2*BMHUBR+4)/(BM.z0>2?BM.z0:6.5), free=function(y){
+   var d=(2*BMHUBR+4)/(BM.pan[0].z0>2?BM.pan[0].z0:6.5), free=function(y){
     return !out.some(function(h){return Math.hypot(h.x-hx,h.y-y)<d;});};
    for(var s=1;s<24&&!free(hy);s++)hy=clamp(y0+Math.ceil(s/2)*d*((s%2)?1:-1),4,92);
    out.push({k:k,o:o,x:hx,y:hy,pl:pl,at:[{x:hx,y:hy},{x:100-hx,y:hy}]});});});
@@ -2163,7 +2264,7 @@ function bmHubSay(h){var n=leaves(h.o).length;
 function bmDrawHubs(g,vs){
  if(!BM.hubs||!BM.hubs.length)return;
  if(!BMHUBP)BMHUBP={cx:new Path2D(CHAINGLYPH.cx),hy:new Path2D(CHAINGLYPH.hy)};
- var C=BM.conn||{}, ho=bmHeldObj(), px=1/BM.cam.z;
+ var C=BM.conn||{}, ho=bmHeldObj(), px=1/BM.pa.cam.z;
  vs.forEach(function(v){BM.hubs.forEach(function(h){
   var held=!!(ho&&ho.kind===h.k&&ho.nm===h.o.nm), hov=(BM.hoverHub===h), lit=held||hov;
   /* a held pattern of any tier puts every other hub back, as it does lines */
@@ -2210,12 +2311,16 @@ function bmSeatSay(st){
  return st.hot+(st.hot===1?' address':' addresses')+' carrying, '
   +fmtPct('pass',st.pass)+' of the flow getting through';}
 function bmFlowStep(pass){for(var i=0;i<BMFLOW.length;i++)if(pass>=BMFLOW[i][0])return BMFLOW[i][1];return 'blocked';}
-function bmDrawFlow(g,vs){
- if(!BM.ov.on.flow)return;
+/* the seats the channel is drawn through, top to bottom, read once a frame
+   by bmDraw and handed to each panel's channel and to the words between */
+function bmFlowCol(){
  var col=flSeats().map(function(s){return {k:s.p.k,b:K2B[s.p.k],y:PMYP[s.p.k],pass:s.pass};})
   .filter(function(m){return m.y!=null;}).sort(function(a,b){return a.y-b.y;});
- if(col.length<2)return;
- var half=function(m){return 0.35+m.pass*1.1;}, px=1/BM.cam.z;
+ return col.length<2?null:col;}
+function bmDrawFlow(g,vs){
+ var col=BM.flowCol;
+ if(!BM.ov.on.flow||!col)return;
+ var half=function(m){return 0.35+m.pass*1.1;}, px=1/BM.pa.cam.z;
  vs.forEach(function(v){var o=50+bmVX(v);bmTf(g);
   var L=col.map(function(m){return [o-half(m),m.y];}), R=col.map(function(m){return [o+half(m),m.y];});
   L.unshift([o-half(col[0])*.5,col[0].y-1.6]);R.unshift([o+half(col[0])*.5,col[0].y-1.6]);
@@ -2236,13 +2341,19 @@ function bmDrawFlow(g,vs){
    if(m.pass>0.005){g.beginPath();g.arc(o,m.y,r,-Math.PI/2,-Math.PI/2+BMTAU*m.pass);g.strokeStyle=bmRgba(c,.95);g.lineWidth=2.6*px;g.stroke();}
    if(bmFlowStep(m.pass)==='blocked'){g.beginPath();g.moveTo(o-r*.8,m.y);g.lineTo(o+r*.8,m.y);
     g.strokeStyle=bmRgba(BMC.ink,.9);g.lineWidth=2.4*px;g.stroke();}});});
- /* the words, in the lane between the two figures, only where both are
-    shown and at the whole body, where the lane is clear */
- if(BM.phone||vs.length<2||BM.cam.z>BM.z0*1.3)return;
- g.setTransform(BM.dpr,0,0,BM.dpr,0,0);g.textAlign='center';g.textBaseline='middle';g.font='600 12px Inter,system-ui,sans-serif';
- col.forEach(function(m){var s=bmW2S((76+BMOX+24)/2,m.y);
-  g.fillStyle=bmRgba(bmSeatC(m.b),.95);g.fillText(bmFlowStep(m.pass),s[0],s[1]);});
  bmTf(g);}
+/* the words, in the lane between the two figures, which is the seam between
+   the two panels: only where both figures are shown and both are at the whole
+   body, where the lane is clear. With one panel opened into a region the lane
+   is that panel's picture and the words step aside. Drawn over the seam and
+   not inside either panel, because they stand across it. */
+function bmFlowWords(g){
+ var col=BM.flowCol;
+ if(!col||bmOne()||bmZoomed())return;
+ g.setTransform(BM.dpr,0,0,BM.dpr,0,0);g.textAlign='center';g.textBaseline='middle';g.font='600 12px Inter,system-ui,sans-serif';
+ var sx=BM.pan[1].x0;
+ col.forEach(function(m){var s=bmW2S(50,m.y,0);
+  g.fillStyle=bmRgba(bmSeatC(m.b),.95);g.fillText(bmFlowStep(m.pass),sx,s[1]);});}
 
 /* ---------- the camera ---------- */
 /* ONE FIGURE OR TWO. A phone has room for one, and the Masks door wants one:
@@ -2252,22 +2363,76 @@ function bmDrawFlow(g,vs){
    when they meant "is one figure up", which was the same question until that
    door existed. BM.one is the view's (BMVIEW), BM.phone is the width's. */
 function bmOne(){return BM.phone||!!BM.one;}
-function bmWorldW(){return bmOne()?[24,76]:[24-14,BMOX+76+14];}
-function bmViews(){return bmOne()?[BM.face==='back'?1:0]:[0,1];}
+function bmViews(){return bmOne()?(BM.face==='back'?BMV1:BMV0):BMV01;}
+/* TWO PANELS, OR ONE. With both figures up, the Front is the left half of the
+   well and the Back the right half, and each has a camera of its own: a
+   wheel, a drag or a zoom into a region moves the panel it was made in and
+   nothing else. With one figure up (a phone, or the Masks door) there is one
+   panel the width of the well, and its one camera still travels the world
+   between the two figures, which is the turn from Front to Back. A panel's
+   number is its figure's number whenever both are up, and nought when one is. */
+function bmPanN(){return bmOne()?1:2;}
+function bmPv(v){return bmOne()?0:v;}
+function bmPanViews(i){return bmOne()?bmViews():(i?BMV1:BMV0);}
+function bmPanAt(sx){return (bmOne()||sx<BM.pan[1].x0)?0:1;}
+function bmPanOf(x){return (bmOne()||x<BMSPLIT)?0:1;}
+function bmAct(i){return (BM.pa=BM.pan[i]);}
+/* where the panels stand: halves of the well, or all of it. Read again when
+   the well's box or the mode changes (bmSize), never per frame. The svg over
+   each panel is moved to match, and a panel with no room has none. */
+function bmLayout(){
+ var W=BM.W, one=bmOne(), P0=BM.pan[0], P1=BM.pan[1];
+ P0.x0=0; P0.w=one?W:W/2; P1.x0=one?W:W/2; P1.w=one?0:W/2;
+ BM.pan.forEach(function(P){P.cx=P.x0+P.w/2;P.dx0=Math.round(P.x0*BM.dpr);P.dx1=Math.round((P.x0+P.w)*BM.dpr);
+  P.skx=NaN;P.vx=NaN;
+  if(P.sv){P.sv.setAttribute('x',P.x0);P.sv.setAttribute('y',0);P.sv.setAttribute('width',P.w);P.sv.setAttribute('height',BM.H);}});
+ /* THE FRONT'S PANEL DRAWS THE FRONT'S OUTLINE ALONE while both are up. On a
+    wide well a panel shows more world than its own figure's width, and the
+    back's outline, which sits in the same svg for the phone's camera to turn
+    to, put the back's left hand in the lane at 2000. The phone's one panel
+    has both, so the camera has the back to turn to. */
+ if(P0.vec)P0.vec.setAttribute('d',(one&&!BM.one)?bmOutline():bmOutline1());}
 /* THE FIT LEAVES THE TOP BAND TO THE BARS. LM moved the overlays and the
    Mark controls to a row across the top of the well, and a row there runs
    through the heads. So the figures are fitted into what is under it, BM.inT
    pixels down, and centred in that: world 50.5 lands half way between the
    band and the foot. Nought on the Masks door, which has no bars, and nought
    with both bars shut, when each is one circle in a corner the fit's own
-   side margin already keeps clear. bmBand measures it. */
-function bmFitCam(){var w=bmWorldW(),ww=w[1]-w[0],hh=102,T=BM.inT||0, z=Math.min(BM.W/ww,(BM.H-24-T)/hh);BM.z0=z;
- return {x:bmOne()?(BM.face==='back'?BMOX+50:50):(w[0]+w[1])/2,y:50.5-T/(2*z),z:z};}
-function bmFlyTo(x,y,z){BM.camT={x:x,y:y,z:z};if(REDUCED){BM.cam={x:x,y:y,z:z};BM.camT=null;}BM.dirty=true;}
-function bmW2S(x,y){return [(x-BM.cam.x)*BM.cam.z+BM.W/2,(y-BM.cam.y)*BM.cam.z+BM.H/2];}
-function bmS2W(x,y){return [(x-BM.W/2)/BM.cam.z+BM.cam.x,(y-BM.H/2)/BM.cam.z+BM.cam.y];}
-function bmTf(g){g.setTransform(BM.dpr*BM.cam.z,0,0,BM.dpr*BM.cam.z,BM.dpr*(BM.W/2-BM.cam.x*BM.cam.z),BM.dpr*(BM.H/2-BM.cam.y*BM.cam.z));}
-function bmZoomed(){return BM.cam.z>BM.z0*1.05||(BM.camT&&BM.camT.z>BM.z0*1.05);}
+   side margin already keeps clear. bmBand measures it.
+   AND EACH FIGURE IS CENTRED IN ITS OWN PANEL, the Front's body in the left
+   half and the Back's in the right, on the middle of the body as drawn
+   (BMG.bbox, measured) with the same margin either side of it and the same
+   room above and below inside the area under the band. Before, one camera
+   held both and the two bodies stood where the world put them: the outer
+   margins were fourteen units and the gap between them twenty two. One figure
+   up is as it was, to the digit. */
+function bmFitCam(i){i=i||0;var P=BM.pan[i],T=BM.inT||0,one=bmOne(),
+ z=Math.min((one?BM.W:P.w)/(one?52:BMPANW),(BM.H-24-T)/102);P.z0=z;
+ if(one)return {x:BM.face==='back'?BMOX+50:50,y:50.5-T/(2*z),z:z};
+ var b=BMG.bbox;return {x:(b[0]+b[2])/2+bmVX(i),y:(b[1]+b[3])/2-T/(2*z),z:z};}
+/* the target is the panel's own, named or read off where it is going */
+function bmFlyTo(x,y,z,i){var P=BM.pan[i==null?bmPanOf(x):i];P.camT={x:x,y:y,z:z};
+ if(REDUCED){P.cam={x:x,y:y,z:z};P.camT=null;}BM.dirty=true;}
+/* a world point onto the page, and back. The panel is the one the point
+   belongs to, or the one under the page point, unless one is named */
+function bmW2S(x,y,i){var P=BM.pan[i==null?bmPanOf(x):i],c=P.cam;return [(x-c.x)*c.z+P.cx,(y-c.y)*c.z+BM.H/2];}
+function bmS2W(x,y,i){var P=BM.pan[i==null?bmPanAt(x):i],c=P.cam;return [(x-P.cx)/c.z+c.x,(y-BM.H/2)/c.z+c.y];}
+/* the drawing's transform is the active panel's (bmAct) */
+function bmTf(g){var P=BM.pa,c=P.cam;g.setTransform(BM.dpr*c.z,0,0,BM.dpr*c.z,BM.dpr*(P.cx-c.x*c.z),BM.dpr*(BM.H/2-c.y*c.z));}
+/* a panel's drawing is held inside it, in the canvas's own pixels */
+function bmClip(g,P){g.beginPath();g.rect(P.dx0,0,P.dx1-P.dx0,g.canvas.height);g.clip();}
+function bmPZoomed(P){return P.cam.z>P.z0*1.05||!!(P.camT&&P.camT.z>P.z0*1.05);}
+/* is any panel opened past its fit. Where it is, or on its way. */
+function bmZoomed(){for(var i=0,n=bmPanN();i<n;i++)if(bmPZoomed(BM.pan[i]))return true;return false;}
+/* where each is going and not where it is: Whole body, pressed, reads the
+   camera still flying in as zoomed, and would otherwise stay up after the
+   press that sent it home */
+function bmAimZoomed(){for(var i=0,n=bmPanN();i<n;i++){var P=BM.pan[i],c=P.camT||P.cam;if(c.z>P.z0*1.05)return true;}return false;}
+/* WHOLE BODY, for every panel that is opened, and for none that is not: one
+   zoomed sends that one home, two sends both. */
+function bmWhole(){
+ for(var i=0,n=bmPanN();i<n;i++)if(bmPZoomed(BM.pan[i])){var f=bmFitCam(i);bmFlyTo(f.x,f.y,f.z,i);}
+ bmBars();}
 /* the band the two bars take across the top of the well, in pixels from its
    top. Only an open bar counts: shut, each is one circle in its corner. Read
    when a bar opened, shut or rewrote itself (BM.bandStale), never every
@@ -2296,10 +2461,12 @@ function bmSize(){
  BM.well.style.setProperty('--bmtop',band+'px');
  if(same){
   if(band===BM.inT)return;
-  /* the band moved and the box did not: fitted, the figures are put straight
-     under the new band; opened into a region, only the fit's floor moves */
-  var zoomed=bmZoomed(); BM.inT=band;
-  var fc=bmFitCam(); if(!zoomed){BM.cam=fc;BM.camT=null;}
+  /* the band moved and the box did not: a panel that is fitted has its figure
+     put straight under the new band; one opened into a region only has its
+     fit's floor moved */
+  BM.inT=band;
+  for(var pi=0,pn=bmPanN();pi<pn;pi++){var Pz=BM.pan[pi],zoomed=bmPZoomed(Pz),fc=bmFitCam(pi);
+   if(!zoomed){Pz.cam=fc;Pz.camT=null;}}
   BM.stillKey='';BM.litKey='';BM.dirty=true;
   if(BM.r){bmMaskHits(BM.r);bmHubRefresh(BM.r);}
   /* the shelves stand under the band, so their room moved with it */
@@ -2310,7 +2477,11 @@ function bmSize(){
  BM.phone=w<700; BM.dpr=Math.min(2,window.devicePixelRatio||1); BM.W=w; BM.H=h;
  [BM.cv,BM.still,BM.lit,BM.lit2].forEach(function(c){c.width=Math.max(1,Math.round(w*BM.dpr));c.height=Math.max(1,Math.round(h*BM.dpr));});
  BM.stillKey='';BM.litKey='';
- var f=bmFitCam(); BM.cam=f; BM.camT=null; BM.dirty=true;
+ /* the panels stand where the new box and mode put them, and each is fitted
+    again, on its own */
+ bmLayout();
+ for(var qi=0,qn=bmPanN();qi<qn;qi++){BM.pan[qi].cam=bmFitCam(qi);BM.pan[qi].camT=null;}
+ BM.dirty=true;
  /* the shelves down its sides take their columns off the new height */
  if(BM.bar)bmRegFit();
  /* the masks' targets are held to the tap floor at the fitted view, so they
@@ -2339,41 +2510,51 @@ function bmDull(){var d=BMVAR[BM.variant].dull,g=BM.pg,o={};
    Cached, and redrawn only when the camera, the dulling or the ground moves,
    never for a pulse. */
 function bmStill(dl){
- var key=[BM.cam.x.toFixed(3),BM.cam.y.toFixed(3),BM.cam.z.toFixed(3),BM.W,BM.H,dl.nerve.toFixed(3),dl.nsat.toFixed(3),
-  dl.seat.toFixed(3),dl.grid.toFixed(3),BM.mode,BM.phone,BM.face,BM.stage,typeof PMPICK==='string'?PMPICK:''].join('|');
- if(key===BM.stillKey)return;BM.stillKey=key;
- var g=BM.sctx, G=BMG;g.setTransform(1,0,0,1,0,0);
- /* THE STAGE IS THE LIGHTING'S OWN GROUND WHERE THAT GROUND IS DARK, and the
-    prototype's dark stage where it is not. The approved figure is white and
-    pale blue lines on a dark body, and on Glass white paper it would vanish,
-    so there it carries its own ground, as a lightbox does. */
- g.clearRect(0,0,BM.still.width,BM.still.height);
- if(BM.stage){g.fillStyle=bmRgba(BM.stage,1);g.fillRect(0,0,BM.still.width,BM.still.height);}
- bmTf(g);var px=1/BM.cam.z;
- bmViews().forEach(function(v){var o=bmVX(v);
-  /* the grid first and the man solid over it, which is the spec's layer
-     order and the prototype's. Solid means the grid is hidden inside him and
-     only the paint shows it, and that is how it was approved. */
-  g.save();g.clip(G.body[v]);g.beginPath();
-  for(var r=0;r<=BMROWS;r++){g.moveTo(BMXA+o,BMYA+r*BMU);g.lineTo(BMXA+BMCOLS*BMU+o,BMYA+r*BMU);}
-  for(var c=0;c<=BMCOLS;c++){g.moveTo(BMXA+c*BMU+o,BMYA);g.lineTo(BMXA+c*BMU+o,BMYA+BMROWS*BMU);}
-  g.strokeStyle=bmRgba(BMC.grid,(BM.mode==='pain'?1.6:1)*dl.grid);g.lineWidth=px;g.stroke();g.restore();
-  /* THE MAN IS SOLID. The approved figure fills him at 7 percent, and that is
-     what let the glow behind him read through him (spec 1A, item 6). His
-     edge is the svg's, in vector, over all of this. */
-  g.fillStyle=bmRgba(BMC.man,1);g.fill(G.body[v]);
-  bmNerves(g,v,dl.nerve,dl.nsat,false);
-  G.nerv[v].forEach(function(n){if(n.k!=='seat'&&n.k!=='flow')return;
-   var on=(n.k==='seat'&&typeof PMPICK==='string'&&PMBANDS.some(function(b){return b.k===PMPICK&&b.b===n.seat;}));
-   var col=bmGrey(n.c,dl.ssat);g.setLineDash(n.da||[]);
-   g.strokeStyle=bmRgba(col,(n.k==='flow'?Math.max(n.o,.12):n.o)*(on?1:dl.seat));
-   g.lineWidth=n.k==='flow'?Math.max(n.w,2.2*px):Math.max(n.w,(on?2.4:1.4)*px);g.stroke(n.p);g.setLineDash([]);});});}
-function bmNerves(g,v,alpha,sat,lit){var px=1/BM.cam.z;
+ /* what is not a camera: the dulling, the mode, the ground. A change in any of
+    it redraws every panel. A camera is kept apart, panel by panel, so
+    opening one panel redraws that one and leaves the other's picture as it
+    was. */
+ var key=[BM.W,BM.H,dl.nerve.toFixed(3),dl.nsat.toFixed(3),
+  dl.seat.toFixed(3),dl.grid.toFixed(3),BM.mode,BM.phone,bmOne(),BM.face,BM.stage,typeof PMPICK==='string'?PMPICK:''].join('|');
+ var all=(key!==BM.stillKey);BM.stillKey=key;
+ var g=BM.sctx, G=BMG;
+ for(var i=0,n=bmPanN();i<n;i++){var P=BM.pan[i],c=P.cam;
+  if(!all&&c.x===P.skx&&c.y===P.sky&&c.z===P.skz&&P.x0===P.skx0&&P.w===P.skw)continue;
+  P.skx=c.x;P.sky=c.y;P.skz=c.z;P.skx0=P.x0;P.skw=P.w;
+  bmAct(i);
+  g.setTransform(1,0,0,1,0,0);g.save();bmClip(g,P);
+  /* THE STAGE IS THE LIGHTING'S OWN GROUND WHERE THAT GROUND IS DARK, and the
+     prototype's dark stage where it is not. The approved figure is white and
+     pale blue lines on a dark body, and on Glass white paper it would vanish,
+     so there it carries its own ground, as a lightbox does. */
+  g.clearRect(P.dx0,0,P.dx1-P.dx0,BM.still.height);
+  if(BM.stage){g.fillStyle=bmRgba(BM.stage,1);g.fillRect(P.dx0,0,P.dx1-P.dx0,BM.still.height);}
+  bmTf(g);var px=1/c.z;
+  bmPanViews(i).forEach(function(v){var o=bmVX(v);
+   /* the grid first and the man solid over it, which is the spec's layer
+      order and the prototype's. Solid means the grid is hidden inside him and
+      only the paint shows it, and that is how it was approved. */
+   g.save();g.clip(G.body[v]);g.beginPath();
+   for(var r=0;r<=BMROWS;r++){g.moveTo(BMXA+o,BMYA+r*BMU);g.lineTo(BMXA+BMCOLS*BMU+o,BMYA+r*BMU);}
+   for(var cc=0;cc<=BMCOLS;cc++){g.moveTo(BMXA+cc*BMU+o,BMYA);g.lineTo(BMXA+cc*BMU+o,BMYA+BMROWS*BMU);}
+   g.strokeStyle=bmRgba(BMC.grid,(BM.mode==='pain'?1.6:1)*dl.grid);g.lineWidth=px;g.stroke();g.restore();
+   /* THE MAN IS SOLID. The approved figure fills him at 7 percent, and that is
+      what let the glow behind him read through him (spec 1A, item 6). His
+      edge is the svg's, in vector, over all of this. */
+   g.fillStyle=bmRgba(BMC.man,1);g.fill(G.body[v]);
+   bmNerves(g,v,dl.nerve,dl.nsat,false);
+   G.nerv[v].forEach(function(nn){if(nn.k!=='seat'&&nn.k!=='flow')return;
+    var on=(nn.k==='seat'&&typeof PMPICK==='string'&&PMBANDS.some(function(b){return b.k===PMPICK&&b.b===nn.seat;}));
+    var col=bmGrey(nn.c,dl.ssat);g.setLineDash(nn.da||[]);
+    g.strokeStyle=bmRgba(col,(nn.k==='flow'?Math.max(nn.o,.12):nn.o)*(on?1:dl.seat));
+    g.lineWidth=nn.k==='flow'?Math.max(nn.w,2.2*px):Math.max(nn.w,(on?2.4:1.4)*px);g.stroke(nn.p);g.setLineDash([]);});});
+  g.restore();}}
+function bmNerves(g,v,alpha,sat,lit){var px=1/BM.pa.cam.z;
  BMG.nerv[v].forEach(function(n){if(n.k==='seat'||n.k==='flow')return;
   var col=lit?bmMix(n.c,[240,196,160],.55):bmGrey(n.c,sat);
   /* nerves keep the width they have on the whole body as the view opens,
      the fix the spec asks for in 1A item 2 */
-  var w=clamp(n.w*BM.z0,0.7,2.2)*px;
+  var w=clamp(n.w*BM.pa.z0,0.7,2.2)*px;
   if(n.f&&n.t==='circle'){g.fillStyle=bmRgba(col,.10*alpha);g.fill(n.p);}
   g.strokeStyle=bmRgba(col,n.o*alpha);g.lineWidth=lit?w*1.1:w;g.stroke(n.p);});}
 
@@ -2384,9 +2565,11 @@ function bmFrame(now){
  bmSize();
  var moving=false;
  if(BM.tr){bmStepTr(now);moving=true;}
- if(BM.camT){var k=1-Math.exp(-dt*9),c=BM.cam,T=BM.camT;
+ /* each panel flies to its own target, and a panel with none stands still */
+ for(var pi=0,pn=bmPanN();pi<pn;pi++){var Pf=BM.pan[pi];if(!Pf.camT)continue;
+  var k=1-Math.exp(-dt*9),c=Pf.cam,T=Pf.camT;
   c.x+=(T.x-c.x)*k;c.y+=(T.y-c.y)*k;c.z+=(T.z-c.z)*k;
-  if(Math.abs(T.z-c.z)<T.z*0.002&&Math.abs(T.x-c.x)<0.02&&Math.abs(T.y-c.y)<0.02){BM.cam={x:T.x,y:T.y,z:T.z};BM.camT=null;}
+  if(Math.abs(T.z-c.z)<T.z*0.002&&Math.abs(T.x-c.x)<0.02&&Math.abs(T.y-c.y)<0.02){Pf.cam={x:T.x,y:T.y,z:T.z};Pf.camT=null;}
   moving=true;}
  /* under reduced motion nothing hums or pulses, so a frame is drawn only when
     something changed */
@@ -2398,60 +2581,103 @@ function bmDraw(dt){
  /* read once a frame: the lines, the hubs and the addresses all ask it */
  BM.conn=bmConnNow();
  var g=BM.ctx;g.setTransform(1,0,0,1,0,0);g.clearRect(0,0,BM.cv.width,BM.cv.height);g.drawImage(BM.still,0,0);
- var vs=bmViews(), px=1/BM.cam.z, gain=BM.ph;
- /* 2. the heat, over the nerves, as he asked, and clipped to him */
- if(gain>0.002)vs.forEach(function(v){
-  var sat=V.satLead<1?Math.pow(gain,V.satLead):gain;
-  bmPaintHeat(v,gain,sat,V.heatMax,V.iso);
-  bmTf(g);g.save();g.clip(G.body[v]);g.imageSmoothingEnabled=true;g.imageSmoothingQuality='high';
-  g.drawImage(G.heat[v],BMXA+bmVX(v),BMYA,BMCOLS*BMU,BMROWS*BMU);g.restore();});
+ var gain=BM.ph, np=bmPanN();
+ /* the flow's seats, read once and not once a panel */
+ BM.flowCol=BM.ov.on.flow?bmFlowCol():null;
  /* 3. Reveal only: the nerves under the pain stay lit. Cached, because
-    recompositing every nerve through the mask each frame measured 21ms. */
+    recompositing every nerve through the mask each frame measured 21ms. Built
+    for every panel at once, each figure through its own camera and inside its
+    own panel, so nothing of one lands in the other. */
  if(V.local&&BM.pg>0.01){
-  var lk=[BM.cam.x.toFixed(3),BM.cam.y.toFixed(3),BM.cam.z.toFixed(3),BM.W,BM.H,G.fieldVer,vs.join(','),BM.variant].join('|');
+  var lk=[bmCamKey(),BM.W,BM.H,G.fieldVer,bmViews().join(','),BM.variant].join('|');
   if(lk!==BM.litKey){BM.litKey=lk;var lc=BM.lctx,l2=BM.l2ctx;
    lc.setTransform(1,0,0,1,0,0);lc.clearRect(0,0,BM.lit.width,BM.lit.height);
-   vs.forEach(function(v){l2.setTransform(1,0,0,1,0,0);l2.clearRect(0,0,BM.lit2.width,BM.lit2.height);bmTf(l2);
+   bmViews().forEach(function(v){var Pl=bmAct(bmPv(v));
+    l2.setTransform(1,0,0,1,0,0);l2.clearRect(0,0,BM.lit2.width,BM.lit2.height);
+    l2.save();bmClip(l2,Pl);bmTf(l2);
     bmNerves(l2,v,1,1,true);bmPaintMask(v);
     l2.globalCompositeOperation='destination-in';l2.imageSmoothingEnabled=true;
     l2.drawImage(G.mask[v],BMXA+bmVX(v),BMYA,BMCOLS*BMU,BMROWS*BMU);l2.globalCompositeOperation='source-over';
-    lc.drawImage(BM.lit2,0,0);});}
-  g.setTransform(1,0,0,1,0,0);g.globalAlpha=BM.pg*(V.litA||1);g.drawImage(BM.lit,0,0);g.globalAlpha=1;}
- bmTf(g);
- /* regions: the pointed one and the open ones, clipped to him */
- var sel=bmSelAll();
- vs.forEach(function(v){g.save();g.clip(G.body[v]);
-  if(BM.mode==='pain')G.reg.forEach(function(r){if(r.v!==v)return;var b=r.box;
-   g.strokeStyle=bmRgba(BMC.acc,.10);g.lineWidth=px;g.strokeRect(b[0]+bmVX(v),b[1],b[2]-b[0],b[3]-b[1]);});
-  /* THE OPEN REGION IS LIT, AND A PAIR IS LIT AS A PAIR. One region was the
-     only thing this could draw, so a name pressed in the panel below, "Knee",
-     which opens both knees, lit one of them. And at the old ten percent fill
-     the open region read as a thin outline on the whole body at 1600, which
-     is not "it just lights up that area" in his words: the fill is lifted so
-     the area reads as lit before the outline is found. */
-  /* hoverList is a part's button under the pointer, so a glyph can be
-     learned by pointing at it before it is pressed */
-  [(BM.hoverList||[]).concat([BM.hoverReg]),sel].forEach(function(list,i){list.forEach(function(r){if(!r||r.v!==v)return;var b=r.box;
-   g.fillStyle=bmRgba(BMC.acc,i?.22:.06);g.fillRect(b[0]+bmVX(v),b[1],b[2]-b[0],b[3]-b[1]);
-   g.strokeStyle=bmRgba(BMC.acc,i?.95:.5);g.lineWidth=px*(i?1.8:1.1);g.strokeRect(b[0]+bmVX(v),b[1],b[2]-b[0],b[3]-b[1]);});});
-  if(BM.mode==='pain'&&BM.hoverCell&&BM.hoverCell.v===v){var hc=BM.hoverCell;
-   g.strokeStyle=bmRgba([240,210,184],.85);g.lineWidth=px*1.4;g.strokeRect(BMXA+hc.c*BMU+bmVX(v),BMYA+hc.r*BMU,BMU,BMU);}
-  g.restore();});
- /* the flow up the spine under everything a person reads off the figure,
-    because it is the channel the rest sits in */
- bmDrawFlow(g,vs);
- /* the masks, over the light and the body and under every reading mark, so
-    a line or an address is never behind a dot */
- bmDrawMasks(g,vs,dt);
- /* 4. the live layer: pain lines, limb centres, cables, addresses, names */
- if(gain>0.02)bmPainLines(g,vs,gain);
- bmLimb(g,vs,dl);
- bmDrawSabs(g,vs,dl,dt);
- bmDrawAddr(g,vs,dl,dt);
- /* the hubs last, so a complex's mark is never under the lines it joins */
- bmDrawHubs(g,vs);
- if(!bmOne()&&BM.cam.z<BM.z0*1.3)bmLabels(g);
+    l2.restore();
+    lc.drawImage(BM.lit2,0,0);});}}
+ for(var i=0;i<np;i++){
+  var P=bmAct(i), vs=bmPanViews(i), px=1/P.cam.z;
+  /* the first panel advances what moves on its own, the springs and the
+     pulses, and the second only draws them, so a frame moves each once */
+  BM.adv=(i===0);
+  /* everything of a panel is drawn inside it: a figure opened into a region
+     reaches past its panel's edge, and this is what keeps it off the other */
+  g.setTransform(1,0,0,1,0,0);g.save();bmClip(g,P);
+  /* 1b. the charge, as heat, clipped to him the same way, and stepping back
+     as the pain comes up, so a painted patch is never read as charge or the
+     other way round (bmChargeRebuild) */
+  if(BM.ov.on.heat&&gain<0.98)vs.forEach(function(v){
+   bmTf(g);g.save();g.clip(G.body[v]);g.globalAlpha=1-gain;g.imageSmoothingEnabled=true;g.imageSmoothingQuality='high';
+   g.drawImage(G.cheat[v],BMXA+bmVX(v),BMYA,BMCOLS*BMU,BMROWS*BMU);g.restore();});
+  /* 2. the heat, over the nerves, as he asked, and clipped to him */
+  if(gain>0.002)vs.forEach(function(v){
+   var sat=V.satLead<1?Math.pow(gain,V.satLead):gain;
+   bmPaintHeat(v,gain,sat,V.heatMax,V.iso);
+   bmTf(g);g.save();g.clip(G.body[v]);g.imageSmoothingEnabled=true;g.imageSmoothingQuality='high';
+   g.drawImage(G.heat[v],BMXA+bmVX(v),BMYA,BMCOLS*BMU,BMROWS*BMU);g.restore();});
+  if(V.local&&BM.pg>0.01){
+   g.setTransform(1,0,0,1,0,0);g.globalAlpha=BM.pg*(V.litA||1);
+   g.drawImage(BM.lit,P.dx0,0,P.dx1-P.dx0,BM.lit.height,P.dx0,0,P.dx1-P.dx0,BM.cv.height);g.globalAlpha=1;}
+  bmTf(g);
+  /* regions: the pointed one and the open ones, clipped to him */
+  var sel=bmSelAll();
+  vs.forEach(function(v){g.save();g.clip(G.body[v]);
+   if(BM.mode==='pain')G.reg.forEach(function(r){if(r.v!==v)return;var b=r.box;
+    g.strokeStyle=bmRgba(BMC.acc,.10);g.lineWidth=px;g.strokeRect(b[0]+bmVX(v),b[1],b[2]-b[0],b[3]-b[1]);});
+   /* THE OPEN REGION IS LIT, AND A PAIR IS LIT AS A PAIR. One region was the
+      only thing this could draw, so a name pressed in the panel below, "Knee",
+      which opens both knees, lit one of them. And at the old ten percent fill
+      the open region read as a thin outline on the whole body at 1600, which
+      is not "it just lights up that area" in his words: the fill is lifted so
+      the area reads as lit before the outline is found. */
+   /* hoverList is a part's button under the pointer, so a glyph can be
+      learned by pointing at it before it is pressed */
+   [(BM.hoverList||[]).concat([BM.hoverReg]),sel].forEach(function(list,i){list.forEach(function(r){if(!r||r.v!==v)return;var b=r.box;
+    g.fillStyle=bmRgba(BMC.acc,i?.22:.06);g.fillRect(b[0]+bmVX(v),b[1],b[2]-b[0],b[3]-b[1]);
+    g.strokeStyle=bmRgba(BMC.acc,i?.95:.5);g.lineWidth=px*(i?1.8:1.1);g.strokeRect(b[0]+bmVX(v),b[1],b[2]-b[0],b[3]-b[1]);});});
+   if(BM.mode==='pain'&&BM.hoverCell&&BM.hoverCell.v===v){var hc=BM.hoverCell;
+    g.strokeStyle=bmRgba([240,210,184],.85);g.lineWidth=px*1.4;g.strokeRect(BMXA+hc.c*BMU+bmVX(v),BMYA+hc.r*BMU,BMU,BMU);}
+   g.restore();});
+  /* the flow up the spine under everything a person reads off the figure,
+     because it is the channel the rest sits in */
+  bmDrawFlow(g,vs);
+  /* the masks, over the light and the body and under every reading mark, so
+     a line or an address is never behind a dot */
+  bmDrawMasks(g,vs,dt);
+  /* 4. the live layer: pain lines, limb centres, cables, addresses, names */
+  if(gain>0.02)bmPainLines(g,vs,gain);
+  bmLimb(g,vs,dl);
+  bmDrawSabs(g,vs,dl,dt);
+  bmDrawAddr(g,vs,dl,dt);
+  /* the hubs last, so a complex's mark is never under the lines it joins */
+  bmDrawHubs(g,vs);
+  if(!bmOne()&&P.cam.z<P.z0*1.3)bmLabels(g,vs);
+  g.restore();}
+ /* what belongs to neither panel is drawn over both: the divider, the flow's
+    words in the lane, the one line of instruction in the corner */
+ bmDivider(g);
+ bmFlowWords(g);
  bmHint(g);}
+/* the line between the two panels. A single pixel of the figure's own edge
+   colour, faint, set in from the band and from the foot so it reads as the
+   seam between two views and not as a frame, and nothing at all with one
+   figure up. Widened 7 screen pixels past that one pixel, his approval,
+   20 November. It stops the same 24 pixels short of the key that it stops
+   short of the band (BM.keyH, bmKey), because the key stands on its foot
+   and the seam ran on through the key's glass as a stripe down its middle,
+   seen on the first close shot of it, 21 November. */
+function bmDivider(g){
+ if(bmOne())return;
+ var x=BM.pan[1].dx0, d=Math.max(1,Math.round(BM.dpr))+Math.round(7*BM.dpr), y0=Math.round((BM.inT||0)*BM.dpr+24*BM.dpr), y1=BM.cv.height-Math.round((24+(BM.keyH||0))*BM.dpr);
+ if(y1<=y0)return;
+ g.setTransform(1,0,0,1,0,0);g.fillStyle=bmRgba(BMC.edge,.12);g.fillRect(x-(d>>1),y0,d,y1-y0);}
+/* both cameras, as one string, for a cache that depends on both */
+function bmCamKey(){var o=[];for(var i=0,n=bmPanN();i<n;i++){var c=BM.pan[i].cam;o.push(c.x.toFixed(3),c.y.toFixed(3),c.z.toFixed(3),BM.pan[i].x0,BM.pan[i].w);}return o.join(',');}
 function bmStroke(g,P,from,to,width,style){ /* P: [x,y,L] samples, drawn between lengths from and to */
  g.beginPath();var started=false;
  for(var i=0;i<P.length;i++){var p=P[i];if(p[2]<from)continue;if(p[2]>to)break;
@@ -2459,7 +2685,7 @@ function bmStroke(g,P,from,to,width,style){ /* P: [x,y,L] samples, drawn between
  if(!started)return;g.lineWidth=width;g.strokeStyle=style;g.stroke();}
 /* a painted region's line to the spine along its nerve. The pulses run
    inward, the direction a pain signal travels. */
-function bmPainLines(g,vs,gain){var px=1/BM.cam.z;
+function bmPainLines(g,vs,gain){var px=1/BM.pa.cam.z;
  g.lineCap='round';g.lineJoin='round';
  BMG.reg.forEach(function(r){if(vs.indexOf(r.v)<0||!r.route||!r.val)return;
   var val=r.val,P=r.samp,L=r.routeLen,t=val/10,col=bmRamp(t)[0],a=gain*(0.45+0.5*t);
@@ -2495,7 +2721,7 @@ function bmDrawSabs(g,vs,dl,dt){
   /* the load drifts on its own slow sine, the way the Field's does */
   var ld=Math.cos(BMTAU*BM.t/s.per+s.ph);s.dir=ld>=0?1:-1;
   vs.forEach(function(v){var c=bmCable(s,v,BM.t);if(!c)return;var P=c.samp,L=c.len;
-   bmTf(g);var px=1/BM.cam.z;g.lineCap='round';g.lineJoin='round';
+   bmTf(g);var px=1/BM.pa.cam.z;g.lineCap='round';g.lineJoin='round';
    var heatLift=BMVAR[BM.variant].local&&s.hot[v]>1.5?1:0;
    var a=(0.40+0.55*s.T/10)*(dl.sab+(1-dl.sab)*heatLift);
    if(hs&&!isHot(s.nm))a*=0.20;
@@ -2516,7 +2742,7 @@ function bmDrawSabs(g,vs,dl,dt){
    if(REDUCED||(hs&&!isHot(s.nm)))return;
    var sp=(0.07+0.15*Math.sqrt(s.T/10))*s.dir;
    s.pulses.forEach(function(pu){
-    if(v===vs[0]){pu.prev=pu.q;pu.q=bmFrac(pu.q+sp*dt);
+    if(v===vs[0]&&BM.adv){pu.prev=pu.q;pu.q=bmFrac(pu.q+sp*dt);
      /* a pulse crossing an address kicks its mark */
      c.nodeQ.forEach(function(nq,ni){var a0=pu.prev,a1=pu.q;
       var crossed=s.dir>0?(a0<nq&&a1>=nq&&a1-a0<.5):(a0>nq&&a1<=nq&&a0-a1<.5);
@@ -2529,7 +2755,7 @@ function bmMarkR(p){return 3.2+0.55*Math.min(p.ids.length,6);}
    product's own reading circle: a faint track, and an arc filled to sq over
    ten. The three readings of question A differ here and nowhere else. */
 function bmDrawAddr(g,vs,dl,dt){
- var zI=BM.z0*1.7, ic=BM.amode==='A4'?bmSstep(zI*0.8,zI*1.25,BM.cam.z):0, onLine={};
+ var Pa=BM.pa, zI=Pa.z0*1.7, ic=BM.amode==='A4'?bmSstep(zI*0.8,zI*1.25,Pa.cam.z):0, onLine={};
  BM.sabs.forEach(function(s){s.nids.forEach(function(id){onLine[id]=Math.max(onLine[id]||0,s.T);});});
  var C=BM.conn||{};
  g.setTransform(BM.dpr,0,0,BM.dpr,0,0);
@@ -2540,10 +2766,13 @@ function bmDrawAddr(g,vs,dl,dt){
   if(!BM.ov.on.addr&&!mine)return;
   /* the mark has mass: kicked by a pulse, it swells past and settles, on the
      Field's own spring */
-  if(!REDUCED){var acc=196*(0-p.kick)-2*.42*14*p.vel;p.vel+=acc*dt;p.kick+=p.vel*dt;}else{p.kick=0;p.vel=0;}
-  vs.forEach(function(v){
+  if(!REDUCED){if(BM.adv){var acc=196*(0-p.kick)-2*.42*14*p.vel;p.vel+=acc*dt;p.kick+=p.vel*dt;}}else{p.kick=0;p.vel=0;}
+  /* a plain loop and not a callback: with a panel drawn at a time this runs
+     twice a frame, and a closure made for every address each time was an
+     allocation the frame had no need of */
+  for(var vi=0;vi<vs.length;vi++){var v=vs[vi];
    var ghost=!bmSolidOn(p,v), x=bmPlaceX(p,v)+bmVX(v), s=bmW2S(x,p.y);
-   if(s[0]<-40||s[1]<-40||s[0]>BM.W+40||s[1]>BM.H+40)return;
+   if(s[0]<Pa.x0-40||s[1]<-40||s[0]>Pa.x0+Pa.w+40||s[1]>BM.H+40)continue;
    var ch=0,seat=null;p.ids.forEach(function(id){var q=BY[id].sq||0;if(q>=ch){ch=q;seat=BY[id].b;}});
    var col=bmSeatC(seat), heatLift=BMVAR[BM.variant].local&&bmFieldAt(v,bmPlaceX(p,v),p.y)>1.5?1:0;
    var ln=p.ids.some(function(id){return onLine[id];});
@@ -2557,7 +2786,7 @@ function bmDrawAddr(g,vs,dl,dt){
    if(C.on)A=mine?(ghost?.45:1):A*.3;
    var r=bmMarkR(p)*(1+0.18*p.kick)*(BM.amode==='A1'?.6:1);
    /* A3, the patch. 4 cm, a placeholder until sizes are sourced */
-   if(BM.amode==='A3'){g.beginPath();g.arc(s[0],s[1],Math.max(r+2,2*BM.cam.z/BMCM),0,BMTAU);g.fillStyle=bmRgba(col,.10*A);g.fill();}
+   if(BM.amode==='A3'){g.beginPath();g.arc(s[0],s[1],Math.max(r+2,2*Pa.cam.z/BMCM),0,BMTAU);g.fillStyle=bmRgba(col,.10*A);g.fill();}
    /* past five an address on a line throws the Field's stress fringes, born
       at the mark and travelling out while loading, back in while releasing */
    var str=clamp((ch-5)/5,0,1);
@@ -2575,10 +2804,10 @@ function bmDrawAddr(g,vs,dl,dt){
    if(BM.hoverPlace===p&&v===BM.hoverView){g.beginPath();g.arc(s[0],s[1],r+4,0,BMTAU);
     g.strokeStyle=bmRgba(BMC.ink,.8);g.lineWidth=1.2;g.stroke();}
    if(mine&&!ghost){g.beginPath();g.arc(s[0],s[1],r+3,0,BMTAU);
-    g.strokeStyle=bmRgba(col,.9);g.lineWidth=1.4;g.stroke();}});});}
+    g.strokeStyle=bmRgba(col,.9);g.lineWidth=1.4;g.stroke();}}});}
 /* A4: each address's own fetter icon, round the place when it holds several */
 function bmRosette(g,p,s,col,A){
- var n=p.ids.length, sz=clamp(0.95*BM.cam.z,14,24), R=n>1?sz*(0.55+0.11*n):0;
+ var n=p.ids.length, sz=clamp(0.95*BM.pa.cam.z,14,24), R=n>1?sz*(0.55+0.11*n):0;
  p.ids.forEach(function(id,j){var nd=BY[id],ch=BMG.child[nd.c];if(!ch)return;
   var an=-Math.PI/2+j/n*BMTAU,x=s[0]+Math.cos(an)*R,y=s[1]+Math.sin(an)*R,c2=bmSeatC(nd.b),q=nd.sq||0;
   g.save();g.translate(x-sz/2,y-sz/2);g.scale(sz/24,sz/24);
@@ -2597,12 +2826,13 @@ function bmRosette(g,p,s,col,A){
    toggle addressed read at full strength and the other stepped back; round
    KW took the toggle away and put both sets of parts under the well, so
    neither side is the one being addressed and both read at full. */
-function bmLabels(g){
+function bmLabels(g,vs){
  g.setTransform(BM.dpr,0,0,BM.dpr,0,0);g.textBaseline='middle';
- [0,1].forEach(function(v){var on=true;
+ vs.forEach(function(v){var on=true;
   g.textAlign='center';g.font='600 13px Inter,system-ui,sans-serif';g.fillStyle=bmRgba(BMC.ink,on?.9:.42);
-  /* under the band, when a bar is open across the top */
-  g.fillText(v?'Back':'Front',bmW2S(v?BMOX+50:50,0)[0],14+(BM.inT||0));});}
+  /* centred over the body as drawn, and under the band when a bar is open
+     across the top */
+  g.fillText(v?'Back':'Front',bmW2S((BMG.bbox[0]+BMG.bbox[2])/2+bmVX(v),0)[0],14+(BM.inT||0));});}
 /* one line of instruction, in the corner, off the figure */
 /* HS SWEEP: ONLY IN PAINT. The default hint, "Press a region to open it.
    Double press to zoom in. Point at a line to trace it.", sat in the corner
@@ -2635,14 +2865,18 @@ function bmOutline(){
 /* one figure, for the icons under the well. The outline is the same path on
    both sides, so one drawing serves the front and the back. */
 function bmOutline1(){return _bmOutline1||(_bmOutline1=bmOutlineAt(0));}
-/* the overlay follows the camera: its viewBox is the world the canvas shows */
+/* the overlay follows the cameras: each panel's own svg has a viewBox that is
+   the world its half of the canvas shows. Compared as numbers and written as a
+   string only when one moved, so a still frame builds nothing. */
 function bmOverlay(){
  if(!BM.sv)return;
- var vb=(BM.cam.x-BM.W/2/BM.cam.z).toFixed(3)+' '+(BM.cam.y-BM.H/2/BM.cam.z).toFixed(3)+' '
-  +(BM.W/BM.cam.z).toFixed(3)+' '+(BM.H/BM.cam.z).toFixed(3);
- if(vb!==BM.vb){BM.vb=vb;BM.sv.setAttribute('viewBox',vb);}
+ for(var i=0,n=bmPanN();i<n;i++){var P=BM.pan[i],c=P.cam;
+  if(!P.sv||(P.vx===c.x&&P.vy===c.y&&P.vz===c.z&&P.vw===P.w&&P.vh===BM.H))continue;
+  P.vx=c.x;P.vy=c.y;P.vz=c.z;P.vw=P.w;P.vh=BM.H;
+  P.sv.setAttribute('viewBox',(c.x-P.w/2/c.z).toFixed(3)+' '+(c.y-BM.H/2/c.z).toFixed(3)+' '+(P.w/c.z).toFixed(3)+' '+(BM.H/c.z).toFixed(3));}
  /* a finger on a phone scrolls the page past a whole body. It draws or pans
-    only where that is the job: painting, or a view that has been opened. */
+    only where that is the job: painting, or a view that has been opened. One
+    surface takes one setting, so it is the stricter of the two panels'. */
  var ta=(BM.mode==='pain'||bmZoomed())?'none':'pan-y';
  if(ta!==BM.ta){BM.ta=ta;BM.sv.style.touchAction=ta;}}
 /* the seven seats, pressable, over the approved figure's own dashed rings.
@@ -2664,8 +2898,12 @@ function bmSelAll(){
  if(/:\*$/.test(k)){var gp=k.slice(0,-2);return BMG.reg.filter(function(r){return r.grp===gp;})
   .sort(function(a,b){return a.side<b.side?-1:1;});}
  return BMG.reg.filter(function(r){return r.key===k;});}
-function bmPick(sx,sy){var G=BMG,w=bmS2W(sx,sy),v=null;
- bmViews().forEach(function(vv){if(w[0]>=24+bmVX(vv)-2&&w[0]<=76+bmVX(vv)+2)v=vv;});if(v===null)return {w:w};
+/* THE PANEL UNDER THE POINT ANSWERS FOR IT. A page point is turned into the
+   world through that panel's camera and no other, and only the figure that
+   panel shows can be what it landed on. The panel is in the answer, because
+   a press, a drag and a wheel go on to act on it. */
+function bmPick(sx,sy){var G=BMG,pi=bmPanAt(sx),w=bmS2W(sx,sy,pi),v=null;
+ bmPanViews(pi).forEach(function(vv){if(w[0]>=24+bmVX(vv)-2&&w[0]<=76+bmVX(vv)+2)v=vv;});if(v===null)return {w:w,pi:pi};
  var x=w[0]-bmVX(v),y=w[1],reg=null,i;
  if(bmIn(G,v,x,y))for(i=0;i<G.reg.length;i++){var r=G.reg[i],b=r.box;
   if(r.v===v&&x>=b[0]&&x<=b[2]&&y>=b[1]&&y<=b[3]){reg=r;break;}}
@@ -2685,7 +2923,7 @@ function bmPick(sx,sy){var G=BMG,w=bmS2W(sx,sy),v=null;
  BM.sabs.forEach(function(s){if(!BM.ov.on.sab&&!(C.on&&C.sab[s.nm]))return;
   var c2=s.views[v];if(!c2||!c2.samp)return;
   for(var j=0;j<c2.samp.length;j+=2){var q=bmW2S(c2.samp[j][0],c2.samp[j][1]),d=Math.hypot(q[0]-sx,q[1]-sy);if(d<sd){sd=d;sab=s;}}});
- return {w:w,v:v,x:x,y:y,reg:reg,cell:cell,place:place,sab:sab,hub:hub};}
+ return {w:w,pi:pi,v:v,x:x,y:y,reg:reg,cell:cell,place:place,sab:sab,hub:hub};}
 
 /* ---------- the tooltip is the product's one, handed the canvas ----------
    Placed off the picture, as the Field's are, at the height of the mark:
@@ -2724,8 +2962,9 @@ function bmPlaceTip(p){
    AN ARRIVAL, NOT A HOVER HELD: called where BM.hoverSab changes to a line,
    so resting on a line, or sliding along it, is silent. */
 const BMSPARK_Z=1.3;
-function bmClose(){return !!(BM.cam&&BM.z0&&BM.cam.z>=BM.z0*BMSPARK_Z);}
-function bmSpark(){if(bmClose()&&typeof sfx==='function')sfx('spark');}
+/* close is a panel's own: the pointer's panel is the one being looked into */
+function bmClose(i){var P=BM.pan[i||0];return !!(P&&P.z0&&P.cam.z>=P.z0*BMSPARK_Z);}
+function bmSpark(i){if(bmClose(i)&&typeof sfx==='function')sfx('spark');}
 /* ---------- pressing, pointing, painting ---------- */
 function bmWire(){
  var sv=BM.sv;
@@ -2736,20 +2975,25 @@ function bmWire(){
   var seat=(BM.mode!=='pain'&&e.target.closest)?e.target.closest('[data-seat]'):null;
   /* and a mask as a mask, on the same terms */
   var mask=(BM.mode!=='pain'&&!seat&&e.target.closest)?e.target.closest('[data-bmmask]'):null;
-  BM.drag={x:p[0],y:p[1],cx:BM.cam.x,cy:BM.cam.y,moved:false,seat:seat,mask:mask,
+  /* a press belongs to the panel it landed in, and so does the drag that
+     follows it, wherever the pointer goes: it is captured, so it keeps moving
+     that panel's camera and not the other's */
+  var Pd=BM.pan[pk.pi];
+  BM.drag={x:p[0],y:p[1],pi:pk.pi,cx:Pd.cam.x,cy:Pd.cam.y,moved:false,seat:seat,mask:mask,
    paint:BM.mode==='pain'&&!!pk.cell,first:true,painted:{},lastReg:pk.reg||null};
-  if(BM.drag.paint||bmZoomed()){try{sv.setPointerCapture(e.pointerId);}catch(x){}}
+  if(BM.drag.paint||bmPZoomed(Pd)){try{sv.setPointerCapture(e.pointerId);}catch(x){}}
   if(BM.drag.paint)bmPaintAt(pk);});
  sv.addEventListener('pointermove',function(e){
   var p=at(e),D=BM.drag;
   if(D){var dx=p[0]-D.x,dy=p[1]-D.y;if(Math.hypot(dx,dy)>4)D.moved=true;
    if(D.paint){var pk=bmPick(p[0],p[1]);if(pk.cell)bmPaintAt(pk);if(pk.reg)D.lastReg=pk.reg;return;}
    /* a drag moves an opened view; the whole body has nowhere to go */
-   if(D.moved&&bmZoomed()){BM.camT=null;BM.cam.x=D.cx-dx/BM.cam.z;BM.cam.y=D.cy-dy/BM.cam.z;BM.dirty=true;}
+   var Pm=BM.pan[D.pi];
+   if(D.moved&&bmPZoomed(Pm)){Pm.camT=null;Pm.cam.x=D.cx-dx/Pm.cam.z;Pm.cam.y=D.cy-dy/Pm.cam.z;BM.dirty=true;}
    return;}
   var pk=bmPick(p[0],p[1]);
   BM.hoverReg=pk.reg||null;BM.hoverCell=pk.cell||null;
-  if(pk.sab&&!pk.place&&pk.sab.nm!==BM.hoverSab){BM.hoverSab=pk.sab.nm;BM.traceT0=performance.now();bmSpark();}
+  if(pk.sab&&!pk.place&&pk.sab.nm!==BM.hoverSab){BM.hoverSab=pk.sab.nm;BM.traceT0=performance.now();bmSpark(pk.pi);}
   if(!pk.sab&&BM.hoverSab&&BM.hoverFrom!=='rail')BM.hoverSab=null;
   BM.hoverFrom='map';
   BM.hoverPlace=pk.place||null;BM.hoverView=pk.v;
@@ -2783,7 +3027,7 @@ function bmWire(){
    PMPICK=(hk&&hk.kind===ho.kind&&hk.nm===ho.nm)?null:ho;S.pin=PMPICK;BM.traceT0=performance.now();pmAnswer(PMPICK);return;}
   if(pk.sab&&!pk.place){var o=pk.sab.o, same=(bmHoldNm()===o.nm);
    /* a finger has no hover, so its tap on a line is its arrival on it */
-   if(e.pointerType!=='mouse')bmSpark();
+   if(e.pointerType!=='mouse')bmSpark(pk.pi);
    PMPICK=same?null:o;S.pin=PMPICK;BM.traceT0=performance.now();pmAnswer(PMPICK);return;}
   /* A MASK OPENS ITS DRILL, the fix DY made on the Field carried to where
      the masks went: "I click on Ideological, I get nothing." pmAnswer sends
@@ -2802,11 +3046,14 @@ function bmWire(){
     over the upper left left the figures at 0.8 and 18 units off centre, and
     a drag moved the camera by nothing. The whole body is the least a view
     shows, so scrolling out reaches the fit and is put back on it exactly. */
- sv.addEventListener('wheel',function(e){e.preventDefault();var p=at(e),w=bmS2W(p[0],p[1]);
-  var z=clamp(BM.cam.z*Math.pow(1.0015,-e.deltaY),BM.z0,BM.z0*8);
-  BM.camT=null;
-  if(z<=BM.z0*1.0001)BM.cam=bmFitCam();
-  else{BM.cam.z=z;BM.cam.x=w[0]-(p[0]-BM.W/2)/z;BM.cam.y=w[1]-(p[1]-BM.H/2)/z;}
+ sv.addEventListener('wheel',function(e){e.preventDefault();var p=at(e),pi=bmPanAt(p[0]),P=BM.pan[pi],w=bmS2W(p[0],p[1],pi);
+  /* the wheel moves the panel it is over, about the pointer, and the other
+     panel stays exactly where it was. A trackpad's pinch arrives here as a
+     wheel, so it is the same. */
+  var z=clamp(P.cam.z*Math.pow(1.0015,-e.deltaY),P.z0,P.z0*8);
+  P.camT=null;
+  if(z<=P.z0*1.0001)P.cam=bmFitCam(pi);
+  else{P.cam.z=z;P.cam.x=w[0]-(p[0]-P.cx)/z;P.cam.y=w[1]-(p[1]-BM.H/2)/z;}
   BM.dirty=true;bmBars();},{passive:false});}
 /* one press paints at the brush, and the same press on a cell already at the
    brush clears it. No second step. */
@@ -2818,9 +3065,14 @@ function bmZoomReg(r){bmZoomRegs([r]);}
 /* a pair zooms to the box round both sides, so both knees stay in view */
 function bmZoomRegs(list){var r=list[0],b=list.reduce(function(a,x){var q=x.box;
   return [Math.min(a[0],q[0]),Math.min(a[1],q[1]),Math.max(a[2],q[2]),Math.max(a[3],q[3])];},r.box.slice());
- var w=(b[2]-b[0])+8,h=(b[3]-b[1])+8,z=Math.min(BM.W/w,BM.H/h,BM.z0*6);
+ /* the panel that owns the region opens, to fill that panel and not the
+    well, and the other is not touched. A pair is one region's two sides on
+    one figure (the knees, the shoulders), so it opens the one panel that
+    figure is in. */
+ var pi=bmPv(r.v),P=BM.pan[pi];
+ var w=(b[2]-b[0])+8,h=(b[3]-b[1])+8,z=Math.min(P.w/w,BM.H/h,P.z0*6);
  if(bmOne())BM.face=r.v?'back':'front';
- bmFlyTo((b[0]+b[2])/2+bmVX(r.v),(b[1]+b[3])/2,z);bmBars();}
+ bmFlyTo((b[0]+b[2])/2+bmVX(r.v),(b[1]+b[3])/2,z,pi);bmBars();}
 /* A REGION ANSWERS IN SELECTION, where every press on this product answers.
    Pressing the open one again puts it down, as a seat and a pattern do. A
    paint stroke opens the region it ended on and never closes it, because
@@ -3047,7 +3299,7 @@ function bmMkBuild(mk){
     at the outer end of the row */
  mk.appendChild(tog);
  var z=document.createElement('button'); z.type='button'; z.className='pm-lb bm-whole'; z.setAttribute('data-bmwhole','1');
- z.textContent='Whole body'; z.onclick=function(){var f=bmFitCam();bmFlyTo(f.x,f.y,f.z);bmBars();};
+ z.textContent='Whole body'; z.onclick=bmWhole;
  mk.appendChild(z);
  bmMkShutPaint(mk,bmMkShut());}
 function bmBars(){
@@ -3059,7 +3311,7 @@ function bmBars(){
  /* where the camera is going and not where it is, bmBarsOne's reading. The
     press on Whole body calls this while the camera is still in, so read off
     the camera it would stay up after the press that sent the view home */
- var zc=BM.camT||BM.cam, zoomed=zc.z>BM.z0*1.05, zb=mk.querySelector('[data-bmwhole]');
+ var zoomed=bmAimZoomed(), zb=mk.querySelector('[data-bmwhole]');
  if(zb&&zb.hidden!==!zoomed){zb.hidden=!zoomed;BM.bandStale=true;}
  var body=BM.well.querySelector('#bmmkb'); if(!body)return;
  var sig=[BM.mode,BM.variant,BM.amode].join('|');
@@ -3124,13 +3376,12 @@ function bmBars(){
    Intake's Mark row on its picture this is the only writer that raises it,
    and it writes only on this door. */
 function bmBarsOne(rb){
- var c=BM.camT||BM.cam, z=c.z>BM.z0*1.05, sig='one|'+z;
+ var z=bmAimZoomed(), sig='one|'+z;
  document.body.classList.toggle('hassub',z); rb.style.display=z?'flex':'none';
  if(sig===rb.getAttribute('data-bmsig'))return;
  rb.setAttribute('data-bmsig',sig);
  rb.innerHTML=z?'<button type="button" class="pm-lb" data-bmwhole="1">Whole body</button>':'';
- rb.querySelectorAll('[data-bmwhole]').forEach(function(el){el.onclick=function(){
-  var f=bmFitCam();bmFlyTo(f.x,f.y,f.z);bmBars();};});}
+ rb.querySelectorAll('[data-bmwhole]').forEach(function(el){el.onclick=bmWhole;});}
 
 /* ---------- the parts, as icons, under the figure ----------
    His words, round JQ: "turn those to buttons, maybe on the bottom panel of
@@ -3206,7 +3457,7 @@ function bmPartName(pt,vn){return vn==='back'?(pt.b?bmNm(pt.b):null):pt.f;}
 function bmPartOf(k){if(!k)return null;var s=String(k).split(':'), bk=s[0]==='back';
  return BMPART.filter(function(p){return (bk?p.b:p.f)===s[1];})[0]||null;}
 function bmSetFace(f){if(BM.face===f)return;BM.face=f;
- if(bmOne()&&BM.W){var c=bmFitCam();bmFlyTo(c.x,c.y,c.z);}
+ if(bmOne()&&BM.W){var c=bmFitCam();bmFlyTo(c.x,c.y,c.z,0);}
  BM.stillKey='';BM.dirty=true;}
 /* open a part on a side, both sides of it unless one side is named. Pressed
    from the panel, so the answer is brought to (RD_INRAIL), on a phone too:
@@ -3354,17 +3605,23 @@ function bmRegBar(){
 var BMOVTOK='--ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;--accent:#7EB8D4;--edge-2:rgba(255,255,255,.14);'
  +'--edge:rgba(255,255,255,.09);--fb-glass:rgba(22,24,32,.74);--fb-glass-on:rgba(40,44,58,.86);'
  +'--fb-shade:rgba(0,0,0,.30);--fb-pillbg:#161820';
-var BMOV=[{k:'nodes',nm:'Nodes',ls:['addr','masks']},{k:'clusters',nm:'Clusters',ls:['pain','flow']},
+var BMOV=[{k:'nodes',nm:'Nodes',ls:['addr','masks']},{k:'clusters',nm:'Clusters',ls:['heat','pain','flow']},
  {k:'networks',nm:'Networks',ls:['sab','cx','hy']}];
 var BMOVL={
  addr:{nm:FB_BYK.addresses.nm,ic:FB_BYK.addresses.ic,tip:FB_BYK.addresses.tip},
  masks:{nm:'Masks',ic:'M4 7.5h16v4.5a8 8 0 01-16 0zM8.2 11.4h2.6M13.2 11.4h2.6',
   tip:'The masks, as dots on the figure that fill in as each one carries weight.'},
+ /* two rings, one inside the other, the way a heat map's contours close on
+    the hottest point. Ring, not fill. Named Charge and not Heat, because
+    Heat is already the Pain mode's own switch (bmvar) and one word is one
+    concept. */
+ heat:{nm:'Charge',ic:'M12 3.8a8.2 8.2 0 100 16.4 8.2 8.2 0 100-16.4zM12 8.6a3.4 3.4 0 100 6.8 3.4 3.4 0 100-6.8z',
+  tip:'Charge, as heat: where your charge sits in the body, as a glow on the figure. Each glow is an address\'s own charge, in its point\'s colour, so the same brightness means the same charge on everyone. Pain you paint is a separate reading and is never mixed in.'},
  pain:{nm:'Pain',ic:'M12 3.6c3.4 4.2 5.6 7.3 5.6 10.2a5.6 5.6 0 01-11.2 0c0-2.9 2.2-6 5.6-10.2z',
   tip:'Paint where it hurts, on the figure. Painted pain stays until the profile changes and is not saved.'},
  /* the rail's own Flow mark, so the section and the circle are one mark */
  flow:{nm:'Flow',ic:'M6 19c3-2.4 3-5.6 0-8 3-2.4 3-5.6 0-8M12 19c3-2.4 3-5.6 0-8 3-2.4 3-5.6 0-8M18 19c3-2.4 3-5.6 0-8 3-2.4 3-5.6 0-8',
-  tip:'How open each seat is, up the spine: open, mildly impaired, moderately impaired, heavily impaired or blocked.'},
+  tip:'How open each point is, up the spine: open, mildly impaired, moderately impaired, heavily impaired or blocked.'},
  sab:{nm:FB_BYK.saboteurs.nm,ic:FB_BYK.saboteurs.ic,tip:FB_BYK.saboteurs.tip},
  cx:{nm:FB_BYK.complexes.nm,ic:FB_BYK.complexes.ic,
   tip:'Where saboteurs join. Each complex is a mark with a line out to every address it is built on.'},
@@ -3382,10 +3639,14 @@ function bmOvVals(r){
  var pv=(BMG&&BMG.reg||[]).reduce(function(m,q){return Math.max(m,q.val||0);},0);
  V.pain={p:pv*10,v:pv?String(pv):dash,c:seatCol('Sacral'),
   m:pv?'Ring and number: the heaviest pain you have painted, at '+pv+'.':'Nothing painted yet.'};
+ var ht=(r&&!r.unread)?bmChargeTop():null;
+ V.heat=ht?{p:ht.sq*10,v:fmtPct('charge',ht.sq),c:bmRgba(bmSeatC(ht.b),1),
+  m:'Ring and number: the hottest address, '+(/_Unnamed$/.test(ht.k)?'an address with no name yet':ht.k)+', at '+fmtPct('charge',ht.sq)+' of the most it could hold.'}
+  :{p:0,v:dash,c:'var(--accent)',m:'Nothing read yet.'};
  var sp=flSpeed();
  V.flow=(r&&!r.unread&&sp>=0.005)?{p:sp*100,v:fmtPct('flow',sp),c:'var(--accent)',
-  m:'Ring and number: flow, the share of charge that passes every seat, '+fmtPct('flow',sp)+'.'}
-  :{p:0,v:dash,c:'var(--accent)',m:(r&&!r.unread)?'Ring and number: flow. Nothing passes every seat yet.':'Nothing read yet.'};
+  m:'Ring and number: flow, the share of charge that passes every point, '+fmtPct('flow',sp)+'.'}
+  :{p:0,v:dash,c:'var(--accent)',m:(r&&!r.unread)?'Ring and number: flow. Nothing passes every point yet.':'Nothing read yet.'};
  Object.keys(V).forEach(function(k){if(V[k])V[k].p=clamp(+V[k].p||0,0,100);});
  return V;}
 /* the burger, shut and open: the Field's fbShutPaint in its own words */
@@ -3473,7 +3734,7 @@ function bmGround(host){
            always Pattern and the Intake gets back what it had. */
 var BMVIEW={
  emap:{on:BM.ov.on,bar:true,one:false,mode:null,face:null,
-  say:'The body, front and back, with its nerves, the seven seats, the addresses and the lines running between them'},
+  say:'The body, front and back, with its nerves, the seven assemblage points, the addresses and the lines running between them'},
  masksview:{on:{masks:1},bar:false,one:true,mode:'pattern',face:'front',
   say:'The front of the body, with the masks on it'}};
 /* MOVING THE FIGURE EMPTIES THE HOST IT LEFT. bmBuild writes ids (bmcv, bmsv,
@@ -3504,17 +3765,28 @@ function bmLive(){return S.tab===TAB.ENERGY&&PMLAYER==='map';}
 function bmBuild(host){
  host.innerHTML='<div class="pm-well">'
   +'<canvas id="bmcv" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;display:block"></canvas>'
-  +'<svg class="pm-svg" id="bmsv" viewBox="0 0 100 100" preserveAspectRatio="none" role="img" '
-  +'aria-label="'+esc(BM.view.say)+'">'
+  /* ONE SVG OVER THE WELL, AND ONE INSIDE IT PER PANEL. The outer one has no
+     viewBox, so its units are page pixels and it is the surface a press is
+     measured against. Each panel's svg is placed at its half of the well by
+     bmLayout and has a viewBox of its own, the world its camera shows (bmOverlay),
+     so a seat, a mask and an outline follow the camera of the panel they are in. */
+  +'<svg class="pm-svg" id="bmsv" role="img" aria-label="'+esc(BM.view.say)+'">'
   /* the outline of the front alone where one figure is up by the view's own
      choice: the fit is set by the height, so at 1600 the well is 139 units
      wide and the back's outline stood in its right hand edge, a second body
      with nothing drawn in it. That door never turns to the back (bmUse sets
      the face, and only its regions answer a press). The Intake keeps both on
      a phone too, because there the one figure turns. */
-  +'<g class="pm-vec"><path d="'+(BM.one?bmOutline1():bmOutline())+'" fill="none" stroke="'+bmRgba(BMC.edge,1)+'" stroke-opacity=".2" '
+  +'<svg class="bm-ps" data-bmp="0" preserveAspectRatio="none"><g class="pm-vec"><path d="'+(BM.one?bmOutline1():bmOutline())+'" fill="none" stroke="'+bmRgba(BMC.edge,1)+'" stroke-opacity=".2" '
   +'stroke-width="1.1" vector-effect="non-scaling-stroke" pointer-events="none"/></g>'
   +'<g data-bmmasks=""></g><g data-bmseats=""></g></svg>'
+  /* the Back's panel has its figure's outline and nothing else: the masks and
+     the seats are on the front, where they were. Where one figure is up by the
+     view's own choice there is no second panel to have one; where a phone is
+     one figure up it has no width, and the first panel's outline holds both
+     figures for the camera to turn between. */
+  +(BM.one?'':'<svg class="bm-ps" data-bmp="1" preserveAspectRatio="none"><g class="pm-vec"><path d="'+bmOutlineAt(BMOX)+'" fill="none" stroke="'+bmRgba(BMC.edge,1)+'" stroke-opacity=".2" '
+  +'stroke-width="1.1" vector-effect="non-scaling-stroke" pointer-events="none"/></g></svg>')+'</svg>'
   /* the overlays, over the svg so a circle takes its own press, and
      pointer-events none on the row so its gaps still reach the figure. The
      overlays in the upper left and the Mark controls in the upper right, one
@@ -3531,17 +3803,99 @@ function bmBuild(host){
      They were a strip after the well, which took its height out of the
      well's flex; inside it they take none, so the fit gets the whole stage.
      Round LQ, bmShBuild. */
-  +'<div id="bmregs" class="bm-regs" role="group" aria-label="Side and region" style="'+BMOVTOK+BMMKTOK+'"></div>':'')+'</div>';
+  +'<div id="bmregs" class="bm-regs" role="group" aria-label="Side and region" style="'+BMOVTOK+BMMKTOK+'"></div>'
+  /* the key: the three places carrying the most, the Dashboard Body card's
+     own three rows, inside the well at its foot. bmKey fills it. */
+  +'<div id="bmkey" class="bt3-key" role="list" aria-label="Where your body carries the most" style="'+BMOVTOK+BMMKTOK+'" hidden></div>':'')+'</div>';
  /* read inside the host, never off the document: with two hosts, an id is
     only as unique as bmUse keeps it */
  BM.well=host.querySelector('.pm-well'); BM.cv=host.querySelector('#bmcv'); BM.sv=host.querySelector('#bmsv');
+ BM.pan.forEach(function(P,i){P.sv=BM.sv.querySelector('[data-bmp="'+i+'"]');P.vx=NaN;P.skx=NaN;
+  P.vec=P.sv?P.sv.querySelector('.pm-vec path'):null;});
  BM.ctx=BM.cv.getContext('2d');
  BM.still=document.createElement('canvas');BM.sctx=BM.still.getContext('2d');
  BM.lit=document.createElement('canvas');BM.lctx=BM.lit.getContext('2d');
  BM.lit2=document.createElement('canvas');BM.l2ctx=BM.lit2.getContext('2d');
- BM.W=0;BM.H=0;BM.vb='';BM.ta='';BM.stillKey='';BM.litKey='';
+ BM.W=0;BM.H=0;BM.ta='';BM.stillKey='';BM.litKey='';
  bmWire();}
 
+/* ---------- the three places carrying the most, card and key ----------
+   ONE DRAWING FOR THE DASHBOARD'S BODY CARD AND THE BODY PAGE'S KEY, 21
+   November. Both read bodyTop3 (engine/compute.js) and both draw through
+   bodyTop3Html, so the card and the page it opens print the same three
+   words and the same three percents from one call each, never two
+   arithmetics that happen to agree today.
+
+   THE FIGURE HAS TO READ AT 16 PIXELS, the height a row gets on the
+   Dashboard card (#stmini6 .st-mini is 88 pixels, shell/head.html, and
+   three rows share what its label leaves). So it is a head, a torso and four
+   strokes, no hands and no feet, and the one place it marks is a ring in the
+   seat's own colour, never a fill (icons are ring, not fill). The other six
+   places are not drawn: at 16 pixels seven dots on a 24 unit figure sit
+   under a pixel apart and read as a smear, which is a picture saying
+   nothing. The y of each place is the body's own order, root at the pelvis
+   to crown at the top of the head, the order OB_PLACES runs in. */
+var BODYFIG_Y={pelvis:16.6,belly:14.4,stomach:12.2,chest:9.9,throat:7.2,forehead:4.6,head:2.5};
+var BODYFIG_PATH='<circle cx="12" cy="4" r="2.6"/>'
+ +'<path d="M9.6 7.6h4.8a1.6 1.6 0 0 1 1.6 1.6v7.4a1.6 1.6 0 0 1-1.6 1.6H9.6A1.6 1.6 0 0 1 8 16.6V9.2a1.6 1.6 0 0 1 1.6-1.6z'
+ +'M8 9.2L6 15.4M16 9.2l2 6.2M10.4 18.2L10 22.6M13.6 18.2l.4 4.4"/>';
+function bodyPlaceCol(seat){
+ var v=(typeof SEATCOL!=='undefined'&&SEATCOL[seat])||'--dim';
+ return 'var('+v+')';}
+function bodyFigSvg(k,col){
+ var y=BODYFIG_Y[k];
+ return '<svg class="bt3-fig" viewBox="0 0 24 24" aria-hidden="true">'
+  +'<g fill="none" stroke="var(--mid)" stroke-opacity=".7" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">'+BODYFIG_PATH+'</g>'
+  +(y==null?'':'<circle cx="12" cy="'+y+'" r="2.1" fill="'+col+'" fill-opacity=".28" stroke="'+col+'" stroke-width="1.7"/>')+'</svg>';}
+/* the words that came off the card's face. The pattern word and the nerve
+   the card printed until today are here, whole, behind the row, so the
+   ruling moved them and did not delete them. */
+function bodyTop3Tip(x){
+ var u=function(k){return typeof unpackOf==='function'?unpackOf(k):'';};
+ var t=x.top, nm=t&&(/_Unnamed$/.test(t.k)?'an address with no name yet':t.k);
+ return ' data-tip-t="'+esc(x.nm+', '+x.pct+'%')+'" data-tip="'+esc(
+  u('charge')+' Your '+x.nm.toLowerCase()+' is '+x.pct+' percent full: the charge its addresses hold against the most they could. '
+  +'It is your '+x.seat+' point. '+u('seat')
+  +(t?' Heaviest here: '+nm+(t.nerve?', at the '+t.nerve+', the nerve it sits on':'')+'. '+u('pattern'):''))+'"';}
+function bodyTop3Html(rows){
+ return rows.map(function(x){
+  var col=bodyPlaceCol(x.seat);
+  return '<div class="bt3-row stmk-t" role="listitem"'+bodyTop3Tip(x)
+   +' aria-label="'+esc(x.nm+', '+x.pct+' percent full'+(x.top?'. Heaviest here: '+x.top.k+(x.top.nerve?', at the '+x.top.nerve:''):''))+'">'
+   +bodyFigSvg(x.k,col)
+   +'<span class="bt3-nm">'+esc(x.nm)+'</span>'
+   +'<span class="bt3-p">'+x.pct+'<small>%</small></span></div>';}).join('');}
+/* THE BODY PAGE'S KEY, 21 November, the default the board applied: each
+   place's own fullness, the same three rows the Dashboard's Body card draws,
+   so a person who presses the card lands on the same three words and the
+   same three percents, from the same call. Its first cut was a strip after
+   the well, the defect round LQ took out (the comment on #bmregs above): a
+   strip after the well takes its height out of the well's flex, measured 68
+   pixels at 1600, and tests/functional.js's "no strip under the figure"
+   check refused it, so the card shipped alone that morning and the key
+   waited on a placement.
+
+   It stands inside the well now, at its foot and on its middle, which is
+   the one place on the page nothing else is: the two figures are each
+   centred in their own half (bmFitCam) and stand on their feet either side
+   of the divider, so the foot of the divider is the empty middle of the
+   picture, and a key there is symmetrical by construction, the 16 November
+   ruling. Three rows, as on the card, not three cells across: across, it
+   was 400 pixels wide and met both pairs of feet at 1280. Absolute, so it
+   takes no height out of the well and the fit is unchanged. A phone has one
+   figure in the middle and no divider, so there it moves to the lower right
+   corner of the well, beside the feet (shell/head.html). Hidden on a field
+   carrying nothing, the way the card draws its dash. The pattern word and
+   the nerve are behind each row, bodyTop3Tip, never on its face. */
+function bmKey(r){
+ var k=BM.well&&BM.well.querySelector('#bmkey');
+ var rows=k?bodyTop3(r):[], html=rows.length?bodyTop3Html(rows):'';
+ if(k){if(k.innerHTML!==html)k.innerHTML=html; k.hidden=!rows.length;}
+ /* the room the key takes at the foot of the well, its height and the 12
+    pixels under it, read once here and not every frame; the divider stops
+    short of it */
+ var h=(k&&!k.hidden)?k.offsetHeight+12:0;
+ if(h!==(BM.keyH||0)){BM.keyH=h;BM.stillKey='';BM.dirty=true;}}
 /* ---------- the entry, from renderMap and from the Masks door ----------
    The host is handed in, the way frMount and avBind take theirs: this read
    #emap by id, which is what kept the figure to one door. */
@@ -3557,25 +3911,15 @@ function bmRender(r,host){
   BM.who=who;BM.whoI=S.who;bmRebuild(0);bmRebuild(1);
   /* another person's masks are not this one's filling in */
   BMG.masks.forEach(function(k){k.shown=null;});}
- BM.r=r; bmSabRefresh(r); bmHubRefresh(r); bmMarkVals(); bmMaskHits(r);
- var seats=flSeats(),speed=flSpeed(),loadedTot=W.filter(function(n){return n.sq>=LOADED;}).length;
- var stop=null;seats.slice().reverse().forEach(function(s){if(!stop&&s.held)stop=s;});
- var dom=seats.slice().sort(function(a,b){return b.hot-a.hot||b.load-a.load;})[0];
+ BM.r=r; bmSabRefresh(r); bmHubRefresh(r); bmMarkVals(); bmMaskHits(r); bmKey(r); bmChargeRebuild();
+ var seats=flSeats();
  bmSeats(seats);
  pmLayerBar(r); bmBars(); bmOvPaint(r);
- /* THE SHELF IS FLOW'S, and renderShelf names its layer out of PML, which
-    does not carry the map. What it prints for Flow is the head and the seven
-    seats and nothing that belongs to a layer, which is this layer's shelf
-    exactly, so it is asked as Flow for the length of the call. */
- var was=PMLAYER; PMLAYER='nerves';
- try{renderShelf(r,seats,speed,stop,dom,loadedTot,[]);}finally{PMLAYER=was;}
- /* the rail's Running list is this map's list of lines: pointing at a row
-    traces its line here, and pressing one holds it, because ui.js pins it */
- document.querySelectorAll('#fire .run-it').forEach(function(el){
-  var nm=((el.querySelector('.run-n')||{}).textContent||'').trim();
-  el.onpointerenter=function(){BM.hoverSab=nm;BM.hoverFrom='rail';BM.traceT0=performance.now();
-   bmSabRefresh(BM.r);BM.dirty=true;};
-  el.onpointerleave=function(){if(BM.hoverSab===nm)BM.hoverSab=null;BM.hoverFrom='';BM.dirty=true;};});
+ /* THE RAIL'S RUNNING LIST WAS THIS MAP'S LIST OF LINES, and pointing at a row
+    traced its line here. The list left the rail on 18 November (it repeated
+    the stack under the Insight reading), so the hover trace went with it: a
+    loss he is told about, DECISIONS.md. The held trace, a press on a line,
+    is unchanged. */
  BM.stage=bmGround(host); BM.stillKey=''; BM.dirty=true;
  if(!BM.ctx)return;          /* no canvas: the outline and the seats stand alone */
  if(!BM.raf){BM.last=0;BM.raf=requestAnimationFrame(bmFrame);}}

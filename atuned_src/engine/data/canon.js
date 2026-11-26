@@ -289,17 +289,57 @@ const SEATGLYPH={
    THE NINE POLED AXES. Poles ruled 14 September 2026 for
    Anticipation, Surprise and Shock; the other six follow the same
    binary: a held state and its coherent opposite.
-   ============================================================ */
+
+   FOUR OPPOSITES MOVED TO THE BOOK'S OWN, 21 November. This table and the
+   book's HARM rows (engine/data/kb.js, E60 to E68) named different opposites
+   for four of the nine, so the Wisdom school card printed "toward Trust"
+   beside a book entry titled "Fear · Safety" and had to hide the book's
+   text to avoid contradicting itself (childBookSays, ui/drills.js). His
+   words: "it would be anger, calm, apathy, joy, sad, happy." So Anger is
+   Calm (was Equanimity, which is also E34, a law, one word on two things),
+   Apathy is Joy (was Vitality, which is also the X reading on the rail),
+   and Sad is Happy (was Joy, which now belongs to Apathy, the pairing the
+   book's own E64 and E66 already printed). Fear is Safety (was Trust): he
+   did not name Fear in that sentence, so this one is the team's own
+   extension of his pattern, siding with the book as he did on the other
+   three, and it is his to overturn. SPEC_POLE (engine/sniff.js) already
+   carried all four of the book's words, so it agrees with this table now.
+
+   THE THREE THAT ARE NOT A SIMPLE PAIR. His words, same message: "Shock,
+   surprise, anticipation are different ones, and they actually include
+   sub-behaviors like anticipation or excitement and anxious for
+   anticipation." So those three carry `sub`, the one field added to this
+   table: a list of the named forms the emotion runs as, each with its
+   valence, `wanted` for the adaptive form and `unwanted` for the one that
+   loads the nerve, and one line `d` in this file's voice. Excitement and
+   Anxious are his. The other four (Alert and Frozen for Shock, Delight and
+   Startle for Surprise) are the team's, written to the book's own lines
+   for each: shock floods the skin before the system can process it and its
+   threshold is "frozen or dissociated", surprise is the unexpected arriving
+   before the system has framed it, anticipation is the system leaning
+   toward what is coming, and anxiety is a monitoring loop. Their `opp`
+   stays, the 14 September ruling, because release, the ritual and the
+   affirmations all read an opposite off every row and a row without one
+   would break nine readers to say something he has not said. Additive:
+   every reader that does not know `sub` reads the row exactly as before. */
+const CHILD_VAL={wanted:'The form you want: it passes and leaves the nerve clear.',
+ unwanted:'The form that loads the nerve: it holds, and charge builds at the address.'};
 const CHILD=[
- {nm:'Fear',        opp:'Trust',       addr:'Lumbar plexus',              loc:'lower back, gut',    seat:'Root',   ic:'M12 3l8 14H4z'},
- {nm:'Anger',       opp:'Equanimity',  addr:'Celiac plexus',              loc:'upper abdomen',      seat:'Solar',  ic:'M13 2L4 14h6l-1 8 9-12h-6z'},
+ {nm:'Fear',        opp:'Safety',      addr:'Lumbar plexus',              loc:'lower back, gut',    seat:'Root',   ic:'M12 3l8 14H4z'},
+ {nm:'Anger',       opp:'Calm',        addr:'Celiac plexus',              loc:'upper abdomen',      seat:'Solar',  ic:'M13 2L4 14h6l-1 8 9-12h-6z'},
  {nm:'Shame',       opp:'Worth',       addr:'Pudendal plexus',            loc:'pelvic floor',       seat:'Sacral', ic:'M5 20V9a7 7 0 0114 0v11M9 20v-6h6v6'},
  {nm:'Disgust',     opp:'Acceptance',  addr:'Sacral and dermis',          loc:'lower abdomen, skin',seat:'Sacral', ic:'M4 8c4 4 12 4 16 0M6 16c3-3 9-3 12 0'},
- {nm:'Apathy',      opp:'Vitality',    addr:'Shoulder girdle and throat', loc:'base of neck',       seat:'Throat', ic:'M4 12h16M4 7h16M4 17h16'},
- {nm:'Shock',       opp:'Groundedness',addr:'Prefrontal and dermis',      loc:'forehead, skin',     seat:'3rd Eye',ic:'M12 12m-9 0a9 9 0 1018 0 9 9 0 10-18 0M12 12m-4.5 0a4.5 4.5 0 109 0 4.5 4.5 0 10-9 0'},
- {nm:'Sad',         opp:'Joy',         addr:'Cardiac plexus',             loc:'centre chest',       seat:'Heart',  ic:'M12 20s-8-5-8-11a4 4 0 018-2 4 4 0 018 2c0 6-8 11-8 11z'},
- {nm:'Surprise',    opp:'Readiness',   addr:'Upper chest and back',       loc:'upper torso',        seat:'Heart',  ic:'M12 3v18M7 7c-3 2-3 9 0 11M17 7c3 2 3 9 0 11'},
- {nm:'Anticipation',opp:'Presence',    addr:'Below the heart',            loc:'lower sternum',      seat:'Solar',  ic:'M12 4v11M8 11l4 4 4-4M6 20h12'}];
+ {nm:'Apathy',      opp:'Joy',         addr:'Shoulder girdle and throat', loc:'base of neck',       seat:'Throat', ic:'M4 12h16M4 7h16M4 17h16'},
+ {nm:'Shock',       opp:'Groundedness',addr:'Prefrontal and dermis',      loc:'forehead, skin',     seat:'3rd Eye',ic:'M12 12m-9 0a9 9 0 1018 0 9 9 0 10-18 0M12 12m-4.5 0a4.5 4.5 0 109 0 4.5 4.5 0 10-9 0',
+  sub:[{nm:'Alert',  val:'wanted',  d:'The jolt that stops the body and puts every sense on what just happened. It lands, it is felt, and it passes through the skin.'},
+       {nm:'Frozen', val:'unwanted',d:'The flood that outruns the nerve. It scatters into the skin, the body goes still or goes absent, and the charge sits on the surface.'}]},
+ {nm:'Sad',         opp:'Happy',       addr:'Cardiac plexus',             loc:'centre chest',       seat:'Heart',  ic:'M12 20s-8-5-8-11a4 4 0 018-2 4 4 0 018 2c0 6-8 11-8 11z'},
+ {nm:'Surprise',    opp:'Readiness',   addr:'Upper chest and back',       loc:'upper torso',        seat:'Heart',  ic:'M12 3v18M7 7c-3 2-3 9 0 11M17 7c3 2 3 9 0 11',
+  sub:[{nm:'Delight',val:'wanted',  d:'The unexpected lands and the chest opens to it. A quick breath in, the eyes widen, then the body settles toward what arrived.'},
+       {nm:'Startle',val:'unwanted',d:'The unexpected lands before it is framed and the body braces first. Shoulders lift, the breath catches, and the brace does not let go.'}]},
+ {nm:'Anticipation',opp:'Presence',    addr:'Below the heart',            loc:'lower sternum',      seat:'Solar',  ic:'M12 4v11M8 11l4 4 4-4M6 20h12',
+  sub:[{nm:'Excitement',val:'wanted',  d:'The lean toward what is coming, with the chest open. Charge rises, the breath stays long, and the body gets ready without bracing.'},
+       {nm:'Anxious',   val:'unwanted',d:'The same lean, braced. The system checks the future again and again, each check adds charge, and the breath goes short and high.'}]}];
 const CHARGES=CHILD.map(c=>c.nm);
 /* Ten of the 33 are Shirzad Chamine's Positive Intelligence saboteurs, the
    Judge and its nine accomplices. They are marked so the product gives the
@@ -315,6 +355,21 @@ const GATEGLYPH={
  ignore:'M2 12s4 5 10 5 10-5 10-5M6 15l-2 3M12 17v3M18 15l2 3',
  attach:'M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1.5 1.5M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1.5-1.5',
  averse:'M3 19C3 9 21 9 21 19M12 15m-2 0a2 2 0 1 0 4 0a2 2 0 1 0-4 0'};
+/* THE FOUR SUPEREGO SYMBOLS, 18 November, his words: "super ego, make those
+   icons. 4 icons horizontal. And make them symbolic." Keyed by the name the
+   AMPLIFIER table carries (engine/data/registers.js), so the Field's row and
+   any later surface draw one mark for one defence. 24 unit box, stroked, ring
+   and never fill, the same grammar as GATEGLYPH above. A balance with the
+   beam tipped to one pan for justification, a crown for entitlement, a rule
+   with its ticks for perfectionism (the thing it measures everything against),
+   and a spiral wound inward for obsession (the thought that circles back). The
+   scale's two pans are open bowls and not closed triangles, which at the
+   badge's 20 pixels read as two solid dots. */
+const SUPEREGO_IC={
+ Justification:'M12 4.2v15.6M8.6 19.8h6.8M3.6 9.6l16.8-3.6M3.6 9.6l-2.2 4.4M3.6 9.6l2.2 4.4M1.4 14a2.2 2.2 0 0 0 4.4 0M20.4 6l-2.2 4.4M20.4 6l2.2 4.4M18.2 10.4a2.2 2.2 0 0 0 4.4 0',
+ Entitlement:'M4.2 17.4L3 7.6l4.8 3.9L12 5l4.2 6.5L21 7.6l-1.2 9.8zM5.4 20.4h13.2',
+ Perfectionism:'M2.8 8.4h18.4v7.2H2.8zM6.2 8.4v3.6M9.4 8.4v2.2M12.6 8.4v3.6M15.8 8.4v2.2M19 8.4v3.6',
+ Obsession:'M10.5 12a1.5 1.5 0 0 1 3 0a3 3 0 0 1-6 0a4.5 4.5 0 0 1 9 0a6 6 0 0 1-12 0a7.5 7.5 0 0 1 15 0'};
 /* SAB_PI IS A LOOKUP, NOT A CITATION, and that decided the 18 October rename
    here. Nothing prints these strings. ui/drills.js and ui/ui.js ask
    SAB_PI.indexOf(o.nm) with the name the reading prints, and print a fixed
@@ -786,7 +841,7 @@ const TIERDEF=[
   soma:'Finding the places you get stuck and fixing them. Practical, and set on getting it done.',
   def:'Your energy builds more than it spends, and the margin is thin.',
   energy:'Forward on most days, and one hard week takes it back.',
-  toward:'Compounding. Same seat, same address, repeated, until the load there stops returning.'},
+  toward:'Compounding. Same point, same address, repeated, until the load there stops returning.'},
  {at:51, nm:'Even',
   state:'Receptive',
   soma:'Exhausted by the old way and aware that it is broken.',
@@ -809,7 +864,7 @@ const TIERDEF=[
   soma:'Caught between the weight in your body and the odd moment of seeing clearly.',
   def:'Your energy costs more than it builds. Charge is held at more addresses than are clearing.',
   energy:'Effort goes in and less comes out. You are working, and the work is going into holding.',
-  toward:'Oscillating, which starts at 41%. Take the heaviest seat first. One address cleared where the load actually sits moves this further than ten cleared anywhere else.'},
+  toward:'Oscillating, which starts at 41%. Take the heaviest point first. One address cleared where the load actually sits moves this further than ten cleared anywhere else.'},
  {at:21, nm:'Corrupt',
   state:'Defensive',
   soma:'Tied to fixed beliefs. Patching over the signs of trouble to protect where you stand.',
@@ -827,7 +882,7 @@ const TIERDEF=[
      rather than an instruction about the field, and it is the one band where
      a person is least able to hear it that way. The instruction underneath was
      already right and is kept word for word. */
-  toward:'Corrupt, and it is reached one address at a time. One seat, one address, one line. Not a programme.'},
+  toward:'Corrupt, and it is reached one address at a time. One point, one address, one line. Not a programme.'},
  /* CONTRACTED, NOT COLLAPSED, 16 October. His words: "I don't [like] the band
     name, like collapsed ... the energy wants to expand, not collapse." The
     product already says expanding and contracting for the direction a reading
@@ -936,3 +991,75 @@ function nodeStateOf(w){
  var x=weightShown(w);
  for(var i=0;i<NODESTATE_PROPOSED.length;i++) if(x>=NODESTATE_PROPOSED[i].at)return NODESTATE_PROPOSED[i];
  return NODESTATE_PROPOSED[NODESTATE_PROPOSED.length-1];}
+
+/* ============================================================
+   NERVE STATE, FOUR RUNGS, ON THE INSIGHT RAIL'S BARS. 20 November, his words
+   on the Field's right rail: "I need to see the nerve state, whether the nerve
+   on these bars open and closed, the icons open, moderately impaired, heavily
+   impaired, closed. I want to see those tiny little icons on these bars so
+   people can see very clearly what the state of their nerve is."
+
+   FOUR WORDS, HIS, AND NO FIGURES, AGAIN. Round KD named five rungs and this
+   names four: the light "impaired" rung is gone and "blocked" is now
+   "closed". The lines are not invented here. Each one is read by name off
+   NODESTATE_PROPOSED above, so moving a line there moves it here and the two
+   tables cannot drift:
+
+     open                 nothing held. The figure beside it prints the dash.
+     moderately impaired  from the floor of the dropped "impaired" rung, 0.1
+                          (1%). Charge a person entered under 4 may not read
+                          open: that is BELOW THE LINE in compute.js, measured,
+                          where a field set to 3.9 everywhere read as nothing.
+                          With no lighter word left it takes the lightest
+                          impaired word he named, never open.
+     heavily impaired     6.5 (65%), the hyper gate in compute.js.
+     closed               9 (90%), where the renderers already draw it hot.
+
+   The 4 line the five-rung table drew between impaired and moderately impaired
+   has no rung to separate any more, so it is not used. Where the lines sit is
+   still his to move, and still a proposal until he does.
+
+   THE STATE READS THE FIGURE THE RAIL PRINTS, the tierOf lesson again. The rail
+   prints whole percents on a 0 to 10 scale (pct in engine/pct.js, kinds chain,
+   weight and charge, all 0 to 10), so the line is compared as a whole percent
+   with the same rounding, and a bar that prints 65% can never wear the
+   moderately impaired mark. The percent is worked out here rather than by
+   calling pct, because this file loads before engine/pct.js.
+
+   def is the one plain sentence the mark unpacks to on hover and tap, the
+   house rule for every symbol. It names what the rung means and the range it
+   covers, and is written from the lines, never typed beside them. */
+function nsAt(nm){
+ for(var i=0;i<NODESTATE_PROPOSED.length;i++) if(NODESTATE_PROPOSED[i].nm===nm)return Math.round(NODESTATE_PROPOSED[i].at*10);
+ throw new Error('nsAt: there is no node state '+JSON.stringify(nm));}
+const NERVESTATE=[
+ {k:'closed',   nm:'closed',              at:nsAt('blocked'),          say:'fully blocked, nothing moves through it'},
+ {k:'heavy',    nm:'heavily impaired',    at:nsAt('heavily impaired'), say:'running hard, very little moves through it'},
+ {k:'moderate', nm:'moderately impaired', at:nsAt('impaired'),         say:'carrying charge, part of the flow is held back'},
+ {k:'open',     nm:'open',                at:0,                        say:'nothing held, the flow moves through'}];
+NERVESTATE.forEach(function(s,i){
+ var up=i?NERVESTATE[i-1].at-1:100;
+ s.range=s.at===0?'no charge':s.at===up?'charge at '+s.at+'%':'charge from '+s.at+'% to '+up+'%';
+ s.def=s.nm.charAt(0).toUpperCase()+s.nm.slice(1)+': '+s.say+'. Reads '+s.range+'.';});
+/* THE WHOLE PERCENT A NERVE STATE AND ITS BRIGHTNESS BOTH READ. Pulled out of
+   nerveStateOf so stkNsHtml (ui/insightui.js) can read the same number for
+   the closed mark's brightness (--ns-i below) without a second rounding
+   that could disagree with the shape it colours. */
+function nervePct(v){
+ var x=+v; if(!isFinite(x))x=0;
+ /* pct's own expression for a 0 to 10 kind, so the two round alike */
+ var p=Math.round(100*x/10); return p<0?0:p>100?100:p;}
+function nerveStateOf(v){
+ var p=nervePct(v);
+ for(var i=0;i<NERVESTATE.length;i++) if(p>=NERVESTATE[i].at)return NERVESTATE[i];
+ return NERVESTATE[NERVESTATE.length-1];}
+/* HOW FAR THROUGH THE CLOSED BAND, 0 at its 90 percent floor and 1 at 100,
+   for the one rung this product lets read as a continuous brightness and
+   not a flat flag (his words, 20 November: "the closed icon intent color
+   intensity brightens with the rise of the DQ"). Undefined below the floor,
+   so a mark that is not closed never carries the variable. */
+function nerveClosedI(v){
+ var p=nervePct(v), floor=NERVESTATE[0].at;
+ if(p<floor)return undefined;
+ var i=(p-floor)/(100-floor);
+ return i<0?0:i>1?1:i;}

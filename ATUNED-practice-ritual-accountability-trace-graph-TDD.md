@@ -832,11 +832,29 @@ super_complex
 
 Renamed 23 October 2026, on the owner's ruling recorded in `DECISIONS.md` under "The full stack, nerve to Character": "From fetter to super complex. After the super complex are the masks... And then at the very top is the character." The fourth type was `character` for one day, named for the Character page, and this section said it could never be called super complex because that word already names Psychopathy in the Compass's descent registry. The ruling removes that reason. The descent files Narcissism as a complex, Machiavellianism as a hyper complex and Psychopathy as a super complex, so the word names the rung each one sits on, and this is that rung. One word still names one thing.
 
-Character is not a node type. It is the whole person, every rung here and every layer the owner puts above them (the masks, then archetype through domain) taken together, which is the whole reading and not one node in it. A record that carries a `character` node is refused as naming no type, the same refusal any unknown type gets.
+Character was not a node type until 21 November (see the next section). It is still the whole person, every rung here and every layer above them taken together. What changed is that the climb can now end on it.
 
 A rung is derived only. It is made when a reading that `read()` stamped with this record's id is handed to `traceFromRecord`, and at no other time. Every door that adds to a graph refuses the four by name: the public add functions, `traceApply`, `validateTrace` and the stored layer. The practice build's own list of node types does not hold them, so a practice intent cannot name one. A rung is always `inferred` and is never promoted to `user_confirmed`, because it is the arithmetic's reading of a field and not a claim a person made.
 
 The address and the fetter are not new types. Both stay a `pattern`, as they always were: an address by its number, a fetter as `fetter:Name`. A type of their own would stop every stored pattern key resolving.
+
+## Derived only: above the chain
+
+Added 21 November 2026. The rest of the owner's 23 October stack, in its settled order: "After the super complex are the masks. The mask layer is the hybrid. Then one up from that is the archetype to the spiritual. And then at the very top is the character." Four more node types. They are read off the same stamped reading as the chain and never added by anything else.
+
+```text
+mask
+archetype
+domain
+character
+```
+
+- `mask`: one of the five masks the reading is taken on, the reading's `maskRing`, made only where a super complex in the same graph has addresses at a seat that mask is worn over (`MASKS[].b`). The edge carries the share of the super complex's addresses that sit under it.
+- `archetype`: the reading's first or second archetype, `ARCH[r.pi]` and `ARCH[r.si]`, made only where a mask in the graph is worn over the archetype's own seat (`ARCH[].b`). It carries the archetype's primary saboteur from `ARCH18` as data, not as an edge, and whether that saboteur is running in this reading.
+- `domain`: the domain the archetype points at, from the `ARCHDOM` lookup (`archDomainOf`, engine/archdom.js). That is a table and the same for everybody, so the domain node carries no weight: a score carried up a lookup is the archetype's score again.
+- `character`: one node, keyed by the record's id. It is where every climb ends.
+
+Each one follows the same rules as the chain: always `inferred`, never promoted, refused at every door. Where the climb cannot go on, because no mask is worn over an archetype's seat or a table does not resolve, the climb stops there and the graph's `stops` list says why. That list is kept apart from `gaps`, which counts what is missing from the person's record. The graph never makes up a link.
 
 ---
 
@@ -879,9 +897,13 @@ pattern supports saboteur
 saboteur supports complex
 complex supports hyper_complex
 hyper_complex supports super_complex
+super_complex supports mask
+mask supports archetype
+archetype supports domain
+domain supports character
 ```
 
-These four edges are `inferred`, like the rungs at their ends, and are never `user_confirmed`. A path from an address to a super complex is four of them, one per rung.
+The last four were added 21 November 2026, for the types above the chain. These edges are `inferred`, like the rungs at their ends, and are never `user_confirmed`. A path from an address to a super complex is four of them, one per rung.
 
 ---
 

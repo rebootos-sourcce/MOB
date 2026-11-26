@@ -58,25 +58,26 @@ function numField(host,name,band,store,key,ic,tip){
  trk.addEventListener('wheel',function(e){e.preventDefault();set(store[key]+(e.deltaY<0?.5:-.5));},{passive:false});
  inp.addEventListener('wheel',function(e){e.preventDefault();set(store[key]+(e.deltaY<0?.5:-.5));},{passive:false});
  return {inp,tr,trk};}
-const CHF={},RPF={},LWF={};
-CHILD.forEach(function(cf){
- CHF[cf.nm]=numField($('chg'),cf.nm,cf.seat,S.charge,cf.nm,cf.ic,unpackOf(cf.nm,'feeling'));
- /* the opposite takes the same mark in Heart, as the stack draws it */
- RPF[cf.nm]=numField($('chg'),'toward '+cf.opp,'Heart',S.replace,cf.nm,cf.ic,unpackOf(cf.opp,'opposite'));
- RPF[cf.nm].inp.parentElement.classList.add('oppf');});
-SI.forEach(function(l){LWF[l.nm]=numField($('laws'),l.nm,l.b,S.law,l.nm,l.ic,unpackOf(l.nm,'law'));});
+/* THE CHILD EMOTION SLIDERS CAME OFF, 18 November, with the left rail's Child
+   emotions section, his words: "I also asked you to remove the child emotions
+   because we're going to have the person do self-reporting in the diagnostic."
+   They were built here into #chg, and numField appends into its host, so a
+   build left behind would throw at load on a host that no longer exists and
+   take every module after this one with it. The laws keep theirs. */
+const LWF={};
+/* THE LAW BOXES LIVE IN THE INTAKE PAGE'S FOLD NOW, 18 November (#iqhand, held in
+   #iqhold until renderIntake takes it, ui/intakeui.js iqHand). They left the right
+   rail with the rest of what sat under Selection. Guarded, so a shell that has
+   no such host builds none and nothing downstream throws. */
+if($('laws'))SI.forEach(function(l){LWF[l.nm]=numField($('laws'),l.nm,l.b,S.law,l.nm,l.ic,unpackOf(l.nm,'law'));});
+/* syncCh stays, and keeps the half that was never about the sliders: nine
+   callers rely on it to coerce each held and opposite value to a number, and
+   a loaded record with a missing axis to a zero. */
 function syncCh(){CHILD.forEach(function(cf){
- const f=CHF[cf.nm],v=+S.charge[cf.nm]||0;S.charge[cf.nm]=v;
- f.inp.value=v.toFixed(1);f.tr.style.width=(v*10)+'%';f.trk.setAttribute('aria-valuenow',v.toFixed(1));
- const o=RPF[cf.nm],w=+S.replace[cf.nm]||0;S.replace[cf.nm]=w;
- o.inp.value=w.toFixed(1);o.tr.style.width=(w*10)+'%';o.trk.setAttribute('aria-valuenow',w.toFixed(1));});}
+ S.charge[cf.nm]=+S.charge[cf.nm]||0; S.replace[cf.nm]=+S.replace[cf.nm]||0;});}
 function syncLw(){SI.forEach(function(l){
- const f=LWF[l.nm],v=+S.law[l.nm]||0;S.law[l.nm]=v;
+ const f=LWF[l.nm],v=+S.law[l.nm]||0;S.law[l.nm]=v; if(!f)return;
  f.inp.value=v.toFixed(1);f.tr.style.width=(v*10)+'%';f.trk.setAttribute('aria-valuenow',v.toFixed(1));});}
-$('allCh').addEventListener('input',function(e){toYou();
- CHARGES.forEach(function(c){S.charge[c]=+e.target.value;});syncCh();saveYou();render();});
-$('allRep').addEventListener('input',function(e){toYou();
- CHARGES.forEach(function(c){S.replace[c]=+e.target.value;});syncCh();saveYou();render();});
 /* THE BULK LAW SLIDER ANSWERS NOTHING, P2-5 of the inference audit, 24
    October. It set every law in one drag, and a law moved off its seed counts
    as answered (lawIn, saveProfile), so one gesture filled all 21 and CQ, the
@@ -86,7 +87,7 @@ $('allRep').addEventListener('input',function(e){toYou();
    A law already answered takes the value and stays answered: the person
    moved their own answer. Moving one law's own control still answers that
    law, because it moves it off the seed. */
-$('allLaw').addEventListener('input',function(e){toYou();
+if($('allLaw'))$('allLaw').addEventListener('input',function(e){toYou();
  var v=+e.target.value;
  SINAMES.forEach(function(l){if(!lawIn(l))LAW_SEED[l]=v; S.law[l]=v;});syncLw();saveYou();render();});
 
@@ -369,7 +370,9 @@ function setTab(i){
     is arguing with them. */
  (function(){
   var WANT={};
-  WANT[TAB.ENERGY]={right:['flow','running']};
+  /* Flow and Running left the rail, 18 November; Insight is the one section
+     it opens on every surface that carries it */
+  WANT[TAB.ENERGY]={right:['you']};
   /* the Awareness grids fold to two lines of what was chosen, round OM, so
      nothing on the left opens by itself on the Field any more */
   WANT[TAB.FIELD]={left:[],right:['you']};
@@ -380,9 +383,9 @@ function setTab(i){
   WANT[TAB.STORY]={right:['simp']};
   /* the Character page's words are the right rail's own section, round PE */
   WANT[TAB.MASKS]={right:['chr']};
-  /* the Summary's rail is today's summary, ui/daily.js, opened the first
-     time the page is reached */
-  WANT[TAB.SUMMARY]={right:['today']};
+  /* the Summary seeded the rail's Today section open here until 21 November,
+     when Today moved into the page's own centre (sumToday, ui/summary.js).
+     A centre zone has no fold to open, so the Summary seeds nothing. */
   var w=WANT[i]; if(!w)return;
   SEC_SEEDED=SEC_SEEDED||{};
   if(SEC_SEEDED[i])return; SEC_SEEDED[i]=1;
@@ -636,6 +639,9 @@ const THEMEICON={
  glass:'M5.5 7.2l9-3.2v12.8l-9 3.2zM14.5 4l4 2.4v11.2l-4 2.4M5.5 7.2L9.6 9.4',
  /* the same pane, lit from the front rather than from behind */
  glasswhite:'M5.5 7.2l9-3.2v12.8l-9 3.2zM14.5 4l4 2.4v11.2l-4 2.4M19 3l2.4 2.4M21 7.6l1.6-1.6',
+ /* the same pane, lit from the front under a cool sky: the rays of Glass white
+    become a ring, one round mark standing still in the corner. Ring, not fill. */
+ glassblue:'M5.5 7.2l9-3.2v12.8l-9 3.2zM14.5 4l4 2.4v11.2l-4 2.4M22 4.2a1.6 1.6 0 1 0-3.2 0a1.6 1.6 0 1 0 3.2 0',
  /* three flat planes, no bevel, no light. The mark is the position. */
  flat:'M3.5 5.5h7v7h-7zM13.5 5.5h7v4h-7zM13.5 12.5h7v6h-7zM3.5 15.5h7v3h-7z',
  /* a white field with a solid block set into it, which is the whole of Lumen:
@@ -653,12 +659,34 @@ const THEMEICON={
    no blur, no shadow, and colour doing the work a material was doing. */
 /* SEVEN. Lumen is the owner's, and it is the only two tone one: white chrome,
    black panels, the text on top of the black. */
-const LIGHTINGS=[['dark','Dark'],['snow','Snow'],['punch','Punch'],['glass','Glass'],
- ['glasswhite','Glass white'],['flat','Flat'],['lumen','Lumen']];
+/* EIGHT. Glass blue is Glass white with its neutral greys moved from warm
+   cream toward blue, and he chose it from the palette board on 18 November:
+   "Let's go with B. For the palette. And let's add that as a new light mode."
+   It is a lighting of its own and Glass white is not touched.
+
+   THE THIRD COLUMN IS WHAT THE ENTRY SAYS WHEN IT IS HOVERED OR HELD, one
+   short sentence a person can use to choose by. The bar's entries are marks
+   with no words, so a mark never stands alone: the name is the tooltip's
+   header and this is its body, through the one tooltip (ui/tip.js). Every
+   lighting has one, not only the new one, because a picker where seven marks
+   explain themselves and one does not is a picker with a hole in it. */
+const LIGHTINGS=[
+ ['dark','Dark','Dark panels on a dark ground, with pale ink.'],
+ ['snow','Snow','Pale panels around a dark stage, with dark ink.'],
+ ['punch','Punch','Solid blocks of colour, with no outlines.'],
+ ['glass','Glass','Dark frosted panels with a bright edge.'],
+ ['glasswhite','Glass white','Pale frosted panels with a warm paper tint.'],
+ ['glassblue','Glass blue','Pale frosted panels with a cool blue tint.'],
+ ['flat','Flat','Plain flat planes, with no blur and no shadow.'],
+ ['lumen','Lumen','A white frame with black panels and light text on them.']];
+/* GLASSWHITE_KIN, in ui/component.js, names the lightings whose body carries
+   the glasswhite class: Glass blue is Glass white with other neutrals, so
+   every rule and every canvas check that already reads glasswhite keeps
+   working on it, and the glassblue class only overrides colour. */
 function setLighting(k){
  S.theme=k;
- ['snow','punch','glass','glasswhite','flat','lumen'].forEach(function(c){
-  document.body.classList.toggle(c,k===c);});
+ ['snow','punch','glass','glasswhite','glassblue','flat','lumen'].forEach(function(c){
+  document.body.classList.toggle(c,k===c||(c==='glasswhite'&&GLASSWHITE_KIN.indexOf(k)>=0));});
  /* the bar's menu and the main menu's lighting on a phone, GF: one list, two
     doors, one setter, so both say the same lighting is on */
  ['themes','navthemes'].forEach(function(id){var seg=$(id);
@@ -670,11 +698,23 @@ function setLighting(k){
  var lb=$('lightbtn');
  if(lb){var e=LIGHTINGS.filter(function(t){return t[0]===k;})[0];
   if(e){lb.setAttribute('aria-label','Lighting, '+e[1]); lb.title='Lighting, '+e[1];}}
- rebuildSwatches(); render();}
+ rebuildSwatches(); render();
+ /* THE AVATAR PAGE REPAINTS ONLY WHEN ASKED, and render() never asks: it is
+    drawn on setTab and on the intake's own presses (renderIntake, then
+    avRefresh). So a lighting changed while it was open left the ring and
+    the energy dials in the old lighting's seat colours, measured 21
+    November: in Snow the dials still carried Dark's hex and Radiance's
+    icon, drawn in Dark's pale ink, all but vanished on Snow's pale face.
+    avSig already keys on S.theme, so this only asks; it repaints when the
+    lighting moved and does nothing otherwise. */
+ if(S.tab===TAB.INTAKE&&typeof avRefresh==='function')avRefresh();}
 LIGHTINGS.forEach(function(t,i){
  var b=document.createElement('button');b.type='button';
  b.setAttribute('aria-pressed',i===0);
  b.className='seg-i'; b.title=t[1]; b.setAttribute('aria-label',t[1]+' theme');
+ /* the meaning, through the one tooltip: hover on a pointer, a held press on
+    a phone, where a tap still chooses the lighting (ui/tip.js, control()) */
+ b.setAttribute('data-tip-t',t[1]); b.setAttribute('data-tip',t[2]);
  b.innerHTML='<svg viewBox="0 0 24 24" width="19" height="19" aria-hidden="true">'
   /* A MISSING ICON IS A MISSING ICON, NOT THE WORD UNDEFINED. Adding a seventh
      lighting put the string "undefined" into a path attribute and the browser
@@ -691,6 +731,7 @@ LIGHTINGS.forEach(function(t,i){
  var nav=$('navthemes'); if(!nav)return;
  var n=document.createElement('button');n.type='button';
  n.setAttribute('aria-pressed',i===0);
+ n.setAttribute('data-tip-t',t[1]); n.setAttribute('data-tip',t[2]);
  n.innerHTML='<svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><path d="'
   +(THEMEICON[t[0]]||'')+'"/></svg><span>'+esc(t[1])+'</span>';
  n.addEventListener('click',function(){setLighting(t[0]);});
@@ -975,8 +1016,6 @@ function rebuildSwatches(){
  $('roots').querySelectorAll('.rootb').forEach(function(b){b.style.setProperty('--rc',rootCol(b.dataset.r));});
  ['ar1','ar2'].forEach(function(id){
   $(id).querySelectorAll('.ib').forEach(function(b,i){b.style.setProperty('--c',icCol(ARCH[i].b));});});
- CHILD.forEach(function(cf){
-  var i=CHF[cf.nm].inp.parentElement.querySelector('i');if(i)i.style.background=seatCol(cf.seat);});
  SI.forEach(function(l){
   var i=LWF[l.nm].inp.parentElement.querySelector('i');if(i)i.style.background=seatCol(l.b);});
  /* the matrix's own key is written once at boot and again only when the
@@ -1113,7 +1152,7 @@ function recordImportWire(p,after){
      first and the message goes onto whatever element is on the screen when it
      is read, which is what impSay does by looking the id up at call time. */
   if(typeof after==='function')after(np);
-  impSay('Loaded '+(np.name||'the record')+(copied?' as a second copy, since this record is already on this device':'')+'. Nothing else was touched.');};
+  impSay('Loaded '+(np.name||'the record')+(copied?' as a second copy, since this record is already on this device':'')+'. The imported plan was reset to Free. Sign in to check any paid tier with the server.');};
  var ig;
  if((ig=$(p+'keepsave'))&&typeof keepFile==='function')ig.onclick=function(){keepFile();};
  if((ig=$(p+'impgo')))ig.onclick=function(){impRun(($(p+'imp')||{}).value||'');};
@@ -1256,7 +1295,7 @@ function recordLinkBoot(){
      random journey id, reuses an existing session, and never sends the story
      or name; the app still owns the record and the release itself. */
   if(typeof authFunnelStart==='function')authFunnelStart();
-  recordLinkSay('Loaded '+(np.name||'the record')+' from the link'+(copied?' as a second copy, since this record is already on this device':'')+'. Nothing else was touched.'+still,
+  recordLinkSay('Loaded '+(np.name||'the record')+' from the link'+(copied?' as a second copy, since this record is already on this device':'')+'. The imported plan was reset to Free. Sign in to check any paid tier with the server.'+still,
    still?'fail':'');
   return np;});}
 function profileSheet(){
@@ -1679,8 +1718,39 @@ function bootUniLand(){
    and on the sheet's end the face is handed home at exactly the size and
    place it already shows. Where the Journal is not what is under the sheet
    (the sign in door is up, or another tab), there is nowhere honest to land,
-   so the face settles where it stands and fades with the card instead. */
-function bootUniFly(st,host){
+   so the face settles where it stands and fades with the card instead.
+
+   THE FLIGHT RUNS ON THE SHEET'S CLOCK, 21 November. His words: "I want to
+   have it line up perfectly with where it starts in the dashboard." It ran
+   720ms of wall time from whichever frame first read 7.20, while the hand
+   home is the sheet's own end at 8.00, so the two raced with 80ms between
+   them. Measured on the build before this change, a frame that read the
+   clock late left the face still at its start box at 7.90 on the sheet's
+   clock, 1058 by 494 against the Journal's 900 by 420 at 1600, and the hand
+   home then cut it 89 pixels down and 17.5 percent smaller in one frame:
+   two things with a cut between them, not one shape landing. Now the
+   flight is pinned to the sheet's timeline and finishes at 7.92, before
+   the hand home, from wherever the clock stands when it starts; a late
+   start flies the same path in less time rather than arriving mid air.
+   And the box is read again on every frame of the flight (bootUniFlyTrack,
+   below), so a Journal that moves while the sheet still covers it is where
+   the last frame lands, not where it stood at 7.20.
+
+   REDUCED MOTION, rbStill (ui/component.js), the media query and the
+   person's own quiet switch alike: no journey. The face is handed home at
+   the settle, under the sheet that still covers it, and the sheet's own
+   fade uncovers it already in place. */
+var BOOT_UNI_LANDED=7.92;
+function bootUniFlyTrack(st){
+ if(!st||!st.fly||st.landed)return;
+ var su=document.getElementById('stuni'); if(!su)return;
+ var b=su.getBoundingClientRect(); if(!(b.width>40&&b.height>40))return;
+ var f=st.fly.style, l=parseFloat(f.left), t=parseFloat(f.top), w=parseFloat(f.width), h=parseFloat(f.height);
+ if(Math.abs(l-b.left)<0.5&&Math.abs(t-b.top)<0.5&&Math.abs(w-b.width)<0.5&&Math.abs(h-b.height)<0.5)return;
+ f.left=b.left+'px'; f.top=b.top+'px'; f.width=b.width+'px'; f.height=b.height+'px';
+ try{if(window.SrcFace&&window.SrcFace.refit)window.SrcFace.refit();}catch(e){}}
+function bootUniFly(st,host,t,fade){
+ if(typeof rbStill==='function'&&rbStill()){ bootUniLand(); return; }
  var dest=null, stuni=document.getElementById('stuni');
  try{
   if(stuni&&typeof S!=='undefined'&&S&&typeof TAB!=='undefined'&&S.tab===TAB.STORY){
@@ -1706,11 +1776,20 @@ function bootUniFly(st,host){
  document.body.appendChild(fly); fly.appendChild(wid);
  try{if(window.SrcFace&&window.SrcFace.refit)window.SrcFace.refit();}catch(e){}
  st.fly=fly;
+ /* what is left of the 720 before 7.92: all of it on time, less on a late
+    frame, never under the 280 a surface move needs to read as a move */
+ var tc=(typeof t==='number'&&isFinite(t))?t:BOOT_UNI_SETTLE;
+ var dur=Math.round(Math.min(720,Math.max(280,(BOOT_UNI_LANDED-tc)*1000)));
  try{
   st.flyAnim=fly.animate([
    {transform:T0,easing:'cubic-bezier(.45,0,.55,1)'},
    {transform:'translate('+dx.toFixed(1)+'px,'+dy.toFixed(1)+'px) scale('+(k*0.97).toFixed(4)+')',offset:120/720,easing:'cubic-bezier(.22,1,.36,1)'},
-   {transform:'none'}],{duration:720,fill:'forwards'});
+   {transform:'none'}],{duration:dur,fill:'forwards'});
+  /* pinned to the sheet's own timeline at the clock's reading, so the end
+     falls at 7.92 on that clock however late this frame ran */
+  if(fade&&fade.startTime!=null&&(fade.playbackRate||1)===1){
+   var d0=fade.effect.getComputedTiming().delay;
+   st.flyAnim.startTime=fade.startTime+d0+(tc-BOOT_UNI_FADE_AT)*1000;}
  }catch(e){fly.style.transform='none';}}
 /* THE ENHANCEMENT ITSELF. Mounts the face into #bootuni (shell/body.html) and
    drives it off the boot clock above. Reduced motion is checked first and
@@ -1792,7 +1871,8 @@ function bootUni(){
   var t=clock();
   if(t==null){st.done=true; BOOT_UNI_RAF=0; bootUniLand(); return;}
   if(face){
-   if(!st.settled&&t>=BOOT_UNI_SETTLE){st.settled=true; try{bootUniFly(st,host);}catch(e){host.classList.add('bx-uni-out');}}
+   if(!st.settled&&t>=BOOT_UNI_SETTLE){st.settled=true; try{bootUniFly(st,host,t,fade);}catch(e){host.classList.add('bx-uni-out');}}
+   else if(st.fly)bootUniFlyTrack(st);
   }else{
    if(!st.g1&&t>=0.80){st.g1=true; try{window.Uni.setGaze(0.6,0);}catch(e){}}
    if(!st.g2&&t>=1.25){st.g2=true; try{window.Uni.setGaze(-0.6,0);}catch(e){}}
@@ -1860,13 +1940,21 @@ var BOOT_FLOOR_AT=0;
  floor(5450);
  try{ var fade=el.getAnimations().filter(function(a){return a.animationName==='bootOut';})[0];
   if(fade){ var set=function(){ if(gone)return;
-    /* the fade's end on the page's own clock. The document timeline and
-       performance.now share an origin, and the timeline's time is the last
-       frame's, which during a long script is well behind now, so the end is
-       taken from the start time and not from the current time */
+    /* A resumed, previously paused fade has a pending play request. Its
+       startTime can still refer to the original first painted frame while
+       playback is pending; using it here makes the floor fire in 200ms,
+       before the full .24s fade or its animationend can finish. The boot
+       gate's held-long/no-press case caught this on every solo run.
+       Never arm a time derived from that stale clock. Keep a bounded
+       watchdog and replace it after the ready promise updates startTime. */
+    if(fade.pending&&fade.ready){
+     floor(5450);
+     fade.ready.then(set,function(){});
+     return;}
+    /* The end is on the page's own timeline, not a hardcoded duration.
+       Leave 200ms for the terminal animation event before the watchdog. */
     var end=fade.effect.getComputedTiming().endTime;
-    floor(Math.max(0,(fade.startTime!=null?fade.startTime+end-performance.now():end-(fade.currentTime||0)))+200);
-    if(fade.pending&&fade.ready)fade.ready.then(set,function(){}); };
+    floor(Math.max(0,(fade.startTime!=null?fade.startTime+end-performance.now():end-(fade.currentTime||0)))+200); };
    set(); retime=set; } }catch(e){}
  /* AND THERE IS A WAY OUT. Anything over 600ms needs one, and this is five
     seconds. It is the overture and it is worth watching, so it is not
@@ -1963,20 +2051,29 @@ function paintUndo(){
      the person read "Took back" and a reload brought the change back. */
   saveYou(); var saved=(typeof pSave==='function')?pSave():true;
   render(); paintUndo();
-  if(saved){status(msg,'ok');return;}
+  if(saved){status(msg,'ok');return true;}
   var st=(typeof saveState==='function')?saveState():{};
   status(msg+(st.err==='NotARecord'?' Nothing saved on a worked example.'
-   :' Not saved. Storage is full or blocked, so a reload brings it back.'),'fail');}
+   :' Not saved. Storage is full or blocked, so a reload brings it back.'),'fail');
+  return false;}
+ /* THE LATCH SOUNDS ONLY ON A MOVE THAT WAS KEPT. Both handlers played undo
+    and kept after settle whatever it answered, so on a store that refused the
+    write the press was heard as a success. Measured with a spy on sfx and a
+    setItem throwing QuotaExceededError: the first Ctrl+Z played refuse and
+    undo in the same millisecond, and a second one inside refuse's 1200 ms gap
+    played undo alone, so the refusal was not heard at all and the latch told
+    the person it had landed. A refused save is heard once, from status, as
+    refuse. */
  var b=$('undobtn');
  if(b)b.onclick=function(){
   var u=undoPop();
   if(!u){paintUndo();return;}
-  settle('Took back '+u.nm+'.'); if(typeof sfx==='function')sfx('undo');};
+  if(settle('Took back '+u.nm+'.')&&typeof sfx==='function')sfx('undo');};
  var f=$('redobtn');
  if(f)f.onclick=function(){
   var u=(typeof redoPop==='function')?redoPop():null;
   if(!u){paintUndo();return;}
-  settle('Put back '+u.nm+'.'); if(typeof sfx==='function')sfx('kept');};
+  if(settle('Put back '+u.nm+'.')&&typeof sfx==='function')sfx('kept');};
  /* the usual chords, because a person who wants either one reaches for them */
  addEventListener('keydown',function(e){
   if(!(e.metaKey||e.ctrlKey))return;

@@ -159,9 +159,13 @@ function ixSay(id,r){
  var none={head:'', body:''};
  if(!r||r.state==='none')return none;
  /* A NUMBER SAYS WHAT IT COUNTS, round PU: "17 left" on its own left a person
-    to work out seventeen of what. It says how many questions and out of how
-    many, in the same line. */
- if(r.state==='part')return {head:r.left+' of '+r.total+' questions left', body:''};
+    to work out seventeen of what. It said how many questions and out of how
+    many, in the same line, which NO-FRACTIONS-AUDIT.md (18 November, finding
+    P09) named as a measure of the person in fraction form: "17 of 18
+    questions left". It says how much of the block is answered now, as a
+    percent, through the portion kind (engine/pct.js), which this file may
+    ask: it is engine code, host free, the same as fmtPct itself. */
+ if(r.state==='part')return {head:fmtPct('portion',r.got/r.total)+' answered', body:''};
  var lbl={arch:['Leading archetype','Leading archetypes'], axes:['Loudest axis','Loudest axes'],
           acts:['Most used move','Most used moves']}[id];
  if(r.state==='level')return {head:'Nothing leads.',

@@ -100,9 +100,9 @@ const SIGHT=[
  {k:'sup', nm:'super complexes', need:'three', layer:true,
   what:'Where your hyper complexes join into super complexes.'},
  {k:'kund', nm:'the Kundalini', need:'two', layer:false, built:false,
-  what:'How far the Kundalini has risen up your seven seats.'},
+  what:'How far the Kundalini has risen up your seven assemblage points.'},
  {k:'reg', nm:'the registers', need:'three', layer:false,
-  what:'The registers, your point cloud: where each pattern sits on the path.'},
+  what:'The registers, your point cloud: where each pattern sits in the compass.'},
  {k:'mask', nm:'the masks', need:'three', layer:false,
   what:'The six masks, and how your chain lights each one.'}];
 /* the rows a person can be told about: the table less any with no surface */
@@ -165,12 +165,18 @@ const PLANS=[
     their cohorts analytics, create recipes, set up their protocol, and see
     their analytics." It said "Manage profiles, build rituals and build
     accountability" in the present tense, for a suite ui/practitioner.js says is
-    not there, so it says opens soon now and nothing in it is claimed built. The
-    paywall's Practitioner strip prints this row's d as its tooltip, so this is
-    the one place the sentence lives. */
+    not there, so it says opens soon now and nothing in it is claimed built.
+    REVERSED, 19 November, Lance's own words ("the paywall needs all 4
+    tiers"): Practitioner is a card now, not the slim strip that used to sit
+    under the other three, and its card's own name prints this row's d as
+    its tooltip (ui/paywall.js's pwCard), so this is still the one place the
+    sentence lives. */
  {k:'four',  nm:'Practitioner', own:true, per:'month', grant:1200, lead:true, built:false,
   d:'Everything in tier three, plus cohorts, which open soon. A cohort is a group of people you lead. You will see their analytics, the charts of how each of them moves. You will create recipes for them, sets of habits and rituals to practise, and set up their protocol, the practices each of them works through.'}];
-const PLAN_BY={}; PLANS.forEach(function(p){PLAN_BY[p.k]=p;});
+/* no prototype, so a plan.tier of "constructor" off a record names no tier
+   rather than Object's own function, which the boundary read as a tier and
+   kept (validateProfile, engine/schema.js) */
+const PLAN_BY=Object.create(null); PLANS.forEach(function(p){PLAN_BY[p.k]=p;});
 /* A TIER'S NAME INSIDE A SENTENCE. Five callers lowercased nm to write "Move
    to tier one" and "unlocked on tier two and above", which is right for a
    numbered rung and wrong for Practitioner: lowercased it reads "Move to
@@ -345,7 +351,7 @@ function planLadder(pl){
  var at=keys.indexOf(now.k);
  return PLANS.filter(function(p){return p.k!=='gift';}).map(function(p){
   var i=keys.indexOf(p.k);
-  return {k:p.k, nm:p.nm, per:p.per, grant:p.grant,
+  return {k:p.k, nm:p.nm, per:p.per, grant:p.grant, d:p.d,
    /* a month here is four weeks, which is the owner's own arithmetic: four
       hundred a month is a hundred a week in DECISIONS.md */
    week:(p.per==='week')?p.grant:Math.round(p.grant/4),
@@ -361,8 +367,16 @@ function planLadder(pl){
    that expired is a punishment for a bank's timing. unpaid and canceled do
    not. The names are the processor's so that a record round trips without
    translation, and translation is where access bugs live. */
-const PLAN_LIVE={trialing:1, active:1, past_due:1};
-const PLAN_DEAD={canceled:1, unpaid:1, incomplete_expired:1, paused:1};
+/* NO PROTOTYPE, 18 November. The boundary keeps a status it does not know as
+   written, on purpose, and planState reads one as pending so it grants
+   nothing. On a plain object a status of "constructor" or "toString" found
+   Object's own function in PLAN_LIVE instead, and planState answered live:
+   an unknown state opened a door, which validateProfile's plan block says
+   it must never do.
+   Built without a prototype, the tables hold only the processor's words. They
+   serialise the same, so the pay cycle walk's pins on them do not move. */
+const PLAN_LIVE=Object.assign(Object.create(null),{trialing:1, active:1, past_due:1});
+const PLAN_DEAD=Object.assign(Object.create(null),{canceled:1, unpaid:1, incomplete_expired:1, paused:1});
 /* THE END DATE IS READ, NOT ONLY THE STATUS, 17 October, the pay cycle run
    (step h) and the systems seat: "planState ignores until, so a signed-out
    record stays paid for ever." The status is only as new as the last read of

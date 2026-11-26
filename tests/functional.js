@@ -52,7 +52,12 @@ const booted=async p=>{
     its first second the parts are on their way to where they belong and a
     measurement taken then measures the animation. Waited out rather than
     turned off, because it is real and a person sees it. */
- await ready(p,()=>typeof enterOver!=='function'||enterOver(),10000,'the Field entrance never finished');};
+ await ready(p,()=>typeof enterOver!=='function'||enterOver(),10000,'the Field entrance never finished');
+ /* AND THE COMPASS IS THE FIGURE HERE. Since 21 November the tab opens on
+    the climb (ui/cone.js, clSvg), and every Compass check in this file is of
+    the figure, its canvas and its two panels. The climb, its poles and its
+    rail are held in tests/collide.js. */
+ await p.evaluate(()=>{if(typeof CONE!=='undefined')CONE.climb=false;});};
 const ok=(c,m)=>{if(c)PASS++;else{FAIL++;console.log('  FAIL '+m);}};
 (async()=>{
 const browser=await chromium.launch({executablePath:process.env.CHROME||chromium.executablePath()});
@@ -140,7 +145,8 @@ const fig=await page.evaluate(()=>({
  vecColor:(()=>{const v=document.querySelector('#emap .pm-vec');
   return v?getComputedStyle(v).color:'none'})(),
  seats:document.querySelectorAll('#emap circle.pm-seat').length}));
-ok(fig.vector===1,'vector figure renders when raster is absent, got '+fig.vector);
+/* one outline in each of the Body's two panels, the Front's and the Back's, where the one svg held both before */
+ok(fig.vector===2,'vector figure renders when raster is absent, one outline in each panel, got '+fig.vector);
 ok(fig.vecColor!=='none'&&fig.vecColor!=='rgba(0, 0, 0, 0)','vector stroke colour resolves, got '+fig.vecColor);
 ok(fig.seats===7,'7 seats drawn, got '+fig.seats);
 console.log(' ',JSON.stringify(fig));
@@ -159,13 +165,18 @@ for(const nm of people){
  for(const L of layers){
   const res=await page.evaluate(l=>{PMLAYER=l;render();
    const svg=document.querySelector('#emap svg.pm-svg');
-   const shelf=document.getElementById('eshelf');
-   return {nodes:svg?svg.childElementCount:0,
-    shelf:shelf?shelf.childElementCount:0,
-    shelfTxt:shelf?shelf.textContent.trim().length:0};},L);
+   /* THE ENERGY SHELF LEFT THE RIGHT RAIL, 18 November, with Flow, Running now
+      and the Laws: "Everything beneath selection... it's all repeat." This
+      asserted #eshelf held more than 40 characters on Body for every person
+      and every layer, 96 times. It asserts that the repeat blocks are gone
+      from the rail on every one of them instead, so the count is unchanged
+      and what it holds is the new ruling. */
+   const gone=!document.getElementById('eshelf')&&!document.getElementById('run')&&!document.getElementById('fire')
+    &&!document.querySelector('#rpanel [data-sec="flow"],#rpanel [data-sec="running"],#rpanel [data-sec="laws"]');
+   return {nodes:svg?svg.childElementCount:0,gone:gone};},L);
   ok(res.nodes>5,nm+'/'+L+': svg empty');
-  ok(res.shelfTxt>40,nm+'/'+L+': shelf empty ('+res.shelfTxt+' chars)');
-  line.push(L+':'+res.nodes+'/'+res.shelfTxt);}
+  ok(res.gone,nm+'/'+L+': Flow, Seats, Running now and the Laws are not on the rail');
+  line.push(L+':'+res.nodes);}
  console.log(' ',nm.padEnd(8),line.join('  '));}
 
 /* ---------------------------------------------------------------------------
@@ -483,7 +494,7 @@ console.log('\n=== the six masks, as pixels on the figure ===');
  ok(mv.hover.off==='\u2013','and leaving the canvas puts the line back, '+mv.hover.off);
  ok(mv.drill.shown&&mv.drill.t.indexOf(mv.drill.pick)>=0&&/Worn over the/.test(mv.drill.t)&&/Carrying the most/.test(mv.drill.t),
   'Read this mask opens '+mv.drill.pick+'\'s summary in Selection, '+mv.drill.t.slice(0,60));
- ok(mv.back.on===mv.before.on&&mv.back.mode===mv.before.mode&&mv.back.views==='0,1'&&mv.back.orbs===8&&mv.back.regs&&mv.back.fig&&mv.back.chp,
+ ok(mv.back.on===mv.before.on&&mv.back.mode===mv.before.mode&&mv.back.views==='0,1'&&mv.back.orbs===9&&mv.back.regs&&mv.back.fig&&mv.back.chp,
   'and the Body gets back all it had: '+mv.back.on+', '+mv.back.mode+', views '+mv.back.views+', '+mv.back.orbs+' circles');
  ok(mv.people.same===0&&mv.people.d>2000,'the figure is the person\'s: one mask, James against Derek, '+mv.people.d+' pixels apart, James twice '+mv.people.same);
  console.log('  Character: '+mv.lit+' lit, lead '+mv.lead.want+', trace '+T.seats.join('>')+' address '+T.addr.N+', hover '+mv.hover.name+', people '+mv.people.d);
@@ -585,7 +596,7 @@ console.log('\n=== the six masks, as pixels on the figure ===');
      panel with nothing drawn, which is read off planNeed and PLANS and not
      typed here as a rung.
 --------------------------------------------------------------------------- */
-console.log('\n=== Character: the five masks, the overlays, Runs under, the lock ===');
+console.log('\n=== Character: the five masks, the overlays, Runs under (gone from the rail card), the lock ===');
 {
  await page.evaluate(CH_HELP);
  const ms=await page.evaluate(async()=>{
@@ -613,22 +624,22 @@ console.log('\n=== Character: the five masks, the overlays, Runs under, the lock
   o.derek={kept:(CURP.ui&&CURP.ui.chmask)||null,on:on()};
   loadP(PERSON('James')); render(); await fr();
   o.jamesBack=on();
-  /* RUNS UNDER. A saboteur of James's whose addresses sit under a read mask
-     other than the one on screen; its drill's row opens that mask here. */
-  const r=compute(), cur=CHV.pick;
-  let ru={found:false};
-  for(const s of r.sabs){
-   const seats=s.parts.filter(Boolean).map(n=>n.b);
-   const m=MASKS_READ.filter(x=>x.nm!==cur&&x.b.some(b=>seats.indexOf(b)>=0))[0];
-   if(!m)continue;
-   runDrill(s); await fr();
-   const row=document.querySelector('#rdrill [data-rununder="'+m.nm+'"]');
-   if(!row)continue;
-   row.click(); await fr();
+  /* RUNS UNDER LEFT THE RAIL'S CARD, 18 November. It was a row in a saboteur's
+     drill that opened the mask the saboteur runs under, and the owner struck it
+     on 15 November ("the runs under doesn't need to be there. Neither does made
+     of") and again on 18 November, when the card became identity only. This
+     held that the row existed and opened the mask. It holds the reverse: the
+     card in the rail carries neither Runs under nor Made of, and lists the
+     addresses as rows. The mask opens from the Character page's own buttons,
+     held a few checks up. */
+  const r=compute();
+  let ru={gone:false};
+  const s0=r.sabs[0];
+  if(s0){
+   runDrill(s0); await fr();
    const d=document.getElementById('rdrill');
-   ru={found:true,sab:s.nm,mask:m.nm,pick:CHV.pick,kept:CURP.ui&&CURP.ui.chmask,on:on(),
-    t:d.style.display!=='none'?d.textContent:''};
-   break;}
+   ru={gone:!d.querySelector('[data-rununder]')&&!/Runs under|Made of/.test(d.textContent)
+     &&/Addresses/.test(d.textContent)&&d.querySelectorAll('.ad-r').length>0,sab:s0.nm};}
   o.ru=ru; rdClose();
   /* the rung that carries the masks, and the one under it, off the table */
   const keys=PLANS.map(p=>p.k), need=planNeed('mask').k;
@@ -646,8 +657,8 @@ console.log('\n=== Character: the five masks, the overlays, Runs under, the lock
   'and each reaches the drawing, pixels changed: cloud '+ms.ov.cloud.d+', torus '+ms.ov.torus.d+', heat '+ms.ov.heat.d);
  ok(!ms.derek.kept&&ms.derek.on==='Child'&&ms.jamesBack==='Adult',
   '5dcb45d: the pick is the profile\'s own, Derek who never picked opens on '+ms.derek.on+' after James picked Adult, James comes back on '+ms.jamesBack);
- ok(ms.ru.found&&ms.ru.pick===ms.ru.mask&&ms.ru.kept===ms.ru.mask&&ms.ru.on===ms.ru.mask&&ms.ru.t.indexOf(ms.ru.mask)>=0&&/Worn over the/.test(ms.ru.t),
-  'a Runs under row in a saboteur\'s drill opens that mask here and its summary in Selection, '+JSON.stringify({sab:ms.ru.sab,mask:ms.ru.mask,on:ms.ru.on}));
+ ok(ms.ru.gone,
+  'a saboteur\'s card in the rail carries no Runs under and no Made of, and lists its addresses as rows, '+JSON.stringify({sab:ms.ru.sab}));
  /* THE LOCK, on two pages of their own: the seed every page here carries is
     overridden by a later init script, the rung under the masks' and the
     masks' own. */
@@ -708,10 +719,10 @@ console.log('\n=== the Body\'s overlays, the Field\'s bar on the map ===');
    on:[...b.querySelectorAll('[data-bmov][aria-pressed="true"]')].map(x=>x.getAttribute('data-bmov')).join(','),
    row:document.querySelectorAll('#lbar button').length,
    modeBtns:document.querySelectorAll('#rbar [data-bmmode]').length};});
- ok(bar.groups.join('|')==='Nodes:addr+masks|Clusters:pain+flow|Networks:sab+cx+hy',
+ ok(bar.groups.join('|')==='Nodes:addr+masks|Clusters:heat+pain+flow|Networks:sab+cx+hy',
   'three groups, as he named them, '+bar.groups.join(' | '));
- ok(bar.orbs===8&&bar.tips===0,'eight of the Field\'s circles with the burger, every one with a tooltip, '+bar.orbs+' circles, '+bar.tips+' without');
- ok(bar.on==='addr,masks,sab','it opens on what the figure drew before the bar, got '+bar.on);
+ ok(bar.orbs===9&&bar.tips===0,'nine of the Field\'s circles with the burger (Charge, the heat, joined Clusters 22 November), every one with a tooltip, '+bar.orbs+' circles, '+bar.tips+' without');
+ ok(bar.on==='addr,masks,heat,sab','it opens on what the figure drew before the bar, and the charge as heat, got '+bar.on);
  ok(bar.row===0&&bar.modeBtns===0,'and there is no row and no Pattern and Pain pair left beside it');
  /* each switch reaches the drawing: the pick, the hits, the hubs */
  const sw=await page.evaluate(()=>{const tap=k=>document.querySelector('#bmov [data-bmov="'+k+'"]').click();
@@ -780,7 +791,7 @@ console.log('\n=== the Body\'s overlays, the Field\'s bar on the map ===');
   t.click(); const shut=vis()+':'+t.getAttribute('aria-expanded');
   t.click(); return shut+' '+vis()+':'+t.getAttribute('aria-expanded')+' '
    +[...b.querySelectorAll('[data-bmov][aria-pressed="true"]')].map(x=>x.getAttribute('data-bmov')).join(',');});
- ok(bg==='0:false 3:true addr,masks,sab','the burger folds all three groups and opens them as they were, '+bg);
+ ok(bg==='0:false 3:true addr,masks,heat,sab','the burger folds all three groups and opens them as they were, '+bg);
  /* LM, his words: "overlay menu ... on the left top across the top, like the
     Field ... the third tier nav that says Mark ... on the upper right opposite
     the overlay, both have buttons that close them. The right one starts
@@ -792,8 +803,8 @@ console.log('\n=== the Body\'s overlays, the Field\'s bar on the map ===');
   const tog=mk.querySelector('[data-bmmk=tog]').getBoundingClientRect(), bur=ov.querySelector('[data-bmov=shut]').getBoundingClientRect();
   const o={row:new Set(tops).size, left:Math.round(bur.left-wr.left), right:Math.round(wr.right-tog.right),
    shut:mk.classList.contains('shut'), row2:!!document.getElementById('bmmkb').offsetParent,
-   sub:getComputedStyle(document.getElementById('subbar')).display, band:BM.inT, z:BM.z0, head:bmW2S(50,0)[1]};
-  ov.querySelector('[data-bmov=shut]').click(); await w(); o.bandShut=BM.inT; o.zShut=BM.z0;
+   sub:getComputedStyle(document.getElementById('subbar')).display, band:BM.inT, z:BM.pan[0].z0, head:bmW2S(50,0)[1]};
+  ov.querySelector('[data-bmov=shut]').click(); await w(); o.bandShut=BM.inT; o.zShut=BM.pan[0].z0;
   ov.querySelector('[data-bmov=shut]').click(); await w();
   mk.querySelector('[data-bmmk=tog]').click(); await w();
   o.open=!!document.getElementById('bmmkb').offsetParent&&document.querySelectorAll('#bmmkb [data-bmamode]').length;
@@ -851,11 +862,274 @@ console.log('\n=== the Body\'s overlays, the Field\'s bar on the map ===');
  const inz=await page.evaluate(()=>bmZoomed());
  for(let i=0;i<14;i++){await page.mouse.wheel(0,240);await page.waitForTimeout(40);}
  await page.waitForTimeout(100);
- const cam=await page.evaluate(()=>{const f=bmFitCam(),c=BM.cam;
+ const cam=await page.evaluate(()=>{const f=bmFitCam(0),c=BM.pan[0].cam;
   return {d:Math.max(Math.abs(c.x-f.x),Math.abs(c.y-f.y),Math.abs(c.z-f.z)),z:c.z/f.z};});
  ok(inz&&cam.d<1e-6,'the wheel in and then out lands on the frame, not below it and off centre, '+JSON.stringify(cam));
  await page.mouse.move(5,5);
  await page.evaluate(()=>{rdClose();loadP(PEOPLE.length-1);render();});}
+
+/* ---------------------------------------------------------------------------
+   THE BODY'S TWO PANELS. His words, 18 November: "For the body, I want
+   independent zoom on this left and right panel." And: "When you do create
+   the independent panel for left and right, so I can zoom independently, I
+   also want you to center the bodies to the panels."
+
+   The Front is the left half of the well and the Back the right half, and
+   each has a camera of its own (BM.pan[0] and BM.pan[1]). Five things are
+   held here, each one a way this could be put back to one shared camera, or
+   to two that were never really apart:
+
+     1. one panel's zoom, drag, wheel or region never moves the other's camera
+        (compared exactly, not within a tolerance: a camera the other panel
+        touched is not the camera it had), and never repaints its picture;
+     2. each body is centred in its own panel, measured off the pixels the
+        canvas draws, at five widths, for both figures, and the titles with it;
+     3. a press in one panel is turned into the world through that panel's
+        camera and no other;
+     4. one figure up, which is a phone, is as it was, to the digit;
+     5. Whole body leaves no panel opened.
+
+   MEASURED, NOT READ. The centring is the drawn body's own box (the figure
+   filled through the panel's transform and scanned for its first and last lit
+   rows and columns) against the panel's own edges, and then the same scan of
+   the still layer the canvas really holds, so the camera arithmetic and what
+   reaches the canvas are each checked and checked against each other.
+--------------------------------------------------------------------------- */
+console.log('\n=== the Body\'s two panels, a camera each ===');
+{
+ const fr=()=>page.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
+ const settle=async()=>{await page.waitForFunction(()=>!BM.pan.some(p=>p.camT),null,{timeout:15000}).catch(()=>{});await fr();await fr();};
+ const cams=()=>page.evaluate(()=>BM.pan.map(p=>({x:p.cam.x,y:p.cam.y,z:p.cam.z,t:p.camT?1:0})));
+ const same=(a,b)=>!!a&&!!b&&a.x===b.x&&a.y===b.y&&a.z===b.z&&a.t===b.t;
+ const whole=async()=>{await page.evaluate(()=>{const z=document.querySelector('[data-bmwhole]');if(z&&!z.hidden)z.click();});await settle();};
+ const fitOf=i=>page.evaluate(i=>{const f=bmFitCam(i),c=BM.pan[i].cam;return Math.max(Math.abs(c.x-f.x),Math.abs(c.y-f.y),Math.abs(c.z-f.z));},i);
+ /* a picture of one panel's half of the still layer, so "left alone" means
+    the pixels and not only the numbers */
+ const pic=i=>page.evaluate(i=>{const P=BM.pan[i],d=BM.sctx.getImageData(P.dx0,0,P.dx1-P.dx0,BM.still.height).data;
+  let h=2166136261;for(let k=0;k<d.length;k+=7){h=Math.imul(h^d[k],16777619);}return h>>>0;},i);
+ const wheel=async(x,y,n,dir)=>{await page.mouse.move(x,y);for(let i=0;i<n;i++){await page.mouse.wheel(0,dir*240);await page.waitForTimeout(30);}await fr();};
+ const sizeTo=async(w,h)=>{await page.setViewportSize({width:w,height:h});
+  await page.waitForFunction(()=>{if(!BM.well)return false;const r=BM.well.getBoundingClientRect();
+   return Math.round(r.width)===BM.W&&Math.round(r.height)===BM.H&&!BM.pan.some(p=>p.camT);},null,{timeout:15000}).catch(()=>{});
+  await fr();await fr();await page.waitForTimeout(200);};
+
+ await page.setViewportSize({width:1600,height:1000});
+ await page.evaluate(()=>{rdClose();loadP(PERSON('Gordon'));setTab(TAB.ENERGY);PMLAYER='map';render();});
+ await fr(); await page.waitForTimeout(300); await settle(); await whole();
+ let sv=await page.evaluate(()=>{const b=BM.sv.getBoundingClientRect();return {x:b.left,y:b.top,w:b.width,h:b.height};});
+ const L=[sv.x+sv.w*0.25,sv.y+sv.h*0.45], R=[sv.x+sv.w*0.75,sv.y+sv.h*0.55];
+
+ /* ---- the panels exist, and stand where the well puts them ---- */
+ const lay=await page.evaluate(()=>({np:bmPanN(),W:BM.W,w:BM.pan.map(p=>p.w),x0:BM.pan.map(p=>p.x0),
+  svg:[...BM.sv.querySelectorAll('svg[data-bmp]')].map(s=>[+s.getAttribute('x'),+s.getAttribute('width')]),
+  vec:document.querySelectorAll('#emap g.pm-vec path').length}));
+ ok(lay.np===2&&lay.w[0]===lay.W/2&&lay.w[1]===lay.W/2&&lay.x0[0]===0&&lay.x0[1]===lay.W/2,
+  'with both figures up there are two panels, each half the well, side by side, '+JSON.stringify(lay));
+ ok(lay.svg.length===2&&lay.svg[0][0]===0&&lay.svg[1][0]===lay.W/2&&lay.svg[0][1]===lay.W/2&&lay.svg[1][1]===lay.W/2,
+  'and the svg over each is laid on its own half, so a press is measured in the panel it is in, '+JSON.stringify(lay.svg));
+ ok(lay.vec===2,'each panel carries its own outline of the figure, 2 in all, got '+lay.vec);
+ /* and only its own: a wide panel shows more world than its figure, and the other figure's outline in it was a hand in the lane */
+ const outl=await page.evaluate(()=>BM.pan.map(P=>P.vec.getAttribute('d')));
+ const wantO=await page.evaluate(()=>[bmOutline1(),bmOutlineAt(BMOX)]);
+ ok(outl[0]===wantO[0]&&outl[1]===wantO[1],'the Front\'s panel outlines the front alone and the Back\'s the back alone');
+ /* the seam is drawn: a thin tall rectangle, once a frame, with two figures up */
+ const seam=await page.evaluate(()=>new Promise(res=>{const g=BM.ctx,o=g.fillRect,got=[];
+  g.fillRect=function(x,y,w,h){if(w<=40&&h>200)got.push([x,y,w,h]);return o.apply(this,arguments);};
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{g.fillRect=o;res({got:got,at:BM.pan[1].dx0});}));}));
+ /* bmDivider was widened 7 screen pixels past its hairline, his approval, 20
+    November, and it is drawn centred on the seam (x-(d>>1)). The capture took
+    w<=3 and compared the left edge to the seam, both true only of a hairline,
+    so it caught nothing and failed. The rule is a thin tall rect centred on
+    the seam, so the centre is what is measured and a width change cannot
+    break it again. */
+ ok(seam.got.length>=1&&seam.got.every(r=>Math.abs((r[0]+r[2]/2)-seam.at)<=2),'a quiet line is drawn on the seam between the two panels, '+JSON.stringify(seam));
+
+ /* what moves on its own moves once a frame and not once a panel: a pulse on a
+    line advances by its speed times the frame's time, and two panels drawing
+    the frame must not advance it twice */
+ /* read after the frame clock has moved 0.4 s, not after a fixed wait, so a slow runner reads the same thing */
+ const pls=await page.evaluate(()=>new Promise(res=>{const s=BM.sabs.find(x=>x.pulses.length);if(!s||REDUCED)return res(null);
+  const u=s.pulses[0],q0=u.q,t0=BM.t,d0=s.dir,w0=performance.now();
+  (function f(){if(BM.t-t0<0.4&&performance.now()-w0<9000)return requestAnimationFrame(f);
+   const dt=BM.t-t0,dq=((u.q-q0)%1+1)%1,sp=(0.07+0.15*Math.sqrt(s.T/10))*d0;
+   res({same:s.dir===d0,ratio:(d0>0?dq:1-dq)/(Math.abs(sp)*dt),dt:dt});})();}));
+ ok(pls&&pls.same&&pls.dt>=0.4&&Math.abs(pls.ratio-1)<0.08,'a pulse on a line moves once a frame, not once a panel, '+JSON.stringify(pls));
+
+ /* ---- 1. zoom one, the other does not move ---- */
+ const base=await cams(); const p0b=await pic(0), p1b=await pic(1);
+ const world=await page.evaluate(p=>bmS2W(p[0]-BM.sv.getBoundingClientRect().left,p[1]-BM.sv.getBoundingClientRect().top),L);
+ await wheel(L[0],L[1],4,-1); await settle();
+ const a1=await cams(), p0a=await pic(0), p1a=await pic(1);
+ ok(a1[0].z>base[0].z*1.5&&a1[0].t===0,'the wheel over the Front zooms the Front, '+base[0].z.toFixed(2)+' to '+a1[0].z.toFixed(2));
+ ok(same(a1[1],base[1]),'and the Back\'s camera is exactly what it was, '+JSON.stringify([base[1],a1[1]]));
+ ok(p1a===p1b&&p0a!==p0b,'and the Back\'s picture is the same pixels while the Front\'s is redrawn, '+JSON.stringify({back:[p1b,p1a],front:[p0b,p0a]}));
+ const under=await page.evaluate(w=>{const s=bmW2S(w[0],w[1],0),r=BM.sv.getBoundingClientRect();return [s[0]+r.left,s[1]+r.top];},world);
+ ok(Math.hypot(under[0]-L[0],under[1]-L[1])<0.75,'the zoom is about the pointer: the point under it stays under it, off by '
+  +Math.hypot(under[0]-L[0],under[1]-L[1]).toFixed(3)+' px');
+ await wheel(R[0],R[1],5,-1); await settle();
+ const a2=await cams(), p0c=await pic(0), p1c=await pic(1);
+ ok(a2[1].z>base[1].z*1.5&&same(a2[0],a1[0]),'the wheel over the Back zooms the Back and the Front stays as it was, '+JSON.stringify(a2));
+ ok(p0c===p0a&&p1c!==p1a,'with the Front\'s picture the same pixels again, '+JSON.stringify({front:[p0a,p0c],back:[p1a,p1c]}));
+ /* the Back's centre is its own panel's centre, not the well's */
+ const w2=await page.evaluate(p=>{const r=BM.sv.getBoundingClientRect(),c=BM.pan[1].cam;return bmW2S(c.x,c.y,1)[0]-BM.pan[1].cx;},L);
+ ok(Math.abs(w2)<1e-6,'a panel\'s camera is aimed at the middle of that panel, off by '+w2);
+ /* the overlay follows each camera: a seat in the Front's svg is where the canvas draws it */
+ const seat=await page.evaluate(()=>{const e=document.querySelector('[data-seat="throat"]'),r=e.getBoundingClientRect(),sv=BM.sv.getBoundingClientRect(),
+   band=PMBANDS.filter(b=>b.k==='throat')[0],s=bmW2S(50,band.yp,0);
+  return {dx:(r.left+r.width/2)-(sv.left+s[0]),dy:(r.top+r.height/2)-(sv.top+s[1])};});
+ ok(Math.abs(seat.dx)<1&&Math.abs(seat.dy)<1,'a seat in the Front\'s svg stands where the Front\'s camera draws it, even with the Back opened, '+JSON.stringify(seat));
+ /* and each panel's svg shows the world that panel's camera shows */
+ const vbs=await page.evaluate(()=>BM.pan.map(P=>{const v=P.sv.getAttribute('viewBox').split(' ').map(Number),c=P.cam;
+  return Math.max(Math.abs(v[0]-(c.x-P.w/2/c.z)),Math.abs(v[1]-(c.y-BM.H/2/c.z)),Math.abs(v[2]-P.w/c.z),Math.abs(v[3]-BM.H/c.z));}));
+ ok(vbs.every(d=>d<0.01),'each panel\'s svg has the viewBox its own camera shows, off by '+vbs.map(d=>d.toFixed(4)).join(' and '));
+ /* a drag moves the panel it began in, across the seam as well */
+ const f0=await cams();
+ await page.mouse.move(L[0],L[1]); await page.mouse.down(); await page.mouse.move(L[0]+260,L[1]+40,{steps:6}); await page.mouse.move(L[0]+700,L[1]+60,{steps:6}); await page.mouse.up(); await fr();
+ const f1=await cams();
+ ok(f1[0].x<f0[0].x-1&&same(f1[1],f0[1]),'a drag in the Front pans the Front, even carried over into the Back\'s half, and the Back does not move, '+JSON.stringify([f0,f1]));
+ await page.mouse.move(R[0],R[1]); await page.mouse.down(); await page.mouse.move(R[0]-120,R[1]-30,{steps:6}); await page.mouse.up(); await fr();
+ const f2=await cams();
+ ok(f2[1].x>f1[1].x&&same(f2[0],f1[0]),'a drag in the Back pans the Back and the Front does not move, '+JSON.stringify([f1,f2]));
+ await whole();
+ /* the wheel out lands on the fit, and only on the panel it was over */
+ await wheel(L[0],L[1],4,-1); await wheel(R[0],R[1],3,-1); await settle(); const z2=await cams();
+ await wheel(L[0],L[1],14,1); await settle(); const z3=await cams(); const dfit=await fitOf(0);
+ ok(dfit<1e-6&&same(z3[1],z2[1]),'the wheel out on the Front lands it on its fit exactly and leaves the Back opened, '+dfit+' '+JSON.stringify([z2[1],z3[1]]));
+ await whole();
+
+ /* ---- a region opens the panel that owns it ---- */
+ const bz=await cams();
+ await page.evaluate(()=>bmZoomRegs(BMG.reg.filter(r=>r.grp==='front:Knee'))); await settle();
+ const kz=await cams();
+ const knees=await page.evaluate(()=>{const P=BM.pan[0];return BMG.reg.filter(r=>r.grp==='front:Knee').map(r=>{const a=bmW2S(r.box[0],r.box[1],0),b=bmW2S(r.box[2],r.box[3],0);
+  return [a[0]>=P.x0-1,b[0]<=P.x0+P.w+1,a[1]>=-1,b[1]<=BM.H+1];}).flat();});
+ ok(kz[0].z>bz[0].z*2&&same(kz[1],bz[1]),'a region of the front opens the Front\'s panel and not the Back\'s, '+JSON.stringify([bz,kz]));
+ ok(knees.length===2*4&&knees.every(Boolean),'a pair is one panel\'s two sides, and both knees stand inside the panel it opened, '+JSON.stringify(knees));
+ await whole();
+ await page.evaluate(()=>bmZoomRegs(BMG.reg.filter(r=>r.grp==='back:Calf'))); await settle();
+ const cz=await cams();
+ ok(cz[1].z>bz[1].z*2&&same(cz[0],bz[0]),'a region of the back opens the Back\'s panel and not the Front\'s, '+JSON.stringify([bz,cz]));
+ await whole();
+ /* its own answer's button does the same */
+ const btn=await page.evaluate(()=>{const r=BMG.reg.find(x=>x.v===1&&x.nm==='Upper back');bmOpenKey(r.key,false);const z=document.getElementById('bmzoom');if(!z)return false;z.click();return true;});
+ await settle(); const zb=await cams();
+ ok(btn&&zb[1].z>bz[1].z*2&&same(zb[0],bz[0]),'Zoom into this region on a back region opens the Back\'s panel and leaves the Front\'s alone, '+JSON.stringify([btn,bz,zb]));
+ await page.evaluate(()=>rdClose()); await whole();
+ /* a double press, on the figure, in the Back's half */
+ const dp=await page.evaluate(()=>{const r=BMG.reg.find(x=>x.v===1&&x.nm==='Calf'&&x.side==='l')||BMG.reg.find(x=>x.v===1&&x.nm==='Calf'),s=bmW2S(r.cx+BMOX,r.cy,1),b=BM.sv.getBoundingClientRect();return [b.left+s[0],b.top+s[1]];});
+ await page.mouse.dblclick(dp[0],dp[1]); await settle(); const dz=await cams();
+ ok(dz[1].z>bz[1].z*2&&same(dz[0],bz[0]),'a double press on the Back opens the Back\'s panel and leaves the Front\'s alone, '+JSON.stringify([bz,dz]));
+ await page.evaluate(()=>rdClose()); await whole(); await page.mouse.move(5,5);
+
+ /* ---- 3. a press is turned into the world through its own panel's camera ---- */
+ await wheel(L[0],L[1],2,-1); await wheel(R[0],R[1],3,-1); await page.mouse.move(L[0]+90,L[1]-60); await settle();
+ const route=await page.evaluate(()=>{const out=[],P=BM.pan;
+  [0,1].forEach(i=>{BMG.reg.filter(r=>r.v===i&&bmIn(BMG,i,r.cx,r.cy)).forEach(r=>{
+   const s=bmW2S(r.cx+bmVX(i),r.cy,i);
+   if(s[0]<P[i].x0+20||s[0]>P[i].x0+P[i].w-20||s[1]<80||s[1]>BM.H-20)return;
+   const pk=bmPick(s[0],s[1]);
+   out.push({i:i,nm:r.nm,pi:pk.pi,v:pk.v,own:!!pk.reg&&pk.reg.v===i,
+    dw:pk.w?Math.hypot(pk.w[0]-(r.cx+bmVX(i)),pk.w[1]-r.cy):9});});});
+  return {n:out.length,seen:[0,1].map(i=>out.filter(o=>o.i===i).length),
+   bad:out.filter(o=>o.pi!==o.i||o.v!==o.i||!o.own||o.dw>1e-6).map(o=>o.i+':'+o.nm+' pi '+o.pi+' v '+o.v+' own '+o.own+' dw '+o.dw.toFixed(3))};});
+ ok(route.seen[0]>=3&&route.seen[1]>=3,'with the Front and the Back opened to different views, regions of each are pressed in its own panel, '+JSON.stringify(route.seen));
+ ok(route.bad.length===0,'every one resolves to its own panel, its own figure and its own world point, through its own camera, '+route.bad.slice(0,4).join(' | '));
+ await whole();
+
+ /* ---- 2. each body is centred in its own panel ---- */
+ /* viewport widths, and the well is what they leave after the rail: a width
+    that leaves the well under 700 is a phone's one figure, which section 4
+    holds, so it is passed over here and counted, never silently */
+ const measured=[];
+ for(const w of [760,1000,1100,1280,1440,1600,2000]){
+  await sizeTo(w,1000); await whole(); await page.mouse.move(5,5);
+  if((await page.evaluate(()=>bmPanN()))!==2)continue;
+  measured.push(w);
+  /* the titles' own x, read as they are drawn */
+  await page.evaluate(()=>{window.__ttl=[];const o=CanvasRenderingContext2D.prototype.fillText;window.__ftx=o;
+   CanvasRenderingContext2D.prototype.fillText=function(t,x,y){if(t==='Front'||t==='Back')window.__ttl.push([t,x,y]);return o.apply(this,arguments);};});
+  await fr();await fr();
+  const m=await page.evaluate(()=>{CanvasRenderingContext2D.prototype.fillText=window.__ftx;
+   const out={W:BM.W,H:BM.H,T:BM.inT,np:bmPanN(),stage:!!BM.stage,ttl:window.__ttl.slice(-2),f:[]};
+   const scan=(d,w,h,a)=>{let x0=1e9,x1=-1,y0=1e9,y1=-1;for(let y=0;y<h;y++)for(let x=0;x<w;x++){if(d[(y*w+x)*4+3]>=a){if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y;}}return [x0,y0,x1+1,y1+1];};
+   [0,1].forEach(i=>{const P=BM.pan[i],dpr=BM.dpr;
+    /* (a) the body filled through this panel's own transform, scanned */
+    const c=document.createElement('canvas');c.width=BM.cv.width;c.height=BM.cv.height;const g=c.getContext('2d');
+    bmAct(i);bmTf(g);g.fill(BMG.body[i]);
+    const a=scan(g.getImageData(0,0,c.width,c.height).data,c.width,c.height,128).map(v=>v/dpr);
+    /* (b) what the still layer really holds for this panel: the opaque man */
+    const sd=BM.sctx.getImageData(P.dx0,0,P.dx1-P.dx0,BM.still.height).data,b0=scan(sd,P.dx1-P.dx0,BM.still.height,250);
+    const b=[b0[0]/dpr+P.x0,b0[1]/dpr,b0[2]/dpr+P.x0,b0[3]/dpr];
+    const row=q=>({l:q[0]-P.x0,r:P.x0+P.w-q[2],t:q[1]-BM.inT,b:BM.H-q[3],cx:(q[0]+q[2])/2-P.cx,cy:(q[1]+q[3])/2-(BM.inT+BM.H)/2});
+    out.f.push({i:i,z:P.z0,zOld:Math.min(BM.W/154,(BM.H-24-BM.inT)/102),model:row(a),canvas:row(b),agree:Math.max(Math.abs(a[0]-b[0]),Math.abs(a[1]-b[1]),Math.abs(a[2]-b[2]),Math.abs(a[3]-b[3]))});});
+   out.px=BM.pan.map(p=>p.cx);return out;});
+  const tol=1.5;
+  m.f.forEach(f=>{
+   ok(Math.abs(f.model.l-f.model.r)<=tol&&Math.abs(f.canvas.l-f.canvas.r)<=tol&&Math.abs(f.canvas.cx)<=tol,
+    'at '+w+' the '+(f.i?'Back':'Front')+' body has the same margin either side in its panel, '+f.canvas.l.toFixed(2)+' and '+f.canvas.r.toFixed(2)+' px (model '+f.model.l.toFixed(2)+' and '+f.model.r.toFixed(2)+')');
+   ok(Math.abs(f.model.t-f.model.b)<=tol&&Math.abs(f.canvas.t-f.canvas.b)<=tol,
+    'at '+w+' the '+(f.i?'Back':'Front')+' body has the same room above and below, under the band, '+f.canvas.t.toFixed(2)+' and '+f.canvas.b.toFixed(2)+' px (model '+f.model.t.toFixed(2)+' and '+f.model.b.toFixed(2)+')');
+   ok(Math.abs(f.z-f.zOld)<1e-9,'at '+w+' the '+(f.i?'Back':'Front')+' body is the size it was before the panels, fitted scale '+f.z.toFixed(4)+' against '+f.zOld.toFixed(4));
+   ok(f.agree<=tol,'at '+w+' the '+(f.i?'Back':'Front')+' body\'s drawn pixels are where its camera puts it, '+f.agree.toFixed(2)+' px apart');});
+  const tt=m.ttl.map(t=>({t:t[0],d:Math.abs(t[1]-m.px[t[0]==='Back'?1:0])}));
+  ok(m.np===2&&!m.stage&&tt.length===2&&tt.every(t=>t.d<=0.75),'at '+w+' the Front and Back titles are centred over their bodies, '+JSON.stringify(tt));
+  console.log('   centred at '+w+': '+m.f.map(f=>(f.i?'Back':'Front')+' margins '+f.canvas.l.toFixed(2)+'/'+f.canvas.r.toFixed(2)+' above/below '+f.canvas.t.toFixed(2)+'/'+f.canvas.b.toFixed(2)).join(', '));}
+ ok(measured.length>=5,'the centring was measured at five widths or more with both figures up, '+measured.join(', '));
+ await sizeTo(1600,1000); await whole();
+
+ /* ---- 5. Whole body leaves no panel opened ---- */
+ let wb=await page.evaluate(()=>{const z=document.querySelector('[data-bmwhole]');return !!z&&!z.hidden;});
+ ok(wb===false,'at the whole body the Whole body button is not there');
+ await wheel(R[0],R[1],5,-1); await settle();
+ wb=await page.evaluate(()=>{const z=document.querySelector('[data-bmwhole]');return !!z&&!z.hidden;});
+ ok(wb===true,'with only the Back opened, the Whole body button is there');
+ const pre=await cams();
+ await page.evaluate(()=>document.querySelector('[data-bmwhole]').click()); await settle();
+ const post=await cams(), d1=await fitOf(1);
+ ok(d1<1e-6&&post[1].t===0&&same(post[0],pre[0]),'it sends the Back home to its fit exactly and the Front is as it was, '+d1);
+ wb=await page.evaluate(()=>{const z=document.querySelector('[data-bmwhole]');return !!z&&!z.hidden;});
+ ok(wb===false,'and the button goes with it');
+ await wheel(L[0],L[1],4,-1); await wheel(R[0],R[1],6,-1); await settle();
+ await page.evaluate(()=>document.querySelector('[data-bmwhole]').click()); await settle();
+ const both=await page.evaluate(()=>BM.pan.map((p,i)=>{const f=bmFitCam(i);return {d:Math.max(Math.abs(p.cam.x-f.x),Math.abs(p.cam.y-f.y),Math.abs(p.cam.z-f.z)),t:p.camT?1:0,open:bmPZoomed(p)};}));
+ ok(both.every(b=>b.d<1e-6&&!b.t&&!b.open)&&!(await page.evaluate(()=>bmZoomed())),'with both opened, one press sends both home and leaves neither opened, '+JSON.stringify(both));
+ await wheel(L[0],L[1],3,-1); await settle(); await page.keyboard.press('f'); await settle();
+ ok((await fitOf(0))<1e-6&&!(await page.evaluate(()=>bmZoomed())),'the F key does the same, for whichever panel is opened');
+
+ /* ---- 4. one figure up is as it was ---- */
+ /* the face is the Front's, as a person who has not turned it finds it; the
+    region presses above turned it to the back, and a phone shows what it is told */
+ await page.evaluate(()=>bmSetFace('front'));
+ await sizeTo(390,844);
+ const ph=await page.evaluate(()=>{const T=BM.inT||0,z=Math.min(BM.W/52,(BM.H-24-T)/102),c=BM.pan[0].cam;
+  return {one:bmOne(),np:bmPanN(),w:[BM.pan[0].w,BM.pan[1].w],W:BM.W,views:bmViews().join(),
+   was:{x:50,y:50.5-T/(2*z),z:z},now:{x:c.x,y:c.y,z:c.z},z0:BM.pan[0].z0,face:BM.face,
+   svgs:BM.sv.querySelectorAll('svg[data-bmp]').length,vec:document.querySelectorAll('#emap g.pm-vec path').length};});
+ const phOut=await page.evaluate(()=>[BM.pan[0].vec.getAttribute('d')===bmOutline(),BM.pan[1].w]);
+ ok(phOut[0]&&phOut[1]===0,'on a phone the one panel carries both outlines for the camera to turn between, and the second panel has no width, '+JSON.stringify(phOut));
+ ok(ph.one&&ph.np===1&&ph.w[0]===ph.W&&ph.w[1]===0&&ph.views==='0','on a phone there is one panel, the width of the well, showing the front, '+JSON.stringify({one:ph.one,np:ph.np,w:ph.w,views:ph.views}));
+ ok(ph.now.x===ph.was.x&&ph.now.y===ph.was.y&&ph.now.z===ph.was.z&&ph.z0===ph.was.z,'and its camera is the fit it always had, to the digit, '+JSON.stringify([ph.was,ph.now]));
+ const seam1=await page.evaluate(()=>new Promise(res=>{const g=BM.ctx,o=g.fillRect,got=[];
+  g.fillRect=function(x,y,w,h){if(w<=40&&h>200)got.push([x,y,w,h]);return o.apply(this,arguments);};
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{g.fillRect=o;res(got.length);}));}));
+ ok(seam1===0,'and no seam is drawn through the one figure, '+seam1);
+ /* the turn to the back carries the one camera across the world, as it did */
+ const turn=await page.evaluate(()=>new Promise(res=>{const xs=[];bmSetFace('back');const t0=performance.now();
+  (function f(){xs.push(BM.pan[0].cam.x);if(performance.now()-t0<900)requestAnimationFrame(f);
+   else res({xs:xs,end:BM.pan[0].cam.x,views:bmViews().join(),np:bmPanN()});})();}));
+ ok(Math.abs(turn.end-(74+50))<0.05&&turn.views==='1'&&turn.np===1,'the Back button turns the one panel to the back figure, '+JSON.stringify({end:turn.end,views:turn.views}));
+ ok(turn.xs.some(x=>x>60&&x<114),'and it glides there across the world rather than cutting, '+turn.xs.slice(0,6).map(x=>x.toFixed(1)).join(' '));
+ await page.evaluate(()=>bmSetFace('front')); await settle();
+ const pz=await page.evaluate(()=>{const b=BM.sv.getBoundingClientRect();return [b.left+b.width/2,b.top+b.height*0.5];});
+ await wheel(pz[0],pz[1],4,-1); await settle();
+ const pz1=await page.evaluate(()=>({z:BM.pan[0].cam.z/BM.pan[0].z0,open:bmZoomed(),btn:!!document.querySelector('#rbar [data-bmwhole],[data-bmwhole]:not([hidden])')}));
+ ok(pz1.z>1.5&&pz1.open&&pz1.btn,'a phone still zooms its one figure and offers the way back, '+JSON.stringify(pz1));
+ await page.evaluate(()=>{const z=document.querySelector('[data-bmwhole]');if(z)z.click();}); await settle();
+ ok((await fitOf(0))<1e-6,'and Whole body returns the one figure to its fit');
+ await sizeTo(1600,1000); await whole();
+ await page.mouse.move(5,5);
+ await page.evaluate(()=>{rdClose();loadP(PEOPLE.length-1);render();});
+}
 
 /* ---------------------------------------------------------------------------
    THE PAIN MAP OPENS BLANK AND IS PAINTED ON.
@@ -985,7 +1259,7 @@ const kb=await page.evaluate(()=>{
  KB_Q=''; kbRender();
  /* every section renders and every row opens something */
  let opened=0, empty=[], walked=0, marks={};
- ['addr','fetter','sab','law','mask','dom','arch','gate','card','seat','harm','gloss'].forEach(k=>{
+ ['addr','fetter','sab','hcx','law','mask','dom','arch','gate','card','seat','harm','gloss'].forEach(k=>{
   KB_SEC=k; kbRender();
   if(!document.querySelectorAll('.kb-row').length){empty.push(k);return;}
   walked++;
@@ -1030,7 +1304,10 @@ const kb=await page.evaluate(()=>{
     horizontal row," so textContent is a count digit or empty and the word
     this check wants is read off aria-label (and title carries the same
     word as the tap reachable fallback this product already uses). */
- const stack=[...document.querySelectorAll('#stack .stk-t[data-st]')]
+ /* THE FIVE TABS ARE GONE, 18 November: the stack is six levels now, each a
+    header, and the child emotions' header carries the name in its aria-label
+    where the tab did. Read off the headers in the order they stand. */
+ const stack=[...document.querySelectorAll('#stack .stk-lv .stk-lh')]
   .map(e=>(e.getAttribute('aria-label')||'').trim().replace(/\s+/g,' '));
  const text=document.body.innerText;
  return {secs,all,hit,none,foundAll,opened,walked,marks,empty,pool,held,chip,dash,rail,stack,text,
@@ -1043,7 +1320,7 @@ const kb=await page.evaluate(()=>{
    matters is that every deck the codex claims to hold is reachable by name.
    The owner asked where the stack and the universal laws were: both were here
    under names that did not say what they held, so those two are named here. */
-{const want=['Fetters','Child emotions','Saboteurs','Laws of Moral Integrity','Masks',
+{const want=['Fetters','Child emotions','Saboteurs','Hyper complexes','Laws of Moral Integrity','Masks',
   'Domains','Archetypes','Laws of Action','The cards','The stack','Universal laws'];
  const miss=want.filter(w=>kb.names.indexOf(w)<0);
  ok(miss.length===0,'every deck is reachable by name'
@@ -1078,18 +1355,25 @@ const kb=await page.evaluate(()=>{
  ok(kb.names.indexOf('Glossary')<0,
   'and the glossary is not a deck, it is what the search answers with');
  /* THE RENAME REACHES EVERY SURFACE OR IT IS NOT A RENAME. The codex is one
-    of three places the nine are named. The left rail's fourth section holds
+    of three places the nine are named. The left rail's fourth section held
     their sliders and the right rail's stack counts them, and a word that
     moves in one place and not the others is how this product ends up with two
-    vocabularies for one thing, which is what it just finished removing. */
- ok(kb.rail.indexOf('Child emotions')>=0,
-  'the left rail calls the nine child emotions, got '+kb.rail.join(', '));
+    vocabularies for one thing, which is what it just finished removing.
+
+    CHANGED 18 NOVEMBER, his words: "I also asked you to remove the child
+    emotions because we're going to have the person do self-reporting in the
+    diagnostic." The left rail's Child emotions section, with its eighteen
+    sliders, is gone, so this check, which asked that the section be there
+    under that name, now asks that it be gone. The word itself still reaches
+    the stack's own tab, which the check after the next one holds. */
+ ok(kb.rail.indexOf('Child emotions')<0,
+  'the left rail has no Child emotions section any more, 18 November, got '+kb.rail.join(', '));
  ok(kb.rail.indexOf('Fetters')<0,
   'and the rail no longer calls the nine fetters');
  /* the word moved off the tab's face to its aria-label, 14 November, but
     the name itself is unchanged: child emotions, not fetters. */
- ok(/^Child emotions/.test(kb.stack[0]||''),
-  'the stack tab\'s aria-label calls them child emotions, got '+(kb.stack[0]||'nothing'));
+ ok(kb.stack.some(h=>/^Child emotions/.test(h)),
+  'the stack level\'s aria-label calls them child emotions, got '+kb.stack.join(' | '));
  ok(!/child fetter/i.test(kb.text),
   'and the phrase child fetter reaches no surface');}
 /* ALL 112, NEVER 108. W is the 108 somatic addresses and the four field
@@ -1151,7 +1435,12 @@ ok(kb.opened===kb.walked,'every section opens a drill, got '+kb.opened
    row's own glyph svg (.crb-g svg), not the first path in the row: the ring
    arc drawn behind it is also an svg and has no path, which is a second,
    separate bug this same recalibration fixed, see the mark reader above. */
-{const want={law:21, mask:5, sab:6, harm:27, fetter:9};
+{const want={law:21, mask:5, sab:6, fetter:9};
+ /* harm was 27 until 5b672b79, 21 November, his note "every law wears its
+    own mark" (HARM_IC, engine/data/kb.js): the HARM deck now carries one
+    distinct mark per card, so it is held to its own card count, read off
+    the run, rather than to a typed number. */
+ const one={harm:1};
  /* mask was 6, round NE: Professional hidden and not calculated, so the
     deck reads five distinct mask marks now, not a regression. */
  const floor={addr:18};
@@ -1163,7 +1452,9 @@ ok(kb.opened===kb.walked,'every section opens a drill, got '+kb.opened
  Object.keys(kb.marks).forEach(k=>{
   const m=kb.marks[k];
   if(m.blank)bad.push(k+': '+m.blank+' cards with no mark');
-  if(want[k]!==undefined&&m.uniq!==want[k])
+  if(one[k]&&m.uniq!==m.n)
+   bad.push(k+': '+m.uniq+' marks on '+m.n+' cards, expected one each');
+  else if(want[k]!==undefined&&m.uniq!==want[k])
    bad.push(k+': '+m.uniq+' marks, expected '+want[k]);
   else if(want[k]===undefined&&m.n>3&&m.uniq<2)
    bad.push(k+': '+m.n+' cards sharing one mark');});
@@ -1251,22 +1542,50 @@ await page.setViewportSize({width:1600,height:1000});
   const cq=[...body.querySelectorAll('.kbs-cq .kb-row')][0]; if(cq)cq.click();
   const core=document.getElementById('rdrill').textContent;
   rdClose();
-  /* a fetter has no meaning on file, and in the wisdom school it says so
-     rather than printing nothing under a name */
+  /* CHANGED 20 NOVEMBER, round LY. A fetter had no meaning on file and the
+     wisdom school said so; each of the 108 now carries one line composed from
+     its own row, under the Source AI mark. So this asks that the line prints
+     and wears the mark, and the gap moves to a child emotion the book and
+     CHILD still disagree on, Fear, which keeps it until he rules. And the
+     two they agree on print the book's words, unmarked. */
   KB_SEC='addr'; kbRender();
   const fx=kbRows('addr').filter(x=>BANDS.indexOf(x.o.b)>=0)[0]; kbOpen(fx);
-  const gap=document.getElementById('rdrill').textContent; rdClose();
+  const fd=document.getElementById('rdrill');
+  const said={t:fd.textContent, want:addrSay(fx.o), mark:!!fd.querySelector('.src-ai .src-mk')}; rdClose();
+  /* CHANGED 22 NOVEMBER. 74564639 moved Fear's opposite to Safety, the
+     book's own E60, so the book and CHILD no longer disagree on any child
+     emotion and Fear now prints the book's entry like Shame below. The gap
+     check holds that instead: Fear's line is the book's, unmarked. */
+  kbOpen(kbRows('fetter').filter(x=>x.o.nm==='Fear')[0]);
+  const gd=document.getElementById('rdrill');
+  const gap={t:gd.textContent, mark:!!gd.querySelector('.src-ai')}; rdClose();
+  kbOpen(kbRows('fetter').filter(x=>x.o.nm==='Shame')[0]);
+  const shd=document.getElementById('rdrill');
+  const shame={t:shd.textContent, mark:!!shd.querySelector('.src-ai')}; rdClose();
+  /* an inferred saboteur says its composed line, marked */
+  const inf=kbRows('sab').filter(x=>x.o.unnamed&&!computeSeen().sabs.some(s=>s.nm===x.o.nm))[0];
+  let infs={t:'',want:'',mark:false};
+  if(inf){kbOpen(inf); const d=document.getElementById('rdrill');
+   infs={t:d.textContent,want:INFER_SAY[inf.o.nm]||'',mark:!!d.querySelector('.src-ai .src-mk')}; rdClose();}
+  /* the hyper complex deck opens each family on its own record */
+  const hx=kbRows('hcx'), hopen=hx.map(x=>{kbOpen(x); const t=document.getElementById('rdrill').textContent; rdClose();
+   return t.indexOf(x.o.nm)>=0&&t.length>120;}).filter(Boolean).length;
   KB_SEC='all'; kbRender();
   /* a Body page press on a mask still answers in the rail, never in the layer */
   setTab(TAB.MASKS); render(); kbOpen({k:'mask',o:MASKS[0]});
   const inRail=!!document.getElementById('rdrill').closest('.lsec'); rdClose();
   /* and the page is left as the knowledge block above left it */
   loadP(PERSON('James')); setTab(TAB.KNOW); render();
-  return {panels,hdr,ph,core,gap,inRail,n:SI.length};});
+  return {panels,hdr,ph,core,gap,said,shame,infs,hx:hx.length,hopen,inRail,n:SI.length};});
  ok(o.panels[0]==='cq'&&o.panels.indexOf('Crown')>0,'the coherence formula comes before the seat page that lists the universal laws, '+o.panels.join(','));
  ok(!/codex/i.test(o.hdr+o.ph)&&!/Crown down to root/.test(o.hdr),'the codex label, its search wording and the seat order line are gone, header "'+o.hdr+'", search "'+o.ph+'"');
  ok(new RegExp('The '+o.n+' laws, each read from nothing to ten, added together').test(o.core),'the formula opens the core drill, which states the ruled formula over '+o.n+' laws');
- ok(/No meaning on file yet\./.test(o.gap),'a fetter with no text on file says so in the wisdom school rather than printing nothing');
+ ok(!!o.said.want&&o.said.t.indexOf(o.said.want)>=0&&!/No meaning on file yet\./.test(o.said.t),'a fetter in the wisdom school prints its own composed line, not the gap');
+ ok(o.said.mark,'and that line wears the Source AI mark, because it is not the book');
+ ok(/The most fundamental contraction\./.test(o.gap.t)&&!/No meaning on file yet\./.test(o.gap.t)&&!o.gap.mark,'Fear, now on the book\'s own opposite, Safety, prints the book\'s entry, no gap and no Source AI mark');
+ ok(/The deepest collapse\./.test(o.shame.t)&&!o.shame.mark,'Shame, where they agree, prints the book\'s own entry and wears no Source AI mark');
+ ok(!!o.infs.want&&o.infs.t.indexOf(o.infs.want)>=0&&o.infs.mark,'an inferred saboteur prints its composed line under the mark');
+ ok(o.hx>0&&o.hopen===o.hx,'every hyper complex in its deck opens on its own record, '+o.hopen+' of '+o.hx);
  ok(o.inRail,'a mask opened from the Body page still answers in the rail');}
 
 const rec=await page.evaluate(()=>{
@@ -1498,6 +1817,173 @@ ok(bands.length===0,'no band word appears anywhere on an unread first screen, fo
  +(bands.join(', ')||'none'));
 await blank.close();
 
+console.log('\n=== an unread Field draws its 21 law ticks empty, and answers to no seed nobody entered ===');
+/* THE GATE FOR 22141540, 16 November. On a blank profile every law holds
+   LAW_DEFAULT, the seed 6 nobody answered, and the wheel's law ticks read
+   S.law straight, so all twenty one stood at six tenths of their run in their
+   seats' colours under a core that prints a dash. The owner saw it as "a bunch
+   of data that was loading up when there's no file selected". The fix changed
+   two files and added no test, so nothing stopped the seed coming back.
+
+   WHAT IS HELD. A canvas has no DOM, so a tick's length is read off the strokes
+   themselves: the 2D context is wrapped for one synchronous draw, and the
+   twenty one ticks are the only run of twenty one identical straight round
+   capped strokes, one on each law's own angle (HIT carries that angle). Both
+   halves of the engine's guard are named here, r.unread and r.lawSQ null, and
+   a read field's lengths are taken as a ratio to the law's own value, so the
+   gate carries no extent of its own and moves with the wheel's geometry.
+
+   The seed is then moved under the unread field, all 21 to ten and all 21 to
+   nought, the way the bulk law slider moves it (ui/panels.js, allLaw: an
+   unanswered law takes the value and its seed goes with it, so it stays
+   unanswered). The whole wheel is drawn again from a fresh compute and not one
+   pixel of it may move, because nothing a person has not answered may be drawn
+   as a reading. The same method on a complete intake has to see the frame
+   move, or the zero above would be a detector that cannot see.
+
+   THE WASH IS HELD ONLY AS FAR AS IT IS TRUE, and the line below says where it
+   stops. What drawAura reads from CQ is held: CQ, DQ, benign and darkB are the
+   unread reading's and no seed moves them. What it reads from r.radiance is
+   NOT held, because it is not silent: radiance is built from Ig and It, which
+   read the seed (6 on a blank profile, radiance 0.80, measured 18 November), so
+   the glow and the wash's opacity answer to a value nobody entered. That is
+   the coherence wash's line to close, wave 3 of the Field plan, and its
+   check is the one this section already runs on the wheel: draw the wash again
+   under a moved seed and count the pixels. The numbers are printed under each
+   width so the day it reads 0 is seen in the log and the check can be added.
+
+   The hover is the second half of the same lie ("reads 60%" over an empty
+   field), so it is read through describe() at both widths, and through a real
+   pointer at 1600 where the law ticks are the topmost target; at 390 the
+   rings sit over them and a finger reaches them by the same describe(). */
+const fieldSilenceProbe=()=>{
+ const cv=document.getElementById('cv'), g=cv.getContext('2d'), wash=document.getElementById('bgaura');
+ const snap=c=>new Uint32Array(c.getContext('2d').getImageData(0,0,c.width,c.height).data.buffer);
+ const diff=(a,b)=>{let n=Math.abs(a.length-b.length);const m=Math.min(a.length,b.length);
+  for(let i=0;i<m;i++)if(a[i]!==b[i])n++;return n;};
+ const names=SI.map(l=>l.nm), kept=names.map(n=>S.law[n]), keptSeed=names.map(n=>LAW_SEED[n]);
+ /* the seed moves the way the bulk law slider moves it (ui/panels.js, allLaw):
+    an unanswered law takes the value and its seed goes with it, so it stays
+    unanswered. Writing S.law alone is an answer, lawIn counts it, and CQ moves. */
+ const seed=v=>names.forEach((n,i)=>{
+  if(v===null){S.law[n]=kept[i];LAW_SEED[n]=keptSeed[i];return;}
+  if(!lawIn(n))LAW_SEED[n]=v; S.law[n]=v;});
+ /* what the wash is handed that comes from CQ, and the one thing that does not */
+ const feed=r=>({CQ:r.CQ,DQ:r.DQ,benign:r.benign,darkB:r.darkB,unread:r.unread,radiance:+r.radiance.toFixed(3)});
+ /* one frame of the wheel and of the wash, from a fresh reading. The two
+    signatures are cleared so the draw is never skipped as "nothing moved". */
+ const frame=forged=>{const r=computeSeen();DRAW_SIG=null;draw(r);AURA_SIG=null;
+  drawAura(forged?Object.assign({},r,forged):r);return {w:snap(cv),a:snap(wash)};};
+ /* the ticks, measured as they are drawn */
+ const ticks=()=>{
+  const M=['beginPath','moveTo','lineTo','stroke'], orig={}, rec=[]; let path=[];
+  M.forEach(k=>{orig[k]=g[k];});
+  g.beginPath=function(){path=[];return orig.beginPath.apply(g,arguments);};
+  g.moveTo=function(x,y){path.push(['M',x,y]);return orig.moveTo.apply(g,arguments);};
+  g.lineTo=function(x,y){path.push(['L',x,y]);return orig.lineTo.apply(g,arguments);};
+  g.stroke=function(){rec.push({p:path.slice(),cap:g.lineCap,w:g.lineWidth});return orig.stroke.apply(g,arguments);};
+  try{DRAW_SIG=null;draw(computeSeen());}finally{M.forEach(k=>{delete g[k];});}
+  const lh=HIT.filter(h=>h.k==='law'), groups={};
+  lh.forEach(h=>{const a=(h.a0+h.a1)/2,ux=Math.cos(a),uy=Math.sin(a);
+   rec.forEach(s=>{
+    if(s.p.length!==2||s.p[0][0]!=='M'||s.p[1][0]!=='L'||s.cap!=='round')return;
+    const dx=s.p[0][1]-h.cx,dy=s.p[0][2]-h.cy,d=Math.hypot(dx,dy);
+    if(!d||Math.abs(dx/d-ux)>1e-6||Math.abs(dy/d-uy)>1e-6)return;
+    const k=s.w.toFixed(3)+'@'+d.toFixed(2);
+    (groups[k]=groups[k]||{})[h.j]=Math.hypot(s.p[1][1]-s.p[0][1],s.p[1][2]-s.p[0][2]);});});
+  const whole=Object.keys(groups).filter(k=>Object.keys(groups[k]).length===lh.length);
+  return {targets:lh.length,runs:whole.length,lens:whole.length===1?lh.map(h=>groups[whole[0]][h.j]):null};};
+ const r0=computeSeen(), tk=ticks();
+ const o={unread:r0.unread,complete:r0.complete,lawSQ:r0.lawSQ,CQ:r0.CQ,targets:tk.targets,runs:tk.runs,lens:tk.lens,
+  laws:names.map(n=>S.law[n]),dash:PCT_DASH,onField:S.tab===TAB.FIELD,fview:fviewOn()};
+ /* what the hover says, from the targets the frame just put down */
+ o.say=HIT.filter(h=>h.k==='law').map(h=>describe(h,r0).replace(/<[^>]+>/g,' ').replace(/\s+/g,' '));
+ /* the frame as it stands, drawn twice, then under a seed of ten and of nought */
+ const A=frame(), A2=frame();
+ seed(10); const rt=computeSeen(), B=frame();
+ seed(0); const rz=computeSeen(), C=frame();
+ seed(null);
+ o.feed={as:feed(r0),ten:feed(rt),nought:feed(rz)};
+ o.still={wheel:diff(A.w,A2.w),wash:diff(A.a,A2.a)};
+ o.moved={wheelTen:diff(A.w,B.w),wheelNought:diff(A.w,C.w),washTen:diff(A.a,B.a),washNought:diff(A.a,C.a)};
+ /* and the wash on a forged CQ, which only a complete intake may answer to */
+ o.moved.washForged=diff(A.a,frame({CQ:r0.CQ>50?5:95}).a);
+ o.px={wheel:A.w.length,wash:A.a.length};
+ return o;};
+const fieldTicksOnUnread=async W=>{
+ const sp=await browser.newPage({viewport:{width:W,height:W===390?844:1000}});
+ await sp.goto(FILE,{waitUntil:'load'}); await booted(sp); await sp.waitForTimeout(400);
+ await sp.evaluate(()=>{try{localStorage.clear();}catch(e){}});
+ await sp.reload({waitUntil:'load'}); await booted(sp); await sp.waitForTimeout(700);
+ /* two frames for the render, and the entrance let finish: the Field assembles
+    on arrival, and a frame measured while it does measures the animation */
+ const settle=async()=>{await sp.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
+  await ready(sp,()=>typeof enterOver!=='function'||enterOver(),10000,'the Field entrance never finished');};
+ await sp.evaluate(()=>{setTab(TAB.FIELD);render();}); await settle();
+ const blankRead=await sp.evaluate(fieldSilenceProbe);
+ /* a real pointer, where the ticks are the top target (1600 only) */
+ let pointer=null;
+ if(W===1600){
+  const pts=await sp.evaluate(()=>{const rc=document.getElementById('cv').getBoundingClientRect();
+   return HIT.filter(h=>h.k==='law').map(h=>{const a=(h.a0+h.a1)/2,r=(h.r0+h.r1)/2;
+    return [rc.left+h.cx+Math.cos(a)*r,rc.top+h.cy+Math.sin(a)*r];});});
+  pointer=[];
+  for(const [X,Y] of pts){
+   await sp.mouse.move(4,4); await sp.mouse.move(X,Y,{steps:3});
+   pointer.push(await sp.evaluate(()=>{const pr=document.getElementById('probe');
+    return pr.classList.contains('on')?pr.textContent.replace(/\s+/g,' '):'';}));}
+  await sp.mouse.move(4,4);}
+ /* then a complete intake, by name, on the same page */
+ await sp.evaluate(()=>{loadP(PERSON('James'));setTab(TAB.FIELD);render();}); await settle();
+ const readRead=await sp.evaluate(fieldSilenceProbe);
+ await sp.close();
+ return {blank:blankRead,read:readRead,pointer};};
+for(const W of [1600,390]){
+ const fs=await fieldTicksOnUnread(W), b=fs.blank, rd=fs.read, tag=W+': ';
+ /* the guard the gate stands on, both halves of it */
+ ok(b.unread===true&&b.lawSQ===null&&b.complete===false&&b.CQ===0&&b.onField&&!b.fview,
+  tag+'a blank profile on the Field is unread, with no law answered, lawSQ null and CQ 0, '
+  +JSON.stringify({unread:b.unread,lawSQ:b.lawSQ,CQ:b.CQ,complete:b.complete}));
+ /* the ticks are found, so a zero below is a measurement and not a miss */
+ ok(b.targets===21&&b.runs===1&&b.lens&&b.lens.length===21,
+  tag+'the wheel puts down 21 law targets and the 21 ticks are found as one run of strokes, '
+  +JSON.stringify({targets:b.targets,runs:b.runs}));
+ ok(b.lens&&b.lens.every(x=>x<0.01)&&b.laws.every(x=>x>0),
+  tag+'every tick is nought long while the seed under it is not, seeds '+b.laws.slice(0,3).join(',')
+  +' ..., lengths '+(b.lens?b.lens.map(x=>+x.toFixed(2)).join(','):'none'));
+ ok(b.say.length===21&&b.say.every(t=>/^\s*law\b/.test(t)&&t.indexOf('reads '+b.dash)>=0&&!/reads\s*[0-9]/.test(t)),
+  tag+'and the hover on each says the dash, never the seed as a percentage, '+JSON.stringify(b.say.slice(0,1)));
+ /* nothing answers to a number nobody entered */
+ const fd=b.feed, same=(x,y)=>x.CQ===y.CQ&&x.DQ===y.DQ&&x.benign===y.benign&&x.darkB===y.darkB&&x.unread===y.unread;
+ ok(fd.as.CQ===0&&fd.as.DQ===0&&fd.as.benign===null&&fd.as.unread===true&&same(fd.as,fd.ten)&&same(fd.as,fd.nought),
+  tag+'a seed of ten and of nought on all 21 laws moves no CQ, DQ, benign or darkB and leaves the field unread, '+JSON.stringify(fd));
+ ok(b.moved.wheelTen===0&&b.moved.wheelNought===0,
+  tag+'and the wheel is drawn identically, '+b.moved.wheelTen+' and '+b.moved.wheelNought+' of '+b.px.wheel+' pixels moved');
+ /* a complete intake draws what it was told, which is what makes the zeros above mean something */
+ ok(rd.unread===false&&rd.complete===true&&rd.lawSQ!==null&&rd.targets===21&&rd.runs===1,
+  tag+'a complete intake is read, whole, and its 21 ticks are found, '
+  +JSON.stringify({unread:rd.unread,complete:rd.complete,lawSQ:rd.lawSQ,runs:rd.runs}));
+ const ratio=rd.lens?rd.lens.map((x,i)=>x/rd.laws[i]):[0];
+ ok(rd.lens&&rd.lens.every(x=>x>0)&&rd.laws.every(x=>x>0)&&new Set(rd.laws).size>1
+   &&Math.max(...ratio)-Math.min(...ratio)<1e-6*Math.max(...ratio),
+  tag+'each tick is as long as its own law, one length per point of the law and not all one length, laws '
+  +rd.laws.slice(0,4).join(',')+' ..., lengths '+(rd.lens?rd.lens.slice(0,4).map(x=>+x.toFixed(2)).join(','):'none'));
+ ok(rd.say.length===21&&rd.say.every(t=>/reads\s*[0-9]+%/.test(t)),
+  tag+'and the hover reads a percentage again, '+JSON.stringify(rd.say.slice(0,1)));
+ ok(b.still.wheel===0&&b.still.wash===0&&rd.moved.wheelTen>rd.still.wheel&&rd.moved.wheelNought>rd.still.wheel
+   &&rd.moved.washForged>0,
+  tag+'and the same method sees a read field move and a still one stay: an unread frame drawn twice is identical, a read wheel moves under '
+  +'a seed change ('+rd.moved.wheelTen+', '+rd.moved.wheelNought+' pixels, against '+rd.still.wheel+' of its own) and the wash under a '
+  +'different CQ ('+rd.moved.washForged+' pixels)');
+ if(W===1600){
+  ok(fs.pointer.length===21&&fs.pointer.every(t=>/^\s*law\b/.test(t)&&t.indexOf('reads '+b.dash)>=0&&!/reads\s*[0-9]/.test(t)),
+   '1600: a real pointer on each of the 21 ticks reads a law and says the dash, '+fs.pointer.filter(t=>!/^\s*law\b/.test(t)).length
+   +' of 21 did not reach a law at all');}
+ /* the open line, printed and not counted: see THE WASH above */
+ console.log('  '+W+': the wash under a moved seed on an unread field, '+b.moved.washTen+' and '+b.moved.washNought+' of '+b.px.wash
+  +' pixels moved, from radiance '+b.feed.as.radiance+' at the seed, '+b.feed.ten.radiance+' at ten, '+b.feed.nought.radiance+' at nought');
+}
+
 console.log('\n=== nothing in the rail is clipped without an affordance ===');
 /* Witness rendered as Witn at every desktop width, in a row that did not wrap
    and had no scrollbar. Rule 10: never hide a control with no affordance. */
@@ -1590,39 +2076,34 @@ ok(/How it shows up/i.test(lab.drill),'says how it shows up in a life');
 ok(/Where it goes/i.test(lab.drill),'and where it goes next');
 /* and the definition has to be reachable by TAP, not only by hover. It lived
    in a title attribute, and the audience arrives on phones. */
-/* #psum IS NOT THE BAND'S DOOR ANY MORE, 14 November, round SV22 finally
-   landed. His words, 5 November: "that little area right there is a
-   summary... that field needs to be moved into the insight field." #psum
-   now prints the Selection panel's own Blueprint domain reading
-   (domReadHtml, ui/drills.js) and a press opens the same runDomDrill, in
-   the place SV18 (5 November) had put the band's runCompassDrill. This is
-   a NAMED LOSS, not a silent one: #psum was the band's only remaining
-   tappable home on the Field (#railtop and #pol2 are both display:none by
-   id), so the band's own definition, body state, "How it shows up", "Where
-   it goes" and the crisis floor have no door on the Field once this gate
-   stops asserting it here. The band word, its state and "Where it goes"
-   still print on Summary's own status card; the definition and the body
-   line do not survive anywhere else. runCompassDrill itself is untouched
-   and still correct, checked directly above through #tier; this block only
-   stops claiming a control that no longer calls it. */
+/* THE BLUEPRINT DOMAIN CARD LEFT THE TOP OF THE RAIL, 18 November. #psum was a
+   fixed library blurb on every read record, above the word Insight. His words:
+   "The insight panel at the very top should say insight. Whatever I select, it
+   should give me source AI's reading." This block asserted the card was a
+   control, 44px tall, with an aria-label, and that a tap opened the domain.
+   Those five checks are kept in count and now hold the new design: the card is
+   gone, the word Insight is the rail's first block, a domain is one more thing
+   Insight reads when it is selected, and the full card still opens in Selection
+   when the domain is pressed. Named in DECISIONS.md, 18 November. */
 const tapPg=await browser.newPage({viewport:{width:390,height:844}});
 await tapPg.goto(FILE,{waitUntil:'load'}); await booted(tapPg); await tapPg.waitForTimeout(700);
 const tapped=await tapPg.evaluate(()=>{
  loadP(PERSON('Tomas')); setTab(TAB.FIELD); render();
  S.pin=null; render();
- const el=document.getElementById('psum');
- const h=Math.round(el.getBoundingClientRect().height);
- const hasLabel=(el.getAttribute('aria-label')||'').length>0;
- const role=el.getAttribute('role'), tab=el.getAttribute('tabindex');
- el.click();
+ const none={psum:!!document.getElementById('psum'),person:!!document.getElementById('person'),
+  head:((document.querySelector('#rpanel .lsec[data-sec="you"] .lsec-hd')||{}).textContent||'').trim()};
+ const d0=DOMAINS[S.doms[0]];
+ runDomDrill(d0); render();
  const d=(document.getElementById('rdrill').textContent||'').replace(/\s+/g,' ');
- return {tag:el.tagName, h, hasLabel, role, tab, opened:d.length,
+ const ins=document.getElementById('insight');
+ return {none, name:(ins.querySelector('.ins-nm')||{}).textContent||'', kind:(ins.querySelector('.ins-kd')||{}).textContent||'',
+  paras:ins.querySelectorAll('.ins-pg[data-on] .ins-p').length, dom:d0.nm, opened:d.length,
   full:/Blueprint domain/i.test(d)&&/cluster/i.test(d)&&(/Read clear/i.test(d)||/What it is/i.test(d))};});
-ok(tapped.tag==='DIV','the domain reading is divs and paragraphs, not phrasing content for a button, got '+tapped.tag);
-ok(tapped.role==='button'&&tapped.tab==='0','so role and tabindex keep it a control instead');
-ok(tapped.hasLabel,'and it carries an aria-label of its own');
-ok(tapped.h>=44,'it clears the touch floor, got '+tapped.h+'px');
-ok(tapped.full,'and a tap gives the blueprint domain, its cluster and its clear or distorted read');
+ok(!tapped.none.psum&&!tapped.none.person,'the blueprint domain card is not on the rail');
+ok(tapped.none.head==='Insight','the rail opens on the word Insight, got '+tapped.none.head);
+ok(tapped.name===tapped.dom&&tapped.kind==='Blueprint domain','a domain that is selected is read by Insight, '+JSON.stringify({n:tapped.name,k:tapped.kind}));
+ok(tapped.paras===3,'in three paragraphs, got '+tapped.paras);
+ok(tapped.full,'and the full card still opens in Selection: the blueprint domain, its cluster and its clear or distorted read');
 await tapPg.close();
 
 console.log('\n=== zoom atomises the construct ===');
@@ -1770,11 +2251,16 @@ const rel=await page.evaluate(()=>{
  CHARGES.forEach(c=>{S.charge[c]=0;}); SINAMES.forEach(l=>{S.law[l]=5;});
  syncCh(); syncLw(); render();
  const l0=SINAMES.map(l=>S.law[l]).join();
- document.getElementById('bRel').click();
- return {l0, wait:true};});
+ /* THE BUTTON MOVED INTO THE INSIGHT READING, 18 November, and acts on what is
+    selected: with nothing held there is nothing selected and so no button to
+    press. Where it is drawn the press goes through the same refusal. */
+ const b=document.getElementById('bRel');
+ if(b)b.click();
+ insRunRelease(null);
+ return {l0, wait:true, drawn:!!b};});
 await page.waitForTimeout(3200);
 const relAfter=await page.evaluate(()=>SINAMES.map(l=>S.law[l]).join());
-ok(relAfter===rel.l0,'with nothing held, the button changes no law');
+ok(relAfter===rel.l0&&!rel.drawn,'with nothing held, no release button is drawn and no law changes');
 
 console.log('\n=== a finger reads the wheel, it does not write it ===');
 /* A thumb landing on the wheel to scroll used to drag the charge underneath
@@ -1990,7 +2476,7 @@ ok(core.z42.rad>core.z1.rad*1.5,
 /* this said "and it says what it is showing", which was the line under the
    depth bar. BA2 cut that line, so nothing says it now; the name is still how
    this block holds which layer resolved at 2.8. */
-ok(core.z28.res==='the seven seats','and the layer resolved there is the seven seats, got '+core.z28.res);
+ok(core.z28.res==='the seven assemblage points','and the layer resolved there is the seven assemblage points, got '+core.z28.res);
 console.log(' ',JSON.stringify(core));
 
 console.log('\n=== the readout stays off the pointer, and a real press reaches the core ===');
@@ -2178,36 +2664,47 @@ const sum=await page.evaluate(()=>{
  const q=s=>document.querySelectorAll(s).length;
  const body=document.getElementById('sumbody');
  /* every ring on this surface is the same object: icon, arc, pill */
- const rings=[...document.querySelectorAll('#sumbody .cr')];
+ /* the page and its left rail, which since 20 November carries What is
+    running (#sumrun) and the celestial layer flat (#spirit): his words, "what's
+    running is moving to the left panel" */
+ const rings=[...document.querySelectorAll('#sumbody .cr,#sumrun .cr')];
  const badRing=rings.filter(c=>!c.querySelector('svg.arc')||!c.querySelector('.gl svg'));
  /* a pill that is empty must not paint, or a colour marker grows a chip */
  const emptyPill=rings.filter(c=>{const v=c.querySelector('.v');
   return v&&!v.textContent.trim()&&getComputedStyle(v).display!=='none';});
  return {
-  glance:q('#sumbody .s-gl'),
   storyP:q('#sumbody .s-story .s-p'),
-  structRows:q('#sumbody .s-row'),
-  doms:q('#sumbody .s-dom'),
-  chips:q('#sumbody .s-chip'),
+  structRows:q('#sumrun .s-row'),
+  doms:q('#doms .ib:not(.rl-off)'),
+  chips:q('#spirit .sp-tile'),
   /* no boxes around the spiritual glyphs, on the owner's ruling */
   chipBox:[...document.querySelectorAll('#sumbody .s-chip')]
    .filter(c=>getComputedStyle(c).borderTopWidth!=='0px').length,
-  numRows:q('#sumbody .s-nrow'),
-  numParts:q('#sumbody .s-npart'),
+  numRows:q('#spirit .sp-line[data-sys=N] .sp-tile'),
   rings:rings.length, badRing:badRing.length, emptyPill:emptyPill.length,
   /* nothing may run wider than its own column */
   over:[...body.querySelectorAll('*')].filter(e=>e.scrollWidth>e.clientWidth+2
    &&getComputedStyle(e).overflowX==='visible').length,
   text:(body.textContent||'').replace(/\s+/g,' ')};});
-ok(sum.glance>=5,'the glance strip carries every reading, got '+sum.glance);
+/* RE-POINTED AND RETIRED BY NAME, 20 November, his words: "everything
+   beneath your patterns... what's running is moving to the left panel. And
+   then the rest of that looks like it's in analytics... where it says
+   oscillating 50%, just get rid of that entirely." What moved is read where
+   it went: the masks as What is running in the left rail (#sumrun), the
+   blueprint as the rail's own lit domain, the spiritual layer and the
+   numerology numbers as the rail's flat Root Energetics (#spirit). Two are
+   retired, not moved: the glance strip was the What it costs card and the
+   name parts were the full numerology card, both off this page now, and
+   Analytics carries the readings. Every ring the page and its rail draw is
+   still held to icon, arc and pill; there are fewer of them on the page, so
+   the count asks for one or more, not nine. */
 ok(sum.storyP===3,'the story is three paragraphs, got '+sum.storyP);
-ok(sum.structRows>5,'the structures panel lists what is measured, got '+sum.structRows);
-ok(sum.doms>0,'and draws the blueprint selection, got '+sum.doms);
-ok(sum.chips>=5,'the spiritual layer is a row of glyphs, got '+sum.chips);
+ok(sum.structRows>0,'What is running lists the masks in the left rail, got '+sum.structRows);
+ok(sum.doms>0,'and the rail lights the blueprint selection, got '+sum.doms);
+ok(sum.chips>=5,'the celestial layer is a row of glyphs in the rail, got '+sum.chips);
 ok(sum.chipBox===0,'with no boxes around them, got '+sum.chipBox);
-ok(sum.numRows>=5,'numerology prints its numbers, got '+sum.numRows);
-ok(sum.numParts===3,'and every name on its own, got '+sum.numParts);
-ok(sum.rings>8&&sum.badRing===0,
+ok(sum.numRows>=5,'numerology prints its numbers in the rail, got '+sum.numRows);
+ok(sum.rings>0&&sum.badRing===0,
  sum.rings+' rings and every one is icon, arc and pill, bad '+sum.badRing);
 ok(sum.emptyPill===0,'an empty value paints no pill, got '+sum.emptyPill);
 
@@ -2331,7 +2828,10 @@ const numUI=await page.evaluate(()=>{
   pct75:/convergence[^.]*\d+%/i.test(txt)};});
 ok(numUI.inPage,'the full name is read, not the roster nickname');
 ok(numUI.hasLp,'and the six numbers are on the page');
-ok(numUI.basis,'convergence names the comparisons it rests on');
+/* RETIRED 20 November: the Birth comparison fold left the Summary with
+   everything under Your patterns, on his ruling recorded above at "the
+   summary, the opening screen". sumConverge still exists and its drill is
+   unchanged. */
 ok(numUI.noFrac,'and does not state them as a count against a total');
 ok(!numUI.pct75,'and never a bare percentage with no denominator');
 
@@ -2462,9 +2962,9 @@ ok(pole.rows===8,'and eight axes on the roster, got '+pole.rows);
    end, so Discipline and Discernment are read off MIRROR rather than typed. The
    master list under them prints the word of the pole each master stands on
    too, since the same day's ruling on the Compass still showing teachers. */
-ok(pole.mirrorUp.every(w=>pole.up.indexOf(w)>=0)&&/Clear Conduction/.test(pole.up)&&/Free Flow/.test(pole.up)&&!/Musashi|Buddha|Akhenaten|Krishna/.test(pole.up),
+ok(pole.mirrorUp.every(w=>pole.up.indexOf(w)>=0)&&/Clarity/.test(pole.up)&&/Free Flow/.test(pole.up)&&!/Musashi|Buddha|Akhenaten|Krishna/.test(pole.up),
  'the upward roster prints behaviour words for the eight axes and for the masters, and no teacher\'s name');
-ok(/False Light/.test(pole.dn)&&/Sacrificial Extraction/.test(pole.dn)&&/Satan frozen/.test(pole.dn)&&!/Lucifer/.test(pole.dn),
+ok(/Shadow/.test(pole.dn)&&/Sacrificial Extraction/.test(pole.dn)&&/Satan frozen/.test(pole.dn)&&!/Lucifer/.test(pole.dn),
  'the downward roster names the inversions and the nine circles');
 ok(/behaviours, not entities/.test(pole.dn),
  'and says in the copy that they are behaviours rather than entities');
@@ -2989,15 +3489,18 @@ console.log('\n=== the bar is the loop\'s four sections over a row of tabs, and 
   /* and 17 November: "change the word compass to path... hide character for
      now... keep avatar there under play, but we're going to move summary,
      intake, and analytics under embody." */
-  '17 November: the journal page alone in Discover, Field, Body, Path and Avatar in Play, Ritual and Accountability in Flow, Wisdom school, Summary and Intake in Embody, Character and Games held off the bar, Clients in Practitioner, '+JSON.stringify(nav.placed));
- ok(nav.play==='Field,Body,Path,Avatar / Field,Body,Path,Avatar',
-  '17 November: Play reads Field, Body, Path, Avatar, in the engine and the bar alike, '+nav.play);
- ok(nav.embody==='Wisdom school,Summary,Intake,Analytics / Wisdom school,Summary,Intake,Analytics',
-  '17 November: Embody reads Wisdom school (Knowledge until 18 November), then Summary, Intake and Analytics in the order they stood in Play, in the engine and the bar alike, '+nav.embody);
+  '17 November: the journal page alone in Discover, Field, Body, Compass and Avatar in Play, Ritual and Accountability in Flow, Knowledge base, Summary and Intake in Embody, Character and Games held off the bar, Clients in Practitioner, '+JSON.stringify(nav.placed));
+ /* OVERRIDDEN, 20 November, his words: "change the title path back to
+    compass, I think it's a better title." Only the word moved; the 17
+    November placement this block checks did not. */
+ ok(nav.play==='Field,Body,Compass,Avatar / Field,Body,Compass,Avatar',
+  '20 November: Play reads Field, Body, Compass, Avatar, in the engine and the bar alike, '+nav.play);
+ ok(nav.embody==='Knowledge base,Summary,Intake,Analytics / Knowledge base,Summary,Intake,Analytics',
+  '20 November: Embody reads Knowledge base again (Wisdom school from 18 November, Lyceum briefly on 20 November, reverted the same day), then Summary, Intake and Analytics in the order they stood in Play, in the engine and the bar alike, '+nav.embody);
  ok(nav.discover.def==='0:Discover:section'&&nav.discover.btn==='0:Discover:section'&&nav.discover.home===0,
   '23 October: Discover has one door, the journal page, named Discover and marked as the section\'s own, in the engine and the markup, and it is where the app opens, '+JSON.stringify(nav.discover));
  ok(nav.discover.story.length===0,'and the word Story is on no name, mark or title on the bar: '+JSON.stringify(nav.discover.story));
- ok(JSON.stringify(nav.first)==='{"discover":"Discover","play":"Field","flow":"Ritual","embody":"Wisdom school"}',
+ ok(JSON.stringify(nav.first)==='{"discover":"Discover","play":"Field","flow":"Ritual","embody":"Knowledge base"}',
   'a first visit to each section opens its first tab, Discover the journal page and Play the Field, '+JSON.stringify(nav.first));
  ok(nav.unsectioned.length===0,'every tab sits in a section, unsectioned: '+nav.unsectioned.join(', '));
  ok(nav.misgrouped.length===0,'and every button sits in its own section\'s group, misgrouped: '+nav.misgrouped.join(', '));
@@ -3281,7 +3784,7 @@ ok(relrun.distinct===relrun.plan,'and never repeats a line inside one run');
    or the patterns that I'm about to release." The heading's place is the
    Story and Seat toggle, and the selection is shown as what it is, each group
    with its count of patterns. */
-ok(!/Release your selections/i.test(relrun.setup)&&/Story/.test(relrun.setup)&&/Seat/.test(relrun.setup)
+ok(!/Release your selections/i.test(relrun.setup)&&/Story/.test(relrun.setup)&&/Point/.test(relrun.setup)
  /* counted in lines and the dose named Patterns again since 29 October,
     the controls he named are all still here */
  &&/\d+ ?lines/.test(relrun.setup)&&/Run speed/.test(relrun.setup)&&/Patterns/.test(relrun.setup)
@@ -3579,7 +4082,7 @@ const ipg=await page.evaluate(async()=>{
  setTab(TAB.FIELD); render();
  return o;});
 ok(ipg.shown&&ipg.inside&&ipg.laws>=21&&ipg.avatarHidden,'Intake opens its own page with the questions on it, '+JSON.stringify(ipg));
-ok(ipg.btn==='Wisdom school,Summary,Intake,Analytics'&&ipg.pressed==='true','17 November: Embody reads Wisdom school, Summary, Intake, Analytics and the Intake door is pressed, '+ipg.btn);
+ok(ipg.btn==='Knowledge base,Summary,Intake,Analytics'&&ipg.pressed==='true','20 November: Embody reads Knowledge base, Summary, Intake, Analytics and the Intake door is pressed, '+ipg.btn);
 ok(ipg.avatarOwns&&ipg.again>=21,'the Avatar still takes its page back and the questions come back to the Intake, '+JSON.stringify({a:ipg.avatarOwns,again:ipg.again}));
 
 console.log('\n=== the profile is a menu, and the glow fills the frame (round OI) ===');
@@ -4084,7 +4587,7 @@ console.log('\n=== sign in, against a stub of the real server, and keeps nothing
  ok(!seen.some(s=>s.email==='probe@example'||s.email==='new@example.invalid'),'and neither of those two was sent');
  ok(o.taken[0]==='An account already uses that email. Log in instead.','a taken email names the way out, got '+JSON.stringify(o.taken));
  ok(o.noSessionYet,'nothing is held after seven refusals');
- ok(o.good[0]==='Signed in as probe@example.invalid.'&&o.good[1]==='ok','a sign in says who, got '+JSON.stringify(o.good));
+ ok(o.good[0]==='Signed in as probe@example.invalid. Your story stays on this device; it does not come over from another one yet.'&&o.good[1]==='ok','a sign in says who, got '+JSON.stringify(o.good));
  ok(/"token":"t-probe"/.test(o.heldAfter)&&/probe@example.invalid/.test(o.heldAfter),'the session is held under its own key, got '+o.heldAfter);
  ok(o.recordSame&&o.exportClean&&o.diskClean,'and never on the record: the profile, its export and the profile store carry no token');
  ok(!o.pwLeak,'no password typed in any attempt reaches storage');
@@ -4106,7 +4609,7 @@ console.log('\n=== sign in, against a stub of the real server, and keeps nothing
   'the forgotten password says the server\'s one answer for both cases, got '+JSON.stringify(o.forgot));
  ok(seen.some(x=>x.u==='/v1/auth/forgot'&&x.email==='probe@example.invalid'),'and the request reached the server');
  ok(o.cardWrong&&o.cardWrong[0]==='No account matches that email and password.','the card shows a refusal, got '+JSON.stringify(o.cardWrong));
- ok(o.cardIn&&o.cardInSaid[0]==='Signed in as probe@example.invalid.'&&/t-probe/.test(o.cardHeld),'a yes closes the card, says who, and holds the session');
+ ok(o.cardIn&&o.cardInSaid[0]==='Signed in as probe@example.invalid. Your story stays on this device; it does not come over from another one yet.'&&/t-probe/.test(o.cardHeld),'a yes closes the card, says who, and holds the session');
  ok(o.bootSkipped,'a person already signed in is not shown the door');
  /* Manage billing used to answer "not built yet. Email support" on every
     press. It goes to /v1/billing/portal now, through ui/auth.js. */
@@ -4848,21 +5351,31 @@ for(let i=1;i<15;i++){
 /* AND THE RELEASE CONTROL DOES NOT REFUSE SOMEBODY WHO IS STILL CARRYING.
    The queue was built at the sq 4 line, so the core loop had two runs in it and
    then the control refused. Measured on James: +4.05, +1.80, refused, while 72
-   addresses were still carrying. */
+   addresses were still carrying.
+
+   18 November: the button is inside the Insight reading and acts on what is
+   selected, not on the heaviest eight of the whole field, so the run is made
+   from the heaviest pattern a person has picked. Four selections in a row, each
+   the heaviest pattern that is not overshot and still holds charge, each pressed
+   through the real button: the card opens every time something is carrying. */
 const relOffer=await page.evaluate(async()=>{
  loadP(PERSON('James'));
  const seen=[];
  for(let k=0;k<4;k++){
-  const r=compute();
-  document.getElementById('bRel').click();
+  const r=computeSeen();
+  const pool=[].concat(r.sups,r.hys,r.cxs,r.sabs).filter(o=>!o.over&&leaves(o).some(n=>n.cf&&n.sq>=1));
+  const pick=pool.sort((a,b)=>b.w-a.w)[k%Math.max(1,pool.length)];
+  S.pin=pick||null; if(pick)runDrill(pick); render();
+  const b=document.getElementById('bRel');
+  if(b)b.click();
   await new Promise(z=>setTimeout(z,60));
-  seen.push({run:k+1,carrying:r.carrying.length,opened:RUN.open,q:RUN.queue.length});
+  seen.push({run:k+1,carrying:r.carrying.length,picked:!!pick,drawn:!!b,opened:RUN.open,q:RUN.queue.length});
   if(RUN.open){RUN.phase='run';RUN.idx=1e9;relCoolDown();relClose();}
  }
  return seen;});
 relOffer.forEach(s=>{
- ok(!(s.carrying>0&&!s.opened),
-  'release run '+s.run+' is offered while '+s.carrying+' addresses carry');});
+ ok(!(s.carrying>0&&s.picked&&!(s.drawn&&s.opened)),
+  'release run '+s.run+' is offered through the button while '+s.carrying+' addresses carry');});
 
 console.log('\n=== the ceiling on release is computed, not guessed ===');
 /* The ceiling is analytic. It must agree with actually clearing every charge
@@ -5251,8 +5764,15 @@ console.log('\n=== the three blocks stacked under the laws, round PP ===');
   ok(N.shut,'and a press on the open one shuts it');
   ok(N.seatTile,'and the archetype tile is the seat tile, one control on this page and not two');}
  ok(ix.pressed.stored===8&&ix.pressed.on,'a press records the answer and the cell stays pressed after the page redraws, '+JSON.stringify(ix.pressed));
- ok(/left/.test(ix.pressed.part),'and a half answered block says what is left, "'+ix.pressed.part+'"');
- ok(/^Loudest axis: Anger\./.test(ix.read)&&/Felt in the upper abdomen/.test(ix.read)&&/Its other end is Equanimity: /.test(ix.read),
+ /* FIXED, stale: a half answered block used to say what is left ("X of Y
+    questions left"), a fraction, which NO-FRACTIONS-AUDIT.md (18 November,
+    finding P09) replaced with a plain percent answered (ixSay, round PU,
+    engine/intakemore.js), and this assertion was never moved to match. */
+ ok(/%.*answered/.test(ix.pressed.part),'and a half answered block says how much is answered, as a percent and not a fraction, "'+ix.pressed.part+'"');
+ /* Anger's opposite was Equanimity until the 21 November ruling moved it to
+    the book's own word, Calm (canon.js CHILD, his words: "anger, calm,
+    apathy, joy, sad, happy"); this assertion was never moved to match. */
+ ok(/^Loudest axis: Anger\./.test(ix.read)&&/Felt in the upper abdomen/.test(ix.read)&&/Its other end is Calm: /.test(ix.read),
   'a finished block names its leader with the place and its other end unpacked, "'+ix.read+'"');
  ok(ix.moved===9&&ix.onAnger===1,'a second press on the same question moves the answer and leaves one cell pressed');
  ok(ix.kept,'and the answer survives the boundary on the way back in');
@@ -5327,12 +5847,19 @@ const kh=await page.evaluate(async()=>{
  o.added=[...host.querySelectorAll('[data-avtag]')].map(x=>x.dataset.avtag);
  const off=$('[data-avtagoff="Sad"]'); if(off)off.click();
  o.taken=[...host.querySelectorAll('[data-avtag]')].map(x=>x.dataset.avtag);
- const joy=$('[data-avtag="Joy"]'); if(joy)joy.click();
+ /* Sad's replacement state is Happy since 74564639, his 21 November words
+    "sad, happy" (CHILD, engine/data/canon.js); it was Joy before. */
+ const joy=$('[data-avtag="Happy"]'); if(joy)joy.click();
  o.found=host.querySelectorAll('.avt-found .av-jr-row').length;
  $('[data-avface="iq"]').click();
  o.iq=!!document.querySelector('#avqslot #iqbody')&&!document.getElementById('iqbody').hidden;
  AV.face='story'; CURP.avatar=keepA; CURP.story=keepS;
  if(keepSide==null)STORE.set(AV_KEY,'{}'); else STORE.set(AV_KEY,keepSide);
+ /* ARCHETYPES IS HIDDEN, 18 November (AV_ARCH_SHOWN, ui/avatarui.js), so
+    avSub('arch') is refused and this would read Becoming. Hidden is not
+    deleted: the view is turned on for these three checks and off again, so
+    the wheel that one line brings back is still the one KH ruled. */
+ const archWas=AV_ARCH_SHOWN; AV_ARCH_SHOWN=true;
  loadP(PERSON('Marcus')); setTab(TAB.INTAKE); avSub('arch'); render();
  await new Promise(r=>setTimeout(r,300));
  const t=document.getElementById('avbody').innerText;
@@ -5340,7 +5867,7 @@ const kh=await page.evaluate(async()=>{
  o.emb=[...document.querySelectorAll('#avbody .av-mk')].filter(x=>/, embodied/.test(x.getAttribute('aria-label'))).length;
  o.pill=(document.querySelector('#avbody .avx-emb')||{}).textContent;
  o.threads=document.querySelectorAll('#avbody .avx-row').length;
- avSub('becoming'); loadP(0); render();
+ avSub('becoming'); AV_ARCH_SHOWN=archWas; loadP(0); render();
  return o;});
 /* THE LEDE IS GONE, ROUND LV, REVERSING KH. His own words then: "you're
    setting up your avatar, we want to find out who it needs to become..."
@@ -5352,7 +5879,7 @@ const kh=await page.evaluate(async()=>{
 ok(kh.lede===undefined,'Becoming carries no lede any more, round LV, got '+kh.lede);
 ok(kh.rings===7&&!kh.prose,'seven rings to select, and no seat prose, got '+kh.rings+' rings, prose '+kh.prose);
 ok(kh.hero>kh.menu,'the ring takes more of the row than either column beside it, '+Math.round(kh.hero)+' against '+Math.round(kh.menu));
-ok(kh.tags.includes('Sad')&&kh.tags.includes('Joy')&&kh.tags.includes('Rejection'),
+ok(kh.tags.includes('Sad')&&kh.tags.includes('Happy')&&kh.tags.includes('Rejection'),
  'the found tags are the fetter, its replacement state and the fetter the words named, got '+JSON.stringify(kh.tags));
 ok(!kh.tags.includes('Martyrdom')&&!kh.tags.includes('Separation'),
  'and never an address the sniffer\'s arithmetic chose, got '+JSON.stringify(kh.tags));
@@ -5439,7 +5966,8 @@ console.log('\n=== a teacher on the compass opens the behaviour complex and adds
   o.active=document.querySelector('#rdrill .tcx-on')?document.querySelector('#rdrill .tcx-on').getAttribute('data-act'):null;
   o.goText=(document.querySelector('#rdrill [data-tcxgo]')||{}).textContent||'';
   o.pickKept=document.querySelector('#rdrill .tcx-on')?document.querySelector('#rdrill .tcx-on').getAttribute('data-tcxr'):null; o.pickWas=id;
-  o.saved=((JSON.parse(STORE.get('atuned-ritual-active')||'{}')[CURP.id])||[]).some(x=>x.tc==='PE');
+  /* on the record since 21 November, practice schema 2 */
+  o.saved=((CURP.practice&&CURP.practice.plans)||[]).some(x=>x.tc==='PE');
   /* the inverted end opens the same pair, because it is one pole */
   runTeacherDrill(MIRROR[i],'dn'); await wait(100);
   o.inverted=!!document.querySelector('#rdrill .tcx');
@@ -5454,7 +5982,12 @@ console.log('\n=== a teacher on the compass opens the behaviour complex and adds
   /* the Active list is Goals' Today, and with a ritual running the centre
      opens on the week since round RB, so the list is asked for by its view */
   setTab(TAB.RITUAL); await wait(400);
-  o.row=[...document.querySelectorAll('#rit .rv-sub')].map(s=>s.textContent).filter(t=>/(^|, )toward Discernment/i.test(t)).length; /* SV24: the line opens on the seat now, "Third eye seat, toward Discernment" */
+  /* the Today list's row is gone, 21 November: what a ritual is toward is
+     said in its block's pop-up, so the ritual is opened there on today */
+  {const st=ritRead(), i=ritWeekDay(st.today,st).findIndex(x=>{const q=x.p||ritSashPlan(x,st.today,st); return q&&q.tc==='PE';});
+   o.row=0; if(i>=0){ritSashOpen(st.today,i);
+    o.row=[...document.querySelectorAll('#sheet-card .rv-shfor')].map(s=>s.textContent).filter(t=>/(^|, )Toward Discernment/.test(t)).length;
+    sheetShut(); RIT.pop=null;}}
   /* a worked example saves nothing, so the panel offers no button. It also
      said so, "is a worked example, so nothing here is saved", and SV19 cut
      that line on his words: "Get rid of Ana is worked example, so nothing is
@@ -7108,12 +7641,13 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
   'wheel: the Laws switch takes the laws off the wheel and puts them back, '+lawsGone.before+' to '+lawsGone.off+' to '+lawsGone.back);
  ok(lawsGone.custom===null&&lawsGone.view===3,'and a set that lands back on a preset is that preset again, not a copy of it');
  /* THE GLASS TAKES THE TONE OF THE GROUND IT LIES ON, read by stageLight().
-    Glass white lays a paper stage; Snow keeps the ruled #101010 under paper
-    rails, so there the glass stays dark. */
+    Glass white lays a paper stage, and so does Glass blue, which is Glass white
+    with its greys moved toward blue (18 November); Snow keeps the ruled #101010
+    under paper rails, so there the glass stays dark. */
  const tone=await fp.evaluate(()=>{const was=S.theme,o={};
-  ['dark','snow','glasswhite'].forEach(t=>{setLighting(t);o[t]={lt:document.getElementById('fbar').classList.contains('fb-lt'),stage:stageLight()};});
+  ['dark','snow','glasswhite','glassblue'].forEach(t=>{setLighting(t);o[t]={lt:document.getElementById('fbar').classList.contains('fb-lt'),stage:stageLight()};});
   setLighting(was);return o;});
- ok(Object.keys(tone).every(t=>tone[t].lt===tone[t].stage)&&tone.glasswhite.lt&&!tone.snow.lt,
+ ok(Object.keys(tone).every(t=>tone[t].lt===tone[t].stage)&&tone.glasswhite.lt&&tone.glassblue.lt&&!tone.snow.lt,
   'the bar\'s glass follows the stage\'s own ground under every lighting tried, '+JSON.stringify(tone));
  /* THE READINGS, IN THE LEFT RAIL, AS CIRCLES, CQ THE LARGER. "You should go
     on the left hand side" and "I do want the CQ number bigger, so it's in
@@ -7338,32 +7872,31 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
  ok(!om.soulOpen&&om.fold.length===2&&om.fold.every(f=>f[1]>=44)&&om.foldCircles>=2,'OM: the Awareness grids fold to a domain line and an archetype line, each 44 or more, '+JSON.stringify(om.fold));
  ok(om.shadowCircle==='','OM: the Decoherence circle is gone from the bar, 5 November, his own mark on it, got '+JSON.stringify(om.shadowCircle));
  ok(!om.overlay&&!om.rail2,'OO: nothing of the left menu is drawn on the stage, and option two is not on by default');
- /* THE CHAIN KEY SAYS ONLY WHAT IS COMPUTED, round of 31 October. Its fifth
-    row read "Archetype: the shape the whole pattern points toward" under a
-    heading that made it a tier of the chain, and compute() stops at the
-    super complex. The four field anchors were in no key, the drill printed
-    more left at Sol Star than was ever held, and the renditions' hover gave
-    an anchor no weight. Each figure is read off FIELD, never typed, so the
-    checks hold for whichever person this page carries. */
+ /* THE CHAIN KEY IS GONE, 18 November, his words: "I also asked you to get
+    rid of the chain. I don't even know what this is doing here." It said only
+    what is computed (round of 31 October: its fifth row read "Archetype: the
+    shape the whole pattern points toward" under a heading that made it a tier,
+    and the four field anchors were in no key) and three checks held that: the
+    heading, the Archetype row, and the anchors' row with its live crown and
+    root figures. They are replaced by this one, which asks that the section,
+    its key and its Outside the chain rows are not in the rail at all. What an
+    anchor says about itself did not go with the key: the drill and the hover
+    below read FIELD and are held as before. Each figure is read off FIELD,
+    never typed, so those checks hold for whichever person this page carries. */
  const ck=await fp.evaluate(()=>{
-  const k=document.getElementById('chainkey'), r=compute();
   const pc=n=>Math.max(0,Math.min(100,Math.round((n.sq||0)*10)));
   const up=FIELD.filter(n=>n.b==='Field-Above'), dn=FIELD.filter(n=>n.b==='Field-Below');
-  return {rows:k?[...k.querySelectorAll('.chk-row')].map(x=>x.textContent):[],
-   head:(document.querySelector('.lsec[data-sec=chain] .tier1')||{}).textContent,
-   unread:!!r.unread, above:pc(up[0]), below:pc(dn[0]),
-   drill:nodeDrillHtml(up[0]), hover:frDescribe({k:'anchor',n:dn[0]},r)};});
- const ckNm=ck.rows.map(t=>t.split('.')[0]);
- ok(ck.head==='Nerve to super-complex'&&ckNm.slice(0,4).join()==='Saboteur,Complex,Hyper-complex,Super-complex',
-  'chain key: the chain is four tiers, nerve to super-complex, '+JSON.stringify([ck.head,ckNm]));
- ok(ckNm[4]==='Archetype'&&/^Archetype\. Not part of the chain\./.test(ck.rows[4])&&!ck.rows.some(t=>/points toward/.test(t)),
-  'chain key: Archetype is named a pick outside the chain, never a tier it climbs into, '+JSON.stringify(ck.rows[4]));
- ok(!ck.unread&&ckNm[5]==='Field anchors'&&ck.rows[5].indexOf('crown above at '+ck.above+'%')>=0
-  &&ck.rows[5].indexOf('root below at '+ck.below+'%')>=0&&/decoherence/.test(ck.rows[5]),
-  'chain key: the four field anchors carry their seat\'s live average and say it counts in decoherence, '+JSON.stringify([ck.above,ck.below,ck.rows[5]]));
- ok(!/Charge held here/.test(ck.drill)&&ck.drill.indexOf('average weight of the crown seat it extends, <b>'+ck.above+'%</b>')>=0,
-  'an anchor\'s drill states its seat average and never "held 0.0, left after that" more');
- ok(ck.hover.indexOf('average weight of the root seat it extends, <b>'+ck.below+'%</b>')>=0&&/decoherence/.test(ck.hover),
+  return {gone:!document.getElementById('chainkey')&&!document.querySelector('.lsec[data-sec=chain]')&&!document.querySelector('.chk-row'),
+   above:pc(up[0]), below:pc(dn[0]),
+   drill:nodeDrillHtml(up[0]), hover:frDescribe({k:'anchor',n:dn[0]},compute())};});
+ ok(ck.gone,'chain key: the chain section, its colour key and the Outside the chain rows are gone from the left rail, 18 November');
+ /* FIXED, stale: drills.js said "seat" here before the 18 November rename
+    (seat to point, tools/vocab-rules.py); the hover check right below
+    already read "point" and this one was the one occurrence the vocab
+    merge missed. */
+ ok(!/Charge held here/.test(ck.drill)&&ck.drill.indexOf('average weight of the crown point it extends, <b>'+ck.above+'%</b>')>=0,
+  'an anchor\'s drill states its point average and never "held 0.0, left after that" more');
+ ok(ck.hover.indexOf('average weight of the root point it extends, <b>'+ck.below+'%</b>')>=0&&/decoherence/.test(ck.hover),
   'an anchor\'s hover on a rendition carries its weight and where it counts');
  await fp.evaluate(()=>{const s=document.querySelector('#lpanel .lsec[data-sec=soul]');if(s&&!s.classList.contains('open'))s.querySelector('.lsec-hd').click();});
  await fp.waitForTimeout(300);
@@ -7427,7 +7960,12 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
      &&getComputedStyle(o).display==='none';})(),
    bare:[...document.querySelectorAll('.lsec-hd')].filter(h=>!h.querySelector('svg')).map(h=>h.textContent.trim()),
    mx:/Architect|Engine|Weaver|Witness/.test(document.getElementById('mxk').textContent),
-   run:[...document.querySelectorAll('#fire .it[data-i]')].map(e=>!!e.querySelector('.crb .crb-v')&&!!e.querySelector('.crb-g path')),
+   /* RUNNING NOW LEFT THE RAIL, 18 November ("Running now, grandiosity, that's all
+      repeat, get rid of that"), and the stack under the Insight reading is the
+      one list of what is running. This held that every Running chip was a badge
+      with its pill and its tier's mark. It holds that every pattern row of the
+      stack is a bar with its figure and its track. */
+   run:[...document.querySelectorAll('#stack .stk-row .stk-am')].map(e=>!!e.querySelector('.rb-v')&&!!e.querySelector('.rb-t')),
    heads:[...document.querySelectorAll('#spirit .sp-hd')].every(h=>!!h.querySelector('svg'))};
   sec.querySelector('.lsec-hd').click();
   /* a blank profile has no birth, and the summary says what unlocks it */
@@ -7463,7 +8001,7 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
  ok(!fv.bare.length,'every section header carries its mark, bare: '+fv.bare.join(', '));
  ok(fv.heads,'and every Root Energetics heading its system\'s');
  ok(!fv.mx,'the matrix carries no root names');
- ok(fv.run.length&&fv.run.every(Boolean),'every Running row is a badge with its pill and its tier\'s mark, '+fv.run.length);
+ ok(fv.run.length&&fv.run.every(Boolean),'every pattern row of the stack is a bar with its figure and its track, '+fv.run.length);
  for(const v of ['frames','dial']){const x=fv.fe[v];
   /* three paths a feather, and a reading at nought draws none, so the count
      is a multiple of three up to the layer's size and never empty */
@@ -8082,6 +8620,14 @@ await require('./stfull.js').stFullGate(browser,FILE,ok,booted);
    the two presentations of one record against one set of rules */
 console.log('\n=== the mini dashboard and the Full one, one set of rulings ===');
 await require('./stfull.js').stParityGate(browser,FILE,ok,booted);
+/* THE THREE CORNER FOLDS AND THE RAIL'S PIXELS, 17 November: the same file.
+   Left rail, Release column and widgets row each pressed, kept across a reload,
+   and opened again, with the face on its axis; and the left rail measured in
+   drawn pixels at 390 and 1600, because every other check on it reads the DOM. */
+console.log('\n=== the three corner folds: left rail, Release column, widgets row ===');
+await require('./stfull.js').stFoldGate(browser,FILE,ok,booted);
+console.log('\n=== the left rail draws something, in pixels, at 390 and 1600 ===');
+await require('./stfull.js').stRailPixelGate(browser,FILE,ok,booted);
 
 /* WHEN VOICE CANNOT RUN, tests/voicefall.js, 3 November. A browser with no
    speech recognition, or a page that is not a secure context, was told
@@ -8091,6 +8637,28 @@ await require('./stfull.js').stParityGate(browser,FILE,ok,booted);
    its own so it can run alone, called here so a full run holds it. */
 console.log('\n=== when voice cannot run, the Journal still takes words ===');
 await require('./voicefall.js').voiceFallGate(browser,FILE,ok,booted);
+
+/* THE INSIGHT WELL TALKS, tests/stksay.js, 17 November, NOT CALLED HERE,
+   19 November, extraction of integ/wave-b. His words on the feature itself:
+   "if i press it, i can talk to source ai about the parent and children and
+   how it works through me and run a protocol to release it." It is built
+   against the stack's own per-tier summary row (Built from, Feeds, Reading,
+   railStkKids/railStkParent/insightSpeak, ui/ui.js), which the insight-rail
+   unnesting (18 November, "Let's unnest them") removed outright: the well
+   and insightSay are gone, the rail is six flat levels of bars with no
+   per-tier summary left for the button to sit on. Calling stkSayGate here
+   is not a report of failure, it is a crash: #stksay never exists, so its
+   own page.click times out after 30 seconds and throws past this call's own
+   try-free await, taking down every later section of this file with it, a
+   blocking gate, not a report-only one. Reproduced directly: node
+   tests/stksay.js alone reads 2 passed, 4 failed, then "the gate threw",
+   exit 1, not a hang and not a silent pass. tests/stksay.js itself stays,
+   unregistered in CI, as the record of what the button is meant to do; it
+   needs a real decision on where it attaches in the unnested rail (the new
+   top-of-rail reading, a per-bar affordance, or a redesign) before it is
+   called from anywhere again. floors.json's own "stksay" floor is removed
+   in the same change: a floor for a gate that cannot reach the real page is
+   the same defect as a number typed into one that can. */
 
 /* TYPE INSTEAD, tests/typein.js, 4 November. His words: "We should probably
    just add the typing panel, closed, to the bottom of the journal. And if a

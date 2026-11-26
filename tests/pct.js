@@ -82,6 +82,26 @@ const READ=`(function(){
   if(!vis(b))return; var v=b.querySelector('.rb-v'), f=b.querySelector('.rb-f'); if(!v||!f)return;
   out.push({kind:'bar',where:'.stk-am '+((b.querySelector('.stk-nm')||{}).textContent||''),
    fill:parseFloat(f.style.width),text:v.textContent.trim(),alarm:false});});
+ /* THE TWO POLE PAIR, 20 November (rbPair, ui/component.js). A hyper complex
+    or a named saboteur's row left .stk-am for this the day the rail grew a
+    second pole (ui/insightui.js), and this walk went on reading only
+    .stk-am, so every such row, and the Balance, Orientation and Coherence
+    pairs that were built from the same widget before it, vanished from the
+    count with nothing failing: not lost, never counted. Read off the drawing
+    the way a ring is: the lean is the two .rb2-fl widths, left and right of
+    centre, and left's half the track plus right's is the whole of it, so
+    the lean is read from whichever one is not zero. A pair with its own
+    figure (data-figfixed, the same bit rbPair writes when its caller hands
+    over fig instead of the lean) prints a different quantity on purpose, so
+    F cannot ask it to equal the lean, and is not asked to. */
+ document.querySelectorAll('.rb2').forEach(function(e){
+  if(!vis(e))return; var v=e.querySelector('.rb2-v'); if(!v)return;
+  var fl=e.querySelector('.rb2-fl.l'), fr=e.querySelector('.rb2-fl.r');
+  var sl=fl?parseFloat((fl.style.transform||'').replace(/^scaleX\\(([-\\d.]+)\\)$/,'$1')):NaN;
+  var sr=fr?parseFloat((fr.style.transform||'').replace(/^scaleX\\(([-\\d.]+)\\)$/,'$1')):NaN;
+  var lean=isFinite(sl)&&sl>0?50+sl*50:isFinite(sr)&&sr>0?50+sr*50:(isFinite(sl)||isFinite(sr))?50:null;
+  out.push({kind:e.getAttribute('data-figfixed')?'pairfixed':'pair',where:'.rb2 '+e.getAttribute('data-pair'),
+   fill:lean,text:v.textContent.trim(),alarm:false});});
  return out;})()`;
 
 (async()=>{
@@ -112,8 +132,12 @@ const READ=`(function(){
     for(const x of rows){
      const m=/^(\d+)%$/.exec(x.text);
      if(!m)continue; pctSeen++;
-     /* F: the printed percent is the arc's own fill */
-     ok(x.fill!==null&&Math.abs(+m[1]-x.fill)<=1,
+     /* F: the printed percent is the arc's own fill. A 'pairfixed' pair
+        (data-figfixed, rbPair in ui/component.js) hands over its own figure
+        on purpose, a quantity the lean it draws was never meant to equal
+        (fetBar's held less installed, stkPolar's chain or installed share,
+        each its own scale), so F is not asked of it; A still is. */
+     if(x.kind!=='pairfixed')ok(x.fill!==null&&Math.abs(+m[1]-x.fill)<=1,
       'F: '+tag+nm+', '+x.kind+' '+J(x.where)+' prints '+x.text+' over a fill of '+(x.fill===null?'nothing':x.fill.toFixed(1)));
      /* A: and it is never in the alarm state */
      ok(!x.alarm,'A: '+tag+nm+', '+x.kind+' '+J(x.where)+' prints '+x.text+' in the alarm colour');}}
@@ -172,24 +196,29 @@ const READ=`(function(){
     loadP(PEOPLE.findIndex(x=>x.nm===who)); setTab(TAB.SUMMARY); render();
     await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
     const R=compute(), acc=accuracy(R), e=(R.X+R.Y+R.Z)/3, cov=accCover(R);
-    const gl={}; document.querySelectorAll('#sum .s-gl').forEach(b=>{gl[b.getAttribute('data-gl')]=((b.querySelector('.cr .v')||{}).textContent||'').trim();});
     const plate=((document.querySelector('#sum .s-plate .cr[title^="Coherence"] .v')||{}).textContent||'').trim();
     const txt=(document.getElementById('sum')||{}).innerText||'';
-    const rows=Array.from(document.querySelectorAll('#sum .s-row .cr .v,#sum .sg-n .cr .v')).map(e=>e.textContent.trim());
-    return {unread:!!R.unread,gl,plate,complete:!!cov.complete,rows,
-     want:{'coherence':fmtPct('cq',R.CQ),'shadow weight':fmtPct('dq',R.DQ),'carried depth':fmtPct('weight',R.SQm),
-      'pole':fmtPct('pole',R.poleMean),'energy':fmtPct('energy',e),'identification':fmtPct('accuracy',acc.pct)},
+    return {unread:!!R.unread,plate,complete:!!cov.complete,
      plateWant:cov.complete?fmtPct('cq',R.CQ):accCoverWord(cov),
      weightBare:(txt.match(/at a weight of \d+(?:\.\d+)?(?!\d|%)/g)||[]),
      decimal:(txt.match(/\b(?:weight|holding|at|is) \d+\.\d\b/g)||[])};},who);
    ok(!s.unread,'S2: '+tag+'the example reads');
-   for(const k of Object.keys(s.want)){
-    if(s.gl[k]===undefined)continue;
-    ok(s.gl[k]===s.want[k],'S2: '+tag+'the glance tile '+k+' prints the registry\'s form, '+J(s.gl[k])+' against '+J(s.want[k]));}
-   ok(Object.keys(s.gl).length>=4,'S2: '+tag+'the glance row is there to read, '+J(Object.keys(s.gl)));
+   /* THE GLANCE ROW AND THE NINE ARE GONE FROM THIS PAGE, 20 November
+      (cd55089c), his own words: "get rid of everything beneath Psyche...
+      everything beneath your patterns... what's running is moving to the
+      left panel. And then the rest of that looks like it's in analytics."
+      sumGlance(r,true) (the glance tiles, class s-gl) and sumNine() (the
+      nine architecture cells, class sg-n) were both cut from sumRender's
+      centre column outright, confirmed by reading that commit's real diff
+      and by a live render finding 0 of either anywhere in the document,
+      not merely moved under a different selector. The checks that read
+      them here (the glance tile values, the glance row's presence, and
+      the union of .s-row/.sg-n ring values) tested a page this build no
+      longer draws; slice 3 below covers Analytics, where the rest of this
+      content now lives. Retired rather than re-pointed at content that
+      was deliberately removed, not relocated within Summary. */
    ok(s.plate===s.plateWant&&(s.complete?/^\d+%$/.test(s.plate):/^(early|partial)$/.test(s.plate)),
     'S2: '+tag+'the plate prints the word while filling and CQ as a percent once every law is answered, '+J({plate:s.plate,want:s.plateWant,complete:s.complete}));
-   ok(s.rows.length>0&&s.rows.every(v=>/^(\d+%|\u2013)$/.test(v)),'S2: '+tag+'every structure and axis ring prints a percent or the dash, '+J(s.rows.slice(0,8)));
    ok(s.weightBare.length===0,'S2: '+tag+'no weight in the prose is printed bare, '+J(s.weightBare));
    ok(s.decimal.length===0,'S2: '+tag+'no decimal figure is left in the prose, '+J(s.decimal));
   }

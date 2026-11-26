@@ -6,6 +6,48 @@
    like.
    ============================================================ */
 var ANA_PICK=null;
+/* THE TWO WAYS, 21 November, his own words on the decision: "add an option
+   for both ways, 100% meaning the whole and a percent based off of the
+   individual item, and I'll figure out which one I like better." Neither
+   replaces the other; a person switches between them on the archetype
+   circle alone, and the choice lives here for the session, the same way
+   ANA_PICK above does, never in the record (switching how a number is
+   shown is not a thing a person entered). 'expr' is archExpr, the archetype
+   against itself, 100% with nothing held, what this chart already printed.
+   'share' is affinityShare, the twelve against each other instead of
+   against the strongest, so they sum to 100% like a real competition. */
+var ANA_ARCHMODE='expr';
+/* ONE PLACE BUILDS THE TWELVE ITEMS FOR EITHER MODE, so the toggle changes
+   which figure is the headline and never changes which twelve bubbles are
+   drawn or how the heaviest one is picked out in gold. */
+function anaArchItems(r){
+ var aff=r.aff||[], share=(typeof affinityShare==='function')?affinityShare():null;
+ return ARCH.map(function(a,i){
+  var lean=aff[i]||0, ex=archExpr(i), isTop=(i===r.pi), c=isTop?GOLD:PAL['3rd Eye'];
+  if(ANA_ARCHMODE==='share'){
+   var sh=share?share[i]:0;
+   /* sized by the share itself here, so the twelve areas actually read as
+      twelve pieces of one whole, the way the mode's own name promises */
+   return {k:'arch',nm:a.nm,v:Math.max(0.4,sh*10),f:fmtPct('archshare',sh),
+    h:(ex!=null?'expressed '+fmtPct('archetype',ex):''),c:c};}
+  /* 'expr' is exactly what this chart already drew: sized by the lean,
+     which orders them, printing how fully each is expressed */
+  return {k:'arch',nm:a.nm,v:Math.max(0.4,lean*10),f:fmtPct('archetype',ex),c:c};});}
+/* THE TOGGLE ITSELF, two labelled tabs and nothing more: his own "I'll
+   figure out which one I like better" is a request to compare the real
+   thing, not a brief for a finished control. Each carries its own tip, the
+   one sentence that says what it is without the chart's face having to say
+   it in words (16 November, symbol/header/body: a plain word label stands
+   in for the symbol here, there is no icon for "percent model"). */
+var ANA_ARCHTAB=[
+ ['expr','Each archetype','This archetype’s own expression, 100% with nothing held at its point. The twelve do not add up to 100.'],
+ ['share','All twelve','Each archetype’s share of all twelve added together, so the twelve sum to 100%, the way a competition’s results do.']];
+function anaArchTabsHtml(){
+ return '<div class="ana-seg" role="tablist" aria-label="How the archetype percent is read">'
+  +ANA_ARCHTAB.map(function(v){var on=ANA_ARCHMODE===v[0];
+   return '<button type="button" role="tab" aria-selected="'+on+'" class="ana-sg'+(on?' ana-on':'')+'" '
+    +'data-anamode="'+v[0]+'" data-tip-t="'+esc(v[1])+'" data-tip="'+esc(v[2])+'">'+esc(v[1])+'</button>';}).join('')
+  +'</div>';}
 function anaHist(){
  var h=(CURP&&CURP.history)||[];
  return h.slice().sort(function(a,b){return new Date(a.t)-new Date(b.t);});}
@@ -44,10 +86,15 @@ function anaPack(items,w,h){
      else{ang+=0.34;rad+=1.1;}}}
    if(!placed)out.push({x:cx,y:cy,r:Math.max(5,rr),it:it});}});
  return out;}
-function anaField(title,sub,items,w,h){
+/* extra, 21 November: an optional block of real controls between the title
+   and the picture itself, for a chart that needs one and none before it
+   did (the archetype percent toggle below). Every existing caller leaves it
+   out and draws exactly as it did before this. */
+function anaField(title,sub,items,w,h,extra){
+ extra=extra||'';
  items=(items||[]).filter(function(x){return x&&x.nm;});
  if(!items.length)
-  return '<div class="ab-f"><div class="pm-eye">'+title+'</div>'
+  return '<div class="ab-f"><div class="pm-eye">'+title+'</div>'+extra
    +'<div class="ab-none">nothing here</div></div>';
  var P=anaPack(items,w,h),top=P[0]?P[0].it.v:1, LMIN=13;
  /* NOTHING READ, SO NO FIGURE. The page says so in its first line and the
@@ -55,7 +102,7 @@ function anaField(title,sub,items,w,h){
     The bubbles keep their size, which is the blueprint, and lose the figure.
     Round J13. */
  var UN=false; try{UN=!!computeSeen().unread;}catch(e){}
- var s='<div class="ab-f"><div class="pm-eye">'+title+'</div>'
+ var s='<div class="ab-f"><div class="pm-eye">'+title+'</div>'+extra
   +'<svg viewBox="0 0 '+w+' '+h+'" class="ab-svg">';
  P.forEach(function(p){
   var fit=p.r>=26, tiny=p.r<LMIN;
@@ -72,7 +119,13 @@ function anaField(title,sub,items,w,h){
       drawn at. Each caller now names the figure, f, the registry's percent
       or a count, and a bubble with no f (a domain, which is a selection and
       not a measurement) prints none. */
-   +'<title>'+esc(p.it.nm+(UN?', not read yet':(p.it.f&&p.it.f!==PCT_DASH?', '+p.it.f:(p.it.f===undefined?'':', nothing held'))))+'</title>'
+   /* h, 21 November: a second line for the hover alone, for a chart whose
+      headline figure is not the only real number on the item (the
+      archetype circle's own expression, read beside whichever percent is
+      the headline). Left out everywhere else, so no other chart's title
+      changes. */
+   +'<title>'+esc(p.it.nm+(UN?', not read yet':(p.it.f&&p.it.f!==PCT_DASH?', '+p.it.f:(p.it.f===undefined?'':', nothing held')))
+    +(!UN&&p.it.h?'. '+p.it.h+'.':''))+'</title>'
    +'<circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="'+p.r.toFixed(1)
    +'" fill="'+p.it.c+'" opacity="'+(0.26+0.56*(p.it.v/(top||1))).toFixed(2)+'"/>'
    +'<circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="'+p.r.toFixed(1)
@@ -91,6 +144,353 @@ function anaField(title,sub,items,w,h){
      +'class="ab-v" style="font-size:'+Math.max(11,p.r*0.24).toFixed(1)+'px">'+(UN?'\u2013':p.it.f)+'</text>';}}
   s+='</g>';});
  return s+'</svg>'+(sub?'<div class="ab-s">'+sub+'</div>':'')+'</div>';}
+/* ============================================================
+   THE SQUARIFIED TREEMAP. Masks, Domains and Archetypes, round
+   <ana-squarified-treemap>, his approval on Mockup C (the version with a
+   release afterglow and Source AI's own cross-linked receipts), replacing
+   anaField's circle packing above for these three charts only; every other
+   call to anaField on this page (the running-hot list is its own thing
+   entirely, see anaHot) is untouched.
+
+   AREA IS THE FIGURE, NOT A RADIUS. anaPack sizes a circle by sqrt(value)
+   against a fixed area budget, which is honest about ordering and dishonest
+   about ratio: a circle twice the value is not twice the area a glance
+   reads it as. A rectangle whose area is literally proportional to v does
+   not have that gap, which is the whole case for a treemap over a bubble
+   chart on this exact page.
+
+   THE ALGORITHM IS SQUARIFIED, Bruls, Huizing and van Wijk, 2000: split the
+   remaining items into a row (or column, whichever side is shorter) that
+   keeps every rectangle in it as close to square as the worst ratio allows,
+   lay that strip down, and recurse on what is left. Ported from
+   mockup-C-release.html's own squarify()/squarifyRows(), unchanged in its
+   arithmetic.
+
+   THE FLOOR IS THE PRODUCT'S OWN --tap TOKEN (shell/head.html, 44px), read
+   off the page rather than typed a second time, and the capping pass that
+   holds every cell at or above it is ported from mockup-D-phone.html's own
+   layoutFloored()/cappedAreas(), the one the mockup's own D-check.js
+   measured passing at a real 390px width before this port. A cell lifted
+   to the floor wears a hatch (never a plain fill), so its size reads as
+   "the smallest you can press" and not as its real share: the same promise
+   the running-hot list's badge already keeps elsewhere on this page. This
+   is also requirement 7 answered structurally rather than by a special
+   case: a nought-charge cell gets exactly the same floor as every other
+   cell, because the floor runs on every cell's area, not on whether that
+   area happens to be nought.
+
+   THE MOVE. Nothing here is a new animation system. anaRender() already
+   tears down and rewrites the whole #ana div on every press and every
+   render; a selection click does not change any item's v, so the layout it
+   produces is bit-for-bit the one already on screen and the FLIP below is
+   a no-op. A real release changes compute()'s own numbers (a mask's load,
+   an archetype's expression; a domain's box never moves, because a domain
+   here is a selection out of the blueprint and not a measurement, per the
+   comment this replaced above), and only then does a cell's rectangle
+   actually move, which is exactly when the FLIP and the afterglow have
+   something true to show. Timings ported unchanged from mockup-C-release's
+   own switchTo()/ghosts(): 420ms cubic-bezier(.22,1,.36,1) for the move,
+   4000ms linear for the afterglow's fade. A pure resize (the window, not
+   the record) repaints with neither: see the `animate` argument below. */
+var ANA_TM_RM=(typeof matchMedia==='function')&&(function(){try{return matchMedia('(prefers-reduced-motion: reduce)').matches;}catch(e){return false;}}());
+var ANA_TM_EASE='cubic-bezier(.22,1,.36,1)';
+var ANA_TM_PREV={};
+var ANA_TM_RO=null;
+/* THE SIZE EACH LENS WAS LAST PAINTED AT. ResizeObserver calls back once for
+   every element the moment it is observed, whatever its size, and anaTmPaint
+   re-observes the boxes after every paint, so the first cut repainted every
+   40ms for as long as the page was open: measured, a cell detached from the
+   document under a pointer before a click could land on it. The callback now
+   repaints only when a box's measured size is not the one it was painted at. */
+var ANA_TM_SIZE={};
+var ANA_TM_LENSES=[
+ {k:'mask',nm:'Masks',sub:'average charge left at its own points, not a share of 100%'},
+ {k:'dom',nm:'Domains',sub:'selected in your blueprint. Sized for contrast, not a measured charge.'},
+ {k:'arch',nm:'Archetypes',sub:'how fully each is expressed, its own percent'}];
+/* the product's own tap floor, read off the page and not typed here a
+   second time; 44 only if the token itself cannot be read at all */
+function anaTmFloor(){
+ try{var v=getComputedStyle(document.documentElement).getPropertyValue('--tap'), n=parseFloat(v);
+  if(n>0)return n;}catch(e){}
+ return 44;}
+/* ---- squarified layout, unchanged arithmetic from mockup-C-release.html ---- */
+function anaTmWorst(areas,side){
+ var sum=0,mx=-Infinity,mn=Infinity;
+ areas.forEach(function(a){sum+=a; if(a>mx)mx=a; if(a<mn)mn=a;});
+ var s2=side*side;
+ return Math.max((s2*mx)/(sum*sum),(sum*sum)/(s2*mn));}
+function anaTmRows(toks,areas,x,y,w,h){
+ if(!toks.length)return [];
+ if(toks.length===1)return [{i:toks[0],x:x,y:y,w:w,h:h}];
+ var side=Math.min(w,h), row=[areas[0]], ri=[toks[0]], k=1;
+ while(k<areas.length){
+  var trial=row.concat([areas[k]]);
+  if(anaTmWorst(trial,side)<=anaTmWorst(row,side)){row=trial; ri.push(toks[k]); k++;}
+  else break;}
+ var rowSum=row.reduce(function(a,b){return a+b;},0), rects=[];
+ if(w>=h){
+  var stripW=rowSum/h, yy=y;
+  ri.forEach(function(tk,j){var ih=row[j]/stripW; rects.push({i:tk,x:x,y:yy,w:stripW,h:ih}); yy+=ih;});
+  rects=rects.concat(anaTmRows(toks.slice(ri.length),areas.slice(ri.length),x+stripW,y,w-stripW,h));
+ }else{
+  var stripH=rowSum/w, xx=x;
+  ri.forEach(function(tk,j){var iw=row[j]/stripH; rects.push({i:tk,x:xx,y:y,w:iw,h:stripH}); xx+=iw;});
+  rects=rects.concat(anaTmRows(toks.slice(ri.length),areas.slice(ri.length),x,y+stripH,w,h-stripH));
+ }
+ return rects;}
+/* ---- the floor, unchanged arithmetic from mockup-D-phone.html ---- */
+function anaTmCapped(nat,need,A){
+ var n=nat.length, fixed=nat.map(function(){return false;}), areas=nat.slice();
+ for(var guard=0;guard<n+1;guard++){
+  var room=A, free=0;
+  for(var i=0;i<n;i++){if(fixed[i])room-=need[i]; else free+=nat[i];}
+  if(room<=0||free<=0){var s=need.reduce(function(a,b){return a+b;},0); return need.map(function(x){return x/s*A;});}
+  var sc=room/free, more=false;
+  for(var j=0;j<n;j++){
+   if(fixed[j]){areas[j]=need[j]; continue;}
+   areas[j]=nat[j]*sc;
+   if(areas[j]<need[j]){fixed[j]=true; more=true;}}
+  if(!more)return areas;}
+ return areas;}
+function anaTmLayout(items,W,H){
+ var A=Math.max(1,W*H), total=0, floor=anaTmFloor(), aim=floor+0.5;
+ items.forEach(function(it){total+=Math.max(0,it.v||0);});
+ var nat=items.map(function(it){return total>0?Math.max(0,it.v||0)/total*A:A/items.length;});
+ var need=items.map(function(){return aim*aim;});
+ var rects=[], areas=[];
+ for(var pass=0;pass<120;pass++){
+  areas=anaTmCapped(nat,need,A);
+  var order=items.map(function(_,i){return i;}).sort(function(a,b){return areas[b]-areas[a]||a-b;});
+  rects=anaTmRows(order,order.map(function(i){return areas[i];}),0,0,W,H);
+  var bad=false;
+  rects.forEach(function(rc){
+   var m=Math.min(rc.w,rc.h);
+   if(m<aim){bad=true; need[rc.i]=Math.max(need[rc.i],areas[rc.i]*(aim/m)*1.02);}});
+  if(!bad)break;}
+ var out={};
+ rects.forEach(function(rc){out[items[rc.i].nm]={x:rc.x,y:rc.y,w:rc.w,h:rc.h,floored:nat[rc.i]<floor*floor};});
+ return out;}
+/* ---- the real items, one lens at a time. Exactly the three mappings
+   anaField's three calls carried above, moved here unchanged: masks read
+   r.maskRing's own average, domains read the blueprint's selection (9 for
+   in, 2 for out, never a charge), archetypes read archExpr. ---- */
+/* OPEN, NOT DECIDED HERE: masks and archetypes are not a true partition of
+   one whole the way a share is, so area-by-value overstates that for those
+   two lenses; whether they need an honest-geometry note is the owner's call. */
+function anaTmItems(r,k){
+ if(k==='mask')return (r.maskRing||[]).map(function(m){
+  return {nm:m.nm,v:m.w,f:fmtPct('weight',m.w),c:seatCol((m.bands||['Heart'])[0]),bands:m.bands};});
+ if(k==='dom')return S.doms.map(function(di){var d=DOMAINS[di];
+   return {nm:d.nm,v:9,c:rootPlain(d.r),sel:true};})
+  .concat(DOMAINS.filter(function(d,i){return S.doms.indexOf(i)<0;}).slice(0,9)
+   .map(function(d){return {nm:d.nm,v:2,c:rootPlain(d.r),sel:false};}));
+ return (r.aff||[]).map(function(a,i){return {nm:(ARCH[i]||{}).nm||'',
+  v:Math.max(0.4,a*10),f:fmtPct('archetype',archExpr(i)),c:(i===r.pi?GOLD:PAL['3rd Eye']),lead:(i===r.pi)};});}
+function anaTmIconPath(k,nm){
+ if(k==='mask'){var m=MASKS.filter(function(x){return x.nm===nm;})[0]; return m?m.ic:'';}
+ if(k==='dom'){var d=DOMAINS.filter(function(x){return x.nm===nm;})[0]; return d?d.ic:'';}
+ var a=ARCH.filter(function(x){return x.nm===nm;})[0]; return a?a.ic:'';}
+function anaTmIconSvg(d,size){
+ if(!d)return '';
+ return '<svg class="ana-tm-ic" style="width:'+size+'px;height:'+size+'px" viewBox="0 0 24 24" aria-hidden="true"><path d="'+d+'"/></svg>';}
+function anaTmFits(nm,fs,w){return nm.length*fs*0.56<=w;}
+/* symbol first, header second, body text third (16 November): the icon is
+   never dropped before the name, and the figure is the last thing to go
+   as the cell gets smaller */
+function anaTmLabel(it,k,w,h){
+ var pad=6, iw=Math.max(0,w-2*pad), room=Math.min(iw,h-2*pad);
+ if(room<15)return '';
+ var d=anaTmIconPath(k,it.nm), out='';
+ if(room>=56){
+  out+=anaTmIconSvg(d,Math.max(16,Math.min(24,room*0.26)));
+  if(anaTmFits(it.nm,12.5,iw))out+='<b class="ana-tm-nm">'+esc(it.nm)+'</b>';
+  if(it.f!==undefined)out+='<i class="ana-tm-v">'+esc(it.f)+'</i>';
+ }else if(room>=32){
+  out+=anaTmIconSvg(d,16);
+  if(anaTmFits(it.nm,11,iw))out+='<b class="ana-tm-nm" style="font-size:11px">'+esc(it.nm)+'</b>';
+  else if(it.f!==undefined)out+='<i class="ana-tm-v" style="font-size:10.5px">'+esc(it.f)+'</i>';
+ }else{
+  out+=anaTmIconSvg(d,Math.max(12,Math.min(18,room*0.6)));
+ }
+ return out;}
+function anaTmCellHtml(k,it,L){
+ var box=L[it.nm]; if(!box)return '';
+ var nil=!(it.v>0), on=!!(ANA_PICK&&ANA_PICK.k===k&&ANA_PICK.nm===it.nm);
+ var dim=!!(ANA_PICK&&ANA_PICK.k===k&&!on);
+ var tip=it.nm+(it.f!==undefined?', '+(it.f===PCT_DASH?'nothing held':it.f):'')
+  +(it.lead?', your primary':'')+(it.sel?', selected in your blueprint':'')
+  +(box.floored?', drawn at the smallest pressable size':'');
+ return '<button type="button" class="ana-tm-cell'+(nil?' nil':'')+(on?' on':'')+(dim?' dim':'')
+  +(box.floored?' floored':'')+'" aria-pressed="'+on+'" '
+  +'style="left:'+box.x.toFixed(2)+'px;top:'+box.y.toFixed(2)+'px;width:'+box.w.toFixed(2)+'px;height:'+box.h.toFixed(2)+'px;--lc:'+it.c+'" '
+  +'data-ana="'+esc(k+'|'+it.nm)+'" data-lens="'+k+'" data-nm="'+esc(it.nm)+'" '
+  +'title="'+esc(tip)+'" aria-label="'+esc('Open '+tip)+'">'
+  +'<span class="ana-tm-in"><span class="ana-tm-fill" style="background:'+it.c+';opacity:'
+   +(nil?0.12:(0.20+0.5*Math.min(1,(it.v||0)/9))).toFixed(2)+'"></span>'
+  +(box.floored?'<span class="ana-tm-hatch" aria-hidden="true"></span>':'')
+  +'<span class="ana-tm-hl" aria-hidden="true"></span><span class="ana-tm-lab">'+anaTmLabel(it,k,box.w,box.h)+'</span></span>'
+  +'<span class="ana-tm-ring" aria-hidden="true"></span><span class="ana-tm-lit" aria-hidden="true"></span>'
+  +(it.sel?'<span class="ana-tm-mark sel" aria-hidden="true"></span>':'')
+  +(it.lead?'<span class="ana-tm-mark lead" aria-hidden="true"></span>':'')
+  +'</button>';}
+/* the lens header. ITS OWN NAME IS A DOOR TOO: a press opens the heaviest
+   real item in that lens straight through the same data-ana pipeline every
+   cell uses, "the whole-lens parent read" answered with a real thing
+   rather than an invented aggregate kind engine/insight.js has never heard
+   of. A domain's own "heaviest" is whichever selected domain sorts first;
+   domains carry no measured figure to be heavy by, so this is the clearest
+   true reading available for that lens's own door. */
+function anaTmLensHtml(r,lens,items){
+ var top=items.reduce(function(a,x){return (x.v||0)>(a.v||0)?x:a;},items[0]||{v:0,nm:''});
+ var openCls=(ANA_PICK&&ANA_PICK.k===lens.k)?' open':'';
+ return '<div class="ana-tm-lens'+openCls+'" data-lens-panel="'+lens.k+'">'
+  +'<button type="button" class="ana-tm-head" aria-pressed="'+!!openCls+'" data-ana="'+esc(lens.k+'|'+top.nm)+'" '
+   +'title="'+esc('Open the heaviest in '+lens.nm+': '+top.nm+(top.f!==undefined?', '+top.f:''))+'">'
+  +anaTmIconSvg(anaTmIconPath(lens.k,top.nm),20)
+  +'<span class="ana-tm-nm2">'+esc(lens.nm)+'</span>'
+  +'<span class="ana-tm-fig2">'+(top.f!==undefined?esc(top.f):'')+'</span>'
+  +'<svg class="ana-tm-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>'
+  +'<div class="ana-tm-sub">'+esc(lens.sub)+'</div>'
+  +'<div class="ana-tm-box" data-lens-box="'+lens.k+'"></div></div>';}
+function anaTmHtml(r){
+ var rows=ANA_TM_LENSES.map(function(lens){
+  if(lens.k==='mask'&&!lockSees('mask'))
+   return '<div class="ana-tm-lens ana-tm-locked"><div class="ana-tm-head" style="cursor:default">'
+    +'<span class="ana-tm-nm2">Masks</span></div>'+lockPanelHtml('mask',{brief:true})+'</div>';
+  return anaTmLensHtml(r,lens,anaTmItems(r,lens.k));});
+ /* ONE BLOCK, ACROSS THE WHOLE GRID. This sits inside .ab-grid, an auto-fit
+    grid of 220 pixel tracks, and its eyebrow, its row and its key went in as
+    three separate grid items: measured at 1600 the three lenses landed in a
+    track 228 pixels wide, every cell under 44 and all 27 drawn at the floor.
+    The wrapper spans every track (.ana-tm, shell/head.html). The paragraph
+    that explained the chart went with it, the 16 November rule: a symbol and
+    a hover say it, and the key below says what each mark means. */
+ return '<div class="ana-tm"><div class="pm-eye plain" style="margin-top:4px">Masks, domains, archetypes</div>'
+  +'<div class="ana-tm-row">'+rows.join('')+'</div>'+anaTmKeyHtml()+'</div>';}
+function anaTmKeyHtml(){
+ return '<div class="ana-tm-key">'
+  +'<span class="ana-tm-key-i"><span class="ana-tm-key-sw sel" aria-hidden="true"></span>selected in your blueprint</span>'
+  +'<span class="ana-tm-key-i"><span class="ana-tm-key-sw lead" aria-hidden="true"></span>your primary</span>'
+  +'<span class="ana-tm-key-i"><span class="ana-tm-key-sw hatch" aria-hidden="true"></span>drawn at the smallest pressable size</span>'
+  +'<span class="ana-tm-key-i"><span class="ana-tm-key-sw glow" aria-hidden="true"></span>where a cell ended before a release</span>'
+  +'</div>';}
+/* ---- paint: measures the real box, lays out, and (except on a plain
+   resize) FLIPs every surviving cell from its last real rectangle to this
+   one and draws the afterglow where one shrank. Ported timings, unchanged,
+   from mockup-C-release.html's switchTo()/ghosts(). ---- */
+function anaTmPaint(r,animate){
+ if(animate==null)animate=true;
+ ANA_TM_LENSES.forEach(function(lens){
+  var box=document.querySelector('.ana-tm-box[data-lens-box="'+lens.k+'"]'); if(!box)return;
+  var w=box.clientWidth,h=box.clientHeight; if(w<2||h<2)return;
+  ANA_TM_SIZE[lens.k]=w+'x'+h;
+  var items=anaTmItems(r,lens.k), L=anaTmLayout(items,w,h);
+  var prev=ANA_TM_PREV[lens.k]||{};
+  box.innerHTML=items.map(function(it){return anaTmCellHtml(lens.k,it,L);}).join('');
+  if(animate&&!ANA_TM_RM){
+   box.querySelectorAll('.ana-tm-cell').forEach(function(c){
+    var nm=c.getAttribute('data-nm'), a=prev[nm], b=L[nm]; if(!a||!b)return;
+    var dx=a.x-b.x, dy=a.y-b.y, sx=a.w/b.w, sy=a.h/b.h;
+    if(Math.abs(dx)<0.5&&Math.abs(dy)<0.5&&Math.abs(sx-1)<0.01&&Math.abs(sy-1)<0.01)return;
+    try{c.animate([
+     {transform:'translate('+dx.toFixed(2)+'px,'+dy.toFixed(2)+'px) scale('+sx.toFixed(4)+','+sy.toFixed(4)+')'},
+     {transform:'none'}],{duration:420,easing:ANA_TM_EASE});}catch(e){}});
+   /* the afterglow: a cell whose real figure came DOWN (not merely one whose
+      pixels shrank on a resize, which this is never called for) keeps a
+      thin outline at its old rectangle, its own colour, fading over 4
+      seconds, exactly the promise ui/sound.js's own undo/redo latch keeps
+      in sound: nothing is deleted, the record of where it was just fades */
+   items.forEach(function(it){
+    var a=prev[it.nm]; if(!a||a.v==null||!(it.v<a.v-1e-9))return;
+    var g=document.createElement('span');
+    g.className='ana-tm-ghost'; g.setAttribute('aria-hidden','true');
+    g.style.cssText='left:'+a.x.toFixed(2)+'px;top:'+a.y.toFixed(2)+'px;width:'+a.w.toFixed(2)+'px;height:'+a.h.toFixed(2)+'px;--gc:'+it.c;
+    box.appendChild(g);
+    try{g.animate([{opacity:.9},{opacity:0}],{duration:4000,easing:'linear'}).finished.then(function(){g.remove();},function(){});}
+    catch(e){g.remove();}});
+  }
+  var out={}; items.forEach(function(it){var b=L[it.nm]; if(b)out[it.nm]={x:b.x,y:b.y,w:b.w,h:b.h,v:it.v};});
+  ANA_TM_PREV[lens.k]=out;
+ });
+ anaTmAttachResize();}
+/* the window resizing is not a release: it repaints with no FLIP and no
+   afterglow (the `false` below), matching mockup-C-release's own
+   attachResize, which calls drawAll() plain on a resize and reserves
+   switchTo()'s animated path for an actual snapshot change */
+function anaTmAttachResize(){
+ if(!ANA_TM_RO){
+  if(typeof ResizeObserver==='function')
+   ANA_TM_RO=new ResizeObserver(function(ents){
+    if(!ents.some(function(en){var b=en.target;
+     return ANA_TM_SIZE[b.getAttribute('data-lens-box')]!==b.clientWidth+'x'+b.clientHeight;}))return;
+    clearTimeout(window.__anaTmRT);
+    window.__anaTmRT=setTimeout(function(){try{anaTmPaint(computeSeen(),false);}catch(e){}},40);});
+  else{
+   addEventListener('resize',function(){
+    clearTimeout(window.__anaTmRT2);
+    window.__anaTmRT2=setTimeout(function(){try{anaTmPaint(computeSeen(),false);}catch(e){}},80);});
+   ANA_TM_RO={observe:function(){},disconnect:function(){}};}}
+ try{ANA_TM_RO.disconnect();}catch(e){}
+ document.querySelectorAll('.ana-tm-box').forEach(function(b){try{ANA_TM_RO.observe(b);}catch(e){}});}
+/* ---- the receipts: a mask or an archetype's headline in the Insight rail
+   (ui/insightui.js's railInsight) carries data-src="kind:name" the same
+   shape a treemap cell's own data-lens+data-nm makes; hovering or
+   focusing either lights both in the cell's own colour (--lc), his words
+   on Mockup C, "receipts". Delegated at the document so it survives every
+   #ana and #insight rebuild without being rewired by hand. ---- */
+function anaTmSrcKey(el){
+ if(el.classList&&el.classList.contains('ana-tm-cell'))return el.getAttribute('data-lens')+':'+el.getAttribute('data-nm');
+ var s=el.closest&&el.closest('[data-src]'); return s?s.getAttribute('data-src'):null;}
+function anaTmLight(key,on){
+ if(!key)return;
+ document.querySelectorAll('.ana-tm-cell').forEach(function(c){
+  if(c.getAttribute('data-lens')+':'+c.getAttribute('data-nm')===key)c.classList.toggle('lit',on);});
+ document.querySelectorAll('[data-src]').forEach(function(s){
+  if(s.getAttribute('data-src')===key)s.classList.toggle('lit',on);});}
+function anaTmHover(e,on){
+ var t=e.target.closest&&e.target.closest('.ana-tm-cell,[data-src]'); if(!t)return;
+ anaTmLight(anaTmSrcKey(t),on);}
+addEventListener('mouseover',function(e){anaTmHover(e,true);});
+addEventListener('mouseout',function(e){anaTmHover(e,false);});
+addEventListener('focusin',function(e){anaTmHover(e,true);});
+addEventListener('focusout',function(e){anaTmHover(e,false);});
+/* ============================================================
+   THE SEVEN, ONE ROW. Round ana-treemap, the approved Analytics redesign:
+   the left rail comes off this page (shell/head.html, body.tab-analytics),
+   and the readings a person read off it come onto the page as one row of
+   seven equal presses, CQ, DQ, Shadow, Vitality, Flow, Radiance and Will, in
+   that order. Symbol first (16 November): each face is the rail's own icon
+   and its percent, nothing else. The name and its sentence are the one
+   tooltip (data-tip-k, data-tip, ui/tip.js) on hover and a held press, and
+   the spoken name carries all three, so nothing is pasted on as a paragraph
+   and nothing is left unpacked.
+
+   THE RAIL'S OWN WORDS AND DOORS, NOT A SECOND COPY. Name, icon, colour,
+   figure and the drill a press opens (data-q through ui/ui.js's one .kb
+   handler, runQDrill) are each read exactly as rbPair and rbRow read them in
+   ui/ui.js, so a press here opens what the same press on the rail opened,
+   and the sentence is rbSay's, the meaning table's rail context. Awareness
+   stood on the rail beside these and is not one of the seven named for this
+   row, so it is not added here: that is the brief's list, not a cut made in
+   this file. ============================================================ */
+var ANA_SEVEN=[
+ {nm:'CQ',q:'cq',ic:'cq',kind:'cq',v:function(r){return r.CQ;},c:function(){return 'var(--accent)';}},
+ {nm:'DQ',q:'dq',ic:'dq',kind:'dq',v:function(r){return r.DQ;},c:function(){return seatCol('Root');}},
+ {nm:'Shadow',q:'cq',ic:'shadow',kind:'lawsq',v:function(r){return r.lawSQ;},c:function(){return seatCol('Root');}},
+ {nm:'Vitality',q:'xyz',ic:'vitality',kind:'vitality',v:function(r){return r.X;},c:function(){return seatCol('Solar');}},
+ {nm:'Flow',q:'flow',ic:'flow',kind:'flow',v:function(r){return r.flow;},c:function(){return 'var(--ink)';}},
+ {nm:'Radiance',q:'xyz',ic:'rad',kind:'radiance',v:function(r){return r.radiance;},
+  c:function(){return 'color-mix(in srgb,var(--ink) 86%,'+seatCol('Solar')+')';}},
+ {nm:'Will',q:'xyz',ic:'will',kind:'will',v:function(r){return r.Z;},c:function(){return seatCol('Throat');}}];
+function anaSevenHtml(r){
+ var u={unread:r.unread};
+ return '<div class="ana-seven" role="group" aria-label="Seven readings">'+ANA_SEVEN.map(function(M){
+  var v=M.v(r), none=r.unread||v===null||v===undefined, raw=none?'–':fmtPct(M.kind,v,u);
+  var say=(typeof rbSay==='function'?rbSay(M.nm):'')||M.nm;
+  return '<button type="button" class="kb ana-sv'+(none?' off':'')+'" data-q="'+M.q+'" style="--c:'+(none?'var(--dim)':M.c())+'"'
+   +' data-tip-k="'+esc(M.nm)+'" data-tip="'+esc(say+(r.unread?' Not read yet.':''))+'"'
+   +' aria-label="'+esc(M.nm+', '+(none?'not read yet':raw)+'. '+say)+'">'
+   +rbIcon(M.ic)+'<b class="ana-sv-v">'+esc(raw)+'</b></button>';}).join('')+'</div>';}
 function anaRender(){
  var el=document.getElementById('ana'); if(!el)return;
  /* the reading this plan may see, ui/lock.js: the biggest thing compounding,
@@ -159,7 +559,7 @@ function anaRender(){
         that cannot see the chain has no grounds to make it */
      :(r.locked&&r.locked.length===SEE_ORDER.length?'':'Nothing is compounding. '))
    /* a count against a total is a score, and this is not a score */
-   +(stop?'Flow stops at the <b>'+stop.p.n.toLowerCase()+'</b>. ':'Every seat is passing. ')
+   +(stop?'Flow stops at the <b>'+stop.p.n.toLowerCase()+'</b>. ':'Every point is passing. ')
    /* HELD, NOT CARRYING, round RB. The count is of addresses at 4 or more,
       which this product calls held; carrying is anything above nothing
       (engine/compute.js, CARRYING IS NOT THE SAME AS HELD), so the word was
@@ -222,26 +622,26 @@ function anaRender(){
      /* held, round RB: accuracy() counts addresses at 4 or more */
      +(acc.held?', '+acc.held+' address'+(acc.held===1?'':'es')+' held':'')
      +'. The needle has play in it, so a small move is not a reading.')+'</span></div>'
-  +'</div></div>'+anaHot(r)+'<div class="ab-grid">';
+  +'</div></div>'+anaSevenHtml(r)+anaHot(r)+'<div class="ab-grid">';
  /* HS SWEEP. Every chart here carried a caption under it saying how to read
     it: what the heading means and that a bigger mark is more. A bubble chart
     says bigger is more by being one, and the heading names the set. The one
     caption kept is the colour key on What is running, because four kinds
     share one chart and colour is the only thing telling them apart. Its tail,
-    the bigger the mark, goes with the rest. */
- out+=(lockSees('mask')?anaField('Masks','',
-  r.maskRing.map(function(m){return {k:'mask',nm:m.nm,v:m.w,f:fmtPct('weight',m.w),
-   c:seatCol((m.bands||['Heart'])[0])};}),300,210)
-  :'<div class="ab-f"><div class="pm-eye">Masks</div>'+lockPanelHtml('mask',{brief:true})+'</div>');
- out+=anaField('Domains','',
-  S.doms.map(function(di){var d=DOMAINS[di];return {k:'dom',nm:d.nm,v:9,c:rootPlain(d.r)};})
-   .concat(DOMAINS.filter(function(d,i){return S.doms.indexOf(i)<0;}).slice(0,9)
-    .map(function(d){return {k:'dom',nm:d.nm,v:2,c:rootPlain(d.r)};})),300,210);
- out+=anaField('Archetypes','',
-  (r.aff||[]).map(function(a,i){return {k:'arch',nm:(ARCH[i]||{}).nm||'',
-   /* sized by the lean, which orders them; the figure is how fully each is
-      expressed, ruled 16 October (engine/archexpr.js) */
-   v:Math.max(0.4,a*10),f:fmtPct('archetype',archExpr(i)),c:(i===r.pi?GOLD:PAL['3rd Eye'])};}),300,210);
+    the bigger the mark, goes with the rest.
+
+    MASKS, DOMAINS AND ARCHETYPES ARE A SQUARIFIED TREEMAP NOW, not three
+    packed-circle charts, round <ana-squarified-treemap>, his approval on
+    Mockup C: area is the real figure and not a circle's radius, all three
+    lenses stand at once with no picker, and a real release moves a cell to
+    its new size with a fading outline at the old one. anaTmHtml below
+    builds all three; the tier gate on Masks that used to wrap its own
+    anaField call now lives inside it, per lens, so Domains and Archetypes
+    stay free to see exactly as they did before this round. Took main's
+    side whole here over the field-analytics branch's older packed-circle
+    calls (21 November merge): the treemap is the shipped, approved design
+    and supersedes them outright, not a case for a hybrid. */
+ out+=anaTmHtml(r);
  out+=(r.locked&&r.locked.length===SEE_ORDER.length
   /* nothing of the chain is visible on this plan: the chart's place says so
      rather than printing "nothing here" over a chain somebody has */
@@ -260,7 +660,7 @@ function anaRender(){
  out+=anaField('The nine axes','',
   CHILD.map(function(c){return {k:'axis',nm:c.nm,v:Math.max(0.3,S.charge[c.nm]||0),f:fmtPct('charge',S.charge[c.nm]||0),
    c:seatCol(c.seat)};}),300,210);
- out+=anaField('The seven seats','',
+ out+=anaField('The seven assemblage points','',
   /* a count of held addresses, so it prints as a count */
   seats.map(function(s){return {k:'seat',nm:s.p.n,v:Math.max(0.3,s.hot),f:anaN(s.hot),
    c:seatCol(K2B[s.p.k])};}),300,210);
@@ -271,7 +671,7 @@ function anaRender(){
     arithmetic and nothing new: the six readings compute() returns, every
     address split by seat and by feeling, and the chain counted ring by ring. */
  out+=anaTele(r);
- var laws=SI.map(function(l){return {nm:l.nm,b:l.b,v:S.law[l.nm]};});
+ var laws=SI.map(function(l){return {nm:l.nm,b:l.b,v:S.law[l.nm],ic:l.ic};});
  var shutL=laws.filter(function(l){return l.v<4;});
  /* 21 of the 76, and the 21 are the Laws of Moral Integrity. Saying "the 21
     laws" with no frame reads as though there were only 21. */
@@ -292,10 +692,21 @@ function anaRender(){
  out+='<div class="pm-eye" style="margin-top:20px">Laws of Moral Integrity</div>'
   +'<div class="ana-laws">';
  laws.forEach(function(l){
-  /* a bar is a button now, round RB, and opens its law in the trail */
-  out+='<button type="button" class="ana-lw'+(l.v<4?' shut':'')+'" data-ana="'+esc('law|'+l.nm)+'" title="'+esc(l.nm+' '+fmtPct('law',l.v)+(l.v<4?', shut':''))+'">'
-   +'<s><u style="height:'+Math.max(4,Math.round(l.v/10*60))+'px;background:'
-   +seatCol(l.b)+'"></u></s><span>'+l.nm.slice(0,3)+'</span></button>';});
+  /* ICON, NOT A NAME ON THE FACE, 20 November, his words: "I think we leave
+     the text off, focus on the size of the kind of icon, the symbol itself,
+     so people can recognize the symbol associated with the word. And then
+     we'll have a mouse over." The bar this replaced printed three letters of
+     the name on every face; now the law's own mark (SI[].ic, a distinct
+     glyph per law since the engine data carries one) is the only thing on
+     the button, and the full name plus its meaning live in the one tooltip
+     (ui/tip.js), reached by hover on a mouse and a held press on a phone,
+     the same mechanism the page's other tiles already use. A law with no
+     meaning on file still gets its name as the tip, never a blank one. */
+  var say=(typeof lawMeaning==='function'&&lawMeaning(l.nm))||'';
+  out+='<button type="button" class="ana-lw'+(l.v<4?' shut':'')+'" data-ana="'+esc('law|'+l.nm)+'" '
+   +'aria-label="'+esc(l.nm+', '+fmtPct('law',l.v)+(l.v<4?', shut':'')+(say?'. '+say:''))+'">'
+   +'<span class="ana-lw-l" data-tip-k="'+esc(l.nm)+'" data-tip="'+esc(say||l.nm)+'" style="color:'+seatCol(l.b)+'">'
+   +rbIcon('<path d="'+(l.ic||'M4 12a8 8 0 1116 0 8 8 0 01-16 0')+'"/>')+'</span></button>';});
  out+='</div>';
  /* AND THE SHUT COUNT, which the eyebrow used to carry. The none shut case
     was said there too and would have been lost, so this line answers in both
@@ -337,6 +748,11 @@ function anaRender(){
     any two of them. the data has been accruing since the rebuild. */
  out+='<div class="ab-f" id="rec"></div>';
  el.innerHTML=out;
+ /* the treemap's own boxes are absolutely positioned against their real
+    measured size, which the string above cannot know before it is in the
+    document; this is the one JS pass that fills them in, real pixels, and
+    the FLIP/afterglow it carries when something actually moved */
+ try{anaTmPaint(r);}catch(e){}
  recRender();
  /* every press on this page and in its trail goes through one handler, at
     the foot of this file, round RB */
@@ -462,9 +878,9 @@ function anaAxisRow(nm){
   +'<span>'+esc(c.nm)+'</span><em>'+unp('axis','toward '+c.opp.toLowerCase())+'</em></button>';}
 function anaSeatRow(band){
  var s=flSeats().filter(function(x){return K2B[x.p.k]===band;})[0]; if(!s)return '';
- return '<button type="button" class="ad-r" data-ana="'+anaKey('seat',s.p.n)+'" title="'+esc('Open the '+band.toLowerCase()+' seat')+'">'
+ return '<button type="button" class="ad-r" data-ana="'+anaKey('seat',s.p.n)+'" title="'+esc('Open the '+band.toLowerCase()+' point')+'">'
   +crBadge(band,Math.min(100,s.load*100),{size:'sm',raw:anaN(s.hot),title:anaPl(s.hot,'address','addresses')+' held at the '+band.toLowerCase()})
-  +'<span>'+esc(s.p.n)+'</span><em>'+anaSeatWord(band)+' seat</em></button>';}
+  +'<span>'+esc(s.p.n)+'</span><em>'+anaSeatWord(band)+' point</em></button>';}
 function anaBands(list){var bs=[];list.forEach(function(n){if(n.b&&bs.indexOf(n.b)<0)bs.push(n.b);});
  return BANDS.filter(function(b){return bs.indexOf(b)>=0;});}
 
@@ -513,12 +929,12 @@ function anaByFeeling(list){
 function anaBySeat(list){
  return anaBars(anaGroup(list,function(n){return n.b;}).map(function(g){
   return {key:anaKey('seat',anaSeatNm(g.k)),lbl:anaSeatWord(g.k,true),v:g.v,c:seatCol(g.k),fig:anaFig(g),
-   title:'Open the '+String(g.k).toLowerCase()+' seat. The bar is the charge left on these fetters, added up.'};}));}
+   title:'Open the '+String(g.k).toLowerCase()+' point. The bar is the charge left on these fetters, added up.'};}));}
 /* the two splits, under one pair of headings, for any set of addresses */
 function anaSplits(list){
  if(!list.length)return '';
  return '<div class="pm-eye" style="margin-top:14px">By feeling</div>'+anaByFeeling(list)
-  +'<div class="pm-eye" style="margin-top:12px">By seat</div>'+anaBySeat(list);}
+  +'<div class="pm-eye" style="margin-top:12px">By point</div>'+anaBySeat(list);}
 /* the patterns running on a set of addresses, or the lock where the plan
    cannot see them. Never "nothing runs here" to a plan that cannot look. */
 function anaRunning(r,list,head){
@@ -535,7 +951,7 @@ function anaStories(bands){
  var s='<div class="pm-eye" style="margin-top:14px">From your stories, '+hit.length+'</div>';
  return s+(hit.length?hit.slice(0,4).map(function(e){
   return '<div class="ad-q">'+esc(e.text.slice(0,130))+(e.text.length>130?'…':'')+'</div>';}).join('')
-  :'<p class="ad-p">No entry has landed on these seats yet.</p>');}
+  :'<p class="ad-p">No entry has landed on these points yet.</p>');}
 /* how many of a set are held, how many carry under the line, said once */
 function anaHeldSay(list){
  var h=list.filter(function(n){return n.sq>=4;}).length;
@@ -567,7 +983,7 @@ function anaChainCard(r,o){
  h+=anaKv([['Weight',crBadge(bs[0]||'Heart',pct('chain',o.w)||0,{size:'md',raw:fmtPct('chain',o.w),
    title:'How heavily it runs, on the same scale as an address'})],
   ['Fetters',anaN(lv.length)],['Held',anaN(lv.filter(function(n){return n.sq>=4;}).length)],
-  ['Seats',anaN(bs.length)]]);
+  ['Points',anaN(bs.length)]]);
  /* the word's own meaning, from the one table. Not "What it is": a
     saboteur's card carries that heading already, for its library entry
     (kbSabBlock), and two headings of one name read as one section twice. */
@@ -584,7 +1000,7 @@ function anaChainCard(r,o){
   +(o.over?'Overshot. The opposite of the feeling underneath is put in past the point where it helps, '
     +'so these fetters will not shut, where a held fetter will not open. ':'')
   +'It runs on <b>'+anaPl(lv.length,'fetter','fetters')+'</b> at the '+anaAnd(bs.map(function(b){return b==='3rd Eye'?'3rd eye':b.toLowerCase();}))
-  +(bs.length===1?' seat':' seats')+'. '+anaHeldSay(lv)+' '+made
+  +(bs.length===1?' point':' points')+'. '+anaHeldSay(lv)+' '+made
   +(o.kind==='sab'&&o.score?' Matched at <b>'+o.score+'%</b>, a measure of how closely your feelings fit the ranges this saboteur is defined by.':'')
   +(o.kind==='sup'?' A super-complex costs more than it looks like it should, because you cannot see it as separate from you.':'')
   +'</p>';
@@ -608,13 +1024,13 @@ function anaAxisCard(r,nm){
  var h=anaHead(unp('axis','Axis'),c.nm+' toward '+c.opp,where+', '+esc(c.loc));
  var hv=S.charge[c.nm]||0, iv=S.replace[c.nm]||0;
  h+=anaKv([['Held',crBadge(c.seat,pct('charge',hv)||0,{size:'md',raw:fmtPct('charge',hv),title:c.nm+' held'})],
-  ['Installed',crBadge(c.seat,pct('installed',iv)||0,{size:'md',raw:fmtPct('installed',iv),title:c.opp+' installed'})],
+  [unp('installed','Installed'),crBadge(c.seat,pct('installed',iv)||0,{size:'md',raw:fmtPct('installed',iv),title:c.opp+' installed'})],
   ['Fetters',anaN(own.length)]]);
  h+='<p class="ad-p">'+unpSay('axis')+' Held is how much '+c.nm.toLowerCase()+' is stored. Installed is how much '
   +c.opp.toLowerCase()+' is in place. Coherence is the centre of this axis, not either end. It runs through <b>'
   +anaPl(own.length,'fetter','fetters')+'</b>. '+anaHeldSay(own)+'</p>';
  h+='<div class="pm-eye">Its fetters</div>'+anaAddrRows(own,10);
- h+='<div class="pm-eye" style="margin-top:12px">By seat</div>'+anaBySeat(own);
+ h+='<div class="pm-eye" style="margin-top:12px">By point</div>'+anaBySeat(own);
  return h+anaRunning(r,own,'Running on it');}
 function anaSeatCard(r,nm){
  var s2=flSeats().filter(function(x){return x.p.n===nm;})[0]; if(!s2)return null;
@@ -626,9 +1042,9 @@ function anaSeatCard(r,nm){
     sentence. Vritti is gone: the codex makes it the wave around a nerve,
     never a spine level. The reason is written at engine/data/gloss.js. The
     Hz wears its own seat's colour, as ruled 25 September (TASKS.md AX8). */
- var h=anaHead('Seat',s2.p.n)+'<div class="ad-sub">'+unp(s2.p.n,s2.p.sk,'yoga')+' · '+unp('plexus',s2.p.nv)
+ var h=anaHead('Point',s2.p.n)+'<div class="ad-sub">'+unp(s2.p.n,s2.p.sk,'yoga')+' · '+unp('plexus',s2.p.nv)
   +' · <span style="color:'+seatCol(bn)+'">'+unp('seat tone',s2.p.hz+' Hz')+'</span></div>';
- h+='<p class="ad-p">'+unpSay('level:'+s2.p.k)+' The seat sits at '+unp('spot:'+s2.p.k,s2.p.seat)+'. It passes <b>'
+ h+='<p class="ad-p">'+unpSay('level:'+s2.p.k)+' The point sits at '+unp('spot:'+s2.p.k,s2.p.seat)+'. It passes <b>'
   +fmtPct('pass',s2.pass)+'</b> of what reaches it. <b>'+s2.hot+'</b> address'
   +(s2.hot===1?' is':'es are')+' held here.</p>';
  /* the laws seated here, as doors, round RB. They were chips that went nowhere. */
@@ -646,7 +1062,7 @@ function anaSeatCard(r,nm){
 function anaLawCard(r,nm){
  var l=SI.filter(function(x){return x.nm===nm;})[0]; if(!l)return null;
  var s=anaSeatNm(l.b);
- return lawDrillHtml(l,{ana:true})+'<div class="pm-eye" style="margin-top:12px">Its seat</div>'
+ return lawDrillHtml(l,{ana:true})+'<div class="pm-eye" style="margin-top:12px">Its point</div>'
   +'<div class="ad-rows">'+anaSeatRow(l.b)+'</div>';}
 function anaDomCard(r,nm){
  var di=-1; DOMAINS.forEach(function(d,i){if(d.nm===nm)di=i;});
@@ -672,7 +1088,7 @@ function anaArchCard(r,nm){
  h+='<p class="ad-p">'+esc((ARCH[ai]||{}).v||'')+'. <b>'
   /* how fully it is expressed, ruled 16 October; the lean against the
      strongest still orders the archetypes and is printed nowhere */
-  +fmtPct('archetype',archExpr(ai))+'</b> expressed. Charge held at its seat pulls it down, and a release lifts it.'
+  +fmtPct('archetype',archExpr(ai))+'</b> expressed. Charge held at its point pulls it down, and a release lifts it.'
   +(a18?' Its primary saboteur is <b>'+esc(a18[1])+'</b>'
    +(sbs.length?', and its '+unp('address','addresses')+' sit at '+esc(unpackList(sbs.map(srcSeatSay))):'')+'.':'')
   +' The archetype does not change. Release clears what bends it on the way out.</p>';
@@ -686,9 +1102,9 @@ function anaMaskCard(r,nm){
  var all=W.filter(function(n){return sb.indexOf(n.b)>=0;}).sort(anaBySq);
  var lv2=all.filter(function(n){return n.sq>=4;});
  var h=anaHead(unp('mask','Mask'),m2.nm,'speaks from '+esc(sb.join(' and ')));
- h+=anaKv([['Load',crBadge(sb[0]||'Heart',pct('weight',m2.w)||0,{size:'md',raw:fmtPct('weight',m2.w),title:'The average charge left across these seats'})],
+ h+=anaKv([['Load',crBadge(sb[0]||'Heart',pct('weight',m2.w)||0,{size:'md',raw:fmtPct('weight',m2.w),title:'The average charge left across these points'})],
   ['Held',anaN(lv2.length)]]);
- h+='<p class="ad-p">'+unpSay('mask')+' This is the age the output takes on the way out. Its load is the average charge left across every address at those seats.</p>'
+ h+='<p class="ad-p">'+unpSay('mask')+' This is the age the output takes on the way out. Its load is the average charge left across every address at those points.</p>'
   +'<div class="pm-eye">Underneath it</div>'+anaAddrRows(all.filter(function(n){return n.sq>0;}),10);
  return h+anaSplits(all)+anaRunning(r,all,'Running under it')+anaStories(sb);}
 /* one seat and one feeling, the cell of the grid */
@@ -696,10 +1112,10 @@ function anaCellCard(r,nm){
  var i=nm.indexOf(':'), b=nm.slice(0,i), f=nm.slice(i+1);
  var c=CHILD.filter(function(x){return x.nm===f;})[0]; if(!c||BANDS.indexOf(b)<0)return null;
  var list=W.filter(function(n){return n.b===b&&n.cf===f;}).sort(anaBySq);
- var h=anaHead('Seat and feeling',f+' at the '+(b==='3rd Eye'?'3rd eye':b.toLowerCase()));
+ var h=anaHead('Point and feeling',f+' at the '+(b==='3rd Eye'?'3rd eye':b.toLowerCase()));
  h+='<p class="ad-p">'+(list.length?'<b>'+anaPl(list.length,'fetter','fetters')+'</b> at the '+anaSeatWord(b)
-   +' seat hold '+esc(f.toLowerCase())+'. '+anaHeldSay(list)
-   :'No fetter at this seat holds '+esc(f.toLowerCase())+', so nothing can gather here.')+'</p>';
+   +' point hold '+esc(f.toLowerCase())+'. '+anaHeldSay(list)
+   :'No fetter at this point holds '+esc(f.toLowerCase())+', so nothing can gather here.')+'</p>';
  if(list.length)h+='<div class="pm-eye">Its fetters</div>'+anaAddrRows(list,12);
  h+='<div class="pm-eye" style="margin-top:12px">Under it</div><div class="ad-rows">'+anaAxisRow(f)+anaSeatRow(b)+'</div>';
  return h+(list.length?anaRunning(r,list,'Running here'):'');}
@@ -738,8 +1154,13 @@ function anaPctFig(kind,v,r){return {p:pct(kind,v)||0,raw:fmtPct(kind,v,{unread:
    said each figure a second way beside the sentence engine/data/gloss.js
    already gives it, which is the one table every other CQ and DQ tooltip
    reads. A getter, so the table is asked when the tile is drawn and not
-   when this file loads. The five below have no entry in that table, so
-   they keep their own words: a content gap, not a wiring one. */
+   when this file loads. THE CONTENT GAP CLOSED, 18 November: Self-read
+   shadow, Pull, Overshoot and Installed kept their own words here because
+   the table had no sentence for them, which left every other screen that
+   prints those words (the session card, the axis card, the pole drill, the
+   release ledger) nothing to ask. Their sentences live in gloss.js now and
+   these read them the way CQ and DQ do. Expression keeps its own words: the
+   table's bare expression is the numerology number. */
 var ANA_MET={
  cq:{nm:'Coherence',seat:'Crown',txt:'CQ',
   get tip(){return unpackOf('cq');},
@@ -748,24 +1169,27 @@ var ANA_MET={
   get tip(){return unpackOf('dq');},
   fig:function(r){return anaPctFig('dq',r.DQ,r);}},
  lawsq:{nm:'Self-read shadow',seat:'Root',txt:'SQ',
-  tip:'SQ is what your own law answers alone imply about shadow, CQ\'s own complement. It is not Shadow (DQ): DQ moves when you release what you actually carry, SQ only moves when a law answer changes.',
+  get tip(){return unpackOf('self-read shadow');},
   fig:function(r){return r.lawSQ===null?{p:0,raw:'–'}:anaPctFig('lawsq',r.lawSQ,r);}},
  pull:{nm:'Pull',seat:'Solar',txt:null,
-  tip:'Pull is how hard the charge you hold drags on what you do, and a heavy place drags far harder than a light one.',
+  get tip(){return unpackOf('pull');},
   fig:function(r){return anaPctFig('pull',r.PULL,r);}},
  ex:{nm:'Expression',seat:'Throat',txt:null,
   tip:'Expression is your coherence with the pull taken off it, so it is how much of it reaches what you do.',
   fig:function(r){return anaPctFig('expression',r.EX,r);}},
  jq:{nm:'Overshoot',seat:'3rd Eye',txt:null,
-  tip:'Overshoot is an opposite feeling put in past the point where it helps, at 60% and above.',
+  get tip(){return unpackOf('overshoot');},
   fig:function(r){return anaPctFig('overshoot',r.JQ,r);}},
  pole:{nm:'Installed',seat:'Heart',txt:null,
-  tip:'Installed is how much of each opposite feeling is in place where its feeling was, such as trust where fear sat.',
+  get tip(){return unpackOf('installed');},
   fig:function(r){return anaPctFig('pole',r.poleMean,r);}}};
 function anaMetRow(r,k){
  var M=ANA_MET[k], f=M.fig(r);
  return '<button type="button" class="ad-r" data-ana="met|'+k+'" title="'+esc('Open '+M.nm)+'">'
-  +crBadge(M.seat,f.p,{size:'sm',raw:f.raw,title:M.nm})+'<span>'+esc(M.nm)+'</span><em>reading</em></button>';}
+  +crBadge(M.seat,f.p,{size:'sm',raw:f.raw,title:M.nm})
+  /* the word carries its sentence the way the tile's does, a data-tip on the
+     label and no tabindex, because the row is already the focusable button */
+  +'<span data-tip-k="'+esc(M.nm)+'" data-tip="'+esc(M.tip)+'">'+esc(M.nm)+'</span><em>reading</em></button>';}
 function anaMetCard(r,k){
  var M=ANA_MET[k]; if(!M)return null;
  var f=M.fig(r), h=anaHead('Reading',M.nm);
@@ -787,7 +1211,7 @@ function anaMetCard(r,k){
  else if(k==='dq'){
   h+='<p class="ad-p">It counts every one of your '+NODES.length+' addresses, under the line at 40% as well as over it. '
    +'It is worked out from the addresses and is not measured on its own. It does not touch CQ. It feeds the pull.</p>'
-   +'<div class="pm-eye">Where it sits, by seat</div>'+bySeat()
+   +'<div class="pm-eye">Where it sits, by point</div>'+bySeat()
    +'<div class="pm-eye" style="margin-top:12px">Heaviest fetters</div>'+anaAddrRows(W.filter(function(n){return n.sq>0;}).sort(anaBySq),8);}
  else if(k==='pull'){
   /* the weights in the unit every address now prints, 17 October */
@@ -797,7 +1221,7 @@ function anaMetCard(r,k){
    +'<div class="pm-eye">Pulling hardest</div><div class="ad-rows">'
    +W.filter(function(n){return n.sq>=2;}).sort(anaBySq).slice(0,10).map(function(n){
     return addrRow(n,{ana:true,em:'drags '+fmtPct('pull',leverPull(n.sq))});}).join('')+'</div>'
-   +'<div class="pm-eye" style="margin-top:12px">By seat</div>'+bySeat();}
+   +'<div class="pm-eye" style="margin-top:12px">By point</div>'+bySeat();}
  else if(k==='ex'){
   var top=(typeof exCeiling==='function')?exCeiling():null;
   h+='<p class="ad-p">Expression is CQ times what the pull leaves. CQ <b>'+fmtPct('cq',r.CQ)+'</b>, pull <b>'
@@ -838,8 +1262,11 @@ function anaSessCard(r,nm){
  h+='<p class="ad-p">Every figure this session kept. '+(p?(same?'Each change is against the session before it.'
    :'The session before was worked out a different way, so no change is shown against it.'):'This is the first session on the record.')+'</p>'
   +'<div class="ana-dls">'+row('Coherence','cq',1,'cq')+row('Shadow','dq',1,'dq')+row('Held','loaded',0)
-  +row('Saboteurs','sab',0)+row('Complexes','cx',0)+row('Hyper-complexes','hy',0)+row('Super-complexes','ch',0)
-  +row('Overshoot','jq',2,'overshoot')+row('Installed','pole',2,'pole')+'</div>'
+  /* the four rungs carry their sentences beside Overshoot and Installed, so
+     one dotted word in a column of bare ones does not read as the odd row */
+  +row(unp('saboteur','Saboteurs'),'sab',0)+row(unp('complex','Complexes'),'cx',0)
+  +row(unp('hyper complex','Hyper-complexes'),'hy',0)+row(unp('super complex','Super-complexes'),'ch',0)
+  +row(unp('overshoot','Overshoot'),'jq',2,'overshoot')+row(unp('installed','Installed'),'pole',2,'pole')+'</div>'
   +(x.tier?'<p class="ad-p">The band read <b>'+esc(String(x.tier).toLowerCase())+'</b>.</p>':'')
   +(x.arch?'<p class="ad-p">The leading archetype was <b>'+esc(x.arch)+'</b>.</p>':'');
  return h;}
@@ -874,12 +1301,42 @@ function anaCrumbs(){
 /* THE DRILL. Still the function every caller knows, and it still clears in
    place: rdClose calls render, render calls anaRender, anaRender calls this,
    which recursed until the stack died when this called rdClose. */
+/* THE REAL KIND A CARD OPENED WITH, for insDoor, below. anaGo's own kinds
+   are this page's own: 'chain' covers a saboteur, complex, hyper-complex or
+   super-complex at once (anaFind tells which), and 'axis' is this file's
+   own name for what engine/insight.js calls 'fet', the child emotion;
+   'seat' here is keyed by the point's proper name where insight.js's own
+   APC table is keyed by the band word, so that one needs the same lookup
+   anaSeatCard already does to get from one to the other. met, sess, rung
+   and cell have no equivalent a person can release, so they are left as
+   they were: no insDoor, Insight keeps whatever it already had or says
+   nothing is selected, honestly, rather than guess at one. */
+function anaInsSelFor(P,r){
+ if(P.k==='addr')return {kind:'addr',i:+P.nm};
+ if(P.k==='axis')return {kind:'fet',nm:P.nm};
+ if(P.k==='seat'){
+  var s=flSeats().filter(function(x){return x.p.n===P.nm;})[0], bn=s&&K2B[s.p.k];
+  return bn?{kind:'seat',nm:bn}:null;}
+ if(P.k==='chain'){var o=anaFind(r,P.nm); return o?{kind:o.kind,nm:o.nm}:null;}
+ if(P.k==='mask'||P.k==='dom'||P.k==='arch'||P.k==='law')return {kind:P.k,nm:P.nm};
+ return null;}
 function anaDrill(){
  var box=document.getElementById('rdrill'); if(!box)return;
  if(!ANA_PICK){ANA_TRAIL=[];box.innerHTML='';box.style.display='none';
   var none=document.getElementById('rdrill-none'); if(none)none.style.display='';
   return;}
  var r=computeSeen(), h=anaCard(r,ANA_PICK);
+ /* THE DOOR SAYS WHAT IT IS ABOUT TO OPEN, before rdShell takes it, the same
+    promise every other drill on this product already keeps (ui/drills.js's
+    runNodeDrill, runLawDrill and the rest). anaDrill() and anaGo() never
+    made that call, so a card could stand open on this page while the
+    Insight rail still read "Nothing selected" underneath it. Only called
+    when the card is real (h!=null): a selection whose pattern has stopped
+    running says so on its own card, and Insight should not claim a
+    confident reading of a thing that card just said is gone. */
+ if(h!=null&&typeof insDoor==='function'){
+  var ik=anaInsSelFor(ANA_PICK,r);
+  if(ik)insDoor(ik.kind,ik.nm,ik.i);}
  /* a thing on the trail can stop running while a person is on it, after a
     release. The card says so and the trail still leads back. */
  if(h==null)h=anaHead('Not running now',anaStepName(ANA_PICK))
@@ -916,8 +1373,23 @@ addEventListener('click',function(e){
   ANA_PICK=ANA_TRAIL[i]; ANA_TRAIL=ANA_TRAIL.slice(0,i);
   anaRedraw(true);
   return;}
+ /* REAL SOUND, SILENT BY DEFAULT: sfx() (ui/sound.js) already is; this is
+    the one real user gesture that opens a reading from the treemap, the
+    same moment ui/ui.js plays 'field' for a press on the Field's own
+    wheel nodes. Scoped to the treemap's own controls so this round does
+    not change what the rest of the Analytics page already sounds like. */
+ if(t.closest('.ana-tm-cell,.ana-tm-head')&&typeof sfx==='function')sfx('field');
  var v=t.getAttribute('data-ana'), at=v.indexOf('|');
  anaGo(v.slice(0,at),v.slice(at+1),inPage&&!inDrill);});
+/* THE ARCHETYPE PERCENT TOGGLE, its own small press, never a step in the
+   trail (ANA_PICK, ANA_TRAIL above are untouched by it): it changes how a
+   number already on the page is read, not what the person is looking at,
+   so it redraws the page in place and opens nothing new. */
+addEventListener('click',function(e){
+ var t=e.target&&e.target.closest?e.target.closest('[data-anamode]'):null;
+ if(!t||!t.closest('#ana'))return;
+ var m=t.getAttribute('data-anamode'); if(!m||m===ANA_ARCHMODE)return;
+ ANA_ARCHMODE=m; anaRender();});
 /* a bubble and the identification block are not buttons, so Enter and Space
    press them the way they press a button */
 addEventListener('keydown',function(e){
@@ -963,14 +1435,14 @@ function anaGrid(r){
     a feeling's name at the start of its row opens the feeling, and the thin
     bar under each name adds that whole column or row up. Same scale along
     each edge, so the longest bar is the heaviest seat or feeling. */
- var s='<div class="ana-grid" role="group" aria-label="Charge left by seat and feeling">'
+ var s='<div class="ana-grid" role="group" aria-label="Charge left by point and feeling">'
   +'<span class="ana-g-c"></span>'+cols.map(function(b){
    var ch=colT[b]?Math.max(6,Math.round(colT[b]/(cmax||1)*100)):0;
-   return '<button type="button" class="ana-g-h" data-ana="'+anaKey('seat',anaSeatNm(b))+'" title="'+esc('The '+b.toLowerCase()+' seat, every feeling. Open it.')+'">'
+   return '<button type="button" class="ana-g-h" data-ana="'+anaKey('seat',anaSeatNm(b))+'" title="'+esc('The '+b.toLowerCase()+' point, every feeling. Open it.')+'">'
     +'<span>'+anaSeatWord(b,true)+'</span><i style="width:'+ch+'%;background:'+seatCol(b)+'"></i></button>';}).join('');
  rows.forEach(function(c){
   var rw=rowT[c.nm]?Math.max(6,Math.round(rowT[c.nm]/(rmax||1)*100)):0;
-  s+='<button type="button" class="ana-g-r" data-ana="'+anaKey('axis',c.nm)+'" title="'+esc(c.nm+' at every seat. Open it.')+'">'
+  s+='<button type="button" class="ana-g-r" data-ana="'+anaKey('axis',c.nm)+'" title="'+esc(c.nm+' at every point. Open it.')+'">'
    +'<span>'+esc(c.nm)+'</span><i style="width:'+rw+'%;background:'+seatCol(c.seat)+'"></i></button>';
   cols.forEach(function(b){
    var m=M[b+':'+c.nm];

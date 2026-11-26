@@ -803,8 +803,30 @@ async function door(browser, SITE, cut, giftAt) {
      ordinary flow, so the story reaches ST_TEXT through srcTurnCommit, the
      one door a turn lands through whether it is typed or spoken. */
   await page.evaluate(t => { if (typeof srcTurnCommit === 'function') srcTurnCommit(t); }, STORY).catch(() => {});
-  await page.waitForTimeout(500);
-  ok(await Q.click('#stapply'), 'the story is written and Commit is there to press', 'no way to keep a story');
+  /* A fixed 500ms pause inspected half-painted UI under parallel browser
+     load. Require a genuinely visible, enabled control, not just a hidden
+     DOM node, and preserve structural diagnostics without story words. */
+  const commitStarted = Date.now();
+  const commitVisible = await page.waitForFunction(() => {
+    const b = document.getElementById('stapply'); if (!b || b.disabled) return false;
+    const r = b.getBoundingClientRect();
+    return r.width > 0 && r.height > 0
+      && b.checkVisibility({ checkOpacity: true, checkVisibilityCSS: true });
+  }, null, { timeout: 5000 }).then(() => true, () => false);
+  const commitWaitMs = Date.now() - commitStarted;
+  const commitDiag = commitVisible ? null : await page.evaluate(() => {
+    const b = document.getElementById('stapply');
+    return { exists: !!b, disabled: b ? b.disabled : null,
+      visible: b ? getComputedStyle(b).visibility : null,
+      storyLength: typeof ST_TEXT === 'string' ? ST_TEXT.length : null,
+      parsed: typeof ST_PARSED !== 'undefined' && !!ST_PARSED,
+      dash: typeof STV !== 'undefined' ? !!STV.dash : null,
+      chat: typeof STV !== 'undefined' ? !!STV.chat : null,
+      tab: typeof S !== 'undefined' ? S.tab : null };
+  }).catch(() => ({ inspect: 'page could not be inspected' }));
+  ok(commitVisible && await Q.click('#stapply'),
+    'the story is written and Commit is visibly enabled to press after ' + commitWaitMs + 'ms',
+    'no visible way to keep a story after ' + commitWaitMs + 'ms: ' + J(commitDiag));
   const kept = await Q.waitSaid(/^\|Committed\. \d+ imprints? written to the field\./, 5000);
   ok(!!kept, 'Commit says it kept the story, ' + J(kept));
   await page.evaluate(SHRINK);
@@ -1091,6 +1113,32 @@ async function door(browser, SITE, cut, giftAt) {
   await po2.waitForFunction(() => typeof LOGIN !== 'undefined' && !LOGIN.open, null, { timeout: 15000 }).catch(() => {});
   await throughIntro(po2, 8000);
   ok(!!await O.waitSaid(/Account created\. Signed in as /, 6000), 'the press says the account is made and who is signed in');
+  /* THE DOOR NO LONGER LEADS HERE, 18 November (a76717e5, "Skip the two
+     first-run sheets; land straight on Dashboard"). loginEnter marks the
+     profile onboarded and lands on Summary instead of opening this sheet,
+     on his ruling, so OB.open never becomes true on its own after this
+     press any more and everything below, the session made, the join, the
+     release and the studio voice, would read as dead with it. The sheet's
+     own mechanics are still real product and still covered (the commit's
+     own words), so this opens it directly the way tests/onboarding2.js
+     already does since 56f07f1a, obOpen(false), which is also the one
+     thing missing: authFunnelStart, its first line, is what makes the
+     first visit session this station is about to read back.
+
+     AND loginEnter ITSELF, the same ruling, marks the profile onboarded
+     on every sign in now, where before this change that bit stayed false
+     until the sheet was actually left (obClose, ui/onboard.js). Nothing
+     combined the two until this walk did, so the gap this opens on
+     station 11, below, is a live one: a release that lands while this
+     bit already reads true never gets its own end card back,
+     obAfterRelease's own guard against reopening a sheet somebody has
+     already left (ui/onboard.js) read "already left" off the wrong
+     signal the moment signing in started setting it first. Cleared here
+     so the walk this test is about to drive reads as what it is, a first
+     run genuinely still open, the same state tests/onboarding2.js's own
+     profile is already in when it calls this. */
+  await po2.evaluate(() => { if (CURP && CURP.ui) CURP.ui.onboarded = false;
+    if (typeof obOpen === 'function') obOpen(false); });
   const obOn = await po2.waitForFunction(() => typeof OB !== 'undefined' && OB.open, null, { timeout: 8000 }).then(() => true, () => false);
   ok(obOn, 'behind the door the first run opens');
   await po2.waitForTimeout(800);
@@ -1204,7 +1252,12 @@ async function door(browser, SITE, cut, giftAt) {
     /* FIRST PRESS SWITCHES, SECOND SENDS, 13 November - see station 3's own note. */
     await O2.click('#loginb-new');
     await O2.click('#loginb-new');
+    await O2.page.waitForFunction(() => typeof LOGIN !== 'undefined' && !LOGIN.open, null, { timeout: 15000 }).catch(() => {});
     await throughIntro(O2.page, 15000);
+    /* THE DOOR NO LONGER LEADS HERE, 18 November, the same fact station 10
+       names in full: loginEnter goes straight to Summary now, so this is
+       opened directly, the way tests/onboarding2.js already does. */
+    await O2.page.evaluate(() => { if (typeof obOpen === 'function') obOpen(false); });
     await O2.page.waitForFunction(() => typeof OB !== 'undefined' && OB.open, null, { timeout: 15000 }).catch(() => {});
     await O2.page.waitForTimeout(800);
     const a2 = Object.values(w2.st.acc)[0] || {}, f2 = Object.values(w2.st.fun);

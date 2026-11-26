@@ -180,11 +180,18 @@ async function lockGate(browser,FILE,ok,booted){
    cards:document.querySelectorAll('#paywall .pw-c').length,
    came:document.querySelectorAll('#paywall .pw-rg.came[data-k="sab"]').length,
    tip:((document.querySelector('#paywall .pw-c[data-pt="'+(PW.door||'none')+'"] .pw-rg[data-k="sab"]')||{getAttribute:()=>''}).getAttribute('data-tl')),
-   you:((document.querySelector('#paywall .pw-hd .pw-here')||{}).textContent||'').replace(/\s+/g,' ')}));
+   /* FIVE COLUMNS, 21 November (251e6383): Free is its own card now, the
+      same shape as every paid tier, and the header's own quiet "You are
+      here" badge (.pw-hd .pw-here) it used to carry was removed along
+      with it. The same fact now sits on Free's own card, the same spot
+      every other tier's own "You are here" already read from
+      (.pw-act .pw-here), the same fix tests/paywall.js's own worked
+      example needed. */
+   you:((document.querySelector('#paywall .pw-c[data-pt="free"] .pw-act .pw-here')||{}).textContent||'')}));
   ok(landed.open&&landed.field&&landed.k==='sab'&&landed.door===need('sab')&&landed.doorCard,
    tag+'See tiers opens the paywall over the Field, saboteurs pressed, the door on the tier SIGHT names, '+JSON.stringify(landed));
   ok(landed.cards>0&&landed.came===landed.cards,tag+'the pressed ring is marked on every card, '+landed.came+' of '+landed.cards);
-  ok(/You are here\s*Free/.test(landed.you)&&landed.tip==='Opens at '+G.tierNm[need('sab')].toLowerCase(),
+  ok(/You are here/.test(landed.you)&&landed.tip==='Opens at '+G.tierNm[need('sab')].toLowerCase(),
    tag+'and the sheet says which tier the person has and which tier opens what was locked, '+JSON.stringify([landed.you,landed.tip]));
   await pg.evaluate(()=>paywallClose());
 
@@ -246,7 +253,10 @@ async function lockGate(browser,FILE,ok,booted){
   ok(bd.engine>0&&bd.lines===0&&bd.hubs===0,tag+'the Body draws no saboteur line and no hub while the engine holds '+bd.engine+', lines '+bd.lines+', hubs '+bd.hubs);
 
   /* ---- 6 · THE COMPASS, REGISTERS ---- */
-  await pg.evaluate(()=>{CONE.shells=true;CONE.top=false;setTab(TAB.COMPASS);coneOpen(true);}); await pg.waitForTimeout(700);
+  /* the figure, not the climb the tab opens on since d39316eb: .cone-fig.climb
+     hides #cnbar, so the Registers circle measured 0 by 0 there. Put back to
+     the climb once this block is read. */
+  await pg.evaluate(()=>{CONE.climb=false;CONE.clSel=null;CONE.shells=true;CONE.top=false;setTab(TAB.COMPASS);coneOpen(true);}); await pg.waitForTimeout(700);
   const cn=await pg.evaluate(()=>{const e=document.querySelector('#cone [data-cn="shells"]'),r=e.getBoundingClientRect();
    return {lock:e.getAttribute('data-lock'),dis:e.getAttribute('aria-disabled'),pr:e.getAttribute('aria-pressed'),mark:!!e.querySelector('.lk-mk'),
     w:r.width,h:r.height,tip:e.getAttribute('data-tip')||'',shells:CONE.shells,
@@ -257,6 +267,7 @@ async function lockGate(browser,FILE,ok,booted){
   ok(!cn.top,tag+'Top is not a rung and is not locked');
   await pg.evaluate(()=>{document.querySelector('#cone [data-cn="shells"]').click();}); await pg.waitForTimeout(300);
   ok(await pg.evaluate(()=>CONE.shells===false),tag+'pressing it does not turn Registers on');
+  await pg.evaluate(()=>{CONE.climb=true;});
 
   /* ---- 7 · THE CHARACTER PAGE ---- */
   const ch=await pg.evaluate(()=>{
@@ -287,24 +298,38 @@ async function lockGate(browser,FILE,ok,booted){
 
   /* ---- 8 · THE RAIL AND THE LISTS, which must say locked and not nothing ---- */
   await as('free');
+  /* THE RAIL'S LISTS ARE THE STACK NOW, 18 November. #run and #fire, the Flow
+     cards and the Running now list, left the rail with the five tabs, and the
+     six-level stack under the Insight reading is the one list of what is
+     running. These three checks held that the rail says locked and never
+     nothing is running, that the chain tabs were locked without a count and
+     the fetters were not, and that an open locked tab showed the lock's panel.
+     They hold the same three things of the levels. */
   const rl=await pg.evaluate(()=>{
-   const run=document.getElementById('run').textContent.replace(/\s+/g,' '), fire=document.getElementById('fire').textContent.replace(/\s+/g,' ');
-   const st=[...document.querySelectorAll('#stack .stk-t[data-st]')].map(t=>({k:t.getAttribute('data-st'),lock:t.getAttribute('data-lock'),
-    n:(t.querySelector('b')||{}).textContent||'',h:t.getBoundingClientRect().height}));
-   STACK_TAB='sab'; railStack(computeSeen());
-   const sl=document.querySelector('#stack .lk-panel');
-   STACK_TAB='fet'; railStack(computeSeen());
-   return {run:run,fire:fire,panels:document.querySelectorAll('#run .lk-panel,#fire .lk-panel').length,st:st,stackPanel:!!sl};});
-  ok(rl.panels>=2&&!/Nothing is running|Nothing running/.test(rl.run+' '+rl.fire),
-   tag+'the rail says it is locked and never that nothing is running, '+rl.run.slice(0,120));
-  ok(rl.st.filter(t=>t.k!=='fet').every(t=>t.lock===t.k&&t.n===''&&t.h>=30)&&rl.st.find(t=>t.k==='fet').lock===null,
-   tag+'the stack\'s chain tabs are locked and print no count, the fetters are not, '+JSON.stringify(rl.st));
-  ok(rl.stackPanel,tag+'a locked stack tab that is open shows the lock\'s panel and not an empty list');
+   const lv=[...document.querySelectorAll('#stack .stk-lv')].map(l=>({k:l.getAttribute('data-lv'),
+    panel:!!l.querySelector('.lk-panel'),n:(l.querySelector('.stk-lc')||{}).textContent||'',
+    h:l.querySelector('.stk-lh').getBoundingClientRect().height}));
+   return {text:document.getElementById('stack').textContent.replace(/\s+/g,' '),
+    panels:document.querySelectorAll('#stack .lk-panel').length,lv:lv};});
+  ok(rl.panels>=2&&!/Nothing is running|Nothing running|None running/.test(rl.text),
+   tag+'the rail says it is locked and never that nothing is running, '+rl.text.slice(0,120));
+  ok(rl.lv.filter(t=>['sup','hy','cx','sab'].indexOf(t.k)>=0).every(t=>t.panel&&t.n==='')
+   &&rl.lv.filter(t=>['sup','hy','cx','sab'].indexOf(t.k)>=0).length===4
+   &&rl.lv.find(t=>t.k==='fet')&&!rl.lv.find(t=>t.k==='fet').panel&&rl.lv.find(t=>t.k==='fet').n!=='',
+   tag+'the stack\'s chain levels are locked and print no count, the child emotions are not, '+JSON.stringify(rl.lv));
+  ok(rl.panels>=4,tag+'every locked level shows the lock\'s panel and not an empty list');
   /* summary, analytics, imprints, avatar, drill */
   await pg.evaluate(()=>{setTab(TAB.SUMMARY);render();}); await pg.waitForTimeout(700);
-  const sm=await pg.evaluate(()=>{const h=document.getElementById('sumbody'), c=h.querySelector('.s-chain');
-   return {chainNums:c?c.querySelectorAll('.s-ch').length:-1,panels:h.querySelectorAll('.lk-panel').length};});
-  ok(sm.chainNums===0&&sm.panels>=1,tag+'the Summary counts no rung of the chain and says the chain is locked, '+JSON.stringify(sm));
+  /* THE CHAIN IS RETIRED FROM THE SUMMARY OUTRIGHT, 20 November (cd55089c,
+     "Summary: flat left rail from celestial to archetype, centre ends at
+     Your patterns"). sumChain lost its only caller that day; CLAUDE.md's
+     own account of the round: "sumChain is not carried. He named the
+     chain as junk on 18 November... this is that same chain." There is no
+     rung count left on the Summary to say locked or unlocked, so this
+     holds that .s-chain stays gone rather than asserting a lock panel the
+     page no longer prints for it. */
+  const sm=await pg.evaluate(()=>!!document.getElementById('sumbody').querySelector('.s-chain'));
+  ok(!sm,tag+'the Summary\'s chain is retired and has not come back, '+JSON.stringify(sm));
   await pg.evaluate(()=>{setTab(TAB.ANALYTICS);render();}); await pg.waitForTimeout(700);
   const an=await pg.evaluate(()=>{const h=document.getElementById('ana');
    return {panels:h.querySelectorAll('.lk-panel').length,nothing:/Nothing is compounding/.test(h.textContent),

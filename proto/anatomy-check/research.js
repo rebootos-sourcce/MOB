@@ -51,6 +51,23 @@ const NOSTRUCT=[
  {i:108,kind:'myth',src:'BI3b',why:'Not anatomy. Found only on New Age meditation pages, as a pillar of light built in meditation.',
   near:'None'}];
 
+/* ---------- view 1b: a real structure, under a retired name ---------- */
+/* BI3a counted "2 are real under an older name" and BI3c "6 older names",
+   neither pass naming which rows those were in the summary TASKS.md keeps.
+   These two are confirmed real structures under a name the atlas no longer
+   uses, each read directly off a real Rohen 7e plate, 21 November: 48
+   ("Hepatic Nerve") against p.279's "proper hepatic artery and hepatic
+   plexus"; 60 ("Anterior Thoracic Roots") against p.207 and p.214's
+   "lateral pectoral nerves" and "medial pectoral nerves". Both match what
+   BMPROP's own hand research already named these two rows. Kept apart from
+   NOSTRUCT, which means no real structure at all; these are the opposite
+   finding, a real structure the modern atlas calls something else. */
+const OLDNAME=[
+ {i:48,src:'BI3c',why:'"Hepatic Nerve" is not the atlas\'s own name.',
+  near:'Hepatic plexus',cite:'Rohen 7e p.279'},
+ {i:60,src:'BI3a',why:'"Anterior Thoracic Roots" is the retired name, and nerves do not have roots at this point.',
+  near:'Pectoral nerves',cite:'Rohen 7e p.207, p.214'}];
+
 /* ---------- view 2: one real structure, more than one address ---------- */
 /* sure 'named'   identical name, or a synonym a source states
    sure 'reading' the research seat's own reading: the names cannot be
@@ -123,7 +140,11 @@ const HEAD=[
    and PMBANDS): Heart T4 to T5 at 30.51, Solar T12 to L1 at 40.21, Sacral
    L5 at 47.02, and Root, "the base of the spine", at 53.55. Vertebrae are
    counted C1 = 1 through the tailbone = 30. */
-const RULER=[[11.5,30.51,'T4 to T5','Heart'],[19.5,40.21,'T12 to L1','Solar'],
+/* The two neck knots, 21 November, off the back figure's own vertebral
+   labels (map.js BMSPINE), so the neck addresses have a level to stand on.
+   figure.js ANATSPINE says why the Throat seat could not be the knot. */
+const RULER=[[1,13,'C1','the back figure\'s C1 label'],[7,19,'C7','the back figure\'s C7 label'],
+ [11.5,30.51,'T4 to T5','Heart'],[19.5,40.21,'T12 to L1','Solar'],
  [24,47.02,'L5','Sacral'],[30,53.55,'the tailbone','Root']];
 const TORSO=[
  {ids:[49,55],s:'Cardiac plexus',lv:[11.5,11.5],side:0,
@@ -143,4 +164,4 @@ const TORSO=[
   today:'On the hip, right of the midline',
   bar:'At Root, where it is filed'}];
 
-module.exports={NOSTRUCT,SAME,INSIDE,CORTEX,HEADMAP,HEAD,RULER,TORSO};
+module.exports={NOSTRUCT,OLDNAME,SAME,INSIDE,CORTEX,HEADMAP,HEAD,RULER,TORSO};

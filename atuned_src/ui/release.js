@@ -392,6 +392,8 @@ function relRerunSay(){
    play and the voice is not spoken for a run the end of it would refuse. */
 function relBegin(){
  if(showRefuse('release'))return;
+ /* the Insight well's funnel (ui/stksay.js): a card its voice opened, begun */
+ if(typeof STK_SAY!=='undefined'&&STK_SAY.relId&&STK_SAY.relId===RUN.id){ STK_SAY.relId=''; stkSayNote('begin'); }
  if(typeof sfx==='function')sfx('begin',true);
  RUN.phase='welcome';RUN.line=0;RUN.idx=0;RUN.pass=0;RUN.halted=false;RUN.paused=false;
  RUN.t0=Date.now();RUN.tEnd=0;RUN.pauseAt=0;RUN.pausedMs=0;relTicker(true);relStep();}
@@ -488,6 +490,9 @@ function relOpp(n){
    to the next run that is not a mini one, because RUN.dose outlives a run and
    a first release must not leave every later release at one line a block. */
 function relPick(nodeIds,from){
+ /* a new run is a new session: a microphone still listening for the last
+    card's row would mark a pattern this run never presented */
+ relHvStop();
  var mini=!!(from&&from.mini)&&typeof ONB_MINI_DOSE==='number';
  if(mini&&!RUN.mini)RUN.doseHeld=RUN.dose;
  if(!mini&&RUN.mini&&RUN.doseHeld!=null){RUN.dose=RUN.doseHeld; RUN.doseHeld=null;}
@@ -1205,19 +1210,33 @@ function relHitRows(H){
  return '<div class="pm-eye">In this run</div>'
   +(ses?'<div class="rel-sub">Reaching a pattern is not a hit. Mark Hit where you felt this release land. '
    +'Hold keeps it for another pass. Not a hit sets it aside, and your record still keeps it. Only a hit you mark is counted.</div>'
-   +'<div class="rel-sub" id="relhitn" aria-live="polite">'+relHitSay()+'</div>':'')
+   +'<div class="rel-sub" id="relhitn" aria-live="polite">'+relHitSay()+'</div>'+relHvHtml():'')
   +ks.map(function(k){
   return '<div class="rel-ct" style="text-align:left;margin-top:12px">'+NM[k]+'</div>'
    /* no scroll of its own: three lists each scrolling inside a card that
       scrolls is three places for a thumb to catch */
+   /* REVERTED, 19 November: the no-fractions pass (aea8a294, 18 November,
+      NO-FRACTIONS-AUDIT.md finding S01) converted this count to a percent
+      through the portion kind. Round PQ already ruled this exact screen
+      percent-free, named by name in ui/release.js's own header comment and
+      held by tests/release-percent.js's whole-card scan: "no reading on the
+      whole finished card is printed as a percent." That gate caught this
+      row the first time it ran against the merged tree. A screen-specific
+      ruling beats the general one on the screen it already named, so the
+      count form returns here; the ring beside it still fills to the same
+      share (x.reach/Math.max(1,x.of)*100, unchanged) and is not a reading in
+      text, so round PQ's own exceptions for the address ring do not apply
+      to it either way. */
    +'<div class="rel-log" style="margin:6px 0;max-height:none;overflow:visible">'+H[k].map(function(x){
     var id=(typeof relHitPat==='function')?relHitPat(k,x.nm):null, on=!!(ses&&id&&st[id]);
-    return '<div class="rel-row'+(on?' rel-rh':'')+(on&&st[id]==='rejected'?' rel-rh-off':'')+'"'
+    var reached=x.reach+' of '+x.of+(x.of===1?' address':' addresses');
+    return '<div class="rel-row'+(on?' rel-rh':'')+(on&&st[id]==='rejected'?' rel-rh-off':'')
+     +(on&&REL_HV.on&&REL_HV.pat===id?' rel-hv-on':'')+'"'
      +(on?' data-relrow="'+esc(id)+'"':'')+'>'
      +crBadge(x.b,x.reach/Math.max(1,x.of)*100,{size:'sm',raw:String(x.reach),
        glyph:'<path d="'+CHAINGLYPH[k]+'"/>',
-       title:x.nm+', '+x.reach+' of its '+x.of+(x.of===1?' address':' addresses')+' in this run'})
-     +'<span>'+esc(x.nm)+'</span><em>'+x.reach+' of '+x.of+(x.of===1?' address':' addresses')+'</em>'
+       title:x.nm+', '+reached+' in this run'})
+     +'<span>'+esc(x.nm)+'</span><em>'+reached+'</em>'
      +(on?relHitSeg(id,x.nm,st[id]):'')+'</div>';}).join('')
    +'</div>';}).join('');}
 /* HOW MUCH OF THE PLAN WAS TRULY SAID, as a count of plan entries from the
@@ -1240,6 +1259,14 @@ function relReach(){
    reach and planN from relCoolDown, and added from the meter's own answer. A
    rerun is never charged, so it says so and does not print a charge that did
    not happen. */
+/* REVERTED, 19 November: the no-fractions pass (aea8a294, 18 November,
+   NO-FRACTIONS-AUDIT.md finding P06) changed "6 of 12 lines were said" to a
+   percent through the portion kind. Round PQ already ruled this exact
+   screen percent-free (its own header comment names the finished card by
+   name), and tests/release-percent.js's whole-card scan caught this note
+   the first time it ran against the merged tree: "8%" on a card the gate
+   asserts carries none. A screen-specific ruling beats the general one on
+   the screen it already named, so the count form returns. */
 function relEndNote(){
  if(!RUN.halted||RUN.reach==null||RUN.reach>=RUN.planN)return '';
  var rest=RUN.planN-RUN.reach, paid=(RUN.meter&&RUN.meter.added)||0;
@@ -1358,21 +1385,32 @@ function relHitEv(){
  catch(e){}
  return 'rh_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2);}
 function relHitPress(pat,cmd,ev){
- if(!CURP||!RUN.saved||!RUN.id||typeof relHitDecide!=='function')return false;
+ if(typeof relHitDecide!=='function')return false;
+ var r=relHitLand(function(){
+  return relHitDecide(CURP,{ev:ev||relHitEv(),sid:RUN.id,pat:pat,cmd:cmd,mode:'control',raw:cmd,conf:null});});
+ if(!r.ok&&!r.unsaved&&r.why&&typeof status==='function')status('That mark was not kept. '+r.why,'fail');
+ return !!r.ok;}
+/* SAVED OR PUT BACK, ONE PATH FOR A PRESS AND A SPOKEN MARK. This body was
+   relHitPress's own until the voice half landed, 21 November. A second copy
+   of the restore for speech would be the second door the engine's header
+   rules out from its side: the day one copy learns a new failure and the
+   other does not, a spoken hit the store refused stays on the log in memory
+   and the next unrelated save persists it. decide is the engine call, run
+   against CURP; the answer is the engine's own, plus unsaved when the store
+   refused it and the record was put back. */
+function relHitLand(decide){
+ if(!CURP||!RUN.saved||!RUN.id)return {ok:false};
  var before=null;
  try{before=CURP.relhit?JSON.stringify(CURP.relhit):null;}catch(e){before=null;}
- var r=relHitDecide(CURP,{ev:ev||relHitEv(),sid:RUN.id,pat:pat,cmd:cmd,mode:'control',raw:cmd,conf:null});
- if(!r.ok){
-  if(typeof status==='function')status('That mark was not kept. '+r.why,'fail');
-  relHitPaint(); return false;}
- if(r.dup||r.noop){relHitPaint(); return true;}
+ var r=decide();
+ if(!r.ok||r.dup||r.noop){relHitPaint(); return r;}
  if(!pSave()){
   if(before===null)delete CURP.relhit; else CURP.relhit=JSON.parse(before);
   if(typeof status==='function')
    status('This browser would not save. Your mark is not on your record.','fail');
-  relHitPaint(); return false;}
+  relHitPaint(); return {ok:false, unsaved:true};}
  relHitPaint();
- return true;}
+ return r;}
 /* every row's three buttons and the count, off the record */
 function relHitPaint(){
  var h=document.getElementById('rel'); if(!h)return;
@@ -1382,7 +1420,131 @@ function relHitPaint(){
   b.setAttribute('aria-pressed',String(RELHIT_CMDS[b.getAttribute('data-relcmd')]===st[b.getAttribute('data-relhit')]));});
  h.querySelectorAll('[data-relrow]').forEach(function(r){
   r.classList.toggle('rel-rh-off',st[r.getAttribute('data-relrow')]==='rejected');});
- var n=document.getElementById('relhitn'); if(n)n.textContent=relHitSay();}
+ var n=document.getElementById('relhitn'); if(n)n.textContent=relHitSay();
+ relHvPaint();}
+
+/* ============================================================
+   HIT, KEEP, NOT A HIT, SAID ALOUD, 21 November. The browser half that
+   engine/relhit.js's header names as a separate item: "This file never
+   listens: the browser half, which opens the microphone and calls
+   relHitVoice, is a separate item and lives in ui/release.js."
+
+   NO SECOND STATE MACHINE. What is heard goes to relHitVoice, which parses
+   it (relHitHear) and hands a clear command to relHitDecide, the door the
+   three buttons use, through relHitLand, the save-or-put-back path they use.
+   So a spoken hit is the same event id guard, the same no op on an item
+   already there and the same one count as a pressed one.
+
+   ONE PATTERN AT A TIME, IN CARD ORDER. A spoken word names a command and
+   not a pattern, so the microphone is always about one row, the first the
+   person has not judged yet, and that row is outlined while it listens. A
+   mark lands and the next unjudged row is the one listened for; when none is
+   left the microphone closes and says so. Held and rejected rows are judged
+   and are skipped: a person changes those with the buttons, which stay.
+
+   RELEASE IS HEARD AND REFUSED, ON THE ENGINE'S RULING AND NOT THIS FILE'S.
+   The addendum lists "RELEASE / HIT" as one action and also warns that
+   "release this pattern" as a session action and "this was a hit" as
+   feedback must not be confusable. RELHIT_VOICE_COLLIDES holds that: the run
+   itself is the release, so release spoken here says why and changes
+   nothing. keep is hold's own alias in RELHIT_VOICE_PHRASES and works.
+
+   THE SAME MICROPHONE AS THE INSIGHT WELL, NOT A SECOND ONE. The recogniser
+   is the browser's, opened the way stkSayListen (ui/stksay.js) opens it:
+   continuous, finals taken by index so a final reported twice is answered
+   once, a browser end restarted while listening, and a sequence number that
+   drops any answer to a listen already stopped. Before it opens, the well's
+   own listen and the Journal's Talk are stopped through their own stop
+   paths (stkSayCut, stkSayJournalOff), so only one recogniser ever holds the
+   microphone. The confidence each final carries goes to the engine
+   unchanged, and below RELHIT_VOICE_FLOOR it moves nothing and says so.
+   ============================================================ */
+var REL_HV={on:false, seq:0, rec:null, pat:'', t:0, say:''};
+/* nothing heard for this long and the microphone closes, quietly: a release
+   card left open must not keep listening to a room */
+var REL_HV_WAIT=20000;
+var REL_HV_MIC='<rect x="9" y="3.5" width="6" height="11" rx="3"/><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v2.5"/>';
+function relHvCan(){
+ return typeof stkSayCanHear==='function'&&stkSayCanHear()&&typeof relHitVoice==='function'
+  &&!(typeof showOnly==='function'&&showOnly());}
+/* the first row on the card the person has not judged, or null */
+function relHvNext(){
+ var s=relHitLive(); if(!s)return null;
+ for(var i=0;i<s.items.length;i++)if(s.items[i].state==='shown')return s.items[i];
+ return null;}
+function relHvHtml(){
+ if(!relHvCan())return '';
+ var on=REL_HV.on;
+ return '<div class="rel-hv"><button type="button" class="rel-hv-b" id="relhitv" aria-pressed="'+on+'"'
+  +' aria-label="'+(on?'Stop marking by voice':'Mark by voice')+'"'
+  +' data-tip-t="Mark by voice" data-tip="Say hit, keep or not a hit for the outlined pattern. Each mark lands the way its button does.">'
+  +'<svg viewBox="0 0 24 24" aria-hidden="true">'+REL_HV_MIC+'</svg></button>'
+  +'<span class="rel-hv-s" id="relhitvs" aria-live="polite">'+esc(relHvLine())+'</span></div>';}
+function relHvLine(){
+ if(REL_HV.say)return REL_HV.say;
+ if(!REL_HV.on)return 'Mark by voice';
+ var s=relHitLive(), x=s&&s.items.filter(function(y){return y.id===REL_HV.pat;})[0];
+ return x?'Listening for '+x.nm+'. Say hit, keep or not a hit.':'Listening.';}
+/* the button, the line and the outlined row, in place: the cooldown may
+   still be being said and a redraw moves the list under the thumb */
+function relHvPaint(){
+ var b=document.getElementById('relhitv');
+ if(b){b.setAttribute('aria-pressed',String(REL_HV.on));
+  b.setAttribute('aria-label',REL_HV.on?'Stop marking by voice':'Mark by voice');}
+ var s=document.getElementById('relhitvs'); if(s)s.textContent=relHvLine();
+ var h=document.getElementById('rel'); if(!h)return;
+ h.querySelectorAll('[data-relrow]').forEach(function(r){
+  r.classList.toggle('rel-hv-on',REL_HV.on&&r.getAttribute('data-relrow')===REL_HV.pat);});}
+/* STOP EVERYTHING THIS STARTED. The number moves first, so a final still on
+   its way answers a listen that is already over and is dropped */
+function relHvStop(say){
+ REL_HV.seq++; clearTimeout(REL_HV.t);
+ var x=REL_HV.rec; REL_HV.rec=null;
+ if(x){x.onresult=x.onend=x.onerror=null; try{if(typeof x.abort==='function')x.abort(); else x.stop();}catch(e){}}
+ REL_HV.on=false; REL_HV.pat=''; REL_HV.say=say||'';
+ relHvPaint();}
+function relHvToggle(){
+ if(REL_HV.on){relHvStop(); return;}
+ if(!relHvCan()){if(typeof status==='function')status('This browser cannot hear speech here. Use the buttons.','fail'); return;}
+ var x=relHvNext();
+ if(!x){relHvStop('Every pattern here is marked.'); return;}
+ /* one recogniser on the page: the well's listen and the Journal's Talk
+    stop through their own paths before this one opens */
+ if(typeof stkSayCut==='function'&&stkSayCut()&&typeof stkSayPaint==='function')stkSayPaint();
+ if(typeof stkSayJournalOff==='function')stkSayJournalOff();
+ var SR=window.SpeechRecognition||window.webkitSpeechRecognition, rec, seq=++REL_HV.seq;
+ try{rec=new SR();}catch(e){relHvStop('The microphone could not start. Use the buttons.'); return;}
+ rec.continuous=true; rec.interimResults=false; rec.lang='en-US';
+ var done={};
+ var wait=function(){clearTimeout(REL_HV.t);
+  REL_HV.t=setTimeout(function(){if(seq===REL_HV.seq)relHvStop();},REL_HV_WAIT);};
+ rec.onresult=function(e){if(seq!==REL_HV.seq)return;
+  for(var i=e.resultIndex;i<e.results.length;i++){
+   if(!e.results[i].isFinal||done[i])continue; done[i]=1;
+   var a=e.results[i][0]; wait(); relHvHeard(a.transcript,a.confidence);
+   if(seq!==REL_HV.seq)return;}};
+ rec.onerror=function(e){if(seq!==REL_HV.seq)return; var code=(e&&e.error)||'unknown';
+  if(code==='no-speech'||code==='aborted')return;
+  relHvStop(code==='not-allowed'?'Marking by voice needs microphone permission. Allow it in the browser, then press the microphone.'
+   :(typeof stMicLine==='function'?stMicLine(code):'The microphone stopped.'));};
+ rec.onend=function(){if(seq!==REL_HV.seq||REL_HV.rec!==rec)return;
+  try{rec.start();}catch(e){relHvStop();}};
+ REL_HV.rec=rec; REL_HV.pat=x.id; REL_HV.say='';
+ try{rec.start();}catch(e){REL_HV.rec=null; relHvStop('The microphone could not start. Use the buttons.'); return;}
+ /* pressed only once the recogniser has really started */
+ REL_HV.on=true; wait(); relHvPaint();}
+/* ONE FINAL, through the one door. A refusal keeps listening for the same
+   row and shows the engine's own sentence for why nothing changed; a mark
+   moves to the next unjudged row, or closes when none is left. */
+function relHvHeard(text,conf){
+ var pat=REL_HV.pat; if(!pat)return;
+ var r=relHitLand(function(){
+  return relHitVoice(CURP,{ev:relHitEv(),sid:RUN.id,pat:pat,heard:text,conf:conf});});
+ if(r.unsaved){relHvStop('This browser would not save. Your mark is not on your record.'); return;}
+ if(!r.ok){REL_HV.say=r.say||('That mark was not kept. '+(r.why||'')); relHvPaint(); return;}
+ var x=relHvNext();
+ if(!x){relHvStop('Marked. Every pattern here is marked.'); return;}
+ REL_HV.pat=x.id; REL_HV.say=''; relHvPaint();}
 function relCoolDown(){
  if(RUN.done)return;
  /* Until the one durable write succeeds, treat every release mutation as
@@ -1668,7 +1830,7 @@ function relCoolDown(){
 function relCancel(){
  relClose();
  status('Release closed. Nothing was started and nothing was charged.');}
-function relClose(){relHush();relTicker(false);RUN.open=false;RUN.phase='idle';RUN.paused=false;relRender();render();}
+function relClose(){relHvStop();relHush();relTicker(false);RUN.open=false;RUN.phase='idle';RUN.paused=false;relRender();render();}
 /* ============================================================
    THE SEAT TONE FOLLOWS THE CARD.
 
@@ -2460,6 +2622,15 @@ function relCss(){
      three columns keep their widths at 390 */
   '.rel-row.rel-rh .seg{grid-column:1/-1;justify-self:start}',
   '.rel-row.rel-rh-off>span,.rel-row.rel-rh-off>em{opacity:.55}',
+  /* the row the microphone is listening for, outlined in the accent and
+     never filled, the house rule for a mark that is a state and not a value */
+  '.rel-row.rel-hv-on{outline:1.5px solid var(--accent);outline-offset:3px;border-radius:var(--r-s)}',
+  '.rel-hv{display:flex;align-items:center;gap:12px;margin:0 0 17px}',
+  '.rel-hv-b{flex:none;width:40px;height:40px;display:grid;place-items:center;border-radius:50%;cursor:pointer;',
+  ' background:transparent;border:1.5px solid var(--edge);color:var(--ink)}',
+  '.rel-hv-b svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}',
+  '.rel-hv-b[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}',
+  '.rel-hv-s{font-size:13.5px;color:var(--dim)}',
   /* A MARK EARNED LANDS LAST AND LANDS ONCE: after the headline has settled,
      out of rest with one overshoot, the landing curve. It is shown only when
      the ladder reads a mark it did not read before the run, so it is rare,
@@ -2873,7 +3044,7 @@ function relGroupHtml(g,k){
 function relSetupCar(none){
  var mode=RUN.grp==='seat'?'seat':'story', G=relGroups(mode);
  var pats=G.reduce(function(s,g){return s+g.pats;},0), q=RUN.queue||[];
- return '<div class="rel-gc" id="relgc" tabindex="0" role="region" aria-label="What this run will release, by '+mode+'">'
+ return '<div class="rel-gc" id="relgc" tabindex="0" role="region" aria-label="What this run will release, by '+(mode==='seat'?'point':'story')+'">'
   +'<div class="rel-gpad" aria-hidden="true"></div>'
   +G.map(relGroupHtml).join('')
   +'<div class="rel-gpad" aria-hidden="true"></div></div>'
@@ -2895,7 +3066,7 @@ function relGcSync(G){
   if(d<=2)r.setAttribute('data-d',String(d)); else r.removeAttribute('data-d');
   if(d===0)r.setAttribute('aria-current','true'); else r.removeAttribute('aria-current');});
  var a=document.getElementById('relgat');
- if(a)a.textContent=(RUN.grp==='seat'?'Seat ':'Story ')+(k+1)+' of '+R.length;}
+ if(a)a.textContent=(RUN.grp==='seat'?'Point ':'Story ')+(k+1)+' of '+R.length;}
 function relGcTo(G,k,smooth){
  var R=G.querySelectorAll('.rel-gi'), r=R[Math.max(0,Math.min(R.length-1,k))]; if(!r)return;
  var top=r.offsetTop+r.offsetHeight/2-G.clientHeight/2;
@@ -3243,7 +3414,7 @@ function relResults(){
     return '<div class="rel-seat" style="--c:'+seatCol(b)+'"><b>'+esc(b)+'</b>'
      +'<span class="rel-seat-w">'+s.w0.toFixed(1)+' <i aria-hidden="true">→</i> '+s.w1.toFixed(1)+'</span>'
      +((pb.bank||pb.shadow)?'<span class="rel-seat-p">'+pb.bank+' to bank, '+pb.shadow+' to shadow</span>':'')+'</div>';}).join('')
-   +'</div><div class="rel-rs-s">Weight at a seat is the charge held at the addresses this release worked there, added up. Each address reads nought to ten.</div>':''));
+   +'</div><div class="rel-rs-s">Weight at a point is the charge held at the addresses this release worked there, added up. Each address reads nought to ten.</div>':''));
  /* 4b. CQ before and after, round QQ: "I want to see my CQ improvement." Read
     off compute() after the write, against the figure read before it, so it
     is the record's own number and the same one the run counted up to. */
@@ -3253,7 +3424,7 @@ function relResults(){
   +'<div class="rel-fig"><span>CQ</span><b>'+cqNow.toFixed(2)+'</b></div>'
   +'<div class="rel-fig"><span>Up</span><b>'+Math.max(0,cqNow-RUN.cq0).toFixed(2)+'</b></div></div>'
   +'<div class="rel-rs-s">CQ is your coherence number, how closely you keep the 21 laws, from nought to a hundred. Up is how far this release lifted it. '
-  +(RUN.rerun?'A rerun opens no new lines, so it lifts nothing.':'Each new line you open lifts the laws at its seat a little.')+'</div>');
+  +(RUN.rerun?'A rerun opens no new lines, so it lifts nothing.':'Each new line you open lifts the laws at its point a little.')+'</div>');
  else if(RUN.cq0!=null)out+=relSect('Your CQ','<div class="rel-clock" id="relrscq"><div class="rel-fig"><span>CQ</span><b>\u2013</b></div></div>'
   +'<div class="rel-rs-s">CQ is your coherence number, how closely you keep the 21 laws. It is not read yet, because no law is answered. Once one is, each new line you open lifts it a little.</div>');
  /* 5. what changed, the TDD's own question, unchanged */
@@ -3495,7 +3666,7 @@ function relRender(){
   relClosePlan();
   var body='<div class="rel-hdt"><span class="seg" role="group" aria-label="Show what is picked by">'
    +'<button type="button" data-relgrp="story" aria-pressed="'+(RUN.grp!=='seat')+'">Story</button>'
-   +'<button type="button" data-relgrp="seat" aria-pressed="'+(RUN.grp==='seat')+'">Seat</button></span></div>'
+   +'<button type="button" data-relgrp="seat" aria-pressed="'+(RUN.grp==='seat')+'">Point</button></span></div>'
    +relSetupCar(spent);
   /* A SHORTER RUN SAYS SO, IN ONE LINE, BEFORE RUN AND NEVER AFTER, 17
      October. A short allowance cut the run without a sentence. It sits under
@@ -3662,6 +3833,8 @@ function relRender(){
  /* HIT, HOLD, NOT A HIT, one press each, through relHitPress */
  h.querySelectorAll('[data-relhit]').forEach(function(el){el.onclick=function(){
   relHitPress(this.getAttribute('data-relhit'),this.getAttribute('data-relcmd'));};});
+ /* the same three marks, said, through relHitVoice (relHvToggle above) */
+ if((b=document.getElementById('relhitv')))b.onclick=relHvToggle;
  /* a mark changes one attribute and the log entry under it, never the card:
     the cooldown is still being said and a redraw would move the list */
  h.querySelectorAll('[data-relfelt]').forEach(function(el){el.onclick=function(){

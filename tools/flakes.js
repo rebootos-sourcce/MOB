@@ -28,8 +28,10 @@
    A NEW FAILURE IS NOT A FLAKE. record adds it as suspected, never open: a
    first failure is a failure until it is shown not to reproduce on the same
    commit, three runs, and moving it to open is a deliberate edit. Nothing
-   in CI calls record yet; wiring the nightly run's failures into it is the
-   next step, and a separate change.
+   in CI calls record: CI holds contents: read and does not commit to main.
+   The nightly's table job (tools/gates-repeat.js --summary) calls match,
+   which writes nothing, and prints NEW, SUSPECTED or KNOWN beside every
+   failing check on the run page, with the record line for a person to run.
    ============================================================ */
 'use strict';
 const fs = require('fs'), path = require('path'), os = require('os'), cp = require('child_process');
@@ -234,5 +236,5 @@ function main(argv) {
   return 0;
 }
 
-module.exports = { failures, keyOf, validate, match, record };
+module.exports = { failures, keyOf, validate, match, record, load, LEDGER };
 if (require.main === module) process.exit(main(process.argv.slice(2)));

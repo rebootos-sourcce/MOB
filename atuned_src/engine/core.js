@@ -321,8 +321,17 @@ const TABDEF=[
     integer 8, TAB.COMPASS, the id cone and the class tab-compass stay, on the
     rule the Body and Character renames follow. One word per concept, so every
     place the product printed "compass" to a person says "path" in the same
-    commit (the bar, the dashboard card, the drills, the tooltips). */
- {k:TAB.COMPASS, id:'cone',  nm:'Path',      cls:'tab-compass', sec:'play'},
+    commit (the bar, the dashboard card, the drills, the tooltips).
+
+    COMPASS AGAIN, 20 November, his words: "change the title path back to
+    compass, I think it's a better title." The first pass back moved only nm
+    here, and shell/body.html's own button kept reading Path over an engine
+    that said Compass, because the bar is markup this file does not write. The
+    rest went back with it: the button and its title, the Play door's title,
+    the dashboard card, the drill, the Insight kind word, the overlays, the
+    hover word, the plans and the Ritual's affirmation source. The numerology
+    row stays Life path, which was never this tab's word. */
+ {k:TAB.COMPASS, id:'cone',  nm:'Compass',   cls:'tab-compass', sec:'play'},
  /* THE MASKS HAVE THEIR OWN DOOR, AFTER COMPASS, in the order he gave. Round
     LE, his words, marked urgent: "the point cloud data and the masks should
     be under the play tab. It should go field intake compass mask
@@ -391,15 +400,15 @@ const TABDEF=[
     kept the word, unlike Discover/Story, so nothing here renames the tab. */
  {k:TAB.RITUAL,  id:'rit',   nm:'Ritual',    cls:'tab-ritual',  sec:'flow',  door:'section'},
  /* "Embody is knowledge." */
- /* WISDOM SCHOOL, 18 November. His words: "Change the words knowledge base
-    to wisdom school." The tab is the surface the copy called the knowledge
-    base, so the tab takes the same name: one word per concept. Only the
-    name a person reads moved. TAB.KNOW, integer 6, id 'know', cls
-    'tab-know' and ui/knowledge.js are identity and keep their spelling, and
-    a comment that says Knowledge means this tab. The Knowledge domain, under
-    the Architect root (engine/data/canon.js), is a different thing and
-    keeps its name. */
- {k:TAB.KNOW,    id:'know',  nm:'Wisdom school', cls:'tab-know', sec:'embody'},
+ /* WISDOM SCHOOL, 18 November, then LYCEUM, 20 November, then REVERSED back
+    to KNOWLEDGE BASE, also 20 November, his words: "My apologies, change it
+    back to knowledge base. Not wisdom school or lyceum. I'm not feeling
+    either of those. They're too hoity-toity." Only the name a person reads
+    moved, each time. TAB.KNOW, integer 6, id 'know', cls 'tab-know' and
+    ui/knowledge.js are identity and keep their spelling, and a comment that
+    says Knowledge means this tab. The Knowledge domain, under the Architect
+    root (engine/data/canon.js), is a different thing and keeps its name. */
+ {k:TAB.KNOW,    id:'know',  nm:'Knowledge base', cls:'tab-know', sec:'embody'},
  /* SUMMARY, INTAKE AND ANALYTICS ARE EMBODY'S, 17 November, after Knowledge
     and in the order they stood in Play. His words: "move summary, intake, and
     analytics under embody." Knowledge stays first so pressing Embody still

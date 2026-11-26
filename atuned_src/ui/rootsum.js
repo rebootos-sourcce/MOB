@@ -106,9 +106,7 @@ const RS_BRIDGE={
   +'This is where a number and a sign land on the same one.'};
 function renderRootSum(){
  var el=document.getElementById('rootsum'); if(!el)return;
- var p=PEOPLE[S.who]||PEOPLE[0], sp=spiritual(p.nm);
- if(!sp&&CURP&&CURP.who&&CURP.who.born&&CURP.who.born.date){var bn=CURP.who.born;
-  sp=spiritualOf({d:bn.date, t:(bn.timeUnknown?'':(bn.time||'')), p:bn.place||'', z:bn.zone||''});}
+ var p=PEOPLE[S.who]||PEOPLE[0], sp=spiritual(p.nm)||spiritualOf(bornAsBirth(CURP));
  /* the name's numbers only off a name that is somebody's, for the reason
     spNumRows gives: a blank profile's roster name is the word You */
  var real=numFullName(CURP)||(typeof FULLNAME!=='undefined'&&FULLNAME[p.nm]);

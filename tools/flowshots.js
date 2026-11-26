@@ -110,14 +110,15 @@ const BLANK=()=>{loadP(0); CURP.rituals=[]; CURP.history=[]; ritPlanPut([]); CUR
  {const p=await open(1600,1000);
   await p.evaluate(SEED); await p.waitForTimeout(1600);
   await p.screenshot({path:path.join(OUT,'flow-1600.png')});
-  await shot(p,'#flowleft .rv-sug','suggested-1600.png');
+  await shot(p,'#rit .rv-sug','suggested-1600.png');
   await shot(p,'#flowside .rv-loopw','loop-1600.png');
   await shot(p,'#flowside .rv-hist','history-1600.png');
   await p.setViewportSize({width:1600,height:2300}); await p.waitForTimeout(800);
   await p.screenshot({path:path.join(OUT,'flow-1600-tall.png')});
   await shot(p,'#rit .rv-six','stack-1600.png');
   await shot(p,'#flowside .rv-c-av','avatar-1600.png');
-  await shot(p,'#rit .rv-act','active-1600.png');
+  await shot(p,'#rit .rv-top','top-1600.png');
+  await shot(p,'#rit .rv-week','week-1600.png');
   await p.close();}
  /* 390: the page is one scroll on a phone, so it is shot whole */
  {const p=await open(390,844,true);
@@ -137,7 +138,7 @@ const BLANK=()=>{loadP(0); CURP.rituals=[]; CURP.history=[]; ritPlanPut([]); CUR
   await p.evaluate(()=>{window.__sc.scrollTop=0;});
   await shot(p,'#flowside .rv-loopw','loop-390.png');
   await shot(p,'#flowside .rv-hist','history-390.png');
-  await shot(p,'#flowleft .rv-sug','suggested-390.png');
+  await shot(p,'#rit .rv-sug','suggested-390.png');
   await p.close();}
  /* a stranger's first visit: nothing written, nothing kept */
  {const p=await open(1600,1000);

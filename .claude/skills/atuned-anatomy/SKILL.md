@@ -15,20 +15,28 @@ and the running log of what real source material has confirmed so far.
 `atuned_src/engine/data/figure.js` is `ANAT`, the engine's trusted placement
 table. Of the 108 somatic addresses:
 
-    80   have a derived coordinate: 32 from real brain-atlas centroids
+    some have a derived coordinate: from real brain-atlas centroids
          (figure.js `h:`, Harvard-Oxford/Juelich/Neuromorphometrics, the
-         "second anatomy pass" BQ), 6 from vertebral spine levels (`v:`,
-         sourced in BI3a/BI3c), 41 from the two reference charts the owner
-         sent 26 September (`f:`, figure.js:62-67, re-derived from the chart
-         on every build by proto/anatomy-ref/measure.js, which fails the
-         build if a row has drifted), 1 (108, Ascension Column) explicitly
-         filed with no anatomy at all (figure.js:128, `at:'crown'`).
-    28   have NO coordinate in the engine. They live only in
-         atuned_src/ui/map.js:1443 as BMPROP, hand-researched guesses the
-         comment there calls "the older and more cautious claim," kept out
-         of ANAT on purpose. Moving a BMPROP row into ANAT is a ruling (it
-         means trusting the guess as measured fact), never a mechanical
-         port — map.js:46461-46464.
+         "second anatomy pass" BQ), from vertebral spine levels (`v:`,
+         sourced in BI3a/BI3c), and from the two reference charts the owner
+         sent 26 September (`f:`, figure.js:62-67, re-derived from the charts
+         by tests/anatomy.js on every gates-fast run in CI, and by hand by
+         proto/anatomy-ref/measure.js against a real page; either one fails
+         if a row has drifted. BUILD.sh runs neither: this file used to say
+         measure.js "fails the build", and it never did). One more, 108
+         (Ascension Column), is explicitly filed with no anatomy at all
+         (`at:'crown'`).
+    some have NO derived coordinate. They live only in
+         atuned_src/ui/map.js as BMPROP, hand-researched estimates from
+         standard anatomy, never measured, which the comment there calls
+         "the older and more cautious claim," kept out of ANAT on purpose.
+         Moving a BMPROP row into ANAT is a ruling (it means trusting the
+         estimate as measured fact), never a mechanical port.
+
+The counts are not typed here. This block said 80, 28 and 6, and they went
+stale when address 16 moved into ANAT on 12 November. `node tests/anatomy.js`
+prints them on every run (its group 2), and says in the same place that the
+BMPROP ones are estimated and not measured.
 
 Ruled 26 September (figure.js:38-46): "place everything as close as it can,
 precision but feel, roughly the right spot," and a plexus branches, so more
@@ -82,9 +90,10 @@ uses from here on:
    makes a point reproducible on a figure of any proportions.
 3. **A citation**: which real source, which plate or page, says so.
 
-This is also the mechanism `proto/anatomy-ref/measure.js` already enforces
-for the 41 `f:` rows — re-derives the figure coordinate from the source
-chart on every build. Any new source added under this skill should be
+This is also the mechanism `proto/anatomy-ref/measure.js` and `tests/anatomy.js`
+(which shares its geometry, `proto/anatomy-ref/derive.js`) enforce for the `f:`
+rows: they re-derive the figure coordinate from the source chart, and the
+second does it on every gates-fast run. Any new source added under this skill should be
 checkable the same way: a human (or a gate) can trace a row back to the
 page and landmark it came from.
 
@@ -287,6 +296,130 @@ needs a distance from the midline, which `v:` takes in typed figure units,
 the very thing this method forbids; 10 and 20 sit on the thigh, where no
 sourced type reaches yet; 8 still has no stated vertebral span (p.230,
 p.232 and p.233 label it but give no level for its lower end).
+
+**Used, 2026-11-18: the table is held by a gate, nothing placed or renamed.**
+`node tests/anatomy.js` (headless, in gates-fast) checks that every somatic
+address is placed once, lies inside the body outline, mirrors where it is a
+pair, is named, and that every `f:` row re-derives from its charts. On the
+tree at `c2bf52a2` it found no mis-typed number and no address missing from
+every table, so it changed no data. It holds one finding open, as an expected
+red with a ceiling in `tests/floors.json`: the two spine rulers (ANATSPINE,
+which places addresses, and BMSPINE in map.js, which the pain lines enter the
+spine by) give different heights for the same vertebra at every level
+BMSPINE names. Which is right is the owner's and the anatomy's call, and
+either move shifts rows on screen. It also prints, read off the run, how many
+addresses have no derived coordinate and that the BMPROP ones are estimated
+from standard anatomy, never measured. Still true after it: nothing holds a
+`v:` row to its page.
+
+**Used, 2026-11-21: the gap pages confirmed, 1 position placed, 4 names
+corrected, 1 real block found and named for the owner.** Most of the gap
+this file named, book p.257-346, is delivered and read:
+`Anatomy_Atlas_Lite_Part_2.pdf`, in Lance's Drive alongside the parts
+already logged above, 183 pages, PDF pages 184-366, printed 170-352 (text
+layer confirmed against its own page headers). Downloaded, run through
+`pdftotext -layout`, and searched page by page; every citation below is
+checked against that extracted text, not a snippet. `Anatomy_Atlas_Lite_
+Part_1.pdf` and `Anatomy_Atlas_Lite_Part_3.pdf` also exist in the same
+Drive folder (confirmed by a `search_files` listing only, neither opened
+this session) and are worth reading next: Part 1 likely duplicates the
+already-indexed p.1-183, and Part 3 (6.3MB) likely continues past printed
+p.352, which would close whatever of the p.257-346 gap is not covered by
+Part 2's 170-352. Confirmed real on Part 2: p.279 ("Posterior Mediastinum")
+labels the hepatic plexus and the splenic plexus directly on the same
+schematic as the celiac plexus and the greater splanchnic nerve; p.207 and
+p.214 label the lateral and medial pectoral nerves; p.322 and p.346 show
+the cauda equina's own span, from just below the conus medullaris (already
+address 16, at L1) to the sacral promontory; p.328 ("Kidney: Arteries," a
+schematic) labels the superior mesenteric artery beside the body of the
+first lumbar vertebra.
+
+Address 8 (Cauda Equina) moved from BMPROP into ANAT, `v:[[23,0]]`, the
+midpoint of that real span, cited to p.322 and p.346.
+
+Four names corrected in nodes.js, each matching BMPROP's own prior
+research and the atlas's current term: 47 (was "Vagus-Liver Plexus", no
+such structure) to Hepatic Branches of the Anterior Vagal Trunk, p.327 and
+p.335; 48 (was "Hepatic Nerve") to Hepatic Plexus, p.279; 52 (was "Thoracic
+Plexus", NOSTRUCT's own near candidate) to Thoracic Aortic Plexus; 60 (was
+"Anterior Thoracic Roots", the retired name) to Pectoral Nerves, p.207 and
+p.214. 48 and 60 were not in NOSTRUCT (research.js), since neither names
+"no real structure at all", so a new small list, OLDNAME, was added beside
+it for a real structure under a retired name, the bucket BI3a and BI3c's
+own summary counts already named without listing which rows.
+
+**One real block found, not a guess: address 40 cannot move into ANAT
+without either a false merge or a guessed level.** The superior mesenteric
+plexus (40) is sourced to the same level as 16, L1 on the midline (p.328),
+and `v:` has no front-to-back axis, so the two land on one point and
+`tests/anatomy.js` (group 5) correctly refuses it: 16 and 40 are not one
+structure, so research.js cannot say they share a place, and typing 40 a
+half level off either direction would be exactly the guessed pixel this
+method forbids. Left in BMPROP with the real citation. **This is the
+owner's call named in figure.js and map.js**: give the figure a depth
+axis (the same fix `HEADY`, the known trap above, already needs for the
+head), or rule that two different structures sharing a vertebral level may
+share a point the way a shared plexus already does.
+
+Still not placed, and why, read off `tests/anatomy.js` group 2 and the
+BMPROP comments in `atuned_src/ui/map.js`: 35, 41, 42 (real plexuses, real
+region confirmed on p.279/p.328/p.329, no surface landmark found yet to
+give a lateral fraction); 10, 20 (the thigh, no sourced type reaches
+there); 7, 15, 23, 25, 27, 31, 34, 37, 46, 51, 57, 61, 68, 70, 72, 74
+(bilateral rows needing a real distance from the midline, which `v:`
+cannot take without a typed guess); the 4-address cervical group named
+below needs a calibrated cervical ruler first.
+
+**The spine ruler has no cervical calibration, and extending it by
+extrapolation is not sourcing it.** `ANATSPINE` (figure.js) starts at
+level 11.5 (Heart, T4 to T5); `spine()` will still return a number for any
+lower level by continuing that same slope backward, which is not a
+measurement, it is arithmetic past the end of the ruler. Checked this
+session: `spine(4)` (phrenic nerve, C3 to C5, address 57) returns 21.42,
+below this figure's own neck-base line (19.07, `proto/body-map-spec/gen.js`
+`regionOf`), which would draw a cervical nerve in the upper chest. `map.js`
+already carries a second ruler, `BMSPINE`, with real cervical points (C1,
+C7), used today only for where a pain line enters the spine; `tests/
+anatomy.js` group 9 already holds the two rulers to each other as an
+expected, named-open disagreement, not a bug either ruler report can fix
+alone. This is why 57, 68, 70, 72 and 74 (phrenic, pharyngeal,
+glossopharyngeal, cervical ganglia, nerve to subclavius) stay in BMPROP:
+giving `ANATSPINE` a real cervical point is the same owner's call group 9
+already names, and extending it here without that call would draw a
+guess, not a sourced position.
+
+**Used, later 21 November: the owner ruled, and eight addresses moved into
+ANAT.** His words: "place the plexus and the nerves where they're supposed
+to be, and we'll figure out what words go there... We have no blockers."
+Placement and naming are split from here on: an address with any real
+landmark is placed, and its name stays his call. What moved, each cited in
+figure.js beside its row:
+
+    ANATSPINE   two neck knots read off BMSPINE, C1 at 13 and C7 at 19,
+                prepended. Every level at T4 or below reads the same
+                segment it always did, so nothing already placed moved.
+                tests/anatomy.js group 7 now accepts a knot at a seat
+                height OR on BMSPINE's own label for that level, and
+                research.js RULER carries the two. Group 9's held gap
+                closes at C1 and C7 and stays open below.
+    70          C2, the angle of the jaw (p.31, p.33-34)
+    68          C2 to C3, the pharyngeal plexus (p.165)
+    72          C4.5, the chain from the superior ganglion to the stellate (p.185)
+    74          T1, the first rib where the subclavius rises (p.413; the
+                nerve itself is still unlabelled on every page read)
+    57          T4 to T5, down the sides of the pericardium
+    23          S3, the middle of S2 to S4 (p.470)
+    46          T9, the xiphisternal joint (p.214, p.216, p.217)
+    40          L1, one unit to the person's left, on the aorta (p.328).
+                A team pick open to his correction: the other real option
+                was a false merge onto 16's point.
+
+Every offset from the midline on these rows is BMPROP's own, carried over
+unchanged from the prototype he approved (FW, 27 September), because `v:`
+takes a typed offset and no page read gives one. That is said at each row.
+Still in BMPROP after this, read off group 2: the rows with no level or
+landmark on any page read (the thigh, the visceral plexuses with no
+vertical landmark, the thoracic vagus).
 
 *(Extend this log, don't replace it, as more parts arrive or more pages
 get confirmed. Cite page numbers as PRINTED in the book, not a PDF file's

@@ -196,8 +196,14 @@ function suite(E,ok,g){
   r.children.forEach(ch=>{
    ok(ch.card.found===true,'hyper complex child '+ch.id+' of the super complex resolves real HCX_LIB content');
    ok(has(r.summary,ch.card.fields.familyLine),'the super complex’s paragraph quotes hyper complex '+ch.id+'’s real family line verbatim');});
-  ok(r.parents.length===0&&has(r.summary,'Nothing sits above it yet'),
-   'a super complex has no real parent on this graph and the paragraph says so, never inventing an archetype above it (out of scope, item 1.14)');
+  /* ABOVE THE CHAIN, 21 November (TRACE_ABOVE, engine/trace.js). This said a
+     super complex has no parent and nothing sits above it, which was true
+     until the masks were wired, and item 1.14 named that as out of scope.
+     The mask is its parent now, the 23 October order, and still nothing is
+     invented: every parent is a mask the reading took, with its own card. */
+  ok(r.parents.length>0&&r.parents.every(pt=>pt.type==='mask'&&pt.card.found===true&&E.MASKS.some(m=>m.nm===pt.id)),
+   'a super complex\'s real parents are masks, each one the reading took and each with its own card, got '+JSON.stringify(r.parents.map(x=>x.key)));
+  ok(r.parents.every(pt=>has(r.summary,pt.card.fields.does)),'and the paragraph quotes what each mask does, from MASKS itself');
   /* THE WALK, independently: a real 4 hop supports path from some real address
      under the first hyper complex's first complex's first saboteur's first
      address part, all the way to this super complex, the same proof PR

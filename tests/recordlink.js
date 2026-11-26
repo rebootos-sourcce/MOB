@@ -265,11 +265,16 @@ require('./net.js').guardBrowser(browser);
     ok(r.rec === JSON.stringify({ laws: q.scoredLaws, axes: q.scoredAxes, arcs: q.scoredArcs }),
       '@' + w + ': and they are what the quiz actually scored, not some other record-building default');
     const ln = r.line || {};
-    ok(/^Loaded Web reading from the link\. Nothing else was touched\.$/.test(ln.shown || '') && ln.lifted && !ln.shownKind,
+    ok(/^Loaded Web reading from the link\. The imported plan was reset to Free\. Sign in to check any paid tier with the server\.$/.test(ln.shown || '') && ln.lifted && !ln.shownKind,
       '@' + w + ': status() says so on screen once the boot sheet has lifted, showed ' + JSON.stringify(ln.shown));
     ok(r.st.hash === '' && r.st.href.indexOf('#r=') < 0 && r.st.href.indexOf('?dev=1') > 0,
       '@' + w + ': the record is off the address and the rest of it is kept, ' + r.st.href.split('/').pop());
     ok(JSON.parse(r.st.stored).some(p => p.name === 'Web reading'), '@' + w + ': and it is in the stored record list');
+    /* Record links are untrusted input. Beyond the receipt above, the
+       persisted profile must have no paid visibility or forged allowance. */
+    ok(JSON.parse(r.st.stored).some(p => p.name === 'Web reading' && p.plan
+      && p.plan.tier === 'free' && p.plan.granted === 0 && p.plan.carried === 0),
+      '@' + w + ': link import cannot grant a tier or a free allowance');
     ok(r.reload.names.length === r.st.names.length,
       '@' + w + ': a reload does not load it twice, ' + r.reload.names.length + ' records after the reload');
     ok(r.errs.length === 0, '@' + w + ': the app threw nothing: ' + r.errs.slice(0, 2).join(' | '));

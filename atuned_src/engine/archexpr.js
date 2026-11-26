@@ -54,5 +54,33 @@ function archExpr(i){
 /* all twelve in ARCH order, so a renderer asks once per render */
 function archExprAll(){return ARCH.map(function(a,i){return archExpr(i);});}
 
+/* ============================================================
+   AFFINITY, SHARED LIKE A COMPETITION, 21 November. The decision, his own
+   words: "add an option for both ways, 100% meaning the whole and a percent
+   based off of the individual item, and I'll figure out which one I like
+   better." affinity() (engine/core.js) already answers one question, which
+   archetype leads and by how much against it: the leader reads 1 and every
+   other reads its own fraction of that one top value, which is right for
+   naming a first and second place and cannot be added across the twelve,
+   because the top archetype's own 1 already uses the whole of what a sum
+   would have left for the rest.
+
+   This divides the same twelve numbers by what they add up to instead of by
+   their own top, so they sum to 1 and a share this prints can sit beside
+   the other eleven shares the way a real competition's results do: Warrior
+   at 30 percent of the field is also saying the other eleven hold the
+   remaining 70, which affinity()'s own numbers never say. Nothing here is a
+   second measurement; it is the one array affinity() already returns, read
+   a second way.
+
+   affinity() never actually returns twelve zeros on a real build: a
+   blueprint always leaves something under it (engine/core.js, coreAt). The
+   equal-twelfths fallback below only answers a call made before any
+   blueprint exists at all, the same guard affinity() keeps for its own
+   early call. */
+function affinityShare(){
+ var a=affinity(), sum=a.reduce(function(x,y){return x+y;},0);
+ return sum>0?a.map(function(v){return v/sum;}):a.map(function(){return 1/a.length;});}
+
 if(typeof module!=='undefined'&&module.exports){
- Object.assign(module.exports,{archExpr:archExpr, archExprAll:archExprAll});}
+ Object.assign(module.exports,{archExpr:archExpr, archExprAll:archExprAll, affinityShare:affinityShare});}

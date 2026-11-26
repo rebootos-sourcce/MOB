@@ -2,8 +2,15 @@
    THE SNIFFER. scanStory finds every hit, parseStory turns tags
    into imprints, applyStory is the only function that mutates.
    ============================================================ */
-var K2BAND={crown:'Crown',eye:'3rd Eye',throat:'Throat',heart:'Heart',
- solar:'Solar',sacral:'Sacral',root:'Root'};
+/* NO PROTOTYPE, 18 November. Every seat check in the product is K2BAND[k]
+   with k off a record, and on a plain object a key of "constructor" or
+   "toString" answers with Object's own function, which is truthy. So the
+   boundary took story.entries[i].bands.constructor as a seat (vEntry,
+   engine/schema.js), and the daily reader then pushed that function in as a
+   seat name and the Ritual surface threw reading it back. A table with no
+   prototype holds only the seven keys written here, at every lookup at once. */
+var K2BAND=Object.assign(Object.create(null),{crown:'Crown',eye:'3rd Eye',throat:'Throat',heart:'Heart',
+ solar:'Solar',sacral:'Sacral',root:'Root'});
 var B2K={Crown:'crown','3rd Eye':'eye',Throat:'throat',Heart:'heart',
  Solar:'solar',Sacral:'sacral',Root:'root'};
 var K2B={};Object.keys(B2K).forEach(function(b){K2B[B2K[b]]=b;});
@@ -210,7 +217,7 @@ function codexRows(ws,wide){
  CHILD.forEach(function(c){
   if(B2K[c.seat]&&(all(c.loc)||(wide&&all(c.addr))))out[B2K[c.seat]]=c.nm+' at the '+(all(c.loc)?c.loc:c.addr);});
  if(wide)APC.forEach(function(r){
-  if(B2K[r.b]&&all(r.nv)&&!out[B2K[r.b]])out[B2K[r.b]]=r.b+' seat, '+r.nv;});
+  if(B2K[r.b]&&all(r.nv)&&!out[B2K[r.b]])out[B2K[r.b]]=r.b+' point, '+r.nv;});
  return out;}
 function somaPlaces(){
  var out={seat:{}, refused:{}, unseated:[], sense:[], missing:[], ruled:[], codex:[], dispute:{},
@@ -235,12 +242,12 @@ function somaPlaces(){
     +' ('+ck.map(function(k){return cs[k];}).join('; ')+')';
    else out.unseated.push(w);
    return;}
-  if(sk.length>1){out.refused[w]='the lexicon seats it at '+sk.sort().join(' and ');return;}
+  if(sk.length>1){out.refused[w]='the lexicon places it at '+sk.sort().join(' and ');return;}
   var veto=CHILD.filter(function(c){
    var loc=' '+String(c.loc||'').toLowerCase().replace(/[^a-z]+/g,' ')+' ';
    return loc.indexOf(' '+w+' ')>=0&&B2K[c.seat]!==sk[0];});
   if(veto.length){out.refused[w]='the codex holds '+veto[0].nm+' at the '+veto[0].loc
-   +', which is the '+veto[0].seat+' seat and not '+sk[0];return;}
+   +', which is the '+veto[0].seat+' point and not '+sk[0];return;}
   out.seat[w]=sk[0];});
  /* the two word places. A half and a place: the owner's ruling, checked
     against the codex wherever the codex says the same words. */
@@ -419,11 +426,35 @@ function maskedSay(runs){
    produced. A comma is left out on purpose, the same ruling leanNorm
    already made: it is too weak a break to end a negation. */
 var SENT_END=/[.!?;:\n\r]/;
+/* THE BOUNDARIES ARE FOUND ONCE PER COPY, NOT ONCE PER HIT, SZA9 of round SZ.
+   clauseFloor walked back from every hit and clauseCeil walked forward, each
+   until it met a sentence end, and dictated speech has none, so each walk
+   crossed the whole entry and the parse grew with the square of its length:
+   16,000 unpunctuated characters took 193 ms where the same words punctuated
+   took 37, most of it in these two walks. The same rule, a space whose raw
+   character ends a clause, is now read in one pass into an ascending list
+   kept on the copy itself, keyed by the text it was read against, and each
+   walk becomes a binary search on that list. The answer is the same index
+   the walk returned, because the walk returned the nearest boundary and the
+   search finds the nearest boundary. */
+function clauseEnds(t,nm){
+ if(nm._ends&&nm._endsT===t)return nm._ends;
+ var out=[], s=nm.s;
+ for(var k=0;k<s.length;k++)
+  if(s.charAt(k)===' '&&SENT_END.test(t.charAt(nm.map[k])))out.push(k);
+ nm._ends=out; nm._endsT=t;
+ return out;}
+/* the index of the first entry in a sorted list that is at least v */
+function sortedAtLeast(a,v){
+ var lo=0, hi=a.length;
+ while(lo<hi){var mid=(lo+hi)>>1; if(a[mid]<v)lo=mid+1; else hi=mid;}
+ return lo;}
 function clauseFloor(t,nm,at){
  t=String(t||'');
- for(var k=Math.min(at,nm.s.length-1);k>=0;k--){
-  if(nm.s.charAt(k)===' '&&SENT_END.test(t.charAt(nm.map[k])))return k;}
- return -1;}
+ var a=clauseEnds(t,nm), top=Math.min(at,nm.s.length-1);
+ if(top<0)return -1;
+ var i=sortedAtLeast(a,top+1)-1;
+ return i>=0?a[i]:-1;}
 /* EVERY WORD, WITH ITS CLAUSE. The forward half of clauseFloor, on the same
    copy and by the same rule: a space whose raw character ends a clause opens
    the next one, so a word whose own leading space is that boundary belongs
@@ -486,6 +517,12 @@ function wordsOf(t,nm){
    nm.s, so a mark and a list can quote from the no to the word on the letters
    typed. srcNegated is the decision; this only finds which word it saw. */
 var NEG_NOT_DENY=['stop','stops','stopped','help'];
+/* the index of the first word whose at is at least v, wordsOf's list being
+   in order of at */
+function wsAt(ws,v){
+ var lo=0, hi=ws.length;
+ while(lo<hi){var mid=(lo+hi)>>1; if(ws[mid].at<v)lo=mid+1; else hi=mid;}
+ return lo;}
 function sniffDeny(t,nm,hits){
  var ws=null, cuts=[];
  hits.forEach(function(h){
@@ -500,7 +537,12 @@ function sniffDeny(t,nm,hits){
   var f=clauseFloor(t,nm,h.at);
   cuts.forEach(function(c){if(c.at<h.at&&c.end<=h.at&&c.end>f)f=c.end;});
   if(!srcNegated(nm.s,h.at,f))return;
-  var win=ws.filter(function(w){return w.at<h.at&&w.at>=Math.max(f,0);}).slice(-SRC_NEG_W);
+  /* the last two words before the hit and inside its clause. This was a
+     filter over every word in the entry, once per denied hit, the third
+     place SZA9 grew with the square of an entry. ws is in order of at, so
+     the same two are found by a search and a step back. */
+  var lo0=Math.max(f,0), j=wsAt(ws,h.at), win=[];
+  while(j>0&&win.length<SRC_NEG_W&&ws[j-1].at>=lo0)win.unshift(ws[--j]);
   var ng=win.filter(function(w){return SRC_NEG.indexOf(w.w)>=0;})[0]||null;
   h.neg=true; h.negw=ng?ng.w:null; h.negAt=ng?ng.at:null;});}
 /* TENSE AND CONDITIONAL VOID A CANDIDATE TOO, TASKS.md SK9 (package follow
@@ -521,19 +563,39 @@ function sniffDeny(t,nm,hits){
    Both require their full pair, in this order, so "if I'm being honest, I
    was angry" (no would after) and "I'm used to being ignored" (no anymore
    or no longer after) are untouched and stay live, as they should. */
+/* the forward walk, read off the same list clauseFloor reads. A NaN at never
+   entered the old loop and so answered the end of the text, kept here. */
 function clauseCeil(t,nm,at){
  t=String(t||'');
- for(var k=at;k<nm.s.length;k++){
-  if(nm.s.charAt(k)===' '&&SENT_END.test(t.charAt(nm.map[k])))return k;}
- return nm.s.length;}
+ if(!(at<nm.s.length))return nm.s.length;
+ var a=clauseEnds(t,nm), i=sortedAtLeast(a,at);
+ return i<a.length?a[i]:nm.s.length;}
+/* WHERE A PHRASE SITS IN THE COPY, every start, found once per copy. The
+   second half of SZA9: sniffTense sliced the whole clause on each side of
+   every hit and searched the slices, and with no sentence end the clause is
+   the whole entry, so this too grew with the square of it.
+   phraseIn(nm,p,lo,hi) says whether p starts at or after lo and ends at or
+   before hi, which is exactly whether the old slice nm.s.slice(lo,hi) with a
+   space put on the end held it: a hit's at is its own leading space, and the
+   clause ceiling is a space or the end of a copy that always closes on one,
+   so the space the old code added was already the next character of nm.s,
+   or, at the very end, sat after a space where no phrase here can use it. */
+function phraseIn(nm,p,lo,hi){
+ var c=nm._ph||(nm._ph={}), a=c[p];
+ if(!a){a=c[p]=[]; for(var k=nm.s.indexOf(p);k>=0;k=nm.s.indexOf(p,k+1))a.push(k);}
+ var i=sortedAtLeast(a,lo);
+ return i<a.length&&a[i]+p.length<=hi;}
 function sniffTense(t,nm,hits){
+ var n=nm.s.length;
  hits.forEach(function(h){
   if(h.neg)return;
   var f=Math.max(clauseFloor(t,nm,h.at),0), c=clauseCeil(t,nm,h.at);
-  var before=nm.s.slice(f,h.at)+' ', after=nm.s.slice(h.at,c)+' ';
-  var pastVoid=before.indexOf(' used to ')>=0&&
-   (after.indexOf(' anymore ')>=0||after.indexOf(' any more ')>=0||after.indexOf(' no longer ')>=0);
-  var condVoid=before.indexOf(' if ')>=0&&after.indexOf(' would ')>=0;
+  /* the old before was nm.s.slice(f,h.at)+' ', the old after
+     nm.s.slice(h.at,c)+' '; see phraseIn for why these bounds are the same */
+  var bEnd=h.at+1, aEnd=Math.min(c+1,n);
+  var pastVoid=phraseIn(nm,' used to ',f,bEnd)&&
+   (phraseIn(nm,' anymore ',h.at,aEnd)||phraseIn(nm,' any more ',h.at,aEnd)||phraseIn(nm,' no longer ',h.at,aEnd));
+  var condVoid=phraseIn(nm,' if ',f,bEnd)&&phraseIn(nm,' would ',h.at,aEnd);
   if(pastVoid||condVoid){h.neg=true; h.negw=pastVoid?'used to':'if'; h.negAt=h.at;}});}
 /* ============================================================
    WHOSE CHARGE, package S2 of REVIEW-sniffer-audit-2026-10-09.md, ruling 2,
@@ -633,7 +695,20 @@ var WHO_OPENER=['the','a','an','this','that','these','those','it','its','there',
  'perhaps','probably','really','honestly','sometimes','often','always','usually','never','work','life',
  'home','school','things','sleep','money','dinner','lunch','breakfast','traffic','weather','coffee','job',
  'monday','tuesday','wednesday','thursday','friday','saturday','sunday','january','february','march',
- 'april','may','june','july','august','september','october','november','december'];
+ 'april','may','june','july','august','september','october','november','december',
+ 'feel','felt','feeling','was','been','being','got','getting','woke','spent','kind','kinda','sort',
+ 'pretty','super','bit','kept','went'];
+/* THE LAST ROW IS THE WRITER WITH THE I LEFT OFF, 18 November, reopening
+   SZA4. "Felt furious all day." read nothing while "felt furious all day."
+   and "I felt furious all day." both read solar: a diary drops its subject,
+   the phone capitalises the verb it starts on, and felt was not a word this
+   reader knew, so whoStartName took it for a name and held the writer's own
+   anger as someone else's. The plural strip SZA4 added cannot reach it,
+   because a past tense is not a plural. These are the words a subjectless
+   sentence about the writer opens on, a verb of feeling or being with no
+   subject, or a hedge (kind of, pretty, a bit) in front of one; feels is
+   reached through the plural strip from feel and is not listed twice.
+   A real name is untouched, because none of these is one. */
 function whoKnown0(w){
  var own=function(o){return Object.prototype.hasOwnProperty.call(o,w);};
  if(own(LEX)||own(ADJ2CHG)||own(LEXMOD))return true;
@@ -1313,7 +1388,17 @@ function marksOf(t,p){
    if(pv&&m.band&&!pv.band){pv.band=m.band;pv.coh=m.coh;}
    if(pv&&m.amt!=null&&pv.amt==null)pv.amt=m.amt;
    return;}
-  m.seat=(m.band&&m.band!=='coherent')?m.band:null;
+  /* SK6, 19 November, ai-director's own read of the code confirmed the
+     fix and corrected two things in the first draft of it: a charge-only
+     adjective (no m.band, "outside" carries charge but names no seat by
+     itself) does not all land at crown, each one lands at ITS OWN seat
+     by its charge, the exact same lookup pathOf's own seatOf() already
+     runs (PATHSEAT[charge]). Without this, marksOf colored nothing for
+     these hits while pathOf and the fetter tally both already counted
+     them, so the chat asked about a point the story bubble showed in
+     plain, uncoloured text. 39 real words move, measured against the
+     live build, not the ~60 first guessed. */
+  m.seat=(m.band&&m.band!=='coherent')?m.band:(m.kind==='adj'?(PATHSEAT[m.charge]||null):null);
   m.bn=m.seat?K2BAND[m.seat]:null;
   keep.push(m); last=m.e;});
  keep.forEach(function(m,i){m.i=i;});
@@ -1636,7 +1721,7 @@ function lexComposite(){
   if(LEX[k])return;
   var a=lexAdd(k,out.seat,out.amt,'Anger',
    {src:'composite',from:'the seated members of LEXCOMP',
-    rule:'unanimous seat, family floor',cite:'canon'});
+    rule:'unanimous point, family floor',cite:'canon'});
   if(a.ok&&!a.already)out.added++;
   else out.unseated.push(k);});
  return out;}
@@ -1932,7 +2017,7 @@ function sniffAxes(p){
   shadow[im.fetter]+=im.amt;
   (cited[im.fetter]=cited[im.fetter]||[]).push(
    im.stated?'the text named '+im.fetter.toLowerCase():
-   im.inferred?'read from the '+im.band+' seat, no address named':
+   im.inferred?'read from the '+im.band+' point, no address named':
    'at '+im.name);});
  /* A STATED FETTER THAT parseStory DROPPED, RECOVERED. Measured, and it is the
     reason this block exists rather than trusting the imprints alone.
@@ -1958,7 +2043,7 @@ function sniffAxes(p){
   if(!h.fet||carried[h.fet]||shadow[h.fet]===undefined)return;
   shadow[h.fet]+=Math.abs(h.amt||0)/3;
   (cited[h.fet]=cited[h.fet]||[]).push('"'+h.t+'" states '+h.fet+
-   ', and its seat is shared with another axis so the imprint layer dropped it');});
+   ', and its point is shared with another axis so the imprint layer dropped it');});
  /* the composite. resentment is anger that has stopped moving, so it splits. */
  p.hits.forEach(function(h){
   var comp=LEXCOMP[h.t];
@@ -2471,6 +2556,11 @@ function sniffStory(text){
   /* the working, kept, because a contract that discards its own evidence cannot
      be audited and re-parsing is what makes the atom layer possible. */
   parsed:    p,
+  /* WHICH LINES OF THE LET GO LIST THE TEXT CARRIES, 21 November, beside
+     the evidence and never in it: engine/letgo.js says why a phrase match
+     adds no charge. Guarded like gaps below, so this contract still answers
+     in a build cut without the list. */
+  letgo:     (typeof letgoCues==='function')?letgoCues(text):null,
   /* WHAT THIS READING DOES NOT KNOW. Carried in the output rather than left to
      a reviewer to remember, because every one of these is a place a renderer
      could otherwise print a clean reading over a hole. */
