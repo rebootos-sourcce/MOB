@@ -385,7 +385,7 @@ function selfTest(T) {
   const unkeyed = R.filter(r => /:\?/.test(r.id));
   ok(!unkeyed.length, 'every generated saboteur resolves to a cluster code' + (unkeyed.length ? '; not: ' + unkeyed.map(r => r.nm).join(', ') : ''));
   const cats = [...new Set(R.map(r => r.cat))];
-  ok(cats.every(c => R.some(r => r.cat === c)) && cats.length === 21, cats.length + ' categories enumerated, the audit\'s 21');
+  ok(cats.every(c => R.some(r => r.cat === c)) && cats.length === 23, cats.length + ' categories enumerated, expected 23');
   // the overlay moves the count, so the gate below can see progress at all
   const first = R.find(r => r.cat === 'Saboteur, named'), over = registry(T, { [first.id]: fixture() }).R.find(r => r.id === first.id);
   ok(over.g.D3 === 'P' && over.g.D4 === 'P' && !over.ownerApproved, 'a complete draft lifts D3 and D4 on its record and is not counted approved');
