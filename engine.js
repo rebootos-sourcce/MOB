@@ -15017,7 +15017,7 @@ var TRACE_V=1;
    (TRACE_ABOVE) come off a reading handed in, and only the same way the chain
    does. A day is grounded on a graph read with no reading, so no day holds
    one. */
-var TRACE_ALG=4;
+var TRACE_ALG=5;
 
 /* THE CHAIN'S FOUR RUNGS, in the order they stack, TDD section 16's second
    block. Derived only: see THE CHAIN, below. Named as the product names
@@ -16198,16 +16198,17 @@ function traceFromRecord(p,intents,reading){
     was inferred (TRACE_PROMOTE). A Yes on an address today's reading no
     longer reaches, because the lexicon moved since, is still the person's
     word about that story and that address, so it is held as user_confirmed
-    with nothing it was before. A Not me is NOT read here: the graph has no
-    provenance for a refusal, and a declined state is F11 and F16, the
-    owner's. It stays on the entry, where the boundary keeps it.
+    with nothing it was before. A later Journal rejection or correction on
+    the same entry suppresses that seat's support. The verdict stays on
+    the story record.
 
     This is a change of derivation, so TRACE_ALG says so. */
  var yesOf=function(sk,e){
   var yes=(e&&e.ob&&Array.isArray(e.ob.yes))?e.ob.yes:[];
+  var declined=storyDeclinedSeats(e&&e.verdicts);
   var at=(e&&typeof e.t==='string'&&!isNaN(new Date(e.t).getTime()))?e.t:undefined;
   yes.forEach(function(a){
-   if(typeof a!=='number'||!BY[a])return;
+   if(typeof a!=='number'||!BY[a]||declined[B2K[BY[a].b]])return;
    var pk=node('pattern',String(a),'known',tracePatternAttrs(String(a)));
    if(!pk)return;
    var r=traceEdgeAdd(g,ix,sk,'supports',pk,'user_confirmed',{at:at, nocycle:true,
@@ -16221,7 +16222,7 @@ function traceFromRecord(p,intents,reading){
  var reads=traceWithSoul(p,function(){
   return ents.map(function(e){
    if(!e||typeof e.text!=='string')return null;
-   try{return parseStory(e.text).imprints;}catch(err){return {err:(err&&err.message)||'error'};}});});
+   try{return parseStoryEntry(e).imprints;}catch(err){return {err:(err&&err.message)||'error'};}});});
  ents.forEach(function(e,i){
   var id=sids[i];
   if(/^entry#/.test(id))g.gaps.push({kind:'undated', story:traceKey('story',id),
@@ -23399,7 +23400,7 @@ function exdepthFill(rec,p,now){
   ev.forEach(function(x){
    var at=exdepthAt(now,x.back,EXDEPTH_HOUR[x.k]);
    if(x.k==='e'){
-    var P=parseStory(x.text), k=P.imprints.length;
+    var P=parseStoryEntry(x), k=P.imprints.length;
     if(k){applyStory(x.text); applyStoryAddr(x.text); verpApply(x.text); leanApply(x.text);}
     rec.story.entries.push({t:at, text:x.text, imprints:k, bands:P.bands, lex:LEX_VERSION});
     out.entries++; out.imprints+=k; return;}
@@ -24595,7 +24596,7 @@ function originWhole(p){
  var count={parental:0,ancestral:0}, hits=[];
  ((p&&p.story&&p.story.entries)||[]).forEach(function(e){
   if(!e||typeof e.text!=='string'||!e.text.trim())return;
-  var parsed=parseStory(e.text);
+  var parsed=parseStoryEntry(e);
   (parsed.hits||[]).forEach(function(h){
    if(!h.originCat||count[h.originCat]===undefined)return;
    count[h.originCat]++;
@@ -24842,7 +24843,41 @@ function pathOf(hits){
   dwell:dwell, start:on.length?on[0].seat:null, end:on.length?on[on.length-1].seat:null,
   kink:end(kink), floor:end(floor)};}
 
-function parseStory(text){
+/* A verdict applies to this entry's reading. Keep the original text and
+   suppress the seat and its companion hits before assigning charge. */
+function storyDeclinedSeats(verdicts){
+ var declined=Object.create(null);
+ if(Array.isArray(verdicts))verdicts.forEach(function(v){
+  if(v&&K2BAND[v.seat]&&(v.v==='no'||v.v==='fix'))declined[v.seat]=true;
+ });
+ return declined;
+}
+function storyVerdictHits(all,verdicts){
+ var declined=storyDeclinedSeats(verdicts), offsets=Object.create(null);
+ all.forEach(function(h){
+  if(!h.band||h.band==='coherent'||h.neg||h.other)return;
+  if(!declined[h.band])offsets[h.at]=false;
+  else if(offsets[h.at]===undefined)offsets[h.at]=true;
+ });
+ return all.filter(function(h){return !declined[h.band]&&!offsets[h.at];});
+}
+/* Independent story counters read text. Mask only the spans removed by
+   the same verdict filter and preserve the boundaries of neighbouring words. */
+function storyTextForCounters(text,verdicts){
+ if(!Object.keys(storyDeclinedSeats(verdicts)).length)return text;
+ var all=scanStory(text), kept=new Set(storyVerdictHits(all,verdicts));
+ var nm=normMap(text), masked=text.split('');
+ all.forEach(function(h){
+  if(kept.has(h))return;
+  var a=nm.map[h.at+1], b=nm.map[h.at+String(h.t).length];
+  for(var i=a;i<=b;i++)masked[i]='.';
+ });
+ return masked.join('');
+}
+function parseStoryEntry(entry){
+ return parseStory(entry.text||'',entry.verdicts);
+}
+function parseStory(text,verdicts){
  /* WHAT COUNTS, AND WHAT IS KEPT BESIDE IT, S1. A hit said with a no goes to
     denied and nowhere else, so it reaches no band, charge, weight, named
     fetter, imprint or path, and every reader of hits below and of this
@@ -24855,6 +24890,7 @@ function parseStory(text){
  var all=srcSafe(text)?[]:scanStory(text), hits=[], denied=[], others=[], byBand={}, byChg={}, imprints=[];
  /* AND A HIT ABOUT SOMEONE ELSE GOES TO others, S2, by the same rule: kept,
     listed, and counted nowhere. A denied hit is never also in others. */
+ if(verdicts&&verdicts.length)all=storyVerdictHits(all,verdicts);
  all.forEach(function(h){(h.neg?denied:h.other?others:hits).push(h);});
  hits.forEach(function(h){
   if(h.band&&h.band!=='coherent'){ byBand[h.band]=(byBand[h.band]||0)+h.amt; }
@@ -25218,10 +25254,10 @@ function unmarkedOf(t,p){
   cur={s:w.s, e:w.e, c:w.c, words:1}; out.push(cur);});
  out.forEach(function(r){r.text=t.slice(r.s,r.e);});
  return {stretches:out, words:ws.length, read:read, unmarked:ws.length-read};}
-function applyStory(text){
+function applyStory(text,verdicts){
  /* show only on a worked example, engine/showonly.js */
  if(showRefuse('story'))return {parsed:parseStory(text), applied:{}, refused:'example'};
- var p=parseStory(text), touched={};
+ var p=parseStory(text,verdicts), touched={};
  p.imprints.forEach(function(im){ var f=im.fetter; if(!f) return;
   touched[f]=(touched[f]||0)+im.amt;});
  /* an adjective sharpens which fetter; repeated mentions weigh more */
@@ -25257,9 +25293,9 @@ function applyStory(text){
    This is additive on top of the spread, never in place of it: an
    address nobody named keeps reading exactly as it does today. Call
    this everywhere applyStory is called, never instead of it. */
-function applyStoryAddr(text){
+function applyStoryAddr(text,verdicts){
  if(showRefuse('story'))return {applied:{}, refused:'example'};
- var p=parseStory(text), touched={};
+ var p=parseStory(text,verdicts), touched={};
  p.imprints.forEach(function(im){
   if(im.inferred||im.node==null)return;
   touched[im.node]=(touched[im.node]||0)+im.amt;});
@@ -25877,7 +25913,7 @@ function bindAxes(entries){
  entries.forEach(function(e,ei){
   if(!e||typeof e.text!=='string'||!e.text)return;
   var p,axes;
-  try{p=parseStory(e.text); axes=sniffAxes(p);}catch(err){return;}
+  try{p=parseStoryEntry(e); axes=sniffAxes(p);}catch(err){return;}
   rows.push({ei:ei,t:e.t,axes:axes});});
  var out=[];
  CHARGES.forEach(function(f){
@@ -26435,8 +26471,9 @@ function srcNegated(src,at,floor){
 function srcPrior(entries){
  var out={};
  (entries||[]).forEach(function(e){
+  var declined=storyDeclinedSeats(e&&e.verdicts);
   Object.keys((e&&e.bands)||{}).forEach(function(k){
-   if(K2BAND[k]&&(e.bands[k]||0)>0)out[k]=(out[k]||0)+1;});});
+   if(!declined[k]&&K2BAND[k]&&(e.bands[k]||0)>0)out[k]=(out[k]||0)+1;});});
  return out;}
 
 /* the rung for one seat, from the three counts, and now a fourth: whether
@@ -26530,6 +26567,20 @@ function srcHear(text,prior,active){
  out.asks=!!(out.top&&out.top.rung>=SRC_ASK);
  out.root=(out.top&&out.top.rung>=SRC_ROOT)?out.top:null;
  return out;}
+
+/* Reflect a checking action and its stated consequence on a finalized turn.
+   Each supported construction contributes only the speaker's own clauses. */
+function srcCheckingReflection(text){
+ var t=String(text||'').trim();
+ if(!t||srcSafe(t))return '';
+ var m=/^If I don['’]t (check [a-z][a-z ’'-]{0,119}), ([a-z][a-z ,’'-]{0,119})[.!]?$/i.exec(t);
+ if(m){
+  var action=m[1].replace(/\bmyself\b/gi,'yourself').replace(/\bmy\b/gi,'your');
+  return 'You’re saying that if you don’t '+action+', '+m[2]+'.';
+ }
+ m=/^I keep (checking [a-z][a-z ,’'-]{0,119}) because I (?:think|expect|believe) ([a-z][a-z ,’'-]{0,119})[.!]?$/i.exec(t);
+ return m?'You keep '+m[1].replace(/\bmy\b/gi,'your')+'. Your concern is, “'+m[2]+ '.”':'';
+}
 
 /* WHAT SOURCE AI DOES NEXT. One of four moves, and the person's own choices
    decide it, never the depth of what was found.
@@ -28304,6 +28355,39 @@ function srcVoiceGraph(text,record,opts){
  base.matched=Object.keys(by).sort().map(function(k){return by[k];});
  return {voice:voice,graph:base};
 }
+/* Resolve exact current addresses against past confirmations. An inferred
+   address or shared seat alone cannot establish a returning pattern. */
+function srcConfirmedStoryAddresses(text,record,opts){
+ var o=opts||{};
+ if(o.allowProfile!==true||!record||!String(text||'').trim()||srcSafe(text))return [];
+ var named=Object.create(null);
+ parseStory(text,o.verdicts).imprints.forEach(function(im){
+  if(!im.inferred&&im.node!=null)named[traceKey('pattern',im.node)]=im.node;
+ });
+ if(!Object.keys(named).length)return [];
+ /* Replay only stories whose address confirmations can match this turn. */
+ var stories=(record.story&&Array.isArray(record.story.entries))?record.story.entries:[];
+ var needed=new Set(Object.keys(named)), matching=[];
+ for(var i=stories.length-1;i>=0&&needed.size;i--){
+  var entry=stories[i], yes=entry&&entry.ob&&entry.ob.yes;
+  if(!Array.isArray(yes))continue;
+  var declined=storyDeclinedSeats(entry.verdicts), found=false;
+  yes.forEach(function(addr){
+   var node=BY[addr], key=traceKey('pattern',addr);
+   if(typeof addr!=='number'||!node||declined[B2K[node.b]]||!needed.delete(key))return;
+   found=true;
+  });
+  if(found)matching.push(entry);
+ }
+ if(!matching.length)return [];
+ var g=traceFromRecord({who:record.who,story:{entries:matching.reverse()}}), confirmed=new Set();
+ g.edges.forEach(function(e){
+  if(e.edge==='supports'&&e.src==='user_confirmed'&&e.from.indexOf('story:')===0&&
+     Object.prototype.hasOwnProperty.call(named,e.to))confirmed.add(named[e.to]);
+ });
+ return Array.from(confirmed);
+}
+
 /* Stage 3: actual Source intelligence is a constrained READ of Source's
  * evidence ledger and record graph. The model can decide how to speak but
  * may never promote a read to an independently measured CQ or a diagnosis. */
@@ -31694,7 +31778,7 @@ function dlyReadOf(p,entry,seat,memo){
   /* borrowing the record's soul rebuilds the susceptibilities, which is the
      expensive part, so one read of one entry is kept for the length of one
      composition and one grounding pass */
-  var parse=function(){return parseStory(entry.text||'').imprints;};
+  var parse=function(){return parseStoryEntry(entry).imprints;};
   (memo&&memo.__soul?parse():traceWithSoul(p,parse)).forEach(function(x){
    if(x.node===null||x.node===undefined||!BY[x.node]||seen[x.node])return;
    seen[x.node]=1; all.push({addr:x.node, band:x.band});});
@@ -33402,7 +33486,7 @@ if(typeof module!=='undefined'&&module.exports){
                  srcHyperSeats:srcHyperSeats,
                  srcHear:srcHear, srcHear:srcHear, srcPrior:srcPrior, srcTurn:srcTurn,
                  srcVoiceSniff:srcVoiceSniff, srcVoiceNarrative:srcVoiceNarrative, srcVoiceChargeCycle:srcVoiceChargeCycle, SRC_TULA_LADDERS:SRC_TULA_LADDERS,
-                 srcVoiceGraph:srcVoiceGraph, srcVoiceIntelligence:srcVoiceIntelligence, srcVoiceCanon:srcVoiceCanon, srcVoicePattern:srcVoicePattern, srcVoiceEvidenceBus:srcVoiceEvidenceBus,
+                 srcVoiceGraph:srcVoiceGraph, srcVoiceIntelligence:srcVoiceIntelligence, srcConfirmedStoryAddresses:srcConfirmedStoryAddresses, srcCheckingReflection:srcCheckingReflection, srcVoiceCanon:srcVoiceCanon, srcVoicePattern:srcVoicePattern, srcVoiceEvidenceBus:srcVoiceEvidenceBus,
                  SRC_DIM_ORDER:SRC_DIM_ORDER, SRC_DIM_CUE:SRC_DIM_CUE, SRC_DO:SRC_DO,
                  srcDims:srcDims, srcNext:srcNext,
                  SRC_BEHAVE:SRC_BEHAVE, SRC_BEHAVE_ORDER:SRC_BEHAVE_ORDER, SRC_BEHAVE_DIM:SRC_BEHAVE_DIM,
@@ -33626,7 +33710,7 @@ if(typeof module!=='undefined'&&module.exports){
                   CQ_CLIMB_FLOOR:CQ_CLIMB_FLOOR, CLIMB_SEAT_PICK:CLIMB_SEAT_PICK, POLE_UNLOCK:POLE_UNLOCK,
                   compassBandOf:compassBandOf, compassClimbSeat:compassClimbSeat, compassUnlockOf:compassUnlockOf,
                   SEAT_FETTER_PAIR:SEAT_FETTER_PAIR, LAW_TEACHER:LAW_TEACHER, compassLawsOf:compassLawsOf,
-  /* sniffer */   scanStory:scanStory, normMap:normMap, maskedRuns:maskedRuns, maskedSay:maskedSay, clauseFloor:clauseFloor, clauseCeil:clauseCeil, marksOf:marksOf, parseStory:parseStory, applyStory:applyStory, applyStoryAddr:applyStoryAddr, uniFromParsed:uniFromParsed,
+  /* sniffer */   scanStory:scanStory, normMap:normMap, maskedRuns:maskedRuns, maskedSay:maskedSay, clauseFloor:clauseFloor, clauseCeil:clauseCeil, marksOf:marksOf, parseStory:parseStory, parseStoryEntry:parseStoryEntry, applyStory:applyStory, applyStoryAddr:applyStoryAddr, uniFromParsed:uniFromParsed,
                   wordsOf:wordsOf, unmarkedOf:unmarkedOf,
                   sniffDeny:sniffDeny, NEG_NOT_DENY:NEG_NOT_DENY, storyHits:storyHits,
                   asideOf:asideOf, asideSay:asideSay,

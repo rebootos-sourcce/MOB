@@ -601,7 +601,7 @@ function dlyReadOf(p,entry,seat,memo){
   /* borrowing the record's soul rebuilds the susceptibilities, which is the
      expensive part, so one read of one entry is kept for the length of one
      composition and one grounding pass */
-  var parse=function(){return parseStory(entry.text||'').imprints;};
+  var parse=function(){return parseStoryEntry(entry).imprints;};
   (memo&&memo.__soul?parse():traceWithSoul(p,parse)).forEach(function(x){
    if(x.node===null||x.node===undefined||!BY[x.node]||seen[x.node])return;
    seen[x.node]=1; all.push({addr:x.node, band:x.band});});

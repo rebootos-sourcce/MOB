@@ -99,7 +99,7 @@ var TRACE_V=1;
    (TRACE_ABOVE) come off a reading handed in, and only the same way the chain
    does. A day is grounded on a graph read with no reading, so no day holds
    one. */
-var TRACE_ALG=4;
+var TRACE_ALG=5;
 
 /* THE CHAIN'S FOUR RUNGS, in the order they stack, TDD section 16's second
    block. Derived only: see THE CHAIN, below. Named as the product names
@@ -1280,16 +1280,17 @@ function traceFromRecord(p,intents,reading){
     was inferred (TRACE_PROMOTE). A Yes on an address today's reading no
     longer reaches, because the lexicon moved since, is still the person's
     word about that story and that address, so it is held as user_confirmed
-    with nothing it was before. A Not me is NOT read here: the graph has no
-    provenance for a refusal, and a declined state is F11 and F16, the
-    owner's. It stays on the entry, where the boundary keeps it.
+    with nothing it was before. A later Journal rejection or correction on
+    the same entry suppresses that seat's support. The verdict stays on
+    the story record.
 
     This is a change of derivation, so TRACE_ALG says so. */
  var yesOf=function(sk,e){
   var yes=(e&&e.ob&&Array.isArray(e.ob.yes))?e.ob.yes:[];
+  var declined=storyDeclinedSeats(e&&e.verdicts);
   var at=(e&&typeof e.t==='string'&&!isNaN(new Date(e.t).getTime()))?e.t:undefined;
   yes.forEach(function(a){
-   if(typeof a!=='number'||!BY[a])return;
+   if(typeof a!=='number'||!BY[a]||declined[B2K[BY[a].b]])return;
    var pk=node('pattern',String(a),'known',tracePatternAttrs(String(a)));
    if(!pk)return;
    var r=traceEdgeAdd(g,ix,sk,'supports',pk,'user_confirmed',{at:at, nocycle:true,
@@ -1303,7 +1304,7 @@ function traceFromRecord(p,intents,reading){
  var reads=traceWithSoul(p,function(){
   return ents.map(function(e){
    if(!e||typeof e.text!=='string')return null;
-   try{return parseStory(e.text).imprints;}catch(err){return {err:(err&&err.message)||'error'};}});});
+   try{return parseStoryEntry(e).imprints;}catch(err){return {err:(err&&err.message)||'error'};}});});
  ents.forEach(function(e,i){
   var id=sids[i];
   if(/^entry#/.test(id))g.gaps.push({kind:'undated', story:traceKey('story',id),

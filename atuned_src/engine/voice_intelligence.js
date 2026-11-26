@@ -70,6 +70,39 @@ function srcVoiceGraph(text,record,opts){
  base.matched=Object.keys(by).sort().map(function(k){return by[k];});
  return {voice:voice,graph:base};
 }
+/* Resolve exact current addresses against past confirmations. An inferred
+   address or shared seat alone cannot establish a returning pattern. */
+function srcConfirmedStoryAddresses(text,record,opts){
+ var o=opts||{};
+ if(o.allowProfile!==true||!record||!String(text||'').trim()||srcSafe(text))return [];
+ var named=Object.create(null);
+ parseStory(text,o.verdicts).imprints.forEach(function(im){
+  if(!im.inferred&&im.node!=null)named[traceKey('pattern',im.node)]=im.node;
+ });
+ if(!Object.keys(named).length)return [];
+ /* Replay only stories whose address confirmations can match this turn. */
+ var stories=(record.story&&Array.isArray(record.story.entries))?record.story.entries:[];
+ var needed=new Set(Object.keys(named)), matching=[];
+ for(var i=stories.length-1;i>=0&&needed.size;i--){
+  var entry=stories[i], yes=entry&&entry.ob&&entry.ob.yes;
+  if(!Array.isArray(yes))continue;
+  var declined=storyDeclinedSeats(entry.verdicts), found=false;
+  yes.forEach(function(addr){
+   var node=BY[addr], key=traceKey('pattern',addr);
+   if(typeof addr!=='number'||!node||declined[B2K[node.b]]||!needed.delete(key))return;
+   found=true;
+  });
+  if(found)matching.push(entry);
+ }
+ if(!matching.length)return [];
+ var g=traceFromRecord({who:record.who,story:{entries:matching.reverse()}}), confirmed=new Set();
+ g.edges.forEach(function(e){
+  if(e.edge==='supports'&&e.src==='user_confirmed'&&e.from.indexOf('story:')===0&&
+     Object.prototype.hasOwnProperty.call(named,e.to))confirmed.add(named[e.to]);
+ });
+ return Array.from(confirmed);
+}
+
 /* Stage 3: actual Source intelligence is a constrained READ of Source's
  * evidence ledger and record graph. The model can decide how to speak but
  * may never promote a read to an independently measured CQ or a diagnosis. */

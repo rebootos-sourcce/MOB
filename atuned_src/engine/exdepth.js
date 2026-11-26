@@ -217,7 +217,7 @@ function exdepthFill(rec,p,now){
   ev.forEach(function(x){
    var at=exdepthAt(now,x.back,EXDEPTH_HOUR[x.k]);
    if(x.k==='e'){
-    var P=parseStory(x.text), k=P.imprints.length;
+    var P=parseStoryEntry(x), k=P.imprints.length;
     if(k){applyStory(x.text); applyStoryAddr(x.text); verpApply(x.text); leanApply(x.text);}
     rec.story.entries.push({t:at, text:x.text, imprints:k, bands:P.bands, lex:LEX_VERSION});
     out.entries++; out.imprints+=k; return;}
