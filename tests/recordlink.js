@@ -326,7 +326,8 @@ require('./net.js').guardBrowser(browser);
       nm + ': not loaded, and the list, the open profile and the stored bytes did not move');
     const ln = r.line || {};
     ok(/^Not loaded from the link: /.test(ln.shown || '') && ln.shownKind === 'fail' && want.test(String(r.st.err))
-      && ln.shown.indexOf(String(r.st.err).slice(0, 20)) > 0,
+      && ln.shown.indexOf(String(r.st.err).slice(0, 20)) > 0
+      && ln.shown.includes('Nothing else was touched.') && !ln.shown.includes('plan was reset'),
       '  and it says why by name, the importError reason on screen, ' + JSON.stringify((ln.shown || '').slice(0, 110)));
     ok(r.st.hash === '', '  and the bad link is off the address too');
   }
