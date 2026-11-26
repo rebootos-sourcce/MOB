@@ -530,7 +530,12 @@ function accPrivacy(){
     duties CLAUDE.md names for a practitioner grant: explicit consent, a
     visible list, and revocation. "Never a silent default" said the same as
     the first sentence in the team's words, and came out with it. */
- h+=accGroup('Who can see this',
+ /* LIVE SINCE ROUND PS, 26 November: ui/praclive.js draws the real list,
+    each practitioner with their two switches and Disconnect, and the box a
+    practitioner's link goes in. The group below is what a build without that
+    file still says, word for word. */
+ if(typeof pracPrivacyHtml==='function')h+=pracPrivacyHtml();
+ else h+=accGroup('Who can see this',
    accRow('People who can see this record','nobody'),
    'Nobody sees this but you. A practitioner can see it only after you say yes. '
    +'Each yes is listed here by name, with what they see and the date you gave '
@@ -710,6 +715,7 @@ function renderAccount(){
  accWire();}
 function accWire(){
  var host=$('settings'); if(!host)return;
+ if(ACC_OPEN==='privacy'&&typeof pracPrivacyWire==='function')pracPrivacyWire(host);
  host.querySelectorAll('[data-acs]').forEach(function(b){
   b.onclick=function(){ACC_OPEN=b.getAttribute('data-acs'); renderAccount();};});
  /* the profiles section. A form each, so Enter in a name is the same press as

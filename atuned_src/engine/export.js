@@ -372,6 +372,9 @@ if(typeof module!=='undefined'&&module.exports){
   /* a worked example's history, engine/pracex.js, for the practitioner page */
                   PRACEX_DAYS:PRACEX_DAYS, PRACEX_HIST:PRACEX_HIST, pracexRecord:pracexRecord,
                   pracexDays:pracexDays, pracexRead:pracexRead,
+                  /* round PS: what a client's device shares with a practitioner, engine/pracshare.js */
+                  PRACSHARE_V:PRACSHARE_V, pracShareSum:pracShareSum, pracShareBody:pracShareBody, pracShareField:pracShareField,
+                  pracShareBuild:pracShareBuild, pracShareCheck:pracShareCheck, pracPropCheck:pracPropCheck,
   /* a worked example's bank and vault, engine/exdepth.js */
                   EXDEPTH_HIST:EXDEPTH_HIST, exdepthFill:exdepthFill, exdepthHas:exdepthHas,
                   exdepthAt:exdepthAt, relQueueOf:relQueueOf, relWrite:relWrite,
