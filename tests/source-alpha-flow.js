@@ -145,6 +145,33 @@ async function main() {
     verify('equal', revoke.sameGrant, false);
     verify('ok', !revoke.caption.includes('confirmed in an earlier entry'));
 
+    await page.locator('[data-srcv="fix"][data-seat="root"]').click();
+    await page.locator('#srcvfix').fill('I felt cornered and wanted a choice.');
+    await page.locator('[data-srcvread="root"]').click();
+    verify('deepEqual', await page.evaluate(() => CURP.story.draftVerdicts), [{ seat: 'root', v: 'fix' }]);
+    await page.reload();
+    await page.waitForFunction(() => document.body.classList.contains('booted'));
+    await page.evaluate(() => {
+      if (OB.open) obClose();
+      loadP(0);
+      setTab(TAB.STORY);
+      STV.dash = true;
+      stRender();
+      if (!STV.typed) stType();
+    });
+    const draftAfterReload = await page.evaluate(() => ({
+      words: ST_TEXT, verdicts: SRC_VERDICTS, root: srcLedgerNow().claims.root?.state,
+      offered: stFound().map(node => node.b)
+    }));
+    verify('match', draftAfterReload.words, /I am afraid\. I am angry\./);
+    verify('deepEqual', draftAfterReload.verdicts, [{ seat: 'root', v: 'fix' }]);
+    verify('equal', draftAfterReload.root, 'corrected');
+    verify('ok', draftAfterReload.offered.length > 0 && draftAfterReload.offered.every(band => band === 'Solar'));
+    await page.locator('#sttext').fill('I am afraid of a different situation.');
+    verify('equal', await page.evaluate(() => SRC_VERDICTS.length), 0);
+    verify('equal', await page.evaluate(() => CURP.story.draftVerdicts), undefined);
+    await page.locator('#sttext').fill(draftAfterReload.words);
+
     const result = await page.evaluate(() => {
       const root = document.querySelector('[data-srcv="no"][data-seat="root"]');
       if (!root) throw Error('No Root correction control');
@@ -170,7 +197,7 @@ async function main() {
       run.click();
       return { last, before, after, angerBefore, angerAfter, preview, report, reloaded,
         release: offer.take.map(node => node.b), fromLast: offer.fromLast,
-        runStory: RUN.storyT, runPlaces: RUN.pick.map(node => node.b) };
+        runStory: RUN.storyT, runPlaces: RUN.pick.map(node => node.b), draftVerdicts: CURP.story.draftVerdicts };
     });
     verify('match', result.last.text, /I am afraid\. I am angry\./);
     verify('deepEqual', result.last.verdicts, [{ seat: 'root', v: 'no' }]);
@@ -182,6 +209,7 @@ async function main() {
     }
     verify('ok', result.fromLast);
     verify('equal', result.runStory, result.last.t);
+    verify('equal', result.draftVerdicts, undefined);
 
     await page.reload();
     await page.waitForFunction(() => document.body.classList.contains('booted'));

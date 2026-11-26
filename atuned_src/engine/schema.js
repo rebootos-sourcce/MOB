@@ -1397,6 +1397,13 @@ function validateProfile(o,ctx){
   if(o.story.draft!==undefined&&o.story.draft!==null){
    var sd=vStr(errs,'story.draft',o.story.draft);
    if(sd!==null&&sd.trim())p.story.draft=sd;}
+  if(o.story.draftVerdicts!==undefined){
+   var dv=vEntryVerdicts(errs,'story.draftVerdicts',o.story.draftVerdicts);
+   if(dv&&dv.length){
+    if(!p.story.draft)errs.push('story.draftVerdicts requires a draft');
+    else p.story.draftVerdicts=dv;
+   }
+  }
   /* THE REPLY LINE'S OWN DRAFT, round of 28 October: a reply typed and not
      yet sent, held the same way the entry's own draft is. Same rule, same
      reason: only a string, never capped, missing or empty is no draft. */
