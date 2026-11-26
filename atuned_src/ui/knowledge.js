@@ -1161,7 +1161,8 @@ function kbPsycheDrill(d){
   var hit=kbRowsOf(ref.kind).filter(function(x){
    return String(x.t||'').trim().toLowerCase()===String(ref.targetName||ref.name||'').trim().toLowerCase();
   })[0];
-  if(!hit)return '';
+  if(!hit)return '<div class="ad-sub" data-dp-unresolved="'+esc(d.id)+'" data-dp-native-index="'+i+'">'
+   +esc(ref.name)+' / Native link awaiting verification</div>';
   return '<button type="button" class="btn" data-dp-native="'+esc(d.id)+'" data-dp-native-index="'+i+'">'
    +esc(ref.name)+(ref.targetName&&ref.name!=='Controller'?' → '+esc(ref.targetName):'')+' <span class="ad-sub">'+esc(ref.evidenceStatus)+'</span></button>';
  }):[]).join('');
