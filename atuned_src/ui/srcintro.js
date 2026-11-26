@@ -195,5 +195,19 @@ function srcIntroLeave(){
   if(SX===sx)SX=null; };
  if(sx.still){ sx.done(); fin(); return; }
  sx.h.classList.add('sx-out');
- setTimeout(function(){ try{ sx.done(); }catch(e){} },SRC_INTRO_T.hand);
- setTimeout(fin,SRC_INTRO_T.out);}
+ /* Two independent timers can become runnable together under browser load:
+    cleanup then removes the intro before any painted frame has both views.
+    Keep the existing hand/out timings, but only dispose after the handoff
+    callback AND two animation frames. The observer and the person can then
+    see the first card while the departing face still exists. */
+ var handed=false,exitElapsed=false,finQueued=false;
+ var maybeFinish=function(){
+  if(!handed||!exitElapsed||finQueued)return;
+  finQueued=true;
+  requestAnimationFrame(function(){ requestAnimationFrame(fin); });
+ };
+ setTimeout(function(){
+  try{ sx.done(); }catch(e){}
+  handed=true; maybeFinish();
+ },SRC_INTRO_T.hand);
+ setTimeout(function(){exitElapsed=true;maybeFinish();},SRC_INTRO_T.out);}
