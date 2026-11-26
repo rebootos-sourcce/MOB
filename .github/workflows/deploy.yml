@@ -202,10 +202,10 @@ jobs:
       # Journal Mode blueprint's P0. Node only, against the engine just built.
       - name: evidence ledger and question check
         run: node tests/evidence.js 2>&1 | tee "$RUNNER_TEMP/gates/evidence.log"
-      # J11, held open on purpose and watched: pImport still accepts a self
-      # declared tier four. Node only, so it runs here and not on a browser
-      # runner. It fails the day the door is closed without saying so.
-      - name: plan self grant watch
+      # J11 negative security gate: a pasted paid plan cannot grant sight.
+      # The real tier comes only from the authenticated Worker billing read.
+      # Node only, run against the engine assembled above.
+      - name: imported plan entitlement boundary
         run: node tests/plan-selfgrant.js 2>&1 | tee "$RUNNER_TEMP/gates/plan-selfgrant.log"
       # THE VOICE PROTOTYPE'S READ ONLY LAYER, revived dormant 17 November
       # (#88 and #89, DECISIONS.md "The voice prototype's read only layer,
