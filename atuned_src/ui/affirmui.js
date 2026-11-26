@@ -87,8 +87,10 @@ function affOpen(o){
  affCss();
  AFF.o=o; AFF.typed=''; AFF.res=null; AFF.keep=null; AFF.creator=false;
  AFF.srcs=affGather(o).filter(function(x){return x.state==='confirmed';});
+ var draft=o.from==='story'&&typeof o.draft==='string'?o.draft:'';
  var pick=null;
- if(o.key&&AFF.srcs.some(function(x){return x.key===o.key;}))pick=o.key;
+ if(draft){pick='typed'; AFF.typed=draft;}
+ else if(o.key&&AFF.srcs.some(function(x){return x.key===o.key;}))pick=o.key;
  else if(o.pathK&&AFF.srcs.some(function(x){return x.key==='pa:'+o.pathK;}))pick='pa:'+o.pathK;
  else if(affWeaves(AFF.srcs))pick='weave';
  else if(AFF.srcs.length)pick=AFF.srcs[0].key;
@@ -107,7 +109,11 @@ function affRun(){
  if(AFF.src==='weave'){
   var prim=AFF.srcs.filter(function(x){return x.kind==='avatar';})[0]||AFF.srcs[0];
   r=affWeave(AFF.srcs,prim?prim.key:null);}
- else if(AFF.src==='typed')r=affCompose(AFF.typed,'ty');
+ else if(AFF.src==='typed'){
+  var theme=AFF.o&&AFF.o.from==='story'&&AFF.o.draft?
+   AFF.typed.replace(/^I know (?:that )?(?=I can )/i,''):AFF.typed;
+  r=affCompose(theme,'ty');
+ }
  else{var s=AFF.srcs.filter(function(x){return x.key===AFF.src;})[0];
   r=s?affCompose(s.text,s.key):affCompose('');}
  AFF.res=r; AFF.keep=r.ok?r.lines.map(function(){return true;}):null;
@@ -141,14 +147,15 @@ function affSelHtml(){
  return '<select id="affsrc" class="aff-sel" aria-label="Where the lines come from">'
   +(affWeaves(AFF.srcs)?opt('weave','Your record'):'')
   +AFF.srcs.map(function(x){return opt(x.key,AFF_KIND[x.kind]+': '+cut(x.text));}).join('')
-  +opt('typed','My own words')+'</select>';}
+  +opt('typed',AFF.o&&AFF.o.draft?'Reframe draft':'My own words')+'</select>';}
 function affHtml(){
  var ok=!!(AFF.res&&AFF.res.ok), stop=!!(AFF.res&&AFF.res.stop);
  return '<div class="aff" aria-labelledby="affh">'
   +'<div class="aff-hd"><span class="aff-ic" data-tip-k="Affirmations" data-tip="'+esc(AFF_HEAD_TIP)+'">'+affIc()+'</span><span class="sh-h plain" id="affh">Affirmations</span>'
   +(typeof srcMark==='function'?srcMark():'')+'</div>'
   +'<div class="aff-src">'+affSelHtml()+'</div>'
-  +(AFF.src==='typed'?'<div class="aff-typed"><label class="aff-lab" for="afft">Who you are becoming</label>'
+  +(AFF.src==='typed'?'<div class="aff-typed"><label class="aff-lab" for="afft">'
+   +(AFF.o&&AFF.o.draft?'Review your reframe':'Who you are becoming')+'</label>'
    +'<div class="aff-in"><input type="text" id="afft" maxlength="80" autocomplete="off" spellcheck="true"'
    +' placeholder="Who you are becoming, or one word for it" value="'+esc(AFF.typed)+'">'
    +'<button type="button" class="btn" id="affgo">Affirm</button></div></div>':'')
