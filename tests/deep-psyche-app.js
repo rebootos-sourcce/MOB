@@ -209,6 +209,7 @@ for(const change of [
  d=>d.records.push(d.records[0]),
  d=>{d.records[0].linkedIds=[];},
  d=>{d.records[1].relationships=[];},
+ d=>{const e=d.records[1].relationships.find(e=>e.type==='versioned_domain_to_blueprint_model');e.fromId=d.records[0].id;e.toId=d.records[1].id;},
  d=>{d.records[0].relationships.find(e=>e.type==='versioned_domain_to_blueprint_model').status='UNREVIEWED';},
  d=>{d.records[1].relationships.find(e=>e.type==='versioned_domain_to_blueprint_model').sourceRef='Different evidence';},
  d=>{d.records[0].sourceEvidenceDigest='';},

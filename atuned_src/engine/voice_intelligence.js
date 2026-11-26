@@ -86,15 +86,15 @@ function srcKnowledgePair(db){
  if(from.name!=='Knowledge'||to.name!=='Personal Blueprint'||from.displaySlotOnly||to.displaySlotOnly)return [];
  if(!Array.isArray(from.linkedIds)||!Array.isArray(to.linkedIds)||
     !from.linkedIds.includes(to.id)||!to.linkedIds.includes(from.id))return [];
- function edges(r){
+ function edges(r,other){
   return (Array.isArray(r.relationships)?r.relationships:[]).filter(function(e){
-   return e&&e.fromId===from.id&&e.toId===to.id&&
+   return e&&e.fromId===r.id&&e.toId===other.id&&
     e.type==='versioned_domain_to_blueprint_model'&&
     e.status==='SOURCE_LEVEL_STRUCTURE_VERSIONED_NO_EQUIVALENCE'&&
     e.reciprocalRequired===true&&typeof e.sourceRef==='string'&&e.sourceRef.trim();
   });
  }
- var left=edges(from),right=edges(to);
+ var left=edges(from,to),right=edges(to,from);
  if(left.length!==1||right.length!==1||left[0].sourceRef!==right[0].sourceRef)return [];
  if(!/^[a-f0-9]{64}$/.test(from.sourceEvidenceDigest||'')||
     !/^[a-f0-9]{64}$/.test(to.sourceEvidenceDigest||''))return [];
