@@ -1,6 +1,8 @@
 # Emotion mapping worksheet
 
-**90 / 108** native links resolve · **18** open links · **6** decisions
+**90 / 108** native links resolve · **18 / 108** classified source-only occurrences · **0** unclassified occurrences · **6** potential scored-deck membership decisions
+
+The six names below exist in the recovered source registry and the ARCH18/ARCHDOM mappings, but not in the current 12-entry scored ARCH deck. Each occurs three times. They remain available as source records; both mapping records link to their corresponding source archetype. Do not treat source-only status as a synonym, a scored native card, or an owner-approved mechanic. Adding scored archetypes or changing their mechanisms requires a separate owner decision. The 90/108 native-route baseline is unchanged; full delivery rebuild and CI are pending.
 
 Each archetype appears three times. Read across and enter the emotion that drives the behavior. The pattern and seat are from the registry. They are clues for deciding the mapping.
 
