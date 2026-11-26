@@ -439,6 +439,7 @@ jobs:
           - { gate: quit, timeout: 20, command: node tests/quit.js }
           - { gate: sniffpage, timeout: 20, command: node tests/sniffpage.js }
           - { gate: srcchat, timeout: 20, command: node tests/srcchat.js }
+          - { gate: source-alpha-flow, timeout: 20, command: node tests/source-alpha-flow.js }
           - { gate: practitioner, timeout: 20, command: node tests/practitioner.js }
           - { gate: release-percent, timeout: 20, command: node tests/release-percent.js }
           - { gate: unpack, timeout: 20, command: node tests/unpack.js }
