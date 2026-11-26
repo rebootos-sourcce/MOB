@@ -1152,7 +1152,7 @@ function recordImportWire(p,after){
      first and the message goes onto whatever element is on the screen when it
      is read, which is what impSay does by looking the id up at call time. */
   if(typeof after==='function')after(np);
-  impSay('Loaded '+(np.name||'the record')+(copied?' as a second copy, since this record is already on this device':'')+'. Nothing else was touched.');};
+  impSay('Loaded '+(np.name||'the record')+(copied?' as a second copy, since this record is already on this device':'')+'. The imported plan was reset to Free. Sign in to check any paid tier with the server.');};
  var ig;
  if((ig=$(p+'keepsave'))&&typeof keepFile==='function')ig.onclick=function(){keepFile();};
  if((ig=$(p+'impgo')))ig.onclick=function(){impRun(($(p+'imp')||{}).value||'');};
@@ -1263,7 +1263,7 @@ function recordLinkBoot(){
    var e=(importError()||['it was refused']).join('. ');
    /* a colon and the reason as the boundary wrote it: capitalising it turned
       the field path axes.Fear.held into a name the record does not have */
-   recordLinkSay('Not loaded from the link: '+e+'. Nothing else was touched.'+still,'fail');
+   recordLinkSay('Not loaded from the link: '+e+'. The imported plan was reset to Free. Sign in to check any paid tier with the server.'+still,'fail');
    return null;}
   /* read now, before the redraws below can run anything else */
   var copied=importCopied();
