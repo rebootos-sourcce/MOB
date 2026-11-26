@@ -194,11 +194,18 @@ practitioner sight, never the general story-pulling sync the 9 October entry
 still gates behind `PROFILE_SYNC_ENABLED=false`. That flag is untouched by
 this ruling.
 
+**RULED, 26 November, round PS, the rise question.** Asked directly whether
+a practitioner's view should include the rise reading, his words: "Rise
+sounds like it would describe the chakra system. The body's already doing
+that." No separate rise surface for practitioners. `engine/rise.js` stays
+real, tested, and unrendered to anyone, exactly as the design pass found it;
+the Body view (the seven seats, the real nervous-system figure) is the
+screen that already carries this ground and a practitioner's Body grant
+reaches it, not a second diagnostic beside it.
+
 **Open:** whether a practitioner sees all of it instead of the tier scope.
 Also open, carried from the 26 November design pass and not yet his call:
-whether a practitioner's view ever includes the rise reading (`engine/rise.js`,
-not shown to anyone today, client or practitioner), and the real
-infrastructure gap it surfaced -- the grant, the invite token and the
+the real infrastructure gap it surfaced -- the grant, the invite token and the
 published snapshot all need a server-side relationship store this product
 does not have yet, so the real (not mockup) build is gated on that being
 built first, not on a product decision.
