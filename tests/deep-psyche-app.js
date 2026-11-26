@@ -32,7 +32,6 @@ for(const ref of nativeCandidates){
 const by=new Map(db.records.map(x=>[x.id,x]));
 /* The source registry retains literal research notes; the shipped drill
    must not present statistical sample notation as reader-facing copy. */
-const displaySafe=value=>typeof value==='string'?value.replace(/\bn\s*=\s*14\b/g,'fourteen'):value;
 const displayFields=['description','body','clear','distorted'];
 for(const record of db.records){
  for(const field of displayFields)
