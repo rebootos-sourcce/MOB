@@ -55,6 +55,42 @@ const FILE='file://'+path.resolve(process.env.ATUNED_FILE||'source.html');
 const SHOTS=process.env.SHOTS||'';
 let PASS=0,FAIL=0;
 const ok=(c,m)=>{if(c)PASS++;else{FAIL++;console.log('  FAIL '+m);}};
+/* THE HAND OVER UNDER A LOADED CLOCK. The browser check below samples real
+   frames and could only fail when CI happened to stall: at 3541a34 both exit
+   timers ran before any frame and it read 0 frames of overlap. This runs
+   srcIntroLeave itself with the timers and frames held by hand, in both
+   orders, so the ordering guarantee is checked every run and not only when
+   the machine is slow. The function is cut out of the source by name, up to
+   the next top level function or the end of the file. */
+const vm=require('vm');
+const introSrc=fs.readFileSync(path.resolve(__dirname,'../atuned_src/ui/srcintro.js'),'utf8');
+const leaveAt=introSrc.indexOf('function srcIntroLeave(){');
+const leaveEnd=introSrc.indexOf('\nfunction ',leaveAt+1);
+const leaveSrc=introSrc.slice(leaveAt,leaveEnd<0?undefined:leaveEnd);
+function handoverInOrder(exitFirst){
+ const tag=exitFirst?' (exit timer first)':' (hand timer first)';
+ const timers=[],frames=[],seen=[];
+ const h={classList:{add(){}},parentNode:{removeChild(){seen.push('removed');}}};
+ const sx={left:false,t:[],h,still:false,done(){seen.push('card');}};
+ const scope={SX:sx,SRC_INTRO_T:{hand:120,out:260},
+  SrcFace:{clear(){},give(){}},uniHandBack(){},srcVoiceCut(){},srcIntroKey(){},
+  clearTimeout(){},removeEventListener(){},
+  requestAnimationFrame:fn=>frames.push(fn),setTimeout:(fn,ms)=>timers.push({fn,ms})};
+ vm.runInNewContext(leaveSrc+';srcIntroLeave();',scope,{timeout:5000});
+ ok(leaveAt>=0&&timers.length===2,'hand over schedules two timers'+tag);
+ if(timers.length!==2)return;
+ timers.sort((a,b)=>exitFirst?b.ms-a.ms:a.ms-b.ms);
+ timers[0].fn();
+ ok(!seen.includes('removed'),'the face is still there after the first timer'+tag);
+ timers[1].fn();
+ ok(seen.includes('card')&&!seen.includes('removed')&&frames.length===1,'both timers run, the card is open and the face is not yet removed'+tag);
+ if(frames.length)frames.shift()();
+ ok(!seen.includes('removed')&&frames.length===1,'the face survives the first frame after both'+tag);
+ if(frames.length)frames.shift()();
+ ok(seen.includes('removed')&&scope.SX===null,'and is removed on the second'+tag);
+}
+handoverInOrder(false);
+handoverInOrder(true);
 const booted=async p=>{try{await p.waitForFunction(
   ()=>document.body.classList.contains('booted'),null,{timeout:12000});}catch(e){}};
 const shot=async(p,n)=>{ if(!SHOTS)return; fs.mkdirSync(SHOTS,{recursive:true}); await p.screenshot({path:path.join(SHOTS,n+'.png')}); };

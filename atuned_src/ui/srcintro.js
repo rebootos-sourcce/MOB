@@ -195,5 +195,16 @@ function srcIntroLeave(){
   if(SX===sx)SX=null; };
  if(sx.still){ sx.done(); fin(); return; }
  sx.h.classList.add('sx-out');
- setTimeout(function(){ try{ sx.done(); }catch(e){} },SRC_INTRO_T.hand);
- setTimeout(fin,SRC_INTRO_T.out);}
+ /* The hand and out timers were independent, so on a loaded machine both
+    became runnable before the next frame: the first card opened and the
+    face was removed with no paint between them, the Journal showed through,
+    and CI measured it as 0 frames of overlap at 3541a34. The delays stay as
+    they were. Teardown now waits for the card to have been handed AND the
+    exit to have elapsed, then for two frames, so at least one paint carries
+    the card under the departing face whichever order the timers run in. */
+ var handed=false,elapsed=false,queued=false;
+ var finish=function(){
+  if(!handed||!elapsed||queued)return; queued=true;
+  requestAnimationFrame(function(){ requestAnimationFrame(fin); }); };
+ setTimeout(function(){ try{ sx.done(); }catch(e){} handed=true; finish(); },SRC_INTRO_T.hand);
+ setTimeout(function(){ elapsed=true; finish(); },SRC_INTRO_T.out);}
