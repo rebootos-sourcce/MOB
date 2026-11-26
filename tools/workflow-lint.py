@@ -112,6 +112,7 @@ BROWSER = {
     'srcintro':      ('node tests/srcintro.js', 20),
     'sniffpage':     ('node tests/sniffpage.js', 20),
     'srcchat':       ('node tests/srcchat.js', 20),
+    'source-alpha-flow': ('node tests/source-alpha-flow.js', 20),
     'practitioner':  ('node tests/practitioner.js', 20),
     'release-screen': ('node tests/release-screen.js', 20),
 # the Avatar Purpose view with its rails removed and Archetype hidden, 18
