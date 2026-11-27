@@ -1,0 +1,178 @@
+/* P5, flat cards, second cut. Punch: no edges, no shadows, filled shapes.
+   The sheet fills the stage; the cards fill the sheet. */
+.sheet.p5{top:12px;left:12px;right:12px;bottom:12px;transform:none;width:auto;max-height:none;height:auto;
+ display:flex;flex-direction:column;padding:16px 28px 4px}
+.hd5{display:flex;align-items:center;gap:16px;min-height:44px;padding-left:52px}
+.hd5 .t1{font-size:32px;flex:1}
+.herechip{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;border-radius:22px;background:var(--sunk);color:var(--ink);font-size:16px;font-weight:500}
+.herechip svg{width:20px;height:20px;flex:none}
+.herechip.quiet{background:var(--panel-2);color:var(--mid);font-weight:400}
+.herechip.quiet b{color:var(--ink);font-weight:600}
+.fail5{display:flex;gap:10px;align-items:center;margin:10px 0 0;padding:10px 14px;border-radius:var(--r-s);background:var(--panel-2);color:var(--ink);font-size:15px}
+.fail5 svg{width:20px;height:20px;flex:none;color:var(--mid)}
+
+/* ---- three cards, the height of the sheet ---- */
+.cards5{flex:1;min-height:0;display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:14px}
+.c5{background:var(--panel-2);border-radius:var(--r);padding:28px 32px 28px;display:flex;flex-direction:column;justify-content:space-between;min-height:0}
+.c5 .cn{font-size:20px;font-weight:600;color:var(--mid)}
+/* level one: the patterns. A button, because the number carries its meaning. */
+.hl{display:block;text-align:left;background:none;border:0;padding:0;margin:6px 0 0;cursor:help;color:var(--ink);border-radius:var(--r-xs)}
+.hl .big{display:block;font-size:136px;line-height:.98;font-weight:600;letter-spacing:-.035em}
+.hl .pl{display:block;font-size:24px;color:var(--mid);margin-top:6px}
+.u{text-decoration:underline dotted;text-decoration-color:var(--mid);text-underline-offset:5px;text-decoration-thickness:2px}
+.hl:hover .pl,.hl.tipped .pl{color:var(--ink)}
+/* level two: the price */
+.c5 .pr{display:flex;align-items:baseline;gap:10px}
+.c5 .pr .num{font-size:60px;font-weight:600;letter-spacing:-.025em;line-height:1;color:var(--ink)}
+.c5 .per{font-size:20px;color:var(--mid)}
+/* THE RINGS, the hero. Six columns, the same six on every card. */
+.rgs{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:22px}
+/* on a desktop the six sit three by two, at twice the size, the same places on
+   every card, so the card's spare height goes to the hero and not to air */
+@media (min-width:761px){
+ .c5 .rgs{grid-template-columns:repeat(3,1fr);gap:clamp(12px,2.2vh,24px) clamp(16px,2vw,36px);margin-top:clamp(14px,2.6vh,28px);
+  width:min(100%,calc((100vh - 560px) * 1.62))}
+ .c5 .rg5.came::after{bottom:-12px;height:5px;left:32%;right:32%}
+}
+.rg5{position:relative;display:flex;align-items:center;justify-content:center;aspect-ratio:1;min-width:44px;min-height:44px;padding:0;border:0;background:none;cursor:help;border-radius:50%}
+.rg5 .dk{width:100%;height:100%;border-radius:50%;display:flex;align-items:center;justify-content:center;
+ box-shadow:inset 0 0 0 2px var(--dim);color:var(--dim);transition:transform var(--t-micro) var(--ease-out)}
+.rg5 .dk svg{width:54%;height:54%}
+.rg5.on .dk{background:var(--accent);box-shadow:none;color:var(--on-accent)}
+.rg5.on .dk .ri{stroke-width:1.8}
+.rg5:hover .dk,.rg5.tipped .dk{transform:scale(1.06)}
+.rg5.tipped .dk{box-shadow:inset 0 0 0 2px var(--ink)}
+.rg5.on.tipped .dk{box-shadow:0 0 0 3px var(--panel-2),0 0 0 5px var(--ink)}
+/* the ring that brought them in: a bar under its column, on every card */
+.rg5.came::after{content:'';position:absolute;left:24%;right:24%;bottom:-11px;height:4px;border-radius:2px;background:var(--ink)}
+.c5 .act{margin-top:30px;min-height:60px;display:flex}
+.c5 .act>*{flex:1}
+.c5 .go{min-height:60px;font-size:19px;border-radius:30px}
+.c5 .go .sh{display:none}
+.c5 .go.quiet{background:var(--sunk);color:var(--ink);font-weight:500}
+.c5 .go.quiet:hover{background:color-mix(in srgb,var(--sunk) 70%,var(--panel))}
+.c5 .shut{min-height:60px;font-size:18px;color:var(--mid)}
+/* where the person is: a mark and words, never a pill, because a pill says press */
+.c5 .herechip{justify-content:center;font-size:18px;background:transparent;min-height:60px}
+
+/* ---- Practitioner: one slim row, under the three ---- */
+.pr5{display:flex;align-items:center;gap:16px;margin-top:12px;min-height:60px;padding:0 20px 0 14px;border-radius:var(--r-s);background:var(--sunk);color:var(--mid);font-size:16px}
+.pdk{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 0 2px var(--dim);color:var(--dim);flex:none}
+.pdk svg{width:24px;height:24px}
+.pn{background:none;border:0;padding:0 2px;min-height:44px;font-size:17px;font-weight:600;color:var(--ink);cursor:help}
+.pp{color:var(--ink)}
+.pp .num{font-weight:600}
+.pw{flex:1}
+.pr5 .shut{min-height:44px;font-size:16px;padding:0}
+
+/* ---- the foot: one line ---- */
+.ft5{display:flex;align-items:center;justify-content:center;gap:4px 14px;flex-wrap:wrap;font-size:14px;color:var(--mid);margin-top:2px}
+.ft5 p{margin:0}
+.ft5 .rf5{flex-basis:100%;text-align:center;margin-top:6px}
+.ft5 .links{margin:0}
+
+/* ---- signed out: the chosen card beside the account step ---- */
+.step5{flex:1;min-height:0;display:grid;grid-template-columns:1fr 2fr;gap:14px;margin-top:14px;align-items:stretch}
+/* the chosen card keeps its size from the three-up, and the form takes the rest */
+.step5 .acct{align-content:center;justify-self:center;width:min(520px,100%);gap:14px}
+.step5 .acct .why b{color:var(--ink);font-weight:600;font-size:28px}
+.step5 .acct label{font-size:16px}
+.step5 .acct input{min-height:56px;font-size:18px;padding:0 16px}
+.step5 .acct .go{min-height:60px;font-size:19px;border-radius:30px;margin-top:6px}
+.step5 .acct .alt{font-size:16px}
+.step5 .act[hidden]{display:none}
+.step5 .c5{justify-content:center;gap:clamp(20px,5vh,56px)}
+
+/* ---- the tooltip ---- */
+.tip5{position:fixed;z-index:60;display:none;background:#3A3D4A;color:var(--ink);border-radius:var(--r-s);padding:12px 14px;font-size:14.5px;line-height:1.4;pointer-events:none}
+.tip5.on{display:grid;gap:4px}
+/* the pointer, so the card reads as belonging to the ring under it */
+.tip5::after{content:'';position:absolute;left:calc(var(--cx,50%) - 8px);width:16px;height:8px;background:#3A3D4A}
+.tip5.up::after{bottom:-8px;clip-path:polygon(0 0,100% 0,50% 100%)}
+.tip5.dn::after{top:-8px;clip-path:polygon(50% 0,100% 100%,0 100%)}
+.tip5 b{font-size:16px;font-weight:600}
+.tip5 .m{color:var(--ink)}
+.tip5 .r1{display:contents}
+.tip5 .tl{order:2}
+.tip5 .r1 b{order:0}
+.tip5 .m{order:1}
+.tip5 .tl{display:flex;align-items:center;gap:8px;color:var(--ink);font-weight:600}
+.tip5 .tl svg{width:18px;height:18px;flex:none}
+
+/* ---- the gift: six lit rings, nothing to buy ---- */
+.sheet.gift5{align-items:center;justify-content:center;gap:0;text-align:center}
+.gift5 .t1{font-size:48px}
+.giftrgs{width:min(1240px,100%);gap:28px;margin-top:48px}
+.gift5 .gq{font-size:20px;color:var(--mid);margin:44px 0 28px}
+.gift5 .go{width:min(360px,100%)}
+
+/* ---- stop, the same family ---- */
+.p5stop .facts .v{font-size:18px}
+@media (max-width:760px){
+ .p5stop{display:flex;flex-direction:column;justify-content:center}
+ .p5stop .t1{margin-top:0;font-size:28px}
+ .p5stop .facts li{padding:16px}
+ .p5stop .facts .v{font-size:19px}
+}
+
+/* ---- the phone ---- */
+@media (max-width:760px){
+ .sheet.p5{top:0;left:0;right:0;bottom:0;padding:6px 16px 0;border-radius:0}
+ .hd5{flex-wrap:wrap;gap:4px 8px;padding-left:46px;min-height:44px}
+ .hd5 .t1{font-size:21px;flex-basis:100%;padding-top:4px}
+ .hd5 .herechip.quiet{margin-left:-46px;min-height:32px;padding:0 12px;font-size:14px;margin-top:6px}
+ .herechip svg{width:16px;height:16px}
+ .fail5{font-size:14px;padding:8px 12px;margin-top:6px}
+ .cards5{grid-template-columns:1fr;grid-auto-rows:1fr;gap:8px;margin-top:8px}
+ .c5{display:grid;grid-template-columns:1fr auto;grid-template-areas:"top pr" "rg rg" "act act";align-content:space-between;padding:10px 12px 10px 14px;border-radius:var(--r-s);row-gap:4px}
+ .c5 .top{grid-area:top}
+ .c5 .low{display:contents}
+ .c5 .cn{font-size:14px}
+ .hl{margin:0;min-height:44px}
+ .hl .big{font-size:40px;line-height:1;display:inline}
+ .hl .pl{display:inline;font-size:14px;margin-left:6px}
+ .u{text-underline-offset:3px;text-decoration-thickness:1.5px}
+ .c5 .pr{grid-area:pr;flex-direction:column;align-items:flex-end;gap:0;align-self:start}
+ .c5 .pr .num{font-size:30px}
+ .c5 .per{font-size:12.5px}
+ .rgs{grid-area:rg;gap:6px;margin-top:2px}
+ .rg5{aspect-ratio:auto;height:44px}
+ .rg5 .dk{width:40px;height:40px;flex:none}
+ .rg5.came::after{bottom:-5px;height:3px;left:30%;right:30%}
+ .c5 .act{grid-area:act;margin-top:6px;min-height:44px}
+ .c5 .go,.c5 .shut,.c5 .herechip{min-height:44px;font-size:15px;border-radius:22px}
+ .c5 .go .lg{display:none}
+ .c5 .go .sh{display:inline}
+ .c5 .shut svg{width:16px;height:16px}
+ .pr5{margin-top:8px;min-height:48px;gap:8px;padding:0 10px 0 6px;font-size:13px;flex-wrap:nowrap}
+ .pdk{width:34px;height:34px}
+ .pdk svg{width:20px;height:20px}
+ .pn{font-size:14px;padding:0}
+ .pw{display:none}
+ .pp{flex:1}
+ .pr5 .shut{font-size:13px;gap:5px}
+ .pr5 .shut svg{width:15px;height:15px}
+ .ft5{font-size:13px;gap:0 6px;margin-top:0}
+ .ft5 .links a,.ft5 .links button{padding:0 7px;font-size:13px}
+ .ft5 .rf5{font-size:12.5px;margin-top:4px}
+ .step5{grid-template-columns:1fr;gap:18px;margin-top:8px;align-content:center}
+ .step5 .acct .why b{font-size:19px}
+ .step5 .acct input{min-height:48px;font-size:16px}
+ .step5 .acct .go{min-height:52px;font-size:17px}
+ .step5 .c5{grid-template-areas:"top pr" "rg rg"}
+ .gift5 .t1{font-size:26px;padding:0 30px}
+ /* the refusal is the newest fact, so on a phone it takes the marker's place */
+ .p5.failed .hd5 .herechip{display:none}
+ /* a compact tooltip: the name and its tier on one row, the meaning under it,
+    so it sits inside the card's own top row and cuts no words in half */
+ .tip5{padding:9px 12px;font-size:14px}
+ .tip5 .r1{display:flex;align-items:center;justify-content:space-between;gap:10px;order:0}
+ .tip5 .r1 b{font-size:15px;white-space:nowrap}
+ .tip5 .tl{font-size:13.5px;gap:6px;white-space:nowrap}
+ .tip5 .tl svg{width:15px;height:15px}
+ .giftrgs{margin-top:28px;gap:18px;grid-template-columns:repeat(3,1fr);width:min(320px,100%)}
+ .giftrgs .rg5{aspect-ratio:1;height:auto}
+ .giftrgs .rg5 .dk{width:100%;height:100%}
+ .gift5 .t1{text-wrap:balance}
+ .gift5 .gq{font-size:15px;margin:24px 0 18px}
+}
