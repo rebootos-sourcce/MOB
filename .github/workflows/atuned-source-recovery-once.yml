@@ -1,0 +1,52 @@
+name: one-time canonical source recovery and tab trace (draft branch only)
+on:
+  push:
+    branches:
+      - lookdev/p0-execution-20261014
+    paths:
+      - .github/workflows/atuned-source-recovery-once.yml
+permissions:
+  contents: read
+jobs:
+  source-recovery:
+    if: contains(github.event.head_commit.message, '[run-source-recovery]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: lookdev/p0-execution-20261014
+          fetch-depth: 1
+      - name: hash and inventory candidate sources
+        run: |
+          set -euo pipefail
+          mkdir -p source-recovery-evidence/candidates
+          printf 'commit=%s\nbranch=%s\nrun_id=%s\n' "$GITHUB_SHA" "$GITHUB_REF_NAME" "$GITHUB_RUN_ID" > source-recovery-evidence/provenance.txt
+          for f in index.html source.html atuned-packed.html sim/pin/source.html main/index.html proto/field-a/index.html proto/field-b/index.html funnel/index.html; do
+            if test -f "$f"; then
+              sha256sum "$f" >> source-recovery-evidence/source-sha256.txt
+              mkdir -p "source-recovery-evidence/candidates/$(dirname "$f")"
+              cp "$f" "source-recovery-evidence/candidates/$f"
+            fi
+          done
+          node - <<'NODE'
+          const fs=require('fs');
+          const paths=['index.html','source.html','atuned-packed.html','sim/pin/source.html','main/index.html','proto/field-a/index.html','proto/field-b/index.html','funnel/index.html'];
+          const out=[];
+          for(const p of paths){if(!fs.existsSync(p))continue;const s=fs.readFileSync(p,'utf8');
+            const ids=[...s.matchAll(/\bid\s*=\s*(['"])(.*?)\1/g)].map(m=>m[2]);
+            const dup=[...new Set(ids.filter((id,i)=>ids.indexOf(id)!==i))];
+            const title=(s.match(/<title[^>]*>([\s\S]*?)<\/title>/i)||[])[1]||'';
+            const tabs=[...s.matchAll(/<(?:button|a|div|section)[^>]*(?:role\s*=\s*['"]tab['"]|data-tab(?:\s|=)|class\s*=\s*['"][^'"]*\btab\b)[^>]*>/gi)].slice(0,80).map(m=>m[0].slice(0,260));
+            const headings=[...s.matchAll(/<h[1-4][^>]*>([\s\S]*?)<\/h[1-4]>/gi)].slice(0,80).map(m=>m[1].replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim());
+            out.push({path:p,bytes:Buffer.byteLength(s),title:title.replace(/<[^>]+>/g,' ').trim(),idCount:ids.length,duplicateIdCount:dup.length,duplicateIds:dup.slice(0,30),buttonCount:(s.match(/<button\b/gi)||[]).length,tabCandidateCount:tabs.length,tabCandidates:tabs,headingSample:headings,hasCoreReferenceName:/CORE_REFERENCE\.html/i.test(s),scriptSrcs:[...s.matchAll(/<script[^>]+src=['"]([^'"]+)/gi)].map(m=>m[1]).slice(0,80)});
+          }
+          fs.writeFileSync('source-recovery-evidence/inventory.json',JSON.stringify({commit:process.env.GITHUB_SHA,candidates:out},null,2)+'\n');
+          console.log(JSON.stringify(out.map(x=>({path:x.path,bytes:x.bytes,title:x.title,idCount:x.idCount,duplicateIdCount:x.duplicateIdCount,buttonCount:x.buttonCount,tabCandidateCount:x.tabCandidateCount,hasCoreReferenceName:x.hasCoreReferenceName,headingSample:x.headingSample.slice(0,20)})),null,2));
+          NODE
+      - name: upload source recovery candidates and trace
+        uses: actions/upload-artifact@v4
+        with:
+          name: atuned-source-recovery-candidates
+          path: source-recovery-evidence/
+          if-no-files-found: error
