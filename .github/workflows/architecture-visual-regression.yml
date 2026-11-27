@@ -1,0 +1,56 @@
+name: Architecture visual and actionability regression
+on:
+  push:
+    branches: [qa/architecture-nine-visual-actionability-20261126]
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        gate: [srcconvo, golden]
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Install pinned browser and compiler
+        run: |
+          npm install --no-audit --no-fund --no-save typescript@5.9.3
+          npm install -g --no-audit --no-fund playwright@1.56.1
+          npx playwright install --with-deps chromium
+          root="$(npm root -g)"
+          chrome="$(NODE_PATH="$root" node -e "console.log(require('playwright').chromium.executablePath())")"
+          test -x "$chrome"
+          echo "NODE_PATH=$root" >> "$GITHUB_ENV"
+          echo "CHROME=$chrome" >> "$GITHUB_ENV"
+      - name: Check build and canonical products
+        run: |
+          ./atuned_src/BUILD-engine.sh && ./atuned_src/BUILD.sh && ./funnel/BUILD-single.sh
+          node tools/products.js --self-test && node tools/products.js
+      - name: Seven full gate repetitions
+        shell: bash
+        run: |
+          set -uo pipefail
+          mkdir -p "$RUNNER_TEMP/gates" "$RUNNER_TEMP/visual-seven"
+          passed=0
+          for pass in 1 2 3 4 5 6 7; do
+            log="$RUNNER_TEMP/visual-seven/${{ matrix.gate }}-$pass.log"
+            if node "tests/${{ matrix.gate }}.js" 2>&1 | tee "$log"; then
+              cp "$log" "$RUNNER_TEMP/gates/${{ matrix.gate }}.log"
+              if node tools/floors.js "${{ matrix.gate }}"; then passed=$((passed+1)); fi
+            fi
+          done
+          echo "Passed $passed of 7" >> "$GITHUB_STEP_SUMMARY"
+          test "$passed" -eq 7
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: visual-seven-${{ matrix.gate }}
+          path: ${{ runner.temp }}/visual-seven/
+          if-no-files-found: warn
