@@ -7718,7 +7718,9 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
      root red, Radiance is drawn in light (the ink warmed by Solar), and Flow
      is seven cells in its seats' own colours with its mark in the ink, so the
      two that kept the ramp under round OG do not any more. */
-  const want=[['DQ',pct('dq',R.DQ),seatCol('Root')],['Vitality',pct('vitality',R.X),seatCol('Solar')],['Awareness',pct('awareness',R.Y),seatCol('3rd Eye')],['Will',pct('will',R.Z),seatCol('Throat')],
+  /* DQ READS AS SHADOW NOW, 27 November: same q ('dq'), same value (R.DQ),
+     same root red, only the printed word changed (ui.js says why). */
+  const want=[['Shadow',pct('dq',R.DQ),seatCol('Root')],['Vitality',pct('vitality',R.X),seatCol('Solar')],['Awareness',pct('awareness',R.Y),seatCol('3rd Eye')],['Will',pct('will',R.Z),seatCol('Throat')],
    ['Radiance',pct('radiance',R.radiance),'color-mix(in srgb,var(--ink) 86%,'+seatCol('Solar')+')'],['Flow',pct('flow',f),'var(--ink)']];
   const pairs=[...d.querySelectorAll('.rb2')];
   const sp=v=>String(v||'').replace(/\s+/g,'').toLowerCase();
@@ -7758,14 +7760,14 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
     mirror:+Math.abs((ab.left-s.left)-(s.right-Math.max(...zs.map(r=>r.right)))).toFixed(2),
     overlay:typeof OVERLAY!=='undefined'&&OVERLAY.indexOf('acc')>=0}};});
  ok(dock.inLeft&&!dock.inStage&&dock.keylo,'the readings sit at the head of the left rail and none of them along the stage\'s foot');
- ok(JSON.stringify(dock.bar.names)==='["DQ","Vitality","Awareness","Will","Radiance","Flow"]',
-  'r1: six amounts in reading order, DQ leading them, '+JSON.stringify(dock.bar.names));
+ ok(JSON.stringify(dock.bar.names)==='["Shadow","Vitality","Awareness","Will","Radiance","Flow"]',
+  'r1: six amounts in reading order, Shadow (DQ, renamed 27 November) leading them, '+JSON.stringify(dock.bar.names));
  ok(JSON.stringify(dock.bar.pairNames)==='[["CQ","Shadow"],["Positive","Negative"],["Masculine","Feminine"]]',
   'r1: three pairs, CQ against its own shadow and not against DQ, '+JSON.stringify(dock.bar.pairNames));
  ok(dock.bar.stacked&&dock.bar.oneColumn,'r1: all nine stacked one on top of the next, in one column of one width, '+JSON.stringify({stacked:dock.bar.stacked,oneColumn:dock.bar.oneColumn}));
  ok(dock.bar.tall>=44,'r1: every row at the 44px floor, '+JSON.stringify(dock.bar.heights));
  ok(dock.bar.fills.every(Boolean),'OG, r1: every amount is filled to its own figure, and Flow is its cells, '+JSON.stringify(dock.bar.fills));
- ok(dock.bar.colours.every(Boolean),'OT, r1: DQ in the root red, vitality, awareness and will in their element\'s colour, radiance in light, flow\'s mark in the ink, '+JSON.stringify(dock.bar.colours));
+ ok(dock.bar.colours.every(Boolean),'OT, r1: Shadow (DQ) in the root red, vitality, awareness and will in their element\'s colour, radiance in light, flow\'s mark in the ink, '+JSON.stringify(dock.bar.colours));
  ok(dock.bar.inside&&dock.bar.twice===0,'r1: the name and the number sit on one line above the track, never inside a fill and never drawn twice, '+JSON.stringify({inside:dock.bar.inside,twice:dock.bar.twice}));
  ok(dock.bar.pairInside,'r1: in every pair both poles\' marks and words sit on the row\'s line, each at its own end, with one figure between them');
  ok(!dock.bar.wire&&dock.bar.gutter<=1,'RB, RZ: the unnamed wire beside the bars is gone and its gutter with it, '+JSON.stringify({wire:dock.bar.wire,gutter:dock.bar.gutter}));

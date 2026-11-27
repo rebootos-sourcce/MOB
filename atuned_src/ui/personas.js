@@ -180,7 +180,18 @@ function renderSpirit(){
     and a record can arrive by link or paste carrying markup the boundary did
     not write. */
  var bornSay=[sp.birth.d,sp.birth.t].filter(Boolean).join(' ')+(sp.birth.p?', '+sp.birth.p:'')+(sp.birth.z?', '+sp.birth.z:'');
- var born='<div class="sp-tile sp-born" tabindex="0" data-tip-t="Born" data-tip="'+esc(bornSay)+'" aria-label="'+esc('Born, '+bornSay)+'">'
+ /* BORN LEFT THE HEADER ROW FOR NUMEROLOGY'S OWN SECOND BAND, 27 November.
+    It sat outside every toggle, always on screen beside the four system
+    buttons, which was its own kind of orphan: one tile with no row to fill
+    out beside it and no system of its own. The seven real numerology
+    values plus Born are eight, which is two even rows of four once Life
+    path, Master, Expression and Soul urge lead and Personality, Birthday,
+    Maturity and Born follow, so it joins the N line below instead of
+    standing alone above it. It no longer shows until Number is pressed,
+    which is the one real behaviour change this carries: the owner's own
+    SV18 ruling is that a system's mark is the press that shows its
+    readings, and Born is now one more reading Number's own press shows. */
+ var born='<div class="sp-tile" tabindex="0" data-tip-t="Born" data-tip="'+esc(bornSay)+'" aria-label="'+esc('Born, '+bornSay)+'">'
   +'<span class="sp-tg" aria-hidden="true"><svg class="sp-gi" viewBox="0 0 24 24">'+SYSGLYPH.born+'</svg></span>'
   +'<span class="sp-said"><span class="sp-row static"><span class="sp-k">When</span> <span class="sp-v">'
   +esc(sp.birth.d)+'</span> <span class="sp-x">'+esc(sp.birth.t||'')+'</span></span>'
@@ -189,7 +200,21 @@ function renderSpirit(){
  /* a gate is printed as "gate 23.4" in its spoken name and as 23.4 in its
     pill: the pill has no room for the word, and the tooltip's kicker says it */
  var gnum=function(g){return g.gate+'.'+g.line;};
- el.innerHTML='<div class="sp-sysrow">'+hd('W','Western')+hd('E','Eastern')+hd('N','Number')+hd('D','Design')+born+'</div>'
+ /* A GRID ROW NEVER LEFT ALONE, 27 November, the standing rule named for the
+    whole UI/UX team, "symmetry in space... I don't like things brushed up
+    and pressed up against one another," applied to the one place on this
+    panel where a short last row could read as a mistake rather than a
+    fact. Flex-wrap already left-aligns here rather than centring a short
+    row, so nothing on this tile set was actually drifting; the fix below
+    is the grouping itself, two explicit bands of four rather than one flow
+    of eight that happened to land on an even count this time and would
+    not the next time a system gained or lost a reading. style="width:100%"
+    on a flex-wrap child forces its own line, which is how two grid rows
+    sit inside .sp-tiles' flex-wrap without a second stylesheet rule; this
+    round edits body.html, ui.js, personas.js and gloss.js and not
+    head.html, so the grid itself is inline and not a new class. */
+ var band4='display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px 10px;width:100%';
+ el.innerHTML='<div class="sp-sysrow">'+hd('W','Western')+hd('E','Eastern')+hd('N','Number')+hd('D','Design')+'</div>'
   +line('W',
   (sp.sun?row('Sun',ZGLYPH[sp.sun],sp.sun,sp.sunEl,'sign',null,say(unpackOf('sun sign'),unpackOf(sp.sun,'sign'))):unres('Sun',noZone))
   +(sp.moon?row('Moon',ZGLYPH[sp.moon],sp.moon,sp.moonEl,'sign',null,say(unpackOf('moon sign'),unpackOf(sp.moon,'sign'))):unres('Moon',noZone))
@@ -211,13 +236,43 @@ function renderSpirit(){
   /* the year is null for an untimed birth on the Li Chun day, where the hour
      decides the animal (chineseYear, engine/birth.js), and is that row then */
   +line('E',
-   (sp.chinese?row('Year',cic,sp.celem+' '+sp.chinese,CH_RUNS[sp.chinese]||'','chinese',sp.chinese,
+   /* "EARTH YEAR" READ AS ONE WORD, 27 November. The value was sp.celem+'
+      '+sp.chinese, "Earth Goat", with the element's own behaviour line
+      (CH_RUNS) riding in x, so the kicker and the spoken name both said
+      the element and the animal run together with nothing marking where
+      one ends and the other starts. The animal is the value a person
+      reads first (it is what the big mark would carry if this tile ever
+      stopped being icon-only, SV18), so it stands alone now; the element
+      is what the year IS, not what it does, so it takes x, the small
+      word's own slot, in place of the behaviour sentence CH_RUNS carried
+      there. The tip argument (say(...) below) already named both the
+      animal's and the element's meaning before this change and still
+      does, unedited: only the kicker and the screen reader's sp-x moved. */
+   (sp.chinese?row('Year',cic,sp.chinese,sp.celem,'chinese',sp.chinese,
     say(unpackOf('year animal'),unpackOf(sp.chinese,'animal'),unpackOf('year element'),unpackOf(sp.celem,'year')))
     :unres('Year','needs a birth time')))
   +line('N',
-   nrow('Life path',NUMFIELD_IC.path,String(sp.lp),sp.lpMean,'lp',String(sp.lp),say(unpackOf('life path'),unpackOf('path:'+sp.lp)))
-  +(sp.master?nrow('Master',NUMFIELD_IC.master,String(sp.master),'survives reduction','lp',String(sp.master),unpackOf('master number')):'')
-  +spNumRows(p.nm,true))
+   /* MASTER ALWAYS SITS HERE NOW, 27 November. It used to print only for a
+      life path of 11, 22 or 33 and vanish otherwise, which is exactly the
+      orphan the band rule above exists to catch: seven real tiles most of
+      the time, eight on the rare chart where a master number survives, so
+      the grid's own column count could never be fixed without guessing
+      which birth would need the extra seat. unres() is the honest shape
+      for a value the record is not refusing, it simply does not apply,
+      and it already carries that meaning everywhere else on this page
+      (Sun, Moon, Rising unresolved for want of data). Life path N not
+      being 11, 22 or 33 is a fact about the chart, not a missing
+      reading, so it gets the dash and says why rather than being left
+      out of the row it would otherwise have held. */
+   '<span class="sp-band" style="'+band4+'">'
+   +nrow('Life path',NUMFIELD_IC.path,String(sp.lp),sp.lpMean,'lp',String(sp.lp),say(unpackOf('life path'),unpackOf('path:'+sp.lp)))
+   +(sp.master?nrow('Master',NUMFIELD_IC.master,String(sp.master),'survives reduction','lp',String(sp.master),unpackOf('master number'))
+     :unres('Master','Your life path, '+sp.lp+', is not 11, 22 or 33, so it stays as it is.'))
+   +spNumRows(p.nm,true,['expression','soul'])
+   +'</span><span class="sp-band" style="'+band4+';margin-top:8px">'
+   +spNumRows(p.nm,true,['personality','birthday','maturity'])
+   +born
+   +'</span>')
   /* the personality and design gates are real and computed. the type is
      not, and it was a row that said so on every birth there is; it is a
      tile nobody could ever fill, so it is not drawn, and the drill for the
@@ -338,13 +393,19 @@ function reTile(k,glyph,v,x,dk,dv,tip,num,pill){
    the same fallback and guards it on an unread field; here the guard is the
    name itself, because a person who has typed their name and nothing else has
    a real expression number and no reading yet. */
-function spNumRows(nm,under){
+/* only, 27 November: the numerology band on the Field's left rail now splits
+   these five into two rows of four alongside Life path, Master and Born
+   (renderSpirit above), so this needs to hand back a named subset rather
+   than always all five. Left out, it is every default caller's own five,
+   unchanged: the no-birth-data fallback (spgo's line above) still wants the
+   whole set in one line and still gets it. */
+function spNumRows(nm,under,only){
  var real=numFullName(CURP)||(typeof FULLNAME!=='undefined'&&FULLNAME[nm]);
  if(!real)return '';
  var N=numerologyOf(nm,CURP); if(!N)return '';
  /* the life path row above is spiritual's own and drills on its own terms, so
     under it this one would be the same number twice */
- var K=(under?[]:['lifePath']).concat(['expression','soul','personality','birthday','maturity']);
+ var K=(under?[]:['lifePath']).concat(only||['expression','soul','personality','birthday','maturity']);
  /* each number is reTile's circle, SV18, the number in its pill: "Except for
     the numerology keep the numerology numbers." Its door is still runNumDrill
     by data-num, so the attribute the tile is built with is swapped in, and

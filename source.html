@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v3531 7b8742f5 2026-11-27 20:04"><head><meta charset="utf-8">
+<html lang="en" data-build="v3533 fb4f203a 2026-11-27 23:11"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -12896,20 +12896,24 @@ body.tab-summary #spirit .sp-tile.rl-off{color:var(--dim)}
         don't even see it." It lies on the stage now, beside #fzoom. Still two
         rows: DQ and CQ, then the four. -->
    <div class="fdock" id="fdock" role="group" aria-label="Readings">
-    <!-- TWO FAMILIES, PAIRS FIRST, 30 October. r1 from mockups/dual-readings,
-         picked by the owner for the left-hand side: "Yeah, those are the
-         menus I like." A pair is one reading measured from a centre, so it is
-         a track with a line at 50 and one mark: coherence, which is CQ against
-         its own shadow, orientation and balance. An amount is one reading
-         measured from none, so it fills from the left end: DQ, vitality,
-         awareness, will, radiance and flow. Each family has a head with its
-         own mark and its one sentence, read off the meaning table at render,
-         so the grammar is said where it is drawn. The ids are kept because
-         every gate reads them; the order of the three hosts is what moved. -->
-    <div class="rb-fam" id="rbgha" tabindex="0" data-tip-k="Where you lean"><svg class="rb-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5v17M3.5 12h17"/><circle cx="16.5" cy="12" r="2.4"/></svg></div>
+    <!-- PAIRS FIRST, 30 October. r1 from mockups/dual-readings, picked by the
+         owner for the left-hand side: "Yeah, those are the menus I like." A
+         pair is one reading measured from a centre, so it is a track with a
+         line at 50 and one mark: coherence, which is CQ against its own
+         shadow. The ids are kept because every gate reads them. -->
     <div class="fdrow">
      <div class="key" id="key" aria-label="What the instrument reads"></div>
     </div>
+    <!-- ONE HEADING NOW, NOT TWO, 27 November. "Where you lean" and "How
+         much" stood over the same stretch of the dock, one word for the six
+         amount rows and a second word for the two pair bars directly under
+         them, with nothing on the rail saying why a person was reading two
+         headings over one block. "Where you lean" is gone outright and
+         nothing stands in its place; this heading, kept at its old id so
+         every gate that already reads #rbghb still finds it, now covers
+         both: the six keys below it and the two bars that follow them. -->
+    <div class="rb-fam rb-fam2" id="rbghb" tabindex="0" data-tip-k="Energetics"><svg class="rb-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 7v10M3.5 12h11.5"/><circle cx="17.4" cy="12" r="2.4"/></svg></div>
+    <div class="keylo" id="keylo" aria-label="What is moving through you"></div>
     <!-- ORIENTATION AND BALANCE JOINED THE READINGS, round OM. His words:
          "Let's move masculine and feminine and benign and malignant here, and
          I want a more uniform way to create cohesion between these aesthetics
@@ -12920,7 +12924,20 @@ body.tab-summary #spirit .sp-tile.rl-off{color:var(--dim)}
          ink, and they are rewritten by the same render. The ids are the ones
          every gate already reads: #polbar is orientation, benign against
          malignant, and #bal is balance, masculine against feminine. One
-         mechanic, FJ in TASKS.md, and so one place. -->
+         mechanic, FJ in TASKS.md, and so one place.
+
+         AND THEY FOLLOW THE SIX KEYS NOW, not the pair above, 27 November:
+         they are amounts the same way the six keys are, so they read under
+         the one Energetics heading and not under coherence. The 10px of
+         inline margin here plus the dock's own 2px row gap (head.html,
+         .fdock) is the 12px the merged section asked for between the keys
+         and the bars; head.html is not part of this round's edit, so the
+         gap is split between the two rather than carried as one new rule. -->
+    <div class="fdial" id="fdial" style="margin-top:10px">
+     <div class="polbar" id="polbar" role="img" tabindex="0" aria-label="Orientation. Positive against negative."></div>
+     <button type="button" class="bal" id="bal"
+      aria-label="Balance. Masculine against feminine. Opens the reading."></button>
+    </div>
     <!-- AND THEY ARE BARS, round RB, ported in the P3 menu pass. His words:
          "This stack of elements should all be bar style with the symbolic icon
          and the text inside of the bar itself to maximize space." The headings
@@ -12930,13 +12947,6 @@ body.tab-summary #spirit .sp-tile.rl-off{color:var(--dim)}
          bar above. Orientation is no door, so it is a carrier a keyboard
          reaches; balance opens its reading. The ids are kept because every
          gate reads them. -->
-    <div class="fdial" id="fdial">
-     <div class="polbar" id="polbar" role="img" tabindex="0" aria-label="Orientation. Positive against negative."></div>
-     <button type="button" class="bal" id="bal"
-      aria-label="Balance. Masculine against feminine. Opens the reading."></button>
-    </div>
-    <div class="rb-fam rb-fam2" id="rbghb" tabindex="0" data-tip-k="How much"><svg class="rb-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 7v10M3.5 12h11.5"/><circle cx="17.4" cy="12" r="2.4"/></svg></div>
-    <div class="keylo" id="keylo" aria-label="What is moving through you"></div>
    </div>
    <!-- SPIRIT, THEN PSYCHE. Ruled 26 September, CH in TASKS.md: "I want to
         subdivide by spiritual stuff, by spirit, then the next block down would
@@ -20863,8 +20873,14 @@ var UNPACK_BASE={
     coherence pair; the two heads name the rail's two families, a pair read
     from its centre and an amount read from none. */
  'rail:shadow':'Shadow, on this line, is the part of the laws your answers leave out, which is always 100 less CQ.',
- 'rail:where you lean':'Each pair is one reading, where the line down the middle is 50 and 50 and the mark is where you sit.',
- 'rail:how much':'Each is one reading, from none of it at the left end to all of it at the right.',
+ /* THE TWO FAMILIES MERGED INTO ONE, 27 November: "How much" and "Where you
+    lean" were two headings over the same stretch of the dock, the six
+    amount rows and the two pair bars under them, and nothing on the rail
+    told a person why there were two words for what reads as one block.
+    "Where you lean" is gone outright and nothing replaces it (ui/ui.js,
+    body.html); the merged section keeps the other heading's id and reads
+    this one entry now. */
+ 'rail:energetics':'Each is one reading, from none of it to all of it, and the two bars under them read from the middle, where 50 and 50 meet.',
  /* 21 November, the Avatar page's Energy card (ui/avdials.js). The head of
     the four dials carries its sentence from here, as the two family heads
     above do, so the word is never on screen without its meaning. */
@@ -110389,7 +110405,18 @@ function renderSpirit(){
     and a record can arrive by link or paste carrying markup the boundary did
     not write. */
  var bornSay=[sp.birth.d,sp.birth.t].filter(Boolean).join(' ')+(sp.birth.p?', '+sp.birth.p:'')+(sp.birth.z?', '+sp.birth.z:'');
- var born='<div class="sp-tile sp-born" tabindex="0" data-tip-t="Born" data-tip="'+esc(bornSay)+'" aria-label="'+esc('Born, '+bornSay)+'">'
+ /* BORN LEFT THE HEADER ROW FOR NUMEROLOGY'S OWN SECOND BAND, 27 November.
+    It sat outside every toggle, always on screen beside the four system
+    buttons, which was its own kind of orphan: one tile with no row to fill
+    out beside it and no system of its own. The seven real numerology
+    values plus Born are eight, which is two even rows of four once Life
+    path, Master, Expression and Soul urge lead and Personality, Birthday,
+    Maturity and Born follow, so it joins the N line below instead of
+    standing alone above it. It no longer shows until Number is pressed,
+    which is the one real behaviour change this carries: the owner's own
+    SV18 ruling is that a system's mark is the press that shows its
+    readings, and Born is now one more reading Number's own press shows. */
+ var born='<div class="sp-tile" tabindex="0" data-tip-t="Born" data-tip="'+esc(bornSay)+'" aria-label="'+esc('Born, '+bornSay)+'">'
   +'<span class="sp-tg" aria-hidden="true"><svg class="sp-gi" viewBox="0 0 24 24">'+SYSGLYPH.born+'</svg></span>'
   +'<span class="sp-said"><span class="sp-row static"><span class="sp-k">When</span> <span class="sp-v">'
   +esc(sp.birth.d)+'</span> <span class="sp-x">'+esc(sp.birth.t||'')+'</span></span>'
@@ -110398,7 +110425,21 @@ function renderSpirit(){
  /* a gate is printed as "gate 23.4" in its spoken name and as 23.4 in its
     pill: the pill has no room for the word, and the tooltip's kicker says it */
  var gnum=function(g){return g.gate+'.'+g.line;};
- el.innerHTML='<div class="sp-sysrow">'+hd('W','Western')+hd('E','Eastern')+hd('N','Number')+hd('D','Design')+born+'</div>'
+ /* A GRID ROW NEVER LEFT ALONE, 27 November, the standing rule named for the
+    whole UI/UX team, "symmetry in space... I don't like things brushed up
+    and pressed up against one another," applied to the one place on this
+    panel where a short last row could read as a mistake rather than a
+    fact. Flex-wrap already left-aligns here rather than centring a short
+    row, so nothing on this tile set was actually drifting; the fix below
+    is the grouping itself, two explicit bands of four rather than one flow
+    of eight that happened to land on an even count this time and would
+    not the next time a system gained or lost a reading. style="width:100%"
+    on a flex-wrap child forces its own line, which is how two grid rows
+    sit inside .sp-tiles' flex-wrap without a second stylesheet rule; this
+    round edits body.html, ui.js, personas.js and gloss.js and not
+    head.html, so the grid itself is inline and not a new class. */
+ var band4='display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px 10px;width:100%';
+ el.innerHTML='<div class="sp-sysrow">'+hd('W','Western')+hd('E','Eastern')+hd('N','Number')+hd('D','Design')+'</div>'
   +line('W',
   (sp.sun?row('Sun',ZGLYPH[sp.sun],sp.sun,sp.sunEl,'sign',null,say(unpackOf('sun sign'),unpackOf(sp.sun,'sign'))):unres('Sun',noZone))
   +(sp.moon?row('Moon',ZGLYPH[sp.moon],sp.moon,sp.moonEl,'sign',null,say(unpackOf('moon sign'),unpackOf(sp.moon,'sign'))):unres('Moon',noZone))
@@ -110420,13 +110461,43 @@ function renderSpirit(){
   /* the year is null for an untimed birth on the Li Chun day, where the hour
      decides the animal (chineseYear, engine/birth.js), and is that row then */
   +line('E',
-   (sp.chinese?row('Year',cic,sp.celem+' '+sp.chinese,CH_RUNS[sp.chinese]||'','chinese',sp.chinese,
+   /* "EARTH YEAR" READ AS ONE WORD, 27 November. The value was sp.celem+'
+      '+sp.chinese, "Earth Goat", with the element's own behaviour line
+      (CH_RUNS) riding in x, so the kicker and the spoken name both said
+      the element and the animal run together with nothing marking where
+      one ends and the other starts. The animal is the value a person
+      reads first (it is what the big mark would carry if this tile ever
+      stopped being icon-only, SV18), so it stands alone now; the element
+      is what the year IS, not what it does, so it takes x, the small
+      word's own slot, in place of the behaviour sentence CH_RUNS carried
+      there. The tip argument (say(...) below) already named both the
+      animal's and the element's meaning before this change and still
+      does, unedited: only the kicker and the screen reader's sp-x moved. */
+   (sp.chinese?row('Year',cic,sp.chinese,sp.celem,'chinese',sp.chinese,
     say(unpackOf('year animal'),unpackOf(sp.chinese,'animal'),unpackOf('year element'),unpackOf(sp.celem,'year')))
     :unres('Year','needs a birth time')))
   +line('N',
-   nrow('Life path',NUMFIELD_IC.path,String(sp.lp),sp.lpMean,'lp',String(sp.lp),say(unpackOf('life path'),unpackOf('path:'+sp.lp)))
-  +(sp.master?nrow('Master',NUMFIELD_IC.master,String(sp.master),'survives reduction','lp',String(sp.master),unpackOf('master number')):'')
-  +spNumRows(p.nm,true))
+   /* MASTER ALWAYS SITS HERE NOW, 27 November. It used to print only for a
+      life path of 11, 22 or 33 and vanish otherwise, which is exactly the
+      orphan the band rule above exists to catch: seven real tiles most of
+      the time, eight on the rare chart where a master number survives, so
+      the grid's own column count could never be fixed without guessing
+      which birth would need the extra seat. unres() is the honest shape
+      for a value the record is not refusing, it simply does not apply,
+      and it already carries that meaning everywhere else on this page
+      (Sun, Moon, Rising unresolved for want of data). Life path N not
+      being 11, 22 or 33 is a fact about the chart, not a missing
+      reading, so it gets the dash and says why rather than being left
+      out of the row it would otherwise have held. */
+   '<span class="sp-band" style="'+band4+'">'
+   +nrow('Life path',NUMFIELD_IC.path,String(sp.lp),sp.lpMean,'lp',String(sp.lp),say(unpackOf('life path'),unpackOf('path:'+sp.lp)))
+   +(sp.master?nrow('Master',NUMFIELD_IC.master,String(sp.master),'survives reduction','lp',String(sp.master),unpackOf('master number'))
+     :unres('Master','Your life path, '+sp.lp+', is not 11, 22 or 33, so it stays as it is.'))
+   +spNumRows(p.nm,true,['expression','soul'])
+   +'</span><span class="sp-band" style="'+band4+';margin-top:8px">'
+   +spNumRows(p.nm,true,['personality','birthday','maturity'])
+   +born
+   +'</span>')
   /* the personality and design gates are real and computed. the type is
      not, and it was a row that said so on every birth there is; it is a
      tile nobody could ever fill, so it is not drawn, and the drill for the
@@ -110547,13 +110618,19 @@ function reTile(k,glyph,v,x,dk,dv,tip,num,pill){
    the same fallback and guards it on an unread field; here the guard is the
    name itself, because a person who has typed their name and nothing else has
    a real expression number and no reading yet. */
-function spNumRows(nm,under){
+/* only, 27 November: the numerology band on the Field's left rail now splits
+   these five into two rows of four alongside Life path, Master and Born
+   (renderSpirit above), so this needs to hand back a named subset rather
+   than always all five. Left out, it is every default caller's own five,
+   unchanged: the no-birth-data fallback (spgo's line above) still wants the
+   whole set in one line and still gets it. */
+function spNumRows(nm,under,only){
  var real=numFullName(CURP)||(typeof FULLNAME!=='undefined'&&FULLNAME[nm]);
  if(!real)return '';
  var N=numerologyOf(nm,CURP); if(!N)return '';
  /* the life path row above is spiritual's own and drills on its own terms, so
     under it this one would be the same number twice */
- var K=(under?[]:['lifePath']).concat(['expression','soul','personality','birthday','maturity']);
+ var K=(under?[]:['lifePath']).concat(only||['expression','soul','personality','birthday','maturity']);
  /* each number is reTile's circle, SV18, the number in its pill: "Except for
     the numerology keep the numerology numbers." Its door is still runNumDrill
     by data-num, so the attribute the tile is built with is swapped in, and
@@ -117588,10 +117665,23 @@ function render(){
      (bad, so its chip says so). Radiance is drawn in light, not a seat's
      colour, because it is the brightness of the field and not a seat, the
      r1 review's reading of round RZ. The ink, warmed by the Solar seat, so a
-     lighting that turns the ink dark turns Radiance with it. */
+     lighting that turns the ink dark turns Radiance with it.
+
+     AND IT READS AS SHADOW NOW, 27 November. A pass on this rail dropped DQ
+     once already on the reasoning that it is just the opposite of CQ, which
+     is not what the engine does: DQ is its own total, every address's held
+     charge summed against the most it could hold (compute.js), and it only
+     tracks CQ's opposite most of the time, by correlation and not by
+     construction. It happens to sit beside CQ's own complement, lawSQ, which
+     the pair above (#key) already draws labelled Shadow, and a rail with a
+     bare "DQ" beside a reading called Shadow was two names for what reads as
+     one idea. This row is still DQ, q and fk unchanged, still r.DQ, still the
+     root seat's red and still the one row here where a rise is a cost; only
+     the word over it changes, to the name the engine's own total deserves
+     rather than the mirror it is not. A team call, open to correction. */
   lo.innerHTML=
-   rbRow('dq','DQ',pct('dq',r.DQ),fmtPct('dq',r.DQ,u),
-    {unread:r.unread,fk:'shadow',ic:'dq',col:seatCol('Root'),bad:true,title:rbSay('DQ')+nr})
+   rbRow('dq','Shadow',pct('dq',r.DQ),fmtPct('dq',r.DQ,u),
+    {unread:r.unread,fk:'shadow',ic:'dq',col:seatCol('Root'),bad:true,title:unpackOf('shadow weight')+nr})
   +rbRow('xyz','Vitality',pct('vitality',r.X),fmtPct('vitality',r.X,u),
     {unread:r.unread,fk:'core',ic:'vitality',col:seatCol('Solar'),title:rbSay('Vitality')+nr})
   +rbRow('xyz','Awareness',pct('awareness',r.Y),fmtPct('awareness',r.Y,u),
@@ -117602,11 +117692,53 @@ function render(){
     {unread:r.unread,fk:'core',ic:'rad',col:'color-mix(in srgb,var(--ink) 86%,'+seatCol('Solar')+')',title:rbSay('Radiance')+nr})
   +rbRow('flow','Flow',pct('flow',f),fmtPct('flow',f,u),
     {unread:r.unread,fk:'seats',ic:'flow',col:'var(--ink)',cells:seatPass,held:seatHeld,names:seatNames,
-     title:rbSay('Flow')+flowCopy});})();
+     title:rbSay('Flow')+flowCopy});
+  /* EACH SEAT PRINTS ITS OWN FIGURE NOW, 27 November. The Flow row's seven
+     cells (rbRow's cells family, ui/component.js) have always filled by
+     r.seats[i].pass and named the seat under them; neither carried a number,
+     so "blocked at the root" was the only word a person got for a seat that
+     might be holding back everything or almost nothing. rbRow's own markup
+     for these cells is load-bearing and tested (the comment above flowCopy
+     says why it is not touched this round), so the figure is added here, to
+     the name label it already draws, rather than inside component.js.
+
+     THE FIGURE IS WEIGHT, NOT PASS. bodyTop3 (compute.js) reads a seat's own
+     held charge as pct('weight',s.weight*10), which is the "how heavy is
+     this seat" reading the Body page's own hover already uses, and it is
+     what is asked for here. The cell's fill keeps reading pass, root to
+     crown passing on what each seat lets through, because that fill and the
+     step line drawn across it are the one load-bearing drawing rbMotion
+     tweens on every tick (component.js rbPaint); swapping its number for
+     weight would have the step line and the blocked ring answer a question
+     about signal while the figure beside them answers a different one about
+     charge, two readings in one shape. So the fill stays pass, and the new
+     figure beside each name is weight, named as weight in its own tooltip,
+     so nothing on screen claims the two are the same number. */
+  (function(){
+   var seatsWrap=lo.querySelector('.rbar[data-q="flow"] .rb-seats');
+   /* rbRow marks the whole .rb-seats strip aria-hidden, right, while it held
+      nothing a screen reader needed that the row's own aria-label had not
+      already said. Each cell now carries its own sentence, so the strip
+      has to stop hiding them from assistive tech, or the words are drawn
+      for the eye and nowhere else. */
+   if(seatsWrap)seatsWrap.removeAttribute('aria-hidden');
+   var cells=seatsWrap?seatsWrap.querySelectorAll('span'):[];
+   if(cells.length===7)(r.seats||[]).forEach(function(s,i){
+    var el=cells[i]; if(!el)return;
+    var wf=fmtPct('weight',s.weight*10,u);
+    var nm=seatNames[i], passFig=fmtPct('flow',seatPass[i],{});
+    var say=r.unread?'Not read yet.':(nm+' holds '+wf+' of what it could, and passes on '+passFig
+     +(i===blockAt?', the least of the points holding charge.':'.'));
+    el.textContent=(r.unread?'':wf+' ')+nm;
+    el.setAttribute('tabindex','0'); el.setAttribute('data-tip-k',nm);
+    el.setAttribute('data-tip',say); el.setAttribute('aria-label',say);});})();})();
  /* THE TWO FAMILY HEADS carry their sentence from the meaning table, the
     same way every word on the rail does, so the tooltip, the spoken name and
     the gate read one sentence (body.html says why they are there) */
- [['rbgha','Where you lean'],['rbghb','How much']].forEach(function(h){var e=$(h[0]); if(!e)return;
+ /* ONE HEAD NOW, 27 November: "Where you lean" is gone and nothing replaces
+    it (body.html says why), so this loop writes one family head instead of
+    two. #rbghb kept its id; only the word over it and what it covers moved. */
+ [['rbghb','Energetics']].forEach(function(h){var e=$(h[0]); if(!e)return;
   var say=rbSay(h[1]); e.setAttribute('data-tip',say); e.setAttribute('aria-label',h[1]+'. '+say);});
  /* the Insight card: the summary box, and the doors while nothing is read */
  (function(){
@@ -118145,5 +118277,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="008624250"></div>
+<div id="eof" hidden data-len="008633201"></div>
 </body></html>

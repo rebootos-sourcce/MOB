@@ -1297,10 +1297,23 @@ function render(){
      (bad, so its chip says so). Radiance is drawn in light, not a seat's
      colour, because it is the brightness of the field and not a seat, the
      r1 review's reading of round RZ. The ink, warmed by the Solar seat, so a
-     lighting that turns the ink dark turns Radiance with it. */
+     lighting that turns the ink dark turns Radiance with it.
+
+     AND IT READS AS SHADOW NOW, 27 November. A pass on this rail dropped DQ
+     once already on the reasoning that it is just the opposite of CQ, which
+     is not what the engine does: DQ is its own total, every address's held
+     charge summed against the most it could hold (compute.js), and it only
+     tracks CQ's opposite most of the time, by correlation and not by
+     construction. It happens to sit beside CQ's own complement, lawSQ, which
+     the pair above (#key) already draws labelled Shadow, and a rail with a
+     bare "DQ" beside a reading called Shadow was two names for what reads as
+     one idea. This row is still DQ, q and fk unchanged, still r.DQ, still the
+     root seat's red and still the one row here where a rise is a cost; only
+     the word over it changes, to the name the engine's own total deserves
+     rather than the mirror it is not. A team call, open to correction. */
   lo.innerHTML=
-   rbRow('dq','DQ',pct('dq',r.DQ),fmtPct('dq',r.DQ,u),
-    {unread:r.unread,fk:'shadow',ic:'dq',col:seatCol('Root'),bad:true,title:rbSay('DQ')+nr})
+   rbRow('dq','Shadow',pct('dq',r.DQ),fmtPct('dq',r.DQ,u),
+    {unread:r.unread,fk:'shadow',ic:'dq',col:seatCol('Root'),bad:true,title:unpackOf('shadow weight')+nr})
   +rbRow('xyz','Vitality',pct('vitality',r.X),fmtPct('vitality',r.X,u),
     {unread:r.unread,fk:'core',ic:'vitality',col:seatCol('Solar'),title:rbSay('Vitality')+nr})
   +rbRow('xyz','Awareness',pct('awareness',r.Y),fmtPct('awareness',r.Y,u),
@@ -1311,11 +1324,53 @@ function render(){
     {unread:r.unread,fk:'core',ic:'rad',col:'color-mix(in srgb,var(--ink) 86%,'+seatCol('Solar')+')',title:rbSay('Radiance')+nr})
   +rbRow('flow','Flow',pct('flow',f),fmtPct('flow',f,u),
     {unread:r.unread,fk:'seats',ic:'flow',col:'var(--ink)',cells:seatPass,held:seatHeld,names:seatNames,
-     title:rbSay('Flow')+flowCopy});})();
+     title:rbSay('Flow')+flowCopy});
+  /* EACH SEAT PRINTS ITS OWN FIGURE NOW, 27 November. The Flow row's seven
+     cells (rbRow's cells family, ui/component.js) have always filled by
+     r.seats[i].pass and named the seat under them; neither carried a number,
+     so "blocked at the root" was the only word a person got for a seat that
+     might be holding back everything or almost nothing. rbRow's own markup
+     for these cells is load-bearing and tested (the comment above flowCopy
+     says why it is not touched this round), so the figure is added here, to
+     the name label it already draws, rather than inside component.js.
+
+     THE FIGURE IS WEIGHT, NOT PASS. bodyTop3 (compute.js) reads a seat's own
+     held charge as pct('weight',s.weight*10), which is the "how heavy is
+     this seat" reading the Body page's own hover already uses, and it is
+     what is asked for here. The cell's fill keeps reading pass, root to
+     crown passing on what each seat lets through, because that fill and the
+     step line drawn across it are the one load-bearing drawing rbMotion
+     tweens on every tick (component.js rbPaint); swapping its number for
+     weight would have the step line and the blocked ring answer a question
+     about signal while the figure beside them answers a different one about
+     charge, two readings in one shape. So the fill stays pass, and the new
+     figure beside each name is weight, named as weight in its own tooltip,
+     so nothing on screen claims the two are the same number. */
+  (function(){
+   var seatsWrap=lo.querySelector('.rbar[data-q="flow"] .rb-seats');
+   /* rbRow marks the whole .rb-seats strip aria-hidden, right, while it held
+      nothing a screen reader needed that the row's own aria-label had not
+      already said. Each cell now carries its own sentence, so the strip
+      has to stop hiding them from assistive tech, or the words are drawn
+      for the eye and nowhere else. */
+   if(seatsWrap)seatsWrap.removeAttribute('aria-hidden');
+   var cells=seatsWrap?seatsWrap.querySelectorAll('span'):[];
+   if(cells.length===7)(r.seats||[]).forEach(function(s,i){
+    var el=cells[i]; if(!el)return;
+    var wf=fmtPct('weight',s.weight*10,u);
+    var nm=seatNames[i], passFig=fmtPct('flow',seatPass[i],{});
+    var say=r.unread?'Not read yet.':(nm+' holds '+wf+' of what it could, and passes on '+passFig
+     +(i===blockAt?', the least of the points holding charge.':'.'));
+    el.textContent=(r.unread?'':wf+' ')+nm;
+    el.setAttribute('tabindex','0'); el.setAttribute('data-tip-k',nm);
+    el.setAttribute('data-tip',say); el.setAttribute('aria-label',say);});})();})();
  /* THE TWO FAMILY HEADS carry their sentence from the meaning table, the
     same way every word on the rail does, so the tooltip, the spoken name and
     the gate read one sentence (body.html says why they are there) */
- [['rbgha','Where you lean'],['rbghb','How much']].forEach(function(h){var e=$(h[0]); if(!e)return;
+ /* ONE HEAD NOW, 27 November: "Where you lean" is gone and nothing replaces
+    it (body.html says why), so this loop writes one family head instead of
+    two. #rbghb kept its id; only the word over it and what it covers moved. */
+ [['rbghb','Energetics']].forEach(function(h){var e=$(h[0]); if(!e)return;
   var say=rbSay(h[1]); e.setAttribute('data-tip',say); e.setAttribute('aria-label',h[1]+'. '+say);});
  /* the Insight card: the summary box, and the doors while nothing is read */
  (function(){

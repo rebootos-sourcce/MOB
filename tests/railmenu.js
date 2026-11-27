@@ -144,15 +144,22 @@ async function railMenuGate(browser,FILE,ok,booted){
     flowTrack:Math.round((d.querySelector('.rbar.rb-flow .rb-t')||{getBoundingClientRect:()=>({height:0})}).getBoundingClientRect().height),
     stacked:rr.every((r,i)=>i===0||r.top>=rr[i-1].bottom-0.5),
     heads:[...d.querySelectorAll('.rb-fam')].filter(__rmVis).map(e=>e.getAttribute('data-tip-k')||''),
-    headAbove:(()=>{const a=document.getElementById('rbgha'),b=document.getElementById('rbghb');if(!a||!b)return false;
-     const ar=a.getBoundingClientRect(),br=b.getBoundingClientRect(),firstPair=pairs[0],firstBar=singles[0];
-     return ar.bottom<=firstPair.getBoundingClientRect().top+0.5&&br.top>=pairs[pairs.length-1].getBoundingClientRect().bottom-0.5&&br.bottom<=firstBar.getBoundingClientRect().top+0.5;})(),
+    /* ONE HEAD NOW, 27 November: "Where you lean" is gone outright and
+       nothing replaces it, so there is one family head (#rbghb, kept at its
+       old id) and it covers both the six amount bars and the two pair bars
+       that now follow them, sitting under the coherence pair and over the
+       first bar. */
+    headAbove:(()=>{const b=document.getElementById('rbghb');if(!b)return false;
+     const br=b.getBoundingClientRect(),cohPair=pairs[0],firstBar=singles[0];
+     return br.top>=cohPair.getBoundingClientRect().bottom-0.5&&br.bottom<=firstBar.getBoundingClientRect().top+0.5;})(),
     loose:kids.map(e=>e.textContent.trim().slice(0,30)),
     others:['.rw-rad','.rw-bus','.rb-hash','.ax','.fdl','#axpick','[data-axd]','.rb-waverow','.rb-wave','.rb-over','.rb2-now'].filter(s=>{const e=d.querySelector(s)||document.querySelector(s);return e&&__rmVis(e);}),
     pairNames:pairs.map(p=>[...p.querySelectorAll('.rb2-n')].map(n=>n.textContent.trim())),
     pairFigs:pairs.map(p=>[...p.querySelectorAll('.rb2-v')].map(n=>n.textContent.trim())),
     halves:pairs.map(p=>[...p.querySelectorAll('.rb2-k')].map(k=>k.getAttribute('data-q')).join()),
     cohIn:!!document.querySelector('#key .rb2[data-pair=coh]'),
+    /* data-q stays dq, every gate that already reads it still finds this
+       row; only the printed name changed, to Shadow, 27 November. */
     dqRow:(()=>{const e=d.querySelector('#keylo .rbar[data-q=dq]');return e?{nm:(e.querySelector('.rb-n')||{}).textContent.trim(),c:(e.style.getPropertyValue('--c')||'').trim().toLowerCase(),
      fill:parseFloat((e.querySelector('.rb-f')||{style:{}}).style.width),v:(e.querySelector('.rb-v')||{}).textContent.trim()}:null;})(),
     dqOnPair:pairs.some(p=>/\bDQ\b/.test(p.textContent)),
@@ -171,14 +178,19 @@ async function railMenuGate(browser,FILE,ok,booted){
     panelScroll:document.getElementById('lpanel').scrollWidth-document.getElementById('lpanel').clientWidth};});
   ok(!st.missing,'RM1: '+tag+'the readings block is on the page');
   if(!st.missing){
-   ok(JSON.stringify(st.order)===JSON.stringify(['pair:coh','pair:lean','pair:bal','bar:DQ','bar:Vitality','bar:Awareness','bar:Will','bar:Radiance','bar:Flow']),
-    'RM1: '+tag+'nine rows, the three pairs first and then the six amounts, DQ leading them, '+JSON.stringify(st.order));
+   /* ONE SECTION NOW, 27 November: coherence leads alone, then the six
+      amounts under the merged Energetics head, Shadow (the renamed DQ row)
+      first because a rise in it is still the one cost among them, then the
+      two pair bars, moved here from above the amounts so the whole merged
+      section reads as one block. */
+   ok(JSON.stringify(st.order)===JSON.stringify(['pair:coh','bar:Shadow','bar:Vitality','bar:Awareness','bar:Will','bar:Radiance','bar:Flow','pair:lean','pair:bal']),
+    'RM1: '+tag+'nine rows, coherence first, then the six amounts under Energetics with Shadow leading them, then the two bars, '+JSON.stringify(st.order));
    ok(st.heights.every(x=>x>=44)&&st.lefts.length===1&&st.widths.length===1&&st.stacked,
     'RM1: '+tag+'every row at the 44px floor, one left edge, one width, stacked, '+JSON.stringify({h:st.heights,l:st.lefts,w:st.widths,stacked:st.stacked}));
    ok(st.lines.length===1&&st.tracks.length===1&&st.tracks[0]===16&&st.flowTrack===24,
     'RM1: '+tag+'one grammar: every line of words one height, every track 16px but Flow\'s 24, '+JSON.stringify({lines:st.lines,tracks:st.tracks,flow:st.flowTrack}));
-   ok(JSON.stringify(st.heads)==='["Where you lean","How much"]'&&st.headAbove,
-    'RM1: '+tag+'each family has its head, over the pairs and over the amounts, '+JSON.stringify({heads:st.heads,above:st.headAbove}));
+   ok(JSON.stringify(st.heads)==='["Energetics"]'&&st.headAbove,
+    'RM1: '+tag+'one head now, Energetics, over the amounts and the bars both, '+JSON.stringify({heads:st.heads,above:st.headAbove}));
    ok(st.loose.length===0,'RM1: '+tag+'no words stand in the block outside a row or a head, '+JSON.stringify(st.loose));
    ok(st.others.length===0,'RM1: '+tag+'no wire, no dial, no style switch, no text row, no hash column, no wave and no words drawn inside a fill, '+JSON.stringify(st.others));
    ok(st.cohIn&&JSON.stringify(st.pairNames[0])==='["CQ","Shadow"]'&&st.halves[0]==='cq,cq'&&!st.dqOnPair,
@@ -189,8 +201,8 @@ async function railMenuGate(browser,FILE,ok,booted){
    const lean=Math.round(st.cq)>50?pc(st.cq):Math.round(st.cq)<50?pc(st.lawSQ):'50%';
    ok(st.lawSQ!==null&&Math.abs(st.lawSQ-(100-st.cq))<1e-6&&JSON.stringify(st.pairFigs[0])===JSON.stringify([lean]),
     'RM2: '+tag+'the pair prints one figure, the leaning side\'s share, '+JSON.stringify(st.pairFigs[0])+' for CQ '+st.cq.toFixed(1)+' and shadow '+(st.lawSQ===null?'null':st.lawSQ.toFixed(1)));
-   ok(!!st.dqRow&&st.dqRow.nm==='DQ'&&st.dqRow.c===st.root&&Math.abs(st.dqRow.fill-Math.round(st.dq))<0.1&&st.dqRow.v===pc(st.dq),
-    'RM2: '+tag+'DQ is an amount in the root red, filled to its own figure and printing it, '+JSON.stringify(st.dqRow)+' for '+st.dq.toFixed(1));
+   ok(!!st.dqRow&&st.dqRow.nm==='Shadow'&&st.dqRow.c===st.root&&Math.abs(st.dqRow.fill-Math.round(st.dq))<0.1&&st.dqRow.v===pc(st.dq),
+    'RM2: '+tag+'DQ reads as Shadow, an amount in the root red, filled to its own figure and printing it, '+JSON.stringify(st.dqRow)+' for '+st.dq.toFixed(1));
    ok(JSON.stringify(st.pairNames.slice(1))==='[["Positive","Negative"],["Masculine","Feminine"]]',
     'RM4: '+tag+'orientation and balance are the same pair, '+JSON.stringify(st.pairNames.slice(1)));
    ok(!!st.halo&&st.leanIc===st.halo&&!!st.fork&&st.malIc===st.fork,'RM5: '+tag+'positive carries the halo and negative the pitchfork, '+JSON.stringify({l:st.leanIc,r:st.malIc}));
@@ -198,7 +210,9 @@ async function railMenuGate(browser,FILE,ok,booted){
    ok(['Vitality','Awareness','Will'].every(k=>col[k]===st.want[k]),'RM6: '+tag+'vitality yellow, awareness indigo, will blue, '+JSON.stringify({got:col,want:st.want}));
    ok(st.marks.length===0,'RM7: '+tag+'no mark stands alone in the block, '+JSON.stringify(st.marks));
    const words=st.words.map(x=>x.word);
-   ok(['CQ','Shadow','DQ','Vitality','Awareness','Will','Radiance','Flow','Positive','Negative','Masculine','Feminine'].every(x=>words.indexOf(x)>=0),
+   /* "DQ" is gone from the scan, 27 November: the row reads Shadow now and
+      the word DQ no longer prints anywhere on this rail. */
+   ok(['CQ','Shadow','Vitality','Awareness','Will','Radiance','Flow','Positive','Negative','Masculine','Feminine'].every(x=>words.indexOf(x)>=0),
     'RM8: '+tag+'every word the menu prints is found by the scan, '+JSON.stringify(words));
    st.words.forEach(x=>ok(x.entry&&x.glossed,'RM8: '+tag+'"'+x.word+'" carries its plain meaning'+(x.entry?'':' and the table has no sentence for it')));
    ok(st.dockR<=st.panelR+0.5&&st.panelScroll<=1,'RM11: '+tag+'the block stays inside its column and the column does not scroll sideways, '+JSON.stringify({dock:st.dockR,panel:st.panelR,scroll:st.panelScroll}));
@@ -269,22 +283,38 @@ async function railMenuGate(browser,FILE,ok,booted){
    const named=all.map(e=>{const nm=(e.getAttribute('aria-label')||e.textContent||'').replace(/\s+/g,' ').trim();
     const r=e.getBoundingClientRect(); return {tag:e.tagName, q:e.getAttribute('data-q')||e.id||'', nm, w:r.width, h:r.height};});
    return {named, n:all.length};});
-  ok(doors.n>=12,'RM9: '+tag+'every reading and both heads are a door or a carrier a keyboard reaches, '+doors.n);
+  /* ONE HEAD LESS, 27 November: "Where you lean" is gone and nothing stands
+     in its place, so the block has one fewer door than before. Read off the
+     real run and dated, per the house rule against a number typed into a
+     document the product then grows past. */
+  ok(doors.n>=11,'RM9: '+tag+'every reading and the one remaining head are a door or a carrier a keyboard reaches, '+doors.n);
   const small=doors.named.filter(x=>x.w<44||x.h<44);
   ok(small.length===0,'RM10: '+tag+'every door is at least 44 by 44, '+JSON.stringify(small));
   const mean=await pg.evaluate(()=>{
    const d=document.getElementById('fdock');
    const half=s=>d.querySelector('.rb2[data-pair=coh] .rb2-k.'+s);
    const row=word=>[...d.querySelectorAll('.rbar')].find(e=>((e.querySelector('.rb-n')||{}).textContent||'').trim()===word);
-   const need=[[half('l'),'CQ'],[half('r'),'Shadow'],[row('DQ'),'DQ'],[row('Vitality'),'Vitality'],[row('Awareness'),'Awareness'],[row('Will'),'Will'],
+   /* THE RENAMED BAR IS CHECKED ON ITS OWN, not swept with the others,
+      27 November. Its word is "Shadow", the same word the coherence pair's
+      own right half already carries for a different reading (CQ's
+      complement), so the generic per-word lookup below, which assumes one
+      meaning per word on this rail, would check this bar's door against
+      the wrong sentence. ui.js reuses unpackOf('shadow weight') directly
+      for this one, and the check after this array does the same. */
+   const need=[[half('l'),'CQ'],[half('r'),'Shadow'],[row('Vitality'),'Vitality'],[row('Awareness'),'Awareness'],[row('Will'),'Will'],
     [row('Radiance'),'Radiance'],[row('Flow'),'Flow'],[document.getElementById('polbar'),'Positive'],[document.getElementById('polbar'),'Negative'],
     [document.getElementById('bal'),'Masculine'],[document.getElementById('bal'),'Feminine'],
-    [document.getElementById('rbgha'),'Where you lean'],[document.getElementById('rbghb'),'How much']];
-   return need.map(([el,word])=>{
+    [document.getElementById('rbghb'),'Energetics']];
+   const shadowBar=row('Shadow');
+   return {rows:need.map(([el,word])=>{
     const nm=el?(el.getAttribute('aria-label')||''):'';
     const say=typeof unpackOf==='function'?unpackOf(word,'rail'):'';
-    return {word, door:!!el&&(el.tagName==='BUTTON'||el.getAttribute('tabindex')==='0'), named:!!say&&nm.indexOf(word)>=0&&nm.indexOf(say)>=0, nm:nm.slice(0,90)};});});
-  mean.forEach(m=>ok(m.door&&m.named,'RM9: '+tag+m.word+' has a door whose spoken name carries the word and its meaning, '+JSON.stringify(m)));
+    return {word, door:!!el&&(el.tagName==='BUTTON'||el.getAttribute('tabindex')==='0'), named:!!say&&nm.indexOf(word)>=0&&nm.indexOf(say)>=0, nm:nm.slice(0,90)};}),
+    shadowBar:(()=>{const nm=shadowBar?(shadowBar.getAttribute('aria-label')||''):'';
+     const say=typeof unpackOf==='function'?unpackOf('shadow weight'):'';
+     return {door:!!shadowBar, named:!!say&&nm.indexOf('Shadow')>=0&&nm.indexOf(say)>=0, nm:nm.slice(0,90)};})()};});
+  mean.rows.forEach(m=>ok(m.door&&m.named,'RM9: '+tag+m.word+' has a door whose spoken name carries the word and its meaning, '+JSON.stringify(m)));
+  ok(mean.shadowBar.door&&mean.shadowBar.named,'RM9: '+tag+'the renamed DQ row has a door whose spoken name carries Shadow and the shadow weight sentence, '+JSON.stringify(mean.shadowBar));
   if(!phone){
    /* the real Tab key, from the first door in the block */
    const first=await pg.evaluate(()=>{const d=document.getElementById('fdock'), f=d.querySelector('button,[tabindex="0"]');
@@ -295,7 +325,11 @@ async function railMenuGate(browser,FILE,ok,booted){
      if(!a||!d.contains(a))return null;
      return a.getAttribute('data-q')?a.getAttribute('data-q')+':'+((a.querySelector&&a.querySelector('.rb-n'))?a.querySelector('.rb-n').textContent.trim():''):a.id;});
     if(a===null)break; order.push(a); await pg.keyboard.press('Tab');}
-   ok(JSON.stringify(order)===JSON.stringify(['rbgha','cq:','cq:','polbar','bal','rbghb','dq:DQ','xyz:Vitality','xyz:Awareness','xyz:Will','xyz:Radiance','flow:Flow']),
+   /* THE BARS MOVED ABOVE THE PAIR BUTTONS, 27 November: coherence leads,
+      then the merged Energetics head, then the six amounts (Shadow first,
+      still data-q=dq), then the two pair bars, which now sit under the
+      amounts instead of above them. */
+   ok(JSON.stringify(order)===JSON.stringify(['cq:','cq:','rbghb','dq:Shadow','xyz:Vitality','xyz:Awareness','xyz:Will','xyz:Radiance','flow:Flow','polbar','bal']),
     'RM9: '+tag+'the Tab key walks the doors in reading order, '+JSON.stringify(order));
    await pg.evaluate(()=>{if(typeof rdClose==='function')rdClose(); if(typeof TIP!=='undefined')TIP.hide();});
    const has=await pg.evaluate(()=>{const k=document.querySelector('#fdock .rb2-k[data-q=cq]');

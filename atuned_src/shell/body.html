@@ -1022,20 +1022,24 @@
         don't even see it." It lies on the stage now, beside #fzoom. Still two
         rows: DQ and CQ, then the four. -->
    <div class="fdock" id="fdock" role="group" aria-label="Readings">
-    <!-- TWO FAMILIES, PAIRS FIRST, 30 October. r1 from mockups/dual-readings,
-         picked by the owner for the left-hand side: "Yeah, those are the
-         menus I like." A pair is one reading measured from a centre, so it is
-         a track with a line at 50 and one mark: coherence, which is CQ against
-         its own shadow, orientation and balance. An amount is one reading
-         measured from none, so it fills from the left end: DQ, vitality,
-         awareness, will, radiance and flow. Each family has a head with its
-         own mark and its one sentence, read off the meaning table at render,
-         so the grammar is said where it is drawn. The ids are kept because
-         every gate reads them; the order of the three hosts is what moved. -->
-    <div class="rb-fam" id="rbgha" tabindex="0" data-tip-k="Where you lean"><svg class="rb-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5v17M3.5 12h17"/><circle cx="16.5" cy="12" r="2.4"/></svg></div>
+    <!-- PAIRS FIRST, 30 October. r1 from mockups/dual-readings, picked by the
+         owner for the left-hand side: "Yeah, those are the menus I like." A
+         pair is one reading measured from a centre, so it is a track with a
+         line at 50 and one mark: coherence, which is CQ against its own
+         shadow. The ids are kept because every gate reads them. -->
     <div class="fdrow">
      <div class="key" id="key" aria-label="What the instrument reads"></div>
     </div>
+    <!-- ONE HEADING NOW, NOT TWO, 27 November. "Where you lean" and "How
+         much" stood over the same stretch of the dock, one word for the six
+         amount rows and a second word for the two pair bars directly under
+         them, with nothing on the rail saying why a person was reading two
+         headings over one block. "Where you lean" is gone outright and
+         nothing stands in its place; this heading, kept at its old id so
+         every gate that already reads #rbghb still finds it, now covers
+         both: the six keys below it and the two bars that follow them. -->
+    <div class="rb-fam rb-fam2" id="rbghb" tabindex="0" data-tip-k="Energetics"><svg class="rb-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 7v10M3.5 12h11.5"/><circle cx="17.4" cy="12" r="2.4"/></svg></div>
+    <div class="keylo" id="keylo" aria-label="What is moving through you"></div>
     <!-- ORIENTATION AND BALANCE JOINED THE READINGS, round OM. His words:
          "Let's move masculine and feminine and benign and malignant here, and
          I want a more uniform way to create cohesion between these aesthetics
@@ -1046,7 +1050,20 @@
          ink, and they are rewritten by the same render. The ids are the ones
          every gate already reads: #polbar is orientation, benign against
          malignant, and #bal is balance, masculine against feminine. One
-         mechanic, FJ in TASKS.md, and so one place. -->
+         mechanic, FJ in TASKS.md, and so one place.
+
+         AND THEY FOLLOW THE SIX KEYS NOW, not the pair above, 27 November:
+         they are amounts the same way the six keys are, so they read under
+         the one Energetics heading and not under coherence. The 10px of
+         inline margin here plus the dock's own 2px row gap (head.html,
+         .fdock) is the 12px the merged section asked for between the keys
+         and the bars; head.html is not part of this round's edit, so the
+         gap is split between the two rather than carried as one new rule. -->
+    <div class="fdial" id="fdial" style="margin-top:10px">
+     <div class="polbar" id="polbar" role="img" tabindex="0" aria-label="Orientation. Positive against negative."></div>
+     <button type="button" class="bal" id="bal"
+      aria-label="Balance. Masculine against feminine. Opens the reading."></button>
+    </div>
     <!-- AND THEY ARE BARS, round RB, ported in the P3 menu pass. His words:
          "This stack of elements should all be bar style with the symbolic icon
          and the text inside of the bar itself to maximize space." The headings
@@ -1056,13 +1073,6 @@
          bar above. Orientation is no door, so it is a carrier a keyboard
          reaches; balance opens its reading. The ids are kept because every
          gate reads them. -->
-    <div class="fdial" id="fdial">
-     <div class="polbar" id="polbar" role="img" tabindex="0" aria-label="Orientation. Positive against negative."></div>
-     <button type="button" class="bal" id="bal"
-      aria-label="Balance. Masculine against feminine. Opens the reading."></button>
-    </div>
-    <div class="rb-fam rb-fam2" id="rbghb" tabindex="0" data-tip-k="How much"><svg class="rb-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 7v10M3.5 12h11.5"/><circle cx="17.4" cy="12" r="2.4"/></svg></div>
-    <div class="keylo" id="keylo" aria-label="What is moving through you"></div>
    </div>
    <!-- SPIRIT, THEN PSYCHE. Ruled 26 September, CH in TASKS.md: "I want to
         subdivide by spiritual stuff, by spirit, then the next block down would
