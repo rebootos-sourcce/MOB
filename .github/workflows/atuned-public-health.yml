@@ -1,0 +1,45 @@
+name: atuned-public-health
+on:
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: '15 15 * * *'
+permissions:
+  contents: read
+jobs:
+  offline-probe-tests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: test public probe without network
+        run: python3 tools/public_health.py --self-test
+  live-readonly-health:
+    # Pull requests need an actual networked probe before promotion.
+    # A live-site outage must not block an otherwise valid candidate PR.
+    # Scheduled and manual runs remain strict and fail on FAIL or UNKNOWN.
+    runs-on: ubuntu-24.04
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: check public read-only routes
+        id: probe
+        continue-on-error: ${{ github.event_name == 'pull_request' }}
+        run: python3 tools/public_health.py
+      - name: state raw probe outcome and scope
+        if: always()
+        env:
+          PROBE_RESULT: ${{ steps.probe.outcome }}
+        run: |
+          {
+            echo "## Public route smoke"
+            echo "Raw probe outcome: $PROBE_RESULT"
+            echo "A non-blocking PR job is not proof of live health when the raw outcome is failure."
+            echo "Cloudflare deployed SHA and Worker/API are NOT VERIFIED by this probe."
+          } >> "$GITHUB_STEP_SUMMARY"
