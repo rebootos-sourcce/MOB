@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v3523 ef15b5a1 2026-11-27 02:35"><head><meta charset="utf-8">
+<html lang="en" data-build="v3525 9c21b624 2026-11-27 02:49"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -30526,7 +30526,8 @@ try{window.__at&&window.__at('engine/tracesummary.js');}catch(e){}
    was selected, the reading compute() made, the trace graph when there is
    one, and a few facts only the host knows (is the safety check on, which
    addresses have already been released, how the avatar ranks them), and it
-   returns three paragraphs per page. No language model: every clause is a
+   returns four registers, one a page (THE FOUR REGISTERS, below; until 20
+   November it was three paragraphs a page). No language model: every clause is a
    fixed template plus a named record field or a computed figure, and a slot
    with no data is dropped or said as one short gap sentence. It is never
    filled by invention. 17 November, his words: "the insight panel is source
@@ -30592,19 +30593,31 @@ var INS_CAP={sab:'Saboteur',cx:'Complex',hy:'Hyper complex',sup:'Super complex',
  path:'Compass',bal:'Balance',atom:'Imprint',gates:'Gates',pole:'Pole'};
 var INS_LIST={sab:'sabs',cx:'cxs',hy:'hys',sup:'sups'};
 var INS_UP={sab:'cx',cx:'hy',hy:'sup'};
-/* the three fixed run-in headers, a label and never data */
-var INS_HEAD=['Where it sits.','How it runs.','What to do.'];
-/* the paragraph ceilings that keep three paragraphs inside a short scroll at
-   390: 70, 70 and 60 words, 200 in all, under the 210 the owner's own "much
-   longer" was set against. */
-var INS_MAX=[70,70,60];
+/* THE FOUR REGISTERS, one a page. OVERRIDDEN, 20 November, his words on this
+   rail: "I want to be able to cycle through the depth of the insight... from
+   what it is and how it works down to the behavior, down to the mechanic...
+   not compressed insight on one page." 18 November's "always show 3
+   paragraphs" put all of it on one page under Where it sits, How it runs and
+   What to do, and the dots paged sideways into the next record. The dots now
+   page down through one selection, in his order, and the run-in header of
+   each page is the register's name, a label and never data. The first three
+   are the three paragraphs that were already written, the fourth is the
+   chain they used to fold into the first: what it is built from and what it
+   feeds. */
+var INS_HEAD=['What it is.','How it works.','The behaviour.','The mechanic.'];
+var INS_REG=['what','how','behaviour','mechanic'];
+var INS_REG_NAME=['What it is','How it works','The behaviour','The mechanic'];
+/* the register ceilings. A page holds one register now, so 210 is no longer a
+   sum across three: each ceiling keeps one register inside a short scroll at
+   390, and the chain that moved out of the first is the fourth's own 70. */
+var INS_MAX=[70,70,60,70];
 var INS_BAN=/\b(should|must|need to|needs to|have to|has to)\b/i;
 /* what a person sees on hover over a book line: where it came from, in words */
 var INS_SRC_WORDS={SABDEF:'the saboteur record',SABCARD:'the saboteur card',HCX_LIB:'the hyper complex record',
  HCXCARD:'the hyper complex card',CHILD:'the child emotion table',AFFIRM:'the affirmation table',
  CHALLENGE:'the daily challenge table',DOMDEF:'the domain record',APC:'the point record',HARM:'the law record',
  ARCH:'the archetype record',MASKS:'the mask record',NODES:'the address table',FAM_POLE:'the family table',
- CRISIS_SAY:'the safety line'};
+ CRISIS_SAY:'the safety line',VERP:'the Laws of Action record',TIER_BY:'the coherence word record'};
 
 /* ---------- small helpers ---------- */
 function insArt(w){return /^[aeiou]/i.test(w)?'an':'a';}
@@ -30726,14 +30739,14 @@ function insStories(g,ids){
  return {any:any,n:Object.keys(seen).length};}
 
 /* ---------- resolving a src path back to its field ---------- */
-var INS_ARR={HCX_LIB:'nm',CHILD:'nm',NODES:'i',DOMAINS:'nm',ARCH:'nm',MASKS:'nm',SI:'nm',APC:'b',HARM:'t'};
+var INS_ARR={HCX_LIB:'nm',CHILD:'nm',NODES:'i',DOMAINS:'nm',ARCH:'nm',MASKS:'nm',SI:'nm',APC:'b',HARM:'t',VERP:'k',MIRROR:'k'};
 function insightResolve(path,r){
  var t=String(path||'');
  if(/^(model|gap):/.test(t))return true;
  var tok=t.split('.'), root=tok.shift(), cur;
  var T={S:S,SABDEF:SABDEF,SABCARD:SABCARD,HCXCARD:HCXCARD,DOMDEF:DOMDEF,AFFIRM:AFFIRM,CHALLENGE:CHALLENGE,
   FAM_POLE:FAM_POLE,CRISIS_SAY:CRISIS_SAY,HCX_LIB:HCX_LIB,CHILD:CHILD,NODES:NODES,DOMAINS:DOMAINS,ARCH:ARCH,
-  MASKS:MASKS,SI:SI,APC:APC,HARM:HARM,r:r};
+  MASKS:MASKS,SI:SI,APC:APC,HARM:HARM,VERP:VERP,MIRROR:MIRROR,TIER_BY:TIER_BY,r:r};
  if(!(root in T))return undefined;
  cur=T[root];
  for(var i=0;i<tok.length;i++){
@@ -30768,6 +30781,36 @@ function insP1Pattern(o,r){
    [path+'.unnamed'],'mine'),2));
  if(over)
   cl.push(insClause(insSeg('That is the opposite pushed past where it helps.',['FAM_POLE'],'model'),1));
+ /* the step down and the step up were here, and they are the fourth register
+    now (insP4Pattern): one page said what it is and what it is made of at
+    once, which is the compression he asked to have taken apart */
+ /* ITS OWN LINE, FROM THE BOOK. A hyper complex is its family, so it quotes
+    the line and does not say it belongs to itself, which was circular. */
+ if(o.kind==='sab'&&!over){
+  var def=SABDEF[KB_KEY(base)];
+  if(def&&def.q&&insOk(def.q))
+   cl.push(insClause(insBook('Its line: ',def.q,['SABDEF.'+KB_KEY(base)+'.q'],'.'),1));
+  else{var f=patFam(o); if(f&&insOk(f.d))cl.push(insClause(insSeg('It belongs to the '+f.nm+' family: '+f.d+'.',['HCX_LIB.'+f.nm+'.d'],'book'),1));}}
+ else if(o.kind==='hy'){
+  var fh=patFam(o);
+  if(fh&&insOk(fh.d)){
+   if(over)cl.push(insClause(insSeg('Its family line: '+fh.d+'.',['FAM_POLE'],'model'),1));
+   else cl.push(insClause(insBook('Its line: ',fh.d,['HCX_LIB.'+fh.nm+'.d'],'.'),1));}}
+ else if(o.kind==='cx'){
+  var fc=patFam(o);
+  if(fc&&insOk(fc.d))cl.push(insClause(insSeg('It belongs to the '+fc.nm+' family: '+fc.d+'.',
+   [over?'FAM_POLE':'HCX_LIB.'+fc.nm+'.d'],'book'),1));}
+ return insPack(INS_HEAD[0],cl,INS_MAX[0]);}
+
+/* THE MECHANIC OF A PATTERN: what it is built from, one step down with each
+   part's percent, and what it feeds, up to the top of the chain on file. These
+   clauses are the ones the first register carried until 20 November, moved
+   here unchanged. A super complex is the top of the chain compute() builds,
+   and the trace graph carries the climb above it, the masks worn over points
+   that hold its addresses (engine/trace.js, traceAboveRead), so that one
+   step is read off the graph when there is one, and never guessed without. */
+function insP4Pattern(o,r,g){
+ var cl=[];
  /* ONE STEP DOWN, EACH PART WITH ITS PERCENT */
  if(o.kind==='sab'){
   var top=insBySq(leaves(o)).slice(0,3);
@@ -30793,28 +30836,24 @@ function insP1Pattern(o,r){
   var fl=chain.map(function(u,i){return (i?'then ':'')+'the '+INS_WORD[u.kind]+' '+insBase(u)+' at '+fmtPct('chain',u.w);});
   cl.push(insClause(insSeg('It feeds '+fl.join(', ')+'.',
    chain.map(function(u){return 'r.'+INS_LIST[u.kind]+':'+u.nm+'.w';}),'mine',
-   {fig:chain.map(function(u){return insFig('chain',u.w);})}),2));}
- else if(o.kind==='sup')
-  cl.push(insClause(insSeg('Nothing sits above it.',['model:top'],'model'),2));
+   {fig:chain.map(function(u){return insFig('chain',u.w);})}),0));}
+ else if(o.kind==='sup'){
+  var worn=insAbove(g,traceKey('super_complex',o.nm),'mask');
+  if(worn.length)cl.push(insClause(insSeg('Nothing in the chain sits above it. It feeds the '+insAnd(worn)
+   +(worn.length===1?' mask, worn':' masks, worn')+' over points that hold its addresses.',['model:trace'],'mine'),0));
+  else cl.push(insClause(insSeg('Nothing sits above it.',['model:top'],'model'),0));}
  else
-  cl.push(insClause(insSeg('Nothing above it is joined to it yet.',['model:top'],'model'),2));
- /* ITS OWN LINE, FROM THE BOOK. A hyper complex is its family, so it quotes
-    the line and does not say it belongs to itself, which was circular. */
- if(o.kind==='sab'&&!over){
-  var def=SABDEF[KB_KEY(base)];
-  if(def&&def.q&&insOk(def.q))
-   cl.push(insClause(insBook('Its line: ',def.q,['SABDEF.'+KB_KEY(base)+'.q'],'.'),3));
-  else{var f=patFam(o); if(f&&insOk(f.d))cl.push(insClause(insSeg('It belongs to the '+f.nm+' family: '+f.d+'.',['HCX_LIB.'+f.nm+'.d'],'book'),3));}}
- else if(o.kind==='hy'){
-  var fh=patFam(o);
-  if(fh&&insOk(fh.d)){
-   if(over)cl.push(insClause(insSeg('Its family line: '+fh.d+'.',['FAM_POLE'],'model'),3));
-   else cl.push(insClause(insBook('Its line: ',fh.d,['HCX_LIB.'+fh.nm+'.d'],'.'),3));}}
- else if(o.kind==='cx'){
-  var fc=patFam(o);
-  if(fc&&insOk(fc.d))cl.push(insClause(insSeg('It belongs to the '+fc.nm+' family: '+fc.d+'.',
-   [over?'FAM_POLE':'HCX_LIB.'+fc.nm+'.d'],'book'),3));}
- return insPack(INS_HEAD[0],cl,INS_MAX[0]);}
+  cl.push(insClause(insSeg('Nothing above it is joined to it yet.',['model:top'],'model'),0));
+ cl.push(insClause(insSeg('Each step is a registration the reading made, not a cause.',['model:trace'],'model'),3));
+ return insPack(INS_HEAD[3],cl,INS_MAX[3]);}
+/* the names one step above a node on the trace graph, of one type, sorted.
+   Empty with no graph or no such node, so the reading says what the chain
+   says and never borrows what a graph would have said. */
+function insAbove(g,key,type){
+ if(!g||!key||typeof traceIsGraph!=='function'||!traceIsGraph(g))return [];
+ return traceNeighbors(g,key,'supports').filter(function(e){return e.dir==='out';})
+  .map(function(e){return traceSplit(e.key);}).filter(function(s){return s.type===type;})
+  .map(function(s){return String(s.id);}).sort();}
 
 /* the heaviest saboteur under a pattern: a complex, a hyper complex and a super
    complex have no sentence of their own, and what they run is what their
@@ -30919,11 +30958,21 @@ function insP1Fet(c,r){
   ['CHILD.'+c.nm+'.opp','S.replace.'+c.nm],'mine',p>0?{fig:[insFig('installed',p)]}:{}),0));
  cl.push(insClause(insSeg('The map points it '+insAtPlace(c.addr)+', in the '+insSeat(c.seat)+' point.',
   ['CHILD.'+c.nm+'.addr','CHILD.'+c.nm+'.seat'],'model',{place:true}),1));
- var sabs=insFetSabs(r,c.nm).slice(0,3);
- if(sabs.length)cl.push(insClause(insSeg(insAnd(sabs.map(function(s){return insBase(s)+' at '+fmtPct('chain',s.w);}))+(sabs.length===1?' runs':' run')+' on it.',
-  sabs.map(function(s){return 'r.sabs:'+s.nm+'.w';}),'mine',{fig:sabs.map(function(s){return insFig('chain',s.w);})}),1));
- else cl.push(insClause(insSeg('No saboteur runs on it yet.',['gap:sabs'],'gap'),1));
  return insPack(INS_HEAD[0],cl,INS_MAX[0]);}
+/* THE MECHANIC OF A CHILD EMOTION: the addresses that carry it, and the
+   saboteurs built on them. The saboteurs line is the one the first register
+   carried until 20 November, moved here unchanged. */
+function insP4Fet(c,r){
+ var cl=[], all=W.filter(function(n){return n.cf===c.nm;}), held=all.filter(function(n){return n.sq>=SEAT_LOADED;});
+ cl.push(insClause(insSeg('It is carried by '+all.length+' address'+(all.length===1?'':'es')+' on the map, and '
+  +(held.length?held.length+' of them '+(held.length===1?'is':'are')+' held.':'none of them is held.'),
+  ['CHILD.'+c.nm+'.nm','model:cf'],'mine'),0));
+ var sabs=insFetSabs(r,c.nm).slice(0,3);
+ if(sabs.length)cl.push(insClause(insSeg('It feeds '+insAnd(sabs.map(function(s){return insBase(s)+' at '+fmtPct('chain',s.w);}))+': '+(sabs.length===1?'that saboteur runs':'those saboteurs run')+' on it.',
+  sabs.map(function(s){return 'r.sabs:'+s.nm+'.w';}),'mine',{fig:sabs.map(function(s){return insFig('chain',s.w);})}),0));
+ else cl.push(insClause(insSeg('No saboteur runs on it yet.',['gap:sabs'],'gap'),0));
+ cl.push(insClause(insSeg('Each step is a registration the reading made, not a cause.',['model:trace'],'model'),3));
+ return insPack(INS_HEAD[3],cl,INS_MAX[3]);}
 function insP2Fet(c,r,g){
  var cl=[], v=S.charge[c.nm]||0, p=S.replace[c.nm]||0;
  var lv=W.filter(function(n){return n.cf===c.nm&&n.sq>=1;});
@@ -30965,11 +31014,25 @@ function insP1Addr(n,r){
   ['NODES.'+n.i+'.k','NODES.'+n.i+'.n','NODES.'+n.i+'.b'],'mine',{fig:insHeld('weight',n.sq)?[insFig('weight',n.sq)]:[],place:true}),0));
  if(n.a&&n.d&&insOk(n.a)&&insOk(n.d))
   cl.push(insClause(insSeg('Held clear, it reads '+insLow1(n.a)+'. Distorted, it reads '+insLow1(n.d)+'.',['NODES.'+n.i+'.a','NODES.'+n.i+'.d'],'book'),1));
+ return insPack(INS_HEAD[0],cl,INS_MAX[0]);}
+/* THE MECHANIC OF AN ADDRESS: what it belongs to and what it feeds. The
+   saboteurs line is the one the first register carried until 20 November,
+   moved here unchanged; the point's pass is seatRows' own (engine/compute.js),
+   the figure the Analytics point card prints off flSeats' same arithmetic. */
+function insP4Addr(n,r){
+ var cl=[];
+ if(n.cf){
+  var same=W.filter(function(x){return x.cf===n.cf;}).length;
+  cl.push(insClause(insSeg('It is one of the '+same+' addresses that carry '+n.cf+'.',['NODES.'+n.i+'.cf'],'model'),1));}
  var sabs=insSabsAt(r,n.i).slice(0,3);
  if(sabs.length)cl.push(insClause(insSeg('Running on it: '+insAnd(sabs.map(function(s){return insBase(s)+' at '+fmtPct('chain',s.w);}))+'.',
   sabs.map(function(s){return 'r.sabs:'+s.nm+'.w';}),'mine',{fig:sabs.map(function(s){return insFig('chain',s.w);})}),0));
  else cl.push(insClause(insSeg('No saboteur runs on it yet.',['gap:sabs'],'gap'),0));
- return insPack(INS_HEAD[0],cl,INS_MAX[0]);}
+ var row=insSeatRow(r,n.b);
+ if(row)cl.push(insClause(insSeg('It feeds the '+insSeat(n.b)+' point, which passes '+fmtPct('pass',row.pass)+' of what reaches it.',
+  ['NODES.'+n.i+'.b','r.seats'],'mine',{fig:[insFig('pass',row.pass)],place:true}),2));
+ cl.push(insClause(insSeg('Each step is a registration the reading made, not a cause.',['model:trace'],'model'),3));
+ return insPack(INS_HEAD[3],cl,INS_MAX[3]);}
 function insP2Addr(n,r,g){
  var cl=[];
  if(n.cf){
@@ -30997,7 +31060,7 @@ function insP3Addr(n,r,rel,safe){
  return insPack(INS_HEAD[2],cl,INS_MAX[2]);}
 
 /* ---------- a blueprint domain ---------- */
-function insParasDom(d,o){
+function insParasDom(d,o,g){
  /* four domains are a different key in DOMDEF, the book's own name for them */
  var key=KB_KEY(d.nm), alt=(typeof KB_RENAME!=='undefined')?KB_RENAME[key]:null;
  if(!DOMDEF[key]&&alt&&DOMDEF[KB_KEY(alt)])key=KB_KEY(alt);
@@ -31029,7 +31092,15 @@ function insParasDom(d,o){
  if(def.x&&insOk(def.x))cl3.push(insClause(insBook('Read distorted: ',insFirst(def.x),['DOMDEF.'+key+'.x'],''),1));
  cl3.push(insClause(insSeg('A release works at an address, so pick a pattern or an address to start one.',['model:release'],'model'),0));
  cl3.push(insClause(insSeg('Leaving it costs nothing. It is here next time.',['model:door'],'model'),0));
- return [insPack(INS_HEAD[0],cl1,INS_MAX[0]),insPack(INS_HEAD[1],cl2,INS_MAX[1]),insPack(INS_HEAD[2],cl3,INS_MAX[2])];}
+ /* THE MECHANIC. Built from the same slot rule as the second register, and
+    fed upward only where the trace graph climbs (engine/trace.js, domain
+    to character). No domain figure, for the reason above. */
+ var cl4=[insClause(insSeg('It is built from the '+own.length+' address'+(own.length===1?'':'es')+' whose place on the wheel falls in its share.',
+  ['DOMAINS.'+d.nm+'.nm','model:slot'],'model'),0)];
+ cl4.push(insClause(insAbove(g,traceKey('domain',d.nm),'character').length
+  ?insSeg('It feeds your character, the whole of what sits below it.',['model:trace'],'mine')
+  :insSeg('It is a selection out of your blueprint and not a measurement, so no figure is computed up from it.',['model:soul'],'model'),0));
+ return [insPack(INS_HEAD[0],cl1,INS_MAX[0]),insPack(INS_HEAD[1],cl2,INS_MAX[1]),insPack(INS_HEAD[2],cl3,INS_MAX[2]),insPack(INS_HEAD[3],cl4,INS_MAX[3])];}
 
 /* ---------- an archetype and a mask ----------
    THESE READ "Source AI has no longer reading of it so far" UNDER A CARD
@@ -31071,7 +31142,15 @@ function insParasArch(sel,r,o){
  cl3.push(insClause(insSeg(run?'A release works at an address, so open '+sab+' to start one on what bends this.'
   :'A release works at an address, so pick a pattern or an address to start one.',['model:release'],'model'),0));
  cl3.push(insClause(insSeg('Leaving it costs nothing. It is here next time.',['model:door'],'model'),0));
- return [insPack(INS_HEAD[0],cl1,INS_MAX[0]),insPack(INS_HEAD[1],cl2,INS_MAX[1]),insPack(INS_HEAD[2],cl3,INS_MAX[2])];}
+ /* THE MECHANIC: archExpr's input, and ARCHDOM's row, the table the trace
+    graph climbs from an archetype to a domain by (archDomainOf) */
+ var cl4=[insClause(insSeg('It is built from how fully it is expressed: charge held at the '+insSeat(a.b)+' point pulls it down.',
+  ['ARCH.'+a.nm+'.b','model:archexpr'],'model',{place:true}),0)];
+ var ad=(typeof archDomainOf==='function')?archDomainOf(a.nm):null;
+ cl4.push(insClause(ad&&ad.nm
+  ?insSeg('It points at the '+ad.nm+' domain, by the archetype to domain table, which is the same for everybody.',['model:archdom'],'model')
+  :insSeg('The archetype to domain table does not join it to a domain yet.',['gap:archdom'],'gap'),1));
+ return [insPack(INS_HEAD[0],cl1,INS_MAX[0]),insPack(INS_HEAD[1],cl2,INS_MAX[1]),insPack(INS_HEAD[2],cl3,INS_MAX[2]),insPack(INS_HEAD[3],cl4,INS_MAX[3])];}
 function insParasMask(sel,r,o){
  var m=(r.maskRing||[]).filter(function(x){return x.nm===sel.nm;})[0];
  if(!m)return insParasOther(sel,o);
@@ -31093,7 +31172,16 @@ function insParasMask(sel,r,o){
   :'A release works at an address, so pick a pattern or an address to start one.',
   top.length?['model:release','NODES.'+top[0].i+'.k']:['model:release'],'model',top.length?{place:true}:{}),0));
  cl3.push(insClause(insSeg('Leaving it costs nothing. It is here next time.',['model:door'],'model'),0));
- return [insPack(INS_HEAD[0],cl1,INS_MAX[0]),insPack(INS_HEAD[1],cl2,INS_MAX[1]),insPack(INS_HEAD[2],cl3,INS_MAX[2])];}
+ /* THE MECHANIC: the load's own inputs, and the one step up the trace graph
+    takes from a mask, to the first or second archetype seated under it
+    (engine/trace.js, traceAboveRead), read off the same r.pi and r.si */
+ var cl4=[insClause(insSeg('It is built from the '+all.length+' address'+(all.length===1?'':'es')+' at its points. Its load is their average charge.',
+  ['model:mask'],'model'),0)];
+ var under=[r.pi,r.si].map(function(x){return ARCH[x];}).filter(function(a,j,l){return a&&sb.indexOf(a.b)>=0&&l.indexOf(a)===j;});
+ cl4.push(insClause(under.length
+  ?insSeg('It is worn over the point of '+insAnd(under.map(function(a){return a.nm;}))+', '+(under.length===1?'an archetype':'archetypes')+' your reading leads with.',['r.pi','r.si'],'mine')
+  :insSeg('Neither archetype your reading leads with is seated under it.',['r.pi','r.si'],'mine'),1));
+ return [insPack(INS_HEAD[0],cl1,INS_MAX[0]),insPack(INS_HEAD[1],cl2,INS_MAX[1]),insPack(INS_HEAD[2],cl3,INS_MAX[2]),insPack(INS_HEAD[3],cl4,INS_MAX[3])];}
 
 /* ---------- the other kinds: a short reading, honest about the rest ---------- */
 function insLineFor(sel){
@@ -31111,62 +31199,288 @@ function insLineFor(sel){
   var s=APC.filter(function(x){return x.b===sel.nm;})[0];
   if(s&&s.d)return {t:insFirst(s.d),src:'APC.'+sel.nm+'.d'};}
  return null;}
+/* THE NOUN A SENTENCE TAKES FOR A KIND, where it is not the headline's word.
+   INS_CAP is the identity line's label and one of them is a plural, Gates,
+   the key the Laws of Action kept, so the sentence built from it read
+   "Awareness is a gates." A sentence takes the singular, and the article is
+   picked against that. */
+var INS_ONE={gates:'Law of Action',seat:'point',path:'compass',bal:'balance',atom:'imprint'};
+function insKindNoun(kind){
+ var w=INS_ONE[kind]||(INS_CAP[kind]||'Selection').toLowerCase();
+ return insArt(w)+' '+w;}
 function insParasOther(sel,o){
- var nm=sel.nm||'', word=(INS_CAP[sel.kind]||'Selection').toLowerCase();
- var lead=sel.kind==='core'?'The core is the centre of the wheel.':(nm?insCap1(nm)+' is '+insArt(word)+' '+word+'.':insCap1(word)+' is selected.');
+ var nm=sel.nm||'';
+ var lead=sel.kind==='core'?'The core is the centre of the wheel.':(nm?insCap1(nm)+' is '+insKindNoun(sel.kind)+'.':insCap1(insKindNoun(sel.kind).replace(/^an? /,''))+' is selected.');
  var cl1=[insClause(insSeg(lead,['model:'+sel.kind],'model'),0)];
- if(sel.kind==='law'&&S.law&&S.law[nm]!==undefined)
-  cl1.push(insClause(insSeg('It reads '+fmtPct('law',S.law[nm])+'.',['S.law.'+nm],'mine',{fig:[insFig('law',S.law[nm])]}),0));
  var ln=insLineFor(sel);
  if(ln&&insOk(ln.t)){
   cl1.push(insClause(insBook('The record says: ',ln.t,[ln.src],'',sel.kind==='seat'),1));}
  var cl2=[insClause(insSeg('Nothing in your entries is linked to this yet. Source AI has no longer reading of it so far.',['gap:'+sel.kind],'gap'),0)];
- var cl3=[insClause(insSeg('A release works at an address, so pick a pattern or an address to start one.',['model:release'],'model'),0),
-  insClause(insSeg('Leaving it costs nothing. It is here next time.',['model:door'],'model'),0)];
- return [insPack(INS_HEAD[0],cl1,INS_MAX[0]),insPack(INS_HEAD[1],cl2,INS_MAX[1]),insPack(INS_HEAD[2],cl3,INS_MAX[2])];}
+ var cl3=[insClause(insRouteTo(null),0),insClause(insDoorSeg(),0)];
+ var cl4=[insClause(insSeg('Source AI has no reading yet of what this one is built from.',['gap:'+sel.kind],'gap'),0)];
+ return insFour(cl1,cl2,cl3,cl4);}
+
+/* ---------- the shared pieces of the readers below ---------- */
+function insFour(c1,c2,c3,c4){
+ return [insPack(INS_HEAD[0],c1,INS_MAX[0]),insPack(INS_HEAD[1],c2,INS_MAX[1]),
+  insPack(INS_HEAD[2],c3,INS_MAX[2]),insPack(INS_HEAD[3],c4,INS_MAX[3])];}
+function insDoorSeg(){return insSeg('Leaving it costs nothing. It is here next time.',['model:door'],'model');}
+/* a seat's row off the reading, seatRows (engine/compute.js): its pass is the
+   one the Analytics point card prints, flSeats' arithmetic ported there */
+function insSeatRow(r,b){return (r.seats||[]).filter(function(s){return s.seat===b;})[0]||null;}
+/* whether a law was entered, lawIn's own answer, and its word, the thresholds
+   the law card prints (lawDrillHtml) and the point card's rows (anaSeatCard),
+   so the three readers of one law can never word it two ways */
+function insLawRead(nm){return (typeof lawIn!=='function')||lawIn(nm);}
+function insLawWord(v){return v<4?'shut':v>=7?'open':'working';}
+function insLowLaw(){
+ var L=SI.filter(function(l){return insLawRead(l.nm);});
+ return L.map(function(l,j){return {l:l,j:j};}).sort(function(a,b){return ((S.law[a.l.nm]||0)-(S.law[b.l.nm]||0))||(a.j-b.j);})
+  .map(function(z){return z.l;})[0]||null;}
+/* WHERE A RELEASE WOULD START: the heaviest address at a point, or anywhere,
+   that a release can actually open, insightRelease's own filter (a child
+   emotion mapped, at least 1 held). None of these kinds offers a release
+   itself, as the archetype and mask readers already do not, so the third
+   register names the address and the door it is opened by. */
+function insHeavyAt(b){return insBySq(W.filter(function(n){return (!b||n.b===b)&&n.cf&&n.sq>=1;}))[0]||null;}
+function insRouteTo(n,where){
+ return n?insSeg('A release works at an address, so open '+n.k+' to start one '+where+'.',['model:release','NODES.'+n.i+'.k'],'model',{place:true})
+  :insSeg('A release works at an address, so pick a pattern or an address to start one.',['model:release'],'model');}
+function insTopHeld(list){return list.filter(function(n){return insHeld('weight',n.sq);}).slice(0,3);}
+function insHeaviestSeg(top){
+ return insSeg('The heaviest '+(top.length===1?'is ':'are ')+insAnd(top.map(function(n){return n.k+' at '+fmtPct('weight',n.sq);}))+'.',
+  top.map(function(n){return 'NODES.'+n.i+'.k';}),'mine',{fig:top.map(function(n){return insFig('weight',n.sq);}),place:true});}
+function insHeldSeg(all,held,lead,src){
+ return insSeg(lead+(held.length?held.length+' of its '+all.length+' address'+(all.length===1?' is':'es '+(held.length===1?'is':'are'))+' held.'
+  :'none of its '+all.length+' address'+(all.length===1?'':'es')+' is held.'),src,'mine',{place:true});}
+
+/* ---------- a law and a point ----------
+   THESE FELL THROUGH TO insParasOther, which gave both the same gap line for
+   the second register and the same "pick a pattern" for the third, while the
+   law card and the point card beside them (lawDrillHtml in ui/drills.js,
+   anaLawCard and anaSeatCard in ui/analytics.js) already printed the law's
+   state, its point and how much is held there, and the point's pass, its
+   held addresses and its laws. Every figure and word below is one those cards
+   already print off the same record, through the same helpers, so the rail and
+   the cards cannot disagree. A law the person has not answered sits at the
+   seed, and the card prints no figure for it (round J13), so neither does
+   this, nor the headline. */
+function insParasLaw(sel,r,o){
+ var l=SI.filter(function(x){return x.nm===sel.nm;})[0]; if(!l)return insParasOther(sel,o);
+ var nm=l.nm, bn=l.b, read=insLawRead(nm), v=S.law[nm];
+ var all=insBySq(W.filter(function(n){return n.b===bn;})), held=all.filter(function(n){return n.sq>=SEAT_LOADED;});
+ var cl1=[insClause(insSeg(nm+' is a Law of Moral Integrity, seated at the '+insSeat(bn)+' point.',['SI.'+nm+'.b'],'model',{place:true}),0)];
+ cl1.push(insClause(read?insSeg('It reads '+fmtPct('law',v)+'.',['S.law.'+nm],'mine',{fig:[insFig('law',v)]})
+  :insSeg('It is not answered yet.',['gap:law'],'gap'),0));
+ var ln=insLineFor(sel);
+ if(ln&&insOk(ln.t))cl1.push(insClause(insBook('The record says: ',ln.t,[ln.src],''),1));
+ var cl2=[];
+ if(read)cl2.push(insClause(insSeg(v<4?'This law is shut. A shut law lets more charge stay held at its point.'
+  :v>=7?'This law is open. It is one of the things carrying your coherence.'
+  :'It is working but not strong. It holds in some places and slips in others.',['S.law.'+nm],'mine'),0));
+ else cl2.push(insClause(insSeg('Nothing is answered for it yet, so how it runs is not read.',['gap:law'],'gap'),0));
+ cl2.push(insClause(insHeldSeg(all,held,'At its point, ',['SI.'+nm+'.b','model:slot']),0));
+ var top=insTopHeld(held);
+ if(top.length)cl2.push(insClause(insHeaviestSeg(top),1));
+ var side=SI.filter(function(x){return x.b===bn&&x.nm!==nm;});
+ if(side.length)cl2.push(insClause(insSeg('Seated beside it: '+insAnd(side.map(function(x){
+  return x.nm+' '+(insLawRead(x.nm)?insLawWord(S.law[x.nm]):'not read yet');}))+'.',side.map(function(x){return 'SI.'+x.nm+'.nm';}),'mine'),2));
+ var cl3=[insClause(insRouteTo(insHeavyAt(bn),'at this law’s point'),0),insClause(insDoorSeg(),0)];
+ var cl4=[insClause(insSeg('It is built from your answers to its questions, each read from nothing to ten.',['model:law'],'model'),0),
+  insClause(insSeg('It feeds your coherence: CQ is the '+SI.length+' laws added together, and this is one of them.',['model:cq'],'model'),0),
+  insClause(insSeg('It also sets the relief at the '+insSeat(bn)+' point, so a shut law lets more charge stay held there.',['SI.'+nm+'.b','model:relief'],'model',{place:true}),1)];
+ return insFour(cl1,cl2,cl3,cl4);}
+function insParasSeat(sel,r,o){
+ var bn=sel.nm, ap=APC.filter(function(x){return x.b===bn;})[0], row=insSeatRow(r,bn);
+ if(!ap||!row)return insParasOther(sel,o);
+ var all=insBySq(W.filter(function(n){return n.b===bn;})), held=all.filter(function(n){return n.sq>=SEAT_LOADED;});
+ var laws=SI.filter(function(x){return x.b===bn;});
+ var cl1=[insClause(insSeg('The '+insSeat(bn)+' point is one of the '+BANDS.length+' assemblage points.',['APC.'+bn+'.b'],'model',{place:true}),0),
+  insClause(insSeg('It passes '+fmtPct('pass',row.pass)+' of what reaches it.',['r.seats'],'mine',{fig:[insFig('pass',row.pass)]}),0)];
+ var ln=insLineFor(sel);
+ if(ln&&insOk(ln.t))cl1.push(insClause(insBook('The record says: ',ln.t,[ln.src],'',true),1));
+ var cl2=[insClause(insHeldSeg(all,held,'Here, ',['APC.'+bn+'.b','model:slot']),0)];
+ var top=insTopHeld(held);
+ if(top.length)cl2.push(insClause(insHeaviestSeg(top),1));
+ if(laws.length)cl2.push(insClause(insSeg((laws.length===1?'The law seated here: ':'The laws seated here: ')+insAnd(laws.map(function(x){
+  return x.nm+' '+(insLawRead(x.nm)?insLawWord(S.law[x.nm]):'not read yet');}))+'.',laws.map(function(x){return 'SI.'+x.nm+'.nm';}),'mine'),1));
+ var cl3=[insClause(insRouteTo(insHeavyAt(bn),'at this point'),0),insClause(insDoorSeg(),0)];
+ var cl4=[insClause(insSeg('It is built from its '+all.length+' addresses: the charge they hold sets how much it passes.',['model:pass'],'model'),0),
+  insClause(insSeg('It feeds Flow. The points pass signal in series, root upward, so what it does not pass, no point above it receives.',['model:flow'],'model'),0),
+  insClause(insSeg(row.held?'It holds enough now to close the column here.':'It is not holding enough to close the column.',['r.seats'],'mine'),1)];
+ if(laws.length)cl4.push(insClause(insSeg('The laws seated here feed it too: a shut law lets more charge stay held at it.',['model:relief'],'model'),2));
+ return insFour(cl1,cl2,cl3,cl4);}
+
+/* ---------- the six kinds with no reader of their own ----------
+   The core, the Compass, Balance, an imprint, a Law of Action and a cone of
+   the poles all read insParasOther's gap lines, beside a drill that printed
+   the real figures (runCoreDrill, runCompassDrill, runBalDrill, runAtomDrill,
+   runGatesDrill and runPoleDrill in ui/drills.js). Each reader below says what
+   its drill already says, off the same engine reads: compute()'s CQ, EX, PULL,
+   tier and balance, TIER_BY, verpRead and VERP_VS, MIRROR through compassAt,
+   and the address an imprint landed on. The third register routes to a real
+   release the same way the archetype and mask readers do. */
+function insParasCore(r){
+ var low=insLowLaw(), cl1=[], cl2=[];
+ cl1.push(insClause(insSeg('The core is your coherence, CQ, at '+fmtPct('cq',r.CQ)+(r.tier?', which reads '+r.tier+'.':'.'),
+  ['r.CQ','r.tier'],'mine',{fig:[insFig('cq',r.CQ)]}),0));
+ var td=r.tier&&TIER_BY[r.tier]?TIER_BY[r.tier].def:'';
+ if(td&&insOk(td))cl1.push(insClause(insBook('The record says: ',td,['TIER_BY.'+r.tier+'.def'],''),1));
+ if(!r.complete)cl1.push(insClause(insSeg((SI.length-(r.answered||0))+' of the '+SI.length+' laws are still to answer, and each counts nothing until it is.',['r.answered'],'mine'),0));
+ var pl=fmtPct('pull',r.PULL);
+ cl2.push(insClause(insSeg('Expression is '+fmtPct('expression',r.EX)+', coherence times what the shadow leaves'+(pl!==PCT_DASH?', with the shadow taking '+pl:'')+'.',
+  ['r.EX','r.PULL'],'mine',{fig:[insFig('expression',r.EX)].concat(pl!==PCT_DASH?[insFig('pull',r.PULL)]:[])}),0));
+ if(low)cl2.push(insClause(insSeg('Your lowest law is '+low.nm+' at '+fmtPct('law',S.law[low.nm])+', seated at the '+insSeat(low.b)+' point.',
+  ['S.law.'+low.nm,'SI.'+low.nm+'.b'],'mine',{fig:[insFig('law',S.law[low.nm])],place:true}),0));
+ cl2.push(insClause(insSeg('Coherence is the alignment between what arrives, the way you read it, the intention behind it and the action that follows.',['model:core'],'model'),1));
+ var cl3=[insClause(insRouteTo(low?insHeavyAt(low.b):insHeavyAt(),low?'at that law’s point':'where the most is held'),0),insClause(insDoorSeg(),0)];
+ var cl4=[insClause(insSeg('It is built from the '+SI.length+' laws, each read from nothing to ten, added together.',['model:cq'],'model'),0),
+  insClause(insSeg('The shadow does not touch it. It pulls on expression instead.',['model:pull'],'model'),0),
+  insClause(insSeg('It feeds the word your reading carries and the place the compass marks.',['model:tier'],'model'),1)];
+ return insFour(cl1,cl2,cl3,cl4);}
+/* the axes the Compass and the cones read, each where compassAt places it,
+   the unanswered ones left out the way the mirror drill prints them unread */
+function insAxes(r){
+ return MIRROR.map(function(m){return {m:m,pos:compassAt(insSeatRow(r,m.seat))};});}
+function insParasPath(r){
+ var cq=Math.max(0,Math.min(100,r.CQ)), cl1=[], cl2=[];
+ cl1.push(insClause(insSeg('The compass places your coherence at '+fmtPct('cq',cq)+', on a line from nothing at the base to '+fmtPct('cq',100)+' at the crown.',
+  ['r.CQ'],'mine',{fig:[insFig('cq',cq),insFig('cq',100)]}),0));
+ if(r.tier)cl1.push(insClause(insSeg('The word there is '+r.tier+'.',['r.tier'],'mine'),0));
+ cl2.push(insClause(insSeg('Above '+fmtPct('cq',MEDIAN)+' your energy builds more than it costs. Below it, it costs more than it builds.',
+  ['model:median'],'model',{fig:[insFig('cq',MEDIAN)]}),0));
+ if(r.complete&&cq>=MEDIAN_LO&&cq<=MEDIAN_HI)cl2.push(insClause(insSeg('It sits in the median range, '+fmtPct('cq',MEDIAN_LO)+' to '+fmtPct('cq',MEDIAN_HI)
+  +', where the reading crosses the line both ways.',['r.CQ','model:median'],'mine',{fig:[insFig('cq',MEDIAN_LO),insFig('cq',MEDIAN_HI)]}),1));
+ var ax=insAxes(r).filter(function(x){return x.pos!=null;}).sort(function(a,b){return a.pos-b.pos;}), lo=ax[0];
+ if(lo)cl2.push(insClause(insSeg('Your lowest axis is '+lo.m.q+', at '+fmtPct('axis',lo.pos)+', between '+lo.m.dn+' at nought and '+lo.m.up+' at a hundred.',
+  ['MIRROR.'+lo.m.k+'.q','r.seats'],'mine',{fig:[insFig('axis',lo.pos)]}),1));
+ var cl3=[insClause(insRouteTo(lo?insHeavyAt(lo.m.seat):insHeavyAt(),lo?'on that axis’s point':'where the most is held'),0),insClause(insDoorSeg(),0)];
+ var cl4=[insClause(insSeg('It is built from your coherence alone: the marker is CQ, and how far it drifts is the range it moves in.',['model:compass'],'model'),0),
+  insClause(insSeg('Each axis is read from what is held at its point and the integrity measured there, never asked.',['model:axis'],'model'),1)];
+ return insFour(cl1,cl2,cl3,cl4);}
+function insParasBal(r){
+ var b=r.balance||{}, cl1=[], cl2=[];
+ var heavy=function(list){return list.filter(function(c){return (S.charge[c]||0)>0;})
+  .map(function(c,j){return {c:c,j:j};}).sort(function(x,y){return ((S.charge[y.c]||0)-(S.charge[x.c]||0))||(x.j-y.j);}).map(function(z){return z.c;})[0]||null;};
+ cl1.push(insClause(insSeg('Balance is which way your field discharges, outward or inward.',['model:balance'],'model'),0));
+ cl1.push(insClause(b.read?insSeg(b.lean===0?'It is even.':'It leans '+(b.lean>0?'outward':'inward')+'.',['r.balance'],'mine')
+  :insSeg('Neither side holds enough yet, so no direction is named.',['gap:balance'],'gap'),0));
+ cl2.push(insClause(insSeg('The '+(OUTWARD.length+INWARD.length)+' axes split by the direction the body takes under them. '+OUTWARD.length+' discharge outward and '
+  +INWARD.length+' withdraw inward, so the means are what compare.',['model:balance'],'model'),1));
+ if(b.read)cl2.push(insClause(insSeg('Outward mean '+fmtPct('charge',b.outMean)+' against inward mean '+fmtPct('charge',b.inMean)+'.',['r.balance'],'mine',
+  {fig:[insFig('charge',b.outMean),insFig('charge',b.inMean)]}),0));
+ var ho=heavy(OUTWARD), hi=heavy(INWARD), bits=[];
+ if(ho)bits.push('outward is '+ho+' at '+fmtPct('charge',S.charge[ho]));
+ if(hi)bits.push((ho?'inward ':'inward is ')+hi+' at '+fmtPct('charge',S.charge[hi]));
+ if(bits.length)cl2.push(insClause(insSeg('The heaviest '+bits.join(', and ')+'.',[ho,hi].filter(Boolean).map(function(c){return 'S.charge.'+c;}),'mine',
+  {fig:[ho,hi].filter(Boolean).map(function(c){return insFig('charge',S.charge[c]);})}),1));
+ var lean=b.read&&b.lean!==0?(b.lean>0?ho:hi):heavy(OUTWARD.concat(INWARD));
+ var can=lean&&insightRelease({kind:'fet',nm:lean},r,{}).ok;
+ var cl3=[insClause(can?insSeg('A release works at an address, so open '+lean+' to start one '+(b.read&&b.lean!==0?'on the side it leans.':'on the heaviest charge.'),
+  ['model:release','CHILD.'+lean+'.nm'],'model'):insRouteTo(null),0),insClause(insDoorSeg(),0)];
+ var cl4=[insClause(insSeg('It is built from the same charges every child emotion holds, split by direction.',['model:balance'],'model'),0),
+  insClause(insSeg('It names a direction and is never added into coherence, which is the laws alone.',['model:cq'],'model'),0)];
+ return insFour(cl1,cl2,cl3,cl4);}
+/* AN IMPRINT is one entry's charge at one address. The drill knows which, and
+   says so with insDoor's third argument now; the entry's own words stay in
+   the drill, quoted whole, because the composer quotes nothing a person
+   wrote (the header above). */
+function insParasAtom(sel,r,o){
+ var n=sel.i!=null?BY[sel.i]:null; if(!n)return insParasOther(sel,o);
+ var cl1=[], cl2=[];
+ cl1.push(insClause(insSeg('This imprint is charge one of your journal entries placed at '+n.k+'.',['NODES.'+n.i+'.k'],'mine'),0));
+ cl1.push(insClause(insSeg(n.k+' sits '+insNodeAt(n)+(n.cf?', in the '+insSeat(n.b)+' point.':'.'),['NODES.'+n.i+'.n','NODES.'+n.i+'.b'],'model',{place:true}),1));
+ cl1.push(insClause(insSeg('The reading placed it from your words, so it is inferred, not something you named.',['model:imprint'],'model'),2));
+ cl2.push(insClause(insHeld('weight',n.sq)?insSeg(n.k+' now holds '+fmtPct('weight',n.sq)+' in all.',['NODES.'+n.i+'.k'],'mine',{fig:[insFig('weight',n.sq)],place:true})
+  :insSeg('Nothing is left held at '+n.k+' after the opposite.',['NODES.'+n.i+'.k'],'mine',{place:true}),0));
+ if(n.cf)cl2.push(insClause(insSeg('It carries '+n.cf+', held at '+fmtPct('charge',S.charge[n.cf]||0)+'.',['S.charge.'+n.cf],'mine',{fig:[insFig('charge',S.charge[n.cf]||0)]}),1));
+ var cl3=[insClause(n.cf&&n.sq>=1?insRouteTo(n,'there'):insSeg('This address holds too little to open a release.',['gap:release'],'gap'),0),insClause(insDoorSeg(),0)];
+ var sabs=insSabsAt(r,n.i).slice(0,3);
+ var cl4=[insClause(insSeg('It is built from one entry in your journal, read word by word.',['model:imprint'],'model'),0),
+  insClause(insSeg('It feeds the weight at '+n.k+(n.cf?' and the charge on '+n.cf:'')+'.',['NODES.'+n.i+'.k'],'model',{place:true}),0)];
+ if(sabs.length)cl4.push(insClause(insSeg('Running on that address: '+insAnd(sabs.map(function(s){return insBase(s)+' at '+fmtPct('chain',s.w);}))+'.',
+  sabs.map(function(s){return 'r.sabs:'+s.nm+'.w';}),'mine',{fig:sabs.map(function(s){return insFig('chain',s.w);})}),1));
+ cl4.push(insClause(insSeg('Each step is a registration the reading made, not a cause.',['model:trace'],'model'),3));
+ return insFour(cl1,cl2,cl3,cl4);}
+/* A LAW OF ACTION. The drill opens it by key and the tests by name, so both
+   find it. "Nothing read yet" only when nothing was, the drill's own rule. */
+function insGate(nm){return verpRead().filter(function(x){return x.k===nm||x.nm===nm;})[0]||null;}
+function insParasGates(sel,r,o){
+ var v=insGate(sel.nm); if(!v)return insParasOther(sel,o);
+ var V=verpRead(), evid=V.some(function(x){return x.n>0;}), up=v.side==='higher';
+ var vs=V.filter(function(x){return x.k===VERP_VS[v.k];})[0], cl1=[], cl2=[];
+ cl1.push(insClause(insSeg(v.nm+' is '+insKindNoun('gates')+', a move of '+(up?'right':'wrong')+' action.',['VERP.'+v.k+'.side'],'model'),0));
+ cl1.push(insClause(v.n?insSeg('It is '+fmtPct('gate',v.pct)+' of every Law of Action read in your stories.',['model:verp'],'mine',{fig:[insFig('gate',v.pct)]})
+  :insSeg(evid?'No sentence of yours has run through it yet.':'Nothing read yet, so no sentence of yours has run through it.',['gap:verp'],'gap'),0));
+ if(insOk(v.d))cl2.push(insClause(insBook('What it sounds like: ',v.d,['VERP.'+v.k+'.d'],'.'),0));
+ cl2.push(insClause(insSeg(up?'It lets the feeling pass without sticking.':'It makes the feeling stick in your body as charge.',['VERP.'+v.k+'.side'],'model'),0));
+ if(vs)cl2.push(insClause(insSeg(vs.nm+' stands across from it'+(vs.n?', at '+fmtPct('gate',vs.pct):'')+'.',['VERP.'+vs.k+'.nm'],'mine',
+  vs.n?{fig:[insFig('gate',vs.pct)]}:{}),1));
+ var cl3=[insClause(insRouteTo(insHeavyAt(),'where the most is held'),0),insClause(insDoorSeg(),0)];
+ var cl4=[insClause(insSeg('It is built from the sentences in your stories that match its cues'+(v.n?', '+v.n+' so far':'')+'.',['model:verp'],'mine'),0),
+  insClause(insSeg('It feeds one share of the '+V.length+' Laws of Action. Nothing you are shown is multiplied by it, and coherence is the laws alone.',['model:verp'],'model'),0)];
+ return insFour(cl1,cl2,cl3,cl4);}
+function insParasPole(sel,r){
+ var up=!/downward/i.test(sel.nm||''), ax=insAxes(r), on=ax.filter(function(x){return x.pos!=null;}), cl1=[], cl2=[];
+ cl1.push(insClause(insSeg(up?'The upward cone is the '+MIRROR.length+' qualities at full expression.'
+  :'The downward cone is the same '+MIRROR.length+' qualities at full inversion.',['model:pole'],'model'),0));
+ cl1.push(insClause(insSeg('They are behaviours, not entities, and coordinates, not a summit.',['model:pole'],'model'),1));
+ var byPos=on.slice().sort(function(a,b){return a.pos-b.pos;}), near=up?byPos[byPos.length-1]:byPos[0], far=up?byPos[0]:byPos[byPos.length-1];
+ if(near){
+  cl2.push(insClause(insSeg('You sit nearest full '+(up?'expression':'inversion')+' on '+near.m.q+', at '+fmtPct('axis',near.pos)+', toward '+(up?near.m.up:near.m.dn)+'.',
+   ['MIRROR.'+near.m.k+'.q','r.seats'],'mine',{fig:[insFig('axis',near.pos)]}),0));
+  if(far&&far!==near)cl2.push(insClause(insSeg('And furthest on '+far.m.q+', at '+fmtPct('axis',far.pos)+'.',['MIRROR.'+far.m.k+'.q','r.seats'],'mine',{fig:[insFig('axis',far.pos)]}),1));}
+ else cl2.push(insClause(insSeg('No axis is answered yet, so nothing places you on one.',['gap:axis'],'gap'),0));
+ var open=ax.length-on.length;
+ if(near&&open)cl2.push(insClause(insSeg(open+(open===1?' axis is':' axes are')+' not answered yet.',['gap:axis'],'gap'),2));
+ var lo=byPos[0];
+ var cl3=[insClause(insRouteTo(lo?insHeavyAt(lo.m.seat):insHeavyAt(),lo?'on the point of your lowest axis':'where the most is held'),0),insClause(insDoorSeg(),0)];
+ var cl4=[insClause(insSeg('It is built from each axis’s point: the charge held there and the integrity of the laws seated there place you on it.',['model:axis'],'model'),0),
+  insClause(insSeg('It is read rather than asked, and it is not a verdict.',['model:axis'],'model'),0)];
+ return insFour(cl1,cl2,cl3,cl4);}
 
 /* ============================================================
-   THE PAGES. One per rung: the selection, then its direct parts heaviest
-   first, up to three, then its parent. A child emotion pages through the
-   saboteurs that run on it. A page with no data is not drawn, so there is
-   never a dead dot. The dots page into the next record, never into new
-   prose, and paging never changes the selection.
+   THE PAGES. One per register, in his order: what it is, how it works, the
+   behaviour, the mechanic. The dots page down through one selection and
+   never change it. Until 20 November they paged sideways, into the
+   selection's parts and its parent (insPageSels, gone with that): those
+   records are named now, with their percents, in the fourth register, and
+   each is one press away in the stack below, which is where a selection is
+   changed.
+
+   WITH THE SAFETY CHECK ON, the behaviour register is the safety line alone
+   and it is the first page, so the line is never behind a dot.
    ============================================================ */
 function insTitle(sel,r){
  if(INS_LIST[sel.kind]){var p=insFind(r,sel.kind,sel.nm);return p?insBase(p):sel.nm;}
- if(sel.kind==='addr'){var n=BY[sel.i];return n?n.k:'';}
+ if(sel.kind==='addr'||(sel.kind==='atom'&&sel.i!=null)){var n=BY[sel.i];return n?n.k:'';}
+ if(sel.kind==='gates'){var v=insGate(sel.nm);if(v)return v.nm;}
  return sel.nm||INS_CAP[sel.kind]||'';}
-function insSelKey(sel){return sel?sel.kind+':'+(sel.kind==='addr'?sel.i:(sel.nm||'')):'';}
+/* an imprint is keyed by its address, so a second imprint opened is a new
+   selection and starts on its first page */
+function insSelKey(sel){return sel?sel.kind+':'+(sel.kind==='addr'||(sel.kind==='atom'&&sel.i!=null)?sel.i:(sel.nm||'')):'';}
 function insParas(sel,r,g,o){
  o=o||{};
- var safe=!!o.safe, rel=insightRelease(sel,r,o);
+ var safe=!!o.safe, rel=insightRelease(sel,r,o), ps;
  if(INS_LIST[sel.kind]){
   var p=insFind(r,sel.kind,sel.nm); if(!p)return null;
-  return [insP1Pattern(p,r),insP2Pattern(p,r,g),insP3Pattern(p,r,rel,safe)];}
+  return [insP1Pattern(p,r),insP2Pattern(p,r,g),insP3Pattern(p,r,rel,safe),insP4Pattern(p,r,g)];}
  if(sel.kind==='fet'){
   var c=CHILD.filter(function(x){return x.nm===sel.nm;})[0]; if(!c)return null;
-  return [insP1Fet(c,r),insP2Fet(c,r,g),insP3Fet(c,r,rel,safe)];}
+  return [insP1Fet(c,r),insP2Fet(c,r,g),insP3Fet(c,r,rel,safe),insP4Fet(c,r)];}
  if(sel.kind==='addr'){
   var n=BY[sel.i]; if(!n)return null;
-  return [insP1Addr(n,r),insP2Addr(n,r,g),insP3Addr(n,r,rel,safe)];}
+  return [insP1Addr(n,r),insP2Addr(n,r,g),insP3Addr(n,r,rel,safe),insP4Addr(n,r)];}
  if(sel.kind==='dom'){
   var d=DOMAINS.filter(function(x){return x.nm===sel.nm;})[0]; if(!d)return null;
-  var ps=insParasDom(d,o); if(safe)ps[2]=insSafeP3(); return ps;}
- var ps2=sel.kind==='arch'?insParasArch(sel,r,o):sel.kind==='mask'?insParasMask(sel,r,o):insParasOther(sel,o); if(safe)ps2[2]=insSafeP3(); return ps2;}
-function insPageSels(sel,r){
- var out=[], p, up;
- if(INS_LIST[sel.kind]){
-  p=insFind(r,sel.kind,sel.nm); if(!p)return out;
-  var parts=p.kind==='sab'
-   ?insBySq(leaves(p)).slice(0,3).map(function(n){return {sel:{kind:'addr',i:n.i},rung:'part'};})
-   :insByW(p.parts).slice(0,3).map(function(x){return {sel:{kind:x.kind,nm:x.nm},rung:'part'};});
-  out=out.concat(parts);
-  up=insUp(p,r); if(up)out.push({sel:{kind:up.kind,nm:up.nm},rung:'parent'});}
- else if(sel.kind==='fet'){
-  out=insFetSabs(r,sel.nm).slice(0,3).map(function(s){return {sel:{kind:'sab',nm:s.nm},rung:'part'};});}
- else if(sel.kind==='addr'){
-  out=insSabsAt(r,sel.i).slice(0,3).map(function(s){return {sel:{kind:'sab',nm:s.nm},rung:'parent'};});}
- return out;}
+  ps=insParasDom(d,o,g);}
+ else{
+  var K={arch:insParasArch,mask:insParasMask,law:insParasLaw,seat:insParasSeat,gates:insParasGates,atom:insParasAtom};
+  ps=K[sel.kind]?K[sel.kind](sel,r,o)
+   :sel.kind==='core'?insParasCore(r):sel.kind==='path'?insParasPath(r):sel.kind==='bal'?insParasBal(r)
+   :sel.kind==='pole'?insParasPole(sel,r):insParasOther(sel,o);}
+ if(safe)ps[2]=insSafeP3();
+ return ps;}
 /* THE ONE ENTRY. sel is {kind, nm} or {kind:'addr', i}. Returns
    {ok, id, pages, rel, safe}, or {ok:false, why} when nothing can be read:
    an unread record, a pattern that is no longer running. */
@@ -31183,7 +31497,8 @@ function insightRead(sel,r,g,o){
  if(obj)fig=fmtPct('chain',obj.w);
  else if(sel.kind==='addr'&&BY[sel.i])fig=fmtPct('weight',BY[sel.i].sq);
  else if(sel.kind==='fet')fig=fmtPct('charge',S.charge[sel.nm]||0);
- else if(sel.kind==='law'&&S.law&&S.law[sel.nm]!==undefined)fig=fmtPct('law',S.law[sel.nm]);
+ /* an unanswered law sits at the seed, and its card prints no figure for it */
+ else if(sel.kind==='law'&&S.law&&S.law[sel.nm]!==undefined&&insLawRead(sel.nm))fig=fmtPct('law',S.law[sel.nm]);
  /* MASK AND ARCHETYPE HAD NO FIGURE HERE, round <ana-squarified-treemap>: the
     headline carried a figure for a pattern, an address, a fetter and a law,
     and nothing for the two kinds a squarified cell can now open straight into
@@ -31205,17 +31520,11 @@ function insightRead(sel,r,g,o){
   var ai=-1; ARCH.forEach(function(a,i){if(a.nm===sel.nm)ai=i;});
   if(ai>=0)fig=fmtPct('archetype',archExpr(ai));}
  var title=insTitle(sel,r);
- var pages=[{key:insSelKey(sel),sel:sel,title:title,rung:'self',
-  tip:'Page 1: '+title+', what you picked',paras:paras}];
- insPageSels(sel,r).forEach(function(ps){
-  var pp=insParas(ps.sel,r,g,o); if(!pp)return;
-  var t=insTitle(ps.sel,r);
-  pages.push({key:insSelKey(ps.sel),sel:ps.sel,title:t,rung:ps.rung,paras:pp,
-   tip:ps.rung==='parent'?t+', what this feeds':'Page '+(pages.length+1)+': '+t+', a part of this'});});
- pages.forEach(function(pg,i){
-  pg.aria='Page '+(i+1)+' of '+pages.length+', '+pg.title;
-  if(pg.rung==='parent')pg.tip='Page '+(i+1)+': '+pg.title+', what this feeds';
-  else if(pg.rung==='part')pg.tip='Page '+(i+1)+': '+pg.title+', a part of this';});
+ var order=o.safe?[2,0,1,3]:[0,1,2,3];
+ var pages=order.map(function(j,i){
+  return {key:insSelKey(sel)+'#'+INS_REG[j],sel:sel,title:title,reg:INS_REG[j],paras:[paras[j]],
+   aria:'Page '+(i+1)+' of '+order.length+', '+INS_REG_NAME[j]+', '+title,
+   tip:'Page '+(i+1)+': '+INS_REG_NAME[j]+' of '+title};});
  return {ok:true,safe:!!o.safe,id:{key:insSelKey(sel),title:title,kindWord:kindWord,fig:fig,
   over:!!(obj&&obj.over)},pages:pages,rel:insightRelease(sel,r,o)};}
 /* the words of one paragraph or page, plain, for the voice and for the tests.
@@ -46958,7 +47267,7 @@ if(typeof module!=='undefined'&&module.exports){
                  srcVet:srcVet, srcVetSay:srcVetSay, srcChoose:srcChoose, qcFamilyOf:qcFamilyOf, srcFamilyCands:srcFamilyCands,
                  SRC_RESTATE:SRC_RESTATE, srcRestate:srcRestate,
   /* insight */  insightRead:insightRead, insightRelease:insightRelease, insightResolve:insightResolve,
-                 insightText:insightText, INS_HEAD:INS_HEAD, INS_MAX:INS_MAX, INS_LIST:INS_LIST,
+                 insightText:insightText, INS_HEAD:INS_HEAD, INS_MAX:INS_MAX, INS_LIST:INS_LIST, INS_REG:INS_REG,
                  INS_WORD:INS_WORD, INS_CAP:INS_CAP, patFam:patFam,
   /* undo */     undoPush:undoPush, undoPop:undoPop, undoDepth:undoDepth,
                  redoPop:redoPop, redoDepth:redoDepth, redoPeek:redoPeek,
@@ -47003,7 +47312,7 @@ if(typeof module!=='undefined'&&module.exports){
                  ageFinding:ageFinding, AGE_WORKED:AGE_WORKED,
   /* compass */  MIRROR:MIRROR, PATHS:PATHS, MASTERS:MASTERS, BLUEPRINT:BLUEPRINT, CIRCLES:CIRCLES,
                  CASCADE:CASCADE, DESCENT:DESCENT, DESCENT_REFER:DESCENT_REFER,
-                 mirrorAt:mirrorAt, darkRead:darkRead, circleAt:circleAt,
+                 mirrorAt:mirrorAt, compassAt:compassAt, darkRead:darkRead, circleAt:circleAt,
                  descentStep:descentStep, descentHeld:descentHeld,
                  DARK_MAL:DARK_MAL, DARK_CQ:DARK_CQ,
                  GOVERN:GOVERN, quadrant:quadrant, outwardShare:outwardShare, organisedShare:organisedShare, ORG_W:ORG_W,
@@ -98070,7 +98379,9 @@ function runXYZDrill(){
    whole and not summarised, and the address it landed on is named with what
    it is standing on and what it costs. */
 function runAtomDrill(n,x){
- insDoor('atom','Imprint');
+ /* the address goes with it, so Insight reads the imprint that is open and
+    not one word that is the same for every imprint (insParasAtom) */
+ insDoor('atom','Imprint',n.i);
  var d=''; try{d=new Date(x.t).toLocaleDateString(undefined,
    {year:'numeric',month:'long',day:'numeric'});}catch(e){d='';}
  var cf=CHILD.filter(function(y){return y.nm===n.cf;})[0];
@@ -99407,7 +99718,11 @@ function smpSayHtml(){
  if(!out||!out.ok)return '';
  return '<div class="smp-say" id="smpsay" aria-live="polite">'
   +'<div class="ins-mk">'+srcMark()+'<span>Source AI\'s reading of '+esc(out.id.title)+'</span></div>'
-  +out.pages[0].paras.map(insParaHtml).join('')+'</div>';}
+  /* the first three registers in the order the rail pages them. pages[0] was
+     the whole reading while a page held three paragraphs; since 20 November a
+     page holds one register, and this panel has no dots to page with, so it
+     prints the three it printed before. The mechanic stays on the rail. */
+  +out.pages.filter(function(pg){return pg.reg!=='mechanic';}).map(function(pg){return pg.paras[0];}).map(insParaHtml).join('')+'</div>';}
 /* IMPRESSIONS UNDERNEATH, filtered to this node's own addresses. Same
    data impRender already draws from (ST_PARSED.imprints), not a
    second imprint source. */
@@ -115070,10 +115385,14 @@ function insParaHtml(p){
  return '<p class="ins-p src-ai"><b>'+esc(p.h)+'</b> '
   +p.segs.map(insSegHtml).join(' ')+'</p>';}
 /* THE FIVE-DOT RULE IN ONE PLACE: the rail never offers a page that has no
-   data, so a dot always leads somewhere */
+   data, so a dot always leads somewhere. A page is one register since 20
+   November (engine/insight.js, THE FOUR REGISTERS), and carries its key, so
+   anything looking for the behaviour or the mechanic finds it by name and
+   never by where it happens to sit: with the safety check on, the behaviour
+   is the first page and not the third. */
 function insPagesHtml(out){
  return '<div class="ins-pgs">'+out.pages.map(function(pg,i){
-  return '<div class="ins-pg" data-pg="'+i+'"'+(i===INS_PAGE?' data-on="1"':' aria-hidden="true"')+'>'
+  return '<div class="ins-pg" data-pg="'+i+'" data-reg="'+esc(pg.reg||'')+'"'+(i===INS_PAGE?' data-on="1"':' aria-hidden="true"')+'>'
    +pg.paras.map(insParaHtml).join('')+'</div>';}).join('')+'</div>';}
 function insDotsHtml(out){
  if(out.pages.length<2)return '';
@@ -117747,5 +118066,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="008590279"></div>
+<div id="eof" hidden data-len="008618629"></div>
 </body></html>

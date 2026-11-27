@@ -2102,7 +2102,9 @@ const tapped=await tapPg.evaluate(()=>{
 ok(!tapped.none.psum&&!tapped.none.person,'the blueprint domain card is not on the rail');
 ok(tapped.none.head==='Insight','the rail opens on the word Insight, got '+tapped.none.head);
 ok(tapped.name===tapped.dom&&tapped.kind==='Blueprint domain','a domain that is selected is read by Insight, '+JSON.stringify({n:tapped.name,k:tapped.kind}));
-ok(tapped.paras===3,'in three paragraphs, got '+tapped.paras);
+/* one register a page since 20 November, his "not compressed insight on one
+   page": the page in view is What it is, and the dots step down the other three */
+ok(tapped.paras===1,'one register on the page in view, got '+tapped.paras);
 ok(tapped.full,'and the full card still opens in Selection: the blueprint domain, its cluster and its clear or distorted read');
 await tapPg.close();
 

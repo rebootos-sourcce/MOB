@@ -30,7 +30,11 @@
    ============================================================ */
 const E=require(require('path').resolve(process.env.ENGINE||'engine.js'));
 const {S,CHARGES,PEOPLE,SINAMES,LAWSET,compute,buildSoul,fmtPct,PCT_DASH,CHILD,W,BY,NODES,
- insightRead,insightRelease,insightResolve,insightText,INS_HEAD,INS_MAX,INS_LIST,CRISIS_SAY}=E;
+ insightRead,insightRelease,insightResolve,insightText,INS_HEAD,INS_MAX,INS_LIST,INS_REG,CRISIS_SAY}=E;
+/* the register a page holds, by its key, so a header and a ceiling are read
+   for the register and never for where the page happens to sit */
+const REG=pg=>INS_REG.indexOf(pg.reg);
+const pageOf=(out,reg)=>out.pages.find(pg=>pg.reg===reg);
 let P=0,F=0,GRP='';
 const g=n=>{GRP=n;console.log('\n'+n);};
 const ok=(c,m)=>{if(c){P++}else{F++;console.log('  FAIL  '+m)}};
@@ -55,6 +59,14 @@ function selections(r){
  out.push({kind:'arch',nm:E.ARCH[0].nm},{kind:'mask',nm:E.MASKS[0].nm},{kind:'law',nm:SINAMES[0]},
   {kind:'seat',nm:'Root'},{kind:'seat',nm:'3rd Eye'},{kind:'core'},{kind:'path',nm:'Compass'},
   {kind:'bal',nm:'Balance'},{kind:'gates',nm:'Awareness'},{kind:'pole',nm:'The upward cone'});
+ /* the rest of the kinds, each the way its own door opens it: every law, every
+    point, both cones, a Law of Action by key, an imprint at the heaviest
+    address, and a law and a Law of Action no table has */
+ E.SI.forEach(l=>out.push({kind:'law',nm:l.nm}));
+ E.BANDS.forEach(b=>out.push({kind:'seat',nm:b}));
+ E.VERP.forEach(v=>out.push({kind:'gates',nm:v.k}));
+ out.push({kind:'pole',nm:'The downward cone'},{kind:'atom',nm:'Imprint',i:W.slice().sort((a,b)=>b.sq-a.sq)[0].i},
+  {kind:'law',nm:'No Such Law'},{kind:'gates',nm:'No Such Move'});
  return out;}
 const words=s=>String(s).trim().split(/\s+/).filter(Boolean).length;
 const paraWords=p=>words(p.h+' '+p.segs.map(s=>s.text).join(' '));
@@ -64,8 +76,12 @@ const clone=x=>JSON.parse(JSON.stringify(x));
 g('IN0 · the composer is exported and the host stays out of it');
 ok(typeof insightRead==='function'&&typeof insightRelease==='function'&&typeof insightResolve==='function'
  &&typeof insightText==='function','insightRead, insightRelease, insightResolve and insightText are exported');
-ok(INS_HEAD.join('|')==='Where it sits.|How it runs.|What to do.','the three headers are fixed labels, in that order');
-ok(INS_MAX.length===3&&INS_MAX[0]+INS_MAX[1]+INS_MAX[2]<=210,'the three ceilings add to no more than 210 words, '+INS_MAX.join('+'));
+/* 20 November, his words: "cycle through the depth of the insight... from what
+   it is and how it works down to the behavior, down to the mechanic... not
+   compressed insight on one page." Four registers, one a page, in his order. */
+ok(INS_HEAD.join('|')==='What it is.|How it works.|The behaviour.|The mechanic.','the four register headers are fixed labels, in his order');
+ok(INS_REG&&INS_REG.join('|')==='what|how|behaviour|mechanic','and each register has a key');
+ok(INS_MAX.length===4&&INS_MAX.every(x=>x<=70),'each register is held to a ceiling of 70 words or fewer, '+INS_MAX.join(', '));
 ok(typeof E.leaves==='function'&&typeof E.patFam==='function','leaves and patFam live in the engine now');
 {
  const r=load(PEOPLE.find(p=>p.nm==='Lance 15'));
@@ -89,18 +105,19 @@ PEOPLE.forEach(p=>{
   if(!a.ok){ if(INS_LIST[sel.kind]||sel.kind==='fet'||sel.kind==='dom')bad.three.push(tag+' did not read: '+a.why); return;}
   kindsSeen[sel.kind]=1;
   if(JSON.stringify(a)!==JSON.stringify(b))bad.det.push(tag);
-  if(a.pages.length<1||a.pages.length>5)bad.pages.push(tag+' '+a.pages.length);
+  if(a.pages.map(x=>x.reg).join('|')!==INS_REG.join('|'))bad.pages.push(tag+' pages '+a.pages.map(x=>x.reg).join(','));
   const keys=a.pages.map(x=>x.key); if(keys.length!==new Set(keys).size)bad.pages.push(tag+' repeats a page');
   a.pages.forEach((pg,pi)=>{
    pagesSeen++;
-   if(pg.paras.length!==3)bad.three.push(tag+' page '+pi+' has '+pg.paras.length);
+   if(pg.paras.length!==1)bad.three.push(tag+' page '+pi+' has '+pg.paras.length+' paragraphs, not one register');
    if(!/^Page \d+ of \d+, .+/.test(pg.aria)||!pg.tip)bad.pages.push(tag+' page '+pi+' has no name');
    let tot=0;
-   pg.paras.forEach((para,j)=>{
+   pg.paras.forEach((para)=>{
+    const j=REG(pg);
     if(para.h!==INS_HEAD[j])bad.head.push(tag+' '+para.h);
-    if(!para.segs.length)bad.three.push(tag+' page '+pi+' paragraph '+j+' is empty');
+    if(!para.segs.length)bad.three.push(tag+' page '+pi+' is empty');
     const w=paraWords(para); tot+=w;
-    if(w>INS_MAX[j])bad.words.push(tag+' p'+(j+1)+' '+w+' words');
+    if(w>INS_MAX[j])bad.words.push(tag+' '+pg.reg+' '+w+' words');
     para.segs.forEach(sg=>{
      if(!sg.text||!sg.kind){bad.src.push(tag+' empty segment');return;}
      if(['model','mine','quote','book','offer','gap'].indexOf(sg.kind)<0)bad.kind.push(tag+' '+sg.kind);
@@ -126,7 +143,7 @@ PEOPLE.forEach(p=>{
   p.nm+': reading it changes nothing it reads');});
 ok(pagesSeen>800,'a real number of pages were read, '+pagesSeen);
 ok(withPct>400,'and a real number of sentences carry a percent, '+withPct);
-['sab','cx','hy','sup','fet','addr','dom','arch','mask','law','seat','core'].forEach(k=>ok(kindsSeen[k],'the reading covered a '+k));
+['sab','cx','hy','sup','fet','addr','dom','arch','mask','law','seat','core','path','bal','atom','gates','pole'].forEach(k=>ok(kindsSeen[k],'the reading covered a '+k));
 
 g('IN2 · what a reading says when the data is thin');
 {
@@ -144,7 +161,7 @@ g('IN2 · what a reading says when the data is thin');
  const ra=load(PEOPLE.find(p=>p.nm==='Rosa'));
  if(!ra.unread){
   const c=insightRead({kind:'fet',nm:CHILD.find(x=>(S.charge[x.nm]||0)>0)?CHILD.find(x=>(S.charge[x.nm]||0)>0).nm:CHILD[0].nm},ra,null,{});
-  ok(c.ok&&c.pages[0].paras.length===3,'a child emotion reads on a record with no patterns, three paragraphs');}
+  ok(c.ok&&c.pages.length===4&&c.pages.every(pg=>pg.paras.length===1&&pg.paras[0].segs.length>0),'a child emotion reads on a record with no patterns, all four registers');}
  /* an unnamed saboteur is named by its seat and its feeling, and borrows no card */
  const un=(r.sabs||[]).concat(...PEOPLE.map(p=>{const x=load(p);return x.sabs||[];})).find(s=>s.unnamed);
  if(un){
@@ -155,19 +172,19 @@ g('IN2 · what a reading says when the data is thin');
   ok(o.ok&&!o.pages[0].paras[0].segs.some(s=>s.q&&/^SABDEF/.test(s.src[0])),'and quotes no saboteur record that is not its own');}
 }
 
-g('IN3 · the safety door is never behind an offer');
+g('IN3 · the safety door is never behind an offer, or a dot');
 {
  const r=load(PEOPLE.find(p=>p.nm==='Lance 15'));
- const sels=selections(r).filter(s=>INS_LIST[s.kind]||s.kind==='fet'||s.kind==='addr'||s.kind==='dom');
+ /* every kind now, the eight that had no reader of their own included */
+ const sels=selections(r);
  let bad=[];
  sels.forEach(sel=>{
   const a=insightRead(sel,r,null,{safe:true});
   if(!a.ok){bad.push(sel.kind+' '+(sel.nm||sel.i)+' did not read'); return;}
-  a.pages.forEach(pg=>{
-   const p3=pg.paras[2];
-   if(p3.segs.length!==1||p3.segs[0].text!==CRISIS_SAY.q)bad.push(sel.kind+' '+(sel.nm||sel.i)+' p3 is not the safety line alone: '+p3.segs.map(s=>s.text).join(' ').slice(0,60));
-   pg.paras.forEach(pa=>pa.segs.forEach(sg=>{if(sg.kind==='offer')bad.push('an offer stands beside the safety line: '+sg.text.slice(0,50));}));});});
- ok(bad.length===0,'with the safety check on, the third paragraph is the one safety line on every page and nothing is offered, '+bad.length+' break it'+(bad[0]?', first: '+bad[0]:''));
+  const p1=a.pages[0], p3=p1.paras[0];
+  if(p1.reg!=='behaviour'||p3.segs.length!==1||p3.segs[0].text!==CRISIS_SAY.q)bad.push(sel.kind+' '+(sel.nm||sel.i)+' page one is not the safety line alone: '+p1.reg+' '+p3.segs.map(s=>s.text).join(' ').slice(0,60));
+  a.pages.forEach(pg=>pg.paras.forEach(pa=>pa.segs.forEach(sg=>{if(sg.kind==='offer')bad.push('an offer stands beside the safety line: '+sg.text.slice(0,50));})));});
+ ok(bad.length===0,'with the safety check on, the first page is the behaviour register and it is the one safety line, and nothing is offered on any page, '+bad.length+' break it'+(bad[0]?', first: '+bad[0]:''));
  ok(CRISIS_SAY&&CRISIS_SAY.q&&CRISIS_SAY.q.length>10,'and that line exists');
 }
 
@@ -182,7 +199,7 @@ g('IN4 · a release is offered where it can run, and nowhere else');
    if(o.over){overSeen++;
     if(x.ok)bad.push(p.nm+' '+o.nm+' is overshot and offers a release');
     const a=insightRead({kind:k,nm:o.nm},r,null,{});
-    if(a.ok&&a.pages[0].paras[2].segs.some(s=>s.kind==='offer'))bad.push(p.nm+' '+o.nm+' is overshot and its third paragraph offers');}
+    if(a.ok&&pageOf(a,'behaviour').paras[0].segs.some(s=>s.kind==='offer'))bad.push(p.nm+' '+o.nm+' is overshot and its behaviour register offers');}
    else{
     const held=E.leaves(o).filter(n=>n.cf&&n.sq>=1);
     if(x.ok!==(held.length>0))bad.push(p.nm+' '+o.nm+' release '+x.ok+' against '+held.length+' addresses');
@@ -198,7 +215,12 @@ g('IN4 · a release is offered where it can run, and nowhere else');
   if(ent.ok)bad.push(p.nm+' Entitlement offers a release, and no feeling is mapped to it');
   const fv=CHILD.find(c=>W.some(n=>n.cf===c.nm&&n.sq>=1));
   if(fv){const x=insightRelease({kind:'fet',nm:fv.nm},r,{}); if(!x.ok||!x.ids.every(i=>BY[i].cf===fv.nm))bad.push(p.nm+' a child emotion releases addresses that are not its own');}
-  ['dom','arch','mask','law','seat','core'].forEach(k=>{if(insightRelease({kind:k,nm:'x'},r,{}).ok)bad.push(p.nm+' a '+k+' offers a release');});});
+  ['dom','arch','mask','law','seat','core','path','bal','atom','gates','pole'].forEach(k=>{if(insightRelease({kind:k,nm:'x'},r,{}).ok)bad.push(p.nm+' a '+k+' offers a release');});
+  /* and the readers that route to one never offer it themselves: their
+     behaviour register names the address and is a model line, not an offer */
+  ['law','seat','core','path','bal','atom','gates','pole'].forEach(k=>{
+   const sel=selections(r).find(s=>s.kind===k), a=sel&&insightRead(sel,r,null,{});
+   if(a&&a.ok&&a.pages.some(pg=>pg.paras[0].segs.some(s=>s.kind==='offer')))bad.push(p.nm+' a '+k+' reading offers a release it cannot run');});});
  ok(bad.length===0,'a release is offered exactly where charge sits and the pattern is not overshot, '+bad.length+' break it'+(bad[0]?', first: '+bad[0]:''));
  ok(overSeen>0,'the roster has an overshot pattern to test against, '+overSeen);
  ok(canSeen>50,'and plenty that can release, '+canSeen);
@@ -211,30 +233,37 @@ g('IN4 · a release is offered where it can run, and nowhere else');
  const ranked=insightRelease({kind:'sab',nm:o.nm},r,{rank:list=>list.slice().reverse()});
  ok(ranked.ids[0]===x0.ids[x0.ids.length-1],'the host\'s own order for the release door is the order the offer starts in');
  const a=insightRead({kind:'sab',nm:o.nm},r,null,{});
- ok(!/\ball\b/i.test(a.pages[0].paras[2].segs.map(s=>s.text).join(' ')),'a release is never said to reach all of anything');
+ ok(!/\ball\b/i.test(pageOf(a,'behaviour').paras[0].segs.map(s=>s.text).join(' ')),'a release is never said to reach all of anything');
 }
 
 g('IN5 · the pages, and what they page through');
 {
  const r=load(PEOPLE.find(p=>p.nm==='Lance 15'));
+ const txt=(out,reg)=>pageOf(out,reg).paras[0].segs.map(s=>s.text).join(' ');
  const sup=r.sups[0], hy=insightRead({kind:'hy',nm:r.hys[0].nm},r,null,{});
- ok(hy.pages[0].rung==='self'&&hy.pages.slice(1).every(pg=>pg.rung==='part'||pg.rung==='parent'),'page one is the selection, the rest are its parts and its parent');
- ok(hy.pages.filter(pg=>pg.rung==='parent').length<=1&&hy.pages.length<=5,'at most one parent page and five pages in all');
+ ok(hy.pages.map(pg=>pg.reg).join(',')==='what,how,behaviour,mechanic','the pages are the four registers, in his order: what it is, how it works, the behaviour, the mechanic');
+ ok(hy.pages.every(pg=>pg.sel===hy.pages[0].sel&&pg.title===hy.id.title),'and paging never changes the selection: every page reads the one thing picked');
  const sp=insightRead({kind:'sup',nm:sup.nm},r,null,{});
- ok(!sp.pages.some(pg=>pg.rung==='parent'),'a super complex has no page above it, because nothing sits above it');
- ok(/Nothing sits above it/.test(sp.pages[0].paras[0].segs.map(s=>s.text).join(' ')),'and says so once');
- const sab=insightRead({kind:'sab',nm:r.sabs[0].nm},r,null,{});
- ok(sab.pages.slice(1).some(pg=>pg.sel.kind==='addr')&&sab.pages.some(pg=>pg.rung==='parent'),'a saboteur pages through its addresses and the complex it feeds');
- const fet=insightRead({kind:'fet',nm:CHILD.find(c=>(S.charge[c.nm]||0)>0).nm},r,null,{});
- ok(fet.pages.slice(1).every(pg=>pg.sel.kind==='sab'),'a child emotion pages through the saboteurs that run on it');
- ok(fet.pages.every((pg,i)=>pg.aria==='Page '+(i+1)+' of '+fet.pages.length+', '+pg.title),'every dot has the name the rail gives it');
- ok(hy.pages.slice(1).every(pg=>/^Page \d+: .+, (a part of this|what this feeds)$/.test(pg.tip)),'and a short sentence for hover and tap');
+ ok(/Nothing sits above it/.test(txt(sp,'mechanic'))&&!/Nothing sits above it/.test(['what','how','behaviour'].map(k=>txt(sp,k)).join(' ')),
+  'a super complex says in the mechanic, and only there, that nothing sits above it');
+ const s0=r.sabs.find(s=>E.leaves(s).length>=2)||r.sabs[0], sab=insightRead({kind:'sab',nm:s0.nm},r,null,{});
+ const top=E.leaves(s0).slice().sort((a,b)=>b.sq-a.sq).slice(0,3), cx=r.cxs.find(c=>(c.parts||[]).some(p=>p.kind==='sab'&&p.nm===s0.nm));
+ ok(top.every(n=>txt(sab,'mechanic').indexOf(n.k)>=0)&&(!cx||txt(sab,'mechanic').indexOf('the complex '+cx.nm)>=0),
+  'a saboteur\'s mechanic names the addresses it is built on and the complex it feeds, '+JSON.stringify(txt(sab,'mechanic').slice(0,90)));
+ ok(!/It is built on|It feeds the/.test(txt(sab,'what')),'and the chain is said once, in the mechanic, not folded back into what it is');
+ const fc=CHILD.find(c=>(S.charge[c.nm]||0)>0), fet=insightRead({kind:'fet',nm:fc.nm},r,null,{});
+ const runs=r.sabs.filter(s=>E.leaves(s).some(n=>n.cf===fc.nm)).sort((a,b)=>b.w-a.w).slice(0,3);
+ ok(runs.length&&runs.every(s=>txt(fet,'mechanic').indexOf(s.nm.replace(/ overshot$/,''))>=0),'a child emotion\'s mechanic names the saboteurs that run on it');
+ const ad=W.slice().sort((a,b)=>b.sq-a.sq)[0], adr=insightRead({kind:'addr',i:ad.i},r,null,{});
+ ok(/Running on it: |No saboteur runs on it yet/.test(txt(adr,'mechanic'))&&/passes \d+% of what reaches it/.test(txt(adr,'mechanic')),'an address\'s mechanic names what runs on it and the point it feeds');
+ ok(fet.pages.every((pg,i)=>pg.aria==='Page '+(i+1)+' of 4, '+['What it is','How it works','The behaviour','The mechanic'][i]+', '+pg.title),'every dot has the name the rail gives it: its place, its register and the selection');
+ ok(hy.pages.every((pg,i)=>pg.tip==='Page '+(i+1)+': '+['What it is','How it works','The behaviour','The mechanic'][i]+' of '+hy.id.title),'and a short sentence for hover and tap');
  const rd=insightRead({kind:'hy',nm:r.hys[0].nm},r,null,{});
  ok(JSON.stringify(rd)===JSON.stringify(hy),'a second read gives the same pages');
  ok(hy.id.title===r.hys[0].nm&&hy.id.kindWord==='Hyper complex'&&/^\d+%$/.test(hy.id.fig),'the identity line is the name, the kind in words and a percent');
  const longest=Math.max.apply(null,PEOPLE.map(p=>{const x=load(p); if(x.unread||!x.sabs.length)return 0;
-  return Math.max.apply(null,x.sabs.map(s=>paraWords(insightRead({kind:'sab',nm:s.nm},x,null,{}).pages[0].paras[0])));}));
- ok(longest>=35,'a full record reaches the longer reading he asked for, a first paragraph of '+longest+' words');
+  return Math.max.apply(null,x.sabs.map(s=>Math.max.apply(null,insightRead({kind:'sab',nm:s.nm},x,null,{}).pages.map(pg=>paraWords(pg.paras[0])))));}));
+ ok(longest>=35,'a full record reaches the longer reading he asked for, a register of '+longest+' words');
 }
 
 g('IN6 · the graph, when there is one');
@@ -266,6 +295,95 @@ g('IN6 · the graph, when there is one');
  ok(!/entr(y|ies) in your journal|No entry/.test(textOf(insightRead({kind:'sab',nm:sab.nm},r,g4,{}))),'a graph with no entries at all says nothing about entries');
  const ad=textOf(insightRead({kind:'addr',i:lv[0].i},r,g1,{}));
  ok(/One entry in your journal lands here\./.test(ad),'an address says how many entries land on it');
+ /* THE CLIMB ABOVE THE CHAIN. A super complex is the top of what compute()
+    builds; the masks above it are the trace graph's (traceAboveRead), so the
+    mechanic reads them off a graph and says nothing of them without one */
+ /* a super_complex is never added by hand (traceNodeAdd refuses it), so the
+    graph is the record's own, read with its reading stamped as that record's */
+ const rl=load(PEOPLE.find(p=>p.nm==='Lance 15')); rl.rec='insightread';
+ const g5=E.traceFromRecord({id:'insightread'},[],rl), sp=rl.sups[0];
+ const worn=(g5.edges||[]).filter(e=>e.from==='super_complex:'+sp.nm&&e.edge==='supports'&&/^mask:/.test(e.to)).map(e=>e.to.slice(5)).sort();
+ ok(worn.length>0,'the record\'s own graph climbs from the super complex to a mask, '+worn.join(', '));
+ const withG=insightRead({kind:'sup',nm:sp.nm},rl,g5,{}), noG=insightRead({kind:'sup',nm:sp.nm},rl,null,{});
+ const mech=o=>o.pages.find(pg=>pg.reg==='mechanic').paras[0].segs.map(s=>s.text).join(' ');
+ ok(worn.every(m=>mech(withG).indexOf(m)>=0)&&/It feeds the .* masks?, worn over points that hold its addresses\./.test(mech(withG))&&!/ masks?\b/.test(mech(noG)),
+  'a super complex\'s mechanic names every mask the graph climbs to, and no mask without a graph, '+JSON.stringify(mech(withG).slice(0,110)));
+}
+
+/* ---------------------------------------------------------------------------
+   THE EIGHT KINDS THAT FELL THROUGH. A law and a point read the generic filler
+   for their second and third paragraphs, and the core, the Compass, Balance, an
+   imprint, a Law of Action and a cone read nothing but it. Each now has its own
+   reader, held here to the card or drill it stands beside: the same figure, the
+   same word, off the same field.
+   --------------------------------------------------------------------------- */
+g('IN8 · a law, a point and the six kinds read their own record');
+{
+ const FILLER=/Source AI has no longer reading|Source AI has no reading yet/;
+ const EIGHT=['law','seat','core','path','bal','atom','gates','pole'];
+ const filler=[], plural=[];
+ PEOPLE.forEach(p=>{const r=load(p); if(r.unread)return;
+  selections(r).filter(s=>EIGHT.indexOf(s.kind)>=0&&!/^No Such/.test(s.nm||'')).forEach(sel=>{
+   const o=insightRead(sel,r,null,{}); if(!o.ok){filler.push(p.nm+' '+sel.kind+' did not read'); return;}
+   const t=textOf(o);
+   if(FILLER.test(t)&&filler.length<4)filler.push(p.nm+' '+sel.kind+' '+(sel.nm||sel.i));
+   if(/\b(a|an) gates\b/i.test(t))plural.push(p.nm+' '+sel.nm);});});
+ ok(filler.length===0,'no law, point, core, Compass, Balance, imprint, Law of Action or cone reads the generic filler, '+filler.join(' | '));
+ ok(plural.length===0,'and none says "a gates", '+plural.slice(0,2).join(' | '));
+ const r=load(PEOPLE.find(p=>p.nm==='Lance 15'));
+ const W1=(o,reg)=>o.pages.find(pg=>pg.reg===reg).paras[0].segs.map(s=>s.text).join(' ');
+ const aw=insightRead({kind:'gates',nm:'Awareness'},r,null,{}), awk=insightRead({kind:'gates',nm:'aware'},r,null,{});
+ ok(/^Awareness is a Law of Action, a move of right action\./.test(W1(aw,'what')),'a Law of Action reads "Awareness is a Law of Action", '+JSON.stringify(W1(aw,'what').slice(0,60)));
+ ok(JSON.stringify(aw.pages.map(pg=>pg.paras))===JSON.stringify(awk.pages.map(pg=>pg.paras))&&awk.id.title==='Awareness','and it reads the same opened by its key as by its name, under its name');
+ const nm=insightRead({kind:'gates',nm:'No Such Move'},r,null,{});
+ ok(/^No Such Move is a Law of Action\./.test(W1(nm,'what')),'the generic sentence takes the singular, with its article, for a kind whose label is a plural');
+ /* the law, against its card: lawDrillHtml's thresholds and its held count */
+ let lawBad=[];
+ E.SI.forEach(l=>{
+  const o=insightRead({kind:'law',nm:l.nm},r,null,{}), v=S.law[l.nm];
+  const word=v<4?'This law is shut.':v>=7?'This law is open.':'It is working but not strong.';
+  const held=W.filter(n=>n.b===l.b&&n.sq>=E.SEAT_LOADED).length, all=W.filter(n=>n.b===l.b).length;
+  if(W1(o,'how').indexOf(word)<0)lawBad.push(l.nm+' word');
+  if(W1(o,'how').indexOf(held?held+' of its '+all+' address':'none of its '+all)<0)lawBad.push(l.nm+' held '+held+'/'+all);
+  if(o.id.fig!==fmtPct('law',v)||W1(o,'what').indexOf('It reads '+fmtPct('law',v)+'.')<0)lawBad.push(l.nm+' figure');});
+ ok(lawBad.length===0,'every law says its card\'s word, its point\'s held count and its figure, '+lawBad.slice(0,3).join(' | '));
+ /* lawIn reads a law as unanswered when it is marked unset and still at its
+    seed, so the blank profile supplies both, and every other law is answered */
+ const l0=E.SI[0].nm;
+ E.loadProfile(E.blankProfile('unread law')); const seed=S.law[l0];
+ load(PEOPLE.find(p=>p.nm==='Lance 15')); S.law[l0]=seed; E.LAW_UNSET[l0]=true;
+ const un=insightRead({kind:'law',nm:l0},compute(),null,{});
+ E.LAW_UNSET[l0]=false; load(PEOPLE.find(p=>p.nm==='Lance 15'));
+ ok(un.ok&&un.id.fig===''&&!/It reads \d+%/.test(textOf(un))&&/not answered yet/.test(W1(un,'what')),'a law nobody answered prints no figure, in the reading or the headline, and says it is not answered');
+ /* the point, against its card: seatRows' pass, the held count and its laws */
+ let seatBad=[];
+ E.BANDS.forEach(b=>{
+  const o=insightRead({kind:'seat',nm:b},r,null,{}), row=r.seats.find(s=>s.seat===b);
+  if(W1(o,'what').indexOf('It passes '+fmtPct('pass',row.pass)+' of what reaches it.')<0)seatBad.push(b+' pass');
+  E.SI.filter(l=>l.b===b).forEach(l=>{if(W1(o,'how').indexOf(l.nm)<0)seatBad.push(b+' '+l.nm);});
+  if(W1(o,'mechanic').indexOf(row.held?'close the column here':'not holding enough')<0)seatBad.push(b+' column');});
+ ok(seatBad.length===0,'every point says its pass, the laws seated at it and whether it closes the column, '+seatBad.slice(0,3).join(' | '));
+ /* the third register routes to a release that can run */
+ let routeBad=[];
+ E.SI.forEach(l=>{
+  const o=insightRead({kind:'law',nm:l.nm},r,null,{}), t=W1(o,'behaviour');
+  const n=W.filter(x=>x.b===l.b&&x.cf&&x.sq>=1).sort((a,b)=>b.sq-a.sq)[0];
+  if(n&&(t.indexOf('open '+n.k+' to start one')<0||!insightRelease({kind:'addr',i:n.i},r,{}).ok))routeBad.push(l.nm+' '+t.slice(0,60));});
+ ok(routeBad.length===0,'a law\'s behaviour register opens the heaviest address at its point that a release can actually run on, '+routeBad.slice(0,2).join(' | '));
+ /* the core, the Compass, Balance and the cones, against their drills */
+ const core=insightRead({kind:'core'},r,null,{});
+ ok(W1(core,'what').indexOf('CQ, at '+fmtPct('cq',r.CQ))>=0&&W1(core,'how').indexOf('Expression is '+fmtPct('expression',r.EX))>=0,'the core says CQ and expression, the drill\'s two figures');
+ const path=insightRead({kind:'path',nm:'Compass'},r,null,{});
+ ok(W1(path,'what').indexOf(fmtPct('cq',r.CQ))>=0&&(!r.tier||W1(path,'what').indexOf(r.tier)>=0),'the Compass says where coherence sits and the word there');
+ const bal=insightRead({kind:'bal',nm:'Balance'},r,null,{}), b=r.balance;
+ ok(W1(bal,'what').indexOf(!b.read?'no direction is named':b.lean===0?'It is even.':'It leans '+(b.lean>0?'outward':'inward')+'.')>=0
+  &&!/\d+% (outward|inward)/.test(textOf(bal)),'Balance says the lean in words and never scores it');
+ const upc=insightRead({kind:'pole',nm:'The upward cone'},r,null,{}), dnc=insightRead({kind:'pole',nm:'The downward cone'},r,null,{});
+ const pos=E.MIRROR.map(m=>E.compassAt(r.seats.find(s=>s.seat===m.seat))).filter(x=>x!=null);
+ ok(pos.length&&W1(upc,'how').indexOf(fmtPct('axis',Math.max.apply(null,pos)))>=0&&W1(dnc,'how').indexOf(fmtPct('axis',Math.min.apply(null,pos)))>=0,
+  'the upward cone names the axis nearest full expression and the downward the one nearest inversion, by compassAt');
+ const ai=W.slice().sort((a,b)=>b.sq-a.sq)[0], at=insightRead({kind:'atom',nm:'Imprint',i:ai.i},r,null,{});
+ ok(at.id.title===ai.k&&W1(at,'what').indexOf('placed at '+ai.k)>=0&&at.id.key==='atom:'+ai.i,'an imprint reads the address it was opened at, and is keyed by it');
 }
 
 /* ---------------------------------------------------------------------------

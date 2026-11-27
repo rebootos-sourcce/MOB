@@ -838,7 +838,9 @@ function runXYZDrill(){
    whole and not summarised, and the address it landed on is named with what
    it is standing on and what it costs. */
 function runAtomDrill(n,x){
- insDoor('atom','Imprint');
+ /* the address goes with it, so Insight reads the imprint that is open and
+    not one word that is the same for every imprint (insParasAtom) */
+ insDoor('atom','Imprint',n.i);
  var d=''; try{d=new Date(x.t).toLocaleDateString(undefined,
    {year:'numeric',month:'long',day:'numeric'});}catch(e){d='';}
  var cf=CHILD.filter(function(y){return y.nm===n.cf;})[0];

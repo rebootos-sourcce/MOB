@@ -176,10 +176,14 @@ function insParaHtml(p){
  return '<p class="ins-p src-ai"><b>'+esc(p.h)+'</b> '
   +p.segs.map(insSegHtml).join(' ')+'</p>';}
 /* THE FIVE-DOT RULE IN ONE PLACE: the rail never offers a page that has no
-   data, so a dot always leads somewhere */
+   data, so a dot always leads somewhere. A page is one register since 20
+   November (engine/insight.js, THE FOUR REGISTERS), and carries its key, so
+   anything looking for the behaviour or the mechanic finds it by name and
+   never by where it happens to sit: with the safety check on, the behaviour
+   is the first page and not the third. */
 function insPagesHtml(out){
  return '<div class="ins-pgs">'+out.pages.map(function(pg,i){
-  return '<div class="ins-pg" data-pg="'+i+'"'+(i===INS_PAGE?' data-on="1"':' aria-hidden="true"')+'>'
+  return '<div class="ins-pg" data-pg="'+i+'" data-reg="'+esc(pg.reg||'')+'"'+(i===INS_PAGE?' data-on="1"':' aria-hidden="true"')+'>'
    +pg.paras.map(insParaHtml).join('')+'</div>';}).join('')+'</div>';}
 function insDotsHtml(out){
  if(out.pages.length<2)return '';

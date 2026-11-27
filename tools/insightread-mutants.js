@@ -16,7 +16,7 @@ const fs=require('fs'), cp=require('child_process'), path=require('path');
 const ROOT=path.resolve(__dirname,'..'), E=fs.readFileSync(ROOT+'/engine.js','utf8');
 const M=[
  ['segment-with-no-src',"src:(src instanceof Array)?src:[src],kind:kind||'model'","src:[],kind:kind||'model'",'IN1'],
- ['src-that-does-not-resolve',"MASKS:MASKS,SI:SI,APC:APC,HARM:HARM,r:r};","MASKS:MASKS,SI:SI,APC:APC,HARM:HARM};",'IN1'],
+ ['src-that-does-not-resolve',"MASKS:MASKS,SI:SI,APC:APC,HARM:HARM,VERP:VERP,MIRROR:MIRROR,TIER_BY:TIER_BY,r:r};","MASKS:MASKS,SI:SI,APC:APC,HARM:HARM,VERP:VERP,MIRROR:MIRROR,TIER_BY:TIER_BY};",'IN1'],
  ['decimal-in-a-figure',"base+' is '+insArt(kw)+' '+kw+', at '+fmtPct('chain',o.w)+'.'","base+' is '+insArt(kw)+' '+kw+', at '+o.w.toFixed(1)+'%.'",'IN1'],
  ['banned-word-in-an-offer',":'A release at '+f.k+' ('+fmtPct('weight',f.sq)+') is available.';",":'A release at '+f.k+' ('+fmtPct('weight',f.sq)+') is available. You should start now.';",'IN1'],
  ['safety-line-behind-an-offer',"function insP3Pattern(o,r,rel,safe){\n if(safe)return insSafeP3();","function insP3Pattern(o,r,rel,safe){\n",'IN3'],
@@ -24,14 +24,21 @@ const M=[
  ['entitlement-offered-a-release',"list=list.filter(function(n){return n.cf&&n.sq>=1;});","list=list.filter(function(n){return n.sq>=1;});",'IN4'],
  ['same-input-different-output',"return (b.x.w-a.x.w)||(a.j-b.j);","return (b.x.w-a.x.w)||(Math.random()-.5);",'IN1'],
  ['reading-changes-the-record',"function insightRead(sel,r,g,o){","function insightRead(sel,r,g,o){S.charge.Fear=(S.charge.Fear||0)+1;",'IN1'],
- ['ceilings-lifted',"var INS_MAX=[70,70,60];","var INS_MAX=[700,700,600];",'IN0'],
+ ['ceilings-lifted',"var INS_MAX=[70,70,60,70];","var INS_MAX=[700,700,600,700];",'IN0'],
  ['gap-blames-the-person',"The reading did not pick one up.',['gap:stories'],'gap'),1));}\n return insPack(INS_HEAD[1],cl,INS_MAX[1]);}\n\n/* the step the record itself names","You did not write about it.',['gap:stories'],'gap'),1));}\n return insPack(INS_HEAD[1],cl,INS_MAX[1]);}\n\n/* the step the record itself names",'IN6'],
  ['edges-counted-as-entries',"seen[e.key]=1;});});\n return {any:any,n:Object.keys(seen).length};}","seen[e.key+'@'+i]=1;});});\n return {any:any,n:Object.keys(seen).length};}",'IN6'],
- ['place-with-two-prepositions',"cl.push(insClause(insSeg('The map seats '+c0.nm+' '+insAtPlace(c0.addr)+'.',","cl.push(insClause(insSeg('The map seats '+c0.nm+' at the '+c0.addr.toLowerCase()+'.',",'IN7'],
+ ['place-with-two-prepositions',"cl.push(insClause(insSeg('The map points '+c0.nm+' '+insAtPlace(c0.addr)+'.',","cl.push(insClause(insSeg('The map points '+c0.nm+' at the '+c0.addr.toLowerCase()+'.',",'IN7'],
  ['anchor-read-as-null-nerve',"if(n&&n.n)return 'at the '+String(n.n).toLowerCase();","return 'at the '+String(n&&n.n).toLowerCase();",'IN7'],
  ['quote-not-in-its-sentence',"return insSeg(lead+'“'+q+'”'+(tail||''),src,'book',{q:q,place:!!place});","return insSeg(lead+'“'+q+'x”'+(tail||''),src,'book',{q:q,place:!!place});",'IN1'],
  ['address-listed-twice',"else if(!sn[x.i]){sn[x.i]=1;a.push(x);}})(o);return a;}","else {sn[x.i]=1;a.push(x);}})(o);return a;}",'IN0'],
  ['blank-record-reads',"if(r.unread)return {ok:false,why:'unread'};","",'IN2'],
+ ['registers-out-of-order',"var order=o.safe?[2,0,1,3]:[0,1,2,3];","var order=o.safe?[2,0,1,3]:[1,0,2,3];",'IN5'],
+ ['safety-line-behind-a-dot',"var order=o.safe?[2,0,1,3]:[0,1,2,3];","var order=o.safe?[0,1,2,3]:[0,1,2,3];",'IN3'],
+ ['law-back-to-the-filler',"var K={arch:insParasArch,mask:insParasMask,law:insParasLaw,","var K={arch:insParasArch,mask:insParasMask,law:insParasOther,",'IN8'],
+ ['seat-back-to-the-filler',"seat:insParasSeat,gates:insParasGates,","seat:insParasOther,gates:insParasGates,",'IN8'],
+ ['gates-said-as-a-plural',"var INS_ONE={gates:'Law of Action',","var INS_ONE={",'IN8'],
+ ['six-kinds-back-to-the-filler',":sel.kind==='core'?insParasCore(r):",":sel.kind==='core'?insParasOther(sel,o):",'IN8'],
+ ['unread-law-prints-the-seed',"cl1.push(insClause(read?insSeg('It reads '","cl1.push(insClause(true?insSeg('It reads '",'IN8'],
 ];
 const tmp=require('os').tmpdir(); let missed=0;
 for(const [id,a,b,grp] of M){

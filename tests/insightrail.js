@@ -108,23 +108,28 @@ async function gate(browser,file,ok){
  await pg.waitForTimeout(250);
  const rd=await pg.evaluate(()=>{
   const ins=document.getElementById('insight'); if(!ins)return null;
-  const ps=[...ins.querySelectorAll('.ins-pg[data-on] .ins-p')];
-  const words=ps.reduce((a,p)=>a+p.innerText.trim().split(/\s+/).length,0);
+  /* 20 November, his words: "cycle through the depth of the insight... not
+     compressed insight on one page." One register on the page in view, the
+     four of them in his order across the pages. */
+  const on=[...ins.querySelectorAll('.ins-pg[data-on] .ins-p')];
+  const ps=[...ins.querySelectorAll('.ins-pg .ins-p')];
+  /* textContent: a page out of view is visibility hidden, and innerText reads it as nothing */
+  const words=ps.map(p=>p.textContent.trim().split(/\s+/).length);
   const rdb=document.getElementById('insrd');
   const st=document.getElementById('stack');
   return {name:(ins.querySelector('.ins-nm')||{}).textContent||'',kind:(ins.querySelector('.ins-kd')||{}).textContent||'',
-   fig:(ins.querySelector('.ins-fg')||{}).textContent||'',paras:ps.length,
+   fig:(ins.querySelector('.ins-fg')||{}).textContent||'',paras:on.length,pages:ins.querySelectorAll('.ins-pg').length,
    heads:ps.map(p=>(p.querySelector('b')||{}).textContent||''),words,
    marks:ins.querySelectorAll('.src-mk').length,ai:ps.filter(p=>p.classList.contains('src-ai')).length,
    italic:ps.some(p=>getComputedStyle(p).fontStyle==='italic'),
    rdTop:rdb?rdb.getBoundingClientRect().top:0,stackTop:st?st.getBoundingClientRect().top:0,
    rdH:rdb?Math.round(rdb.getBoundingClientRect().height):0,
    selHead:(document.getElementById('rdrill')||{}).innerText||''};});
- ok(rd&&rd.paras===3&&rd.heads.join('|')==='Where it sits.|How it runs.|What to do.',
-  'READING: three paragraphs under the three fixed headers, '+JSON.stringify(rd&&rd.heads));
- ok(rd&&rd.marks===1&&rd.ai===3&&!rd.italic,
-  'READING: one Source AI mark at the head of the block, every paragraph in the Source AI colour, none slanted, '+JSON.stringify({m:rd&&rd.marks,ai:rd&&rd.ai}));
- ok(rd&&rd.words>=60&&rd.words<=210,'READING: longer than the old one line and inside 210 words, '+(rd&&rd.words));
+ ok(rd&&rd.paras===1&&rd.pages===4&&rd.heads.join('|')==='What it is.|How it works.|The behaviour.|The mechanic.',
+  'READING: one register a page, the four in his order, what it is, how it works, the behaviour and the mechanic, '+JSON.stringify(rd&&{on:rd.paras,pages:rd.pages,h:rd.heads}));
+ ok(rd&&rd.marks===1&&rd.ai===4&&!rd.italic,
+  'READING: one Source AI mark at the head of the block, every register in the Source AI colour, none slanted, '+JSON.stringify({m:rd&&rd.marks,ai:rd&&rd.ai}));
+ ok(rd&&rd.words.reduce((a,b)=>a+b,0)>=60&&rd.words.every(w=>w<=72),'READING: longer than the old one line in all, and no register past its ceiling, '+(rd&&rd.words.join(',')));
  ok(rd&&rd.name&&rd.kind==='Hyper complex'&&/^\d+%$/.test(rd.fig),
   'READING: the identity line is the name, the kind in words and a percent, '+JSON.stringify(rd&&{n:rd.name,k:rd.kind,f:rd.fig}));
  ok(rd&&rd.stackTop-rd.rdTop<800,'READING: the stack starts within a short scroll of the reading, '+(rd&&Math.round(rd.stackTop-rd.rdTop))+'px');
@@ -183,8 +188,8 @@ async function gate(browser,file,ok){
     none:/Nothing selected/.test(ins.innerText),paras:ins.querySelectorAll('.ins-pg[data-on] .ins-p').length});});
   S.pin=null; rdClose();
   return out;});
- const bad=doors.filter(d=>d.err||!d.shown||d.none||!d.nm2||d.paras!==3);
- ok(doors.length===14&&bad.length===0,'DOORS: every kind of selection is read by Insight in three paragraphs while Selection shows its card, '
+ const bad=doors.filter(d=>d.err||!d.shown||d.none||!d.nm2||d.paras!==1);
+ ok(doors.length===14&&bad.length===0,'DOORS: every kind of selection is read by Insight, one register a page, while Selection shows its card, '
   +JSON.stringify(bad.slice(0,3)));
 
  /* THE DOTS */
@@ -425,8 +430,9 @@ async function gate(browser,file,ok){
   S.pin=o; runDrill(o); render(); await new Promise(z=>setTimeout(z,150));
   const row=[...document.querySelectorAll('#stack .stk-r[data-sk]')].find(b=>{const rr=computeSeen()[({sab:'sabs',cx:'cxs',hy:'hys',sup:'sups'})[b.getAttribute('data-sk')]][+b.getAttribute('data-si')];return rr&&rr.nm===o.nm&&rr.kind===o.kind;});
   const glyph=row&&row.parentNode.querySelector('.stk-run:not(.off)');
-  const p3=[...document.querySelectorAll('#insight .ins-pg[data-on] .ins-p')][2];
-  return {nm:o.nm,bRel:!!document.getElementById('bRel'),glyph:!!glyph,p3:p3?p3.innerText.replace(/\s+/g,' '):'',tip:row?(row.getAttribute('data-tip')||''):''};});
+  /* the behaviour register is the third page, by its key and not by where it sits */
+  const p3=document.querySelector('#insight .ins-pg[data-reg="behaviour"] .ins-p');
+  return {nm:o.nm,bRel:!!document.getElementById('bRel'),glyph:!!glyph,p3:p3?p3.textContent.replace(/\s+/g,' '):'',tip:row?(row.getAttribute('data-tip')||''):''};});
  ok(!ov.none&&!ov.bRel&&!ov.glyph&&/opposite pushed past where it helps/.test(ov.p3),
   'OVERSHOT: no Release and no run glyph on an overshot pattern, and the reading says why, '+JSON.stringify(ov));
 
@@ -437,11 +443,11 @@ async function gate(browser,file,ok){
   insRefresh(); await new Promise(z=>setTimeout(z,100));
   const ps=[...document.querySelectorAll('#insight .ins-pg[data-on] .ins-p')];
   const o={bRel:!!document.getElementById('bRel'),glyphs:document.querySelectorAll('#stack .stk-run:not(.off)').length,
-   p3:ps[2]?ps[2].innerText.replace(/\s+/g,' ').trim():'',q:CRISIS_SAY.q};
+   p3:ps[0]?ps[0].innerText.replace(/\s+/g,' ').trim():'',q:CRISIS_SAY.q};
   window.stSafe=was; stSafe=was; insRefresh();
   return o;});
- ok(!safe.bRel&&safe.glyphs===0&&safe.p3==='What to do. '+safe.q,
-  'SAFETY: with the check on, the third paragraph is the one safety line and no Release is drawn anywhere, '+JSON.stringify({b:safe.bRel,g:safe.glyphs,p3:safe.p3.slice(0,80)}));
+ ok(!safe.bRel&&safe.glyphs===0&&safe.p3==='The behaviour. '+safe.q,
+  'SAFETY: with the check on, the page in view is the behaviour register, the one safety line, and no Release is drawn anywhere, '+JSON.stringify({b:safe.bRel,g:safe.glyphs,p3:safe.p3.slice(0,80)}));
 
  /* A STALE STORE LOADS CLEAN */
  const stale=await open(browser,file,1600,1000,`(function(){try{
@@ -454,7 +460,7 @@ async function gate(browser,file,ok){
  catch(e){stThrew=String((e&&e.message)||e).split('\n')[0].slice(0,80);}
  await stale.waitForTimeout(300);
  const sv=await stale.evaluate(()=>({reads:document.querySelectorAll('#insight .ins-pg[data-on] .ins-p').length,levels:document.querySelectorAll('#stack .stk-lv').length}));
- ok(!stThrew&&stale.errs.length===0&&sv.reads===3&&sv.levels>=5,'STALE: a store that carries the old rail\'s keys loads clean and reads, '+JSON.stringify({threw:stThrew,errs:stale.errs.slice(0,2),sv}));
+ ok(!stThrew&&stale.errs.length===0&&sv.reads===1&&sv.levels>=5,'STALE: a store that carries the old rail\'s keys loads clean and reads, '+JSON.stringify({threw:stThrew,errs:stale.errs.slice(0,2),sv}));
  await stale.context().close();
 
  ok(pg.errs.length===0,'ERRORS: no page error through the whole walk, '+JSON.stringify(pg.errs.slice(0,2)));
@@ -501,7 +507,7 @@ async function gate(browser,file,ok){
 const MUT=[
  ['person-card-back',"<div class=\"lsec open\" data-rail=\"right\" data-sec=\"you\">",'<div class="person" id="person">Blueprint Domain</div><div class="lsec open" data-rail="right" data-sec="you">','FIRST:'],
  ['flow-section-back','<!-- FLOW, SEATS, RUNNING NOW, THE LAWS AND THE OLD FOOT','<div class="lsec" data-rail="right" data-sec="flow"><button class="lsec-hd" type="button">Flow</button><div class="lsec-bd"><div id="eshelf">x</div></div></div><!-- FLOW, SEATS, RUNNING NOW, THE LAWS AND THE OLD FOOT','AFTER:'],
- ['two-paragraphs',"pg.paras.map(insParaHtml).join('')","pg.paras.slice(0,2).map(insParaHtml).join('')",'READING: three paragraphs'],
+ ['register-dropped',"pg.paras.map(insParaHtml).join('')","pg.paras.slice(1).map(insParaHtml).join('')",'READING: one register a page'],
  ['no-source-mark',"'<div class=\"ins-mk\">'+srcMark()+","'<div class=\"ins-mk\">'+",'READING: one Source AI mark'],
  ['small-dots','.ins-dot{flex:0 0 var(--tap);width:var(--tap);height:var(--tap);','.ins-dot{flex:0 0 30px;width:30px;height:30px;','DOTS: between two and five'],
  ['dots-dead','function insPage(n){\n if(!INS_OUT)return;','function insPage(n){\n return;','DOTS: the first page is current'],
