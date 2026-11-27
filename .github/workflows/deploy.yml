@@ -482,6 +482,14 @@ jobs:
           # 15817657). Landed run by no job, so tools/orphans.js failed
           # gates-fast. New, so report only first.
           - { gate: guide, timeout: 20, command: node tests/guide.js }
+          # 27 November: what a client's device shares with a practitioner
+          # (tests/pracshare.js, engine/pracshare.js, 0ce41adf). Headless on
+          # the built engine.js. Landed run by no job, so tools/orphans.js
+          # failed gates-fast on run 45912157094. New, so report only first.
+          # Its browser half, tests/praclive.js, needs a reboot-os checkout
+          # this repository's runners cannot reach, so it is in MANUAL in
+          # tools/orphans.js with that reason rather than here.
+          - { gate: pracshare, timeout: 20, command: node tests/pracshare.js }
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

@@ -218,6 +218,11 @@ BROWSER = {
 # the screen guides, 21 November (tests/guide.js). Report only until three
 # green runs.
     'guide':         ('node tests/guide.js', 20),
+# what a client's device shares with a practitioner, 27 November
+# (tests/pracshare.js, engine/pracshare.js, 0ce41adf). Headless on engine.js.
+# Report only until three green runs. tests/praclive.js is not here: it needs
+# a reboot-os checkout no job has, so tools/orphans.js lists it in MANUAL.
+    'pracshare':     ('node tests/pracshare.js', 20),
 }
 # P0 Alpha acceptance: move to the blocking browser matrix, and mutation-test each
 # one so a future refactor cannot silently return it to report-only.
