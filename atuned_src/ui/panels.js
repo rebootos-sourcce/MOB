@@ -1316,7 +1316,17 @@ function recordLinkBoot(){
      random journey id, reuses an existing session, and never sends the story
      or name; the app still owns the record and the release itself. */
   if(typeof authFunnelStart==='function')authFunnelStart();
-  recordLinkSay('Loaded '+(np.name||'the record')+' from the link.'+(copied?' Loaded as a second copy, since this record is already on this device.':'')+recordPlanTail()+still,
+  /* recordPlanTail (above) returns its tail starting with the period that
+     ends this sentence; a prior commit (969f2a19, PR #245) added a second
+     period here and "Loaded " a second time on the copied branch, on a
+     base from before recordPlanTail carried its own leading period
+     (46ac818c, also on main). Rebasing the PR onto the current build
+     combined both fixes textually with no conflict, since they touch
+     different lines of this file, and printed "from the link.. The
+     imported plan...". Restored to one period, matching recordImportHtml's
+     impSay call above and the invariant recordPlanTail's own comment
+     states. tests/recordlink.js's exact-text check caught it. */
+  recordLinkSay('Loaded '+(np.name||'the record')+' from the link'+(copied?' as a second copy, since this record is already on this device':'')+recordPlanTail()+still,
    still?'fail':'');
   return np;});}
 function profileSheet(){
