@@ -19,11 +19,19 @@
    control is reachable, and a click that times out fails here by name.
    Both widths, because the phone stacks the rails under the stage.
 
+   DISCOVER SPLIT IN TWO, 27 November, his ruling: Journal and Imprints. The
+   Journal is always what Full was (STV.dash starts true and #stdash is not
+   drawn), it carries Source AI and the imprints and nothing else, and its
+   left rail starts shut on every load (LCOLS_OPEN, ui/ui.js) and is opened
+   by its own fold. So item 1 is the landing, item 2 is the fold opening the
+   rail, and the old item 9, Dashboard back to Simple, has no door left to
+   press and is gone.
+
    WHAT IT HOLDS
-     1  the Journal lands in Simple, with chat on, and Simple keeps no left
-        column (28 October)
-     2  Dashboard turns on Full: st-full, the left column back, #stleft the
-        only thing in it but its fold
+     1  the Journal lands in Full with chat on, no Dashboard door, the two
+        cards and nothing else, and the left rail shut with nothing stored
+     2  the fold opens the rail: the left column back, #stleft the only
+        thing in it but its fold
      3  Energy draws all seven seats with no story too, icon only, every
         one at rest brightness, 13 November's reversal of the no-pill
         silence a sentence used to hold here
@@ -35,13 +43,11 @@
      6  and switching the profile leaves no safety line and no door on a
         record that never wrote one (the door check here is now always
         absence; the line itself still moves correctly)
-     7  leaving the tab clears the rail and the class; coming back in Full
-        draws both again
-     8  THE FOLD IS BACK, 17 November, OVERRIDDEN: the Journal's own rail
-        folds again under its own key, and folding it moves nothing on
-        the Field's own key (1600 only, where the column sits beside
-        the stage)
-     9  Dashboard pressed again is Simple, exactly as before
+     7  leaving the tab clears the rail and the class; coming back draws
+        both again, with the rail still open from item 2 (one load)
+     8  the fold shuts and reopens the rail, writes no stored answer, and
+        moves nothing on the Field's own key; a reload shuts it again
+        (1600 only, where the column sits beside the stage)
     10  a profile change in Full leaves none of the last person's words, rail,
         page text or parse on screen, writes nothing onto the new
         record, brings the words back on the way home, drops the last
@@ -54,6 +60,12 @@ const STORY='My chest was tight and I felt scared when he shouted at me. I was a
 const WIDTHS=[[1600,1000,'desktop'],[390,844,'phone']];
 
 async function press(p,sel,ok,what){
+ /* setTab hands focus to the tab's own button, and a focused tab opens its
+    title as a tip, which since 27 November (two Discover doors on the bar)
+    can lie over the Journal's fold. A person pressing anything below the bar
+    has left it, so a tab button's focus is put down first. */
+ try{ await p.evaluate(()=>{if(document.activeElement&&document.activeElement.closest&&document.activeElement.closest('#tabbar'))document.activeElement.blur();});
+  await p.waitForTimeout(150); }catch(e){}
  try{ await p.click(sel,{timeout:5000}); return true; }
  catch(e){ ok(false,what+': '+sel+' could not be pressed, '+String(e.message).split('\n')[0]); return false; }}
 
@@ -64,23 +76,26 @@ async function stFullGate(browser,FILE,ok,booted){
   await p.goto(FILE); await booted(p);
   const at=wn+': ';
 
-  /* 1. landing, Simple */
+  /* 1. landing: Full, two cards, the rail shut */
   const s0=await p.evaluate(async()=>{
    loadP(0); setTab(TAB.STORY); render(); await new Promise(r=>setTimeout(r,320));
    const lc=document.getElementById('lcol');
    return {chat:STV.chat, dash:STV.dash, full:document.body.classList.contains('st-full'),
-    simple:!!document.querySelector('#stflow.st-simple'),
-    lcol:getComputedStyle(lc).display, left:(document.getElementById('stleft')||{}).innerHTML,
+    simple:!!document.querySelector('#stflow.st-simple'), shut:document.body.classList.contains('lshut'),
+    key:STORE.get('lcols')||null, lcol:getComputedStyle(lc).display,
+    cols:[...document.querySelectorAll('#stflow>*')].map(e=>e.className.split(' ')[0]).join(','),
+    gone:['stmini6','strel','stbank','stvault','zfold','rowfold'].filter(id=>document.querySelector('#story #'+id)),
     hasHost:!!document.getElementById('stleft'), dashBtn:!!document.getElementById('stdash')};});
-  ok(s0.hasHost&&s0.dashBtn,at+'the Journal carries #stleft in the shell and its Dashboard door, '+JSON.stringify(s0));
-  ok(s0.chat===true&&s0.dash===false&&!s0.full&&s0.simple,at+'the Journal lands in Simple with chat on, '+JSON.stringify(s0));
-  ok(s0.lcol==='none'&&s0.left==='',at+'and Simple keeps no left column and an empty rail, the 28 October ruling, '+s0.lcol);
+  ok(s0.hasHost&&!s0.dashBtn,at+'the Journal carries #stleft in the shell and no Dashboard door, '+JSON.stringify(s0));
+  ok(s0.chat===true&&s0.dash===true&&s0.full&&!s0.simple,at+'the Journal lands in Full with chat on, '+JSON.stringify(s0));
+  ok(s0.cols==='st-colw,st-colb'&&s0.gone.length===0,at+'the flow is Source AI\'s card and the imprints card and nothing else, '+JSON.stringify({cols:s0.cols,gone:s0.gone}));
+  ok(s0.shut&&s0.key===null&&s0.lcol==='flex',at+'and the left rail lands shut, as a strip, with nothing stored, '+JSON.stringify(s0));
 
-  /* 2. Dashboard, Full. The heading is sampled from the press on, because the
+  /* 2. The fold opens the rail. The heading is sampled from the press on, because the
      first cut of this rail was drawn, blinked out about 900 ms later under the
      left rail's first sight entrance (ui/railmotion.js), and came back: text
      present the whole time, so a check on the text alone passed it. */
-  await press(p,'#stdash',ok,at+'Dashboard');
+  await press(p,'#lfold',ok,at+'the Journal\'s fold, to open its rail');
   /* the press itself only redraws the Journal; the entrance runs from the next
      render(), which any next event makes (a turn landing, a profile change).
      This gate's first cut sampled without it and passed the blinking build. */
@@ -100,13 +115,13 @@ async function stFullGate(browser,FILE,ok,booted){
        mock-up round, so those are the two extra columns Dashboard mode
        brings in beside the chat, not the one .st-colx used to be. */
     simple:!!document.querySelector('#stflow.st-simple'),
-    cols:!!document.querySelector('#stflow .st-colb')&&!!document.querySelector('#stflow .st-colz'),
+    cols:!!document.querySelector('#stflow .st-colz'),
     lcol:getComputedStyle(lc).display, lw:Math.round(b.width), rw:Math.round(r.width), rh:Math.round(r.height),
     shut:document.body.classList.contains('lshut'), shown,
     grid:getComputedStyle(document.querySelector('.mid')).gridTemplateColumns};});
-  ok(s1.dash&&s1.chat&&s1.full&&!s1.simple&&s1.cols,at+'Dashboard turns on Full with chat still on, '+JSON.stringify({dash:s1.dash,chat:s1.chat,full:s1.full,simple:s1.simple}));
-  ok(s1.lcol==='flex'&&s1.rw>0&&s1.rh>0,at+'and the left column is back with the rail in it, '+JSON.stringify({lcol:s1.lcol,lw:s1.lw,rw:s1.rw,rh:s1.rh}));
-  ok(!s1.shut,at+'the Journal\'s left column arrives open in Full');
+  ok(s1.dash&&s1.chat&&s1.full&&!s1.simple&&!s1.cols,at+'still Full with chat on, and no Release column, '+JSON.stringify({dash:s1.dash,chat:s1.chat,full:s1.full,simple:s1.simple,cols:s1.cols}));
+  ok(s1.lcol==='flex'&&s1.rw>0&&s1.rh>0,at+'and the left column is open with the rail in it, '+JSON.stringify({lcol:s1.lcol,lw:s1.lw,rw:s1.rw,rh:s1.rh}));
+  ok(!s1.shut,at+'the fold opened the Journal\'s left column');
   /* THE FOLD IS BACK, 17 November, OVERRIDDEN from the 10 November
      ruling kept below for the record: his new annotated screenshot
      names this exact control, "closes left if I click that left box."
@@ -232,58 +247,62 @@ async function stFullGate(browser,FILE,ok,booted){
    if(o.fieldShut)document.body.classList.add('lshut');
    setTab(TAB.STORY); render(); await new Promise(r=>setTimeout(r,260));
    o.backFull=document.body.classList.contains('st-full'); o.backDash=STV.dash;
+   o.backShut=document.body.classList.contains('lshut');
    o.backRows=document.querySelectorAll('#stleft #st-energy-ls .st-pl').length;
    return o;});
   ok(!s4.offFull&&s4.offLeft===''&&s4.offRail==='none',at+'leaving the Journal clears the rail and the class, '+JSON.stringify(s4));
   ok(s4.fieldSec!=='none',at+'and the Field\'s left rail is the Field\'s again, '+s4.fieldSec);
   ok(s4.backFull&&s4.backDash&&s4.backRows===7,at+'coming back in Full draws the class and all seven seats again, '+JSON.stringify(s4));
+  ok(!s4.backShut,at+'and the rail opened in item 2 is still open, the same load, '+JSON.stringify(s4));
 
-  /* 8. THE FOLD IS BACK, 17 November, OVERRIDDEN from the 10 November
-     ruling kept below for the record: his new annotated screenshot
-     names this exact control, "be able to minimize that left panel...
-     closes left if I click that left box." .lfold is shown again on
-     body.tab-story.st-full (shell/head.html) and colShut() reads a
-     stored answer for 'lcols' now, the same shape every other
-     surface's own key already reads (ui/ui.js). Checked here: the
-     control is visible and open on arrival, pressing it shuts the
-     rail and writes 'lcols', a round trip to the Field and back
-     leaves the Journal shut and never touches the Field's own 'lcol'
-     key, and pressing it again reopens the rail with nothing stuck.
-     WHAT THIS REPLACED, 10 November, his words then: "the left menu,
-     get rid of that close menu... merge that left menu into the full
-     panel." */
+  /* 8. THE FOLD, AND NOTHING KEPT, 27 November. The Journal's rail folds
+     under its own key since 17 November ("closes left if I click that left
+     box"), and since the split of Discover it starts shut on every load and
+     is never remembered: his ruling that Source AI and the imprints are
+     the first thing seen every time (LCOLS_OPEN, ui/ui.js). Checked here:
+     the rail is open from item 2, pressing the fold shuts it and writes
+     nothing, a round trip to the Field leaves it shut and never touches the
+     Field's own 'lcol' key, pressing it again opens it, and a reload shuts
+     it again with nothing in the store. */
   if(wn==='desktop'){
-   const k0=await p.evaluate(()=>({lcols:STORE.get('lcols'),lcol:STORE.get('lcol'),
+   /* setTab hands focus to the tab's own button, and after item 6's Escape
+      that focus is a keyboard one, so the Journal button's title opens as
+      a tip, and since 27 November that button is on the bar over this
+      corner: put focus down the way a pointer moving off the bar would */
+   await p.evaluate(()=>{if(document.activeElement)document.activeElement.blur();});
+   await p.mouse.move(800,600); await p.waitForTimeout(200);
+   const k0=await p.evaluate(()=>({lcols:STORE.get('lcols')||null,lcol:STORE.get('lcol')||null,
      fold:getComputedStyle(document.getElementById('lfold')).display,
      shut:document.body.classList.contains('lshut')}));
-   ok(k0.fold!=='none',at+'the Journal has its fold back to press, '+JSON.stringify(k0));
-   ok(!k0.shut,at+'and it arrives open, '+JSON.stringify(k0));
+   ok(k0.fold!=='none'&&!k0.shut,at+'the Journal\'s fold is there to press, the rail open, '+JSON.stringify(k0));
    await press(p,'#lfold',ok,at+'the Journal\'s own fold');
    await p.waitForTimeout(250);
-   const k1=await p.evaluate(()=>({shut:document.body.classList.contains('lshut'),lcols:STORE.get('lcols')}));
-   ok(k1.shut&&k1.lcols==='shut',at+'pressing it shuts the rail and writes lcols, '+JSON.stringify(k1));
+   const k1=await p.evaluate(()=>({shut:document.body.classList.contains('lshut'),lcols:STORE.get('lcols')||null}));
+   ok(k1.shut&&k1.lcols===null,at+'pressing it shuts the rail and stores nothing, '+JSON.stringify(k1));
    const k2=await p.evaluate(async()=>{const o={};
     setTab(TAB.FIELD); render(); await new Promise(r=>setTimeout(r,200));
-    o.fieldShut=document.body.classList.contains('lshut'); o.lcol=STORE.get('lcol');
+    o.lcol=STORE.get('lcol')||null;
     setTab(TAB.STORY); render(); await new Promise(r=>setTimeout(r,200));
-    o.backShut=document.body.classList.contains('lshut'); o.lcols=STORE.get('lcols');
+    o.backShut=document.body.classList.contains('lshut'); o.lcols=STORE.get('lcols')||null;
     return o;});
-   ok(k2.backShut&&k2.lcols==='shut'&&k2.lcol===k0.lcol,
-    at+'the Journal\'s own shut rail survives the Field and back, and never writes the Field\'s own lcol key, '+JSON.stringify({k0,k2}));
+   ok(k2.backShut&&k2.lcols===null&&k2.lcol===k0.lcol,
+    at+'the shut rail survives the Field and back, and never writes the Field\'s own lcol key, '+JSON.stringify({k0,k2}));
+   await p.evaluate(()=>{if(document.activeElement)document.activeElement.blur();});
+   await p.mouse.move(800,600); await p.waitForTimeout(200);
    await press(p,'#lfold',ok,at+'the Journal\'s own fold, reopened');
    await p.waitForTimeout(250);
-   const k3=await p.evaluate(()=>({shut:document.body.classList.contains('lshut'),lcols:STORE.get('lcols')}));
-   ok(!k3.shut&&k3.lcols==='open',at+'and pressing it again reopens the rail, '+JSON.stringify(k3));}
+   const k3=await p.evaluate(()=>({shut:document.body.classList.contains('lshut'),lcols:STORE.get('lcols')||null}));
+   ok(!k3.shut&&k3.lcols===null,at+'and pressing it again reopens the rail, still storing nothing, '+JSON.stringify(k3));
+   await p.reload({waitUntil:'load'}); await booted(p);
+   const k4=await p.evaluate(async()=>{loadP(0); setTab(TAB.STORY); render(); await new Promise(r=>setTimeout(r,250));
+    return {shut:document.body.classList.contains('lshut'),lcols:STORE.get('lcols')||null};});
+   ok(k4.shut&&k4.lcols===null,at+'and a reload lands it shut again, '+JSON.stringify(k4));
+   await press(p,'#lfold',ok,at+'the Journal\'s own fold, open for what follows');
+   await p.waitForTimeout(250);}
 
-  /* 9. Dashboard again is Simple */
-  await p.evaluate(()=>window.scrollTo(0,0));
-  await press(p,'#stdash',ok,at+'Dashboard, off');
-  await p.waitForTimeout(220);
-  const s5=await p.evaluate(()=>({dash:STV.dash,full:document.body.classList.contains('st-full'),
-   simple:!!document.querySelector('#stflow.st-simple'),lcol:getComputedStyle(document.getElementById('lcol')).display,
-   left:document.getElementById('stleft').innerHTML}));
-  ok(!s5.dash&&!s5.full&&s5.simple&&s5.lcol==='none'&&s5.left==='',at+'Dashboard pressed again is Simple as it was, '+JSON.stringify(s5));
-  await p.evaluate(()=>{ST_TEXT='';ST_PARSED=null;if(typeof stDraft==='function')stDraft();});
+  /* 9, DASHBOARD BACK TO SIMPLE, IS GONE WITH ITS DOOR, 27 November: see
+     the header. */
+  await p.evaluate(()=>{window.scrollTo(0,0);ST_TEXT='';ST_PARSED=null;if(typeof stDraft==='function')stDraft();});
 
   /* 10. THE WORDS ARE THE OPEN RECORD'S, 3 November. The bug this holds was
      on atuned.world from PR #169: in Full, with a story on the Journal, the
@@ -293,8 +312,6 @@ async function stFullGate(browser,FILE,ok,booted){
      The picker is moved by a real selectOption, which fires the same change
      event a person's choice does (ui/personas.js, loadP). force only skips
      the visibility wait, because at 390 the select sits behind its menu. */
-  await press(p,'#stdash',ok,at+'Dashboard, on again for the switch');
-  await p.waitForTimeout(200);
   const MARK='he shouted at me';
   const a=await p.evaluate(async t=>{loadP(0); ST_TEXT=t; ST_PARSED=parseStory(t); stRefresh();
    await new Promise(r=>setTimeout(r,650));
@@ -348,8 +365,11 @@ async function stFullGate(browser,FILE,ok,booted){
   await p.evaluate(async t=>{ST_TEXT=t; ST_PARSED=parseStory(t); stRefresh(); stRender(); await new Promise(r=>setTimeout(r,200));
    stCommit(); await new Promise(r=>setTimeout(r,250));},'My jaw was tight all morning and my shoulders would not drop.');
   const f2=await p.evaluate(()=>{var ids=stRelModel().take.map(function(n){return n.i;});
-   relPick(ids,{mini:true,story_t:STV.lastT}); relClose(); stRelPanel();
-   return {take:stRelModel().take.length, open:STV.lastOpen, rq:document.querySelectorAll('#strel [data-rq]').length};});
+   relPick(ids,{mini:true,story_t:STV.lastT}); relClose();
+   /* #strel draws on the Imprints page alone since 27 November */
+   setTab(TAB.IMPRINTS); stRelPanel();
+   var o={take:stRelModel().take.length, open:STV.lastOpen, rq:document.querySelectorAll('#strel [data-rq]').length};
+   setTab(TAB.STORY); return o;});
   ok(f2.take===0&&f2.open===false&&f2.rq===0,at+'and the same holds for a release run through onboarding\'s own mini shape, '+JSON.stringify(f2));
   await p.evaluate(async t=>{ST_TEXT=t; ST_PARSED=parseStory(t); stRefresh(); stRender(); await new Promise(r=>setTimeout(r,200));
    stCommit(); await new Promise(r=>setTimeout(r,250));},'A third entry, committed and never released.');
@@ -387,13 +407,10 @@ async function stFullGate(browser,FILE,ok,booted){
   ok(e2.line===e0.line&&e2.reach===0,at+'and its own words trip the line, still no door, '+JSON.stringify(e2));
   await p.evaluate(()=>{ST_TEXT=''; ST_PARSED=null; stDraft(); profDelete(CURP.id);});
   await p.evaluate(()=>{loadP(0); setTab(TAB.STORY); render();});
-  /* THE FOLD IS BACK, 17 November, see the note at item 8 above. This
-     path is a fresh profile load and a plain render(), never a press
-     on #lfold, so railOpened's own reopen fade (ui/railmotion.js),
-     which only fires from colFold's own onclick, has nothing to fire
-     from here either way. What this checks stays what it checked
-     before the control came back: the rail sits open with no fade
-     running. */
+  /* A FRESH PROFILE LOAD AND A PLAIN render() run no fade on the rail.
+     railOpened's reopen fade (ui/railmotion.js) fires only from colFold's
+     own press, so this path has nothing to fire it from. The rail is as
+     item 8 left it, open on the desktop. */
   if(wn==='desktop'){
    await p.waitForTimeout(300);
    const an=await p.evaluate(async()=>{await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
@@ -406,6 +423,7 @@ async function stFullGate(browser,FILE,ok,booted){
 
 /* ============================================================
    THE MINI DASHBOARD AND THE FULL ONE HOLD THE SAME RULINGS, 17 November.
+   Since 27 November only the Full one is reachable, and only it is walked.
    His question: "why don't you fix the dashboard in both locations?" Fix after
    fix landed on the Full Dashboard (STV.dash) and the mini one, the Journal's
    start view, went on showing the same defect, because every gate above
@@ -433,7 +451,10 @@ async function stParityGate(browser,FILE,ok,booted){
   const errs=[]; p.on('pageerror',e=>errs.push(e.message.slice(0,160)));
   await p.goto(FILE); await booted(p);
   for(const who of ['blank','read','example']){
-   for(const dash of [false,true]){
+   /* THE MINI VIEW IS UNREACHABLE SINCE 27 November: STV.dash starts true
+      and nothing sets it false (the Dashboard door is not drawn), so only
+      the view a person can reach is walked. */
+   for(const dash of [true]){
     const at=wn+' '+who+' '+(dash?'Full':'mini')+': ';
     const m=await p.evaluate(async a=>{
      const wait=ms=>new Promise(r=>setTimeout(r,ms));
@@ -472,19 +493,9 @@ async function stParityGate(browser,FILE,ok,booted){
      if(!dash)ok(k.txt==='',at+'and on the mini view carries no word of its own, '+JSON.stringify(k.txt));});
     if(who==='example')ok(m.marks.some(k=>k.id===''),at+'the worked example mark is there, '+JSON.stringify(m.marks));
    }}
-  /* the one real hidden word, on the mini view: the mark appears bare */
-  const at=wn+' mini, a word hidden: ';
-  const s=await p.evaluate(async()=>{
-   const wait=ms=>new Promise(r=>setTimeout(r,ms));
-   loadP(0); setTab(TAB.STORY); STV.chat=true; STV.typed=false; STV.dash=false;
-   ST_TEXT='I felt really ****** furious and my chest was tight.'; ST_PARSED=parseStory(ST_TEXT);
-   render(); stRender(); await wait(700);
-   const e=document.getElementById('stmask'); if(!e)return null;
-   const r=e.getBoundingClientRect(), cs=getComputedStyle(e);
-   return {shown:cs.display!=='none'&&r.width>0, txt:e.textContent.trim(), w:Math.round(r.width), h:Math.round(r.height),
-    name:e.getAttribute('aria-label'), tipT:e.getAttribute('data-tip-t')};});
-  ok(s&&s.shown&&s.txt===''&&s.w>=44&&s.h>=44&&/hidden/.test(s.tipT||'')&&(s.name||'').length>20,
-   at+'it shows with no word on it, a 44 pixel target, the count in its tip, '+JSON.stringify(s));
+  /* the one real hidden word on the mini view, checked here until 27
+     November, is gone with that view: on Full with chat on the mark is not
+     drawn (stRender, dashTB) */
   ok(errs.length===0,wn+': no page error on the way, '+errs.join(' | '));
   await p.close();}}
 
@@ -595,10 +606,14 @@ async function stFoldGate(browser,FILE,ok,booted){
    else if(side==='row'){ if(!(b.colw.h-a.colw.h>=freed-4))f.push('the columns took '+Math.round(b.colw.h-a.colw.h)+' px of the '+Math.round(freed)+' px given back');}
    else if(!(a.flow.h-b.flow.h>=freed-4))f.push('the page shrank '+Math.round(a.flow.h-b.flow.h)+' px for the '+Math.round(freed)+' px given back');
    return f.concat(face(b));}};
- const FOLDS=[
-  {nm:'the left rail',id:'lfold',c:'l',key:'lcols',cls:'lshut'},
-  {nm:'the Release column',id:'zfold',c:'z',key:'stzfold',cls:'st-zshut'},
-  {nm:'the widgets row',id:'rowfold',c:'r',key:'strowfold',cls:'st-rowshut'}];
+ /* ONE FOLD LEFT, 27 November. The Release column and the widgets row left
+    the Journal when Discover split in two, and their folds with them
+    (zFoldWire and rowFoldWire are defined and uncalled). The left rail's
+    fold stays, and its ruling changed: it lands shut on every load and is
+    never stored, so the walk below starts shut, opens, and checks a reload
+    shuts it again where it used to check a reload kept it. LAY.z and LAY.r
+    above are the measures those two folds were held to, kept for the
+    record of what they asserted. */
  for(const [w,h,wn] of WID){
   const p=await browser.newPage({viewport:{width:w,height:h}});
   const errs=[]; p.on('pageerror',e=>errs.push(e.message.slice(0,160)));
@@ -612,88 +627,57 @@ async function stFoldGate(browser,FILE,ok,booted){
    const ctl=id=>{const e=document.getElementById(id); if(!e)return null;
     const o=R(e); o.exp=e.getAttribute('aria-expanded'); o.label=e.getAttribute('aria-label')||''; return o;};
    const fl=document.getElementById('stflow'), grid=fl&&getComputedStyle(fl).display==='grid';
-   /* DESCENDANT, NOT A DIRECT CHILD, 19 November: the two-row split
-      (ui/storyui.js, shell/head.html) nested every card one level deeper
-      inside .st-mini6-row, so the direct-child selector this line used to
-      read (#stmini6>.st-mini) now matches nothing at all. */
-   const minis=[...document.querySelectorAll('#stmini6 .st-mini')];
    return {
-    cls:{l:B.contains('lshut'),z:B.contains('st-zshut'),r:B.contains('st-rowshut'),full:B.contains('st-full')},
-    key:{l:STORE.get('lcols')||null,z:STORE.get('stzfold')||null,r:STORE.get('strowfold')||null},
-    ctl:{l:ctl('lfold'),z:ctl('zfold'),r:ctl('rowfold')},
+    cls:{l:B.contains('lshut'),full:B.contains('st-full')},
+    key:{l:STORE.get('lcols')||null},
+    ctl:{l:ctl('lfold')},
     stage:Q('#stage'),flow:Q('#stflow'),colw:Q('.st-colw'),colb:Q('.st-colb'),colz:Q('.st-colz'),
-    uni:Q('#stuni'),row:Q('#stmini6'),lcol:Q('#lcol'),left:Q('#stleft'),rel:Q('#strel'),
-    simple:!!document.querySelector('#stflow.st-simple'),
+    uni:Q('#stuni'),row:Q('#stmini6'),lcol:Q('#lcol'),left:Q('#stleft'),
     side:grid?'row':'stack', tracks:grid?getComputedStyle(fl).gridTemplateColumns.split(' ').length:null,
-    minis:minis.filter(e=>{const r=e.getBoundingClientRect(); return r.width>0&&r.height>0;}).length, minisAll:minis.length,
     vw:innerWidth};});
-  /* a transition is a moving target, so a reading is taken when two in a row agree */
   const settle=async()=>{let prev=null, cur=null;
    for(let i=0;i<30;i++){cur=JSON.stringify(await snap()); if(cur===prev)break; prev=cur; await p.waitForTimeout(140);}
    return JSON.parse(cur);};
   const prep=()=>p.evaluate(async a=>{
    loadP(0); a.forEach(t=>{ST_TEXT=t; ST_PARSED=parseStory(t); stCommit();});
    ST_TEXT=''; ST_PARSED=null;
-   setTab(TAB.STORY); STV.chat=true; STV.typed=false; STV.dash=false; render(); stRender();
+   setTab(TAB.STORY); STV.chat=true; STV.typed=false; render(); stRender();
    await new Promise(r=>setTimeout(r,500));},READ);
-  const goFull=async(on)=>{
-   const now=await p.evaluate(()=>!!STV.dash);
-   if(now!==on)await press(p,'#stdash',ok,wn+': Dashboard');
-   return settle();};
   const pick=async(v)=>{await p.selectOption('#psel',v,{force:true}); await p.waitForTimeout(350); return settle();};
   await prep();
-  let base=await goFull(true);
   const other=await p.evaluate(()=>[...document.querySelectorAll('#psel option')].map(o=>o.value).find(v=>v!=='0'));
-  for(const f of FOLDS){
-   const at=wn+' '+f.nm+': ';
-   const oth=FOLDS.filter(g=>g!==f);
-   /* 1. arrives open, a person who has never chosen */
-   const s0=await settle(), side=s0.side;
-   const c0=s0.ctl[f.c];
-   ok(s0.cls.full&&!s0.cls[f.c]&&s0.key[f.c]!=='shut'&&!!c0&&c0.shown&&c0.exp==='true'&&/^Close/.test(c0.label)
-    &&c0.w>=44&&c0.h>=44&&face(s0).length===0&&(wn==='desktop')===(side==='row'),
-    at+'arrives open, a 44 pixel target, the face on its axis, the flow laid '+side+'ways, '+JSON.stringify({cls:s0.cls,key:s0.key[f.c],ctl:c0,face:face(s0),side}));
-   /* 2. one real press shuts it, and only it */
-   await press(p,'#'+f.id,ok,at+f.nm+' fold');
-   const s1=await settle(), c1=s1.ctl[f.c];
-   const moved=oth.filter(g=>s1.cls[g.c]!==s0.cls[g.c]||s1.key[g.c]!==s0.key[g.c]).map(g=>g.id);
-   ok(s1.cls[f.c]&&!!c1&&c1.exp==='false'&&/^Open/.test(c1.label)&&s1.key[f.c]==='shut'&&c1.w>=44&&c1.h>=44&&moved.length===0,
-    at+'pressed, it is shut, says so, writes '+f.key+' shut, and moves nothing else, '+JSON.stringify({cls:s1.cls[f.c],ctl:c1&&{exp:c1.exp,label:c1.label,w:c1.w,h:c1.h},key:s1.key[f.c],moved}));
-   /* 3. what a person sees */
-   const bad=LAY[f.c](s0,s1,side);
-   ok(bad.length===0,at+'the layout answers on the '+side+' flow, '+bad.join('; '));
-   /* 4. THE MINI VIEW WITH IT STILL SHUT, the 17 November bug */
-   const sm=await goFull(false);
-   const mbad=face(Object.assign({},sm,{colw:sm.flow}));
-   ok(!sm.cls.full&&sm.simple&&sm.cls[f.c]&&mbad.length===0&&(sm.tracks===null||sm.tracks===1),
-    at+'on the mini view the face stays on the page\'s axis with it shut, one track, '+JSON.stringify({full:sm.cls.full,simple:sm.simple,shut:sm.cls[f.c],tracks:sm.tracks,mbad}));
-   await goFull(true);
-   /* 5. a reload */
-   await p.reload({waitUntil:'load'}); await booted(p); await prep(); await goFull(true);
-   const s3=await settle(), c3=s3.ctl[f.c];
-   const d3=sameShape(s1,s3,own(side));
-   ok(s3.cls[f.c]&&s3.key[f.c]==='shut'&&!!c3&&c3.exp==='false'&&d3.length===0,
-    at+'a reload keeps it shut, on the same layout, '+JSON.stringify({cls:s3.cls[f.c],key:s3.key[f.c],exp:c3&&c3.exp,d3}));
-   /* 6. a profile change and back */
-   const sa=await pick(other), sb=await pick('0');
-   const cb=sb.ctl[f.c];
-   ok(sa.cls[f.c]&&sa.key[f.c]==='shut'&&sb.cls[f.c]&&sb.key[f.c]==='shut'&&!!cb&&cb.exp==='false',
-    at+'another profile and back keeps it shut, '+JSON.stringify({other:{cls:sa.cls[f.c],key:sa.key[f.c]},back:{cls:sb.cls[f.c],key:sb.key[f.c],exp:cb&&cb.exp}}));
-   /* 7. open again */
-   await press(p,'#'+f.id,ok,at+f.nm+' fold, again');
-   const s4=await settle(), c4=s4.ctl[f.c], d4=sameShape(s0,s4,own(side));
-   ok(!s4.cls[f.c]&&!!c4&&c4.exp==='true'&&/^Close/.test(c4.label)&&s4.key[f.c]==='open'&&d4.length===0,
-    at+'pressed again it opens, writes open, and every box is where it was, '+JSON.stringify({cls:s4.cls[f.c],exp:c4&&c4.exp,key:s4.key[f.c],d4}));}
-  /* ALL THREE AT ONCE, then all three open */
-  for(const f of FOLDS)await press(p,'#'+f.id,ok,wn+' all three: '+f.nm);
-  const sx=await settle();
-  const xbad=face(sx);
-  ok(FOLDS.every(f=>sx.cls[f.c]&&sx.key[f.c]==='shut'&&sx.ctl[f.c]&&sx.ctl[f.c].exp==='false')&&xbad.length===0&&sx.flow.r<=sx.vw+1,
-   wn+' all three shut: every class, key and control agrees, the face on its axis, nothing past the screen, '+JSON.stringify({cls:sx.cls,key:sx.key,face:xbad,flowRight:sx.flow.r,vw:sx.vw}));
-  for(const f of FOLDS)await press(p,'#'+f.id,ok,wn+' all three open: '+f.nm);
-  const sy=await settle(), dy=sameShape(base,sy,own(base.side));
-  ok(FOLDS.every(f=>!sy.cls[f.c]&&sy.key[f.c]==='open')&&dy.length===0,
-   wn+' all three open again, every box where it was, '+JSON.stringify({cls:sy.cls,key:sy.key,dy}));
+  const at=wn+' the left rail: ';
+  /* 1. lands shut, nothing stored, two even cards and nothing else */
+  const s0=await settle(), side=s0.side, c0=s0.ctl.l;
+  ok(s0.cls.full&&s0.cls.l&&s0.key.l===null&&!!c0&&c0.shown&&c0.exp==='false'&&/^Open/.test(c0.label)
+   &&c0.w>=44&&c0.h>=44&&face(s0).length===0&&(wn==='desktop')===(side==='row'),
+   at+'lands shut, a 44 pixel target, nothing stored, the face on its axis, the flow laid '+side+'ways, '+JSON.stringify({cls:s0.cls,key:s0.key,ctl:c0,face:face(s0),side}));
+  ok(!s0.colz&&!s0.row&&(side!=='row'||(s0.tracks===2&&near(s0.colw.w,s0.colb.w))),
+   at+'the Journal is two cards of one width and no third column or widget row, '+JSON.stringify({colw:s0.colw&&s0.colw.w,colb:s0.colb&&s0.colb.w,tracks:s0.tracks,colz:!!s0.colz,row:!!s0.row}));
+  /* 2. a real press opens it, and stores nothing */
+  await press(p,'#lfold',ok,at+'fold');
+  const s1=await settle(), c1=s1.ctl.l;
+  ok(!s1.cls.l&&!!c1&&c1.exp==='true'&&/^Close/.test(c1.label)&&s1.key.l===null&&c1.w>=44&&c1.h>=44,
+   at+'pressed, it opens, says so, and stores nothing, '+JSON.stringify({cls:s1.cls.l,ctl:c1&&{exp:c1.exp,label:c1.label,w:c1.w,h:c1.h},key:s1.key.l}));
+  /* 3. what a person sees, open against shut: LAY.l reads its second
+     argument as the shut one */
+  const bad=LAY.l(s1,s0,side);
+  ok(bad.length===0,at+'the layout answers on the '+side+' flow, '+bad.join('; '));
+  /* 4. a profile change and back, the same load, keeps it open */
+  const sa=await pick(other), sb=await pick('0');
+  ok(!sa.cls.l&&!sb.cls.l&&sb.key.l===null,at+'another profile and back keeps it open in the same load, '+JSON.stringify({other:sa.cls.l,back:sb.cls.l,key:sb.key.l}));
+  /* 5. a reload lands it shut again, on the first layout */
+  await p.reload({waitUntil:'load'}); await booted(p); await prep();
+  const s3=await settle(), d3=sameShape(s0,s3,own(side));
+  ok(s3.cls.l&&s3.key.l===null&&s3.ctl.l&&s3.ctl.l.exp==='false'&&d3.length===0,
+   at+'a reload lands it shut again, on the same layout, '+JSON.stringify({cls:s3.cls.l,key:s3.key.l,d3}));
+  /* 6. open, then shut again: every box back where it was */
+  await press(p,'#lfold',ok,at+'fold, open');
+  await settle();
+  await press(p,'#lfold',ok,at+'fold, shut');
+  const s4=await settle(), d4=sameShape(s0,s4,own(side));
+  ok(s4.cls.l&&s4.ctl.l&&s4.ctl.l.exp==='false'&&s4.key.l===null&&d4.length===0,
+   at+'pressed twice more it is shut, stores nothing, and every box is where it was, '+JSON.stringify({cls:s4.cls.l,key:s4.key.l,d4}));
   ok(errs.length===0,wn+': no page error on the way, '+errs.join(' | '));
   await p.close();}}
 
@@ -765,6 +749,8 @@ async function stRailPixelGate(browser,FILE,ok,booted){
   const seen=await p.evaluate(async nm=>{
    const i=PEOPLE.findIndex(x=>x.nm===nm); if(i<0)return null;
    loadP(i); setTab(TAB.STORY); STV.chat=true; STV.typed=false; STV.dash=true; render(); stRender();
+   /* the rail lands shut since 27 November, so its own fold opens it */
+   if(document.body.classList.contains('lshut'))document.getElementById('lfold').click();
    await new Promise(r=>setTimeout(r,900));
    const rail=document.getElementById('stleft'), rr=rail.getBoundingClientRect();
    /* visible to a person: shown, not transparent anywhere up its own chain,
@@ -821,7 +807,7 @@ if(require.main===module){
   console.log('\n=== the mini dashboard and the Full one, one set of rulings ===');
   try{ await stParityGate(browser,FILE,ok,booted); }
   catch(e){ FAIL++; console.log('  FAIL the parity gate threw: '+e.stack); }
-  console.log('\n=== the three corner folds: left rail, Release column, widgets row ===');
+  console.log('\n=== the Journal\'s left rail fold, shut on every load ===');
   try{ await stFoldGate(browser,FILE,ok,booted); }
   catch(e){ FAIL++; console.log('  FAIL the fold gate threw: '+e.stack); }
   console.log('\n=== the left rail draws something, in pixels, at 390 and 1600 ===');

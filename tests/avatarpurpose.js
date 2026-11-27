@@ -112,10 +112,16 @@ const LAYOUT=()=>{
    o.stalePressed=(document.querySelector('#avbody .avs-sb[aria-pressed="true"]')||{}).dataset;
    o.stalePressed=o.stalePressed?o.stalePressed.avsub:null;
    AV.sub='nonsense'; AV.sig=''; renderAvatar(); await f(60); o.junk=AV.sub;
-   /* the Discover card */
+   /* the Discover card. Off Discover since 27 November (the Journal draws
+      none of the seven cards), its code kept for his own placement, so it is
+      checked gone from the page and then built the way stRender built it,
+      in a box of this gate's own, where its link still answers */
    setTab(TAB.STORY); await f(60);
+   o.cardGone=!document.querySelector('#story [data-stgo]');
    o.cardSays=STGO_LABEL.stavatar;
-   const card=document.querySelector('[data-stgo="stavatar"]');
+   const tb=document.getElementById('tcards')||document.body.appendChild(Object.assign(document.createElement('div'),{id:'tcards'}));
+   tb.innerHTML=stMiniShell('stavatar','Avatar',stMiniAvatar(compute()),'stavatar');
+   const card=document.querySelector('#tcards [data-stgo="stavatar"]');
    o.cardAria=card?card.getAttribute('aria-label')+' | '+((card.querySelector('[data-tip]')||{}).dataset||{}).tip:'';
    STGO.stavatar(); await f(120);
    o.cardTab=S.tab===TAB.INTAKE; o.cardSub=AV.sub; o.cardWheel=!!document.querySelector('#avbody .av-arch');
@@ -133,7 +139,8 @@ const LAYOUT=()=>{
   ok(d.avSub==='becoming'&&!d.avSubWheel,w+': avSub(\'arch\') lands on Becoming, AV.sub '+d.avSub);
   ok(d.stale==='becoming'&&!d.staleWheel&&d.stalePressed==='becoming',w+': a view left at arch paints Becoming, pressed, '+JSON.stringify([d.stale,d.staleWheel,d.stalePressed]));
   ok(d.junk==='becoming',w+': a view the page does not know paints Becoming, got '+d.junk);
-  ok(!/Archetypes/.test(d.cardSays)&&!/Archetypes/.test(d.cardAria),w+': the Discover card no longer says it opens Archetypes, '+d.cardSays+' | '+d.cardAria);
+  ok(d.cardGone,w+': 27 November: no card of the seven is drawn on the Journal');
+  ok(!!d.cardAria&&!/Archetypes/.test(d.cardSays)&&!/Archetypes/.test(d.cardAria),w+': the Discover card no longer says it opens Archetypes, '+d.cardSays+' | '+d.cardAria);
   ok(d.cardTab&&d.cardSub==='becoming'&&!d.cardWheel,w+': the Discover card opens Becoming, '+JSON.stringify([d.cardTab,d.cardSub,d.cardWheel]));
   ok(d.marks>0&&d.markButtons===0&&d.markTips,w+': Character\'s archetypes are marks with their meaning, not doors, '+d.markButtons+' of '+d.marks+' are buttons');
   ok(d.markStays&&d.markSub!=='arch',w+': a press on one goes nowhere hidden, tab kept, AV.sub '+d.markSub);

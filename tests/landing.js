@@ -18,8 +18,10 @@
    "Yeah, I've changed that rule. The most important portions of the app are
    core loop... That really is the journal to the release."
 
-   So a device with no memory opens on Discover's one door, the journal page
-   (TABHOME, engine/core.js), where it opened on the Field before. The one
+   So a device with no memory opens on Discover's journal page (TABHOME,
+   engine/core.js), where it opened on the Field before. Since 27 November
+   Discover has two doors, Journal and Imprints, and the Journal is still
+   integer 0 and still home. The one
    first landing keeps his 9 October target, Summary, because that ruling is
    about exactly the funnel's first arrival and the gift's line stands on it;
    that is a default the UX seat took, his to overrule, written at
@@ -69,7 +71,7 @@ const booted = pg => pg.waitForFunction(() => typeof isBooted === 'function' && 
    in eight presses after 1500 ms. That race is not what this file holds, so
    a real press here comes after the wait, and the race is filed on its own. */
 const settle = pg => pg.waitForTimeout(1500);
-/* the opening is read as TAB.STORY, Discover's one door, and not through
+/* the opening is read as TAB.STORY, Discover's Journal, and not through
    TABHOME, so a build that has no TABHOME is measured against the same
    surface rather than against undefined */
 const state = pg => pg.evaluate(() => ({
@@ -104,8 +106,8 @@ async function payloadFromQuiz(browser) {
     const pg = await cx.newPage(); const errs = []; pg.on('pageerror', e => errs.push(e.message));
     await pg.goto('file://' + SRC + '?dev=1', { waitUntil: 'load' }); await booted(pg);
     let s = await state(pg);
-    ok(s.tab === s.discover && s.sec === 'discover', 'a clean device opens on Discover, the journal page, with Discover pressed: tab ' + s.tab + ', pressed ' + s.sec);
-    ok(s.home === s.discover, 'and the opening is named once, TABHOME, and it is Discover\'s door: ' + s.home);
+    ok(s.tab === s.discover && s.sec === 'discover', 'a clean device opens on Discover\'s Journal, with Discover pressed: tab ' + s.tab + ', pressed ' + s.sec);
+    ok(s.home === s.discover, 'and the opening is named once, TABHOME, and it is the Journal: ' + s.home);
     await pg.evaluate(() => setTab(TAB.COMPASS));
     await pg.reload({ waitUntil: 'load' }); await booted(pg);
     s = await state(pg);

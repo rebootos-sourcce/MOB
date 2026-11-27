@@ -91,14 +91,25 @@ console.log('\n=== the 21 questions, each through the ten points ===');
   const old=Math.round(100*(rit.length-lost)/rit.length);
   setTab(TAB.INTAKE); AV.sub='becoming'; AV.sig=''; renderAvatar(); await w(60);
   const page=avState().overall;
-  setTab(TAB.STORY); STV.dash=true; stRender(); await w(60);
-  const card=document.querySelector('#stavatar');
+  /* THE CARD LEFT DISCOVER, 27 November: the Journal draws none of the seven
+     and the Imprints page none either. Its code stays, because he is placing
+     the cards himself, so it is read the way stRender built it, through
+     stMiniShell and stMiniAvatar, into a box of this gate's own */
+  setTab(TAB.STORY); stRender(); await w(60);
+  const gone=['stavatar','stmasks','stcompass','stboundary','stbody','stfield','stsuperego'].filter(id=>document.getElementById(id));
+  setTab(TAB.IMPRINTS); await w(60);
+  gone.push(...['stavatar','stmasks','stmini6'].filter(id=>document.getElementById(id)));
+  setTab(TAB.STORY); await w(30);
+  const box=document.getElementById('tcards')||document.body.appendChild(Object.assign(document.createElement('div'),{id:'tcards'}));
+  box.innerHTML=stMiniShell('stavatar','Avatar',stMiniAvatar(compute()),'stavatar');
+  const card=document.querySelector('#tcards #stavatar');
   const g=card&&card.querySelector('.stmk-av-whole');
-  return {old, page:page===null?null:Math.round(page*100), help:avBecomingNow().pct,
+  return {gone, old, page:page===null?null:Math.round(page*100), help:avBecomingNow().pct,
    cardTip:g&&g.getAttribute('data-tip-t'), text:card?card.innerText:'',
    be:(card.querySelector('.stmk-av-be')||{getAttribute:()=>null}).getAttribute('data-tip-t'),
    shed:(card.querySelector('.stmk-av-shed')||{getAttribute:()=>null}).getAttribute('data-tip-t'),
    strokes:[...card.querySelectorAll('[stroke]')].map(e=>e.getAttribute('stroke'))};});
+ ok(rep.gone.length===0,'27 November: no card of the seven is drawn on the Journal or the Imprints page, '+JSON.stringify(rep.gone));
  ok(rep.old!==rep.page,'reproduced: the old card ring read '+rep.old+' while the page read '+rep.page);
  ok(rep.page!==null&&rep.page===rep.help,'the page reads the helper, '+rep.page+' and '+rep.help);
  ok(rep.cardTip==='Whole, '+rep.help+'%','the card reads the same helper, its hover says '+rep.cardTip);
@@ -108,8 +119,9 @@ console.log('\n=== the 21 questions, each through the ten points ===');
  ok(rep.be&&rep.shed,'both people have a hover, '+rep.be+' / '+rep.shed);
  const named=await p.evaluate(async()=>{
   CURP.avatar=CURP.avatar||avatarBlank(); CURP.avatar.name='The Builder'; CURP.avatar.shedName='The Firefighter';
-  stRender(); await new Promise(r=>setTimeout(r,40));
-  const c=document.querySelector('#stavatar');
+  const box=document.getElementById('tcards'); box.innerHTML=stMiniShell('stavatar','Avatar',stMiniAvatar(compute()),'stavatar');
+  await new Promise(r=>setTimeout(r,40));
+  const c=document.querySelector('#tcards #stavatar');
   return [c.querySelector('.stmk-av-be').getAttribute('data-tip-t'),c.querySelector('.stmk-av-shed').getAttribute('data-tip-t')];});
  ok(named[0]==='Becoming: The Builder'&&named[1]==='Releasing: The Firefighter','their real names on hover, '+named.join(' / '));
 
@@ -228,8 +240,12 @@ console.log('\n=== the 21 questions, each through the ten points ===');
   o.readBtn=document.querySelectorAll('#avbody .avmk [data-avmread],#avbody .avmk #chread').length;
   /* the Dashboard's Masks card, while Character is held */
   o.held=!tabOnBar(TAB.MASKS);
-  setTab(TAB.STORY); STV.dash=true; stRender(); await w(60);
-  const card=document.querySelector('[data-stgo="stmasks"]'); o.door=!!card;
+  /* the card is off Discover since 27 November and its link still works, so
+     it is built the way stRender built it, in a box of this gate's own */
+  setTab(TAB.STORY); stRender(); await w(60);
+  const tb=document.getElementById('tcards')||document.body.appendChild(Object.assign(document.createElement('div'),{id:'tcards'}));
+  tb.innerHTML=stMiniShell('stmasks','Masks',stMiniMasks(compute()),'stmasks');
+  const card=document.querySelector('#tcards [data-stgo="stmasks"]'); o.door=!!card;
   if(card){card.click(); await w(80);}
   o.landTab=S.tab===TAB.INTAKE; o.landSub=AV.sub; o.landMasks=B().length;
   window.SIGHT_PLAN=had;

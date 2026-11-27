@@ -144,6 +144,11 @@ function impPill(n,maxW,IX,ghost,inferred){
   +'title="'+esc(ttl)+'">'+esc(lbl)+'<b>'+val+'</b></button>';}
 function impRender(){
  var host=document.getElementById('imp'); if(!host)return;
+ /* ONLY ON THE IMPRINTS PAGE, 27 November. #imp is a static host there and
+    the Journal's stPaintAll calls this on every keystroke, so without this
+    it drew the whole record behind a page nobody could see. Emptied rather
+    than left, the rule Summary keeps. */
+ if(typeof TAB!=='undefined'&&S.tab!==TAB.IMPRINTS){ if(host.innerHTML)host.innerHTML=''; return; }
  var live=impLive(), ghosts=impGhosts(), IX=impIndex();
  var maxW=live.length?live[0].sq:1;
  var total=live.reduce(function(a,n){return a+n.sq;},0);
@@ -210,6 +215,9 @@ function impRender(){
      +' and nothing reaches the line yet. An address shows here once it does.</div>'
    : '<div class="ip-none">You have not written anything yet. '
      +'Whatever you write gets pulled apart and collected here.</div>';
+  /* the foot bar stands on an empty bank too, so the pane's foot stays
+     level with Run across the page whatever the bank holds */
+  h+='<div class="ip-bar"><span class="ip-sel"></span><button class="btn" id="impinfo" disabled>Detail</button></div>';
   host.innerHTML=h; impWire(); return;}
  /* AND IT SAYS WHERE THE CHILD SITS, in the seat's own terms and not in a
     second vocabulary: the axis, the seat it is held at, the address inside
@@ -300,9 +308,11 @@ function impRender(){
     one is pressed, so the empty half of this slot says nothing. */
  h+='<div class="ip-bar"><span class="ip-sel">'
   +(picked.length?picked.length+' selected':'')+'</span>'
-  +'<button class="btn" id="impinfo"'+(picked.length===1?'':' disabled')+'>Detail</button>'
-  +'<button class="btn pri" id="imprun"'+(picked.length?'':' disabled')+'>Release '
-  +(picked.length>1?picked.length:'')+'</button></div>';
+  +'<button class="btn" id="impinfo"'+(picked.length===1?'':' disabled')+'>Detail</button></div>';
+ /* RELEASE LEFT THIS BAR, 27 November. On the Imprints page the release
+    stands beside the bank with its own Run, which runs exactly what is
+    picked here (stRelModel), so a second Release button one pane over was
+    the same job twice. impWire still binds #imprun if it is ever drawn. */
  host.innerHTML=h; impWire();
  /* the Saboteur grouping is the chain's first rung, so its button is the plan's */
  lockApply(host.querySelector('[data-ig="sab"]'),'sab');}

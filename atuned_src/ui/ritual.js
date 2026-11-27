@@ -1627,8 +1627,10 @@ function ritWire(h,c){
       person is already looking. The ritbuild class brings that column to the
       front on a phone, ritRender above. */
    case 'miss-edit': ritEditOpen(id); return;
-   case 'go-bank': if(typeof setTab==='function')setTab(TAB.STORY);
-    if(typeof stBank==='function'&&typeof STV!=='undefined'&&!STV.bank)stBank(); return;
+   case 'go-bank':
+    /* the bank is the Imprints page since 27 November, and stBank opens it
+       on the bank side of its switch */
+    if(typeof stBank==='function')stBank(); return;
    case 'add': RIT.add=true; RIT.edit=null; RIT.sel={}; RIT.order=[]; RIT.tags=[]; RIT.on=null; RIT.tm=null;
     if(c.called)ritPick(c.called.k); break;
    /* the repeat band's presses, ritRecurAct in ui/ritbank.js, the same

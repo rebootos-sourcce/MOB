@@ -335,7 +335,8 @@ async function lockGate(browser,FILE,ok,booted){
    return {panels:h.querySelectorAll('.lk-panel').length,nothing:/Nothing is compounding/.test(h.textContent),
     chain:h.querySelectorAll('[data-ab^="chain|"]').length};});
   ok(an.panels>=1&&!an.nothing&&an.chain===0,tag+'Analytics holds no running chart and does not say nothing is compounding, '+JSON.stringify(an));
-  const ip=await pg.evaluate(()=>{IMP_GROUP='sab'; impRender();
+  /* the bank, #imp, draws on the Imprints page alone since 27 November */
+  const ip=await pg.evaluate(()=>{setTab(TAB.IMPRINTS); IMP_GROUP='sab'; impRender();
    const h=document.getElementById('imp'), g=h.querySelector('[data-ig="sab"]');
    const r={lock:g&&g.getAttribute('data-lock'),panel:!!h.querySelector('.lk-panel'),
     nothing:/Nothing is compounding/.test(h.textContent),feeds:/part of \d+ saboteur/.test(h.innerHTML)};

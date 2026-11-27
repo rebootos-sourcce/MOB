@@ -84,7 +84,8 @@ var GD_IC={
    ui/storyui.js and ui/stdash.js for the Dashboard (Discover with the
    Dashboard control pressed, STV.dash), ui/wheel.js, ui/fieldbar.js,
    ui/personas.js and the right rail for the Field, ui/avatarui.js for the
-   Avatar face of the Avatar tab. A row is {q: selector, ic, nm, say}. */
+   Avatar face of the Avatar tab. The Imprints page's key, imps, is the
+   Imprints tab (27 November). A row is {q: selector, ic, nm, say}. */
 var GUIDE={
  dashboard:{nm:'Dashboard', rows:[
   {q:'#st-energy', ic:'seats', nm:'Energy',
@@ -107,18 +108,26 @@ var GUIDE={
    say:'See what you have said and what is being read from it, or type.'},
   {q:'#stuni', ic:'circle', nm:'Reading circle',
    say:'Seven rings, root at the centre and crown outside. Each dot is a body address, brighter where it holds more charge.'},
-  {q:'#stbank', ic:'bank', nm:'Imprints',
-   say:'Every imprint you hold, to choose what you release.'},
-  {q:'#stvault', ic:'archive', nm:'Archive',
-   say:'What you have already released. The number is how many.'},
   {q:'#stsort', ic:'sort', nm:'Sort',
    say:'Order the list by body point, by when it was heard, or by weight.'},
   {q:'#stapply', ic:'bank', nm:'Bank',
-   say:'Put what this story found into your imprints.'},
+   say:'Put what this story found into your imprints.'}]},
+ /* THE IMPRINTS PAGE, 27 November: the bank, the vault and the release that
+    left the Dashboard when Discover split in two. Read off stImpsRender,
+    impRender and stRelPanel (ui/storyui.js, ui/imprints.js). */
+ imps:{nm:'Imprints', rows:[
+  {q:'#impsw', ic:'faces', nm:'Bank or vault',
+   say:'Bank is every imprint you hold. Vault is what you have released, and its number is how many points.'},
+  {q:'#imp .ip-ctl', ic:'layers', nm:'Group by',
+   say:'Group the bank by body point, by charge, by saboteur, and more.'},
+  {q:'#imp .ip-cloud', ic:'pick', nm:'Imprints',
+   say:'Each pill is one imprint. Press it to choose it for the release.'},
+  {q:'#impinfo', ic:'insight', nm:'Detail',
+   say:'With one imprint chosen, read it in full.'},
   {q:'#strel', ic:'release', nm:'Release',
-   say:'Where an imprint is let go. The corner button folds this column away.'},
-  {q:'#stmini6', ic:'tiles', nm:'Your tools',
-   say:'Compass, Boundary, Body, Field, Avatar, Masks and Superego at a glance. Each tile opens its tool.'}]},
+   say:'What the release will run: what you chose, or what your last story found.'},
+  {q:'#strun', ic:'release', nm:'Run release',
+   say:'Starts the release with the pace and patterns set above it.'}]},
  field:{nm:'Field', rows:[
   {q:'#fbar', ic:'layers', nm:'Layers',
    say:'Turn each layer of the wheel on and off: saboteurs, complexes, hyper complexes and the rest.'},
@@ -163,9 +172,11 @@ var GUIDE={
    say:'Hold the slider to see your avatar with that share of your banked charge released. Let go and it goes back. Nothing is changed.'}]}};
 
 /* which key the screen on show answers to, or '' for one with no guide yet.
-   Discover is two screens, the conversation alone and the Dashboard, and
-   the Avatar tab is three faces; each is its own key so a future pass can
-   write one without the other. */
+   The Journal was two screens, the conversation alone and the Dashboard, and
+   since 27 November only the Dashboard is reachable (STV.dash starts true);
+   the Imprints page answers to its own id, imps, below. The Avatar tab is
+   three faces; each is its own key so a future pass can write one without
+   the other. */
 function guideKey(){
  if(typeof S==='undefined'||!S)return '';
  var t=(typeof TABREAL==='function')?TABREAL(S.tab):S.tab;

@@ -14,6 +14,15 @@ function rdOpen(){
  if(typeof kbAnsHome==='function'&&typeof TAB!=='undefined'&&S.tab!==TAB.KNOW)kbAnsHome();
  var b=document.getElementById('rdrill');if(!b)return null;
  b.style.display='block';
+ /* the Imprints page has no rail of its own, so a drill opened there brings
+    the column beside the page for as long as it is open (shell/head.html,
+    body.imp-sel), and rdClose and leaving the tab take it away again */
+ if(typeof TAB!=='undefined'&&S.tab===TAB.IMPRINTS){ document.body.classList.add('imp-sel');
+  /* a rail shut on another surface would come in as a strip with the answer
+     hidden in it; this one exists to show the answer, so it comes in open,
+     for this drill only (the store is not written, railTab repaints it on
+     the next tab change) */
+  if(typeof railFoldPaint==='function')railFoldPaint(false); }
  var none=document.getElementById('rdrill-none'); if(none)none.style.display='none';
  /* open Selection, and leave open whatever else the person had open. */
  if(typeof OPENSEC==='object'&&OPENSEC&&OPENSEC.right){OPENSEC.right.sel=1;
@@ -96,6 +105,7 @@ function rdOpen(){
   catch(e){go.scrollIntoView();}}
  return b;}
 function rdClose(){ANA_PICK=null;S.pin=null;
+ document.body.classList.remove('imp-sel');
  if(typeof insClear==='function')insClear();
  /* AND BODY'S PICK GOES DOWN WITH THE ANSWER, now that Body answers here. The
     way back is where every surface puts its pick down, the Field's S.pin and

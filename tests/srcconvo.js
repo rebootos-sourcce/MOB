@@ -455,7 +455,10 @@ const fast = p => p.evaluate(() => { SRC_TAIL_MS = 90; });
     ok(!tip.title && !tip.tipAttr, w + ': the circle carries no hover at all, the 18 November ruling: ' + JSON.stringify(tip));
     await p.cx.close();
   }
-  if (sel('8')) for (const [w, h, view] of [[1600, 1000, 'hero'], [1600, 1000, 'dash'], [390, 844, 'hero'], [390, 844, 'dash']]) {
+  /* THE HERO VIEW IS UNREACHABLE SINCE 27 November: the Journal lands on the
+     Dashboard (STV.dash starts true) and the door back to the hero is not
+     drawn, so only the view a person can reach is walked */
+  if (sel('8')) for (const [w, h, view] of [[1600, 1000, 'dash'], [390, 844, 'dash']]) {
     const p = await open(browser, w, h);
     if (view === 'dash') await p.evaluate(() => { STV.dash = true; stRender(); });
     await p.waitForTimeout(300);

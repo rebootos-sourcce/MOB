@@ -154,7 +154,8 @@ const ev = async (page, fn, arg) => { try { return await page.evaluate(fn, arg);
         return route.fulfill({ status: 200, headers: { 'content-type': 'audio/wav', 'access-control-allow-origin': '*' }, body: WAV });
       });
       await commit(page, STORIES.grief);
-      const f5 = await ev(page, () => { var f = document.getElementById('strdose'), l = f && f.closest('label');
+      /* the Release panel is the Imprints page's since 27 November */
+      const f5 = await ev(page, () => { setTab(TAB.IMPRINTS); var f = document.getElementById('strdose'), l = f && f.closest('label');
         return { label: l ? (l.querySelector('span') || {}).textContent : null, max: f ? +f.max : null, value: f ? +f.value : null, dose: RUN.dose,
           card: typeof REL_DOSES !== 'undefined' ? REL_DOSES[REL_DOSES.length - 1] : null }; });
       /* PATTERNS, not Times said, round of 29 October, overriding 17
@@ -291,11 +292,10 @@ const ev = async (page, fn, arg) => { try { return await page.evaluate(fn, arg);
        here. tests/becoming.js picks two but holds their order only.
        SR3: #strpace is a typed number. It is clamped to the card's own 0.5 to 2
        and carried into the run, and a value that is no number falls back to 1.
-       THE ONE LIMIT: the Story's simple layout hides the release column and the
-       bank (#stflow.st-simple .st-colz is display:none, and the bank is in the
-       rail that is shut at this width), so a pointer press has no target here
-       and the pills and the buttons are pressed with .click(), which runs the
-       same handlers a press does. A typed number is set on the field and
+       THE ONE LIMIT, kept from when the Story's simple layout hid both: the
+       pills and the buttons are pressed with .click(), which runs the same
+       handlers a press does. They stand side by side on the Imprints page
+       since 27 November, which is where this opens. A typed number is set on the field and
        change is dispatched, which is what typing then leaving the field does. */
     console.log('\n=== 9. two picks are two rings and both release, and the speed takes a typed number, at ' + W + ' ===');
     {
@@ -304,8 +304,9 @@ const ev = async (page, fn, arg) => { try { return await page.evaluate(fn, arg);
         REL_WORD_S = 0.0004; REL_GAP_S = 0.001; REL_HEAD_S = 0; REL_FRAME_S = 0;
         CURP.ui.voice = false; CURP.ui.tone = false;
         CHARGES.forEach(function (c) { S.charge[c] = 7; }); pSave();
-        setTab(TAB.STORY); render();
+        /* the bank and the release are the Imprints page since 27 November */
         Object.keys(IMP_PICK).forEach(function (k) { delete IMP_PICK[k]; });
+        setTab(TAB.IMPRINTS); render();
         var o = {}, num = function (a, b) { return a - b; };
         var ids = [].slice.call(document.querySelectorAll('#imp [data-imp]')).map(function (e) { return +e.dataset.imp; })
           .filter(function (i) { return BY[i] && BY[i].cf; });

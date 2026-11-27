@@ -310,7 +310,8 @@ require('./net.js').guardBrowser(b);
   const keep=window.avRank; window.avRank=L=>L.sort((a,c)=>c.sq-a.sq);
   o.bad=order()[0]===lite.i; window.avRank=keep;
   o.tagKept=(CURP.avatar.tags[lite.b].add||[]).indexOf(lite.k)>=0;
-  setTab(TAB.STORY); render(); await w(100);
+  /* the release is the Imprints page's since 27 November */
+  setTab(TAB.IMPRINTS); render(); await w(100);
   o.mark=document.querySelectorAll('#strel .st-rq-av').length;
   o.markSays=/First, because you tagged/.test((document.querySelector('#strel .st-rq-av .st-rq')||{}).title||'');
   Object.keys(IMP_PICK).forEach(k=>delete IMP_PICK[k]);

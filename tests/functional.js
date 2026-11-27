@@ -3495,7 +3495,7 @@ console.log('\n=== the bar is the loop\'s four sections over a row of tabs, and 
   out.searched={tab:S.tab===TAB.KNOW, q:KB_Q, closed:!document.getElementById('srch').classList.contains('open')};
   KB_Q=''; setTab(TAB.FIELD); await wait();
   return out;});
- ok(nav.tab==='{"STORY":0,"SUMMARY":1,"FIELD":2,"ENERGY":3,"ANALYTICS":4,"INTAKE":5,"KNOW":6,"GAMES":7,"COMPASS":8,"SETTINGS":9,"RITUAL":10,"MASKS":11,"PRACTITIONER":12,"QUESTIONS":13,"ACCOUNT":14}',
+ ok(nav.tab==='{"STORY":0,"SUMMARY":1,"FIELD":2,"ENERGY":3,"ANALYTICS":4,"INTAKE":5,"KNOW":6,"GAMES":7,"COMPASS":8,"SETTINGS":9,"RITUAL":10,"MASKS":11,"PRACTITIONER":12,"QUESTIONS":13,"ACCOUNT":14,"IMPRINTS":15}',
   'every identity integer holds its value, '+nav.tab);
  ok(JSON.stringify(nav.loopKeys)==='["discover","play","flow","embody"]'&&JSON.stringify(nav.shownKeys)===JSON.stringify(nav.loopKeys),
   'the first tier is discover, play, flow, embody, in his order, and with practitioner mode off those four are all the bar shows, '+JSON.stringify(nav.shownKeys));
@@ -3519,11 +3519,14 @@ console.log('\n=== the bar is the loop\'s four sections over a row of tabs, and 
   '20 November: Play reads Field, Body, Compass, Avatar, in the engine and the bar alike, '+nav.play);
  ok(nav.embody==='Knowledge base,Summary,Intake,Analytics / Knowledge base,Summary,Intake,Analytics',
   '20 November: Embody reads Knowledge base again (Wisdom school from 18 November, Lyceum briefly on 20 November, reverted the same day), then Summary, Intake and Analytics in the order they stood in Play, in the engine and the bar alike, '+nav.embody);
- ok(nav.discover.def==='0:Discover:section'&&nav.discover.btn==='0:Discover:section'&&nav.discover.home===0,
-  '23 October: Discover has one door, the journal page, named Discover and marked as the section\'s own, in the engine and the markup, and it is where the app opens, '+JSON.stringify(nav.discover));
+ /* DISCOVER IS TWO DOORS, 27 November, his ruling: Journal and Imprints.
+    The 23 October one door, named Discover and marked as the section's own,
+    is what this replaced; the Journal keeps integer 0 and is still home. */
+ ok(nav.discover.def==='0:Journal:,15:Imprints:'&&nav.discover.btn==='0:Journal:,15:Imprints:'&&nav.discover.home===0,
+  '27 November: Discover has two doors, Journal then Imprints, neither marked as the section\'s own, in the engine and the markup, and the Journal is where the app opens, '+JSON.stringify(nav.discover));
  ok(nav.discover.story.length===0,'and the word Story is on no name, mark or title on the bar: '+JSON.stringify(nav.discover.story));
- ok(JSON.stringify(nav.first)==='{"discover":"Discover","play":"Field","flow":"Ritual","embody":"Knowledge base"}',
-  'a first visit to each section opens its first tab, Discover the journal page and Play the Field, '+JSON.stringify(nav.first));
+ ok(JSON.stringify(nav.first)==='{"discover":"Journal","play":"Field","flow":"Ritual","embody":"Knowledge base"}',
+  'a first visit to each section opens its first tab, Discover the Journal and Play the Field, '+JSON.stringify(nav.first));
  ok(nav.unsectioned.length===0,'every tab sits in a section, unsectioned: '+nav.unsectioned.join(', '));
  ok(nav.misgrouped.length===0,'and every button sits in its own section\'s group, misgrouped: '+nav.misgrouped.join(', '));
  ok(nav.secof.analytics==='embody'&&nav.secof.settings===null,
@@ -3680,9 +3683,11 @@ console.log('\n=== practitioner mode: the switch, the fifth section and the sket
   'shut while standing on Clients, the person lands home on Discover and the bar on Discover, '+JSON.stringify(o2));
  ok(o2.swOff==='false'&&o2.stored===false&&JSON.stringify(o2.shown)==='["discover","play","flow","embody"]',
   'switched off in Account, the bar is the loop\'s four again with nothing left over, '+JSON.stringify(o2.shown));
- /* home is Discover since 23 October, a section that is its own door, so the
-    row under it holds no tab and there is no letter to line one up under:
-    what is held is that it is not left pointing at the section that went */
+ /* home is Discover since 23 October. It was a section that is its own door
+    until 27 November, with no tab in the row under it; it has two doors
+    since the split, so the row is held to its first letter like any other.
+    Either way what is held is that it is not left pointing at the section
+    that went */
  ok(o2.sec!=='practitioner'&&(o2.selfDoor?o2.row===0:(o2.row>0&&o2.dx!==null&&Math.abs(o2.dx)<=1)),
   'and the row under the bar is not left pointing at the section that went, section '+o2.sec+', '+o2.row+' tabs in sight'
   +(o2.selfDoor?', the section being its own door':', off its first letter by '+o2.dx+'px'));
@@ -5114,8 +5119,9 @@ ok(tiers.small===0,'every control on the tiers meets the 44 pixel floor, '+tiers
  const tabs=await pa.$$eval('.tabtop',a=>a.map(x=>x.textContent.trim()));
  const go=async nm=>{await pa.$$eval('.tabtop',(a,i)=>a[i].click(),
    tabs.findIndex(t=>new RegExp(nm,'i').test(t))); await pa.waitForTimeout(600);};
- /* the journal page's door reads Discover since 23 October */
- await go('Discover');
+ /* the journal page's door reads Journal since 27 November (Discover from
+    23 October until the split) */
+ await go('Journal');
  /* voice only now, round of 29 October: srcTurnCommit is the one door */
  await pa.evaluate(()=>{srcTurnCommit('I was humiliated in the meeting and I said nothing. '
    +'My chest went tight and I felt ashamed the rest of the day.');});
@@ -6223,7 +6229,8 @@ console.log('\n=== the child pattern is found, marked and located ===');
  const kp=await browser.newPage({viewport:{width:1600,height:1000}});
  await kp.goto(FILE,{waitUntil:'load'}); await booted(kp);
  const blank=await kp.evaluate(async()=>{
-  setTab(TAB.STORY); stRender();
+  /* #imp is the Imprints page's since 27 November */
+  setTab(TAB.IMPRINTS);
   await new Promise(r=>setTimeout(r,200));
   return {engine:childFound(compute()).n,
    pills:document.querySelectorAll('#imp .ip.kid').length,
@@ -6237,7 +6244,7 @@ console.log('\n=== the child pattern is found, marked and located ===');
  ok(blank.figure===false,'and the figure is absent rather than reading nought');
  console.log('  blank      '+blank.pills+' marked, '+blank.rows+' located');
  const on=await kp.evaluate(async()=>{
-  loadP(GORDON()); setTab(TAB.STORY); stRender();
+  loadP(GORDON()); setTab(TAB.IMPRINTS); render();
   await new Promise(r=>setTimeout(r,250));
   const k=childFound(compute());
   const pills=[...document.querySelectorAll('#imp .ip.kid')].map(e=>+e.dataset.imp);
@@ -8650,7 +8657,7 @@ await require('./stfull.js').stParityGate(browser,FILE,ok,booted);
    Left rail, Release column and widgets row each pressed, kept across a reload,
    and opened again, with the face on its axis; and the left rail measured in
    drawn pixels at 390 and 1600, because every other check on it reads the DOM. */
-console.log('\n=== the three corner folds: left rail, Release column, widgets row ===');
+console.log('\n=== the Journal\'s left rail fold, shut on every load ===');
 await require('./stfull.js').stFoldGate(browser,FILE,ok,booted);
 console.log('\n=== the left rail draws something, in pixels, at 390 and 1600 ===');
 await require('./stfull.js').stRailPixelGate(browser,FILE,ok,booted);
@@ -8741,7 +8748,7 @@ console.log('\n=== GW: the glossary reaches the Psyche stack, Analytics and Comp
  ok(gw.want.hy&&gw.card.indexOf(gw.want.hy)>=0,'GW: and the card the tile opens says the same sentence, read from the same key');
  ok(gw.cq===gw.ucq&&gw.dq===gw.udq&&!!gw.ucq&&!!gw.udq,'GW: the Analytics CQ and DQ tiles say the glossary\'s sentence, '+JSON.stringify([gw.cq,gw.dq]));
  ok(gw.ctop===gw.ucq&&gw.cbot===gw.udq&&!/\b112\b/.test(gw.cbot||''),'GW: the Compass\'s CQ and DQ titles are the glossary\'s, and no flat 112, '+JSON.stringify([gw.ctop,gw.cbot]));
- await page.evaluate(()=>{if(typeof rdClose==='function')rdClose();STV.dash=false;loadP(0);render();});
+ await page.evaluate(()=>{if(typeof rdClose==='function')rdClose();loadP(0);render();});
 }
 
 await browser.close();

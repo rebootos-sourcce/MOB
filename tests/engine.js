@@ -7467,8 +7467,9 @@ g('LL · practitioner mode, the switch and its integer');
   'and it is a boolean on the way in, as every preference beside it is');
  /* THE INTEGER IS APPENDED AND NOTHING BEFORE IT MOVED. Written out in full
     rather than counted, because this is the one table in the product where a
-    changed value is the defect and not the product growing. */
- ok(JSON.stringify(E.TAB)==='{"STORY":0,"SUMMARY":1,"FIELD":2,"ENERGY":3,"ANALYTICS":4,"INTAKE":5,"KNOW":6,"GAMES":7,"COMPASS":8,"SETTINGS":9,"RITUAL":10,"MASKS":11,"PRACTITIONER":12,"QUESTIONS":13,"ACCOUNT":14}',
+    changed value is the defect and not the product growing. Imprints, 15,
+    appended 27 November when Discover split in two. */
+ ok(JSON.stringify(E.TAB)==='{"STORY":0,"SUMMARY":1,"FIELD":2,"ENERGY":3,"ANALYTICS":4,"INTAKE":5,"KNOW":6,"GAMES":7,"COMPASS":8,"SETTINGS":9,"RITUAL":10,"MASKS":11,"PRACTITIONER":12,"QUESTIONS":13,"ACCOUNT":14,"IMPRINTS":15}',
   'Practitioner is 12 and every integer before it holds its value, '+JSON.stringify(E.TAB));
 }
 

@@ -660,8 +660,10 @@ function ritBankAct(a,b){
   case 'prel': ritBankShut(); if(typeof relPick==='function')relPick([+b.getAttribute('data-n')]); return;
   case 'why': {var bc=ritBecoming(); ritBankShut(); if(bc)ritStartFor(bc,+b.getAttribute('data-d')); return;}
   case 'go-story': ritBankShut(); if(typeof setTab==='function')setTab(TAB.STORY); return;
-  case 'go-bank': ritBankShut(); if(typeof setTab==='function')setTab(TAB.STORY);
-   if(typeof stBank==='function'&&typeof STV!=='undefined'&&!STV.bank)stBank(); return;
+  case 'go-bank': ritBankShut();
+   /* the bank is the Imprints page since 27 November, and stBank opens it
+      on the bank side of its switch */
+   if(typeof stBank==='function')stBank(); return;
   case 'bwhy': {var t=document.getElementById('rv-mwhy'); if(ritMissAnswer(P.id,t?t.value:''))ritBankRedraw(null); return;}
   default: return;}
  ritBankRedraw(b);}
