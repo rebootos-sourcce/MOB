@@ -2919,10 +2919,35 @@ const LAW_TEACHER={
 /* a teacher's laws, by pole key, in SI's own order */
 function compassLawsOf(k){
  return SINAMES.filter(function(n){return LAW_TEACHER[n]===k;});}
-/* CASCADE HAS NO ICONS AND THAT IS DELIBERATE. Nothing in the build renders
-   it, so an icon there would be a path nobody draws, which is the same class
-   of dead weight as the release animation that sat in the frame loop for
-   weeks. It gets icons on the turn something renders it. */
+/* THE CASCADE'S SIX MARKS, 27 November. This note said CASCADE had no icons
+   on purpose, because nothing rendered it and a path nobody draws is dead
+   weight, and that it gets icons on the turn something renders it. The dark
+   read in runPoleDrill (ui/drills.js) renders it now, behind the descent's own
+   gate and after its referral, so this is that turn.
+
+   Same 24 unit grid, ring not fill, each argued from what the state does and
+   none reused: no other table carries these six as names with a mark. GOVERN
+   prints The Devil and The Demon as corners and draws no icon for either, so
+   there was no existing mark to reuse. That is also one word naming two
+   concepts across two tables (a corner of the stack there, a state of the
+   cascade here), which is the owner's to rule on and is not renamed here.
+   GOVERN reads no icon through icOf, so these keys cannot reach a corner. */
+/* arms out in front and the legs still walking, under a head that is only a
+   ring: the motions go on and nothing is home */
+IC_NEW['The Zombie']='M12 3.4a2.6 2.6 0 110 5.2 2.6 2.6 0 010-5.2M12 8.6v6.4M12 10.6h7M12 12.8h7M12 15l-3 5.6M12 15l3 5.6';
+/* three identical steps, each taken because the one ahead was: navigation
+   handed to whatever is in front */
+IC_NEW['The Drone']='M6 4.5l6 4 6-4M6 10.5l6 4 6-4M6 16.5l6 4 6-4';
+/* a ring with nothing at its centre and three lines arriving from outside:
+   every reference point comes in, none starts here */
+IC_NEW['The NPC']='M12 8.5a3.5 3.5 0 110 7 3.5 3.5 0 010-7M12 2.5V7M10.6 5.6L12 7l1.4-1.4M2.5 12H7M5.6 10.6L7 12l-1.4 1.4M21.5 12H17M18.4 10.6L17 12l1.4 1.4';
+/* two fangs over the drop they take: it runs on current it did not make */
+IC_NEW['The Energy Vampire']='M4 5.5h16M7.5 5.5l1.8 5.5 1.8-5.5M12.9 5.5l1.8 5.5 1.8-5.5M12 14c1.8 2.4 2.6 3.6 2.6 4.8a2.6 2.6 0 01-5.2 0c0-1.2.8-2.4 2.6-4.8';
+/* a discharge with no gap in it, what lands and what goes out in one stroke */
+IC_NEW['The Demon']='M13.5 2.5L7 13h5l-1.5 8.5L17 11h-5z';
+/* an eye wide open under horns: it sees clearly, and aims what it sees */
+IC_NEW['The Devil']='M2.5 13c2.6-4 6-6 9.5-6s6.9 2 9.5 6c-2.6 4-6 6-9.5 6s-6.9-2-9.5-6zM12 10.5a2.5 2.5 0 110 5 2.5 2.5 0 010-5M8 8L6 3.5M16 8l2-4.5';
+CASCADE.forEach(function(c){c.ic=icOf(c.nm);});
 
 /* ---- THE NARCISSISM DESCENT ----
    The last step is not ours to work on. The codex

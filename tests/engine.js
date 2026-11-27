@@ -2497,6 +2497,29 @@ ok(MIRROR.some(m=>m.k==='IL'&&m.up==='Grace'&&m.dn==='Shadow'),'light is Grace a
  ok(CIRCLES.length===9&&CIRCLES.every((c,i)=>c.c===i+1),'nine circles in order');
  ok(CIRCLES.every(c=>c.by&&c.p&&c.at),'each circle names its governor, its pattern and its seat');
  ok(CASCADE.length===6,'six cascade states, got '+CASCADE.length);
+ /* THE CASCADE WEARS SIX MARKS SINCE THE DARK READ DRAWS IT, 27 November.
+    The six names are held as test data so a rename is a named diff, and each
+    mark is held distinct from every other mark the compass hands a screen, so
+    a state can never borrow a figure's icon by accident. */
+ {ok(CASCADE.map(c=>c.nm).join('|')==='The Zombie|The Drone|The NPC|The Energy Vampire|The Demon|The Devil',
+   'the six cascade states keep their names and their order, saw '+CASCADE.map(c=>c.nm).join('|'));
+  const bare=CASCADE.filter(c=>typeof c.ic!=='string'||!/^M\d/.test(c.ic)).map(c=>c.nm);
+  ok(bare.length===0,'every cascade state carries a path mark'+(bare.length?'  bare: '+bare.join(', '):''));
+  ok(new Set(CASCADE.map(c=>c.ic)).size===CASCADE.length,'and no two cascade states share one');
+  const others=[].concat(MIRROR.map(m=>m.ic),MIRROR.map(m=>m.dic),MASTERS.map(m=>m.ic),
+   BLUEPRINT.map(b=>b.ic),CIRCLES.map(c=>c.ic),E.PATHS.map(p=>p.ic),E.PATHS.map(p=>p.dic)).filter(Boolean);
+  const clash=CASCADE.filter(c=>others.indexOf(c.ic)>=0).map(c=>c.nm);
+  ok(clash.length===0,'and none wears a mark another compass figure already wears'+(clash.length?'  '+clash.join(', '):''));
+  /* ON THE 24 GRID, read off the absolute commands only. The arcs here write
+     their flags packed ("110 5.2" is 1, 1, 0 and 5.2), which a number regex
+     reads as a hundred and ten, so a probe walking relative arcs would report
+     a mark off the grid that is drawing correctly. Checked against a known
+     bad case: an M at 30 fails it. */
+  const offGrid=d=>(d.match(/[MLHV][^A-Za-z]*/g)||[]).some(seg=>
+   (seg.slice(1).match(/-?\d*\.?\d+/g)||[]).map(Number).some(v=>v<0||v>24));
+  ok(offGrid('M30 2L4 4')&&!offGrid('M12 2L4 4'),'the grid probe fails a known bad mark and passes a good one');
+  const off=CASCADE.filter(c=>offGrid(c.ic)).map(c=>c.nm);
+  ok(off.length===0,'and every cascade mark sits on the 24 unit grid'+(off.length?'  off: '+off.join(', '):''));}
 
  /* the position on an axis is read, not asked */
  ok(mirrorAt(0,10)===100,'a clear seat with full integrity sits at the coherent pole');

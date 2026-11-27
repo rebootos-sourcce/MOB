@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v3529 bead7294 2026-11-27 17:06"><head><meta charset="utf-8">
+<html lang="en" data-build="v3531 4735fa02 2026-11-27 18:40"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -16683,10 +16683,35 @@ const LAW_TEACHER={
 /* a teacher's laws, by pole key, in SI's own order */
 function compassLawsOf(k){
  return SINAMES.filter(function(n){return LAW_TEACHER[n]===k;});}
-/* CASCADE HAS NO ICONS AND THAT IS DELIBERATE. Nothing in the build renders
-   it, so an icon there would be a path nobody draws, which is the same class
-   of dead weight as the release animation that sat in the frame loop for
-   weeks. It gets icons on the turn something renders it. */
+/* THE CASCADE'S SIX MARKS, 27 November. This note said CASCADE had no icons
+   on purpose, because nothing rendered it and a path nobody draws is dead
+   weight, and that it gets icons on the turn something renders it. The dark
+   read in runPoleDrill (ui/drills.js) renders it now, behind the descent's own
+   gate and after its referral, so this is that turn.
+
+   Same 24 unit grid, ring not fill, each argued from what the state does and
+   none reused: no other table carries these six as names with a mark. GOVERN
+   prints The Devil and The Demon as corners and draws no icon for either, so
+   there was no existing mark to reuse. That is also one word naming two
+   concepts across two tables (a corner of the stack there, a state of the
+   cascade here), which is the owner's to rule on and is not renamed here.
+   GOVERN reads no icon through icOf, so these keys cannot reach a corner. */
+/* arms out in front and the legs still walking, under a head that is only a
+   ring: the motions go on and nothing is home */
+IC_NEW['The Zombie']='M12 3.4a2.6 2.6 0 110 5.2 2.6 2.6 0 010-5.2M12 8.6v6.4M12 10.6h7M12 12.8h7M12 15l-3 5.6M12 15l3 5.6';
+/* three identical steps, each taken because the one ahead was: navigation
+   handed to whatever is in front */
+IC_NEW['The Drone']='M6 4.5l6 4 6-4M6 10.5l6 4 6-4M6 16.5l6 4 6-4';
+/* a ring with nothing at its centre and three lines arriving from outside:
+   every reference point comes in, none starts here */
+IC_NEW['The NPC']='M12 8.5a3.5 3.5 0 110 7 3.5 3.5 0 010-7M12 2.5V7M10.6 5.6L12 7l1.4-1.4M2.5 12H7M5.6 10.6L7 12l-1.4 1.4M21.5 12H17M18.4 10.6L17 12l1.4 1.4';
+/* two fangs over the drop they take: it runs on current it did not make */
+IC_NEW['The Energy Vampire']='M4 5.5h16M7.5 5.5l1.8 5.5 1.8-5.5M12.9 5.5l1.8 5.5 1.8-5.5M12 14c1.8 2.4 2.6 3.6 2.6 4.8a2.6 2.6 0 01-5.2 0c0-1.2.8-2.4 2.6-4.8';
+/* a discharge with no gap in it, what lands and what goes out in one stroke */
+IC_NEW['The Demon']='M13.5 2.5L7 13h5l-1.5 8.5L17 11h-5z';
+/* an eye wide open under horns: it sees clearly, and aims what it sees */
+IC_NEW['The Devil']='M2.5 13c2.6-4 6-6 9.5-6s6.9 2 9.5 6c-2.6 4-6 6-9.5 6s-6.9-2-9.5-6zM12 10.5a2.5 2.5 0 110 5 2.5 2.5 0 010-5M8 8L6 3.5M16 8l2-4.5';
+CASCADE.forEach(function(c){c.ic=icOf(c.nm);});
 
 /* ---- THE NARCISSISM DESCENT ----
    The last step is not ours to work on. The codex
@@ -99107,7 +99132,24 @@ function runPoleDrill(end){
       return '<div class="ad-r static'+(dk.step&&dk.step.nm===d.nm?' on':'')
        +'" title="'+esc(d.d)+'"><span class="ad-k">'+esc(d.nm)+'</span>'
        +'<span class="ad-v">'+esc(d.kind)+'</span></div>';}).join('')+'</div>';
-   if(dk.refer)h+='<p class="ad-p"><b>'+esc(DESCENT_REFER)+'</b></p>';}
+   if(dk.refer)h+='<p class="ad-p"><b>'+esc(DESCENT_REFER)+'</b></p>';
+   /* THE CASCADE, BEHIND THE SAME GATE AND AFTER THE REFERRAL. CASCADE sat in
+      engine/data/compass.js as six named states that nothing drew. It is
+      inside dk.dark and not beside it, so a field that is not malignant and
+      decoherent at once is never shown it, and it comes after the referral so
+      the clinician line is never pushed below a list. It is not gated on
+      dk.refer as well: the six span early decoherence to full fragmentation,
+      by their own table's heading, and the referral is the floor of that.
+
+      NO ROW IS LIT. The descent's rows light the step darkRead chose; nothing
+      in the engine reads which cascade state a field is in, so lighting one
+      here would be a label the chain does not support. The row shape is the
+      blueprint's, mark then name, the line on hover. */
+   h+='<div class="pm-eye">The cascade, '+NUMWORD(CASCADE.length).replace(/^The /,'')+' states</div>'
+    +'<p class="ad-p">From going through the motions to harm done on purpose. Each row names a behaviour.</p>'
+    +'<div class="ad-rows">'+CASCADE.map(function(c){
+      return '<div class="ad-r static" data-cascade="'+esc(c.nm)+'" title="'+esc(c.d)+'">'
+       +'<span class="ad-k">'+adGl(c.ic)+esc(c.nm)+'</span></div>';}).join('')+'</div>';}
  }
  /* one row of doors, on BOTH ends of the cone, so the volume is reachable
     from the flat reading rather than only from a tab nobody has found. This
@@ -118086,5 +118128,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="008620012"></div>
+<div id="eof" hidden data-len="008623265"></div>
 </body></html>

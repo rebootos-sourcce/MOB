@@ -1548,7 +1548,24 @@ function runPoleDrill(end){
       return '<div class="ad-r static'+(dk.step&&dk.step.nm===d.nm?' on':'')
        +'" title="'+esc(d.d)+'"><span class="ad-k">'+esc(d.nm)+'</span>'
        +'<span class="ad-v">'+esc(d.kind)+'</span></div>';}).join('')+'</div>';
-   if(dk.refer)h+='<p class="ad-p"><b>'+esc(DESCENT_REFER)+'</b></p>';}
+   if(dk.refer)h+='<p class="ad-p"><b>'+esc(DESCENT_REFER)+'</b></p>';
+   /* THE CASCADE, BEHIND THE SAME GATE AND AFTER THE REFERRAL. CASCADE sat in
+      engine/data/compass.js as six named states that nothing drew. It is
+      inside dk.dark and not beside it, so a field that is not malignant and
+      decoherent at once is never shown it, and it comes after the referral so
+      the clinician line is never pushed below a list. It is not gated on
+      dk.refer as well: the six span early decoherence to full fragmentation,
+      by their own table's heading, and the referral is the floor of that.
+
+      NO ROW IS LIT. The descent's rows light the step darkRead chose; nothing
+      in the engine reads which cascade state a field is in, so lighting one
+      here would be a label the chain does not support. The row shape is the
+      blueprint's, mark then name, the line on hover. */
+   h+='<div class="pm-eye">The cascade, '+NUMWORD(CASCADE.length).replace(/^The /,'')+' states</div>'
+    +'<p class="ad-p">From going through the motions to harm done on purpose. Each row names a behaviour.</p>'
+    +'<div class="ad-rows">'+CASCADE.map(function(c){
+      return '<div class="ad-r static" data-cascade="'+esc(c.nm)+'" title="'+esc(c.d)+'">'
+       +'<span class="ad-k">'+adGl(c.ic)+esc(c.nm)+'</span></div>';}).join('')+'</div>';}
  }
  /* one row of doors, on BOTH ends of the cone, so the volume is reachable
     from the flat reading rather than only from a tab nobody has found. This
