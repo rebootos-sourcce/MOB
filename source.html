@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v3541 6ecab339 2026-11-28 08:04"><head><meta charset="utf-8">
+<html lang="en" data-build="v3542 93527699 2026-11-28 08:04"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -103940,7 +103940,17 @@ function recordLinkBoot(){
      random journey id, reuses an existing session, and never sends the story
      or name; the app still owns the record and the release itself. */
   if(typeof authFunnelStart==='function')authFunnelStart();
-  recordLinkSay('Loaded '+(np.name||'the record')+' from the link.'+(copied?' Loaded as a second copy, since this record is already on this device.':'')+recordPlanTail()+still,
+  /* recordPlanTail (above) returns its tail starting with the period that
+     ends this sentence; a prior commit (969f2a19, PR #245) added a second
+     period here and "Loaded " a second time on the copied branch, on a
+     base from before recordPlanTail carried its own leading period
+     (46ac818c, also on main). Rebasing the PR onto the current build
+     combined both fixes textually with no conflict, since they touch
+     different lines of this file, and printed "from the link.. The
+     imported plan...". Restored to one period, matching recordImportHtml's
+     impSay call above and the invariant recordPlanTail's own comment
+     states. tests/recordlink.js's exact-text check caught it. */
+  recordLinkSay('Loaded '+(np.name||'the record')+' from the link'+(copied?' as a second copy, since this record is already on this device':'')+recordPlanTail()+still,
    still?'fail':'');
   return np;});}
 function profileSheet(){
@@ -118580,5 +118590,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="008645982"></div>
+<div id="eof" hidden data-len="008646683"></div>
 </body></html>
