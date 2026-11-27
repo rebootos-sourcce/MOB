@@ -1,0 +1,155 @@
+{
+  "branch": "claude/little-books-review-k7az9s",
+  "revision": "e98a057859fb97dbe35fd58a20d944dd29db587d",
+  "volumes": 11,
+  "pairs": 99,
+  "different_charge_lines": 59,
+  "words_min": 46,
+  "words_max": 69,
+  "lines_naming_one_nature_only": 8,
+  "lines_30_words_or_fewer": 0,
+  "per_volume": [
+    {
+      "file": "generator/volumes/anger.json",
+      "volume": "ANGER",
+      "pairs": 9,
+      "different_charge_lines": 4,
+      "words_min": 51,
+      "words_max": 53,
+      "natures_named": {
+        "anxiety": 9,
+        "overwhelm": 9,
+        "burnout": 9
+      }
+    },
+    {
+      "file": "generator/volumes/anxiety.json",
+      "volume": "ANXIETY",
+      "pairs": 9,
+      "different_charge_lines": 3,
+      "words_min": 52,
+      "words_max": 58,
+      "natures_named": {
+        "anxiety": 9,
+        "overwhelm": 9
+      }
+    },
+    {
+      "file": "generator/volumes/burnout.json",
+      "volume": "BURNOUT",
+      "pairs": 9,
+      "different_charge_lines": 6,
+      "words_min": 51,
+      "words_max": 69,
+      "natures_named": {
+        "anxiety": 9,
+        "overwhelm": 9,
+        "burnout": 8
+      }
+    },
+    {
+      "file": "generator/volumes/control.json",
+      "volume": "CONTROL",
+      "pairs": 9,
+      "different_charge_lines": 8,
+      "words_min": 51,
+      "words_max": 60,
+      "natures_named": {
+        "anxiety": 9,
+        "overwhelm": 9,
+        "burnout": 3
+      }
+    },
+    {
+      "file": "generator/volumes/drive.json",
+      "volume": "DRIVE",
+      "pairs": 9,
+      "different_charge_lines": 8,
+      "words_min": 51,
+      "words_max": 62,
+      "natures_named": {
+        "anxiety": 9,
+        "overwhelm": 9,
+        "burnout": 7
+      }
+    },
+    {
+      "file": "generator/volumes/duty.json",
+      "volume": "DUTY",
+      "pairs": 9,
+      "different_charge_lines": 6,
+      "words_min": 46,
+      "words_max": 62,
+      "natures_named": {
+        "anxiety": 9,
+        "depression": 7,
+        "overwhelm": 2,
+        "sadness": 1
+      }
+    },
+    {
+      "file": "generator/volumes/grief.json",
+      "volume": "GRIEF",
+      "pairs": 9,
+      "different_charge_lines": 7,
+      "words_min": 46,
+      "words_max": 52,
+      "natures_named": {
+        "anxiety": 9,
+        "grief": 8,
+        "sadness": 8,
+        "overwhelm": 1
+      }
+    },
+    {
+      "file": "generator/volumes/money.json",
+      "volume": "MONEY",
+      "pairs": 9,
+      "different_charge_lines": 6,
+      "words_min": 46,
+      "words_max": 68,
+      "natures_named": {
+        "anxiety": 9,
+        "overwhelm": 1,
+        "depression": 8
+      }
+    },
+    {
+      "file": "generator/volumes/shame.json",
+      "volume": "SHAME",
+      "pairs": 9,
+      "different_charge_lines": 9,
+      "words_min": 52,
+      "words_max": 63,
+      "natures_named": {
+        "anxiety": 9,
+        "overwhelm": 9
+      }
+    },
+    {
+      "file": "generator/volumes/voice.json",
+      "volume": "VOICE",
+      "pairs": 9,
+      "different_charge_lines": 8,
+      "words_min": 49,
+      "words_max": 62,
+      "natures_named": {
+        "anxiety": 9,
+        "depression": 1
+      }
+    },
+    {
+      "file": "generator/volumes/worth.json",
+      "volume": "WORTH",
+      "pairs": 9,
+      "different_charge_lines": 5,
+      "words_min": 49,
+      "words_max": 57,
+      "natures_named": {
+        "anxiety": 9,
+        "overwhelm": 7,
+        "burnout": 6
+      }
+    }
+  ]
+}

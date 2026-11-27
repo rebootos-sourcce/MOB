@@ -1,0 +1,158 @@
+{
+ "banks": {
+  "anxiety": 100,
+  "overwhelm": 100,
+  "burnout": 100,
+  "grief": 52,
+  "sadness": 67,
+  "depression": 93
+ },
+ "reserves": {
+  "anxiety": 82,
+  "overwhelm": 41,
+  "burnout": 148,
+  "grief": 0,
+  "sadness": 0,
+  "depression": 0
+ },
+ "pairs": [
+  {
+   "pair": [
+    "anxiety",
+    "overwhelm"
+   ],
+   "same_id": 0,
+   "same_sentence": 0,
+   "same_words": 0
+  },
+  {
+   "pair": [
+    "anxiety",
+    "burnout"
+   ],
+   "same_id": 0,
+   "same_sentence": 0,
+   "same_words": 0
+  },
+  {
+   "pair": [
+    "anxiety",
+    "grief"
+   ],
+   "same_id": 0,
+   "same_sentence": 0,
+   "same_words": 0
+  },
+  {
+   "pair": [
+    "anxiety",
+    "sadness"
+   ],
+   "same_id": 0,
+   "same_sentence": 0,
+   "same_words": 0
+  },
+  {
+   "pair": [
+    "anxiety",
+    "depression"
+   ],
+   "same_id": 0,
+   "same_sentence": 0,
+   "same_words": 0
+  },
+  {
+   "pair": [
+    "overwhelm",
+    "burnout"
+   ],
+   "same_id": 0,
+   "same_sentence": 0,
+   "same_words": 0
+  },
+  {
+   "pair": [
+    "overwhelm",
+    "grief"
+   ],
+   "same_id": 0,
+   "same_sentence": 0,
+   "same_words": 0
+  },
+  {
+   "pair": [
+    "overwhelm",
+    "sadness"
+   ],
+   "same_id": 0,
+   "same_sentence": 0,
+   "same_words": 0
+  },
+  {
+   "pair": [
+    "overwhelm",
+    "depression"
+   ],
+   "same_id": 0,
+   "same_sentence": 0,
+   "same_words": 0
+  },
+  {
+   "pair": [
+    "burnout",
+    "grief"
+   ],
+   "same_id": 0,
+   "same_sentence": 0,
+   "same_words": 0
+  },
+  {
+   "pair": [
+    "burnout",
+    "sadness"
+   ],
+   "same_id": 0,
+   "same_sentence": 0,
+   "same_words": 0
+  },
+  {
+   "pair": [
+    "burnout",
+    "depression"
+   ],
+   "same_id": 0,
+   "same_sentence": 0,
+   "same_words": 0
+  },
+  {
+   "pair": [
+    "grief",
+    "sadness"
+   ],
+   "same_id": 0,
+   "same_sentence": 0,
+   "same_words": 0
+  },
+  {
+   "pair": [
+    "grief",
+    "depression"
+   ],
+   "same_id": 0,
+   "same_sentence": 0,
+   "same_words": 0
+  },
+  {
+   "pair": [
+    "sadness",
+    "depression"
+   ],
+   "same_id": 0,
+   "same_sentence": 0,
+   "same_words": 0
+  }
+ ],
+ "total_same_id": 0,
+ "total_same_sentence": 0,
+ "total_same_words": 0
+}

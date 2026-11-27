@@ -1,0 +1,3272 @@
+{
+  "nature_id": "depression",
+  "bank_version": "depression-candidate-2026-10-16-v1",
+  "source_path_or_uri": "rebootos-sourcce/Reboot-OS:atuned/data/letgo/ (2026_Let_Go_List.txt, TULA__Lances_Let_Go_List_1.pdf, TULA__Lances_Let_Go_List.pdf, and for the card lines only, Tula__SUPPLIMENT_LET_GO_LIST.txt)",
+  "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+  "approval_reference": "",
+  "approved_by": "",
+  "approved_at": "",
+  "status": "candidate, not approved",
+  "counts": {
+    "items": 93,
+    "owner_lines": 8,
+    "card_lines_not_dictated": 85,
+    "shortfall_to_100": 7
+  },
+  "items": [
+    {
+      "pattern_id": "depression-2001f5239cd8514b",
+      "content": "I'm letting go of being depressed for the world",
+      "pattern_hash": "2001f5239cd8514b34b368b568984709bbbe98941f6eb240551c2e0ed747fcc5",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_kind": "owner dictation",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-373",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=3394;unit=11",
+        "record_title": "Immature",
+        "source_text_as_transcribed": "I'm letting go of being depressed for the world",
+        "reading_layer": "none",
+        "index_node_id": 233,
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 72,
+          "fetter_name": "Speaking to be Right",
+          "emo_family": null,
+          "score": 10.0
+        },
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=25:35",
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=43:3"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "depressed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-09b4fd79a2556477",
+      "content": "I'm letting go of giving up",
+      "pattern_hash": "09b4fd79a2556477a8f4a58146df3f62e7ee4c1d97d88b161e4ada3b6c1db435",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_kind": "owner dictation",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-341",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=2893;unit=23",
+        "record_title": "Self Doubt",
+        "source_text_as_transcribed": "I'm letting go of giving up",
+        "reading_layer": "none",
+        "index_node_id": 201,
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 85,
+          "fetter_name": "Doubt",
+          "emo_family": null,
+          "score": 13.0
+        },
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=6:31",
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=23:43"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "giving up"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-4ea189d4465b143f",
+      "content": "I'm letting go of feeling unmotivated with life",
+      "pattern_hash": "4ea189d4465b143fa7cabc142f5dd2300a0488b09fd023d317cc3e5dbef0064b",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_kind": "owner dictation",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-352",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=3048;unit=9",
+        "record_title": "PTSD",
+        "source_text_as_transcribed": "I'm letting go of feeling unmotivated with life",
+        "reading_layer": "none",
+        "index_node_id": 210,
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 74,
+          "fetter_name": "Talking to Avoid Feeling",
+          "emo_family": null,
+          "score": 7.0
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "unmotivated"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-654a473d6e200248",
+      "content": "I'm letting go of believing that I'm defeated from despair crushed from despair unable to speak from despair unable to communicate from despair unable to feel powerful despair",
+      "pattern_hash": "654a473d6e20024891eb54dd7599ccd99b41a2e87e36519d46587d1a23a8cbbe",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_kind": "owner dictation",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-153",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=879;unit=2",
+        "record_title": "Despair",
+        "source_text_as_transcribed": "I'm going to go bleeding that I'm defeated from despair crushed from despair unable to speak from despair unable to communicate from despair unable to feel powerful despair",
+        "reading_layer": "text_clean (intake rule 1189, ruled by the owner 2026-09-11)",
+        "index_node_id": 113,
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 74,
+          "fetter_name": "Talking to Avoid Feeling",
+          "emo_family": null,
+          "score": 3.0
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "despair"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-5027d839f12661c2",
+      "content": "I'm letting go of feeling unmotivated with work",
+      "pattern_hash": "5027d839f12661c254980d32ff9ea82c7a9a8ab7207fdb805992bad21286ab75",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_kind": "owner dictation",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-352",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=3050;unit=11",
+        "record_title": "PTSD",
+        "source_text_as_transcribed": "I'm letting go of feeling unmotivated with work",
+        "reading_layer": "none",
+        "index_node_id": 210,
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 74,
+          "fetter_name": "Talking to Avoid Feeling",
+          "emo_family": null,
+          "score": 7.0
+        },
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=9:27",
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=26:40"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "unmotivated"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-c737af90026599ef",
+      "content": "I'm letting go of giving up on my dreams",
+      "pattern_hash": "c737af90026599efe371296b22f8b25b64b36f7e4e91246a06dce7df622d49fd",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_kind": "owner dictation",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-341",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=2871;unit=1",
+        "record_title": "Self Doubt",
+        "source_text_as_transcribed": "I'm letting go of giving up on my dreams",
+        "reading_layer": "none",
+        "index_node_id": 201,
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 85,
+          "fetter_name": "Doubt",
+          "emo_family": null,
+          "score": 13.0
+        },
+        "also_in": [
+          "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=3130;unit=18",
+          "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=3210;unit=1",
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=11:7",
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=15:15",
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=6:9",
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=23:21",
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=28:18",
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=32:29"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "giving up"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-ccb2dd4044ea6777",
+      "content": "I'm letting go of giving up on my success",
+      "pattern_hash": "ccb2dd4044ea6777414a2c5d0d9ac095bf2d51edd8184e8050d403a0ccf8852c",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz",
+        "source_kind": "owner typed list",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_pdf_b.json",
+        "source_record_file_blob": "8be3bd5b27c2b1e183c46ac1afab3a8299930b03",
+        "source_record_id": "pdf_b-115",
+        "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=56:1",
+        "record_title": "Let him go feeling depressed",
+        "source_text_as_transcribed": "I'm letting go of giving up on my success",
+        "reading_layer": "none",
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=38:36"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "giving up"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-4c08a27693c51b92",
+      "content": "I'm letting go of giving up that I will not be successful",
+      "pattern_hash": "4c08a27693c51b928d9f47f4ac65b1000e442e2b95d14219426ab4ac3822c253",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz",
+        "source_kind": "owner typed list",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_pdf_b.json",
+        "source_record_file_blob": "8be3bd5b27c2b1e183c46ac1afab3a8299930b03",
+        "source_record_id": "pdf_b-115",
+        "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=56:2",
+        "record_title": "Let him go feeling depressed",
+        "source_text_as_transcribed": "I'm letting go of giving up that I will not be successful",
+        "reading_layer": "none",
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=38:37"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "giving up"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-9b3c3db073dedb85",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am ashamed of feeling hopeless.",
+      "pattern_hash": "9b3c3db073dedb85f0a564d350e3128188f68648707f646afd2a76b48dbbe09d",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-122",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=21300",
+        "record_title": "50. collapsed in the belief that there’s no way out.",
+        "source_text_as_transcribed": "ashamed of feeling hopeless.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 21214,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "hopeless"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-27c58940cc74d338",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am hopeless about feeling clear again.",
+      "pattern_hash": "27c58940cc74d3382aaa270d096e6665decb6dfe55e61f1268dc8e89bb0af0dd",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-132",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=23064",
+        "record_title": "energetic signature: overstimulation without grounding; perception clouded by exhaustion; clarity buried under the weigh",
+        "source_text_as_transcribed": "hopeless about feeling clear again.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 22966,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "hopeless"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-055ebb7a91c171c8",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am hopeless that I will ever find peace.",
+      "pattern_hash": "055ebb7a91c171c8ee1804baaf2a20372dad26870d2ec077e98c1313a91c2376",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-001",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=71",
+        "record_title": "3B – Regret",
+        "source_text_as_transcribed": "Hopeless that I will ever find peace.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 7,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "hopeless"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-a420e55b1f7d7228",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am hopeless about ever feeling sharp.",
+      "pattern_hash": "a420e55b1f7d72288d220659819de9d5b1dee0ef406e2efc224a26a9b1bec9d1",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-125",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=22061",
+        "record_title": "calm → refreshed → focused → clear → radiant → inspired → vibrant → sharp → luminous → expanded.",
+        "source_text_as_transcribed": "hopeless about ever feeling sharp.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 21967,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100.",
+        "also_in": [
+          "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=22061"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "hopeless"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-6a00c9c250dac89f",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am hopeless that I will ever be free from regret.",
+      "pattern_hash": "6a00c9c250dac89f7dad280b6883e6360a291dea0a657d73eaba30c8fba7f0d2",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-001",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=39",
+        "record_title": "3B – Regret",
+        "source_text_as_transcribed": "Hopeless that I will ever be free from regret.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 7,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "hopeless"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-69b44b3f8431753e",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am hopeless that it will ever get better.",
+      "pattern_hash": "69b44b3f8431753e7de0e61b1cf83abd15a69c46e9d28beeb44c951cfabce578",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-037",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=7599",
+        "record_title": "Energetic Signature: “I collapse when everything feels out of my hands.”",
+        "source_text_as_transcribed": "Hopeless that it will ever get better.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 7516,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "hopeless"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-097336ebe6f4862c",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am collapsing into numbness.",
+      "pattern_hash": "097336ebe6f4862cfd3413edc12789fd14712cd216db2c065340e34548593c49",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-227",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=38310",
+        "record_title": "50. collapsed in the belief everything I do is futile.",
+        "source_text_as_transcribed": "collapsing into numbness.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 38250,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "numbness"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-38443fa280ee41d8",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am collapsing into apathy.",
+      "pattern_hash": "38443fa280ee41d8ce7e75917cc42d51f7bd817690880cf8dd535fbee7d39679",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-226",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=38205",
+        "record_title": "energetic signature: effort severed from outcome; purpose thinned; will disengages to avoid disappointment.",
+        "source_text_as_transcribed": "collapsing into apathy.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 38145,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "apathy"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-422df73a931a1ac2",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am threatened by emptiness.",
+      "pattern_hash": "422df73a931a1ac2a8048565277e8c3f5aa3370985be274aac1e679ea2be4cba",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-201",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=33775",
+        "record_title": "50. collapsed in the belief my energy is gone.",
+        "source_text_as_transcribed": "threatened by emptiness.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 33685,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100.",
+        "also_in": [
+          "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=38235",
+          "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=38280",
+          "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=39646"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "emptiness"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-632ab770307403d3",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am collapsing into despair.",
+      "pattern_hash": "632ab770307403d3ccfcff78acee254cee757e2708c9130d14408ed3aebcc323",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-203",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=33966",
+        "record_title": "50. collapsed in the belief goodness should control life.",
+        "source_text_as_transcribed": "collapsing into despair.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 33906,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "despair"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-aa1ca76fc68f293d",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am numb and wordless.",
+      "pattern_hash": "aa1ca76fc68f293dc559952e746ccde546aa7de61a6ac80991a79b4a9b571685",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-057",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=11519",
+        "record_title": "energetic signature: silencing expression to maintain control and avoid vulnerability.",
+        "source_text_as_transcribed": "numb and wordless.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 11421,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "numb"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-b629dea79852892d",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am numb to consequence.",
+      "pattern_hash": "b629dea79852892d25113b4e4c7e8e790f500cbe411f5b0d250d858248cc494f",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-051",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=10211",
+        "record_title": "energetic signature: hiding from truth to escape responsibility.",
+        "source_text_as_transcribed": "numb to consequence.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 10113,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "numb"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-efd6316e47c306ce",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am numb from overstimulation.",
+      "pattern_hash": "efd6316e47c306ce731bcbbaf2c64c93e64f8aca37c324e3f62587f74338c6a2",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-124",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=21669",
+        "record_title": "50. collapsed in the illusion that my mind must never rest.",
+        "source_text_as_transcribed": "numb from overstimulation.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 21649,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "numb"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-fbb1157730377caf",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am numb from over-control.",
+      "pattern_hash": "fbb1157730377caf3929f98f81913a2a10179dd05c64c6e0bbc20c366340062f",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-030",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=6580",
+        "record_title": "* Every new 3B card (and any rewrite you request) will automatically use a progressive adjective ladder: tense → stresse",
+        "source_text_as_transcribed": "Numb from over-control.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 6492,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100.",
+        "also_in": [
+          "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=6580"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "numb"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-4a27f42a51006c65",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am bothered by emotional emptiness.",
+      "pattern_hash": "4a27f42a51006c657bea573cc8a7d48b7e7337b4fbc2a2cbb71f681afec73e25",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-205",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=34410",
+        "record_title": "50. collapsed in the belief this breakup broke me.",
+        "source_text_as_transcribed": "bothered by emotional emptiness.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 34340,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "emptiness"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-5d9f1a2df574382f",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am equating emptiness with failure.",
+      "pattern_hash": "5d9f1a2df574382fdb31dd7c3b49d8096c5e28593034cb2f91a2af528582d434",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-009",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=2130",
+        "record_title": "* Continuous numbering 1–200, written in full nervous-system invocation language exactly like the other TULA cards.",
+        "source_text_as_transcribed": "Equating emptiness with failure.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 1987,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100.",
+        "also_in": [
+          "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=2130"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "emptiness"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-6261dba24afbaad7",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am numb when certainty collapses.",
+      "pattern_hash": "6261dba24afbaad7376d9f2d43c57e783dfb9c4154c80416e73a0e68c0dca62a",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-061",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=12373",
+        "record_title": "energetic signature: trapped in the need to be right instead of resting in wholeness.",
+        "source_text_as_transcribed": "numb when certainty collapses.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 12293,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "numb"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-626ff850e0e94fbd",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am numb from mental collapse.",
+      "pattern_hash": "626ff850e0e94fbd231b1918d65b545e2cf14e1c3fc14fa94e7725ceb17f77fa",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-125",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=22067",
+        "record_title": "calm → refreshed → focused → clear → radiant → inspired → vibrant → sharp → luminous → expanded.",
+        "source_text_as_transcribed": "numb from mental collapse.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 21967,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100.",
+        "also_in": [
+          "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=22067"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "numb"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-8b84b6711052fa1d",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am ashamed to admit despair.",
+      "pattern_hash": "8b84b6711052fa1da87eb6e8d8e94de646e60fdfd95a4d74977e93eb64603825",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-121",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=21199",
+        "record_title": "energetic signature: time perceived as an enemy; spirit dulled by the illusion of missed chances; freedom hidden beneath",
+        "source_text_as_transcribed": "ashamed to admit despair.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 21109,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "despair"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-9bb4f0b3c7eeecd0",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am numb from constant correction.",
+      "pattern_hash": "9bb4f0b3c7eeecd09fac62024b61d7d64fc4cdeeede6aaca6dabcb97128616f4",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-047",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=9654",
+        "record_title": "No. 50 limiting beliefs and truths. 5-0, not 15. Let's see the end results, the clean version.",
+        "source_text_as_transcribed": "numb from constant correction.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 9552,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100.",
+        "also_in": [
+          "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=9654",
+          "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=9763"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "numb"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-b1dd94514ea0292d",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am thinking emptiness equals failure.",
+      "pattern_hash": "b1dd94514ea0292d09abea3a12938ffb53db77b87db320680cfb674b51d6cbb1",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-098",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=18004",
+        "record_title": "50. collapsed in fear that nothing remains after letting go.",
+        "source_text_as_transcribed": "thinking emptiness equals failure.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 17956,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "emptiness"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-c42fb84063999714",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am disgusted by humanity’s apathy.",
+      "pattern_hash": "c42fb840639997141b84e662fd775a4fd4cec40ca2d584bf7f01513a7ccab705",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-106",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=19062",
+        "record_title": "50. collapsed in bitterness toward life itself.",
+        "source_text_as_transcribed": "disgusted by humanity’s apathy.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 19042,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "apathy"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-da6c7a7db690f80e",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am confusing numbness with calm.",
+      "pattern_hash": "da6c7a7db690f80ea8c310806fe8114465466804eef5f89a98022a3397efeffb",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-101",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=18335",
+        "record_title": "energetic signature: guarding the heart to avoid pain, confusing walls for strength, mistaking isolation for safety.",
+        "source_text_as_transcribed": "confusing numbness with calm.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 18285,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "numbness"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-005510d17535008f",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am numb from holding in frustration.",
+      "pattern_hash": "005510d17535008f73129b0d21d7493fdc99612bb0722f03696ce47561deda47",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-067",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=13695",
+        "record_title": "energetic signature: over-sensitized to life’s randomness, demanding peace by force instead of presence.",
+        "source_text_as_transcribed": "numb from holding in frustration.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 13601,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "numb"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-097bc2b42f52e141",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am furious that peace feels numb.",
+      "pattern_hash": "097bc2b42f52e14181b80393ae977348abaf62afd3b40c26f6c8a1ea928330ef",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-040",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=8315",
+        "record_title": "That’s a powerful and honest one. It’s Masculine polarity (right side), anchored in the solar plexus / chest / jaw — whe",
+        "source_text_as_transcribed": "Furious that peace feels numb.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 8255,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100.",
+        "also_in": [
+          "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=8315"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "numb"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-1ba5480f7d0718e7",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am empty when I visit home.",
+      "pattern_hash": "1ba5480f7d0718e779d3f10db0e9eaf7bf428819093585be4cbf8bd451fde9dc",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-059",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=11929",
+        "record_title": "energetic signature: craving authenticity and grounding after growing up around emotional falseness.",
+        "source_text_as_transcribed": "empty when I visit home.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 11857,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "empty"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-4101f9fb766f3823",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am mad until I go numb.",
+      "pattern_hash": "4101f9fb766f382383af91287a3b30dc609d1031f99b5465984ca639a3551f83",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-037",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=7579",
+        "record_title": "Energetic Signature: “I collapse when everything feels out of my hands.”",
+        "source_text_as_transcribed": "Mad until I go numb.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 7516,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "numb"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-49aec132149cfdae",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am numb where wonder should live.",
+      "pattern_hash": "49aec132149cfdaeb37548c62ec19ff6331401362af7ebdd88b97d4bc94ee380",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-070",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=14349",
+        "record_title": "energetic signature: longing to belong but afraid that unity will erase personal tenderness, depth, or identity.",
+        "source_text_as_transcribed": "numb where wonder should live.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 14255,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "numb"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-67a5f9399a5fe289",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am angry that peace feels empty.",
+      "pattern_hash": "67a5f9399a5fe289f025a5c761d452916d53b463b2ee5b41193854a716a24b8d",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-042",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=8584",
+        "record_title": "Energetic Signature: “If I’m not upset, I don’t know who I am.”",
+        "source_text_as_transcribed": "Angry that peace feels empty.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 8521,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "empty"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-6aa1a306ce9a90ec",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am numb from suppressing my instincts.",
+      "pattern_hash": "6aa1a306ce9a90ec72055a3c92cd15d355429f89eff68bd4b1e3ccf3951e7a91",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-066",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=13473",
+        "record_title": "energetic signature: longing held hostage by fear of judgment, abandonment, or being too much.",
+        "source_text_as_transcribed": "numb from suppressing my instincts.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 13383,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "numb"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-8f069a6b40259d2a",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am numb to beauty in others.",
+      "pattern_hash": "8f069a6b40259d2a0472cc1b4016aedd27407e0fd94b99e90b697509e3a107d6",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-108",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=19321",
+        "record_title": "50. collapsed in hatred’s false protection.",
+        "source_text_as_transcribed": "numb to beauty in others.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 19259,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "numb"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-a7aab34480cd3960",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am numb from too much holding.",
+      "pattern_hash": "a7aab34480cd39605901e4c3786fa8f822efc420b13345586624b82a50851c51",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-056",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=11297",
+        "record_title": "energetic signature: holding pain in protection rather than releasing into softness and trust.",
+        "source_text_as_transcribed": "numb from too much holding.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 11203,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "numb"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-ad426f793d51dfda",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am numb from shutting out noise.",
+      "pattern_hash": "ad426f793d51dfda233f17bebc04a4a93cc433b0fd411393df06f4980db5ce8d",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-068",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=13905",
+        "record_title": "energetic signature: overwhelmed by life’s noise, craving peace but gripping against the very aliveness that delivers it",
+        "source_text_as_transcribed": "numb from shutting out noise.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 13819,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "numb"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-ae8dbb51c242007c",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am believing acceptance equals giving up.",
+      "pattern_hash": "ae8dbb51c242007c34e4e865b5096fe9c464dca80c9b763262f468ae4d510f03",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-112",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=19721",
+        "record_title": "50. collapsed in exhaustion from endless striving.",
+        "source_text_as_transcribed": "believing acceptance equals giving up.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 19693,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "giving up"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-c08ef9d88b91148f",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am stressed by the sudden emptiness.",
+      "pattern_hash": "c08ef9d88b91148feca2f51e3f85d35e998cfb6fd1cf76e92820f8ef0487b4b7",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-230",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=39029",
+        "record_title": "energetic signature: bond rupture; love energy searching for its lost home; nervous system disoriented by sudden absence",
+        "source_text_as_transcribed": "stressed by the sudden emptiness.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 39013,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "emptiness"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-c2632f6856643413",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am numb in moments of decision.",
+      "pattern_hash": "c2632f6856643413badb1180c4041c160a285018f14d461cbc99de191d299f7f",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-065",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=13245",
+        "record_title": "energetic signature: instinct suppressed by fear of rejection, failure, or punishment for wanting.",
+        "source_text_as_transcribed": "numb in moments of decision.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 13165,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "numb"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-cd454da49bb8a9fd",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am troubled equating independence with numbness.",
+      "pattern_hash": "cd454da49bb8a9fd933bb098af03b120178acd0851a42779227b114935bafe7b",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-221",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=37474",
+        "record_title": "50. collapsed in the belief I must not need validation to be strong.",
+        "source_text_as_transcribed": "troubled equating independence with numbness.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 37378,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "numbness"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-e3bf1b2a9a6e08bf",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am wanting to give up completely.",
+      "pattern_hash": "e3bf1b2a9a6e08bfb8f0c3cd7fe27e3cc970527d3b53600e396e22180302888c",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-035",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=7108",
+        "record_title": "Energetic Signature: “I feel small and stupid when things go wrong.”",
+        "source_text_as_transcribed": "Wanting to give up completely.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 7013,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "give up"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-086ba38593d88252",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am numb to love that isn’t sincere.",
+      "pattern_hash": "086ba38593d88252f69b3d335e6cc0f91c476042a6ab561dc063f6b6f858c86f",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-060",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=12159",
+        "record_title": "energetic signature: yearning for real connection but carrying the weight of everyone else’s emotional pretending.",
+        "source_text_as_transcribed": "numb to love that isn’t sincere.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 12075,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "numb"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-0c8b7309d1d60242",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am bothered by emptiness where connection lived.",
+      "pattern_hash": "0c8b7309d1d6024253f263e43fd43a657a8b2d460910963f1a926e7731e61544",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-231",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=39188",
+        "record_title": "50. collapsed in the belief this loss has broken me.",
+        "source_text_as_transcribed": "bothered by emptiness where connection lived.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 39118,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "emptiness"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-1c7c7487db54079f",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am numb from trying to understand everything.",
+      "pattern_hash": "1c7c7487db54079f96933a222a59ae62d021b380971d6caa55634841f53918cc",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-088",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=16427",
+        "record_title": "energetic signature: longing to see truth but fearing its weight, caught between intuition and illusion, craving reconne",
+        "source_text_as_transcribed": "numb from trying to understand everything.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 16329,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "numb"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-289c488702ad58a5",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am numb under the weight of performance.",
+      "pattern_hash": "289c488702ad58a5f0a95e5049952aed1867252d75e5bfffafa33d94faceb9a8",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-063",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=12813",
+        "record_title": "energetic signature: gripping happiness to avoid the full spectrum of being human.",
+        "source_text_as_transcribed": "numb under the weight of performance.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 12729,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "numb"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-63fb954fd6da99e4",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am numb to the radiance within me.",
+      "pattern_hash": "63fb954fd6da99e4aee8a219c8a501f2c85e2b07d80a7ac5a9ba656a9761798c",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-094",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=17324",
+        "record_title": "50. collapsed in illusion that I am only the surface.",
+        "source_text_as_transcribed": "numb to the radiance within me.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 17304,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "numb"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-7af95fedf5766384",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am pushing love when I feel empty.",
+      "pattern_hash": "7af95fedf5766384d25a143ad33047d909e8d770f499f80f4cd8375432b97127",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-064",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=12987",
+        "record_title": "energetic signature: craving endless light while suppressing the gentle truth of emotional depth and rest.",
+        "source_text_as_transcribed": "pushing love when I feel empty.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 12947,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "empty"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-b0dd5c5db4ef47bb",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am heavy in mind, empty in heart.",
+      "pattern_hash": "b0dd5c5db4ef47bb7584f7984974c75cfe1359572a944671ec71b3c35b8f2958",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-087",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=16205",
+        "record_title": "energetic signature: intellect spins without orientation, spiritual sight clouded by fear of truth and embodiment.",
+        "source_text_as_transcribed": "heavy in mind, empty in heart.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 16111,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "empty"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-b2e40ed7e8fd0f3b",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am regretful for giving up too soon.",
+      "pattern_hash": "b2e40ed7e8fd0f3be49d82bb187cc7c54c815ad7271a1c062f47b10d2ce3b475",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-028",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=6018",
+        "record_title": "Energetic Signature: “When I don’t understand, I collapse instead of staying curious.”",
+        "source_text_as_transcribed": "Regretful for giving up too soon.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 5924,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "giving up"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-bbd8871e5645f9a6",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am believing numbness is easier than feeling.",
+      "pattern_hash": "bbd8871e5645f9a61d0a123539ff2f20eca41722437cbf3883deaf5b9e3564f2",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-007",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=1544",
+        "record_title": "Energetic Signature: “Afraid to feel, so I stop the tide.”",
+        "source_text_as_transcribed": "Believing numbness is easier than feeling.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 1490,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "numbness"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-cb671cf1f5288b6b",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am numb when I try to feel.",
+      "pattern_hash": "cb671cf1f5288b6bbd3bb5c99b2b1a3dc4f1aeb026dc334ca4297ea7c64ac3a8",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-050",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=9989",
+        "record_title": "energetic signature: wanting things to feel right instead of seeing what is real.",
+        "source_text_as_transcribed": "numb when I try to feel.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 9895,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "numb"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-f611a20724ba94bc",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am numb when contrast feels too loud.",
+      "pattern_hash": "f611a20724ba94bcdda3d9fe5724ed574c912c4b435fa995e0e28ddffce43f75",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-062",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=12587",
+        "record_title": "energetic signature: caught between emotion and intuition, longing to rest in unity but afraid to dissolve boundaries.",
+        "source_text_as_transcribed": "numb when contrast feels too loud.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 12511,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "numb"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-f68918101d2a6bee",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am pissed my support system feels empty.",
+      "pattern_hash": "f68918101d2a6beeaee728784b7f5172085910e432b9f5441b98c77bcdbb9d0f",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-185",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=30468",
+        "record_title": "50. collapsed inside the belief I have no help.",
+        "source_text_as_transcribed": "pissed my support system feels empty.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 30418,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "empty"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-f8576ca1ed398a20",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am convinced that resting equals giving up.",
+      "pattern_hash": "f8576ca1ed398a20c0878817a702daeb95c9d7f5b8b733b26b6a3f298c234159",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-002",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=313",
+        "record_title": "Fetter Correlation: GUILT → CONTROL → SELF-JUDGMENT",
+        "source_text_as_transcribed": "Convinced that resting equals giving up.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 235,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "giving up"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-0209ab225297b46b",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am furious that I feel empty without anger.",
+      "pattern_hash": "0209ab225297b46bee462c44ebf102d4f062eea74ecd76b85d58d35f77931c6b",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-038",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=7806",
+        "record_title": "Energetic Signature: “I pump myself up with anger because it feels stronger than hurt.”",
+        "source_text_as_transcribed": "Furious that I feel empty without anger.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 7767,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "empty"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-1f7196842a435c9d",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am numb to joy rising from the root.",
+      "pattern_hash": "1f7196842a435c9d6f62cfab69a1894889baa9056992aff52a110865a4ca6634",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-092",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=17141",
+        "record_title": "50. collapsed in the tangle of fragmented energy.",
+        "source_text_as_transcribed": "numb to joy rising from the root.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 17087,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "numb"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-40f97050709a9e57",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am numb to the fullness of being alive.",
+      "pattern_hash": "40f97050709a9e5764b0259dbdcd2388fcfa6451d54fd8596259ad2da856d403",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-093",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=17297",
+        "record_title": "energetic signature: identifying only with the physical and mental, forgetting the radiance of the subtle bodies that fo",
+        "source_text_as_transcribed": "numb to the fullness of being alive.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 17199,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "numb"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-f44ff0c2c1bbc7c4",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am feeling safer in numbness than in feeling.",
+      "pattern_hash": "f44ff0c2c1bbc7c4bcdaa433fbb5f1709c1d4f8bdd3318f80da67844b313619f",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-005",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=1082",
+        "record_title": "Energetic Meaning: The life-force is held hostage by judgment; when regret softens, desire returns as creative pulse.",
+        "source_text_as_transcribed": "Feeling safer in numbness than in feeling.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 986,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "numbness"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-9e4100d98d12607a",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am thinking I must stay numb to stay safe.",
+      "pattern_hash": "9e4100d98d12607a496e4abf3d169b94f1d98cbdf16be1ae33326c3120b93665",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-014",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=2828",
+        "record_title": "Healing Arc: Release → Flow → Renewal → Grounded Ease",
+        "source_text_as_transcribed": "Thinking I must stay numb to stay safe.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 2696,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "numb"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-cb6fd0ae63b0e0c8",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am heavy in my head, empty in my core.",
+      "pattern_hash": "cb6fd0ae63b0e0c8035577cc8190b8596aee5374c3a8af213f37b166c7c19587",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-090",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=16841",
+        "record_title": "energetic signature: craving proof instead of presence, afraid to trust intuitive truth, blocking wisdom that flows thro",
+        "source_text_as_transcribed": "heavy in my head, empty in my core.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 16765,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "empty"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-3cc04b73d38e6d16",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am feeling empty in the space where spirit should live.",
+      "pattern_hash": "3cc04b73d38e6d163442ecdfc0153e335098160ff7effcec7e9aafbf19233000",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-082",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=15614",
+        "record_title": "50. collapsed in the illusion of divine abandonment.",
+        "source_text_as_transcribed": "feeling empty in the space where spirit should live.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 15564,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "empty"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-a917b7bc6398ffe1",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am ready to give up just to stop the noise.",
+      "pattern_hash": "a917b7bc6398ffe13cd7cd50eb0a727b20c5ca6354c6cbd6279d88f5cc42e482",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-036",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=7336",
+        "record_title": "Energetic Signature: “If I can’t make it work, everything is against me.”",
+        "source_text_as_transcribed": "Ready to give up just to stop the noise.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 7265,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "give up"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-e0c5d93a5c8de5cf",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am furious that I numb out with food or screens.",
+      "pattern_hash": "e0c5d93a5c8de5cf21bb34cc7e0dfece7a17184c163ebd0effc42c6028b1d314",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-039",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=8090",
+        "record_title": "Energetic Signature: “I swallow the anger and let it eat at me.”",
+        "source_text_as_transcribed": "Furious that I numb out with food or screens.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 8019,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "numb"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-470b6cc673026f25",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am threatened by meaninglessness.",
+      "pattern_hash": "470b6cc673026f25188bfff4b7c16f142f8110d956e121a9d3ecfb8242f0c1fe",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-227",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=38340",
+        "record_title": "50. collapsed in the belief everything I do is futile.",
+        "source_text_as_transcribed": "threatened by meaninglessness.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 38250,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "meaninglessness"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-3517e88f02b1305c",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am empty once anger passes.",
+      "pattern_hash": "3517e88f02b1305c955bd95e25293bcada187e3a384d6944f47876ffd0fd6864",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-030",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=6576",
+        "record_title": "* Every new 3B card (and any rewrite you request) will automatically use a progressive adjective ladder: tense → stresse",
+        "source_text_as_transcribed": "Empty once anger passes.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 6492,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100.",
+        "also_in": [
+          "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=6576"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "empty"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-7b1dbe6582d2b8c0",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am enraged feeling chronically empty.",
+      "pattern_hash": "7b1dbe6582d2b8c0b45d3a1343d96b2d88c5632b3853349524f3c0b79678dc4b",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-201",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=33741",
+        "record_title": "50. collapsed in the belief my energy is gone.",
+        "source_text_as_transcribed": "enraged feeling chronically empty.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 33685,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "empty"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-a3376cf50e147384",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am numb to life’s invitations.",
+      "pattern_hash": "a3376cf50e14738406be8149ca30dd16e007f7cb85af6cb435423de7749f36e4",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-122",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=21264",
+        "record_title": "50. collapsed in the belief that there’s no way out.",
+        "source_text_as_transcribed": "numb to life’s invitations.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 21214,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "numb"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-36195288730fd9a2",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am numb from waiting for rescue.",
+      "pattern_hash": "36195288730fd9a260ba4e5a5f828f4b5091e01be56a4f2e1a632d5e5f8a9c16",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-121",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=21193",
+        "record_title": "energetic signature: time perceived as an enemy; spirit dulled by the illusion of missed chances; freedom hidden beneath",
+        "source_text_as_transcribed": "numb from waiting for rescue.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 21109,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "numb"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-73017654a78e69a0",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am ashamed of giving up internally.",
+      "pattern_hash": "73017654a78e69a09a0df203da05f072ea6d3afec0935c6f937d27b0715388e4",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-226",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=38237",
+        "record_title": "energetic signature: effort severed from outcome; purpose thinned; will disengages to avoid disappointment.",
+        "source_text_as_transcribed": "ashamed of giving up internally.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 38145,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "giving up"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-8519e37b3680b7d4",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am numb from holding in disappointment.",
+      "pattern_hash": "8519e37b3680b7d4f2d3c15ca60f5b2c77bb8d3adb284ae88bdecabd4aaae12b",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-059",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=11955",
+        "record_title": "energetic signature: craving authenticity and grounding after growing up around emotional falseness.",
+        "source_text_as_transcribed": "numb from holding in disappointment.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 11857,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "numb"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-8d06b7a819668719",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am pressured to numb my feelings.",
+      "pattern_hash": "8d06b7a819668719056cf700f75d09ab074178313c2d42b188e7cb43ffba7486",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-205",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=34418",
+        "record_title": "50. collapsed in the belief this breakup broke me.",
+        "source_text_as_transcribed": "pressured to numb my feelings.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 34340,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "numb"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-bc0940cebfa8cb53",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am too numb to keep fighting.",
+      "pattern_hash": "bc0940cebfa8cb5316509abb24c30d10581eab2005bab12761082149f551e799",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-037",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=7607",
+        "record_title": "Energetic Signature: “I collapse when everything feels out of my hands.”",
+        "source_text_as_transcribed": "Too numb to keep fighting.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 7516,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "numb"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-c1a2855c5fc86768",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am stressed when peace feels empty.",
+      "pattern_hash": "c1a2855c5fc867687d2492d3d208457445da72cdd1cf6e286c9902d94a12ac32",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-040",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=8283",
+        "record_title": "That’s a powerful and honest one. It’s Masculine polarity (right side), anchored in the solar plexus / chest / jaw — whe",
+        "source_text_as_transcribed": "Stressed when peace feels empty.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 8255,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100.",
+        "also_in": [
+          "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=8283"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "empty"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-c7955ce42be84158",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am empty from too much restraint.",
+      "pattern_hash": "c7955ce42be8415848ca508f96dc334c07dd9fe83a6e0f132cb62c62921bb0ba",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-065",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=13261",
+        "record_title": "energetic signature: instinct suppressed by fear of rejection, failure, or punishment for wanting.",
+        "source_text_as_transcribed": "empty from too much restraint.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 13165,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "empty"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-6db87466bbaf3468",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am numb from fighting the same battle.",
+      "pattern_hash": "6db87466bbaf34685d861c45d8b0f80692825bbdebe774570cdb15dcf26e4543",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-035",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=7078",
+        "record_title": "Energetic Signature: “I feel small and stupid when things go wrong.”",
+        "source_text_as_transcribed": "Numb from fighting the same battle.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 7013,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "numb"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-820217777110c534",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am empty when the joy rush fades.",
+      "pattern_hash": "820217777110c5341aa205672ff39c59e1cd053a55bf43644e3b629ccc4b03fe",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-063",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=12815",
+        "record_title": "energetic signature: gripping happiness to avoid the full spectrum of being human.",
+        "source_text_as_transcribed": "empty when the joy rush fades.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 12729,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "empty"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-e853142d390fa112",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am numb to the beauty of existence.",
+      "pattern_hash": "e853142d390fa11268ebf57de48a8a445f048a762882a911456eaeb542be37a3",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-106",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=19132",
+        "record_title": "50. collapsed in bitterness toward life itself.",
+        "source_text_as_transcribed": "numb to the beauty of existence.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 19042,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "numb"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-701332b2334f2f41",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am numb to joy that flows beneath thought.",
+      "pattern_hash": "701332b2334f2f41758afad82354fce9363a835ac2b0c34327b812509feb055b",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-094",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=17352",
+        "record_title": "50. collapsed in illusion that I am only the surface.",
+        "source_text_as_transcribed": "numb to joy that flows beneath thought.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 17304,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "numb"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-9f479a2284205674",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am mad that I confuse calm with numb.",
+      "pattern_hash": "9f479a2284205674df66a38c2be636fde0a5160815e5d0902e8503b388e66d51",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-042",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=8614",
+        "record_title": "Energetic Signature: “If I’m not upset, I don’t know who I am.”",
+        "source_text_as_transcribed": "Mad that I confuse calm with numb.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 8521,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "numb"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-c4e7181fef66e510",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am empty where family truth should have been.",
+      "pattern_hash": "c4e7181fef66e510cc31c80fa9262e47eb2434dcdb8a65a070adb0ae5bd341c9",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-060",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=12173",
+        "record_title": "energetic signature: yearning for real connection but carrying the weight of everyone else’s emotional pretending.",
+        "source_text_as_transcribed": "empty where family truth should have been.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 12075,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "empty"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-eaa5468ce92ef963",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am empty after trying to prove my point.",
+      "pattern_hash": "eaa5468ce92ef9637ec1d284e4d08a4c100ea2a74614e6bb7598964decfebd42",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-061",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=12371",
+        "record_title": "energetic signature: trapped in the need to be right instead of resting in wholeness.",
+        "source_text_as_transcribed": "empty after trying to prove my point.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 12293,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "empty"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-ea31e92738c094b3",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am convinced I have to stay numb to stay calm.",
+      "pattern_hash": "ea31e92738c094b31ce0720ab38e750c8169696c81962ad2da830db36da52f3e",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-009",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=2112",
+        "record_title": "* Continuous numbering 1–200, written in full nervous-system invocation language exactly like the other TULA cards.",
+        "source_text_as_transcribed": "Convinced I have to stay numb to stay calm.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 1987,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100.",
+        "also_in": [
+          "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=2112"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "numb"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-8651a49807e6ba0e",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am distressed feeling pointless.",
+      "pattern_hash": "8651a49807e6ba0e2b0897e362dc06eb15d9b515a32912cc03bf35bac6dc2a59",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-227",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=38348",
+        "record_title": "50. collapsed in the belief everything I do is futile.",
+        "source_text_as_transcribed": "distressed feeling pointless.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 38250,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "pointless"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-b32b7c74337a1439",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am numb to the present moment.",
+      "pattern_hash": "b32b7c74337a1439f6d6f97362e11b3d249f4c27ec0d9bd99d418ccc54eb73e0",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-121",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=21149",
+        "record_title": "energetic signature: time perceived as an enemy; spirit dulled by the illusion of missed chances; freedom hidden beneath",
+        "source_text_as_transcribed": "numb to the present moment.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 21109,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "numb"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-d00cda5e4b19e8c1",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am numb where passion should live.",
+      "pattern_hash": "d00cda5e4b19e8c187623492bd9f37037504044b8a9a298df09f6fedad454e4c",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-065",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=13263",
+        "record_title": "energetic signature: instinct suppressed by fear of rejection, failure, or punishment for wanting.",
+        "source_text_as_transcribed": "numb where passion should live.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 13165,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "numb"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-a13c63dce7a7de1f",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am numb when people talk about love.",
+      "pattern_hash": "a13c63dce7a7de1f2d5db608110931398d88fd017c04b52ddec0651aa73166d8",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-059",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=11927",
+        "record_title": "energetic signature: craving authenticity and grounding after growing up around emotional falseness.",
+        "source_text_as_transcribed": "numb when people talk about love.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 11857,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "numb"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-9da7f877eea2d2a7",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am collapsed in despair at the imperfection of creation.",
+      "pattern_hash": "9da7f877eea2d2a7133e16f9bae9b44f1a1a05744aac384cb3605fdb57ae6de9",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-106",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=19142",
+        "record_title": "50. collapsed in bitterness toward life itself.",
+        "source_text_as_transcribed": "collapsed in despair at the imperfection of creation.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 19042,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "despair"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "depression-aeeb09da22f750e5",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am frustrated pouring into emptiness.",
+      "pattern_hash": "aeeb09da22f750e5f9c26009df1ba20d7166a46bf8af2b80c674193a75690431",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-227",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=38264",
+        "record_title": "50. collapsed in the belief everything I do is futile.",
+        "source_text_as_transcribed": "frustrated pouring into emptiness.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 38250,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "neighbour",
+        "words": [
+          "emptiness"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    }
+  ],
+  "content_sha256": "1f37f78792177513cc742d6a88ed726993fc00068e5a3e091a2a8e8afea5ff03"
+}
