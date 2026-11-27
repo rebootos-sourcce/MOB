@@ -193,6 +193,13 @@ for(const w of [[1680,1020],[390,844]]){
 console.log('\n=== compass controls clear of the axis names, every lighting ===');
 {const ab=people.indexOf('Abraham');
  const was=await p.evaluate(()=>S.theme);
+ /* ON THE FIGURE, where the axis names are. Since 27 November the climb's
+    rows are in the left column and not in #cone, so on the climb, the
+    default, this found the hidden overlay controls and no names at all;
+    before that it was measuring hidden controls against the climb's rows,
+    which held nothing either. The overlays and the names share a stage only
+    in figure mode, so that is where they are held apart. */
+ const climbWas=await p.evaluate(()=>{const c=CONE.climb;CONE.climb=false;return c;});
  for(const w of [[1680,1020],[390,844]]){
   await p.setViewportSize({width:w[0],height:w[1]});await p.waitForTimeout(160);
   const lights=await p.evaluate(()=>LIGHTINGS.map(t=>t[0]));
@@ -217,7 +224,8 @@ console.log('\n=== compass controls clear of the axis names, every lighting ==='
   ok(nb>0&&nr>0,w.join('x')+'/compass: found '+nb+' controls and '+nr+' names, so nothing was checked');
   console.log('  '+w.join('x')+': '+lights.length+' lightings, '+nb+' controls against '+nr+' names, '
    +(bad.length?'overlapping on '+bad.join(' '):'none overlapping'));}
- await p.evaluate(k=>setLighting(k),was);}
+ await p.evaluate(k=>setLighting(k),was);
+ await p.evaluate(c=>{CONE.climb=c;},climbWas);}
 /* ============================================================
    No words painted on the Compass figure but its two pole words, and
    the figure whole inside its own canvas.
@@ -492,7 +500,10 @@ for(const w of [[1600,1000],[390,844]]){
    const up=document.querySelector('#cnclimb .cl-pole-up .cl-pr'), dn=document.querySelector('#cnclimb .cl-pole-dn .cl-pr');
    const ub=up&&bx(up), db=dn&&bx(dn);
    const inside=q=>sb&&q.left>=sb.left-0.5&&q.right<=sb.right+0.5&&q.top>=sb.top-0.5&&q.bottom<=sb.bottom+0.5;
+   /* the rail is in the left column since 27 November, his words: "The table
+      that has Crown, Transmutation, Clarity ... moves into the left rail" */
    const rail=document.getElementById('clrail'), rb=rail&&bx(rail);
+   const inLeft=!!rail&&document.getElementById('lpanel').contains(rail)&&!document.getElementById('cone').contains(rail);
    const seats=[...document.querySelectorAll('#clrail .clr-nm')].map(e=>e.textContent);
    const parts=[...document.querySelectorAll('#clrail>.clr-pole,#clrail .clr-hd,#clrail .cn-nr')];
    const rover=[];for(let i=0;i<parts.length;i++)for(let j=i+1;j<parts.length;j++)
@@ -515,7 +526,7 @@ for(const w of [[1600,1000],[390,844]]){
    return {poles:poles.length,over:over,dn:dm.length,dover:dover,dtext:dtext,want:DESCENT.length,upIn:!!ub&&inside(ub),dnIn:!!db&&inside(db),
     upTop:!!ub&&st.every(q=>ub.bottom<=q.top+0.5),dnBot:!!db&&st.every(q=>db.top>=q.bottom-0.5),
     seats:seats,wantSeats:BANDS.slice().reverse(),rover:rover,clipped:rail&&innerWidth>=900?lastB>rb.bottom+0.5:false,
-    ends:railEnds,card:card,
+    ends:railEnds,card:card,inLeft:inLeft,
     /* his words, 21 November: the teachers out of the centre into the rail,
        and the two poles named Coherence and Decoherence */
     tchOnBoard:document.querySelectorAll('#cnclimb .cl-t').length,
@@ -528,6 +539,7 @@ for(const w of [[1600,1000],[390,844]]){
   ok(r.dnBot,tag+': the down arrow is not below every station and descent step');
   ok(r.dn===r.want&&r.dover===0&&r.dtext===0,tag+': the descent draws '+r.dn+' of '+r.want+' marks, '+r.dover+' touching, '+r.dtext+' names printed');
   ok(r.seats.join()===r.wantSeats.join(),tag+': the rail reads '+r.seats.join(', ')+', want Crown to Root');
+  ok(r.inLeft,tag+': the climb\'s rail is not in the left column');
   ok(r.ends[0]==='src'&&r.ends[r.ends.length-1]==='descent',tag+': the rail does not open on Source and close on the descent: '+r.ends.join());
   ok(r.rover.length===0,tag+': rail entries print over each other: '+r.rover.slice(0,3).join('; '));
   ok(!r.clipped,tag+': the rail runs past its own bottom');

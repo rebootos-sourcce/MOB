@@ -875,6 +875,22 @@
     <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
      <rect x="3.5" y="4.5" width="17" height="15" rx="2.5"/><path d="M9 4.5v15"/>
      <path class="lf-ch" d="M15.6 9.4L13 12l2.6 2.6"/></svg></button>
+   <!-- A TAB'S OWN RAIL, .lown, ruled 27 November. His words for the Body:
+        "the left rail, all that content does not apply. Clear out the current
+        content in the left rail on the body. Move the overlays from that top
+        menu into buttons in the left rail." And for the Compass: "Rip
+        everything out of this left rail on the compass, because it does not
+        apply here. The table that has Crown, Transmutation, Clarity ... moves
+        into the left rail." So each of those two tabs shows its own host here
+        and nothing else, by one rule in head.html for both. Filled by
+        bmOvPaint (ui/map.js) and coneOpen (ui/cone.js). These hosts outlive
+        the stage, which is rebuilt on every press, so a listener bound on
+        one of them is bound once or it fires once per rebuild. -->
+   <!-- each opens on a head row the height of #lfold, which sits in its right
+        corner, so no key and no switch is ever under the fold (the reason
+        .fl-hd keeps 52 pixels free on Flow) -->
+   <div class="lown" id="bmlrail"><div class="lown-hd">Overlays</div><div id="bmov" class="bm-ov bm-rail" role="group" aria-label="Overlays"></div></div>
+   <div class="lown" id="cnlrail"><div class="lown-hd" id="clhead"></div><div class="cn-pan cl-rail" id="clrail" role="group" aria-label="The climb"></div></div>
    <!-- THE FLOW INPUT MENU. Ruled round QF, 2 October, his words: "Left menu
         will be for inputting new." So on the Ritual page this column is the
         one place a person starts or changes a ritual: closed it is one press
