@@ -125,6 +125,25 @@ function mtBlock(c){
   +(live.length?'<button class="btn" data-gmimp="'+esc(c.nm)+'">See the '+live.length+' running you</button>':'')
   +'</div>';}
 
+/* A TAP TARGET OF ITS OWN FOR THE RULES, 27 November, addendum to CO-33. The
+   Deal button's own tooltip carries the rules, which a mouse reaches on hover
+   and a keyboard reaches on focus, but a touch carrier that is also a button
+   only opens on a press and hold (ui/tip.js, pressArm), so the one single
+   gesture a phone actually uses, a tap, never showed them. A ring icon beside
+   Deal gives touch its own plain tap: the button's onclick calls TIP.show
+   directly, the same route ui/lock.js already uses for a definition a press
+   has to reach at once rather than after a hold. Deal itself keeps its single
+   tap for dealing; this is a second control and not a second way to do the
+   first one. */
+function gmRulesBtn(label,text){
+ return '<button type="button" class="vt gm-rules" aria-label="Rules" '
+  +'data-tip-t="'+esc(label)+'" data-tip="'+esc(text)+'">'
+  +'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/>'
+  +'<path d="M12 10.3v5.3M12 7.1v.01"/></svg></button>';}
+function gmWireRules(host){
+ host.querySelectorAll('.gm-rules').forEach(function(b){
+  b.onclick=function(){if(typeof TIP!=='undefined')TIP.show(b);};});}
+
 /* ---- the shell ---- */
 function gmRender(){
  var host=document.getElementById('games'); if(!host)return;
@@ -155,10 +174,14 @@ function gmRender(){
       from the same words, one hover or one focus away, and the six channels
       are read off C3_VERB so the list is never typed a second time. The
       earlier HS sweep kept these lines "because nothing else teaches it"; a
-      tooltip on the one control that starts the game is something else. */
-   h+='<div class="gm-intro">'
-    +'<button class="btn pri" id="lggo" data-tip-t="The letting go run" data-tip="'+esc('Twenty four cards, face down, dealt from what you are carrying. Turn one, say the line and the truth under it, turn it back. The clock runs while you do it. Each line runs every channel at once: '
-      +C3_VERB.join(', ').replace(/, ([^,]*)$/,' and $1')+'. '+CARD_OPEN)+'">Deal twenty four</button></div>';}
+      tooltip on the one control that starts the game is something else.
+      gmRulesBtn, added the same day as an addendum, gives a touch reader a
+      plain tap for the same sentence: see its own comment above gmRender. */
+   var lgRules='Twenty four cards, face down, dealt from what you are carrying. Turn one, say the line and the truth under it, turn it back. The clock runs while you do it. Each line runs every channel at once: '
+     +C3_VERB.join(', ').replace(/, ([^,]*)$/,' and $1')+'. '+CARD_OPEN;
+   h+='<div class="gm-intro"><div style="display:flex;align-items:center;gap:8px">'
+    +'<button class="btn pri" id="lggo" data-tip-t="The letting go run" data-tip="'+esc(lgRules)+'">Deal twenty four</button>'
+    +gmRulesBtn('The letting go run',lgRules)+'</div></div>';}
   else{
    h+='<div class="gm-bar"><div class="gm-chan"><span class="pm-eye">Pole</span>'
     +'<div class="gm-chips">'+C3_POLE.map(function(p){
@@ -197,10 +220,12 @@ function gmRender(){
 
  if(GAME==='mt'){
   if(!MT.cards.length){
-   /* the same cut as the letting go run above: the rules are the button's tooltip */
-   h+='<div class="gm-intro"><button class="btn pri" id="mtgo" data-tip-t="The match" data-tip="'
-    +esc('Eight pairs of child emotion marks, face down. Match a pair and it opens: what it is, how it runs through you, and what the coherent opposite is.')
-    +'">Deal the marks</button></div>';}
+   /* the same cut as the letting go run above: the rules are the button's
+      tooltip, and gmRulesBtn gives a touch reader the same plain tap */
+   var mtRules='Eight pairs of child emotion marks, face down. Match a pair and it opens: what it is, how it runs through you, and what the coherent opposite is.';
+   h+='<div class="gm-intro"><div style="display:flex;align-items:center;gap:8px">'
+    +'<button class="btn pri" id="mtgo" data-tip-t="The match" data-tip="'+esc(mtRules)+'">Deal the marks</button>'
+    +gmRulesBtn('The match',mtRules)+'</div></div>';}
   else{
    h+='<div class="gm-bar"><div class="gm-of">'+MT.found+' of '+MT_PAIRS+' matched</div></div>'
     +'<div class="gm-grid mt">'+MT.cards.map(function(c,i){
@@ -221,6 +246,7 @@ function gmRender(){
     where a plan belongs. */
 
  host.innerHTML=h;
+ gmWireRules(host);
  host.querySelectorAll('[data-gm]').forEach(function(el){el.onclick=function(){
   GAME=el.getAttribute('data-gm'); lgStop(); gmRender();};});
  host.querySelectorAll('[data-lgc]').forEach(function(el){el.onclick=function(){
