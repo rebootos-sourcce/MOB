@@ -1345,12 +1345,15 @@ function avDetail(st,a){
  var rt=st.side.arch[a.nm]||0, A=AV_OF[a.b], e=!!avArchEmbodied(st.r)[a.i];
  var out='<div class="av-card av-det" style="--c:'+seatCol(a.b)+'">'
   +'<div class="av-ph"><span class="av-pic">'+avArchIc(a)+'</span><div>'
-  +'<p class="av-det-e"><b>'+A.nm+'</b>, '+AV_THE[a.b]+'</p><div class="av-pn">'+esc(a.nm)+'</div></div>'
+  +'<p class="av-det-e"><b>'+A.nm+'</b>, '+AV_THE[a.b]+'</p><div class="av-pn">'+unp('archetypes',a.nm)+'</div></div>'
   /* the one word, where the percent was. A slot keeps its label: the pill is
      always here, and only its value moves. */
   +'<span class="avx-emb'+(e?' avx-y':'')+'">'+(e?avSvg(AV_PIN):'')+(st.r.unread?'not read yet':e?'embodied':'not embodied')+'</span></div>'
-  +'<p class="av-def">'+esc(AV_DEF[a.nm]||'')+'</p>'
-  +'<div class="ad-sub">'+esc(ARCH_CREDIT)+'</div>';
+  /* THE CREDIT IS THE NAME'S TOOLTIP. It was a muted line under the
+     definition, "Jung-derived, after Carol Pearson and Margaret Mark", the
+     caption he struck on 27 November, CO-33. The data is still ARCH_CREDIT and
+     the name carries it through the archetypes entry in gloss.js. */
+  +'<p class="av-def">'+esc(AV_DEF[a.nm]||'')+'</p>';
  if(a.sab)
   out+='<div class="av-imp" style="--s:'+seatCol(a.sabB)+'"><div class="pm-eye">Impact</div>'
    +'<p class="av-imp-v"><b>'+esc(a.sab)+'</b><span>primary saboteur'

@@ -151,7 +151,7 @@ function ritGoalTile(st){
  /* nothing read and no avatar line: the one press is the way in */
  if(!bc&&!last){
   if(st.r.unread)return '<div class="rv-ttl rv-tgoal" style="--c:var(--accent)">'+head()
-   +'<span class="rv-tnm">Not read yet</span><span class="rv-tact"><button type="button" class="btn pri" data-act="go-story">Write a story</button></span></div>';
+   +'<span class="rv-tnm" data-say="value">Not read yet</span><span class="rv-tact"><button type="button" class="btn pri" data-act="go-story">Write a story</button></span></div>';
   return '<div class="rv-ttl rv-tgoal" style="--c:var(--accent)">'+head()
    +'<button type="button" class="rv-tnm rv-tpr" data-act="pgoal" aria-label="Goal: none written yet. Open">–</button><span class="rv-tact"></span></div>';}
  var be=String((bc?bc.be:last.be)||'').trim().replace(/^"+|"+$/g,''), iam=ritIAm(be)||be;
@@ -178,7 +178,7 @@ function ritChalTile(c,st){
   /* IF I MISS stays the one neutral press, on the tile now (ritMissOfferHtml's
      rule), and opens the challenge with the why question first */
   +(off?'<button type="button" class="rv-mof" data-act="miss-why" data-id="'+esc('ch:'+c.id)+'">'+ritIc('ring')+'Why?</button>'
-   :'<span class="rv-tsub">'+(on?'Done today':'Not yet today')+'</span>')+'</span></div>';}
+   :'<span class="rv-tsub" data-say="value">'+(on?'Done today':'Not yet today')+'</span>')+'</span></div>';}
 
 /* ---------------- the affirmations' way in ----------------
    The Today card carried the affirmations and the clock that set their days,
@@ -199,7 +199,7 @@ function ritAffCardHtml(st){
   +'<div class="rv-sgh"><button type="button" class="rv-sgn rv-bko'+(on?' rv-on':'')+'" data-act="aff-set" aria-label="'
   +esc('Affirmations, '+(on?'on your week. Say them, change the days':'not on your week yet. Say them, set the days'))+'">Affirmations</button></div>'
   +'<div class="rv-sgo"><span class="rv-sgk"'+rvTip(K.nm,K.says)+'>'+ritKindIc('aff')+esc(K.nm)+'</span>'
-  +'<span class="rv-sgm">'+(on?esc(ritOften(ritSchedOf('aff').on)):'Not on your week yet')+'</span></div></li>';}
+  +'<span class="rv-sgm" data-say="value">'+(on?esc(ritOften(ritSchedOf('aff').on)):'Not on your week yet')+'</span></div></li>';}
 
 /* ---------------- the look ---------------- */
 function ritWeekCss(){

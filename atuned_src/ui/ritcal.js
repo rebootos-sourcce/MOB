@@ -711,7 +711,11 @@ function ritSuccessHtml(st){
  /* THE HONEST PART. A span that reaches back before the record does not
     pretend the record was empty there: those days are drawn hatched and never
     counted as missed, which is the arithmetic in ritSpanRead. */
- var note=S.rs===null?'<p class="rv-sparse">Nothing on your record yet. This fills in, a day at a time, as you keep rituals.</p>':'';
+ /* AN EMPTY STATE SAYS WHAT IS MISSING AND STOPS. It went on to say "This fills
+    in, a day at a time, as you keep rituals", which is how the page behaves and
+    not a fact about the person, the caption he struck as junk on 27 November,
+    CO-33. */
+ var note=S.rs===null?'<p class="rv-sparse" data-say="empty">Nothing on your record yet.</p>':'';
  /* THE AFFIRMATIONS AND HELD PLACES LINES ARE GONE, round SW, his words on
     the right rail: "on the right-hand side there's a bunch of text I want
     to get rid of." Both were plain prose over this card's own picture (a

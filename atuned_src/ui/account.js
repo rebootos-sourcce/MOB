@@ -69,13 +69,13 @@ function accRow(label,value,o){
  o=o||{};
  return '<div class="ac-row'+(o.cls?' '+o.cls:'')+'">'
   +'<span class="ac-rl">'+esc(label)+'</span>'
-  +'<span class="ac-rv'+(o.num?' num':'')+'">'+(o.raw?value:esc(String(value)))+'</span></div>';}
+  +'<span class="ac-rv'+(o.num?' num':'')+'" data-say="value">'+(o.raw?value:esc(String(value)))+'</span></div>';}
 /* A stub row. Full opacity, real label, and the honest value in the value
    slot. aria-disabled and not a button, so nothing can press it. */
 function accStub(label,why){
  return '<div class="ac-row ac-stub" aria-disabled="true">'
   +'<span class="ac-rl">'+esc(label)+'</span>'
-  +'<span class="ac-rv">'+esc(why||'not built yet')+'</span></div>';}
+  +'<span class="ac-rv" data-say="value">'+esc(why||'not built yet')+'</span></div>';}
 function accAct(label,id,o){
  o=o||{};
  return '<div class="ac-row ac-act"><span class="ac-rl">'+esc(label)+'</span>'
@@ -85,14 +85,23 @@ function accAct(label,id,o){
    the switch carries no label of its own. col paints the note, for the one
    switch whose note is a seat's hertz: ruled, a hertz number is the seat's own
    colour. */
-function accTog(label,id,on,note,col){
+/* tip is what the switch does, as its tooltip on hover, tap and focus. It used
+   to be the note, a muted line under the label, which is the caption he struck
+   as junk on 27 November, CO-33. */
+function accTog(label,id,on,note,col,tip){
  return '<div class="ac-row ac-tog"><span class="ac-rl">'+esc(label)
   +(note?'<em'+(col?' style="color:'+col+'"':'')+'>'+esc(note)+'</em>':'')+'</span>'
   +'<button class="ac-sw'+(on?' on':'')+'" id="'+id+'" type="button" role="switch" '
-  +'aria-checked="'+(!!on)+'" aria-label="'+esc(label)+'"><i></i></button></div>';}
-function accGroup(title,rows,foot){
+  +'aria-checked="'+(!!on)+'" aria-label="'+esc(label)+'"'
+  +(tip?' data-tip-t="'+esc(label)+'" data-tip="'+esc(tip)+'"':'')+'><i></i></button></div>';}
+/* say declares what the footer is, for tests/nocaption.js. The default is a
+   disclosure, because the Settings sweep kept only those (what is held, where,
+   who has sight, what a delete does); a footer that is an empty state or a
+   refusal passes its own word, so the declaration is a claim that can be read
+   and not a blanket. */
+function accGroup(title,rows,foot,say){
  return '<div class="ac-grp">'+(title?'<div class="ac-gh">'+esc(title)+'</div>':'')
-  +rows+(foot?'<div class="ac-gf">'+foot+'</div>':'')+'</div>';}
+  +rows+(foot?'<div class="ac-gf" data-say="'+(say||'disclosure')+'">'+foot+'</div>':'')+'</div>';}
 
 /* ---------- 4.1 account ---------- */
 function accAccount(){
@@ -205,8 +214,8 @@ function accAccount(){
     see theirs, read off pracSightList and never typed. */
  var sightN=(typeof pracSightList==='function')?pracSightList().length:0;
  h+=accGroup('Practitioner',
-   accTog('Practitioner mode','acprac',pracOn(),
-    'adds Practitioner to the menu'),
+   accTog('Practitioner mode','acprac',pracOn(),'',null,
+    'Adds Practitioner to the menu.'),
    'Turning it on shares nothing of yours.'
    +(sightN?'':' Nobody has let you see their record yet.'));
  /* HS SWEEP, SETTINGS. A footer that only described the control above it is

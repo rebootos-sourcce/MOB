@@ -181,7 +181,7 @@ function ritSugHtml(st){
     would be the contradiction SV16 took off this list. */
  var law=(typeof ritLawCardHtml==='function')?ritLawCardHtml(st):'';
  if(!list.length&&all.length&&!undo&&!aff&&!law)return saved;
- var body=!list.length?(aff||law?'<ul class="rv-sugl">'+aff+law+'</ul>':'')+'<p class="rv-empty">'+(all0.length?'Nothing else called for. Each one is added, saved or dismissed.'
+ var body=!list.length?(aff||law?'<ul class="rv-sugl">'+aff+law+'</ul>':'')+'<p class="rv-empty" data-say="empty">'+(all0.length?'Nothing else called for. Each one is added, saved or dismissed.'
    :law?'Nothing else called for yet. Record a story to fill it.':'Nothing called for yet. Record a story to fill it.')+'</p>'
   /* THE CARD IS ritBankCard NOW, 20 November (ui/ritbank.js), so a Path or
      Avatar host draws this same card and not its own. This is its only
