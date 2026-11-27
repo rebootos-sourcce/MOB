@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v3532 c62c48ba 2026-11-28 00:13"><head><meta charset="utf-8">
+<html lang="en" data-build="v3535 5c17b96a 2026-11-28 05:23"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -2062,10 +2062,10 @@ body:not(.tab-field) .fbar,body:not(.tab-field) .fb-float{display:none!important
    because under Snow the theme's tokens are paper ink and the stage stays
    the ruled #101010: the bar needs the ground's ink, which INK() and frMount
    already choose the same way. */
-.fbar,.fb-float,.fview,.fzoom,.cn-zoom,.cnbar,.cnview,.cn-pan,#railtop,#acc{--ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;--accent:#7EB8D4;
+.fbar,.fb-float,.fview,.fzoom,.cn-zoom,.cnbar,.cnview,.cn-pan,.bm-rail,#railtop,#acc{--ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;--accent:#7EB8D4;
  --edge-2:rgba(255,255,255,.14);--edge:rgba(255,255,255,.09);
  --fb-glass:rgba(22,24,32,.74);--fb-glass-on:rgba(40,44,58,.86);--fb-shade:rgba(0,0,0,.30);--fb-pillbg:#161820}
-.fbar.fb-lt,.fb-float.fb-lt,.fview.fb-lt,.fzoom.fb-lt,.cn-zoom.fb-lt,.cnbar.fb-lt,.cnview.fb-lt,.cn-pan.fb-lt,#railtop.fb-lt,#acc.fb-lt{--ink:#14161C;--mid:#4A4843;--dim:#6E6B65;--accent:#2F6E92;
+.fbar.fb-lt,.fb-float.fb-lt,.fview.fb-lt,.fzoom.fb-lt,.cn-zoom.fb-lt,.cnbar.fb-lt,.cnview.fb-lt,.cn-pan.fb-lt,.bm-rail.fb-lt,#railtop.fb-lt,#acc.fb-lt{--ink:#14161C;--mid:#4A4843;--dim:#6E6B65;--accent:#2F6E92;
  --edge-2:rgba(20,22,28,.16);--edge:rgba(20,22,28,.10);
  --fb-glass:rgba(252,252,250,.80);--fb-glass-on:rgba(255,255,255,.94);--fb-shade:rgba(20,22,28,.14);--fb-pillbg:#FAFAF7}
 /* ---- one layer, one object. 44 by 44, the tap floor ---- */
@@ -4415,7 +4415,14 @@ select#psel optgroup{background:var(--sunk);color:var(--dim);font-style:normal;
    of nothing, so the circle on the right is never pushed off the line and
    the overlays wrap inside their share instead */
 .bm-top{position:absolute;top:10px;left:12px;right:12px;z-index:3;display:flex;flex-wrap:wrap;
- align-items:flex-start;gap:8px 12px;pointer-events:none}
+ align-items:flex-start;justify-content:flex-end;gap:8px 12px;pointer-events:none}
+/* flex-end, 27 November: the overlays were the strip's flexible first item
+   and held the Mark circle to the right edge. They are keys in the left rail
+   now (#bmlrail), so without this the circle slid left to fill their place.
+   The phone's Turn circle takes the other corner by its own auto margin. */
+.bm-turn{order:0;margin-right:auto}
+.bm-turn[hidden]{display:none}
+.bm-turn>*{pointer-events:auto}
 .bm-ov{display:flex;flex-wrap:wrap;align-items:center;gap:12px;min-width:0;flex:1 1 0;order:1}
 .bm-mkb{order:2}
 .bm-mk{display:flex;flex-direction:row-reverse;align-items:flex-start;gap:8px;flex:0 0 auto;order:3}
@@ -4448,6 +4455,8 @@ select#psel optgroup{background:var(--sunk);color:var(--dim);font-style:normal;
    shut. The target stays 44, the tap floor; the frame drawn inside it is 32
    and one pixel. ---- */
 .bm-regs{position:absolute;inset:0;z-index:3;pointer-events:none}
+/* BMPARTS false, ui/map.js: the shelves stay in the document and are not shown */
+.bm-regs[hidden]{display:none}
 .bm-sh{position:absolute;top:calc(max(var(--bmtop,0px),58px) + 4px);display:flex;flex-direction:column;
  align-items:flex-start;gap:6px}
 .bm-sh.bm-front{left:12px}
@@ -8766,6 +8775,42 @@ body.tab-ritual #rit .rel-act{position:sticky;bottom:0;background:var(--bg);
 body.tab-ritual #lpanel>*:not(.lfold):not(.fl-rail){display:none!important}
 body.tab-ritual #rpanel>*:not(.rfold):not(.fl-rail){display:none!important}
 body:not(.tab-ritual) .fl-rail{display:none}
+/* THE BODY AND THE COMPASS EACH OWN THE LEFT COLUMN, 27 November, his words:
+   "For the body, the left rail, all that content does not apply" and "Rip
+   everything out of this left rail on the compass." Flow's rule above, keyed
+   on .lown and written once for both tabs, so a section added to the rail
+   later turns up on neither. The third line carries no !important on
+   purpose: body.lshut #lpanel>*:not(.lfold) outweighs it, so folding the
+   column still folds a tab's own rail. */
+body:is(.tab-energy,.tab-compass) #lpanel>*:not(.lfold):not(.lown){display:none!important}
+.lown{display:none}
+body.tab-energy #bmlrail,body.tab-compass #cnlrail{display:block}
+/* the head row: the fold's own height, its right corner left to the fold */
+.lown-hd{display:flex;align-items:center;gap:8px;min-height:var(--tap);margin:0 0 12px;padding:0 52px 0 2px;
+ font-size:16px;font-weight:600;color:var(--ink)}
+/* THE OVERLAY KEYS, 27 November. "Move the overlays from that top menu into
+   buttons in the left rail." Each is the Field's object, fbOrb, with its word
+   under the ring: the symbol in a ring, the value, the word. Square and not
+   round here because a word sits under it, 76 wide so "Hyper complexes" breaks
+   once rather than running out, and one height for all eight so a row with a
+   two line name does not stand taller than its neighbours. The groups are
+   his, Nodes, Clusters and Networks (BMOV, ui/map.js), one row each, every
+   gap 12, every row centred: the symmetry ruling of 16 November. */
+.bm-rail{display:flex;flex-direction:column;align-items:center;gap:12px;flex:none;order:0;padding:0}
+.bm-rail .fb-grp{display:flex;justify-content:center;gap:12px}
+.bm-rail .fb-b{width:76px;height:92px;box-sizing:border-box;padding:9px 4px 8px;justify-content:flex-start;gap:6px;
+ border:1px solid var(--edge-2);border-radius:var(--r-s);background:transparent}
+.bm-rail .fb-b:hover{border-color:var(--mid)}
+.bm-rail .fb-b.on{border-color:color-mix(in srgb,var(--accent) 55%,var(--edge-2))}
+.bm-rail .fb-nm{white-space:normal;text-align:center;line-height:14px;max-width:100%}
+/* under 1180 the columns stack, and the keys come before the figure they
+   switch, Flow's own pattern for its input menu */
+@media (max-width:1180px){body.tab-energy #lcol{order:-2}}
+/* a phone: the eight keys as four by two, 4 x 76 + 3 x 12 = 340 of the 358 a
+   390 window leaves the panel */
+@media (max-width:720px){
+ .bm-rail{display:grid;grid-template-columns:repeat(4,76px);justify-content:center;gap:12px}
+ .bm-rail .fb-grp{display:contents}}
 /* 400 ON BOTH SIDES, measured rather than chosen, and measured twice. Both
    columns carry a row of seven presses at the 44 pixel floor: the builder's
    week on the left, the record's month on the right. That is 308 plus its
@@ -11876,14 +11921,19 @@ body.tab-summary #spirit .sp-tile.rl-off{color:var(--dim)}
 .cl-av.below .cl-avq{text-anchor:start}
 @keyframes clpulse{0%,100%{stroke-opacity:.9}50%{stroke-opacity:.25}}
 @media (prefers-reduced-motion:reduce){.cl-av .halo{animation:none}}
-/* 44 and not the 36 the design round drew: the tap floor (tests/design.js
-   gate 8) holds every control to 44 by 44, and this one failed it */
-.cl-tog{display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 16px;border-radius:22px;
- background:rgba(16,17,20,.85);border:1px solid var(--edge);color:var(--ink);font:inherit;font-size:12.5px;cursor:pointer}
-.cl-tog svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.cl-tog:hover{border-color:var(--mid)}
-.cl-tog{position:absolute;top:12px;left:12px;z-index:3}
-.cone-fig:not(.climb) .cl-tog{top:auto;bottom:12px}
+/* CLIMB OR FIGURE, the switch at the head of the left rail (coneOpen),
+   27 November. It was .cl-tog, one button on the board. Each half is a
+   button 44 tall, the tap floor (tests/design.js gate 8), measured on the
+   button and not on the capsule round it, so the two are framed apart rather
+   than inset in one frame; and equal, so neither word reads as the one that
+   matters more. */
+.cl-sw{display:flex;flex:1 1 auto;gap:4px}
+.cl-swb{flex:1 1 0;min-height:44px;padding:0 12px;border:1px solid var(--edge-2);border-radius:var(--r-s);background:transparent;
+ color:var(--mid);font:inherit;font-size:13px;font-weight:500;cursor:pointer;
+ transition:background-color var(--t-micro) var(--ease-out),color var(--t-micro) var(--ease-out)}
+.cl-swb:hover{color:var(--ink)}
+.cl-swb.on{background:color-mix(in srgb,var(--ink) 10%,transparent);border-color:var(--mid);color:var(--ink)}
+.cl-swb:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
 .cl-card{display:flex;flex-direction:column;gap:10px}
 .cl-hd{display:flex;gap:12px;align-items:center}
 .cl-hic svg{width:34px;height:34px;fill:none;stroke:var(--ink);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
@@ -11915,8 +11965,17 @@ body.tab-summary #spirit .sp-tile.rl-off{color:var(--dim)}
    Insight rail on the right: the figure's second panel is not drawn on the
    climb, so the page is a rail, the board, a rail. The seats are spread down
    the height with even space between them, the poles at its two ends. */
-.cone-fig.climb{grid-template-columns:minmax(220px,256px) minmax(0,1fr)}
-.cone-fig.climb>.cl-rail{grid-column:1;grid-row:1 / span 2}
+/* THE RAIL LEFT THE CARD, 27 November: it is in the left column (#cnlrail),
+   so on the climb the board is the card's one column and takes the width the
+   rail had. clGeo measures the board off the canvas, so it widens and
+   centres with it. In the column the rail is laid in flow, top down, and the
+   column scrolls it, so it does not keep a scroll of its own. It keeps the
+   .cn-pan class for the glass inks it is drawn in, and drops that glass's
+   card, because the column is already the card. */
+.cone-fig.climb{grid-template-columns:minmax(0,1fr)}
+.cone-fig.climb>.cn-cvw{grid-column:1}
+.cone-fig.climb>.cone-key{grid-column:1}
+#lpanel .cl-rail{overflow:visible;justify-content:flex-start;padding:0;background:none;border:0;box-shadow:none}
 .cl-rail{justify-content:space-between;gap:6px;padding:10px 8px;overflow-y:auto}
 .cone-fig.stk .cl-rail{display:flex;flex-direction:column;justify-content:flex-start;gap:10px;overflow:visible}
 .cl-rail .cn-nr{min-height:44px;padding:4px 6px;gap:10px}
@@ -12822,6 +12881,22 @@ body.tab-summary #spirit .sp-tile.rl-off{color:var(--dim)}
     <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
      <rect x="3.5" y="4.5" width="17" height="15" rx="2.5"/><path d="M9 4.5v15"/>
      <path class="lf-ch" d="M15.6 9.4L13 12l2.6 2.6"/></svg></button>
+   <!-- A TAB'S OWN RAIL, .lown, ruled 27 November. His words for the Body:
+        "the left rail, all that content does not apply. Clear out the current
+        content in the left rail on the body. Move the overlays from that top
+        menu into buttons in the left rail." And for the Compass: "Rip
+        everything out of this left rail on the compass, because it does not
+        apply here. The table that has Crown, Transmutation, Clarity ... moves
+        into the left rail." So each of those two tabs shows its own host here
+        and nothing else, by one rule in head.html for both. Filled by
+        bmOvPaint (ui/map.js) and coneOpen (ui/cone.js). These hosts outlive
+        the stage, which is rebuilt on every press, so a listener bound on
+        one of them is bound once or it fires once per rebuild. -->
+   <!-- each opens on a head row the height of #lfold, which sits in its right
+        corner, so no key and no switch is ever under the fold (the reason
+        .fl-hd keeps 52 pixels free on Flow) -->
+   <div class="lown" id="bmlrail"><div class="lown-hd">Overlays</div><div id="bmov" class="bm-ov bm-rail" role="group" aria-label="Overlays"></div></div>
+   <div class="lown" id="cnlrail"><div class="lown-hd" id="clhead"></div><div class="cn-pan cl-rail" id="clrail" role="group" aria-label="The climb"></div></div>
    <!-- THE FLOW INPUT MENU. Ruled round QF, 2 October, his words: "Left menu
         will be for inputting new." So on the Ritual page this column is the
         one place a person starts or changes a ritual: closed it is one press
@@ -63959,6 +64034,15 @@ var BMPART=[
  {k:'shin',f:'Shin',b:'Calf'},
  {k:'ankle',f:'Ankle',b:null},
  {k:'foot',f:'Foot',b:'Heel'}];
+/* THE PART SHELVES ARE HIDDEN, NOT DELETED, 27 November, his words: "These
+   part menus, the fact that there's two of them, is too much. Hide these
+   icons for now," and of whether they come back, "I don't know if we
+   actually need them." So the two shelves stay in the document, hidden, and
+   bmRegBar and bmRegFit do nothing while this is false. Flip it and every
+   line of the picker is still here. What it costs while off: a phone has no
+   press on a part to turn the one figure, so the Turn circle (bmTurnBuild)
+   carries that. */
+const BMPARTS=false;
 /* A REGION'S NAME AS A PERSON READS IT. The table keeps "Back of head" as
    its key, because the route and pain tables are keyed on it, but the set
    it stands in already says which side it is, so on the screen it is "Head". */
@@ -65614,6 +65698,14 @@ function bmOpenReg(r,toggle){bmOpenKey(r.key,toggle);}
    address had been opened from its answer stayed picked, and the next press
    on its name put it down instead of bringing its answer back. */
 function bmAnswering(){return !!document.getElementById('bmzoom');}
+/* A KNOWN DEFECT, recorded 27 November and deliberately not fixed while
+   BMPARTS is false. His words: "I can't select the front and back
+   independently." The cause is here: PMPICK={bmReg:k} is ONE slot, and every
+   press of a region, a seat, a line, a mask or a hub overwrites it, while
+   bmSelAll and bmRegionDrill read only that slot's list[0].v. So no two parts,
+   front and back included, can ever be held together. The fix, when the
+   shelves return: hold an array of keys, take their union in bmSelAll, and
+   run the drill once per view. TASKS.md carries it by name. */
 function bmOpenKey(k,toggle){
  if(toggle&&bmPickKey()===k&&bmAnswering()){rdClose();return;}
  /* the face follows the pick, so on a phone, which shows one figure, the
@@ -65833,10 +65925,24 @@ function bmMkBuild(mk){
  z.textContent='Whole body'; z.onclick=bmWhole;
  mk.appendChild(z);
  bmMkShutPaint(mk,bmMkShut());}
+/* TURN, ON A PHONE ONLY. A phone shows one figure (bmOne), and the way it
+   turned to the back was a press on a back part, which is gone with the
+   shelves (BMPARTS). Without this a phone could never see the back at all.
+   The upper left mirrors the Mark circle in the upper right; on a desk both
+   figures stand side by side and the circle is hidden, since a control that
+   changes nothing is a dead control. */
+function bmTurnBuild(el){
+ var b=fbOrb({nm:'Turn',label:true,ic:'M4 12a8 8 0 0113.7-5.6M20 12a8 8 0 01-13.7 5.6M17.7 3v3.4h-3.4M6.3 21v-3.4h3.4',
+  tip:'Turns the figure round, front to back and back again.'});
+ b.setAttribute('data-bmturn','1');
+ b.onclick=function(){bmSetFace(BM.face==='back'?'front':'back');};
+ el.appendChild(b);}
 function bmBars(){
  if(!BMG)return;
  if(!BM.bar){var rb=document.getElementById('rbar');if(rb)bmBarsOne(rb);return;}
  bmRegBar();
+ var tn=BM.well&&BM.well.querySelector('#bmturn');
+ if(tn){if(!tn.firstChild)bmTurnBuild(tn); tn.hidden=!BM.phone;}
  var mk=BM.well&&BM.well.querySelector('#bmmk'); if(!mk)return;
  if(!mk.firstChild)bmMkBuild(mk);
  /* where the camera is going and not where it is, bmBarsOne's reading. The
@@ -66053,6 +66159,7 @@ function bmShBuild(el){
   sh.appendChild(pn); el.appendChild(sh);
   bmShShutPaint(sh,vn,bmShShut(vn));});}
 function bmRegFit(){
+ if(!BMPARTS)return;
  var el=BM.well?BM.well.querySelector('#bmregs'):null; if(!el||!el.firstChild)return;
  var wb=BM.well.getBoundingClientRect().bottom;
  el.querySelectorAll('.bm-sh').forEach(function(sh){
@@ -66062,6 +66169,7 @@ function bmRegFit(){
   var rows=Math.max(1,Math.floor((wb-tb-6-10-12)/44));
   sh.style.setProperty('--bmc',Math.max(2,Math.ceil(n/rows)));});}
 function bmRegBar(){
+ if(!BMPARTS)return;
  var el=BM.well?BM.well.querySelector('#bmregs'):null; if(!el||!BMG)return;
  if(!el.firstChild){bmShBuild(el);bmRegFit();}
  var k=bmPickKey()||'', pain=BM.mode==='pain', cur=bmPartOf(k), kv=k.split(':')[0];
@@ -66180,28 +66288,17 @@ function bmOvVals(r){
   :{p:0,v:dash,c:'var(--accent)',m:(r&&!r.unread)?'Ring and number: flow. Nothing passes every point yet.':'Nothing read yet.'};
  Object.keys(V).forEach(function(k){if(V[k])V[k].p=clamp(+V[k].p||0,0,100);});
  return V;}
-/* the burger, shut and open: the Field's fbShutPaint in its own words */
-function bmOvShut(){var s=false;try{s=STORE.get('bmov')==='shut';}catch(e){}return s;}
-function bmOvShutPaint(bar,shut){
- var tog=bar.querySelector('[data-bmov=shut]'); if(!tog)return;
- bar.querySelectorAll('.fb-grp').forEach(function(c){c.style.display=shut?'none':'flex';});
- /* the class is what bmBand reads, and the band moves the figures */
- bar.classList.toggle('shut',shut); BM.bandStale=true;
- var say=shut?'Open the overlays':'Close the overlays';
- tog.setAttribute('aria-expanded',shut?'false':'true');tog.setAttribute('aria-label',say);
- if(!FB_COARSE)tog.setAttribute('data-tip-t',say);
- fbTip(tog,shut?'Opens the overlays again, each one as you left it.'
-  :'Folds the overlays into this one circle. Each one stays as it was set.');}
+/* THE OVERLAYS LEFT THE WELL FOR THE LEFT RAIL, 27 November, his words:
+   "Move the overlays from that top menu into buttons in the left rail, to
+   clean up the UI." So the burger that folded them is gone with the row it
+   folded: the rail has its own fold, #lfold, and two folds for one set of
+   keys is the second control he asked to lose. The store key 'bmov' it wrote
+   is simply no longer read. Each key wears its word under the ring now
+   (label), because a rail has the room a strip over the figure did not. */
 function bmOvBuild(bar){
- var tog=fbOrb({nm:'Close the overlays',ic:'M4.5 7h15M4.5 12h15M4.5 17h15'});
- tog.setAttribute('data-bmov','shut');tog.setAttribute('aria-controls','bmov');tog.style.pointerEvents='auto';
- tog.onclick=function(){var now=bmOvShut()?false:true;
-  try{STORE.set('bmov',now?'shut':'open');}catch(e){}
-  bmOvShutPaint(bar,now);};
- bar.appendChild(tog);
  BMOV.forEach(function(gp){var c=document.createElement('div');c.className='fb-grp';
   c.setAttribute('role','group');c.setAttribute('aria-label',gp.nm);
-  gp.ls.forEach(function(k){var L=BMOVL[k],b=fbOrb({nm:L.nm,ic:L.ic,tip:L.tip,val:true});
+  gp.ls.forEach(function(k){var L=BMOVL[k],b=fbOrb({nm:L.nm,ic:L.ic,tip:L.tip,val:true,label:true});
    b.setAttribute('data-bmov',k);b.style.pointerEvents='auto';b.onclick=function(){bmOvToggle(k);};c.appendChild(b);});
   bar.appendChild(c);});}
 /* one press, one switch. Off, a pattern held from that switch is put down,
@@ -66214,8 +66311,15 @@ function bmOvToggle(k){
  if(BM.r){bmSabRefresh(BM.r);bmHubRefresh(BM.r);bmMaskHits(BM.r);}
  BM.dirty=true;bmOvPaint(BM.r);}
 function bmOvPaint(r){
+ /* the rail host is in the shell and outlives every door, so only the Body's
+    own door (BM.bar) may fill it: the Masks door draws this figure too and
+    has no overlays of its own */
+ if(!BM.bar)return;
  var bar=document.getElementById('bmov'); if(!bar)return;
- if(!bar.firstChild){bmOvBuild(bar);bmOvShutPaint(bar,bmOvShut());}
+ if(!bar.firstChild)bmOvBuild(bar);
+ /* the rail takes the theme's ground and not the well's, so the glass inks
+    are read off the column it now sits in, bmGround's reading */
+ var lp=document.getElementById('lpanel'); bar.classList.toggle('fb-lt',!!(lp&&bmGround(lp)));
  var V=bmOvVals(r);
  bar.querySelectorAll('[data-bmov]').forEach(function(b){
   var k=b.getAttribute('data-bmov'),L=BMOVL[k],v=V[k]; if(!L)return;
@@ -66327,14 +66431,17 @@ function bmBuild(host){
      row is the row's own item and not inside its circle's box, so on a
      phone it can take a line of its own under the circles while the circle
      that opened it stays where it was pressed. */
-  +(BM.bar?'<div class="bm-top" style="'+BMOVTOK+BMMKTOK+'"><div id="bmov" class="bm-ov" role="group" aria-label="Overlays"></div>'
-  +'<div id="bmmk" class="bm-mk"></div><div id="bmmkb" class="bm-mkb" role="group" aria-label="Mark"></div></div>'
+  /* #bmov is not here any more: the overlays are keys in the left rail,
+     shell/body.html #bmlrail, 27 November. What the strip keeps is the Mark
+     controls on the right and, on a phone, the one Turn circle on the left. */
+  +(BM.bar?'<div class="bm-top" style="'+BMOVTOK+BMMKTOK+'">'
+  +'<div id="bmturn" class="bm-turn"></div><div id="bmmk" class="bm-mk"></div><div id="bmmkb" class="bm-mkb" role="group" aria-label="Mark"></div></div>'
   /* the two shelves of parts, down the well's left and right edges, on the
      same glass inks as the bars because they lie on the same dark picture.
      They were a strip after the well, which took its height out of the
      well's flex; inside it they take none, so the fit gets the whole stage.
      Round LQ, bmShBuild. */
-  +'<div id="bmregs" class="bm-regs" role="group" aria-label="Side and region" style="'+BMOVTOK+BMMKTOK+'"></div>'
+  +'<div id="bmregs" class="bm-regs" role="group" aria-label="Side and region" style="'+BMOVTOK+BMMKTOK+'"'+(BMPARTS?'':' hidden')+'></div>'
   /* the key: the three places carrying the most, the Dashboard Body card's
      own three rows, inside the well at its foot. bmKey fills it. */
   +'<div id="bmkey" class="bt3-key" role="list" aria-label="Where your body carries the most" style="'+BMOVTOK+BMMKTOK+'" hidden></div>':'')+'</div>';
@@ -96521,7 +96628,11 @@ function coneTone(){
  ['cnzoom','cnbar','cnview'].forEach(function(id){var e=document.getElementById(id);
   if(e)e.classList.toggle('fb-lt',lt);});
  var host=document.getElementById('cone'), pl=host?coneGroundLt(host):false;
- [].forEach.call(document.querySelectorAll('#cone .cn-pan'),function(e){e.classList.toggle('fb-lt',pl);});}
+ [].forEach.call(document.querySelectorAll('#cone .cn-pan'),function(e){e.classList.toggle('fb-lt',pl);});
+ /* the climb's rail is in the left column now, on the theme's ground and not
+    the stage's, so its glass is read off that column */
+ var lp=document.getElementById('lpanel'), crl=document.getElementById('clrail');
+ if(crl)crl.classList.toggle('fb-lt',lp?coneGroundLt(lp):false);}
 function coneOpen(inTab){
  var h=document.getElementById('cone'); if(!h)return;
  /* A PRESS REBUILDS THE CARD, so the press would drop a keyboard person's
@@ -96565,7 +96676,13 @@ function coneOpen(inTab){
       bottom to top, so its rail is the seven seats in that order (clRail)
       and the right of the page is the Insight rail, where a station's card
       opens. "The figure" puts both panels back. */
-   +(CONE.climb?'<div class="cn-pan cn-nms-l cl-rail" id="clrail" role="group" aria-label="The climb by seat, Crown at the top and Root at the bottom">'+clRailIn()+'</div>':coneNames('l'))
+   /* AND THEN THE RAIL LEFT THE CARD FOR THE LEFT COLUMN, 27 November, his
+      words: "The table that has Crown, Transmutation, Clarity, Natural
+      Growth etc. moves into the left rail. That opens up all this space for
+      our center field." It is #clrail in shell/body.html now, filled below
+      in coneOpen, so on the climb the board is the card's only column. The
+      figure keeps its own left panel, which is about the figure. */
+   +(CONE.climb?'':coneNames('l'))
    /* THE CANVAS, THE OVERLAYS AND THE ZOOM, held together so the corners are
       the canvas's and not the card's, whatever the key under the figure does.
       The overlays take the upper left and how it is drawn the upper right,
@@ -96583,8 +96700,6 @@ function coneOpen(inTab){
    +'"></canvas>'
    /* the climb board (clSvg, below), laid over the canvas's own box */
    +'<div class="cn-climb" id="cnclimb"></div>'
-   +'<button type="button" class="cl-tog" id="cltog" data-tip-k="'+(CONE.climb?'The figure':'The climb')+'" data-tip="'+(CONE.climb?'Show the compass as the figure.':'Show the compass as the path up it.')+'">'
-   +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="'+(CONE.climb?'M12 3l7 9-7 9-7-9z':'M4 19h16M6 14h12M8 9h8M12 4v2')+'"/></svg><span>'+(CONE.climb?'The figure':'The climb')+'</span></button>'
    /* THE OVERLAYS. Built into by coneOvBuild once the card is in the
       document. .cone-ctl is kept as the name of the row so the gate that
       finds the switches by it still does. */
@@ -96689,14 +96804,34 @@ function coneOpen(inTab){
     twice as fast after one press and three times after two. The springs of
     the view from above step per frame, so they would have arrived early too. */
  var fg0=h.querySelector('.cone-fig'); if(fg0)fg0.classList.toggle('climb',!!CONE.climb);
- var tg=document.getElementById('cltog'); if(tg)tg.onclick=function(){CONE.climb=!CONE.climb; CONE.clSel=null; coneOpen(CONE.tab);};
+ /* THE TWO VIEWS ARE A SWITCH AT THE RAIL'S HEAD, 27 November. It was one
+    button on the board, "The figure", which named the view it would go to and
+    not the one on screen, so a person read it as a title. Two words, the one
+    showing pressed. The same CONE.climb and the same press as before; the
+    rail under it stays the climb list in both views, and only the stage
+    swaps. */
+ var hd=document.getElementById('clhead');
+ if(hd){
+  var sw=function(on,nm,tip){return '<button type="button" class="cl-swb'+(on?' on':'')+'" aria-pressed="'+on+'" data-clview="'+nm.toLowerCase()+'" data-tip-t="'+nm+'" data-tip="'+tip+'">'+nm+'</button>';};
+  hd.innerHTML='<div class="cl-sw" role="group" aria-label="How the compass is shown">'
+   +sw(!!CONE.climb,'Climb','The compass as the path up it, seat by seat.')
+   +sw(!CONE.climb,'Figure','The compass as the figure, two pyramids and the eight axes.')+'</div>';
+  hd.querySelectorAll('[data-clview]').forEach(function(b){b.onclick=function(){
+   var to=b.getAttribute('data-clview')==='climb'; if(to===!!CONE.climb)return;
+   CONE.climb=to; CONE.clSel=null; coneOpen(CONE.tab);};});}
  var ch=document.getElementById('cnclimb'); if(ch)ch.addEventListener('click',function(e){
   var g=e.target.closest&&e.target.closest('[data-cl]'); if(g)clPress(g.getAttribute('data-cl'));});
  if(ch)ch.addEventListener('keydown',function(e){if(e.key!=='Enter'&&e.key!==' ')return;
   var g=e.target.closest&&e.target.closest('[data-cl]'); if(g){e.preventDefault(); clPress(g.getAttribute('data-cl'));}});
- /* the rail's rows are buttons, so a click is the keyboard's press as well */
- var crl=document.getElementById('clrail'); if(crl)crl.addEventListener('click',function(e){
-  var g=e.target.closest&&e.target.closest('[data-cl]'); if(g)clPress(g.getAttribute('data-cl'));});
+ /* the rail's rows are buttons, so a click is the keyboard's press as well.
+    BOUND ONCE: #clrail is in the shell now and outlives this card, which is
+    rebuilt on every press, so the listener the card used to take down with
+    it would otherwise be added again on every open and a row would fire
+    clPress once per open since the page loaded. */
+ var crl=document.getElementById('clrail');
+ if(crl){crl.innerHTML=clRailIn();
+  if(!crl._w){crl._w=1; crl.addEventListener('click',function(e){
+   var g=e.target.closest&&e.target.closest('[data-cl]'); if(g)clPress(g.getAttribute('data-cl'));});}}
  if(CONE.raf)cancelAnimationFrame(CONE.raf);
  coneLayout(); coneTick();
  var x=document.getElementById('conex'); if(x)x.onclick=coneClose;
@@ -117134,6 +117269,7 @@ function colKey(){
  if(S.tab===TAB.KNOW)return 'lcolk';
  if(S.tab===TAB.STORY)return 'lcols';
  if(S.tab===TAB.SUMMARY)return 'lcolsum';
+ if(S.tab===TAB.ENERGY)return 'lcolb';
  return 'lcol'; }
 function colShut(){
  var beside=true; try{beside=matchMedia(LCOL_BESIDE).matches;}catch(e){}
@@ -117150,7 +117286,16 @@ function colShut(){
     information down to their archetypes exposed." A reading that lands
     shut is a reading nobody sees, and a fold made here no longer moves the
     Field's or the other way round. */
- var dflt=(k==='lcolf'||k==='lcols'||k==='lcolsum')?false:(k==='lcolk')?true:beside;
+ /* AND THE BODY AND THE COMPASS, 27 November, both open, Flow's reason
+    once more. Their left columns became their own controls that day (the
+    Body's overlay keys, the Compass's climb list, shell/body.html .lown),
+    and a column that arrives shut would hide the only overlay switches the
+    Body has. The Body had shared the Field's 'lcol', so it gets its own key,
+    and a fold made on the Field no longer moves it. OVERRIDDEN for the
+    Compass: round OU, "I want the compass left panel to start closed. Yeah,
+    the root energetics panel." That panel is gone from the Compass, and the
+    rail in its place is the one he asked to see. */
+ var dflt=(k==='lcolf'||k==='lcols'||k==='lcolsum'||k==='lcolb'||k==='lcolc')?false:(k==='lcolk')?true:beside;
  var shut=dflt;
  /* THE JOURNAL'S OWN RAIL FOLDS AGAIN, 17 November, OVERRIDDEN from the
     10 November ruling kept below for the record: his new annotated
@@ -118230,5 +118375,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="008629164"></div>
+<div id="eof" hidden data-len="008638854"></div>
 </body></html>

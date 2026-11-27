@@ -3100,7 +3100,11 @@ function coneTone(){
  ['cnzoom','cnbar','cnview'].forEach(function(id){var e=document.getElementById(id);
   if(e)e.classList.toggle('fb-lt',lt);});
  var host=document.getElementById('cone'), pl=host?coneGroundLt(host):false;
- [].forEach.call(document.querySelectorAll('#cone .cn-pan'),function(e){e.classList.toggle('fb-lt',pl);});}
+ [].forEach.call(document.querySelectorAll('#cone .cn-pan'),function(e){e.classList.toggle('fb-lt',pl);});
+ /* the climb's rail is in the left column now, on the theme's ground and not
+    the stage's, so its glass is read off that column */
+ var lp=document.getElementById('lpanel'), crl=document.getElementById('clrail');
+ if(crl)crl.classList.toggle('fb-lt',lp?coneGroundLt(lp):false);}
 function coneOpen(inTab){
  var h=document.getElementById('cone'); if(!h)return;
  /* A PRESS REBUILDS THE CARD, so the press would drop a keyboard person's
@@ -3144,7 +3148,13 @@ function coneOpen(inTab){
       bottom to top, so its rail is the seven seats in that order (clRail)
       and the right of the page is the Insight rail, where a station's card
       opens. "The figure" puts both panels back. */
-   +(CONE.climb?'<div class="cn-pan cn-nms-l cl-rail" id="clrail" role="group" aria-label="The climb by seat, Crown at the top and Root at the bottom">'+clRailIn()+'</div>':coneNames('l'))
+   /* AND THEN THE RAIL LEFT THE CARD FOR THE LEFT COLUMN, 27 November, his
+      words: "The table that has Crown, Transmutation, Clarity, Natural
+      Growth etc. moves into the left rail. That opens up all this space for
+      our center field." It is #clrail in shell/body.html now, filled below
+      in coneOpen, so on the climb the board is the card's only column. The
+      figure keeps its own left panel, which is about the figure. */
+   +(CONE.climb?'':coneNames('l'))
    /* THE CANVAS, THE OVERLAYS AND THE ZOOM, held together so the corners are
       the canvas's and not the card's, whatever the key under the figure does.
       The overlays take the upper left and how it is drawn the upper right,
@@ -3162,8 +3172,6 @@ function coneOpen(inTab){
    +'"></canvas>'
    /* the climb board (clSvg, below), laid over the canvas's own box */
    +'<div class="cn-climb" id="cnclimb"></div>'
-   +'<button type="button" class="cl-tog" id="cltog" data-tip-k="'+(CONE.climb?'The figure':'The climb')+'" data-tip="'+(CONE.climb?'Show the compass as the figure.':'Show the compass as the path up it.')+'">'
-   +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="'+(CONE.climb?'M12 3l7 9-7 9-7-9z':'M4 19h16M6 14h12M8 9h8M12 4v2')+'"/></svg><span>'+(CONE.climb?'The figure':'The climb')+'</span></button>'
    /* THE OVERLAYS. Built into by coneOvBuild once the card is in the
       document. .cone-ctl is kept as the name of the row so the gate that
       finds the switches by it still does. */
@@ -3268,14 +3276,34 @@ function coneOpen(inTab){
     twice as fast after one press and three times after two. The springs of
     the view from above step per frame, so they would have arrived early too. */
  var fg0=h.querySelector('.cone-fig'); if(fg0)fg0.classList.toggle('climb',!!CONE.climb);
- var tg=document.getElementById('cltog'); if(tg)tg.onclick=function(){CONE.climb=!CONE.climb; CONE.clSel=null; coneOpen(CONE.tab);};
+ /* THE TWO VIEWS ARE A SWITCH AT THE RAIL'S HEAD, 27 November. It was one
+    button on the board, "The figure", which named the view it would go to and
+    not the one on screen, so a person read it as a title. Two words, the one
+    showing pressed. The same CONE.climb and the same press as before; the
+    rail under it stays the climb list in both views, and only the stage
+    swaps. */
+ var hd=document.getElementById('clhead');
+ if(hd){
+  var sw=function(on,nm,tip){return '<button type="button" class="cl-swb'+(on?' on':'')+'" aria-pressed="'+on+'" data-clview="'+nm.toLowerCase()+'" data-tip-t="'+nm+'" data-tip="'+tip+'">'+nm+'</button>';};
+  hd.innerHTML='<div class="cl-sw" role="group" aria-label="How the compass is shown">'
+   +sw(!!CONE.climb,'Climb','The compass as the path up it, seat by seat.')
+   +sw(!CONE.climb,'Figure','The compass as the figure, two pyramids and the eight axes.')+'</div>';
+  hd.querySelectorAll('[data-clview]').forEach(function(b){b.onclick=function(){
+   var to=b.getAttribute('data-clview')==='climb'; if(to===!!CONE.climb)return;
+   CONE.climb=to; CONE.clSel=null; coneOpen(CONE.tab);};});}
  var ch=document.getElementById('cnclimb'); if(ch)ch.addEventListener('click',function(e){
   var g=e.target.closest&&e.target.closest('[data-cl]'); if(g)clPress(g.getAttribute('data-cl'));});
  if(ch)ch.addEventListener('keydown',function(e){if(e.key!=='Enter'&&e.key!==' ')return;
   var g=e.target.closest&&e.target.closest('[data-cl]'); if(g){e.preventDefault(); clPress(g.getAttribute('data-cl'));}});
- /* the rail's rows are buttons, so a click is the keyboard's press as well */
- var crl=document.getElementById('clrail'); if(crl)crl.addEventListener('click',function(e){
-  var g=e.target.closest&&e.target.closest('[data-cl]'); if(g)clPress(g.getAttribute('data-cl'));});
+ /* the rail's rows are buttons, so a click is the keyboard's press as well.
+    BOUND ONCE: #clrail is in the shell now and outlives this card, which is
+    rebuilt on every press, so the listener the card used to take down with
+    it would otherwise be added again on every open and a row would fire
+    clPress once per open since the page loaded. */
+ var crl=document.getElementById('clrail');
+ if(crl){crl.innerHTML=clRailIn();
+  if(!crl._w){crl._w=1; crl.addEventListener('click',function(e){
+   var g=e.target.closest&&e.target.closest('[data-cl]'); if(g)clPress(g.getAttribute('data-cl'));});}}
  if(CONE.raf)cancelAnimationFrame(CONE.raf);
  coneLayout(); coneTick();
  var x=document.getElementById('conex'); if(x)x.onclick=coneClose;

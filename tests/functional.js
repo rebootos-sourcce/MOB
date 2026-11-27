@@ -494,7 +494,7 @@ console.log('\n=== the six masks, as pixels on the figure ===');
  ok(mv.hover.off==='\u2013','and leaving the canvas puts the line back, '+mv.hover.off);
  ok(mv.drill.shown&&mv.drill.t.indexOf(mv.drill.pick)>=0&&/Worn over the/.test(mv.drill.t)&&/Carrying the most/.test(mv.drill.t),
   'Read this mask opens '+mv.drill.pick+'\'s summary in Selection, '+mv.drill.t.slice(0,60));
- ok(mv.back.on===mv.before.on&&mv.back.mode===mv.before.mode&&mv.back.views==='0,1'&&mv.back.orbs===9&&mv.back.regs&&mv.back.fig&&mv.back.chp,
+ ok(mv.back.on===mv.before.on&&mv.back.mode===mv.before.mode&&mv.back.views==='0,1'&&mv.back.orbs===8&&mv.back.regs&&mv.back.fig&&mv.back.chp,
   'and the Body gets back all it had: '+mv.back.on+', '+mv.back.mode+', views '+mv.back.views+', '+mv.back.orbs+' circles');
  ok(mv.people.same===0&&mv.people.d>2000,'the figure is the person\'s: one mask, James against Derek, '+mv.people.d+' pixels apart, James twice '+mv.people.same);
  console.log('  Character: '+mv.lit+' lit, lead '+mv.lead.want+', trace '+T.seats.join('>')+' address '+T.addr.N+', hover '+mv.hover.name+', people '+mv.people.d);
@@ -721,7 +721,7 @@ console.log('\n=== the Body\'s overlays, the Field\'s bar on the map ===');
    modeBtns:document.querySelectorAll('#rbar [data-bmmode]').length};});
  ok(bar.groups.join('|')==='Nodes:addr+masks|Clusters:heat+pain+flow|Networks:sab+cx+hy',
   'three groups, as he named them, '+bar.groups.join(' | '));
- ok(bar.orbs===9&&bar.tips===0,'nine of the Field\'s circles with the burger (Charge, the heat, joined Clusters 22 November), every one with a tooltip, '+bar.orbs+' circles, '+bar.tips+' without');
+ ok(bar.orbs===8&&bar.tips===0,'eight of the Field\'s circles, the burger gone with the strip it folded (27 November, the overlays are keys in the left rail), every one with a tooltip, '+bar.orbs+' circles, '+bar.tips+' without');
  ok(bar.on==='addr,masks,heat,sab','it opens on what the figure drew before the bar, and the charge as heat, got '+bar.on);
  ok(bar.row===0&&bar.modeBtns===0,'and there is no row and no Pattern and Pain pair left beside it');
  /* each switch reaches the drawing: the pick, the hits, the hubs */
@@ -785,43 +785,43 @@ console.log('\n=== the Body\'s overlays, the Field\'s bar on the map ===');
  ok(fl.edge==='open,open,mildly impaired,heavily impaired,blocked,blocked','fifths of pass, '+fl.edge);
  ok(fl.throat==='blocked'&&fl.crown==='moderately impaired'&&fl.title.indexOf('blocked')>=0,
   'Gordon\'s throat passes 8 percent and reads blocked, on the seat\'s own name too, '+fl.title);
- /* the burger folds the rest, and opens them as they were */
- const bg=await page.evaluate(()=>{const b=document.getElementById('bmov'),t=b.querySelector('[data-bmov="shut"]');
-  const vis=()=>[...b.querySelectorAll('.fb-grp')].filter(g=>getComputedStyle(g).display!=='none').length;
-  t.click(); const shut=vis()+':'+t.getAttribute('aria-expanded');
-  t.click(); return shut+' '+vis()+':'+t.getAttribute('aria-expanded')+' '
-   +[...b.querySelectorAll('[data-bmov][aria-pressed="true"]')].map(x=>x.getAttribute('data-bmov')).join(',');});
- ok(bg==='0:false 3:true addr,masks,heat,sab','the burger folds all three groups and opens them as they were, '+bg);
+/* THE BURGER'S CHECK WENT WITH THE BURGER, 27 November. The overlays are keys
+    in the left rail, and the rail's own fold (#lfold) is what puts them away;
+    that is held in the left rail block below. */
  /* LM, his words: "overlay menu ... on the left top across the top, like the
     Field ... the third tier nav that says Mark ... on the upper right opposite
     the overlay, both have buttons that close them. The right one starts
     closed ... close that to reclaim space." And the parts: "Front and Back on
     their respective sides ... smaller with a frame around them." */
  const lm=await page.evaluate(async()=>{const w=()=>new Promise(r=>setTimeout(r,400));
-  const wr=BM.well.getBoundingClientRect(), ov=document.getElementById('bmov'), mk=document.getElementById('bmmk');
-  const tops=[...ov.querySelectorAll('.fb-b')].map(b=>Math.round(b.getBoundingClientRect().top));
-  const tog=mk.querySelector('[data-bmmk=tog]').getBoundingClientRect(), bur=ov.querySelector('[data-bmov=shut]').getBoundingClientRect();
-  const o={row:new Set(tops).size, left:Math.round(bur.left-wr.left), right:Math.round(wr.right-tog.right),
+  const wr=BM.well.getBoundingClientRect(), mk=document.getElementById('bmmk');
+  const tog=mk.querySelector('[data-bmmk=tog]').getBoundingClientRect();
+  /* 27 November: the overlays left this strip for the left rail, so what is
+     held here is the Mark controls alone, still in the upper right */
+  const o={right:Math.round(wr.right-tog.right),top:Math.round(tog.top-wr.top),
+   ovInWell:BM.well.contains(document.getElementById('bmov')),
    shut:mk.classList.contains('shut'), row2:!!document.getElementById('bmmkb').offsetParent,
-   sub:getComputedStyle(document.getElementById('subbar')).display, band:BM.inT, z:BM.pan[0].z0, head:bmW2S(50,0)[1]};
-  ov.querySelector('[data-bmov=shut]').click(); await w(); o.bandShut=BM.inT; o.zShut=BM.pan[0].z0;
-  ov.querySelector('[data-bmov=shut]').click(); await w();
+   sub:getComputedStyle(document.getElementById('subbar')).display, band:BM.inT, z:BM.pan[0].z0};
   mk.querySelector('[data-bmmk=tog]').click(); await w();
   o.open=!!document.getElementById('bmmkb').offsetParent&&document.querySelectorAll('#bmmkb [data-bmamode]').length;
-  o.stored=STORE.get('bmmk');
+  o.stored=STORE.get('bmmk'); o.bandOpen=BM.inT; o.zOpen=BM.pan[0].z0; o.head=bmW2S(50,0)[1];
   mk.querySelector('[data-bmmk=tog]').click(); await w();
+  o.bandShut=BM.inT; o.zShut=BM.pan[0].z0;
   bmZoomReg(BMG.reg[0]); bmBars(); await w();
   o.whole=!mk.querySelector('[data-bmwhole]').hidden&&mk.classList.contains('shut');
   mk.querySelector('[data-bmwhole]').click(); await w();
+  const wb=BM.well.getBoundingClientRect(), host=BM.well.parentNode.getBoundingClientRect();
+  const rg=document.getElementById('bmregs');
+  o.inWell=BM.well.contains(rg); o.fill=Math.round(host.bottom-wb.bottom);
+  o.parts=BMPARTS; o.regsHidden=rg.hidden&&getComputedStyle(rg).display==='none';
   /* LQ, his words: "the zone controls on the left and right sides of the
      center display area ... on a shelf that pops out ... a minimize button
-     ... both start minimized ... then scale the bodies up because those
-     buttons on the bottom are eating up too much valuable real estate." */
-  const wb=BM.well.getBoundingClientRect(), host=BM.well.parentNode.getBoundingClientRect();
+     ... both start minimized." Hidden 27 November behind BMPARTS, his words
+     "Hide these icons for now", and kept here for the day it flips back. */
+  if(BMPARTS){
   const shf=document.querySelector('.bm-sh.bm-front'), shb=document.querySelector('.bm-sh.bm-back');
   const tf=shf.querySelector('[data-bmsh=tog]'), tb=shb.querySelector('[data-bmsh=tog]');
   const shown=sh=>[...sh.querySelectorAll('.bm-pt')].filter(x=>x.offsetParent).length;
-  o.inWell=BM.well.contains(document.getElementById('bmregs')); o.fill=Math.round(host.bottom-wb.bottom);
   o.start=[shf.classList.contains('shut'),shb.classList.contains('shut'),tf.getAttribute('aria-expanded'),tb.getAttribute('aria-expanded'),shown(shf),shown(shb)];
   o.sides=[Math.round(tf.getBoundingClientRect().left-wb.left),Math.round(wb.right-tb.getBoundingClientRect().right)];
   o.under=Math.round(Math.min(tf.getBoundingClientRect().top,tb.getBoundingClientRect().top)-wb.top)>=BM.inT;
@@ -829,24 +829,24 @@ console.log('\n=== the Body\'s overlays, the Field\'s bar on the map ===');
   o.oneOpen=[shown(shf),shown(shb),STORE.get('bmshf'),STORE.get('bmshb')||''];
   tb.click(); await w();
   o.nf=BMPART.filter(p=>p.f).length; o.nb=BMPART.filter(p=>p.b).length; o.both=[shown(shf),shown(shb)];
-  /* every part inside the well, where overflow hidden would take the rest */
   o.reach=[...document.querySelectorAll('#bmregs .bm-pt')].every(x=>x.getBoundingClientRect().bottom<=wb.bottom);
   const pt=shf.querySelector('.bm-pt'), fr=pt.querySelector('i').getBoundingClientRect();
   o.pt=[Math.round(pt.getBoundingClientRect().width),Math.round(fr.width),getComputedStyle(pt.querySelector('i')).borderTopWidth];
   tf.click(); tb.click(); await w();
-  o.min=[shown(shf),shown(shb),STORE.get('bmshf'),STORE.get('bmshb')];
+  o.min=[shown(shf),shown(shb),STORE.get('bmshf'),STORE.get('bmshb')];}
   return o;});
- ok(lm.row===1&&lm.left<30&&lm.right<30,'the overlays are one row across the top, the burger at the upper left and the Mark circle at the upper right, '
-  +JSON.stringify({row:lm.row,left:lm.left,right:lm.right}));
+ ok(!lm.ovInWell&&lm.right<30&&lm.top<30,'the strip over the figure keeps only the Mark circle, in the upper right, and the overlays are not in it, '
+  +JSON.stringify({ovInWell:lm.ovInWell,right:lm.right,top:lm.top}));
  ok(lm.shut&&!lm.row2&&lm.sub==='none','the Mark row starts shut, and the sub bar it lived in is gone from the Body, '+JSON.stringify({shut:lm.shut,sub:lm.sub}));
- /* the scale only grows where the height is what binds the fit; at this width
-    the width binds, so it holds, and the head is what shows the band */
- ok(lm.band>0&&lm.head>=lm.band&&lm.bandShut===0&&lm.zShut>=lm.z,'the overlays open fit the figures under them, and shut give the band back, band '
-  +lm.band+' with the head at '+Math.round(lm.head)+', then '+lm.bandShut+', scale '+lm.z.toFixed(2)+' to '+lm.zShut.toFixed(2));
+ ok(lm.band===0&&lm.bandOpen>0&&lm.head>=lm.bandOpen&&lm.bandShut===0&&lm.zShut>=lm.zOpen,'the Mark row open fits the figures under it, and shut gives the band back, band '
+  +lm.bandOpen+' with the head at '+Math.round(lm.head)+', then '+lm.bandShut+', scale '+lm.zOpen.toFixed(2)+' to '+lm.zShut.toFixed(2));
  ok(lm.open===3&&lm.stored==='open','pressed, the Mark row opens with its three readings, and the press is kept, '+JSON.stringify({open:lm.open,stored:lm.stored}));
  ok(lm.whole,'Whole body stands beside the shut Mark circle while a region is opened, so the way back is never folded away');
- ok(lm.inWell&&lm.fill<2,'no strip under the figure: the parts are inside the well and the well takes the stage to its foot, '
+ ok(lm.inWell&&lm.fill<2,'no strip under the figure: the parts host is inside the well and the well takes the stage to its foot, '
   +JSON.stringify({inWell:lm.inWell,left:lm.fill}));
+ ok(lm.parts||lm.regsHidden,'27 November, "Hide these icons for now": with BMPARTS off the part shelves are in the document and not shown, '
+  +JSON.stringify({parts:lm.parts,hidden:lm.regsHidden}));
+ if(lm.parts){
  ok(lm.start.join()==='true,true,false,false,0,0','both shelves start minimized, no part showing on either, '+JSON.stringify(lm.start));
  ok(lm.sides[0]<30&&lm.sides[1]<30&&lm.under,'Front\'s shelf on the left edge and Back\'s on the right, under the top band, '+JSON.stringify(lm.sides));
  ok(lm.oneOpen[0]===lm.nf&&lm.oneOpen[1]===0&&lm.oneOpen[2]==='open'&&lm.oneOpen[3]!=='open',
@@ -854,7 +854,49 @@ console.log('\n=== the Body\'s overlays, the Field\'s bar on the map ===');
  ok(lm.both[0]===lm.nf&&lm.both[1]===lm.nb&&lm.reach,'both open, every part stands inside the well where it can be pressed, '
   +JSON.stringify({both:lm.both,reach:lm.reach}));
  ok(lm.min.join()==='0,0,shut,shut','the same circle minimizes each shelf again, and that is kept too, '+JSON.stringify(lm.min));
- ok(lm.pt[0]===44&&lm.pt[1]<44&&lm.pt[2]==='1px','each part is a pin line frame smaller than its 44 pixel target, '+JSON.stringify(lm.pt));
+ ok(lm.pt[0]===44&&lm.pt[1]<44&&lm.pt[2]==='1px','each part is a pin line frame smaller than its 44 pixel target, '+JSON.stringify(lm.pt));}
+ /* THE LEFT RAIL IS THE BODY'S OWN, and the Compass's, 27 November. His
+    words: "For the body, the left rail, all that content does not apply ...
+    Move the overlays from that top menu into buttons in the left rail." */
+ const lr=await page.evaluate(async()=>{const w=()=>new Promise(r=>setTimeout(r,400));
+  const vis=e=>!!(e&&e.offsetParent&&getComputedStyle(e).display!=='none');
+  const kids=()=>[...document.getElementById('lpanel').children].filter(e=>!e.classList.contains('lfold')&&vis(e)).map(e=>e.id||e.className);
+  const fold=document.getElementById('lfold'), was=document.body.classList.contains('lshut');
+  if(was){fold.click(); await w();}
+  const o={inPanel:document.getElementById('lpanel').contains(document.getElementById('bmov')),
+   body:kids(), keys:[...document.querySelectorAll('#bmov [data-bmov]')].filter(vis).length,
+   phone:BM.phone, turn:vis(document.querySelector('#bmturn [data-bmturn]'))};
+  fold.click(); await w();
+  o.shutKeys=[...document.querySelectorAll('#bmov [data-bmov]')].filter(vis).length;
+  fold.click(); await w();
+  /* the Turn circle, pressed by hand on a desk: it turns the face either way */
+  const f0=BM.face; bmSetFace(f0==='back'?'front':'back'); o.turned=BM.face!==f0; bmSetFace(f0);
+  setTab(TAB.COMPASS); render(); await w();
+  o.cone=kids();
+  const rl=document.getElementById('clrail');
+  o.clIn=document.getElementById('lpanel').contains(rl)&&!document.getElementById('cone').contains(rl)&&rl.querySelectorAll('[data-cl]').length>0;
+  /* C2: bound once. Every open rebuilds the card; the rail outlives it */
+  coneOpen(CONE.tab); coneOpen(CONE.tab); await w();
+  let n=0; const real=clPress; window.clPress=function(k){n++;};
+  try{clPress=window.clPress;}catch(e){}
+  rl.querySelector('[data-cl]').click();
+  try{clPress=real;}catch(e){} window.clPress=real;
+  o.fires=n;
+  const c0=CONE.climb;
+  document.querySelector('#clhead [data-clview="figure"]').click(); await w();
+  o.fig=[CONE.climb,document.querySelector('#clhead [data-clview="figure"]').getAttribute('aria-pressed'),
+   document.getElementById('clrail').querySelectorAll('[data-cl]').length>0&&vis(document.getElementById('clrail'))];
+  document.querySelector('#clhead [data-clview="climb"]').click(); await w();
+  o.climb=CONE.climb; if(!c0){CONE.climb=false;coneOpen(CONE.tab);}
+  if(was){fold.click(); await w();}
+  setTab(TAB.ENERGY); render(); await w();
+  return o;});
+ ok(lr.inPanel&&lr.body.join()==='bmlrail'&&lr.keys===8,'the overlays are eight keys in the left rail, and on the Body the rail shows nothing else, '+JSON.stringify({body:lr.body,keys:lr.keys}));
+ ok(lr.shutKeys===0,'folding the left column still folds the Body\'s own rail, '+lr.shutKeys+' keys showing');
+ ok(lr.turn===lr.phone&&lr.turned,'the Turn circle is shown on a phone only, and it turns the figure, '+JSON.stringify({phone:lr.phone,turn:lr.turn}));
+ ok(lr.cone.join()==='cnlrail'&&lr.clIn,'on the Compass the rail shows only the climb, and the climb list is in the left column and not the stage, '+JSON.stringify(lr.cone));
+ ok(lr.fires===1,'a press on a climb row fires once, however many times the card was rebuilt, '+lr.fires);
+ ok(lr.fig.join()==='false,true,true'&&lr.climb===true,'Climb and Figure switch CONE.climb, and the climb list stays in the rail in both, '+JSON.stringify(lr));
  /* KV: "If I scroll on the body map, I can't frame it." */
  const sv=await page.evaluate(()=>{const b=BM.sv.getBoundingClientRect();return {x:b.left,y:b.top};});
  await page.mouse.move(sv.x+140,sv.y+140);

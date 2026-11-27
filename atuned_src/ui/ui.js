@@ -777,6 +777,7 @@ function colKey(){
  if(S.tab===TAB.KNOW)return 'lcolk';
  if(S.tab===TAB.STORY)return 'lcols';
  if(S.tab===TAB.SUMMARY)return 'lcolsum';
+ if(S.tab===TAB.ENERGY)return 'lcolb';
  return 'lcol'; }
 function colShut(){
  var beside=true; try{beside=matchMedia(LCOL_BESIDE).matches;}catch(e){}
@@ -793,7 +794,16 @@ function colShut(){
     information down to their archetypes exposed." A reading that lands
     shut is a reading nobody sees, and a fold made here no longer moves the
     Field's or the other way round. */
- var dflt=(k==='lcolf'||k==='lcols'||k==='lcolsum')?false:(k==='lcolk')?true:beside;
+ /* AND THE BODY AND THE COMPASS, 27 November, both open, Flow's reason
+    once more. Their left columns became their own controls that day (the
+    Body's overlay keys, the Compass's climb list, shell/body.html .lown),
+    and a column that arrives shut would hide the only overlay switches the
+    Body has. The Body had shared the Field's 'lcol', so it gets its own key,
+    and a fold made on the Field no longer moves it. OVERRIDDEN for the
+    Compass: round OU, "I want the compass left panel to start closed. Yeah,
+    the root energetics panel." That panel is gone from the Compass, and the
+    rail in its place is the one he asked to see. */
+ var dflt=(k==='lcolf'||k==='lcols'||k==='lcolsum'||k==='lcolb'||k==='lcolc')?false:(k==='lcolk')?true:beside;
  var shut=dflt;
  /* THE JOURNAL'S OWN RAIL FOLDS AGAIN, 17 November, OVERRIDDEN from the
     10 November ruling kept below for the record: his new annotated

@@ -1428,6 +1428,15 @@ var BMPART=[
  {k:'shin',f:'Shin',b:'Calf'},
  {k:'ankle',f:'Ankle',b:null},
  {k:'foot',f:'Foot',b:'Heel'}];
+/* THE PART SHELVES ARE HIDDEN, NOT DELETED, 27 November, his words: "These
+   part menus, the fact that there's two of them, is too much. Hide these
+   icons for now," and of whether they come back, "I don't know if we
+   actually need them." So the two shelves stay in the document, hidden, and
+   bmRegBar and bmRegFit do nothing while this is false. Flip it and every
+   line of the picker is still here. What it costs while off: a phone has no
+   press on a part to turn the one figure, so the Turn circle (bmTurnBuild)
+   carries that. */
+const BMPARTS=false;
 /* A REGION'S NAME AS A PERSON READS IT. The table keeps "Back of head" as
    its key, because the route and pain tables are keyed on it, but the set
    it stands in already says which side it is, so on the screen it is "Head". */
@@ -3083,6 +3092,14 @@ function bmOpenReg(r,toggle){bmOpenKey(r.key,toggle);}
    address had been opened from its answer stayed picked, and the next press
    on its name put it down instead of bringing its answer back. */
 function bmAnswering(){return !!document.getElementById('bmzoom');}
+/* A KNOWN DEFECT, recorded 27 November and deliberately not fixed while
+   BMPARTS is false. His words: "I can't select the front and back
+   independently." The cause is here: PMPICK={bmReg:k} is ONE slot, and every
+   press of a region, a seat, a line, a mask or a hub overwrites it, while
+   bmSelAll and bmRegionDrill read only that slot's list[0].v. So no two parts,
+   front and back included, can ever be held together. The fix, when the
+   shelves return: hold an array of keys, take their union in bmSelAll, and
+   run the drill once per view. TASKS.md carries it by name. */
 function bmOpenKey(k,toggle){
  if(toggle&&bmPickKey()===k&&bmAnswering()){rdClose();return;}
  /* the face follows the pick, so on a phone, which shows one figure, the
@@ -3302,10 +3319,24 @@ function bmMkBuild(mk){
  z.textContent='Whole body'; z.onclick=bmWhole;
  mk.appendChild(z);
  bmMkShutPaint(mk,bmMkShut());}
+/* TURN, ON A PHONE ONLY. A phone shows one figure (bmOne), and the way it
+   turned to the back was a press on a back part, which is gone with the
+   shelves (BMPARTS). Without this a phone could never see the back at all.
+   The upper left mirrors the Mark circle in the upper right; on a desk both
+   figures stand side by side and the circle is hidden, since a control that
+   changes nothing is a dead control. */
+function bmTurnBuild(el){
+ var b=fbOrb({nm:'Turn',label:true,ic:'M4 12a8 8 0 0113.7-5.6M20 12a8 8 0 01-13.7 5.6M17.7 3v3.4h-3.4M6.3 21v-3.4h3.4',
+  tip:'Turns the figure round, front to back and back again.'});
+ b.setAttribute('data-bmturn','1');
+ b.onclick=function(){bmSetFace(BM.face==='back'?'front':'back');};
+ el.appendChild(b);}
 function bmBars(){
  if(!BMG)return;
  if(!BM.bar){var rb=document.getElementById('rbar');if(rb)bmBarsOne(rb);return;}
  bmRegBar();
+ var tn=BM.well&&BM.well.querySelector('#bmturn');
+ if(tn){if(!tn.firstChild)bmTurnBuild(tn); tn.hidden=!BM.phone;}
  var mk=BM.well&&BM.well.querySelector('#bmmk'); if(!mk)return;
  if(!mk.firstChild)bmMkBuild(mk);
  /* where the camera is going and not where it is, bmBarsOne's reading. The
@@ -3522,6 +3553,7 @@ function bmShBuild(el){
   sh.appendChild(pn); el.appendChild(sh);
   bmShShutPaint(sh,vn,bmShShut(vn));});}
 function bmRegFit(){
+ if(!BMPARTS)return;
  var el=BM.well?BM.well.querySelector('#bmregs'):null; if(!el||!el.firstChild)return;
  var wb=BM.well.getBoundingClientRect().bottom;
  el.querySelectorAll('.bm-sh').forEach(function(sh){
@@ -3531,6 +3563,7 @@ function bmRegFit(){
   var rows=Math.max(1,Math.floor((wb-tb-6-10-12)/44));
   sh.style.setProperty('--bmc',Math.max(2,Math.ceil(n/rows)));});}
 function bmRegBar(){
+ if(!BMPARTS)return;
  var el=BM.well?BM.well.querySelector('#bmregs'):null; if(!el||!BMG)return;
  if(!el.firstChild){bmShBuild(el);bmRegFit();}
  var k=bmPickKey()||'', pain=BM.mode==='pain', cur=bmPartOf(k), kv=k.split(':')[0];
@@ -3649,28 +3682,17 @@ function bmOvVals(r){
   :{p:0,v:dash,c:'var(--accent)',m:(r&&!r.unread)?'Ring and number: flow. Nothing passes every point yet.':'Nothing read yet.'};
  Object.keys(V).forEach(function(k){if(V[k])V[k].p=clamp(+V[k].p||0,0,100);});
  return V;}
-/* the burger, shut and open: the Field's fbShutPaint in its own words */
-function bmOvShut(){var s=false;try{s=STORE.get('bmov')==='shut';}catch(e){}return s;}
-function bmOvShutPaint(bar,shut){
- var tog=bar.querySelector('[data-bmov=shut]'); if(!tog)return;
- bar.querySelectorAll('.fb-grp').forEach(function(c){c.style.display=shut?'none':'flex';});
- /* the class is what bmBand reads, and the band moves the figures */
- bar.classList.toggle('shut',shut); BM.bandStale=true;
- var say=shut?'Open the overlays':'Close the overlays';
- tog.setAttribute('aria-expanded',shut?'false':'true');tog.setAttribute('aria-label',say);
- if(!FB_COARSE)tog.setAttribute('data-tip-t',say);
- fbTip(tog,shut?'Opens the overlays again, each one as you left it.'
-  :'Folds the overlays into this one circle. Each one stays as it was set.');}
+/* THE OVERLAYS LEFT THE WELL FOR THE LEFT RAIL, 27 November, his words:
+   "Move the overlays from that top menu into buttons in the left rail, to
+   clean up the UI." So the burger that folded them is gone with the row it
+   folded: the rail has its own fold, #lfold, and two folds for one set of
+   keys is the second control he asked to lose. The store key 'bmov' it wrote
+   is simply no longer read. Each key wears its word under the ring now
+   (label), because a rail has the room a strip over the figure did not. */
 function bmOvBuild(bar){
- var tog=fbOrb({nm:'Close the overlays',ic:'M4.5 7h15M4.5 12h15M4.5 17h15'});
- tog.setAttribute('data-bmov','shut');tog.setAttribute('aria-controls','bmov');tog.style.pointerEvents='auto';
- tog.onclick=function(){var now=bmOvShut()?false:true;
-  try{STORE.set('bmov',now?'shut':'open');}catch(e){}
-  bmOvShutPaint(bar,now);};
- bar.appendChild(tog);
  BMOV.forEach(function(gp){var c=document.createElement('div');c.className='fb-grp';
   c.setAttribute('role','group');c.setAttribute('aria-label',gp.nm);
-  gp.ls.forEach(function(k){var L=BMOVL[k],b=fbOrb({nm:L.nm,ic:L.ic,tip:L.tip,val:true});
+  gp.ls.forEach(function(k){var L=BMOVL[k],b=fbOrb({nm:L.nm,ic:L.ic,tip:L.tip,val:true,label:true});
    b.setAttribute('data-bmov',k);b.style.pointerEvents='auto';b.onclick=function(){bmOvToggle(k);};c.appendChild(b);});
   bar.appendChild(c);});}
 /* one press, one switch. Off, a pattern held from that switch is put down,
@@ -3683,8 +3705,15 @@ function bmOvToggle(k){
  if(BM.r){bmSabRefresh(BM.r);bmHubRefresh(BM.r);bmMaskHits(BM.r);}
  BM.dirty=true;bmOvPaint(BM.r);}
 function bmOvPaint(r){
+ /* the rail host is in the shell and outlives every door, so only the Body's
+    own door (BM.bar) may fill it: the Masks door draws this figure too and
+    has no overlays of its own */
+ if(!BM.bar)return;
  var bar=document.getElementById('bmov'); if(!bar)return;
- if(!bar.firstChild){bmOvBuild(bar);bmOvShutPaint(bar,bmOvShut());}
+ if(!bar.firstChild)bmOvBuild(bar);
+ /* the rail takes the theme's ground and not the well's, so the glass inks
+    are read off the column it now sits in, bmGround's reading */
+ var lp=document.getElementById('lpanel'); bar.classList.toggle('fb-lt',!!(lp&&bmGround(lp)));
  var V=bmOvVals(r);
  bar.querySelectorAll('[data-bmov]').forEach(function(b){
   var k=b.getAttribute('data-bmov'),L=BMOVL[k],v=V[k]; if(!L)return;
@@ -3796,14 +3825,17 @@ function bmBuild(host){
      row is the row's own item and not inside its circle's box, so on a
      phone it can take a line of its own under the circles while the circle
      that opened it stays where it was pressed. */
-  +(BM.bar?'<div class="bm-top" style="'+BMOVTOK+BMMKTOK+'"><div id="bmov" class="bm-ov" role="group" aria-label="Overlays"></div>'
-  +'<div id="bmmk" class="bm-mk"></div><div id="bmmkb" class="bm-mkb" role="group" aria-label="Mark"></div></div>'
+  /* #bmov is not here any more: the overlays are keys in the left rail,
+     shell/body.html #bmlrail, 27 November. What the strip keeps is the Mark
+     controls on the right and, on a phone, the one Turn circle on the left. */
+  +(BM.bar?'<div class="bm-top" style="'+BMOVTOK+BMMKTOK+'">'
+  +'<div id="bmturn" class="bm-turn"></div><div id="bmmk" class="bm-mk"></div><div id="bmmkb" class="bm-mkb" role="group" aria-label="Mark"></div></div>'
   /* the two shelves of parts, down the well's left and right edges, on the
      same glass inks as the bars because they lie on the same dark picture.
      They were a strip after the well, which took its height out of the
      well's flex; inside it they take none, so the fit gets the whole stage.
      Round LQ, bmShBuild. */
-  +'<div id="bmregs" class="bm-regs" role="group" aria-label="Side and region" style="'+BMOVTOK+BMMKTOK+'"></div>'
+  +'<div id="bmregs" class="bm-regs" role="group" aria-label="Side and region" style="'+BMOVTOK+BMMKTOK+'"'+(BMPARTS?'':' hidden')+'></div>'
   /* the key: the three places carrying the most, the Dashboard Body card's
      own three rows, inside the well at its foot. bmKey fills it. */
   +'<div id="bmkey" class="bt3-key" role="list" aria-label="Where your body carries the most" style="'+BMOVTOK+BMMKTOK+'" hidden></div>':'')+'</div>';
