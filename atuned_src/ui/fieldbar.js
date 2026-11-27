@@ -241,7 +241,7 @@ function fbValues(r){
  V.fetters={p:fm.p,v:fm.v,c:seatCol(fetHi.seat),
   m:fm.v!==dash?'Ring and number: the mean charge held across the nine child emotions, heaviest at '+fetHi.nm+'.'
    :'Ring and number: the mean charge held across the nine child emotions. Nothing is held yet.'};
- [['saboteurs',r.sabs,r.sabs[0]&&r.sabs[0].parts[0]?r.sabs[0].parts[0].b:r.darkB],
+ [['saboteurs',r.sabs,(r.sabs[0]&&patSeat(r.sabs[0]))||r.darkB],
   ['complexes',r.cxs,'Solar'],['hyper',r.hys,'Sacral'],['character',r.sups,'Root']].forEach(function(t){
   var p=fbReach(t[1],carry);
   V[t[0]]={p:p,v:String(t[1].length),c:seatCol(t[2]),

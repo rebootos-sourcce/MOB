@@ -1262,8 +1262,11 @@ function crbNode(n,size,o){o=o||{};
    hot:p.w>=9 stays as the caller's word, and cr() keeps it off the arc because
    the figure is a percent; overshot is said in the title. */
 function crPat(p,size,o){o=o||{};
- var lv=leaves(p), b=(lv[0]||{}).b||'Heart', f=fmtPct('chain',p.w);
+ /* the seat its charge sits in, patSeat; a pattern with none claims no seat
+    and is drawn in the accent, the same neutral the Insight rail uses */
+ var b=patSeat(p), f=fmtPct('chain',p.w);
  return cr(b, pct('chain',p.w)||0, Object.assign({size:size||'md', raw:f, label:p.nm,
+  color:b?seatCol(b):'var(--accent)',
   hot:p.w>=9||!!p.over,
   title:p.nm+', weight '+f+(p.over?', overshot':'')},o));}
 /* leaves() and patFam() live in engine/insight.js now, 18 November: the
@@ -1342,6 +1345,14 @@ function bc(b){
          : LIGHT()           ? PAL_LIGHT
          : PAL;
  return hx(P[b]);}
+/* A PATTERN'S PAINT ON A CANVAS, 27 November, his words: "Colour Field
+   saboteurs by charge, not first address." The seat its charge sits in,
+   patSeat (engine/insight.js), and the accent when none of its addresses
+   carries any, the neutral the Insight rail and the frames' own M.seat
+   already fall back to. Never the seat of its first listed address, which is
+   SAB_LIB's fixed order and drew Tomas's Avoider root red while the crown
+   holds the most of it. tests/insightrail.js FIELD holds it. */
+function patBc(o){var b=patSeat(o); return b?bc(b):hx(GOLD);}
 function nodeCol(n){const base=bc(n.b),ld=clamp(n.disp/10,0,1);
  return mixc(mixc(base,LIGHT()?(COOL()?[229,234,240]:[238,236,230]):[150,160,180],.74),base,Math.pow(ld,.55));}
 /* ---- the one status writer ----

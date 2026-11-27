@@ -861,7 +861,7 @@ function frFrames(M,r){
     P.push('<path class="F-addr" d="'+d+'" fill="none" stroke="'+rgba(M.seat(n.b),.16+kk*.22)
      +'" stroke-width="'+(.7+kk*1).toFixed(2)+'"'+(s.unnamed?' stroke-dasharray="3 3"':'')+'/>');
     frFlow(M,'L-patterns','F-addr',d,M.seat(n.b),.16+kk*.22,.7+kk*1,frTen(n));});});
-  r.sabs.forEach(function(s,k){var p=at.sab[k],c=M.seat((s.parts[0]&&s.parts[0].b)||'Root'),rb=(2.6+w01(s)*3.4)*Math.max(sc,.6);
+  r.sabs.forEach(function(s,k){var p=at.sab[k],c=M.seat(patSeat(s)),rb=(2.6+w01(s)*3.4)*Math.max(sc,.6);
    P.push('<circle data-h="'+M.hid({k:'sab',o:s})+'" cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="'+rb.toFixed(1)+'"'
     +(s.unnamed?' fill="'+frRgb(M.ground)+'" stroke="'+frRgb(c)+'" stroke-width="1.5"':' fill="'+frRgb(c)+'"')+'/>');});})();
 
@@ -1016,7 +1016,7 @@ function frDial(M,r){
     P.push('<path class="F-addr" d="'+d+'" fill="none" stroke="'+rgba(M.seat(n.b),.15+kk*.2)
      +'" stroke-width="'+(.6+kk*.9).toFixed(2)+'"'+(s.unnamed?' stroke-dasharray="2 3"':'')+'/>');
     frFlow(M,'L-patterns','F-addr',d,M.seat(n.b),.15+kk*.2,.6+kk*.9,frTen(n));});});
-  r.sabs.forEach(function(s,k){var p=at.sab[k],c=M.seat((s.parts[0]&&s.parts[0].b)||'Root'),rr=(2.4+w01(s)*3.2)*Math.max(sc,.6),h=M.hid({k:'sab',o:s});
+  r.sabs.forEach(function(s,k){var p=at.sab[k],c=M.seat(patSeat(s)),rr=(2.4+w01(s)*3.2)*Math.max(sc,.6),h=M.hid({k:'sab',o:s});
    hitOf['s'+k]=h;
    P.push('<circle data-h="'+h+'" cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="'+rr.toFixed(1)+'"'
     +(s.unnamed?' fill="'+frRgb(M.ground)+'" stroke="'+frRgb(c)+'" stroke-width="1.4"':' fill="'+frRgb(c)+'"')+'/>');});})();
@@ -1108,7 +1108,7 @@ function frCallouts(M,r,P){
  if(shut)push('laws',P.lawAt[shut.i],shut.l.nm,'Most shut law. '+fmtPct('law',shut.v),M.seat(shut.l.b),P.hitOf['l'+shut.i]);
  var hp=r.sabs.slice().sort(function(a,b){return b.w-a.w;})[0];
  if(hp){var hk=M.ixSab.get(hp);
-  push('patterns',P.at.sab[hk],hp.nm,'Heaviest pattern. Weight '+fmtPct('chain',hp.w),M.seat((hp.parts[0]&&hp.parts[0].b)||'Root'),P.hitOf['s'+hk]);}
+  push('patterns',P.at.sab[hk],hp.nm,'Heaviest pattern. Weight '+fmtPct('chain',hp.w),M.seat(patSeat(hp)),P.hitOf['s'+hk]);}
  /* the box a label takes is the name's line over the line saying what it is,
     30 tall, with the leader meeting it at the name. inRing is flatplate's
     test with the dial's own edge and floor in place of the wheel's. */

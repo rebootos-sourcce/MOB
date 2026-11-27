@@ -1701,7 +1701,7 @@ function drawWheel0(r,L){
   /* a name asked for by the pointer is set at any zoom: hover is the person
      asking for the word, which is not the same as the picture printing it */
   if(on){const ta=TXT_A;TXT_A=1;radialTxt(o.nm,o.ang,rad-s-10,12.5,ink,.95,600,true);TXT_A=ta;}
-  HIT.push({k:o.kind,o,x,y,rad:s+10});}
+  HIT.push({k:o.kind,o,x,y,rad:s+10,c});}
  /* NAMEPLATES. Two patterns at nearly the same angle wrote over each other.
     A plate reserves an angular slot at its own radius. A newcomer gets two
     chances to clear by moving along its bearing, and if it still collides it
@@ -1807,11 +1807,13 @@ function drawWheel0(r,L){
  /* the beads go silent on unread with their chords, see FETTER CHORDS above */
  lay('fetters',()=>{if(r.unread)return;CHILD.forEach(c=>bead(c,R.fet,4.2+Math.min(1,(S.charge[c.nm]||0)/10)*2.4,bc(c.seat)));
   if(L===1)CHILD.forEach(c=>nameplate(c,R.fet,bc(c.seat),5.4));});
- lay('saboteurs',()=>{r.sabs.forEach(s=>bead(s,R.sab,5.4,bc(s.parts[0].b)));
+ /* coloured at the seat its charge sits in, patBc (ui/component.js) off
+    patSeat (engine/insight.js), never at its first listed address */
+ lay('saboteurs',()=>{r.sabs.forEach(s=>bead(s,R.sab,5.4,patBc(s)));
   /* B names the saboteurs, because they are the layer. C and D name only the
      heaviest things: the wheel is showing structure by then, and the right rail
      carries every name in full. */
-  if(L===1)r.sabs.slice(0,6).forEach(s=>nameplate(s,R.sab,bc(s.parts[0].b),6.2));});
+  if(L===1)r.sabs.slice(0,6).forEach(s=>nameplate(s,R.sab,patBc(s),6.2));});
  lay('complexes',()=>r.cxs.forEach(c=>bead(c,R.cx,7.2,bc('Solar'))));
  /* the inner rings hold the heaviest, longest names. Radial text has no room
     between the hyper ring and the archetypes, so these set horizontally beside

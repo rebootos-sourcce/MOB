@@ -1172,7 +1172,7 @@ function relHits(r){
    if(!o||o.over||seen[o.nm])return;
    var lv=leaves(o), reach=lv.filter(function(n){return ids[n.i];}).length;
    if(!reach)return; seen[o.nm]=1;
-   H[t[0]].push({fam:t[0],nm:o.nm,reach:reach,of:lv.length,b:(lv[0]||{}).b||'Heart'});});
+   H[t[0]].push({fam:t[0],nm:o.nm,reach:reach,of:lv.length,b:patSeat(o)});});
   /* the ones this run reached furthest into first, and on a tie the larger
      share of its own addresses */
   H[t[0]].sort(function(a,b){return b.reach-a.reach||b.reach/b.of-a.reach/a.of;});});
@@ -1234,7 +1234,7 @@ function relHitRows(H){
      +(on&&REL_HV.on&&REL_HV.pat===id?' rel-hv-on':'')+'"'
      +(on?' data-relrow="'+esc(id)+'"':'')+'>'
      +crBadge(x.b,x.reach/Math.max(1,x.of)*100,{size:'sm',raw:String(x.reach),
-       glyph:'<path d="'+CHAINGLYPH[k]+'"/>',
+       color:x.b?seatCol(x.b):'var(--accent)',glyph:'<path d="'+CHAINGLYPH[k]+'"/>',
        title:x.nm+', '+reached+' in this run'})
      +'<span>'+esc(x.nm)+'</span><em>'+reached+'</em>'
      +(on?relHitSeg(id,x.nm,st[id]):'')+'</div>';}).join('')
