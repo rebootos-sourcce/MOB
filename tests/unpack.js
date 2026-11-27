@@ -40,6 +40,20 @@ const T=E.unpackAll();
 let PASS=0,FAIL=0;
 const ok=(c,m)=>{if(c)PASS++;else{FAIL++;console.log('  FAIL '+m);}};
 const booted=async p=>{try{await p.waitForFunction(()=>document.body.classList.contains('booted'),null,{timeout:12000});}catch(e){}};
+/* A MEANING IS CARRIED, NOT PRINTED. Ruled 27 November, CO-33: on a surface a
+   term's sentence reaches the person as its tooltip (a data-tip, which opens on
+   hover, tap and focus), and inline is allowed only inside a drill a press
+   opened (#rdrill). This reports both shapes for one sentence under one scope,
+   so a surface still printing it beside the term, which the builds in flight
+   have not swept yet, and a surface that has moved it into the tooltip both
+   pass, and neither run breaks. A caller that wants the future state only
+   asserts r.tip. The sentence is matched whole, character for character, the
+   way the table gate above holds a page to gloss.js. */
+const carrying=(p,sel,sentence)=>p.evaluate(([sel,sent])=>{
+ const root=document.querySelector(sel); if(!root)return {missing:true,tip:false,inline:false};
+ const tip=[root].concat(Array.prototype.slice.call(root.querySelectorAll('[data-tip]')))
+  .some(x=>(x.getAttribute('data-tip')||'')===sent);
+ return {missing:false,tip,inline:(root.innerText||'').replace(/\s+/g,' ').indexOf(sent)>=0};},[sel,sentence]);
 
 /* THE SEEDED TERMS A SURFACE MUST NOT PRINT BARE. [name, pattern, table key].
    The pattern finds the term as a symbol and the key is the table's sentence
@@ -124,8 +138,11 @@ for(const [w,h,wn] of [[1600,1000,'1600'],[390,844,'390']]){
  const lead=await p.evaluate(()=>document.querySelector('.s-story').innerText);
  ok(/The blueprint you were born on reads earth, which is the Architect root, on life path 9, the one who completes\./.test(lead),
   'the lead sentence still reads as the owner heard it');
- ok(/symbolic reading is a meaning an old system gives to a date or a name, and nothing in your body is measured/.test(lead),
-  'the reading says it is a symbolic reading and not a measurement');
+ /* the meaning of "symbolic reading" is CARRIED or said, from the table's own
+    sentence: the tooltip is the ruled shape, and the inline sentence is the
+    old one the Summary rebuild has not swept yet */
+ const sym=await carrying(p,'.s-story',T['symbolic reading']);
+ ok(sym.tip||sym.inline,'the reading carries what a symbolic reading is, as a tooltip or beside it, in the table\'s sentence: '+JSON.stringify(sym));
 
  /* ---- the blueprint card, with its fold open ---- */
  await p.evaluate(()=>{document.querySelectorAll('.sg-drive details').forEach(d=>d.open=true);});
@@ -238,7 +255,9 @@ for(const [w,h,wn] of [[1600,1000,'1600'],[390,844,'390']]){
  const offWant=E.compassOffAxis().map(x=>x.k);
  ok(offs.map(x=>x.k).join()===offWant.join(),'the Compass names every pole on no axis, in the roster order, saw '+JSON.stringify(offs.map(x=>x.k)));
  offs.forEach(o=>ok(o.t===E.recipeOf(o.k).line+'.','pole '+o.k+' ('+o.q+') carries its own line as its meaning, has "'+o.t.slice(0,60)+'"'));
- ok(await p.evaluate(()=>!!document.querySelector('#cone .cn-grp i')),'and the caption over them says why they carry no number');
+ /* a tooltip on the group is the ruled shape and the caption is the one it
+  replaces, so either stands until the Compass build removes the caption */
+ ok(await p.evaluate(()=>!!document.querySelector('#cone .cn-grp[data-tip], #cone .cn-grp [data-tip], #cone .cn-grp i')),'and the group over them says why they carry no number, as a tooltip or a caption');
  for(const k of offWant){
   const got=await p.evaluate(k=>{const b=document.querySelector('#cone [data-cnpole="'+k+'"]'); if(!b)return null; b.click();
    const d=document.querySelector('#rdrill .tcx');
@@ -456,7 +475,10 @@ for(const [w,h,wn] of [[1600,1000,'1600'],[390,844,'390']]){
   const cn=await hold('Compass reading and record','#rdrill');
   const cnt=await p.evaluate(()=>document.getElementById('rdrill').innerText.replace(/\s+/g,' '));
   ok(!/\bintegrity\s+(is\s+)?\d+%/i.test(cnt),'the Compass does not call the r.Ig figure integrity: '+(cnt.match(/.{0,40}integrity is.{0,20}/i)||[''])[0]);
-  ok(cnt.indexOf(T['integrity'])>=0,'the Compass still says what integrity is, in the table\'s sentence');
+  /* inside the drill a press opened, inline is allowed, so the sentence may
+    stand in the text or be carried by a term in it */
+  const intg=await carrying(p,'#rdrill',T['integrity']);
+  ok(cnt.indexOf(T['integrity'])>=0||intg.tip,'the Compass still says what integrity is, in the table\'s sentence, inline in the drill or as a tooltip');
   await p.evaluate(()=>{try{rdClose();}catch(e){}});
   ['pull','overshoot','installed','self-read shadow'].forEach(t=>ok(seenW.has(t),'the walk finds '+t+' printed somewhere, so the gate has something to hold: saw '+Array.from(seenW)));
 

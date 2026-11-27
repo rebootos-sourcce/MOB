@@ -844,14 +844,7 @@ Light that has a source, what does that mean? So meaning is missing."
           Light that has a source. The care comes from inside the person and
           does not need a room to reflect it.
 
-**One table, three shapes, never a link.** The meaning is in `engine/data/gloss.js`
-and nowhere else is a meaning written. A line that has room prints the sentence
-after the term, set in the quieter size. A line with no room makes the term a
-carrier of the sentence, the one tooltip the product already has, with its dotted
-underline, which opens on hover, on a tap and on keyboard focus. A claim that is
-itself a phrase, a pole line, is cut into its phrases and each is printed with
-its meaning in one paragraph, from `POLE_MEANS` in `engine/data/compass.js`. The
-meaning is never behind a link to another page.
+**One table, one shape on a surface.** The meaning is in gloss.js and reaches the person as the term's tooltip, on hover, tap and focus. It is never printed beside the term on a surface. Inside a drill the person opened, a pole line may still be cut into phrases with their meanings (POLE_MEANS).
 
 **A claim says whose claim it is.** The sun, moon and rising positions are
 computed from the sky. What a sign or a number means is an old system's say so,
@@ -922,7 +915,8 @@ This is not V2 (never instruct) or V6 (one string, one bucket) repeated under a
 new number: those are about what a line does, this is about how many words it
 is allowed once the job is already right. It also does not license cutting the
 meaning a term needs under V23; a symbol's unpacked sentence is not secondary
-text, it is the only place the meaning lives, and stays whole.
+text, it is the only place the meaning lives, and stays whole. V23's meaning
+lives in the tooltip and is never secondary text on the screen.
 
 ---
 

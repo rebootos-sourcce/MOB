@@ -19,11 +19,11 @@ It exits non zero on a finding at a severity that stops a build. Every
 other mode of that gate enforces the same rules, so there is one set of
 rules and one place they live.
 
-    commit 590b13e8, tree dirty   database md5 af4a330331a1
-    31 objections logged, 26 of them with a quotation on record
-    26 rules, 12 with patterns in the database, 14 held by a gate elsewhere
+    commit 7b8742f5, tree dirty   database md5 61665f84b484
+    32 objections logged, 27 of them with a quotation on record
+    27 rules, 12 with patterns in the database, 15 held by a gate elsewhere
     13 more objections are guidance, because no check can express them
-    17 findings on this run, 0 at a severity that stops a build
+    15 findings on this run, 0 at a severity that stops a build
 
 ---
 
@@ -347,6 +347,17 @@ The rules existed and the product broke them, because the gate read the source a
 
 Why it kept coming back, found by Emmy and checked against the tree. The two strings were never cut because no gate ever read them. The house harvest drops any literal carrying = or a quote, which is every attribute; objection_hits strips tags before it matches, which deletes a placeholder written inside a whole input tag; and CO-27, section-explains-itself, is the shape of a paragraph under a heading, which a placeholder is not. Each round cut the visible text he struck and left the attribute, because the attribute is not text on a screenshot until the field is empty. The phrase came from the Gollwitzer and Sheeran citation quoted in DESIGN-firstrun.md and RETENTION-90DAY.md, where it is design rationale, and was copied into shipped copy. TASKS.md near round FO had noted it only as a grammar bug, When after I put the kettle on.
 
+### CO-33. A caption line printed beside or under a label that says what the thing is, how it is drawn, counted, scored or sourced, or what to do with it. The meaning belongs in the tooltip, on hover, tap and focus, and never on the screen as a line.
+
+> Get rid of all the text that says an axis is a line from a feeling to its opposite... all that is junk. Strip it out. Everywhere... I keep telling you not to have it. You keep adding it... sweep across the site and clear all that junk out.
+
+    where    the Intake page and every surface like it, on the live page
+    when     27 November, in his words
+    quoted   verbatim
+    rules    caption-under-label, section-explains-itself
+
+Why it kept coming back, found by a research pass. Rule V23 in the voice skill told writers to print a term's meaning as a line after it, V24 shielded that line from cuts, unpSay() in ui/component.js exists to print meanings inline, and about eighty code comments cite round PO as the reason a caption exists. The writer was following the rule. Both rules now say the meaning is the tooltip and nothing else. The fifth logged time for this class, after CO-16, CO-28, CO-27 and CO-32. Held by tests/nocaption.js, which reads the rendered page because a caption is a property of the screen and not of any one string in the source.
+
 ---
 
 ## The rules, and where each one is enforced
@@ -359,7 +370,8 @@ Why it kept coming back, found by Emmy and checked against the tree. The two str
     empty-state           value         stop      objections                  CO-09, CO-22
     serial-to-a-person    label         stop      objections                  CO-15
     two-months-free       offer         stop      objections                  CO-25
-    section-explains-itself definition    stop      objections                  CO-27, CO-28, CO-16
+    section-explains-itself definition    stop      objections                  CO-27, CO-28, CO-16, CO-33
+    caption-under-label   definition    flag      tests/nocaption.js          CO-33, CO-27, CO-28, CO-16
     invented-example-copy value         stop      objections                  CO-32
     figure-label          label         stop      check.py:figure label       CO-08
     naked-number          number        stop      check.py:naked number       CO-06, CO-07
@@ -489,14 +501,14 @@ A weight printed on its own says nothing to either reader. The layman needs a no
 
     fails   That reaches the body at the anterior heart, on the fear axis, at a weight of 7.4.
     fixed   That reaches the body at the anterior heart, on the fear axis, heavily impaired at a weight of 7.4.
-    found   17
-    atuned_src/ui/component.js:1177
+    found   15
+    atuned_src/ui/component.js:1268
         , weight
-    atuned_src/ui/cone.js:3001
+    atuned_src/ui/cone.js:3030
         , at a weight of
-    atuned_src/ui/drills.js:393
+    atuned_src/ui/drills.js:499
         Charge held here <b>
-    atuned_src/ui/drills.js:692
+    atuned_src/ui/drills.js:809
         </b>, shadow weight <b>
     atuned_src/ui/imprints.js:92
         Charge left
@@ -504,26 +516,22 @@ A weight printed on its own says nothing to either reader. The layman needs a no
         weight
     atuned_src/ui/map.js:942
         addresses, weight
-    atuned_src/ui/map.js:2157
+    atuned_src/ui/map.js:2263
         at a weight of
-    atuned_src/ui/map.js:2759
+    atuned_src/ui/map.js:3008
         , at a weight of
-    atuned_src/ui/map.js:3375
+    atuned_src/ui/map.js:3637
         , at a weight of
-    atuned_src/ui/rings.js:1107
+    atuned_src/ui/rings.js:1111
         Heaviest pattern. Weight
-    atuned_src/ui/summary.js:276
+    atuned_src/ui/summary.js:288
         , at a weight of
     atuned_src/ui/ui.js:61
         <hr>charge held <b>
-    atuned_src/ui/ui.js:90
+    atuned_src/ui/ui.js:94
         <br>weight <b>
-    atuned_src/ui/ui.js:102
+    atuned_src/ui/ui.js:106
         weight <b>
-    atuned_src/ui/ui.js:1730
-        weight
-    atuned_src/ui/ui.js:1793
-        , weight
 
 FLAGGED AND NEVER FAILED, for three reasons, each said rather than left to be found. The ladder is real now and this entry supersedes its own first cut: round KD in TASKS.md, his words, "Yeah, we use that let's call it node state instead of band ladder. Node state would be open impaired moderately impaired heavily impaired blocked." The placeholder heavily blocked, his example from round JX, is retired, and the pattern no longer accepts it or his other examples (heavy, light, flowing, clear). It clears on impaired and on blocked when blocked is not qualified, which covers four rungs. It does not clear on open, which in this product is also a verb and a plan word, "Rerunning anything already open costs nothing", so it would clear lines on a word that means something else; a weight at open prints 0.0, which the product rarely prints. First reason: the words are ruled and the lines between them are not. He named five rungs and no figures. NODESTATE_PROPOSED in engine/data/canon.js is a proposal, named as one, and no surface calls nodeStateOf until he confirms the lines. A stop here would make every writer pick a node state per surface by eye, which is one word per concept broken and the contradiction between the two readers this rule exists to prevent. Second, the sweep reads each literal apart, so a band word written after the value in the next literal is not seen and that line is a false flag a person clears. Third, the picture half is not text, and whether the icon sits beside the figure is read off the screen. The first pattern is the template shape: a literal ending on weight, weight of, charge held or charge left, with trailing space or an open tag, which is where a run time figure lands. The second is the rendered shape, weight 6.3. Checked before it was trusted against the known good cases it must not fire on: KB_OF in ui/knowledge.js, of the mask at full weight, where the figure comes before; the By weight sort control; the Shadow weight label; the What it weighed eyebrow; No mask carries weight yet; and a band word earlier in the same literal. And against the known bad ones it must: summary.js at a weight of, rings.js Heaviest pattern. Weight, and the rendered Held at the heart, at a weight of 7.4. Heaviest is a rank and not a band, so it does not clear a line. It reaches weight and charge, the two he named. A percent match, a pain figure or Waiting to land are outside it. Read the count off the run.
 
@@ -640,7 +648,7 @@ If an empty label draws an empty box, drop the key rather than passing a space.
 
 The same claim in the tooltip, and the sentence directly after it already says what is true. Neither side reaches 1 is checkable on any profile. Not read yet is not.
 
-### atuned_src/ui/drills.js:805
+### atuned_src/ui/drills.js:931
 
     bucket  value
     rule    empty-state, from CO-09

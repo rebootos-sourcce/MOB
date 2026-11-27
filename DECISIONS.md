@@ -5135,3 +5135,8 @@ that you're building to my vision with your team. Now do it now."
 - **Graded.** His words: "if I were to give you a grade, you get a D." Named
   here for the record, against this exact failure, so a later seat reads why
   the bar moved and not only that it did.
+
+## No caption lines. Meaning is hover and tap only. Ruled 27 November.
+- Retires round PO's on-screen reading; the 16 November symbol-first rule is the one reading. Every term keeps a reachable meaning in gloss.js.
+- Struck by name: the Intake axis, action and archetype lines, "These three are kept beside your reading", "Set the laws by hand" (a second route that doubles his work), the Wisdom school Sat and Chit lines and "2 read", the Analytics lens subtitles, key row and "Darker is more charge", the awareness rail's "pale" legend.
+- Fifth logged time for this class (CO-16, CO-28, CO-27, CO-32). Held by `tests/nocaption.js`.
