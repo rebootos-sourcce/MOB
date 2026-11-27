@@ -538,7 +538,7 @@ console.log('\n=== the six masks, as pixels on the figure ===');
    return {chov:STORE.get('chov'),on:CHV.ov};});
   await ready(bp,()=>document.querySelectorAll('#masksview [data-chov]').length===4,5000,'the overlay toggles were not drawn after the reload');
   const after=await ovs();
-  ok(bl.unread&&/^Nothing read yet, so the field is dark/.test(bl.txt),'a stranger reads that nothing is read yet, got '+bl.txt.slice(0,60));
+  ok(bl.unread&&/^Nothing read yet\. Write what happened in Discover/.test(bl.txt),'a stranger reads that nothing is read yet, got '+bl.txt.slice(0,60));
   ok(!bl.lead&&!/Leading pattern/.test(bl.txt),'and an unread profile leads with no pattern at all, 5dcb45d, got '+(bl.lead?'a lead block':'')+(/Leading pattern/.test(bl.txt)?' the words':''));
   ok(bl.coh==='–','its coherence reads a dash and not a number, got '+bl.coh);
   ok(bl.on==='Child','and it opens on Child, got '+bl.on);

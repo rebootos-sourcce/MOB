@@ -441,19 +441,21 @@ function chArchHtml(r){
  var unread=!r||!!r.unread, emb=(!unread&&typeof avArchEmbodied==='function')?avArchEmbodied(r):{};
  var door=typeof AV_ARCH_SHOWN!=='undefined'&&AV_ARCH_SHOWN, tag=door?'button':'span';
  var on=ARCH.filter(function(a,i){return emb[i];}).map(function(a){return a.nm;});
- return '<div class="pm-eye chr-sp">Archetypes</div><div class="chr-arch" role="group" aria-label="Archetypes">'
+ return '<div class="pm-eye chr-sp">'+unp('archetypes','Archetypes')+'</div><div class="chr-arch" role="group" aria-label="Archetypes">'
   +ARCH.map(function(a,i){var e=!!emb[i], say=chSentence(a.v)+' '+a.d+(unread?'':e?' Embodied, one of the three your field reads strongest.':' Not embodied.');
    return '<'+tag+(door?' type="button"':' role="img" tabindex="0"')+' class="chr-ar'+(e?' on':'')+'" data-charch="'+esc(a.nm)+'" style="--ac:'+PAL[a.b]+'"'
     +' aria-label="'+esc(a.nm+'. '+say)+'" data-tip-t="'+esc(a.nm)+'" data-tip="'+esc(say)+'">'
     +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="'+a.ic+'"/></svg></'+tag+'>';}).join('')+'</div>'
-  +(on.length?'<p class="chr-note chr-arn">Embodied: '+esc(chAnd(on))+'</p>':'')
-  +'<p class="chr-note">'+esc(ARCH_CREDIT)+'</p>';}
+  +(on.length?'<p class="chr-note chr-arn" data-say="reading">Embodied: '+esc(chAnd(on))+'</p>':'');}
 function chRailHtml(r){
  var sc=CHV.sc, m=maskOf(CHV.pick), unread=!r||r.unread, w=sc.w, li=CHC.leadPat(w), a=CHILD[li], col='#'+'';
  var pc=CHC.PCOL[li], hexc='#'+pc.map(function(v){return ('0'+Math.round(v).toString(16)).slice(-2);}).join('');
  var SF=seatField(), AF=addrField();
  var h='<div class="chr">';
- if(unread)h+='<p class="chr-note">Nothing read yet, so the field is dark and the cloud is plain. Write what happened in Discover and it starts to answer.</p>';
+ /* AN EMPTY STATE NAMES WHAT PUTS IT IN AND NOTHING ELSE. It also said "so the
+    field is dark and the cloud is plain", which is how the screen is drawn and
+    not a fact about the person, the caption he struck on 27 November, CO-33. */
+ if(unread)h+='<p class="chr-note" data-say="empty">Nothing read yet. Write what happened in Discover.</p>';
  /* the leading pattern, what the mask does, and the one line the stage used to
     carry as a caption */
  /* AN UNREAD PROFILE LEADS WITH NOTHING. It printed "Leading pattern, Fear
@@ -463,41 +465,45 @@ function chRailHtml(r){
  if(!unread)h+='<div class="chr-lead" style="--lead:'+hexc+'"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="'+hexc+'" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="'+a.ic+'"/></svg>'
   +'<div><div class="pm-eye">Leading pattern</div><b>'+esc(a.nm)+'</b><span class="chr-fig"'+chPc('charge',w[a.nm]||0,false)+'>'+fmtPct('charge',w[a.nm]||0)+'</span></div></div>'
   +'<div class="chr-where">'+esc(chSentence(a.loc))+'</div>';
- h+='<div class="pm-eye">Mask</div><div class="ad-nm">'+esc(m.nm)+'</div><div class="ad-sub">Worn over the '+esc(chSeats(m))+'</div>'
-  +'<p class="ad-p">It '+esc(m.v)+'.</p>'
+ h+='<div class="pm-eye">Mask</div><div class="ad-nm">'+esc(m.nm)+'</div><div class="ad-sub" data-say="reading">Worn over the '+esc(chSeats(m))+'</div>'
+  +'<p class="ad-p" data-say="reading">It '+esc(m.v)+'.</p>'
   +'<button type="button" class="btn" id="chread">Read this mask</button>';
  h+=chArchHtml(r);
  if(CHV.sel>=0)h+=chTraceCard(r);
  h+='<div class="pm-eye chr-sp">Pointing at</div><div class="chr-hover" id="chhover" aria-live="polite" data-h="">'+chHoverText(CHV.hov,-1)+'</div>';
  /* the two readings that light and move the field */
  var cq=unread?0:Math.round(+r.CQ||0), dq=unread?0:Math.round(+r.DQ||0), vt=unread?0:(+r.X||0);
- h+='<div class="pm-eye chr-sp">Light and breath</div><div class="chr-read">'
-  +'<div class="chr-row"><span>Coherence</span><b'+chPc('cq',cq,unread)+'>'+fmtPct('cq',cq,{unread:unread})+'</b><i>'+esc(chSentence(charCohWord(unread?0:cq/100)))+' It lights the figure and sets how wide, bright and whole the field is.</i></div>'
-  +'<div class="chr-row"><span>Vitality</span><b'+chPc('vitality',vt,unread)+'>'+fmtPct('vitality',vt,{unread:unread})+'</b><i>'+esc(chVitWord(unread?0:vt))+' It sets how far and how fast the field breathes.</i></div>'
-  +'<div class="chr-row"><span>Decoherence</span><b'+chPc('dq',dq,unread)+'>'+fmtPct('dq',dq,{unread:unread})+'</b><i>The shadow, your 108 addresses and 4 field anchors against the most they could hold. It opens the gaps.</i></div></div>'
-  /* round RB: the glow behind the figure is a picture too, so it is said */
-  +(unread?'':'<p class="chr-note">The glow behind the figure is the colour your whole field gives off: every point\u2019s colour, mixed by how bright it is. It breathes with the field.</p>');
+ /* EACH DIAL KEEPS ITS LABEL, ITS FIGURE AND ITS WORD, AND NOTHING ELSE. The
+    three lines under them said what the dial does to the field, and the one
+    under the glow said what the glow is. That is how the picture is drawn, and
+    it was printed on the screen to somebody who asked for none of it, the
+    caption he struck on 27 November, CO-33. Each sentence is the label's
+    tooltip now (char:coherence, char:vitality, char:decoherence and
+    char:light and breath in engine/data/gloss.js). */
+ h+='<div class="pm-eye chr-sp">'+unp('light and breath','Light and breath','char')+'</div><div class="chr-read">'
+  +'<div class="chr-row"><span>'+unp('coherence','Coherence','char')+'</span><b'+chPc('cq',cq,unread)+'>'+fmtPct('cq',cq,{unread:unread})+'</b><i data-say="reading">'+esc(chSentence(charCohWord(unread?0:cq/100)))+'</i></div>'
+  +'<div class="chr-row"><span>'+unp('vitality','Vitality','char')+'</span><b'+chPc('vitality',vt,unread)+'>'+fmtPct('vitality',vt,{unread:unread})+'</b><i data-say="reading">'+esc(chVitWord(unread?0:vt))+'</i></div>'
+  +'<div class="chr-row"><span>'+unp('decoherence','Decoherence','char')+'</span><b'+chPc('dq',dq,unread)+'>'+fmtPct('dq',dq,{unread:unread})+'</b></div></div>';
  /* the seven seats: root first as everywhere, each a button that traces it */
- h+='<div class="pm-eye chr-sp plain">The seven assemblage points</div><div class="chr-seats">'
+ h+='<div class="pm-eye chr-sp plain">'+unp('assemblage points','The seven assemblage points','char')+'</div><div class="chr-seats">'
   +SF.map(function(s,k){var sh=charSmooth(CHAR_SEAT_LO,CHAR_SEAT_FULL,s.mean),word=sh<.25?'Open':sh<.6?'Loaded':'Closed';
    return '<button type="button" class="chr-seat" data-chtrace="'+k+'" aria-pressed="'+(CHV.sel===k)+'" title="'+word+'" style="--sc:'+PAL[s.seat]+'">'
     +'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="6.5" fill="none" stroke="'+PAL[s.seat]+'" stroke-width="1.7"/></svg>'
     +'<span class="chr-sn">'+esc(chSeatName(s.seat))+'</span><span class="chr-bar"><i style="width:'+Math.round(sh*100)+'%'+(chPcCol('closed',sh,false)?';background:'+chPcCol('closed',sh,false):'')+'"></i></span><span class="chr-sv"'+chPc('closed',sh,false)+'>'+fmtPct('closed',sh)+'</span></button>';}).join('')
-  +'</div><p class="chr-note">The bar is how closed the point is, from the charge on its own addresses. Past about a third the field pinches there, runs slow and breaks up. An open point swells.</p>';
- /* what the points are, which is the question the owner asked of the mockup */
- h+='<div class="pm-eye chr-sp">What the points are</div>'
-  /* NEVER THE LOWER COUNT. This printed the body's own share of the
-     addresses, which is the figure the house rule says is never put in front
-     of a person: the count stated is the whole set. Round RG. */
-  +'<p class="ad-p">Each point is one address, and there are '+AF.length
-  +'. Most sit round the body at the height of their point, going slowly round the spine. '
-  +'Four are field anchors, two above the head and two below the feet, drawn as rings. Size and brightness are the address’s charge, and a ring round a point is a charge above seven tenths.</p>'
-  /* round RB: the saboteur's ring, the complex's second ring, the dimmed body
-     and the line, each said where it is drawn, with what a saboteur and a
-     complex are taken from the one table of meanings */
-  +(CHV.who&&CHV.who.some(function(x){return x&&x.sab;})?'<p class="ad-p">A ring in the point\u2019s own colour marks a point where a saboteur runs. '+esc(unpackOf('saboteur'))
-   +' The body under a saboteur goes dark and grey by how heavy it is. The three heaviest saboteurs are drawn bold, each with a dotted line to the place on the body it dims, and a second ring outside a bold one means that saboteur is part of a complex. '+esc(unpackOf('complex'))+'</p>':'')
-  +'<div class="chr-counts">'+SF.map(function(s){return '<span style="--sc:'+PAL[s.seat]+'"><i></i>'+esc(chSeatName(s.seat))+' <b>'+s.n+'</b></span>';}).join('')+'<span class="chr-anc"><i></i>Anchors <b>4</b></span></div>';
+  +'</div>';
+ /* WHAT THE POINTS ARE WAS A PARAGRAPH, AND IS THE HEADING'S TOOLTIP. The owner
+    asked what the points are when he saw the mockup, and the answer was printed
+    as two paragraphs under the heading: how the points are placed, what size
+    and brightness mean, which are rings, and how a saboteur is drawn. All of
+    it is how the picture is drawn, so it moved to char:addresses and char:rings
+    in engine/data/gloss.js and the two labels carry it. It also printed the
+    whole count, "there are 112", as the first thing the section said, which
+    the 28 October ruling forbids on a screen that has not stated the 108 and 4
+    split first; the count is gone with the sentence. The Anchors chip carries
+    the field anchor's own meaning, which the paragraph had been saying for it. */
+ var rings=CHV.who?CHV.who.filter(function(x){return x&&x.sab;}).length:0;
+ h+='<div class="pm-eye chr-sp">'+unp('addresses','Addresses','char')+'</div>'
+  +'<div class="chr-counts">'+SF.map(function(s){return '<span style="--sc:'+PAL[s.seat]+'"><i></i>'+esc(chSeatName(s.seat))+' <b>'+s.n+'</b></span>';}).join('')+''+(rings?'<span class="chr-anc"><i></i>'+unp('rings','Rings','char')+' <b>'+rings+'</b></span>':'')+'<span class="chr-anc"><i></i>'+unp('field anchor','Anchors')+' <b>4</b></span></div>';
  h+='</div>';
  return h;}
 /* the words for a vitality, the left menu's own scale of 0 to 1 */

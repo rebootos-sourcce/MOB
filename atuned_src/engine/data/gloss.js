@@ -8,9 +8,13 @@
 
    A label, a sign, a number or a term of art never stands alone. This is the
    one table of what each one means, and it is the only place those sentences
-   are written. A surface asks it by name and prints the sentence beside the
-   term, either in the line itself or in the one tooltip the product already
-   has, so no surface keeps its own copy and none can say it differently.
+   are written. A surface asks it by name and the sentence reaches the person
+   as the term's tooltip, on hover, tap and keyboard focus, and is never
+   printed beside the term. OVERRIDDEN in part, 27 November (CO-33, CLAUDE.md
+   UNPACK EVERY SYMBOL): this said a term with room prints the sentence after
+   it, and that line was the junk he told the seats to strip everywhere. Only a
+   drill the person opened may say a sentence in its own text. No surface keeps
+   its own copy and none can say it differently.
 
    ONE SENTENCE EACH. Short, present tense, words a ten year old has. A
    sentence that is itself a claim says whose claim it is: numerology claims,
@@ -244,6 +248,22 @@ var UNPACK_BASE={
  /* DQ stood as a bare label on the release clock. Round RG. */
  'dq':'DQ is your shadow weight: all the charge you carry, on every address, against the most your body could hold.',
  'coherence':'Coherence is when what you mean, what you do and what your body does point the same way.',
+ /* THE CHARACTER RAIL'S OWN READINGS, 27 November, CO-33. Each of these was a
+    muted line printed under its label ("It lights the figure and sets how
+    wide, bright and whole the field is", "The bar is how closed the point
+    is"), which the owner struck as junk on every page. The sentence moved
+    here and the label carries it as a tooltip, so nothing a person could
+    learn there is gone. Read with the char context, because coherence and
+    the rest mean the same thing on every page but this one says what the
+    figure does with it. */
+ 'held places':'Held places are the places in your body holding a story, and a reading of them is taken each time you commit a story or finish a release.',
+ 'char:light and breath':'Coherence lights the field and vitality moves it, and the glow behind the figure is the colour your whole field gives off, mixed by how bright each point is.',
+ 'char:coherence':'Coherence is when what you mean, what you do and what your body does point the same way, and it sets how wide, bright and whole the figure and field are.',
+ 'char:vitality':'Vitality is how much energy the field has, and it sets how far and how fast the field breathes.',
+ 'char:decoherence':'Decoherence is your shadow, the charge on all your addresses against the most they could hold, and it opens the gaps in the field.',
+ 'char:assemblage points':'The bar shows how closed a point is, from the charge on its own addresses, and past about a third the field pinches there, runs slow and breaks up, while an open point swells.',
+ 'char:addresses':'Each point is one address, most sit round the body at the height of their point and go slowly round the spine, and size and brightness are the address\u2019s charge.',
+ 'char:rings':'A ring in a point\u2019s own colour marks a saboteur, the body under it dims with its weight, and a second ring outside a bold one marks a complex.',
  /* THE FIELD'S LEFT MENU, round RB and the P3 menu pass. Every reading on the
     rail is one bar with its mark and its one word inside it, and the word is a
     carrier of its sentence here, read with the rail context so a word that
@@ -498,6 +518,13 @@ function unpackAll(){
   ARCH.forEach(function(a){
    t['archetype:'+a.nm.toLowerCase()]=a.nm+' is one of '+ARCH.length+' kinds of character, the one that '+a.v+'.';});
  t['archetype']='An archetype is one of '+(typeof ARCH!=='undefined'?ARCH.length:'twelve')+' kinds of character you are born leaning toward.';
+ /* THE CREDIT WAS A LINE UNDER THE LIST. ARCH_CREDIT (canon.js) printed on the
+    Character rail and the Avatar card as a muted sentence, which is the
+    caption he struck on 27 November, CO-33. The data stays where it is and
+    the plural label carries it. Built here so the credit is read off the one
+    constant and never typed a second time. */
+ if(typeof ARCH_CREDIT!=='undefined')
+  t['archetypes']='Archetypes are patterns of how a person acts, and they are '+ARCH_CREDIT+'.';
  /* THE NINETEEN BLUEPRINT DOMAINS. UNPACK_DOM just above carries the short
     clear and distorted clause for each; this builds the sentence off
     DOMAINS so the count is read from the table and never typed, same

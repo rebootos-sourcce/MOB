@@ -147,17 +147,18 @@ function gmRender(){
 
  if(GAME==='lg'){
   if(!LG.cards.length){
-   h+='<div class="gm-intro"><p class="gm-p">Twenty four cards, face down, dealt from what you '
-    +'are carrying. Turn one, say the line and the truth under it, turn it back. The clock runs '
-    +'while you do it.</p>'
-    /* HS sweep: the rules above the deal button stay, because they are the
-       game and nothing else teaches it. "Time it once and you will believe
-       it" was the game selling itself, and is cut. */
-    +'<p class="gm-p">'+esc(CARD_OPEN)+'</p>'
-    +'<div class="gm-gates"><span class="pm-eye plain">One statement runs every channel at once</span>'
-    +'<div class="gm-glist">'+C3_VERB.map(function(v){
-      return '<span class="gm-gate">'+esc(v)+'</span>';}).join('')+'</div></div>'
-    +'<button class="btn pri" id="lggo">Deal twenty four</button></div>';}
+   /* THE RULES ARE THE DEAL BUTTON'S TOOLTIP, 27 November, CO-33. Four lines
+      stood above it: how many cards, what to do with one, that the clock runs,
+      the six channels a line runs, and the body scan that precedes reading.
+      All of it is what to do with the screen, printed without anyone asking,
+      the caption he struck as junk on every page. The game is still taught
+      from the same words, one hover or one focus away, and the six channels
+      are read off C3_VERB so the list is never typed a second time. The
+      earlier HS sweep kept these lines "because nothing else teaches it"; a
+      tooltip on the one control that starts the game is something else. */
+   h+='<div class="gm-intro">'
+    +'<button class="btn pri" id="lggo" data-tip-t="The letting go run" data-tip="'+esc('Twenty four cards, face down, dealt from what you are carrying. Turn one, say the line and the truth under it, turn it back. The clock runs while you do it. Each line runs every channel at once: '
+      +C3_VERB.join(', ').replace(/, ([^,]*)$/,' and $1')+'. '+CARD_OPEN)+'">Deal twenty four</button></div>';}
   else{
    h+='<div class="gm-bar"><div class="gm-chan"><span class="pm-eye">Pole</span>'
     +'<div class="gm-chips">'+C3_POLE.map(function(p){
@@ -196,9 +197,10 @@ function gmRender(){
 
  if(GAME==='mt'){
   if(!MT.cards.length){
-   h+='<div class="gm-intro"><p class="gm-p">Eight pairs of child emotion marks, face down. Match a pair '
-    +'and it opens: what it is, how it runs through you, and what the coherent opposite is.</p>'
-    +'<button class="btn pri" id="mtgo">Deal the marks</button></div>';}
+   /* the same cut as the letting go run above: the rules are the button's tooltip */
+   h+='<div class="gm-intro"><button class="btn pri" id="mtgo" data-tip-t="The match" data-tip="'
+    +esc('Eight pairs of child emotion marks, face down. Match a pair and it opens: what it is, how it runs through you, and what the coherent opposite is.')
+    +'">Deal the marks</button></div>';}
   else{
    h+='<div class="gm-bar"><div class="gm-of">'+MT.found+' of '+MT_PAIRS+' matched</div></div>'
     +'<div class="gm-grid mt">'+MT.cards.map(function(c,i){

@@ -222,15 +222,19 @@ function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'
    way a renderer puts it on a screen, and it is not a new component: the
    product already has one tooltip, ui/tip.js, which opens on hover, on a tap
    and on keyboard focus, and the sheet sets the one class that says a word
-   carries something, .tipu, a dotted underline. So a term that has no room for
-   its sentence beside it becomes a carrier of that sentence, and a term that
-   has room is followed by the sentence itself.
+   carries something, .tipu, a dotted underline. So every term becomes a
+   carrier of its sentence. OVERRIDDEN in part, 27 November (CO-33): this said a
+   term that has room is followed by the sentence itself, and that printed line
+   is the caption he struck as junk on every page. The sentence is the
+   tooltip and is never set beside the term on a surface.
 
      unp(term,label,ctx)     the term as a carrier, or plain text when the table
                              has no sentence for it. Never a guess.
      unpAttr(term,ctx,label) the same three attributes, for an element a caller
                              already owns, such as a chip that is a button.
-     unpSay(term,ctx)        the sentence, escaped, for a line that prints it.
+     unpSay(term,ctx)        the sentence, escaped. FOR A DRILL THE PERSON OPENED
+                             (#rdrill) AND NEVER FOR A SURFACE: tests/nocaption.js
+                             fails a surface that prints it as a line.
 
    The meaning is always in the same element as the term or on the term itself,
    never behind a link to another page. The rule and its reason are in

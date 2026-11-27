@@ -139,9 +139,9 @@ function plLevel(g){var t='Summary'; if(g.sight.body)t+=' +Body'; if(g.sight.fie
    name for it, the grant level, and the mini ring off its Summary. */
 function plClientsGrp(){
  if(!plSignedIn())return accGroup('Your clients',accRow('People who let you see their record','nobody yet'),
-  'Clients connect to an account, so this list fills once you are signed in. Account, at the top, signs you in.');
+  'Clients connect to an account, so this list fills once you are signed in. Account, at the top, signs you in.','empty');
  if(!PL.roster)return accGroup('Your clients',accRow('People who let you see their record','reading'),'');
- if(PL.roster.err)return accGroup('Your clients',accRow('People who let you see their record',PL.roster.off?'nobody yet':'could not read'),esc(PL.roster.err));
+ if(PL.roster.err)return accGroup('Your clients',accRow('People who let you see their record',PL.roster.off?'nobody yet':'could not read'),esc(PL.roster.err),'refusal');
  var live=pracLiveActive(), ended=pracLiveGrants().filter(function(g){return g.ended_by;});
  var rows=live.map(function(g){var on=PL.sel===g.id, sm=g.summary&&g.summary.sum;
   return '<button type="button" class="pr-client'+(on?' on':'')+'" data-plo="'+esc(g.id)+'" aria-pressed="'+on+'">'

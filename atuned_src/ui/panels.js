@@ -854,12 +854,13 @@ ROOTD.forEach(function(rn){
   buildSoul();S.pin=null;syncSoul();saveYou();render();
   railPick(b,'root');});
  $('roots').appendChild(b);});
-/* What the two states mean, in the rail, once. A legend is cheaper than a
-   person guessing, and there is nowhere else on this row to put it. */
-(function(){
- var r=$('roots'); if(!r||!r.parentNode)return;
- var d=document.createElement('div'); d.className='rootlegend'; d.id='rootlegend';
- r.parentNode.insertBefore(d,r.nextSibling);})();
+/* THE LEGEND IS GONE, 27 November, CO-33. A line under the row said "filled,
+   you added" and "pale, something you picked is in here", which is how the
+   buttons are drawn and not a fact about the person: the caption he struck as
+   junk on every page. Both states were already in each button's own title, set
+   a few lines above ("Filled means you added it. Pale means something you
+   picked is already in it."), and ui/tip.js opens a title on hover, tap and
+   focus, so the meaning is reachable and nothing is lost. */
 /* ESCAPED, ROUND RA: S.roots comes from soul.roots, which the schema boundary
    only checks is an array of strings, not their content (engine/schema.js);
    DOMAINS[i].nm is the fixed table and needs nothing. */
@@ -1004,13 +1005,6 @@ function syncSoul(){
   b.setAttribute('aria-pressed',on);
   /* added wins over lit, because a fill and a wash on one control is noise */
   if(!on&&lit[b.dataset.r]){b.dataset.lit='1';nlit++;}else delete b.dataset.lit;});
- var lg=$('rootlegend');
- if(lg)lg.textContent=(S.roots.length?'filled, you added':'')
-  +(S.roots.length&&nlit?' \u00b7 ':'')
-  +(nlit?'pale, something you picked is in here':'');
- /* HS sweep: with nothing added and nothing pale this printed "click a root
-    to add every domain under it", a how to line under a row of buttons. The
-    legend now speaks only when there is a state on the row to key. */
  capD();capA();awSum();}
 function rebuildSwatches(){
  /* every colour the rail's grids wear is per lighting now, so all three move

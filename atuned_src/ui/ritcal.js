@@ -711,11 +711,19 @@ function ritSuccessHtml(st){
  /* THE HONEST PART. A span that reaches back before the record does not
     pretend the record was empty there: those days are drawn hatched and never
     counted as missed, which is the arithmetic in ritSpanRead. */
- var note=S.rs===null?'<p class="rv-sparse">Nothing on your record yet. This fills in, a day at a time, as you keep rituals.</p>':'';
+ /* AN EMPTY STATE SAYS WHAT IS MISSING AND STOPS. It went on to say "This fills
+    in, a day at a time, as you keep rituals", which is how the page behaves and
+    not a fact about the person, the caption he struck as junk on 27 November,
+    CO-33. */
+ var note=S.rs===null?'<p class="rv-sparse" data-say="empty">Nothing on your record yet.</p>':'';
  var extra=[S.said?'Affirmations said on '+acctDays(S.said)+'.':'', S.did?'Challenges done '+S.did+(S.did===1?' time.':' times.'):'']
   .filter(Boolean).join(' ');
  var held=S.then===null?''
-  :'<p class="rv-okf rv-shel">Held places: '+S.then+' at the start of this span, '+S.now+' now. A reading is taken each time you commit a story or finish a release.</p>';
+  /* HOW IT IS SOURCED WAS A SECOND SENTENCE. "A reading is taken each time
+     you commit a story or finish a release" says where the figure comes from,
+     which is the label's tooltip (held places, engine/data/gloss.js) and not a
+     line, 27 November, CO-33. */
+  :'<p class="rv-okf rv-shel" data-say="value">'+unp('held places','Held places')+': '+S.then+' at the start of this span, '+S.now+' now.</p>';
  var top=Math.max.apply(null,S.bars.map(function(x){return x.n;}).concat([1]));
  var bars=!S.bars.length?'':'<div class="rv-ana1"><span class="rv-lb">Kept by point, '+esc(R.nm)+'</span><ul class="rv-sbars">'
   +S.bars.map(function(x){

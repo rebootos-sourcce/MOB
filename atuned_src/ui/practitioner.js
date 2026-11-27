@@ -481,8 +481,13 @@ function pracList(){
      system print here any more */
   /* the second sentence moved to Your clients above, round RB, which is
      where the real list now says it is empty and why */
-  +'<div class="ac-gf">Ten of the product’s worked examples, not clients, picked to cover the '
-  +'whole range from the heaviest field to the lightest. Open one to practise reading.</div>';}
+  /* WHAT THE LIST IS, IN FIVE WORDS. It said "Ten of the product's worked
+     examples, not clients, picked to cover the whole range from the heaviest
+     field to the lightest. Open one to practise reading", which is how the
+     list was chosen and what to do with it, the caption he struck as junk on
+     27 November, CO-33. Only the disclosure that these are not clients stays,
+     because a person reading them as their own clients would be misled. */
+  +'<div class="ac-gf" data-say="disclosure">Worked examples, not clients</div>';}
 /* ONE RING, SEVEN SEATS. Each arc is one of the seven seats (BANDS), equal
    angle so the shape never distorts, its colour at full strength and the
    rest dimmed by how much that seat actually holds against the heaviest
@@ -765,7 +770,7 @@ function pracModeGroup(){
 
 function pracDetail(){
  if(PRAC_SEL==null||!PEOPLE[PRAC_SEL])
-  return '<div class="pr-mid" id="prmid"><div class="ac-grp pr-head"><div class="pr-empty">'
+  return '<div class="pr-mid" id="prmid"><div class="ac-grp pr-head"><div class="pr-empty" data-say="empty">'
    +'Open a worked example on the left to read it.</div></div></div>';
  var p=PEOPLE[PRAC_SEL], snap=pracRead(p);
  pracSeenSet(p.nm,pracTierWord(snap));
@@ -964,7 +969,7 @@ function pracDrillClear(){
 function pracLeave(){pracDrillClear(); var h=$('prac'); if(h)h.innerHTML='';}
 function pracSelNone(open){
  var none=document.getElementById('rdrill-none'), d=document.getElementById('pr-selnone');
- if(!d&&none&&none.parentNode){d=document.createElement('div'); d.id='pr-selnone'; d.className='rel-note';
+ if(!d&&none&&none.parentNode){d=document.createElement('div'); d.id='pr-selnone'; d.className='rel-note'; d.setAttribute('data-say','empty');
   none.parentNode.insertBefore(d,none.nextSibling);}
  if(d)d.textContent=open
   ?'Nothing selected. Press a figure, a day, a pattern or a point on '+open.nm+'’s page to read it here.'

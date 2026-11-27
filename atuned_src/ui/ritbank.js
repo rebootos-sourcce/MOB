@@ -396,7 +396,7 @@ function ritMissOffer(r,st){var R=ritMissRun(r,st); return R.n>=RIT_MISS_AT?R:nu
    and nothing claims success before its writer answers. */
 function ritPopShell(col,head,sub,body,acts){
  return '<div class="rv-sh rv-pop" style="--c:'+col+'"><div class="rv-shh"><span class="rv-sht"><span class="sh-h plain">'+esc(head)+'</span>'
-  +(sub?'<span class="rv-shs">'+esc(sub)+'</span>':'')+'</span></div>'+body
+  +(sub?'<span class="rv-shs" data-say="value">'+esc(sub)+'</span>':'')+'</span></div>'+body
   +'<div class="sh-act rv-sha">'+acts+'<button type="button" class="btn rv-shx" data-sh="close">Close</button></div></div>';}
 function ritPopGone(t){return ritPopShell('var(--accent)',t,'','','');}
 function ritFold(nm,body){
