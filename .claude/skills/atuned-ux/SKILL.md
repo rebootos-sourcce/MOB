@@ -72,6 +72,9 @@ anyone to read.
 **10. Never hide a control with no affordance.** An overflowing scroller with
 a hidden scrollbar is indistinguishable from a missing feature. Wrap instead.
 
+**11. No caption lines.** A label's meaning is its tooltip. Run
+`node tests/nocaption.js`.
+
 ## Where a principle loses to a ruling
 
 - **Personalisation and cross-device continuity** are out of scope. This is a

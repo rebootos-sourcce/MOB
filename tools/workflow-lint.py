@@ -223,6 +223,9 @@ BROWSER = {
 # Report only until three green runs. tests/praclive.js is not here: it needs
 # a reboot-os checkout no job has, so tools/orphans.js lists it in MANUAL.
     'pracshare':     ('node tests/pracshare.js', 20),
+# no caption lines on a surface, 27 November (tests/nocaption.js, CO-33).
+# Report only, and not in tests/floors.json yet, by ruling.
+    'nocaption':     ('node tests/nocaption.js', 20),
 }
 # P0 Alpha acceptance: move to the blocking browser matrix, and mutation-test each
 # one so a future refactor cannot silently return it to report-only.

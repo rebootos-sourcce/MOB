@@ -490,6 +490,12 @@ jobs:
           # this repository's runners cannot reach, so it is in MANUAL in
           # tools/orphans.js with that reason rather than here.
           - { gate: pracshare, timeout: 20, command: node tests/pracshare.js }
+          # 27 November: no caption lines on a surface (tests/nocaption.js,
+          # CO-33). Reads the rendered page and prints the flagged lines per
+          # tab. REPORT ONLY by ruling: it exits 0 on a flagged line and fails
+          # only on its own self checks. Not in tests/floors.json yet, on
+          # purpose, so it holds nothing until the other builds' sweeps land.
+          - { gate: nocaption, timeout: 20, command: node tests/nocaption.js }
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

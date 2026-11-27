@@ -12,7 +12,8 @@
     "marketing/refuse.js:<id>": "already enforced on outward copy by that rule id.",
     "tools/terms.py": "terminology drift, enforced by that tool.",
     "tools/questions.js": "enforced by the question generator's own gate.",
-    "person": "not gateable. It is in the guidance list at the foot of this file, named rather than dropped."
+    "person": "not gateable. It is in the guidance list at the foot of this file, named rather than dropped.",
+    "tests/nocaption.js": "a browser gate that reads the rendered surfaces, report only at first. Not written twice."
   },
   "canonical": {
     "not read at all, as a value": "not read yet",
@@ -171,7 +172,8 @@
       "log": [
         "CO-27",
         "CO-28",
-        "CO-16"
+        "CO-16",
+        "CO-33"
       ],
       "why": "A paragraph under a heading whose only job is to explain what the section is, how to read it, or how to use it. The heading, the layout, the icon and the control already say it, and the person does not read the paragraph; they scan past it and it costs the screen. His ruling, the third time: no text that describes something without an icon or a symbol unless it is body text, and we have overlays for all of it.",
       "re": [
@@ -195,8 +197,25 @@
       ],
       "fail": "Archetypes. 12 ways of acting, each beside the part of your life it acts from. Set how much of each one is you, from one to five. [Drag to turn it. Press any name to read that axis.]",
       "fix": "Archetypes. [the wheel, the scale with its two end words, and nothing else]",
-      "keeps": "Four kinds of line are not this defect and are not cut by it. A reading about the person. An empty state or a refusal that says what is missing and what puts it in. A disclosure the person is owed: what is stored, where, who has sight, what a delete does. And one line of instruction at the moment of use, where the control has no other way to be learned, the model being the archetype scale's own: One press sets it. The same press again takes it off.",
+      "keeps": "Four kinds of line are not this defect and are not cut by it. A reading about the person. An empty state or a refusal that says what is missing and what puts it in. A disclosure the person is owed: what is stored, where, who has sight, what a delete does. And, only inside an empty state or a refusal, one line of instruction at the moment of use that names what puts the missing thing in. On a surface that has its content, how to use a control is its tooltip and never a line (CO-33).",
       "note": "The patterns are the shapes the class actually shipped in, read off the corpses rather than imagined. How to use a control is only caught with an object in front of the verb, press a region to open, press one to trace, because a tooltip's own action line, Click to set as primary, is on demand and is the overlay he asked for; the first cut without the object fired on every canvas tooltip. Checked before it was trusted: nothing found on the product after the HS sweep; run over the tree before it, the archetype line, the Energetics subtitle and the release line he quoted all fire, and so does the BA9 caption struck on 25 September; none of the kept lines above fires. Some lines the sweep cut by reading pass these patterns, the birth moment paragraph he also quoted, the deck's description and the Settings footers among them. A paragraph that explains its section in words no pattern foresaw passes this gate, which is why the guidance entry for a legend stays in the list at the foot of this file."
+    },
+    {
+      "id": "caption-under-label",
+      "class": "definition",
+      "severity": "flag",
+      "gate": "tests/nocaption.js",
+      "log": [
+        "CO-33",
+        "CO-27",
+        "CO-28",
+        "CO-16"
+      ],
+      "why": "A line on screen about the screen and not about the person: it says what a label is, how a thing is drawn, counted, scored or sourced, or what to do with it, and it shows without anyone pressing anything. Cover the line. If the person loses no fact about themselves, their data or what just happened, it is junk. Its meaning is the label's tooltip.",
+      "re": [],
+      "fail": "Fear. [The body braces against a threat, real or not.] How often does your gut clench?",
+      "fix": "Fear [tooltip: The body braces against a threat, real or not.] How often does your gut clench?",
+      "note": "Enforced by the rendered page, not by a pattern, because a caption is a shape on a screen (muted, small, three words or more, beside a label) and no source regex sees that. Report only until the sweep lands. A keeper declares itself with data-say."
     },
     {
       "id": "invented-example-copy",
@@ -945,6 +964,19 @@
         "invented-example-copy"
       ],
       "note": "Why it kept coming back, found by Emmy and checked against the tree. The two strings were never cut because no gate ever read them. The house harvest drops any literal carrying = or a quote, which is every attribute; objection_hits strips tags before it matches, which deletes a placeholder written inside a whole input tag; and CO-27, section-explains-itself, is the shape of a paragraph under a heading, which a placeholder is not. Each round cut the visible text he struck and left the attribute, because the attribute is not text on a screenshot until the field is empty. The phrase came from the Gollwitzer and Sheeran citation quoted in DESIGN-firstrun.md and RETENTION-90DAY.md, where it is design rationale, and was copied into shipped copy. TASKS.md near round FO had noted it only as a grammar bug, When after I put the kettle on."
+    },
+    {
+      "id": "CO-33",
+      "date": "27 November, in his words",
+      "where": "the Intake page and every surface like it, on the live page",
+      "verbatim": true,
+      "words": "Get rid of all the text that says an axis is a line from a feeling to its opposite... all that is junk. Strip it out. Everywhere... I keep telling you not to have it. You keep adding it... sweep across the site and clear all that junk out.",
+      "objects": "A caption line printed beside or under a label that says what the thing is, how it is drawn, counted, scored or sourced, or what to do with it. The meaning belongs in the tooltip, on hover, tap and focus, and never on the screen as a line.",
+      "rules": [
+        "caption-under-label",
+        "section-explains-itself"
+      ],
+      "note": "Why it kept coming back, found by a research pass. Rule V23 in the voice skill told writers to print a term's meaning as a line after it, V24 shielded that line from cuts, unpSay() in ui/component.js exists to print meanings inline, and about eighty code comments cite round PO as the reason a caption exists. The writer was following the rule. Both rules now say the meaning is the tooltip and nothing else. The fifth logged time for this class, after CO-16, CO-28, CO-27 and CO-32. Held by tests/nocaption.js, which reads the rendered page because a caption is a property of the screen and not of any one string in the source."
     }
   ],
   "handover": [
