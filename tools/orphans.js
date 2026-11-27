@@ -75,6 +75,15 @@ const MANUAL = {
      Wire the real gates-browser step into deploy.yml and drop this line
      once those are resolved and the file is confirmed clean. */
   'vocab.js': 'reads 15 passed, 5 failed on the merged tree; not clean yet, see tests/vocab.js and this file\'s own comment',
+  /* 27 November, 0ce41adf. Practitioner sharing end to end: it spawns the
+     reboot-os Worker (atuned/server/test/serve.mjs) from a checkout named by
+     ROS and walks two browser profiles against it. reboot-os is a private
+     repository and no workflow here holds a token that can check it out, so
+     in CI it could only print NOT RUN, which is a gate that runs nothing.
+     The Worker half is gated in reboot-os itself (test/prac.test.mjs). Wire
+     it into gates-report and drop this line once a job can check reboot-os
+     out. Read 24 passed, 0 failed by hand on that day. */
+  'praclive.js': 'run by hand with ROS set to a reboot-os checkout: it spawns the real Worker, and no job here can check out that private repository',
 };
 
 /* YAML and bash share `#` as a comment. A `#` opens one at the start of a
