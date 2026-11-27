@@ -1553,6 +1553,10 @@ function ritRender(){
  /* THE LEFT COLUMN IS THE BUILDER ALONE, 21 November: Called for moved to
     the centre under the week, where its cards are dragged onto a day */
  if(left)left.innerHTML=ritBuildHtml(c,act.length,r.unread);
+ /* A RITUAL A PRACTITIONER SENT, round PS, C3: its own row at the head of
+    the column the person starts their own rituals from, drawn and wired by
+    ui/praclive.js, and only on the person's own record */
+ if(left&&ritOwn()&&typeof pracRitHtml==='function')left.insertAdjacentHTML('afterbegin',pracRitHtml());
  /* RITUAL TO AVATAR AND ONGOING GOAL IN THE RIGHT MENU, SV16, his words:
     "Ongoing goals, and ritual to avatar move that to the right menu." After
     Accountability and not inside it: he ruled the tracker stays as it is, so
@@ -1565,6 +1569,7 @@ function ritRender(){
      column that starts one comes first, shell/head.html, round QN */
   document.body.classList.toggle('ritnone',!act.length);}
  ritWire(h,c); if(left)ritWire(left,c); if(side)ritWire(side,c);
+ if(left&&typeof pracRitWire==='function')pracRitWire(left);
  [h,left,side].forEach(ritTell);
  /* the rings move into their values, the same tween the dock's circles and
     every badge in the rails use (crMotion, ui/component.js): from empty on

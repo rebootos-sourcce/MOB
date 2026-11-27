@@ -56,7 +56,8 @@ const REG_MAP=[
  ['time_axis','held',[],'how a release settles over the days after it. Nothing here models it, and the rebound days were taken off the release screen by his ruling of 27 September'],
  ['evidence','held',[],'trial and practice figures about the method. Not product data'],
  ['contraindications','held',[],'when a release should not be run, or should be paced. The release screens hold the product\'s own wording'],
- ['open_rulings','held',[],'the owner\'s open questions in that file, carried into CANON-MERGE-PLAN.md']];
+ ['open_rulings','held',[],'the owner\'s open questions in that file, carried into CANON-MERGE-PLAN.md'],
+ ['resolved_rulings','held',['AMPLIFIER'],'the open questions he has closed, his words and the day. Each one is applied to the table it names and regDiff holds that table, so the record itself is not carried a second time']];
 
 /* the ported tables, by register, as regDiff reads them */
 function regDiff(canon){

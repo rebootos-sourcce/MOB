@@ -227,7 +227,38 @@ const addedText = (before, after) => { const left = before.slice(), add = [];
 const circleOf = p => p.evaluate(() => { const c = document.getElementById('srcface'); const r = c.getBoundingClientRect(); const R = Math.max(12, Math.min(r.width, r.height) / 2 - 2);
   return { cx: r.left + r.width / 2, cy: r.top + r.height / 2, R, box: [r.left, r.top, r.width, r.height], top: Math.round(r.top) }; });
 const tipOn = p => p.evaluate(() => { const t = document.getElementById('tip'); return !!(t && t.classList.contains('on')); });
-const hover = async (p, x, y, ms) => { await p.mouse.move(x - 40, y - 40); await p.mouse.move(x, y, { steps: 4 }); await p.waitForTimeout(ms || 1000); const on = await tipOn(p); return on; };
+/* A HOVER IS WATCHED FOR ITS WHOLE WINDOW, AND THE WINDOW IS THE ONE THE PAGE
+   NEEDED. This slept a fixed 1100 milliseconds and read #tip once at the end.
+   With four copies of this gate on one CI box the page's own 380 millisecond
+   hover delay, and the frame after it that adds .on, landed later than 1100
+   of ours, so Talk's own card, the positive control, read as never opening
+   while nothing in the product was wrong (nightly 45886220916, parallel 1 and
+   4). A fixed sleep assumes the page's clock kept pace with the test's, and
+   under load it does not. It also cut the other way: a quiet hover read once
+   could miss a card that opened and closed inside the window. So the page now
+   records from inside itself whether #tip carried .on at any moment of the
+   window, and the control is run first and timed in wall clock: tipOpen gives
+   how long Talk's card really took, and every hover that must open nothing
+   waits at least twice that, so a quiet circle is quiet for longer than a
+   working card needed to appear on this same page, on this same box. */
+/* only an opening counts: a card from the hover before, still easing out
+   under its grace when the window starts, is not this hover's card */
+const TIPWATCH = () => { window.__tipEver = false; if (window.__tipMo) window.__tipMo.disconnect();
+  window.__tipMo = new MutationObserver(ms => ms.forEach(m => { const t = m.target;
+    if (t.id === 'tip' && t.classList.contains('on') && !/(^|\s)on(\s|$)/.test(m.oldValue || '')) window.__tipEver = true; }));
+  window.__tipMo.observe(document.documentElement, { subtree: true, attributes: true, attributeFilter: ['class'], attributeOldValue: true }); };
+const tipEver = p => p.evaluate(() => { if (window.__tipMo) window.__tipMo.disconnect(); const t = document.getElementById('tip');
+  return !!window.__tipEver || !!(t && t.classList.contains('on')); });
+const pointTo = async (p, x, y) => { await p.mouse.move(x - 40, y - 40); await p.mouse.move(x, y, { steps: 4 }); };
+const HOVER_MIN = 1100;
+/* the watch goes on before the pointer moves: on a starved page the evaluate after the move
+   can land past the 380 ms delay, and the opening it was there to see has already happened */
+const hover = async (p, x, y, ms) => { await p.evaluate(TIPWATCH); await pointTo(p, x, y); await p.waitForTimeout(Math.max(HOVER_MIN, ms || 0)); return tipEver(p); };
+/* the control: how long, in real milliseconds, a card the product does show took to open here. null if it never did */
+const tipOpen = async (p, x, y, limit) => { await pointTo(p, x, y); const t0 = Date.now();
+  const on = await p.waitForFunction(() => { const t = document.getElementById('tip'); return !!(t && t.classList.contains('on')); }, null, { timeout: limit, polling: 50 }).then(() => true, () => false);
+  return on ? Date.now() - t0 : null; };
+const tipGone = p => p.waitForFunction(() => { const t = document.getElementById('tip'); return !(t && t.classList.contains('on')); }, null, { timeout: 8000, polling: 50 }).catch(() => {});
 
 /* THE JUMP DETECTOR. Every 50 milliseconds the rectangle of the round button.
    Steady is the place it most often sat; an excursion is a sample more than 4
@@ -238,12 +269,35 @@ const WATCH = () => { window.__tr = 0; window.__rects = []; window.__t0 = perfor
   window.__iv = setInterval(() => { const e = document.getElementById('stapply'); const r = e ? e.getBoundingClientRect() : null;
     window.__rects.push([Math.round(performance.now() - window.__t0), r ? Math.round(r.left) : 0, r ? Math.round(r.top) : 0, r ? Math.round(r.width) : 0]); }, 50); };
 const readWatch = p => p.evaluate(() => { clearInterval(window.__iv); return { tr: window.__tr, rects: window.__rects }; });
+/* WHAT WAS WATCHED IS READ OFF THE SAMPLES' OWN TIMES, NOT OFF HOW MANY THERE
+   WERE. The checks below asked for more than 500 samples, which is 25 of the
+   40 seconds only if every 50 millisecond tick landed on time. Under load
+   Chrome runs a late interval once rather than catching up, so on a busy CI
+   box a page that held perfectly still read 294 and 398 samples and failed,
+   and the same count would pass a run that sampled fast for 25 seconds and
+   then went blind for 15. A margin on the count fixes the first by making the
+   second worse. So a sample now counts only for the stretch since the one
+   before it, and only when that stretch is no longer than JUMP_MS: the
+   known bad case below injects a jump that lasts JUMP_MS, so a gap of that
+   length or less cannot have hidden one, and a longer gap is blind time that
+   is reported and never credited. The requirement is the one the count meant,
+   COVER of the soak seen at that resolution, now measured rather than
+   assumed. */
+const JUMP_MS = 150, COVER = 500 / 800;
 const analyse = w => {
   const vis = w.rects.filter(r => r[3] > 0), tally = {};
   vis.forEach(r => { const k = r[1] + ',' + r[2]; tally[k] = (tally[k] || 0) + 1; });
   const mode = Object.keys(tally).sort((a, b) => tally[b] - tally[a])[0] || '0,0', [mx, my] = mode.split(',').map(Number);
   const out = vis.filter(r => Math.max(Math.abs(r[1] - mx), Math.abs(r[2] - my)) > 4);
-  return { samples: w.rects.length, shown: vis.length, steady: [mx, my], excursions: out.length, first: out.slice(0, 4), tr: w.tr }; };
+  let seenMs = 0, shownMs = 0, maxGap = 0;
+  for (let i = 1; i < w.rects.length; i++) {
+    const gap = w.rects[i][0] - w.rects[i - 1][0]; maxGap = Math.max(maxGap, gap);
+    if (gap > JUMP_MS) continue;
+    seenMs += gap; if (w.rects[i][3] > 0 && w.rects[i - 1][3] > 0) shownMs += gap; }
+  return { samples: w.rects.length, shown: vis.length, seenMs, shownMs, maxGap, steady: [mx, my], excursions: out.length, first: out.slice(0, 4), tr: w.tr }; };
+/* Talk off draws no Commit at all, so that page is credited for time watched, not time the button was on screen */
+const watched = (r, all) => r.samples + ' samples, ' + ((all ? r.seenMs : r.shownMs) / 1000).toFixed(1) + ' s of ' + SOAK + (all ? ' watched' : ' seen on screen') + ' at ' + JUMP_MS + ' ms or finer, longest gap ' + r.maxGap + ' ms';
+const enough = ms => ms >= SOAK * 1000 * COVER;
 
 async function pressTalk(p) { await p.click('#stmic'); }
 
@@ -286,13 +340,23 @@ const lostOk = p => !(p.lost || []).length;
         up: !!c.closest('[title],[data-tip],[data-tip-t]'), key: /^Source's reading circle\nDots:/.test(key) && /Gold arc/.test(key) && key.split('\n').length >= 6 }; });
     ok(!k.title && !k.tip && !k.up, 'the canvas carries no title and no data-tip, and nothing above it does: ' + JSON.stringify(k));
     ok(k.aria && k.key, 'the label stays on the canvas and the key text stays in the data, SrcFace.key(): ' + JSON.stringify({ aria: k.aria, key: k.key }));
-    const h1 = await hover(p, c0.cx, c0.cy, 1100);
-    ok(!h1, 'no hover card at the middle of the circle after a second');
-    const h2 = await hover(p, c0.box[0] + 24, c0.cy, 1100);
-    ok(!h2, 'and none over the empty corner of its box, where the card used to open');
+    /* the control goes first now, so its measured time can size the quiet windows after it */
     const mc = await p.evaluate(() => { const r = document.getElementById('stmic').getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; });
-    const h3 = await hover(p, mc[0], mc[1], 1100);
-    ok(h3, 'the probe can see a card: Talk\'s own hover still opens one, so a quiet circle is not a tooltip that is off for everyone');
+    const h3 = await tipOpen(p, mc[0], mc[1], 15000);
+    await p.mouse.move(2, 2); await tipGone(p); await p.waitForTimeout(500);
+    /* and the watch the quiet hovers use sees that same card, so its false is a real false. Waited
+       for, not slept on: one timed opening is not a promise about the next one on a loaded box,
+       measured at 657 ms for the first and more than 1314 for the second on the same page */
+    await p.evaluate(TIPWATCH); await pointTo(p, mc[0], mc[1]); const tw = Date.now();
+    const h3w = await p.waitForFunction(() => window.__tipEver, null, { timeout: 15000, polling: 50 }).then(() => Date.now() - tw, () => null);
+    await tipEver(p);
+    const quiet = 2 * Math.max(h3 || HOVER_MIN, h3w || HOVER_MIN);
+    ok(h3 !== null && h3w !== null, 'the probe can see a card: Talk\'s own hover still opens one, so a quiet circle is not a tooltip that is off for everyone, opened in ' + h3 + ' ms, and seen by the window watch in ' + h3w + ' ms');
+    await p.mouse.move(2, 2); await tipGone(p); await p.waitForTimeout(500);
+    const h1 = await hover(p, c0.cx, c0.cy, quiet);
+    ok(!h1, 'no hover card at the middle of the circle at any moment of ' + Math.max(HOVER_MIN, quiet) + ' ms, twice what Talk\'s card took');
+    const h2 = await hover(p, c0.box[0] + 24, c0.cy, quiet);
+    ok(!h2, 'and none over the empty corner of its box, where the card used to open');
     await p.mouse.move(2, 2); await p.waitForTimeout(500);
 
     /* 1. the circle at rest, measured against itself */
@@ -343,7 +407,7 @@ const lostOk = p => !(p.lost || []).length;
 
     /* the hover again, now that the circle has moved up under a pointer that was left on Talk */
     const c1 = await circleOf(p);
-    const h4 = await hover(p, c1.cx, c1.cy, 1100);
+    const h4 = await hover(p, c1.cx, c1.cy, quiet);
     ok(!h4, 'no hover card on the circle while the microphone is open either');
     /* the picture is taken with the pointer still on the circle, where the owner's card was */
     if (SHOTS) await snap(p, 'talk-silent-hover-1600.png');
@@ -530,12 +594,12 @@ const lostOk = p => !(p.lost || []).length;
       }
     });
     const cStarts = await C.evaluate(() => window.__micCfg.starts);
-    ok(ra.shown > 500 && ra.samples > 500, 'Talk on at 1600: the button was sampled ' + ra.samples + ' times and was on screen for ' + ra.shown);
+    ok(enough(ra.shownMs), 'Talk on at 1600: the button was watched on screen, ' + watched(ra));
     ok(aState.starts >= 5 && aState.renders >= 4, 'and the recogniser went quiet and was restarted ' + (aState.starts - 1) + ' times, rendering the page ' + aState.renders + ' times, as Chrome\'s does about every ten seconds');
     ok(ra.excursions === 0 && ra.tr === 0, 'Talk on at 1600: it never left its place, ' + ra.excursions + ' samples away from ' + ra.steady + ', and the browser started ' + ra.tr + ' glides on left or top: ' + JSON.stringify(ra.first));
-    ok(rc.shown > 500 && rc.excursions === 0 && rc.tr === 0 && cStarts >= 5, 'Talk on at 390: the same, ' + rc.shown + ' samples on screen, ' + rc.excursions + ' away from ' + rc.steady + ', ' + rc.tr + ' glides, ' + (cStarts - 1) + ' restarts: ' + JSON.stringify(rc.first));
-    ok(rb.samples > 500 && rb.excursions === 0 && rb.tr === 0, 'Talk off at 1600: nothing moves, ' + rb.samples + ' samples, ' + rb.excursions + ' excursions, ' + rb.tr + ' glides');
-    ok(rd.shown > 300 && rd.excursions >= 2, 'known bad first: a jump injected every ten seconds is caught, ' + rd.excursions + ' samples away in ' + rd.shown + ', ' + injected + ' injected: ' + JSON.stringify(rd.first));
+    ok(enough(rc.shownMs) && rc.excursions === 0 && rc.tr === 0 && cStarts >= 5, 'Talk on at 390: the same, ' + watched(rc) + ', ' + rc.excursions + ' away from ' + rc.steady + ', ' + rc.tr + ' glides, ' + (cStarts - 1) + ' restarts: ' + JSON.stringify(rc.first));
+    ok(enough(rb.seenMs) && rb.excursions === 0 && rb.tr === 0, 'Talk off at 1600: nothing moves, ' + watched(rb, true) + ', ' + rb.excursions + ' excursions, ' + rb.tr + ' glides');
+    ok(rd.shown > 0 && rd.excursions >= 2, 'known bad first: a jump injected every ten seconds is caught, ' + rd.excursions + ' samples away, ' + watched(rd) + ', ' + injected + ' injected: ' + JSON.stringify(rd.first));
     await shot(C, 'talk-silent-after-soak-390.png');
 
     /* the same pages are the 390 hover check: the structure, and a tap on the circle that opens nothing */

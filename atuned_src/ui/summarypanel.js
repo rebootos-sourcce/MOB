@@ -82,7 +82,11 @@ function smpSayHtml(){
  if(!out||!out.ok)return '';
  return '<div class="smp-say" id="smpsay" aria-live="polite">'
   +'<div class="ins-mk">'+srcMark()+'<span>Source AI\'s reading of '+esc(out.id.title)+'</span></div>'
-  +out.pages[0].paras.map(insParaHtml).join('')+'</div>';}
+  /* the first three registers in the order the rail pages them. pages[0] was
+     the whole reading while a page held three paragraphs; since 20 November a
+     page holds one register, and this panel has no dots to page with, so it
+     prints the three it printed before. The mechanic stays on the rail. */
+  +out.pages.filter(function(pg){return pg.reg!=='mechanic';}).map(function(pg){return pg.paras[0];}).map(insParaHtml).join('')+'</div>';}
 /* IMPRESSIONS UNDERNEATH, filtered to this node's own addresses. Same
    data impRender already draws from (ST_PARSED.imprints), not a
    second imprint source. */

@@ -46,8 +46,8 @@ if(typeof module!=='undefined'&&module.exports){
                  srcVet:srcVet, srcVetSay:srcVetSay, srcChoose:srcChoose, qcFamilyOf:qcFamilyOf, srcFamilyCands:srcFamilyCands,
                  SRC_RESTATE:SRC_RESTATE, srcRestate:srcRestate,
   /* insight */  insightRead:insightRead, insightRelease:insightRelease, insightResolve:insightResolve,
-                 insightText:insightText, INS_HEAD:INS_HEAD, INS_MAX:INS_MAX, INS_LIST:INS_LIST,
-                 INS_WORD:INS_WORD, INS_CAP:INS_CAP, patFam:patFam,
+                 insightText:insightText, INS_HEAD:INS_HEAD, INS_MAX:INS_MAX, INS_LIST:INS_LIST, INS_REG:INS_REG,
+                 INS_WORD:INS_WORD, INS_CAP:INS_CAP, patFam:patFam, patSeat:patSeat, leaves:leaves,
   /* undo */     undoPush:undoPush, undoPop:undoPop, undoDepth:undoDepth,
                  redoPop:redoPop, redoDepth:redoDepth, redoPeek:redoPeek,
                   undoPeek:undoPeek, undoClear:undoClear, UNDO_MAX:UNDO_MAX,
@@ -91,7 +91,7 @@ if(typeof module!=='undefined'&&module.exports){
                  ageFinding:ageFinding, AGE_WORKED:AGE_WORKED,
   /* compass */  MIRROR:MIRROR, PATHS:PATHS, MASTERS:MASTERS, BLUEPRINT:BLUEPRINT, CIRCLES:CIRCLES,
                  CASCADE:CASCADE, DESCENT:DESCENT, DESCENT_REFER:DESCENT_REFER,
-                 mirrorAt:mirrorAt, darkRead:darkRead, circleAt:circleAt,
+                 mirrorAt:mirrorAt, compassAt:compassAt, darkRead:darkRead, circleAt:circleAt,
                  descentStep:descentStep, descentHeld:descentHeld,
                  DARK_MAL:DARK_MAL, DARK_CQ:DARK_CQ,
                  GOVERN:GOVERN, quadrant:quadrant, outwardShare:outwardShare, organisedShare:organisedShare, ORG_W:ORG_W,
@@ -372,6 +372,9 @@ if(typeof module!=='undefined'&&module.exports){
   /* a worked example's history, engine/pracex.js, for the practitioner page */
                   PRACEX_DAYS:PRACEX_DAYS, PRACEX_HIST:PRACEX_HIST, pracexRecord:pracexRecord,
                   pracexDays:pracexDays, pracexRead:pracexRead,
+                  /* round PS: what a client's device shares with a practitioner, engine/pracshare.js */
+                  PRACSHARE_V:PRACSHARE_V, pracShareSum:pracShareSum, pracShareBody:pracShareBody, pracShareField:pracShareField,
+                  pracShareBuild:pracShareBuild, pracShareCheck:pracShareCheck, pracPropCheck:pracPropCheck,
   /* a worked example's bank and vault, engine/exdepth.js */
                   EXDEPTH_HIST:EXDEPTH_HIST, exdepthFill:exdepthFill, exdepthHas:exdepthHas,
                   exdepthAt:exdepthAt, relQueueOf:relQueueOf, relWrite:relWrite,

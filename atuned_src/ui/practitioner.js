@@ -737,7 +737,10 @@ function pracNotesCard(p){
    what (DECISIONS.md, "The practitioner": the tier scope, structure only or
    story with its own yes) is still open, and a field list written now would
    be a schema nobody ruled on. */
-function pracSightList(){return [];}
+/* THE LIVE LIST, round PS, 26 November: the server piece exists now
+   (reboot-os atuned/server/src/prac.js) and ui/praclive.js reads it. Only
+   connections the client has said yes to are counted, never one waiting. */
+function pracSightList(){return (typeof pracLiveActive==='function')?pracLiveActive():[];}
 function pracSightGroup(){
  var L=pracSightList();
  return accGroup('Your clients',
@@ -971,6 +974,7 @@ function pracWire(host){
  host.querySelectorAll('[data-pri]').forEach(function(b){
   b.onclick=function(){var i=+b.getAttribute('data-pri');
    if(i!==PRAC_SEL){pracDrillClear(); PRAC_ALLPAT=false;}
+   if(typeof pracLiveClear==='function')pracLiveClear();
    PRAC_SEL=i; renderPrac();};});
  host.querySelectorAll('[data-prs]').forEach(function(b){
   b.onclick=function(){PRAC_SORT=b.getAttribute('data-prs'); renderPrac();};});
@@ -978,7 +982,7 @@ function pracWire(host){
  var all=host.querySelector('[data-prall]');
  if(all)all.onclick=function(){PRAC_ALLPAT=!PRAC_ALLPAT; renderPrac();};
  var back=host.querySelector('.pr-back');
- if(back)back.onclick=function(){pracDrillClear(); PRAC_SEL=null; renderPrac();};
+ if(back)back.onclick=function(){pracDrillClear(); PRAC_SEL=null; if(typeof pracLiveClear==='function')pracLiveClear(); renderPrac();};
  var accb=host.querySelector('#pracacc');
  if(accb)accb.onclick=function(){ACC_OPEN='account'; setTab(TAB.SETTINGS);};
  var f=host.querySelector('#prnoteform');
@@ -991,8 +995,12 @@ function renderPrac(){
  var host=$('prac'); if(!host)return;
  pracCss();
  var open=(PRAC_SEL!=null&&PEOPLE[PRAC_SEL])?PEOPLE[PRAC_SEL]:null;
+ /* A REAL CLIENT OPEN, round PS: ui/praclive.js draws them. Its open client
+    and an example are never open at once: pressing one clears the other. */
+ var live=(typeof pracLiveOpen==='function')&&pracLiveOpen();
+ var side=(!open&&!live&&typeof pracLiveSide==='function')?pracLiveSide():'';
  pracSelNone(open);
- host.innerHTML='<div class="pr-wrap" style="--c:'+seatCol('Throat')+'" data-open="'+(open?'1':'0')+'">'
+ host.innerHTML='<div class="pr-wrap" style="--c:'+seatCol('Throat')+'" data-open="'+(open||live?'1':'0')+'">'
   +'<div class="ac-hd"><div class="pm-eye">Practitioner</div><h2 class="kb-h">Clients</h2></div>'
   /* WHAT THIS MODE IS, said on the page it opens, round RB: the page used to
      begin on a list of names with nothing saying whose they were or what a
@@ -1002,9 +1010,10 @@ function renderPrac(){
   +'<button type="button" class="btn pr-back">Back to clients</button>'
   +'<div class="pr-cols">'
   +'<div class="pr-list-col">'
-  +pracSightGroup()
+  +((typeof pracLiveList==='function')?pracLiveList():pracSightGroup())
   +'<div class="ac-grp"><div class="ac-gh">Worked examples</div>'+pracList()+'</div>'+pracModeGroup()+'</div>'
-  +pracDetail()
+  +(live?pracLiveDetail():side&&!open?side:pracDetail())
   +'</div></div>';
  pracWire(host);
+ if(typeof pracLiveWire==='function')pracLiveWire(host);
  pracMark();}

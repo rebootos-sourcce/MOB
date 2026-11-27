@@ -108,23 +108,28 @@ async function gate(browser,file,ok){
  await pg.waitForTimeout(250);
  const rd=await pg.evaluate(()=>{
   const ins=document.getElementById('insight'); if(!ins)return null;
-  const ps=[...ins.querySelectorAll('.ins-pg[data-on] .ins-p')];
-  const words=ps.reduce((a,p)=>a+p.innerText.trim().split(/\s+/).length,0);
+  /* 20 November, his words: "cycle through the depth of the insight... not
+     compressed insight on one page." One register on the page in view, the
+     four of them in his order across the pages. */
+  const on=[...ins.querySelectorAll('.ins-pg[data-on] .ins-p')];
+  const ps=[...ins.querySelectorAll('.ins-pg .ins-p')];
+  /* textContent: a page out of view is visibility hidden, and innerText reads it as nothing */
+  const words=ps.map(p=>p.textContent.trim().split(/\s+/).length);
   const rdb=document.getElementById('insrd');
   const st=document.getElementById('stack');
   return {name:(ins.querySelector('.ins-nm')||{}).textContent||'',kind:(ins.querySelector('.ins-kd')||{}).textContent||'',
-   fig:(ins.querySelector('.ins-fg')||{}).textContent||'',paras:ps.length,
+   fig:(ins.querySelector('.ins-fg')||{}).textContent||'',paras:on.length,pages:ins.querySelectorAll('.ins-pg').length,
    heads:ps.map(p=>(p.querySelector('b')||{}).textContent||''),words,
    marks:ins.querySelectorAll('.src-mk').length,ai:ps.filter(p=>p.classList.contains('src-ai')).length,
    italic:ps.some(p=>getComputedStyle(p).fontStyle==='italic'),
    rdTop:rdb?rdb.getBoundingClientRect().top:0,stackTop:st?st.getBoundingClientRect().top:0,
    rdH:rdb?Math.round(rdb.getBoundingClientRect().height):0,
    selHead:(document.getElementById('rdrill')||{}).innerText||''};});
- ok(rd&&rd.paras===3&&rd.heads.join('|')==='Where it sits.|How it runs.|What to do.',
-  'READING: three paragraphs under the three fixed headers, '+JSON.stringify(rd&&rd.heads));
- ok(rd&&rd.marks===1&&rd.ai===3&&!rd.italic,
-  'READING: one Source AI mark at the head of the block, every paragraph in the Source AI colour, none slanted, '+JSON.stringify({m:rd&&rd.marks,ai:rd&&rd.ai}));
- ok(rd&&rd.words>=60&&rd.words<=210,'READING: longer than the old one line and inside 210 words, '+(rd&&rd.words));
+ ok(rd&&rd.paras===1&&rd.pages===4&&rd.heads.join('|')==='What it is.|How it works.|The behaviour.|The mechanic.',
+  'READING: one register a page, the four in his order, what it is, how it works, the behaviour and the mechanic, '+JSON.stringify(rd&&{on:rd.paras,pages:rd.pages,h:rd.heads}));
+ ok(rd&&rd.marks===1&&rd.ai===4&&!rd.italic,
+  'READING: one Source AI mark at the head of the block, every register in the Source AI colour, none slanted, '+JSON.stringify({m:rd&&rd.marks,ai:rd&&rd.ai}));
+ ok(rd&&rd.words.reduce((a,b)=>a+b,0)>=60&&rd.words.every(w=>w<=72),'READING: longer than the old one line in all, and no register past its ceiling, '+(rd&&rd.words.join(',')));
  ok(rd&&rd.name&&rd.kind==='Hyper complex'&&/^\d+%$/.test(rd.fig),
   'READING: the identity line is the name, the kind in words and a percent, '+JSON.stringify(rd&&{n:rd.name,k:rd.kind,f:rd.fig}));
  ok(rd&&rd.stackTop-rd.rdTop<800,'READING: the stack starts within a short scroll of the reading, '+(rd&&Math.round(rd.stackTop-rd.rdTop))+'px');
@@ -183,8 +188,8 @@ async function gate(browser,file,ok){
     none:/Nothing selected/.test(ins.innerText),paras:ins.querySelectorAll('.ins-pg[data-on] .ins-p').length});});
   S.pin=null; rdClose();
   return out;});
- const bad=doors.filter(d=>d.err||!d.shown||d.none||!d.nm2||d.paras!==3);
- ok(doors.length===14&&bad.length===0,'DOORS: every kind of selection is read by Insight in three paragraphs while Selection shows its card, '
+ const bad=doors.filter(d=>d.err||!d.shown||d.none||!d.nm2||d.paras!==1);
+ ok(doors.length===14&&bad.length===0,'DOORS: every kind of selection is read by Insight, one register a page, while Selection shows its card, '
   +JSON.stringify(bad.slice(0,3)));
 
  /* THE DOTS */
@@ -425,10 +430,53 @@ async function gate(browser,file,ok){
   S.pin=o; runDrill(o); render(); await new Promise(z=>setTimeout(z,150));
   const row=[...document.querySelectorAll('#stack .stk-r[data-sk]')].find(b=>{const rr=computeSeen()[({sab:'sabs',cx:'cxs',hy:'hys',sup:'sups'})[b.getAttribute('data-sk')]][+b.getAttribute('data-si')];return rr&&rr.nm===o.nm&&rr.kind===o.kind;});
   const glyph=row&&row.parentNode.querySelector('.stk-run:not(.off)');
-  const p3=[...document.querySelectorAll('#insight .ins-pg[data-on] .ins-p')][2];
-  return {nm:o.nm,bRel:!!document.getElementById('bRel'),glyph:!!glyph,p3:p3?p3.innerText.replace(/\s+/g,' '):'',tip:row?(row.getAttribute('data-tip')||''):''};});
+  /* the behaviour register is the third page, by its key and not by where it sits */
+  const p3=document.querySelector('#insight .ins-pg[data-reg="behaviour"] .ins-p');
+  return {nm:o.nm,bRel:!!document.getElementById('bRel'),glyph:!!glyph,p3:p3?p3.textContent.replace(/\s+/g,' '):'',tip:row?(row.getAttribute('data-tip')||''):''};});
  ok(!ov.none&&!ov.bRel&&!ov.glyph&&/opposite pushed past where it helps/.test(ov.p3),
   'OVERSHOT: no Release and no run glyph on an overshot pattern, and the reading says why, '+JSON.stringify(ov));
+
+ /* NO RED THAT NOTHING HOLDS, 27 November. His words on the live rail: "the
+    insight panel has red, but there's nothing in it that's red." A pattern's
+    bar and the Insight ring took the seat of the pattern's FIRST address, and
+    the first address is a Root one whenever the pattern touches Root, so a
+    pattern drew Root's red when Root held a sliver of it or nothing at all
+    (an overshot pattern). The expected seat is worked out HERE, from the
+    addresses' own charge summed by seat, and not by calling the helper the
+    fix added, so the check cannot agree with a wrong helper. A pattern whose
+    addresses carry no charge must paint no seat colour at all. Every record,
+    every row on the rail, and the Insight ring for each pattern whose first
+    address is not where its charge sits. */
+ const tint=await pg.evaluate(()=>{
+  const SEATS=BANDS.map(b=>String(seatCol(b)).toLowerCase());
+  const heavy=o=>{const by={}; leaves(o).forEach(n=>{const v=+n.sq||0; if(v>0)by[n.b]=(by[n.b]||0)+v;});
+   let best=null,bv=0; BANDS.forEach(b=>{if((by[b]||0)>bv){bv=by[b];best=b;}}); return best;};
+  const varOf=(st,v)=>{const m=new RegExp('(?:^|;)\\s*'+v+':\\s*([^;]+)').exec(st||''); return m?m[1].trim().toLowerCase():'';};
+  const want=o=>{const h=heavy(o); return h?String(seatCol(h)).toLowerCase():null;};
+  const fits=(got,o)=>{const w=want(o); return got!==''&&(w?got===w:SEATS.indexOf(got)<0);};
+  const bad=[]; let rows=0, rings=0, rootFirst=0;
+  const LIST={sab:'sabs',cx:'cxs',hy:'hys',sup:'sups'};
+  PEOPLE.forEach((p,pi)=>{
+   loadP(pi); setTab(TAB.FIELD); S.pin=null; rdClose(); render();
+   const r=computeSeen(); if(r.unread)return;
+   document.querySelectorAll('#stack .stk-r[data-sk]').forEach(btn=>{
+    const o=(r[LIST[btn.getAttribute('data-sk')]]||[])[+btn.getAttribute('data-si')]; if(!o)return;
+    const t=btn.querySelector('.rb-t[style*="--c:"]'), pr=btn.querySelector('[style*="--lc:"]');
+    const got=t?varOf(t.getAttribute('style'),'--c'):pr?varOf(pr.getAttribute('style'),'--lc'):'';
+    rows++; if(!fits(got,o))bad.push(p.nm+' row '+o.nm+' painted '+got+' charge in '+heavy(o));});
+   [].concat(r.sabs||[],r.cxs||[],r.hys||[],r.sups||[]).forEach(o=>{
+    const lv=leaves(o); if(!lv.length||lv[0].b===heavy(o))return;
+    rootFirst+=lv[0].b==='Root'?1:0;
+    S.pin=o; runDrill(o); render();
+    const id=document.querySelector('#insight .ins-id');
+    const got=id?varOf(id.getAttribute('style'),'--c'):'';
+    rings++; if(!fits(got,o))bad.push(p.nm+' ring '+o.nm+' painted '+got+' charge in '+heavy(o));});});
+  S.pin=null; rdClose();
+  return {rows,rings,rootFirst,bad};});
+ ok(tint.rows>100&&tint.rings>10&&tint.rootFirst>10&&tint.bad.length===0,
+  'TINT: every pattern bar and Insight ring takes the seat its charge sits in, never its first address, and a pattern with no charge paints no seat colour, '
+  +JSON.stringify({rows:tint.rows,rings:tint.rings,rootFirst:tint.rootFirst,n:tint.bad.length,bad:tint.bad.slice(0,4)}));
+ await pg.evaluate(()=>{loadP(PERSON('Lance 15'));setTab(TAB.FIELD);S.pin=null;rdClose();render();});
 
  /* THE SAFETY LINE is the whole third paragraph and no Release is drawn */
  await pg.evaluate(()=>{loadP(PERSON('Lance 15'));setTab(TAB.FIELD);const r=computeSeen();S.pin=r.hys[0];runDrill(S.pin);render();});
@@ -437,11 +485,11 @@ async function gate(browser,file,ok){
   insRefresh(); await new Promise(z=>setTimeout(z,100));
   const ps=[...document.querySelectorAll('#insight .ins-pg[data-on] .ins-p')];
   const o={bRel:!!document.getElementById('bRel'),glyphs:document.querySelectorAll('#stack .stk-run:not(.off)').length,
-   p3:ps[2]?ps[2].innerText.replace(/\s+/g,' ').trim():'',q:CRISIS_SAY.q};
+   p3:ps[0]?ps[0].innerText.replace(/\s+/g,' ').trim():'',q:CRISIS_SAY.q};
   window.stSafe=was; stSafe=was; insRefresh();
   return o;});
- ok(!safe.bRel&&safe.glyphs===0&&safe.p3==='What to do. '+safe.q,
-  'SAFETY: with the check on, the third paragraph is the one safety line and no Release is drawn anywhere, '+JSON.stringify({b:safe.bRel,g:safe.glyphs,p3:safe.p3.slice(0,80)}));
+ ok(!safe.bRel&&safe.glyphs===0&&safe.p3==='The behaviour. '+safe.q,
+  'SAFETY: with the check on, the page in view is the behaviour register, the one safety line, and no Release is drawn anywhere, '+JSON.stringify({b:safe.bRel,g:safe.glyphs,p3:safe.p3.slice(0,80)}));
 
  /* A STALE STORE LOADS CLEAN */
  const stale=await open(browser,file,1600,1000,`(function(){try{
@@ -454,7 +502,7 @@ async function gate(browser,file,ok){
  catch(e){stThrew=String((e&&e.message)||e).split('\n')[0].slice(0,80);}
  await stale.waitForTimeout(300);
  const sv=await stale.evaluate(()=>({reads:document.querySelectorAll('#insight .ins-pg[data-on] .ins-p').length,levels:document.querySelectorAll('#stack .stk-lv').length}));
- ok(!stThrew&&stale.errs.length===0&&sv.reads===3&&sv.levels>=5,'STALE: a store that carries the old rail\'s keys loads clean and reads, '+JSON.stringify({threw:stThrew,errs:stale.errs.slice(0,2),sv}));
+ ok(!stThrew&&stale.errs.length===0&&sv.reads===1&&sv.levels>=5,'STALE: a store that carries the old rail\'s keys loads clean and reads, '+JSON.stringify({threw:stThrew,errs:stale.errs.slice(0,2),sv}));
  await stale.context().close();
 
  ok(pg.errs.length===0,'ERRORS: no page error through the whole walk, '+JSON.stringify(pg.errs.slice(0,2)));
@@ -501,7 +549,7 @@ async function gate(browser,file,ok){
 const MUT=[
  ['person-card-back',"<div class=\"lsec open\" data-rail=\"right\" data-sec=\"you\">",'<div class="person" id="person">Blueprint Domain</div><div class="lsec open" data-rail="right" data-sec="you">','FIRST:'],
  ['flow-section-back','<!-- FLOW, SEATS, RUNNING NOW, THE LAWS AND THE OLD FOOT','<div class="lsec" data-rail="right" data-sec="flow"><button class="lsec-hd" type="button">Flow</button><div class="lsec-bd"><div id="eshelf">x</div></div></div><!-- FLOW, SEATS, RUNNING NOW, THE LAWS AND THE OLD FOOT','AFTER:'],
- ['two-paragraphs',"pg.paras.map(insParaHtml).join('')","pg.paras.slice(0,2).map(insParaHtml).join('')",'READING: three paragraphs'],
+ ['register-dropped',"pg.paras.map(insParaHtml).join('')","pg.paras.slice(1).map(insParaHtml).join('')",'READING: one register a page'],
  ['no-source-mark',"'<div class=\"ins-mk\">'+srcMark()+","'<div class=\"ins-mk\">'+",'READING: one Source AI mark'],
  ['small-dots','.ins-dot{flex:0 0 var(--tap);width:var(--tap);height:var(--tap);','.ins-dot{flex:0 0 30px;width:30px;height:30px;','DOTS: between two and five'],
  ['dots-dead','function insPage(n){\n if(!INS_OUT)return;','function insPage(n){\n return;','DOTS: the first page is current'],
@@ -529,6 +577,8 @@ const MUT=[
  ['nerve-state-read-off-wrong-value',"+stkNsHtml(o.w,o.nm,f)","+stkNsHtml(o.w/2,o.nm,f)",'NERVE: each mark is the state'],
  ['nerve-marks-one-drawing',"heavy:chainRing(12,12,STK_NSR)+'M4.8 12h14.4',","heavy:chainRing(12,12,STK_NSR)+'M4.8 12H12',",'NERVE: the four states'],
  ['nerve-mark-unexplained',"+' data-tip-k=\"'+esc('Nerve state: '+s.nm)+'\" data-tip=\"'+esc(s.def+' '+nm","+' data-tip-k=\"'+esc('Nerve state: '+s.nm)+'\" data-tip=\"'+esc(' '+nm",'NERVE: every mark unpacks'],
+ ['bar-tint-first-address',"var b=patSeat(o), p=Math.max(","var b=(leaves(o)[0]||{}).b||'Heart', p=Math.max(",'TINT:'],
+ ['ring-tint-first-address',"ob=patSeat(o); return ob?seatCol(ob):'var(--accent)';","ob=(leaves(o)[0]||{}).b||'Heart'; return seatCol(ob);",'TINT:'],
  ['laws-lost-from-intake',"if(f.parentNode!==host)host.appendChild(f);}","}",'LAWS: and the fold'],
 ];
 

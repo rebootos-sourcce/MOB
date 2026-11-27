@@ -303,10 +303,17 @@ async function page(browser,W,H,o){
    for(let i=0;i<rings;i++){
     const sel='#paywall .pw-rg >> nth='+i;
     const want=await pg.evaluate(i=>{const r=document.querySelectorAll('#paywall .pw-rg')[i];
-     const g=sightRows().find(x=>x.k===r.getAttribute('data-k')); return {nm:pwName(g),tl:r.getAttribute('data-tl')};},i);
+     /* gl is the ring's sentence in the one meaning table, '' when it has
+        none. The registers ring had none until fc67a0df and its card read
+        SIGHT's lock line instead, which still named the ring and its tier, so
+        nothing here failed (paywall-registers-no-entry). */
+     const g=sightRows().find(x=>x.k===r.getAttribute('data-k')), nm=g.nm.replace(/^the /,'');
+     const gl=[nm,nm.replace(/es$/,''),nm.replace(/s$/,'')].map(x=>unpackOf(x)).find(Boolean)||'';
+     return {nm:pwName(g),tl:r.getAttribute('data-tl'),gl:gl};},i);
     await pg.focus(sel); await pg.waitForTimeout(40);
     let t=await pg.evaluate(()=>__pw.tip());
     if(!t||t.text.indexOf(want.nm)<0||t.text.indexOf(want.tl)<0||!t.on||t.c<4.5)tipBad.push('focus '+i+' '+JSON.stringify(t));
+    if(!want.gl||!t||t.text.indexOf(want.gl)<0)tipBad.push('ring '+i+' '+want.nm+' does not read its meaning off the table, '+JSON.stringify(want.gl));
     await pg.evaluate(()=>{document.activeElement.blur(); pwTipHide();});
     if(i%5===0){
      if(P.phone){await pg.tap(sel); await pg.waitForTimeout(80);}

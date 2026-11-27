@@ -190,6 +190,10 @@ jobs:
           done
       - name: engine gate
         run: node tests/engine.js 2>&1 | tee "$RUNNER_TEMP/gates/engine.log"
+      # Inventory and record provenance ledger are part of the architecture
+      # contract. Both missing coverage and unrecorded changes must fail.
+      - name: canonical records inventory gate
+        run: node tools/records.js --gate 2>&1 | tee "$RUNNER_TEMP/gates/records.log"
       # THE BODY PAGE'S TABLE, held headless, 18 November. Nothing read ANAT,
       # BMPROP or a nerve name before, and proto/anatomy-ref/measure.js, which
       # figure.js says re-derives the chart rows, was run by no job. Node only,
@@ -255,7 +259,7 @@ jobs:
       # A gate that lost its tests still exits 0. The floors are in
       # tests/floors.json and are raised on purpose, never lowered to get green.
       - name: floors
-        run: node tools/floors.js --self-test && node tools/floors.js engine funnel-package plan-selfgrant anatomy
+        run: node tools/floors.js --self-test && node tools/floors.js engine funnel-package plan-selfgrant anatomy records
 
   # The required browser gates, one job each, in parallel, each on its own
   # runner with the chromium that playwright 1.56.1 installs. CHROME carries
@@ -479,6 +483,14 @@ jobs:
           # 15817657). Landed run by no job, so tools/orphans.js failed
           # gates-fast. New, so report only first.
           - { gate: guide, timeout: 20, command: node tests/guide.js }
+          # 27 November: what a client's device shares with a practitioner
+          # (tests/pracshare.js, engine/pracshare.js, 0ce41adf). Headless on
+          # the built engine.js. Landed run by no job, so tools/orphans.js
+          # failed gates-fast on run 45912157094. New, so report only first.
+          # Its browser half, tests/praclive.js, needs a reboot-os checkout
+          # this repository's runners cannot reach, so it is in MANUAL in
+          # tools/orphans.js with that reason rather than here.
+          - { gate: pracshare, timeout: 20, command: node tests/pracshare.js }
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

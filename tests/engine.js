@@ -2497,6 +2497,29 @@ ok(MIRROR.some(m=>m.k==='IL'&&m.up==='Grace'&&m.dn==='Shadow'),'light is Grace a
  ok(CIRCLES.length===9&&CIRCLES.every((c,i)=>c.c===i+1),'nine circles in order');
  ok(CIRCLES.every(c=>c.by&&c.p&&c.at),'each circle names its governor, its pattern and its seat');
  ok(CASCADE.length===6,'six cascade states, got '+CASCADE.length);
+ /* THE CASCADE WEARS SIX MARKS SINCE THE DARK READ DRAWS IT, 27 November.
+    The six names are held as test data so a rename is a named diff, and each
+    mark is held distinct from every other mark the compass hands a screen, so
+    a state can never borrow a figure's icon by accident. */
+ {ok(CASCADE.map(c=>c.nm).join('|')==='The Zombie|The Drone|The NPC|The Energy Vampire|The Demon|The Devil',
+   'the six cascade states keep their names and their order, saw '+CASCADE.map(c=>c.nm).join('|'));
+  const bare=CASCADE.filter(c=>typeof c.ic!=='string'||!/^M\d/.test(c.ic)).map(c=>c.nm);
+  ok(bare.length===0,'every cascade state carries a path mark'+(bare.length?'  bare: '+bare.join(', '):''));
+  ok(new Set(CASCADE.map(c=>c.ic)).size===CASCADE.length,'and no two cascade states share one');
+  const others=[].concat(MIRROR.map(m=>m.ic),MIRROR.map(m=>m.dic),MASTERS.map(m=>m.ic),
+   BLUEPRINT.map(b=>b.ic),CIRCLES.map(c=>c.ic),E.PATHS.map(p=>p.ic),E.PATHS.map(p=>p.dic)).filter(Boolean);
+  const clash=CASCADE.filter(c=>others.indexOf(c.ic)>=0).map(c=>c.nm);
+  ok(clash.length===0,'and none wears a mark another compass figure already wears'+(clash.length?'  '+clash.join(', '):''));
+  /* ON THE 24 GRID, read off the absolute commands only. The arcs here write
+     their flags packed ("110 5.2" is 1, 1, 0 and 5.2), which a number regex
+     reads as a hundred and ten, so a probe walking relative arcs would report
+     a mark off the grid that is drawing correctly. Checked against a known
+     bad case: an M at 30 fails it. */
+  const offGrid=d=>(d.match(/[MLHV][^A-Za-z]*/g)||[]).some(seg=>
+   (seg.slice(1).match(/-?\d*\.?\d+/g)||[]).map(Number).some(v=>v<0||v>24));
+  ok(offGrid('M30 2L4 4')&&!offGrid('M12 2L4 4'),'the grid probe fails a known bad mark and passes a good one');
+  const off=CASCADE.filter(c=>offGrid(c.ic)).map(c=>c.nm);
+  ok(off.length===0,'and every cascade mark sits on the 24 unit grid'+(off.length?'  off: '+off.join(', '):''));}
 
  /* the position on an axis is read, not asked */
  ok(mirrorAt(0,10)===100,'a clear seat with full integrity sits at the coherent pole');
@@ -8753,6 +8776,17 @@ g('PO · unpack every symbol: the meaning table and the pole meanings');
    'each of the four defences has its own mark, plain path data, and no mark stands for a defence the Field does not draw');
   ok(FOURD.every(n=>/^[A-Z][a-z]+ is /.test(T['superego:'+n.toLowerCase()]||'')&&T['superego:'+n.toLowerCase()].indexOf(n)===0),
    'each defence has a sentence that opens on its own name');
+  /* EVERY AMPLIFIER ROW, NOT ONLY THE FOUR THE PANEL DRAWS. Judgment and
+     Comparison rejoined AMPLIFIER as rows five and six with no superego:
+     sentence, so unpackOf(nm,'superego') fell through to '' and a drill opened
+     on either address by any route said nothing about the defence (the board's
+     superego-two-symbols-unexplained, fixed at fc67a0df). The check above holds
+     FOURD only, a typed list, so it stayed green across that hole and would
+     again. This one reads the table. */
+  {const bare=E.AMPLIFIER.filter(a=>{const s=unpackOf(a.nm,'superego');
+    return s!==T['superego:'+a.nm.toLowerCase()]||s.indexOf(a.nm+' is ')!==0;}).map(a=>a.nm);
+   ok(E.AMPLIFIER.length>FOURD.length&&bare.length===0,
+    'every one of the '+E.AMPLIFIER.length+' amplifier rows has its own superego sentence, opening on its name, bare: '+JSON.stringify(bare));}
   /* the figure under a symbol is the charge held at its place, and the sentence says so and nothing larger */
   ok(FOURD.every(n=>/the charge held at its place in the body|no story reaches its place in the body yet/.test(T['superego:'+n.toLowerCase()])),
    'every defence sentence says its figure is the charge at its place in the body, never how much of the defence a person shows');
@@ -8788,6 +8822,15 @@ g('PO · unpack every symbol: the meaning table and the pole meanings');
   const via=E.GLOSS.filter(g=>T[g.t.toLowerCase()]===first(g)), left=E.GLOSS.filter(g=>!T[g.t.toLowerCase()]);
   ok(via.length>0,'the glossary reaches the meaning table: '+via.length+' GLOSS words carry their own first sentence, '
    +'and these carry none: '+JSON.stringify(left.map(g=>g.t)));}
+ /* EVERY PAYWALL RING'S MEANING IS IN THIS TABLE. pwMean (ui/paywall.js)
+    tries the ring's name, then singular, and falls back to SIGHT's own lock
+    line when none resolves, which is what the registers ring did until
+    fc67a0df gave 'register' its entry (the board's paywall-registers-no-entry).
+    A fallback is still a sentence on screen, so the page gate's tip check
+    stayed green while the ring read a second source. This holds the table end. */
+ {const sing=g=>{const nm=g.nm.replace(/^the /,''); return [nm,nm.replace(/es$/,''),nm.replace(/s$/,'')];};
+  const bare=E.SIGHT.filter(g=>g.built!==false&&!sing(g).some(t=>unpackOf(t))).map(g=>g.k);
+  ok(E.SIGHT.length>0&&bare.length===0,'every built paywall ring has its own meaning in the table, none falls back to its lock line, bare: '+JSON.stringify(bare));}
  ok(unpackOf('Brow','seat')===T['seat:3rd eye']&&unpackKey('Virgo','sign')==='sign:virgo'&&unpackOf('nothing at all')==='',
   'the lookup folds case, reads Brow as the 3rd Eye, and returns nothing for a term it does not hold');
  /* THE FOURTH RUNG AND THE TOP ARE TWO WORDS, ruled 23 October (DECISIONS.md,
@@ -11230,7 +11273,17 @@ g('RC · a code for every row of the ported registers, and the door reads each o
   ok(am.address===37,'and the amplifier says the address it stands on, '+JSON.stringify(am));
   const en=is('Entitlement',{kind:'amplifier'},'AM01','canon.json\'s amplifier Entitlement');
   ok(en.address===8,'stands on address 8, where NODES\'s own Entitlement is 38, '+JSON.stringify(en));
-  is('Justification',null,'AM06','Justification is an amplifier and nothing else here');
+  const ju=is('Justification',null,'AM06','Justification is an amplifier and nothing else here');
+  /* RULING 5 IS CLOSED, 27 October, and this row said inferred for a month
+     after, because the copy vendored on 21 November came from a branch cut
+     before the closure. regDiff holds the tag to the file; this holds the
+     file to the closure, so a copy taken from that branch again fails here
+     by name and not as one tag among the registers. */
+  {const C=JSON.parse(require('fs').readFileSync(require('path').resolve('vendor/reboot-os/canon.json'),'utf8'));
+   const op=(C.open_rulings||[]).filter(r=>r.id===5), rs=(C.resolved_rulings||[]).filter(r=>r.id===5);
+   ok(op.length===0&&rs.length===1&&rs[0].ruled_by==='Lance Powell','canon.json files ruling 5 as resolved by him and not as open, open '+op.length+', resolved '+rs.length);
+   ok(ju.address===34&&ju.tag==='R','and Justification stands on address 34, ruled and not inferred, '+JSON.stringify(ju));
+   ok(E.BY[34]&&E.BY[34].k==='Arrogance','and address 34 keeps the name Arrogance: he put the two together, he did not rename it, '+JSON.stringify(E.BY[34]&&E.BY[34].k));}
   is('Right-Front',null,'BQ01','a body quadrant');
   is('right front',null,'BQ01','spelled with a space');
   is('Dermis',null,'OG10','an organ');

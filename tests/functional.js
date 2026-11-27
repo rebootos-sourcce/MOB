@@ -2102,7 +2102,9 @@ const tapped=await tapPg.evaluate(()=>{
 ok(!tapped.none.psum&&!tapped.none.person,'the blueprint domain card is not on the rail');
 ok(tapped.none.head==='Insight','the rail opens on the word Insight, got '+tapped.none.head);
 ok(tapped.name===tapped.dom&&tapped.kind==='Blueprint domain','a domain that is selected is read by Insight, '+JSON.stringify({n:tapped.name,k:tapped.kind}));
-ok(tapped.paras===3,'in three paragraphs, got '+tapped.paras);
+/* one register a page since 20 November, his "not compressed insight on one
+   page": the page in view is What it is, and the dots step down the other three */
+ok(tapped.paras===1,'one register on the page in view, got '+tapped.paras);
 ok(tapped.full,'and the full card still opens in Selection: the blueprint domain, its cluster and its clear or distorted read');
 await tapPg.close();
 
@@ -2909,6 +2911,19 @@ const pole=await page.evaluate(()=>{
  const txt=()=>(document.getElementById('rdrill').textContent||'').replace(/\s+/g,' ');
  runPoleDrill('up'); o.up=txt(); o.mirrorUp=MIRROR.map(m=>m.up);
  runPoleDrill('dn'); o.dn=txt();
+ /* THE CASCADE STEP, 27 November. Six rows, each wearing the mark its own
+    table entry carries, in the table's order, after the referral. The mark is
+    compared to the data rather than only counted, so a row that drew some
+    other state's icon fails here. */
+ {const host=document.getElementById('rdrill');
+  const rows=[...host.querySelectorAll('[data-cascade]')];
+  o.casc=rows.map(r=>r.getAttribute('data-cascade'));
+  o.cascWant=CASCADE.map(c=>c.nm);
+  o.cascMarked=rows.filter((r,i)=>{const p=r.querySelector('svg.ad-gl path');
+   return p&&CASCADE[i]&&p.getAttribute('d')===CASCADE[i].ic&&p.getAttribute('fill')==='none'
+    &&r.getAttribute('title')===CASCADE[i].d;}).length;
+  const html=host.innerHTML, ref=html.indexOf('licensed clinician'), cas=html.indexOf('data-cascade');
+  o.cascAfterRefer=ref>=0&&cas>ref;}
  /* A DESCENT RECORD IS NEVER PAINTED, 23 October. The voice gate sets
     content.researchPasses and content.inferenceBasis aside as a record about
     the copy (NOT_COPY in .claude/skills/atuned-voice/check.py), on the ground
@@ -2954,6 +2969,7 @@ const pole=await page.evaluate(()=>{
  o.cleanCQ=Math.round(rc.EX); o.cleanMal=Math.round(rc.malig);
  o.cleanDark=darkRead(rc.malig/100,rc.EX).dark;
  runPoleDrill('dn'); o.clean=txt();
+ o.cleanCasc=document.querySelectorAll('#rdrill [data-cascade]').length;
  loadP(GORDON()); render();
  return o;});
 ok(pole.ends===2,'the cone carries a door at each end, got '+pole.ends);
@@ -2988,6 +3004,12 @@ ok(pole.cleanDark===false,'a cleared field does not read as the descent, CQ '
  +pole.cleanCQ+' malignant '+pole.cleanMal);
 ok(!/licensed clinician/.test(pole.clean),'and is never shown the referral');
 ok(!/Both at once/.test(pole.clean),'nor the descent read');
+ok(JSON.stringify(pole.casc)===JSON.stringify(pole.cascWant),
+ 'the dark read draws the cascade, all six states in the table\'s order, saw '+JSON.stringify(pole.casc));
+ok(pole.cascMarked===pole.cascWant.length,'and every row wears its own state\'s ring mark and line, '
+ +pole.cascMarked+' of '+pole.cascWant.length);
+ok(pole.cascAfterRefer,'and the cascade comes after the referral, never above it');
+ok(pole.cleanCasc===0,'and a cleared field is never shown the cascade, drew '+pole.cleanCasc);
 /* THE FOUR CORNERS, and the one thing the surface must never do. A corner
    describes the shape of what is firing. The first build let a field at CQ 39
    read Angel because its stack all pointed inward, which is wrong twice. */
@@ -3570,7 +3592,11 @@ console.log('\n=== practitioner mode: the switch, the fifth section and the sket
   o.host={w:Math.round(hr.width),h:Math.round(hr.height),len:host.innerHTML.length,
    clients:host.querySelectorAll('.pr-client').length,
    buttons:[...host.querySelectorAll('button')].map(b=>b.id).filter(Boolean),
-   honest:/example/i.test(host.textContent)&&/let a practitioner see/i.test(host.textContent)};
+   /* ROUND PS, 26 November: the sentence this read, "no way yet to let a
+      practitioner see a record on another device", stopped being true when
+      sharing was wired (ui/praclive.js). The honest state signed out, which
+      is how this gate runs, is that the real list fills once signed in. */
+   honest:/example/i.test(host.textContent)&&/fills once you are signed in/i.test(host.textContent)};
   /* round QB: the right rail comes back carrying Selection alone, where a
      press on a client's figure, day, pattern or seat is answered. The left
      rail, the practitioner's own field, stays shut. */

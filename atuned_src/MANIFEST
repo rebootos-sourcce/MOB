@@ -48,6 +48,7 @@ engine/practice.js
 engine/valuefelt.js
 engine/loop.js
 engine/pracex.js
+engine/pracshare.js
 engine/exdepth.js
 engine/intake.js
 engine/intakemore.js
@@ -133,6 +134,7 @@ ui/plans.js
 ui/account.js
 ui/paywall.js
 ui/practitioner.js
+ui/praclive.js
 ui/guide.js
 ui/personas.js
 ui/rootsum.js
