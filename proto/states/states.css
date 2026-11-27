@@ -1,0 +1,89 @@
+/* ============================================================
+   STATES, REDRAWN. Prototype, round DK. Every colour is a house token or
+   the house element colour, so Dark, Snow, Punch and Glass all carry it.
+   The tile is .ib, the left rail's own; only what .ib does not do is here.
+   ============================================================ */
+#spirit .st-four{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:10px}
+#spirit .st-cell{display:flex;flex-direction:column;align-items:center;min-width:0;gap:1px}
+#spirit .st-ib{width:100%}
+#spirit .st-ib svg{stroke:var(--c,var(--mid))}
+#spirit .st-ib.open svg{opacity:.5;stroke-dasharray:2.4 2.4}
+/* which layer a tile is, small in its corner, where .ib keeps its root dot */
+#spirit .st-pos{position:absolute;top:4px;right:4px;width:12px;height:12px;display:flex}
+#spirit .st-pos svg{width:12px;height:12px;stroke:var(--dim);stroke-width:1.9;opacity:.9}
+#spirit .st-k{font-size:11px;color:var(--dim);margin-top:5px;line-height:1.2}
+#spirit .st-v{font-size:11.5px;color:var(--ink);line-height:1.25;text-align:center;
+ max-width:100%;overflow-wrap:anywhere}
+#spirit .st-num{font-family:var(--num);font-size:20px;font-weight:300;color:var(--ink);line-height:1}
+#spirit .st-sm svg{stroke:var(--accent)}
+#spirit .st-row2{margin-top:14px;padding-top:12px;border-top:1px solid var(--edge)}
+/* the stack, the one wide control: the drawing and what it says */
+#spirit .st-stack{display:flex;align-items:center;gap:14px;width:100%;margin-top:12px;padding:10px 12px;
+ min-height:var(--tap);background:var(--sunk);border:1.5px solid transparent;border-radius:var(--r-xs);
+ cursor:pointer;text-align:left;font-family:var(--sans);transition:all var(--t-micro) var(--ease-out)}
+#spirit .st-stack:hover{background:var(--panel-2);border-color:var(--edge-2)}
+#spirit .st-stack[aria-pressed=true]{border-color:var(--gold);background:var(--panel-2)}
+#spirit .st-stack-t{display:flex;flex-direction:column;align-items:flex-start;min-width:0}
+#spirit .st-stack-t .st-k{margin-top:0}
+#spirit .st-stack-t .st-v{text-align:left;font-size:13px}
+.st-fig{width:64px;height:auto;flex:0 0 auto;overflow:visible}
+.st-fig rect{fill:none;stroke-width:1.6}
+.st-fig path{fill:none;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
+.st-fig path.j-flush,.st-fig path.j-braced{stroke:var(--mid)}
+.st-fig path.j-offset{stroke:var(--dim);stroke-dasharray:1.6 2}
+.st-fig path.j-shear{stroke:var(--bad,#D4736D)}
+.st-fig path.j-loop{stroke:var(--mid)}
+.st-fig path.j-loop.j-offset{stroke:var(--dim)}
+.st-fig path.j-loop.j-shear{stroke:var(--bad,#D4736D)}
+.st-fig.big{width:100%;max-width:262px;margin:12px 0 14px;display:block}
+.st-fig.big rect{stroke-width:1.8}
+.st-fig.big path{stroke-width:1.6}
+.st-fig text{font-family:var(--sans);font-size:11.5px;fill:var(--dim);stroke:none}
+.st-fig .st-lab{fill:var(--mid);font-size:12px}
+.st-fig text.j-shear,em.j-shear{fill:var(--bad,#D4736D);color:var(--bad,#D4736D)}
+.st-fig text.j-braced,em.j-braced,.st-fig text.j-flush,em.j-flush{fill:var(--mid);color:var(--mid)}
+.st-fig text.j-offset,em.j-offset{fill:var(--dim);color:var(--dim)}
+/* Punch: nothing outlined, everything solid, so pressed is a fill */
+body.punch #spirit .st-stack{border-color:transparent}
+body.punch #spirit .st-stack[aria-pressed=true]{border-color:transparent;
+ background:color-mix(in srgb,var(--accent) 24%,var(--sunk))}
+/* the prototype's own controls, dashed so nobody reads them as product */
+#spirit .st-proto,.st-combo{margin-top:18px;padding:10px 10px 12px;border:1px dashed var(--edge-2);
+ border-radius:var(--r-xs)}
+.st-proto-h{font-size:11px;color:var(--dim);margin-bottom:8px}
+#spirit .st-proto-r{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:6px}
+#spirit .st-proto-r>span{font-size:12px;color:var(--mid)}
+#spirit .st-seg{display:flex;gap:4px}
+#spirit .st-seg button{font:12px var(--sans);color:var(--mid);background:var(--sunk);border:1px solid transparent;
+ border-radius:999px;padding:0 11px;min-height:32px;cursor:pointer}
+#spirit .st-seg button[aria-pressed=true]{border-color:var(--gold);color:var(--ink)}
+/* ---- the right hand cards ---- */
+.st-nm{display:flex;align-items:center;gap:10px}
+.st-nm-g svg,.st-rel-g svg,.st-glyphs svg{fill:none;stroke:var(--c,var(--mid));stroke-width:1.6;
+ stroke-linecap:round;stroke-linejoin:round}
+.st-nm-g svg{width:26px;height:26px;display:block}
+.st-rels{display:flex;flex-direction:column;gap:2px;margin-top:6px}
+.st-rel{display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start;text-align:left;width:100%;
+ border:0;background:transparent;cursor:pointer;min-height:var(--tap);font-family:var(--sans);
+ padding:8px 6px;border-radius:var(--r-xs)}
+.st-rel:hover{background:var(--panel-2)}
+.st-rel-g svg{width:22px;height:22px;display:block;margin-top:1px}
+.st-rel-t{display:flex;flex-direction:column;gap:3px;min-width:0}
+.st-rel-h{font-size:13.5px;color:var(--ink)}
+.st-rel-h em{font-style:normal;font-size:12px;margin-left:6px}
+.st-rel-p{font-size:13px;line-height:1.5;color:var(--mid)}
+.st-open{margin-top:12px}
+.st-glyphs{display:flex;gap:12px;margin:6px 0 2px}
+.st-glyphs svg{width:22px;height:22px;display:block}
+.st-head{font-size:16px;line-height:1.5;color:var(--ink);margin:6px 0 2px;font-weight:500}
+.st-line b{font-weight:600;color:var(--ink)}
+.st-seam{border-left:2px solid var(--bad,#D4736D);padding-left:11px}
+.st-limit{color:var(--dim)}
+.st-def{font-size:12.5px;line-height:1.55;color:var(--dim);margin:4px 0}
+.st-def em{font-style:normal;margin-right:4px}
+.st-src{font-size:12px;color:var(--dim);margin-top:12px}
+.st-combo-g{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.st-combo-g label{display:flex;flex-direction:column;gap:3px;font-size:11.5px;color:var(--dim)}
+.st-sel{font:13px var(--sans);color:var(--ink);background:var(--sunk);border:1px solid var(--edge-2);
+ border-radius:var(--r-xs);min-height:36px;padding:0 8px}
+.st-combo-b{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}

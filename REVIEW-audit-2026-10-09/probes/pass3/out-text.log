@@ -1,0 +1,50 @@
+OUT settings/account | Your email and password go to our server, and what your first visit sent joins the account. Your stories and readings stay on this device.
+OUT settings/account | Save, open or delete a profile
+OUT settings/account | Turning it on shares nothing of yours. Nobody has let you see their record yet.
+OUT settings/profiles | Every change saves as you go, under this name.
+OUT settings/profiles | Held in this browser. Delete cannot be undone and there is no copy unless you made one.
+OUT settings/profiles | A new profile starts blank. The one open now stays saved under its own name.
+OUT settings/security | Nothing about this record is protected by a password today. It is held in this browser, so anybody with this browser has it.
+OUT settings/security | Every row here waits on sign in.
+OUT settings/privacy | We never sell anybody’s data. Ever.
+OUT settings/privacy | name, sex, date, time and place
+OUT settings/privacy | Held in this browser. Your stories are not sent to us, and the name you enter never leaves this device.
+OUT settings/privacy | A first visit sends our server a random code made for this browser and the topic you pick under What brought you here. After that it sends a mark when you finish the opening, finish your first release, or answer What changed. What you answered is not sent. A sign in sends your email and password and joins those marks to your account. Feedback, dictation, the voice that reads a release, and payment each say what they send where you use them.
+OUT settings/privacy | Nobody sees this but you. A practitioner can see it only after you say yes. Each yes is listed here by name, with what they see and the date you gave it, and one press on the row takes it back.
+OUT settings/privacy | The web reading saves your answers as a file. Load it here. Nothing on this device changes unless the whole file loads, and if it does not, this says which field failed.
+OUT settings/privacy | Delete removes this record from this browser now, and it cannot be undone. Our server has no copy of it, so there is no other copy unless you made one. Our server does keep your sign in, if you made one, and what your first visit sent. Delete does not reach those.
+OUT settings/billing | Manage billing opens the payment page, where you can change tier, replace a card or stop. Nothing about a card is ever held on this device, and the record carries no customer number.
+OUT settings/billing | Not open yet. It will add the cohort lead suite to tier three: tools to manage profiles, build rituals and build accountability for the people you lead. None of it is built, so nothing here can be bought. When it opens, you will see part of a person's reading only after they say yes, and they can take that back at any time.
+OUT settings/billing | Moving to a tier needs a sign in, because the plan is held on your record. Sign in from Account, then come back here.
+OUT settings/billing | Each price is charged once a month until you stop. You pay on a separate payment page, and nothing is charged until you confirm there. Moving down or stopping goes through Manage billing above, and stopping deletes nothing.
+OUT settings/billing | Invoices live with whoever takes the payment, which is never this file. Nothing about a card is held here and the record carries no customer number.
+OUT settings/help | They all go to the same place. What you write is held on this device first, and the outbox below says whether it has gone.
+OUT settings/help | Discord is a free chat app where the community talks. It opens in a new tab, it needs its own Discord account, and nothing from this app goes with you.
+OUT profile sheet | Manage billing opens the payment page, where you can change tier, replace a card or stop. Nothing about a card is ever held on this device, and the record carries no customer number.
+OUT profile sheet | Your record is held in this browser. Your stories are not sent to us, and the name you enter never leaves this device.
+OUT onboarding card 0 | Your story and your name stay on this device. Our server gets a random code for this browser, the topic you pick next, and which steps you finish.
+IN  settings/account | Your stories and readings stay on this device. Signing in does not copy them anywhere.
+IN  settings/account | Save, open or delete a profile
+IN  settings/account | Turning it on shares nothing of yours. Nobody has let you see their record yet.
+IN  settings/profiles | Every change saves as you go, under this name.
+IN  settings/profiles | Held in this browser. Delete cannot be undone and there is no copy unless you made one.
+IN  settings/profiles | A new profile starts blank. The one open now stays saved under its own name.
+IN  settings/security | Nothing about this record is protected by a password today. It is held in this browser, so anybody with this browser has it.
+IN  settings/privacy | We never sell anybody’s data. Ever.
+IN  settings/privacy | name, sex, date, time and place
+IN  settings/privacy | Held in this browser. Your stories are not sent to us, and the name you enter never leaves this device.
+IN  settings/privacy | A first visit sends our server a random code made for this browser and the topic you pick under What brought you here. After that it sends a mark when you finish the opening, finish your first release, or answer What changed. What you answered is not sent. A sign in sends your email and password and joins those marks to your account. Feedback, dictation, the voice that reads a release, and payment each say what they send where you use them.
+IN  settings/privacy | Nobody sees this but you. A practitioner can see it only after you say yes. Each yes is listed here by name, with what they see and the date you gave it, and one press on the row takes it back.
+IN  settings/privacy | The web reading saves your answers as a file. Load it here. Nothing on this device changes unless the whole file loads, and if it does not, this says which field failed.
+IN  settings/privacy | Delete removes this record from this browser now, and it cannot be undone. Our server has no copy of it, so there is no other copy unless you made one. Our server does keep your sign in, if you made one, and what your first visit sent. Delete does not reach those.
+IN  settings/billing | Manage billing opens the payment page, where you can change tier, replace a card or stop. Nothing about a card is ever held on this device, and the record carries no customer number.
+IN  settings/billing | Not open yet. It will add the cohort lead suite to tier three: tools to manage profiles, build rituals and build accountability for the people you lead. None of it is built, so nothing here can be bought. When it opens, you will see part of a person's reading only after they say yes, and they can take that back at any time.
+IN  settings/billing | Each price is charged once a month until you stop. You pay on a separate payment page, and nothing is charged until you confirm there. Moving down or stopping goes through Manage billing above, and stopping deletes nothing.
+IN  settings/billing | Invoices live with whoever takes the payment, which is never this file. Nothing about a card is held here and the record carries no customer number.
+IN  settings/help | They all go to the same place. What you write is held on this device first, and the outbox below says whether it has gone.
+IN  settings/help | Discord is a free chat app where the community talks. It opens in a new tab, it needs its own Discord account, and nothing from this app goes with you.
+IN  profile sheet | Manage billing opens the payment page, where you can change tier, replace a card or stop. Nothing about a card is ever held on this device, and the record carries no customer number.
+IN  profile sheet | Your record is held in this browser. Your stories are not sent to us, and the name you enter never leaves this device.
+IN  onboarding card 0 | Your story and your name stay on this device. Our server gets a random code for this browser, the topic you pick next, and which steps you finish.
+OUT login card (no ?dev) | Welcome / Log in / Email / Password / Suggest / Forgot your password? / Log in / Create account / Guest
+exit 0

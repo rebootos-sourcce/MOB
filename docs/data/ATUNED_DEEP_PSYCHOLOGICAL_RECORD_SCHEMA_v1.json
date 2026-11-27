@@ -1,0 +1,295 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/rebootos-sourcce/MOB/blob/main/docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_SCHEMA_v1.json",
+  "title": "ATÜNED Shared Deep-Psychological Record",
+  "description": "Shared record envelope aligned to the existing Nerve-to-Super-Complex knowledge record shape, with provenance, typed links, template coverage, and exactly three distinct research-pass slots. A schema-valid record is not necessarily canon-approved or research-complete.",
+  "type": "object",
+  "required": [
+    "id",
+    "kind",
+    "nm",
+    "seat",
+    "fam",
+    "def",
+    "body",
+    "links",
+    "templateId",
+    "template",
+    "templateValidation",
+    "sourceRefs",
+    "sourceClaims",
+    "researchPasses",
+    "status",
+    "taxonomyVersion"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "kind": {
+      "type": "string",
+      "minLength": 1
+    },
+    "nm": {
+      "type": "string",
+      "minLength": 1
+    },
+    "seat": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "fam": {
+      "type": "string",
+      "minLength": 1
+    },
+    "def": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "body": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "links": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "templateId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "template": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "templateValidation": {
+      "type": "object",
+      "required": [
+        "status",
+        "missingFields"
+      ],
+      "properties": {
+        "status": {
+          "type": "string"
+        },
+        "missingFields": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "sourceRefs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "sourceIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "sourceClaims": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "recordType": {
+      "type": "string"
+    },
+    "canonicalName": {
+      "type": "string"
+    },
+    "displayName": {
+      "type": "string"
+    },
+    "aliases": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "layer": {
+      "type": "string"
+    },
+    "taxonomyVersion": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    },
+    "definition": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "essence": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "function": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "healthyExpression": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "decoherentExpression": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "signals": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "distortions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "upstreamInfluenceIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "downstreamEffectIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "parentId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "childIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "relationships": {
+      "type": "array"
+    },
+    "interactions": {
+      "type": "array"
+    },
+    "examples": {
+      "type": "array"
+    },
+    "nonExamples": {
+      "type": "array"
+    },
+    "safetyNotes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "evidenceStrength": {
+      "type": "string"
+    },
+    "confidence": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "researchPasses": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "required": [
+          "pass",
+          "name",
+          "status",
+          "sources",
+          "findings",
+          "conflicts"
+        ],
+        "properties": {
+          "pass": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 3
+          },
+          "name": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "pending",
+              "in_progress",
+              "complete",
+              "blocked"
+            ]
+          },
+          "sources": {
+            "type": "array"
+          },
+          "findings": {
+            "type": "array"
+          },
+          "conflicts": {
+            "type": "array"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "unresolvedQuestions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "changelog": {
+      "type": "array"
+    }
+  },
+  "additionalProperties": true
+}

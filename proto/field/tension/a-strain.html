@@ -1,0 +1,658 @@
+<!doctype html>
+<html lang="en" data-build="proto-field-tension-A">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Field mockup A</title>
+<style>
+:root{
+ --bg:#0E0E0F; --stage:#101010; --panel:#15161A; --edge:#26282E;
+ --ink:#E6E7EA; --dim:#9A9CA4; --accent:#7EB8D4; --proto:#D6A93B; --alarm:#FF2E1F;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink)}
+body{font:400 14.5px/1.5 Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+.proto{position:sticky;top:0;z-index:5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:var(--proto);color:#16130A;
+ font-weight:600;font-size:13px;padding:6px 16px}
+.proto span{font-weight:500;opacity:.85}
+header{padding:16px 16px 6px;max-width:1400px;margin:0 auto}
+.eyebrow{font-size:12px;color:var(--dim);font-weight:600;letter-spacing:.02em}
+h1{font-size:22px;line-height:1.25;margin:4px 0 6px;font-weight:600}
+.sub{color:#C9CBD2;max-width:78ch;margin:0}
+nav.vars{display:flex;gap:6px;flex-wrap:wrap;padding:10px 16px 0;max-width:1400px;margin:0 auto}
+nav.vars a{color:var(--dim);text-decoration:none;border:1px solid var(--edge);border-radius:999px;
+ padding:4px 12px;font-size:13px}
+nav.vars a[aria-current]{color:var(--ink);border-color:var(--accent)}
+main{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:14px;padding:12px 16px;max-width:1400px;margin:0 auto}
+.stage{position:relative;height:min(74vh,860px);min-height:420px;background:var(--stage);
+ border:1px solid var(--edge);border-radius:12px;overflow:hidden}
+.stage canvas{display:block;touch-action:none;cursor:crosshair}
+.hint{position:absolute;left:12px;top:10px;right:12px;font-size:12.5px;color:var(--dim);pointer-events:none}
+.zro{position:absolute;right:12px;bottom:10px;font-size:12px;color:var(--dim);pointer-events:none;
+ font-variant-numeric:tabular-nums}
+aside{background:var(--panel);border:1px solid var(--edge);border-radius:12px;padding:12px 12px 8px;
+ max-height:min(74vh,860px);overflow:auto}
+aside h2{font-size:14px;margin:0;font-weight:600}
+aside .small{font-size:12.5px;color:var(--dim);margin:2px 0 8px}
+#hot{list-style:none;margin:0;padding:0}
+#hot li button{all:unset;box-sizing:border-box;cursor:pointer;display:grid;width:100%;
+ grid-template-columns:10px minmax(0,1fr) 34px 74px;gap:4px 8px;align-items:center;padding:6px 4px;
+ border-radius:8px}
+#hot li button:hover,#hot li button:focus-visible{background:#1D1F25}
+#hot .dot{width:8px;height:8px;border-radius:50%}
+#hot .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:13px}
+#hot .val{font-weight:600;font-variant-numeric:tabular-nums;text-align:right;font-size:13px}
+#hot .dir{font-size:12px;color:var(--dim)}
+#hot .dir.expanding{color:#E7C98A} #hot .dir.collapsing{color:#9DB4E6}
+#hot .bar{grid-column:2/5;height:3px;background:#23252B;border-radius:2px;overflow:hidden}
+#hot .bar i{display:block;height:100%}
+.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:0 16px 12px;max-width:1400px;margin:0 auto}
+.controls button,#policy button{font:inherit;font-size:13px;color:var(--ink);background:#1A1C22;
+ border:1px solid var(--edge);border-radius:999px;padding:7px 14px;cursor:pointer;min-height:36px}
+.controls button:hover,#policy button:hover{border-color:#3A3D46}
+.controls button[aria-pressed="true"],#policy button[aria-pressed="true"]{border-color:var(--accent);color:#fff}
+.controls label{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--dim)}
+.controls input[type=range]{width:140px;accent-color:var(--accent)}
+#policy{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:0 16px 12px;max-width:1400px;margin:0 auto}
+#policy .lbl{font-size:13px;color:var(--ink);font-weight:600;margin-right:4px}
+details{max-width:1400px;margin:0 auto 32px;padding:0 16px;color:var(--dim);font-size:13px}
+details summary{cursor:pointer;color:var(--ink)}
+table{border-collapse:collapse;margin-top:8px;width:100%;max-width:880px}
+td,th{border-bottom:1px solid var(--edge);padding:5px 8px;text-align:left;vertical-align:top}
+th{color:var(--ink);font-weight:600}
+@media (max-width:860px){
+ main{grid-template-columns:minmax(0,1fr)}
+ .stage{height:62vh;min-height:360px}
+ aside{max-height:none}
+ .controls input[type=range]{width:110px}}
+</style>
+</head>
+<body>
+<div class="proto" role="note">Prototype. <span>Mock loads. Not the app, not your reading.</span></div>
+<header>
+ <div class="eyebrow">Field mockup A of four · tension on heavy load, names around the pointer</div>
+ <h1>Strain marks</h1>
+ <p class="sub">Tension drawn the way an animator draws strain. Short marks come off every address past five. Rising load, they run outward and point away. Falling load, they run inward and point at it. They step at twelve frames a second while the rest runs at sixty, so the hot ones stand out. Zoom in and names appear around the pointer, dissolving at the edge.</p>
+</header>
+<nav class="vars" aria-label="The four mockups">
+ <a href="a-strain.html" aria-current="page">A · Strain marks</a>
+ <a href="b-wire.html">B · Taut wire</a>
+ <a href="c-heat.html">C · Heat</a>
+ <a href="d-fringe.html">D · Fringes, and which names win</a>
+</nav>
+<main>
+ <div class="stage" id="stage"><canvas id="cv" aria-label="The Field, a ring of addresses round a core, with tension drawn on the heavy ones"></canvas>
+  <div class="hint" id="hint"></div><div class="zro" id="zro"></div></div>
+ <aside aria-label="Running hot">
+  <h2>Running hot · <span id="hotn"></span></h2>
+  <p class="small">Every address north of five, heaviest first, and which way it is moving. Press one to go to it.</p>
+  <ol id="hot"></ol>
+ </aside>
+</main>
+<div class="controls">
+ <button type="button" id="b-replay">Replay the load up</button>
+ <button type="button" id="b-story">Load a story into 3rd Eye</button>
+ <button type="button" id="b-release">Release it</button>
+ <button type="button" id="b-names">Zoom to the names</button>
+ <button type="button" id="b-reset">Reset view</button>
+ <button type="button" id="b-motion" aria-pressed="false">Reduced motion: off</button>
+ <label for="r-rad">Radius <input type="range" id="r-rad" min="80" max="340" step="10"> <span id="r-radv"></span></label>
+</div>
+<div id="policy" hidden></div>
+<details>
+ <summary>Timing, for the team</summary>
+ <table><tr><th>What</th><th>How long</th><th>Curve</th><th>Note</th></tr><tr><td>Strain marks</td><td>12 a second, on twos</td><td>stepped</td><td>3 to 5 marks, length by tension</td></tr><tr><td>Squash and stretch</td><td>with tension</td><td>spring</td><td>area held</td></tr><tr><td>Lens</td><td>160px, full to 45 percent</td><td>smoothstep, per pixel</td><td></td></tr><tr><td>Load up, per seat</td><td>380ms, 62ms apart, Root first</td><td>ease out cubic</td><td>as shipped</td></tr><tr><td>Tension arriving at five</td><td>about 320ms, 8 percent over</td><td>spring, w 20, damping .62</td><td>dips the wrong way first</td></tr><tr><td>Pointer lens following</td><td>about 160ms to settle</td><td>critically damped spring, w 30</td><td></td></tr><tr><td>Names arriving / leaving</td><td>140ms / 260ms</td><td>exponential chase</td><td>word mode only</td></tr><tr><td>Lens appearing with zoom</td><td>2.05 to 2.67</td><td>smoothstep</td><td>the shipped names ramp</td></tr><tr><td>Zoom, one notch</td><td>x1.12, about 130ms</td><td>exponential chase</td><td>toward the pointer</td></tr><tr><td>Go to an address</td><td>480ms</td><td>ease out cubic</td><td></td></tr><tr><td>Breath, at rest</td><td>4.2s a cycle, a tenth of a unit</td><td>sine, travelling round the ring</td><td>off under reduced motion</td></tr><tr><td>Load drift</td><td>15 to 26s a cycle</td><td>sine</td><td>sets expanding or collapsing</td></tr></table><p>Frame cost is main thread canvas, not compositor. Under reduced motion loads sit at their end values, nothing drifts or buzzes, tension is drawn still, and the canvas repaints only when you move or zoom.</p>
+</details>
+<script>
+/* ============================================================
+   A. STRAIN MARKS.
+
+   Tension drawn the way an animator draws it on a character under load:
+   short marks off the body, the emanata. Off the address, past the ring.
+   Rising load, the marks run outward and taper to a point away from the
+   ring. Falling load, they run inward and taper toward it, converging.
+   With the motion stopped the taper alone still says which.
+
+   ON TWOS. The marks step at twelve a second while everything else runs at
+   sixty. A hot address is the one thing on the ring drawn at a different
+   frame rate, which is the Spider-Verse trick: the rate is the signal, and
+   the eye finds the odd one out without being told.
+
+   The address itself squashes and stretches. Expanding, it lengthens and
+   thins; collapsing, it shortens and widens. Area held, so it has mass.
+
+   Names: a lens round the pointer, 160px, full to 45 percent of the radius
+   and smoothstepped to nothing at the edge, per pixel. A long name crossing
+   the edge dissolves along its length.
+   ============================================================ */
+window.VARIANT={id:'A',R:160,lensMode:'pixel',falloff:'smooth',plateau:0.45,
+ shape:function(n,G){
+  var s=n.Td*n.ds;
+  if(Math.abs(s)<0.001)return;
+  var d=(n.rO-n.rI)*(1+0.28*s);
+  n.rI=n.rO-d; n.hw*=(1-0.14*s);},
+ over:function(G){
+  var tick=REDUCED?0:Math.floor(G.t*12);
+  var fresh=tick!==S.tick; S.tick=tick;
+  for(var i=0;i<W.length;i++){var n=W[i],T=n.Td;
+   /* the phase runs signed by direction, so a reversal runs the marks back
+      the way they came instead of jumping */
+   if(!REDUCED)n.a1+=G.dt*(0.9+1.8*Math.abs(T))*n.ds;
+   if(fresh)n.a2=n.a1;                         /* held between ticks: on twos */
+   if(Math.abs(T)<0.02||n.ea<1)continue;
+   /* EXAGGERATED ON PURPOSE. At true scale the first cut read as nothing at
+      zoom 1: ten pixel hairs at a third strength. A mark that has to say
+      "running hot" from arm's length gets a floor. */
+   var mag=(0.45+0.55*Math.abs(T))*(0.35+0.65*Math.abs(n.ds));
+   var dir=(n.ds*(T<0?-1:1))>=0?1:-1;          /* the backswing flips it */
+   var cnt=3+Math.round(Math.abs(T)*3);
+   var span=(12+30*Math.abs(T))*G.sk, len=(8+20*Math.abs(T))*G.sk;
+   var col=hotCol(n);
+   for(var k=0;k<cnt;k++){
+    var p=REDUCED?(k+0.5)/cnt:frac(n.a2+k*0.618);
+    var fan=((k+0.5)/cnt-0.5)*n.hw*2.8*(1+0.5*Math.abs(T));
+    /* the boil: a hair of jitter per tick, seeded, so the hand is visible
+       but the mark does not crawl */
+    var j=REDUCED?0:(frac(Math.sin((tick+k*7.1+n.i*3.3))*43758.5)-0.5)*0.006;
+    var a=n.aa+fan+j;
+    /* one formula both ways: the phase already runs backward when the load
+       falls, so the same marks travel inward */
+    var r0=n.rO+3+p*span, r1=r0+len;
+    var al=Math.sin(Math.PI*clamp(p,0,1))*mag*0.95;
+    if(REDUCED)al=mag*0.8;
+    var ca=Math.cos(a),sa=Math.sin(a),nx=-sa,ny=ca,wb=(1.2+3.2*Math.abs(T))*Math.min(1.6,G.sk);
+    /* a thin wedge, wide at its root and a point at its tip */
+    var rb=dir>0?Math.min(r0,r1):Math.max(r0,r1), rt=dir>0?Math.max(r0,r1):Math.min(r0,r1);
+    g.beginPath();
+    g.moveTo(G.cx+ca*rb+nx*wb/2,G.cy+sa*rb+ny*wb/2);
+    g.lineTo(G.cx+ca*rt,G.cy+sa*rt);
+    g.lineTo(G.cx+ca*rb-nx*wb/2,G.cy+sa*rb-ny*wb/2);
+    g.closePath();g.fillStyle=rgba(col,al);g.fill();}}}};
+
+</script>
+<script>
+/* ============================================================
+   FIELD MOCKUP, SHARED HALF. Tension on heavy load, names by pointer.
+
+   GH in TASKS.md. Mock data, not the engine. Everything here is drawn
+   on the geometry the Field actually uses (atuned_src/ui/wheel.js), so
+   what the owner sees is the real ring with a new behaviour on it:
+
+     angle       i over the ring, from twelve o'clock, Root first
+     shell       0.66 of the unit, addresses grow inward by their load
+     names       arrive from zoom 2.05, FET_STEP[1] in wheel.js
+     entrance    seats in turn, 62ms apart, 380ms each, eased out
+
+   LOAD is the address's charge on the 0 to 10 scale the ring draws
+   (n.sq in the engine). expression.js:8 sums the hot ones per seat.
+   North of five, an address carries tension. Its direction is the sign
+   of its own rate of change: rising is expanding, falling is
+   collapsing. Every address drifts, so every hot address is always one
+   or the other, and the moment it turns is visible.
+
+   One variant file sets window.VARIANT before this runs.
+   ============================================================ */
+'use strict';
+var TAU=Math.PI*2;
+var PAL={'Root':'#D6524C','Sacral':'#D8924E','Solar':'#DABF6A','Heart':'#5FD5A6',
+ 'Throat':'#5EBBDB','3rd Eye':'#7D93E0','Crown':'#A77EDB'};
+var BANDS=['Root','Sacral','Solar','Heart','Throat','3rd Eye','Crown'];
+var NAMES={
+ 'Root':["Fear","Shame","Guilt","Control","Insecurity","Victimhood","Scarcity","Root_08_Unnamed","Possession","Lethargy","Resistance","Compulsion","Disconnection","Escapism","Panic","Collapse"],
+ 'Sacral':["Addiction","Lust","Envy","Jealousy","Co-Dependency","Shame Of Desire","Hypersexuality","Avoidance Of Pleasure","Manipulation Through Emotion","Oversensitivity","Fantasy","Infatuation","Obsession","Guilt Of Pleasure","Need For Approval","Excess Emotion"],
+ 'Solar':["Pride","Arrogance","Competition","Anger","Judgment","Entitlement","Rebellion","Perfectionism","Force","Rigidity","Resentment (Solar)","Unworthiness","Anxiety","Self-Judgment (Solar)","Need To Win","Superiority"],
+ 'Heart':["Hatred","Resentment (Heart)","Self-Judgment (Heart)","Betrayal","Separation","Martyrdom","Longing","Closed Heart","Manipulative Kindness","Expectation","Blame","False Love","Rejection","Avoidance Of Grief","Need To Be Needed"],
+ 'Throat':["Deceit","Self-Silencing","People Pleasing","Lying","Interrupting","Comparison","Excuse","Stage Performing","Speaking To Be Right","Manic Expression","Talking To Avoid Feeling","Spiritual Language To Manipulate"],
+ '3rd Eye':["Delusion","Cynicism","Distrust","Hypervigilance","Dogma","Overanalysis","Projection","Paranoia","Distortion","Doubt","Idealism","Lack Of Discernment"],
+ 'Crown':["Doubt Of God","Hubris","Spiritual Pride","Nihilism","Spiritual Escapism","False Humility","Seeking Validation","Savior Complex","Condemnation","Need To Be Special","Unworthy Of God","Knowing Better Than God","Denial Of Truth","Rejection Of Spirit","Fear Of God","Anger At God","Forgetfulness","Denial Of Light","Rejection Of Unity","Self-Exclusion","Endless Seeking"]};
+/* the mock person. Heavy in Solar and Heart, a few sitting just under five
+   so they cross it as they drift, which is the moment the brief is about. */
+var HOT={'Fear':7.2,'Control':6.1,'Panic':5.4,'Collapse':4.6,'Need For Approval':6.8,
+ 'Co-Dependency':5.2,'Anger':8.6,'Judgment':7.4,'Resentment (Solar)':6.2,'Perfectionism':5.1,
+ 'Force':4.8,'Betrayal':7.8,'Resentment (Heart)':6.6,'Rejection':5.5,'Closed Heart':4.7,
+ 'Self-Silencing':7.0,'People Pleasing':6.0,'Hypervigilance':6.4,'Overanalysis':5.3,
+ 'Seeking Validation':5.8,'Unworthy Of God':4.9,
+ /* the story's run, cool until a story lands on it */
+ 'Delusion':2.4,'Cynicism':3.1,'Distrust':3.6,'Dogma':2.2,'Projection':2.9,'Paranoia':3.3};
+var STORY=['Delusion','Cynicism','Distrust','Hypervigilance','Dogma','Overanalysis','Projection','Paranoia'];
+var STORY_ADD=3.0, STORY_DUR=1.2, STORY_STAG=0.07;
+var ALARM=[255,46,31], INK=[230,231,234], GROUND=[16,16,16], HOTW=[255,238,214];
+/* the names ramp, FET_STEP[1] in wheel.js and its own 0.30 ramp */
+var NAME_Z=2.05, NAME_RAMP=NAME_Z*0.30;
+var ENTER_SPAN=0.38, ENTER_STAG=0.062;
+var NOTCH=1.12, ZMIN=0.85, ZMAX=7;
+var FREEZE=7.0;   /* the clock reduced motion is pinned to */
+
+function hx(h){h=h.replace('#','');return [parseInt(h.substr(0,2),16),parseInt(h.substr(2,2),16),parseInt(h.substr(4,2),16)];}
+function rgba(c,a){a=a<0?0:a>1?1:a;return 'rgba('+(c[0]|0)+','+(c[1]|0)+','+(c[2]|0)+','+a.toFixed(3)+')';}
+function mixc(a,b,t){return [a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t,a[2]+(b[2]-a[2])*t];}
+function clamp(v,a,b){return v<a?a:v>b?b:v;}
+function smooth(t){t=clamp(t,0,1);return t*t*(3-2*t);}
+function frac(x){return x-Math.floor(x);}
+function eoc(k){k=clamp(k,0,1);return 1-Math.pow(1-k,3);}
+function eio(k){k=clamp(k,0,1);return k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;}
+function chase(v,to,rate,dt){return v+(to-v)*(1-Math.exp(-rate*dt));}
+function mulberry(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);
+ t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function cqRamp(cq){var t=clamp(cq,0,100)/100;
+ var ST=[[0,[58,23,20]],[.28,[163,58,50]],[.5,[90,96,112]],[.76,[126,184,212]],[1,[234,244,249]]];
+ for(var i=1;i<ST.length;i++)if(t<=ST[i][0]){var a=ST[i-1],b=ST[i],f=(t-a[0])/(b[0]-a[0]);
+  return mixc(a[1],b[1],f);}
+ return ST[ST.length-1][1];}
+
+var VR=window.VARIANT;
+var cv=document.getElementById('cv'), g=cv.getContext('2d');
+var LY=document.createElement('canvas'), lg=LY.getContext('2d');
+var stage=document.getElementById('stage');
+var CW=800,CH=600,DPR=1,BASE_U=300;
+var MQ=window.matchMedia?window.matchMedia('(prefers-reduced-motion: reduce)'):null;
+var REDUCED=!!(MQ&&MQ.matches);
+var TOUCH=false;
+
+/* ---------------- the ring ---------------- */
+var W=[], rnd=mulberry(7);
+BANDS.forEach(function(b,bi){NAMES[b].forEach(function(k){W.push({k:k,b:b,bi:bi});});});
+W.forEach(function(n,i){
+ n.i=i; n.ang=i/W.length*TAU-Math.PI/2; n.c=hx(PAL[n.b]);
+ n.nm=(n.k==='Root_08_Unnamed')?'Unnamed':n.k;
+ var r1=rnd(), r2=rnd(), r3=rnd(), r4=rnd(), r5=rnd();
+ n.base=(HOT[n.k]!==undefined)?HOT[n.k]:(r1<0.3?0:0.3+r2*3.3);
+ /* a heavy address drifts far enough to cross five and back; a light one
+    barely moves. Periods of 15 to 26 seconds, which is a slow push and not a
+    flicker. */
+ var heavy=n.base>=3.8;
+ n.sw=heavy?0.7+r3*0.9:r3*0.25; n.per=15+r4*11; n.ph=r5*TAU;
+ n.sIdx=STORY.indexOf(n.k);
+ n.v=0; n.pv=0; n.ds=0; n.Td=0; n.Tv=0; n.lab=0;
+ n.a1=0; n.a2=0; n.a3=0;       /* variant phase accumulators */
+});
+
+/* ---------------- state ---------------- */
+var S={zoom:1,zt:1,ox:0,oy:0,zpx:0,zpy:0,px:-1e4,py:-1e4,pin:false,
+ lx:-1e4,ly:-1e4,lvx:0,lvy:0,lensA:0,R:VR.R,t:0,last:null,enterT0:0,
+ story:{from:0,to:0,t0:-1e9},drag:null,fly:null,follow:null,dirty:true,
+ radShow:0,tick:-1,policy:VR.policy||null,frameMs:0};
+
+/* the lens never covers more than about three quarters of a phone */
+function lensR(){return Math.min(S.R,Math.min(CW,CH)*0.38);}
+function U(z){return BASE_U*(z===undefined?S.zoom:z);}
+function shellR(z){return U(z)*0.66;}
+function clockT(){return REDUCED?FREEZE:S.t;}
+
+/* ---------------- loads ---------------- */
+function enterSeat(bi,t){
+ if(REDUCED)return 1;
+ return eoc((t-S.enterT0-bi*ENTER_STAG)/ENTER_SPAN);}
+function storyAmt(n,t){
+ if(n.sIdx<0)return 0;
+ var st=S.story, k=REDUCED?1:clamp((t-st.t0-n.sIdx*STORY_STAG)/STORY_DUR,0,1);
+ return (st.from+(st.to-st.from)*eio(k))*STORY_ADD;}
+/* load is a pure function of time, so its rate is too, and direction is
+   never a guess */
+function loadAt(n,t,tDrift){
+ var drift=n.sw*Math.sin(TAU*tDrift/n.per+n.ph);
+ return clamp((n.base+drift+storyAmt(n,t))*enterSeat(n.bi,t),0,10);}
+function tensionOf(v){return v>5?0.18+0.82*Math.pow((v-5)/5,0.8):0;}
+
+/* ---------------- camera ---------------- */
+function CX(){return CW/2+S.ox;} function CY(){return CH/2+S.oy;}
+function zoomAbout(nz,px,py){
+ nz=clamp(nz,ZMIN,ZMAX);
+ var cx=CX(),cy=CY(),k=nz/S.zoom;
+ S.ox=px-(px-cx)*k-CW/2; S.oy=py-(py-cy)*k-CH/2; S.zoom=nz;}
+function nodeAnchor(n,z){
+ /* where a name starts: the inner end of the address, never further out
+    than the band the seat names sit in */
+ var R=shellR(z), d=U(z)*.016+clamp(n.v/10,0,1)*U(z)*.088;
+ return Math.min(R-d, R-24)-6;}
+function flyTo(n,z1){
+ z1=Math.max(z1||2.9,S.zoom);
+ var ra=nodeAnchor(n,z1)-40;
+ var ox=-Math.cos(n.ang)*ra, oy=-Math.sin(n.ang)*ra;
+ S.follow=n; S.pin=true;
+ if(REDUCED){S.zoom=S.zt=z1;S.ox=ox;S.oy=oy;S.fly=null;S.dirty=true;return;}
+ S.fly={t0:S.t,dur:0.48,z0:S.zoom,z1:z1,ox0:S.ox,oy0:S.oy,ox1:ox,oy1:oy};}
+
+/* ---------------- per frame ---------------- */
+function step(dt){
+ var t=S.t, tt=clockT();
+ /* loads, direction, tension */
+ for(var i=0;i<W.length;i++){var n=W[i];
+  var v=loadAt(n,t,tt), vp=loadAt(n,REDUCED?t:t-0.2,tt-0.2);
+  n.v=v; n.ds=clamp((v-vp)/0.2/0.30,-1,1);
+  var Tt=tensionOf(v);
+  if(REDUCED){n.Td=Tt;n.Tv=0;}
+  else{
+   /* ANTICIPATION. Crossing five is the event. The mark dips the wrong way
+      for a few frames before it springs out, which is what makes the
+      arrival read as a push rather than a fade. */
+   if(n.pv<=5&&v>5)n.Tv-=1.4;
+   /* a spring that lands with a small overshoot: w 20, damping .62, about
+      8 percent over and settled in 320ms */
+   var h=dt, sub=Math.max(1,Math.ceil(h/(1/120))), sd=h/sub;
+   for(var s=0;s<sub;s++){var acc=400*(Tt-n.Td)-2*0.62*20*n.Tv;n.Tv+=acc*sd;n.Td+=n.Tv*sd;}
+   if(n.Td<-0.08){n.Td=-0.08;n.Tv=Math.max(0,n.Tv);}}
+  n.pv=v;}
+ /* camera */
+ if(S.fly){var f=S.fly,k=REDUCED?1:eoc((t-f.t0)/f.dur);
+  S.zoom=S.zt=f.z0+(f.z1-f.z0)*k; S.ox=f.ox0+(f.ox1-f.ox0)*k; S.oy=f.oy0+(f.oy1-f.oy0)*k;
+  if(k>=1)S.fly=null;}
+ else if(Math.abs(S.zt-S.zoom)>1e-4){
+  zoomAbout(REDUCED?S.zt:chase(S.zoom,S.zt,16,dt),S.zpx,S.zpy);}
+ if(S.follow){var fa=S.follow, ra=nodeAnchor(fa)-18;
+  S.px=CX()+Math.cos(fa.ang)*ra; S.py=CY()+Math.sin(fa.ang)*ra;}
+ /* the lens follows the pointer on a critically damped spring, w 30, which
+    settles in about 160ms: close enough to feel attached, soft enough that
+    a flick across the ring does not strobe the names */
+ if(REDUCED||S.lx<-9e3){S.lx=S.px;S.ly=S.py;S.lvx=S.lvy=0;}
+ else{var w=30;
+  S.lvx+=(w*w*(S.px-S.lx)-2*w*S.lvx)*dt; S.lvy+=(w*w*(S.py-S.ly)-2*w*S.lvy)*dt;
+  S.lx+=S.lvx*dt; S.ly+=S.lvy*dt;}
+ var want=smooth((S.zoom-NAME_Z)/NAME_RAMP)*(S.pin?1:0);
+ S.lensA=REDUCED?want:chase(S.lensA,want,want>S.lensA?12:11.5,dt);
+ if(S.radShow>0)S.radShow=Math.max(0,S.radShow-dt/(REDUCED?0.001:1.2));
+ if(VR.step)VR.step(dt);}
+
+/* ---------------- drawing helpers ---------------- */
+function arcP(cx,cy,r0,r1,a0,a1){g.beginPath();g.arc(cx,cy,r1,a0,a1);g.arc(cx,cy,r0,a1,a0,true);g.closePath();}
+function nodeCol(n){var ld=clamp(n.v/10,0,1);
+ return mixc(mixc(n.c,[150,160,180],.74),n.c,Math.pow(ld,.55));}
+function hotCol(n){
+ if(n.v>=9)return mixc(ALARM,[255,255,255],.12);
+ return mixc(n.c,[255,255,255],.25+.35*clamp(n.Td,0,1));}
+function falloff(x,kind,plateau){
+ if(kind==='gauss'){return Math.exp(-(x*x)/0.5)*(1-smooth((x-0.8)/0.35));}
+ if(kind==='cos'){if(x<=plateau)return 1;if(x>=1)return 0;
+  return 0.5+0.5*Math.cos(Math.PI*(x-plateau)/(1-plateau));}
+ return 1-smooth((x-plateau)/(1-plateau));}
+function arcTxt(ctx,s,cx,cy,am,rad,size,c,a,span){
+ ctx.save();ctx.font='600 '+size+'px Inter, system-ui, sans-serif';
+ var tw=ctx.measureText(s).width, need=tw/Math.max(1,rad);
+ if(span&&need>span){ctx.restore();return;}
+ var low=Math.sin(am)>0.25, dir=low?-1:1, t=am-dir*need/2;
+ ctx.textAlign='center';ctx.textBaseline='middle';
+ for(var i=0;i<s.length;i++){var ch=s[i],cw=ctx.measureText(ch).width,th=t+dir*(cw/2)/rad;
+  ctx.save();ctx.translate(cx+Math.cos(th)*rad,cy+Math.sin(th)*rad);ctx.rotate(th+dir*Math.PI/2);
+  ctx.lineJoin='round';ctx.lineWidth=3;ctx.strokeStyle='rgba(16,16,16,.85)';ctx.strokeText(ch,0,0);
+  ctx.fillStyle=rgba(c,a);ctx.fillText(ch,0,0);ctx.restore();t+=dir*cw/rad;}
+ ctx.restore();}
+/* A RADIAL RUN, inward, the value against the ring. Ruled 26 September:
+   nothing written on the Field runs past the ring, so every name reads from
+   its address toward the centre. The figure sits at the ring end on both
+   sides, so it is always next to the thing it measures. */
+function radialRun(ctx,n,cx,cy,rad,name,val,size,nameCol,valCol,a){
+ var ang=n.aa, left=Math.cos(ang)<0, rot=left?ang+Math.PI:ang;
+ ctx.save();ctx.translate(cx+Math.cos(ang)*rad,cy+Math.sin(ang)*rad);ctx.rotate(rot);
+ ctx.textBaseline='middle';ctx.textAlign='left';
+ ctx.font='600 '+size.toFixed(1)+'px Inter, system-ui, sans-serif';
+ var vw=val?ctx.measureText(val).width:0, gap=val&&name?size*0.55:0;
+ ctx.font='500 '+size.toFixed(1)+'px Inter, system-ui, sans-serif';
+ var nw=name?ctx.measureText(name).width:0, tot=vw+gap+nw;
+ /* right side reads inward as -x from the anchor, left side as +x */
+ var x0=left?0:-tot;
+ var vx=left?x0:x0+nw+gap, nx=left?x0+vw+gap:x0;
+ ctx.lineJoin='round';ctx.lineWidth=3;ctx.strokeStyle='rgba(16,16,16,'+(0.8*a).toFixed(3)+')';
+ if(name){ctx.strokeText(name,nx,0);ctx.fillStyle=rgba(nameCol,a);ctx.fillText(name,nx,0);}
+ if(val){ctx.font='600 '+size.toFixed(1)+'px Inter, system-ui, sans-serif';
+  ctx.strokeText(val,vx,0);ctx.fillStyle=rgba(valCol,a);ctx.fillText(val,vx,0);}
+ ctx.restore();}
+/* the direction mark, a chevron on the radius: outward is expanding,
+   inward is collapsing. It is the one cue that survives reduced motion
+   and the labels being off. */
+function chevron(ctx,n,cx,cy,rad,col,a){
+ if(Math.abs(n.ds)<0.12||a<=0.01)return;
+ /* a filled head, not a stroke: a stroked chevron beside a figure was read
+    as a typed less than sign on the first look */
+ var dir=n.ds>0?1:-1, s=3.2;
+ ctx.save();ctx.translate(cx+Math.cos(n.aa)*rad,cy+Math.sin(n.aa)*rad);ctx.rotate(n.aa);
+ ctx.beginPath();ctx.moveTo(dir*s,0);ctx.lineTo(-dir*s*0.7,-s*0.85);ctx.lineTo(-dir*s*0.7,s*0.85);ctx.closePath();
+ ctx.fillStyle=rgba(col,a);ctx.fill();
+ ctx.restore();}
+
+/* ---------------- the frame ---------------- */
+function draw(){
+ var t0=performance.now();
+ var cx=CX(),cy=CY(),u=U(),R=shellR(),z=S.zoom,zk=clamp(Math.sqrt(z),1,2.2);
+ /* sk is the size of a mark: it grows with zoom, but it starts from the size
+    of the ring, so a phone does not get desktop sized strain on a ring half
+    as big */
+ var sk=clamp(BASE_U/440,0.5,1.2)*zk;
+ var G={cx:cx,cy:cy,U:u,R:R,z:z,zk:zk,sk:sk,t:S.t,dt:S.dt||0};
+ g.setTransform(DPR,0,0,DPR,0,0);
+ g.fillStyle='#101010';g.fillRect(0,0,CW,CH);
+ /* the wash, one gradient, behind everything */
+ var wg=g.createRadialGradient(cx,cy,0,cx,cy,u*1.2);
+ wg.addColorStop(0,'rgba(126,184,212,.07)');wg.addColorStop(1,'rgba(126,184,212,0)');
+ g.fillStyle=wg;g.fillRect(0,0,CW,CH);
+ /* geometry per address. The breath is a slow wave round the ring, a tenth
+    of a unit, so the Field is never still even when nothing is loading. */
+ var fg=smooth((z-1.55)/(1.55*0.3)), tt=S.t;
+ for(var i=0;i<W.length;i++){var n=W[i];
+  var ea=enterSeat(n.bi,S.t);
+  n.ea=ea; n.aa=n.ang+(1-ea)*0.19;
+  var ld=clamp(n.v/10,0,1), carrying=n.v>=4;
+  var br=REDUCED?0:0.10*Math.sin(TAU*tt/4.2-n.i*0.12);
+  var d=u*.016+clamp((n.v+br)/10,0,1)*u*.088+(carrying?fg*ld*u*.05:0);
+  /* the slot does not widen with zoom here. The shipped ring widens a grown
+     address past its own slot, which put the next name's run on top of it */
+  n.rO=R; n.rI=R-d; n.hw=TAU/W.length*.43; n.col=nodeCol(n);
+  if(VR.shape)VR.shape(n,G);}
+ /* the core's radius first, because the wires in B are drawn to it */
+ var cq=58, cc=cqRamp(cq), cr=u*0.2*(1+(REDUCED?0:Math.sin(S.t*1.4)*.04))*(0.34+0.66*enterSeat(6,S.t-0.3));
+ G.coreR=cr;
+ if(VR.under)VR.under(G);
+ /* the core */
+ g.beginPath();g.arc(cx,cy,cr,0,TAU);g.fillStyle=rgba(cc,1);g.fill();
+ g.lineWidth=Math.max(1.2,cr*.04);g.strokeStyle=rgba(mixc(cc,[0,0,0],.45),.9);g.stroke();
+ var big=clamp(cr*0.52,15,64);
+ g.textAlign='center';g.textBaseline='alphabetic';g.fillStyle=rgba(mixc(cc,[255,255,255],.75),1);
+ g.font='500 '+big.toFixed(1)+'px Inter, system-ui, sans-serif';g.fillText(String(cq),cx,cy+big*0.3);
+ if(big*0.26>=11){g.fillStyle=rgba(INK,.55);g.font='400 '+(big*0.26).toFixed(1)+'px Inter, system-ui, sans-serif';
+  g.fillText('of 100',cx,cy+big*0.3+big*0.26*1.75);}
+ G.coreR=cr;
+ /* the shell guide and the addresses */
+ g.beginPath();g.arc(cx,cy,R,0,TAU);g.strokeStyle='rgba(230,231,234,.07)';g.lineWidth=1;g.stroke();
+ for(i=0;i<W.length;i++){n=W[i]; if(n.ea<=0)continue;
+  var c=VR.wedgeCol?VR.wedgeCol(n,G):n.col, carry=n.v>=4, l2=clamp(n.v/10,0,1);
+  g.globalAlpha=n.ea;
+  arcP(cx,cy,n.rI,n.rO,n.aa-n.hw,n.aa+n.hw);
+  g.fillStyle=rgba(mixc(c,[0,0,0],.2),carry?.34+l2*.6:.12);g.fill();
+  if(n.v>=9){g.strokeStyle=rgba(ALARM,.85);g.lineWidth=1.4;g.stroke();}
+  g.beginPath();g.arc(cx,cy,n.rO-1.2,n.aa-n.hw,n.aa+n.hw);
+  g.strokeStyle=rgba(mixc(c,[255,255,255],.44),carry?.75:.2);g.lineWidth=2.2;g.stroke();
+  g.globalAlpha=1;}
+ /* the seat names, round their own arcs, as shipped */
+ BANDS.forEach(function(b,bi){var seg=W.filter(function(n){return n.bi===bi;});
+  var a0=seg[0].aa,a1=seg[seg.length-1].aa, am=(a0+a1)/2;
+  arcTxt(g,b,cx,cy,am,R-11,11.5,mixc(hx(PAL[b]),INK,.18),.9*(1-0.55*S.lensA),a1-a0+TAU/W.length);});
+ if(VR.dim)VR.dim(G);
+ if(VR.over)VR.over(G);
+ drawLabels(G);
+ if(VR.lensMark)VR.lensMark(G);
+ if(S.radShow>0){g.beginPath();g.arc(S.lx>-9e3?S.lx:cx,S.lx>-9e3?S.ly:cy,lensR(),0,TAU);
+  g.setLineDash([4,5]);g.strokeStyle=rgba(INK,.45*S.radShow);g.lineWidth=1;g.stroke();g.setLineDash([]);}
+ /* it says what it is, on the canvas itself, so a screenshot of this
+    surface alone still carries it */
+ g.textAlign='left';g.textBaseline='alphabetic';g.font='600 11px Inter, system-ui, sans-serif';
+ g.fillStyle='rgba(214,169,59,.85)';g.fillText('Prototype, mock loads',12,CH-12);
+ var ms=performance.now()-t0; S.frameMs=S.frameMs?S.frameMs*0.92+ms*0.08:ms;}
+
+/* ---------------- names and values ---------------- */
+function drawLabels(G){
+ var cx=G.cx,cy=G.cy,R=lensR(),mode=VR.lensMode,kind=VR.falloff,pl=VR.plateau;
+ var lensOn=S.lensA>0.003;
+ var fn=smooth((S.zoom-NAME_Z)/NAME_RAMP);
+ var placedV=[], size=11.5;
+ /* sort heavy first, so where two figures would collide the heavier wins */
+ var order=W.slice().sort(function(a,b){return b.v-a.v;});
+ var inLens=[];
+ order.forEach(function(n){
+  if(n.ea<=0.5)return;
+  var ra=Math.min(n.rI,G.R-24)-6;
+  n.ra=ra;
+  var ax=cx+Math.cos(n.aa)*ra, ay=cy+Math.sin(n.aa)*ra;
+  var d=Math.hypot(ax-S.lx,ay-S.ly), w=lensOn?falloff(d/R,kind,pl):0;
+  /* the name's strength. word mode chases it in 140ms and lets go in
+     260ms, so a name arriving and a name leaving are two different speeds */
+  var target=w*S.lensA;
+  if(mode==='word')n.lab=REDUCED?target:chase(n.lab,target,target>n.lab?21:11.5,G.dt);
+  else n.lab=target;
+  var pol=VR.nameAlpha?VR.nameAlpha(n,fn):n.lab;
+  n.nameA=pol;
+  if(n.tw===undefined){g.save();g.font='500 11.5px Inter, system-ui, sans-serif';
+   n.tw=g.measureText(n.nm+'  00.0').width+10;g.restore();}
+  var hot=n.v>5;
+  /* the figure alone, for a hot address outside the names, and it gives way
+     as its name arrives */
+  var vA=hot?clamp(1-pol,0,1)*clamp(n.Td*3,0,1):0;
+  if(vA>0.01){
+   var gap=13/Math.max(40,ra), clash=placedV.some(function(p){
+    var da=Math.abs(Math.atan2(Math.sin(p-n.aa),Math.cos(p-n.aa)));return da<gap;});
+   if(!clash){placedV.push(n.aa);
+    var hc=hotCol(n);
+    radialRun(g,n,cx,cy,ra,null,n.v.toFixed(1),size,INK,hc,vA);
+    chevron(g,n,cx,cy,ra+5,hc,vA*clamp(Math.abs(n.ds)*1.6,0,1));}}
+  if(pol>0.01||(mode==='pixel'&&lensOn&&d<R+220))inLens.push({n:n,w:w,d:d});});
+ if(!inLens.length)return;
+ if(mode==='pixel'){
+  /* PER PIXEL. The names are set on their own layer and the layer is cut by
+     one radial gradient on the lens, so a long name crossing the edge
+     dissolves along its length instead of fading as a block. Bounded to
+     the lens box, so the cost is the lens and not the screen. */
+  var bx=Math.max(0,Math.floor(S.lx-R-4)), by=Math.max(0,Math.floor(S.ly-R-4));
+  var bw=Math.min(CW,Math.ceil(S.lx+R+4))-bx, bh=Math.min(CH,Math.ceil(S.ly+R+4))-by;
+  if(bw<=0||bh<=0)return;
+  lg.setTransform(DPR,0,0,DPR,0,0);lg.clearRect(bx,by,bw,bh);
+  lg.save();lg.beginPath();lg.rect(bx,by,bw,bh);lg.clip();
+  inLens.forEach(function(o){var n=o.n,hot=n.v>5;
+   radialRun(lg,n,cx,cy,n.ra,n.nm,hot||VR.allValues?n.v.toFixed(1):null,size,
+    mixc(INK,n.c,.12),hot?hotCol(n):mixc(INK,n.c,.35),1);
+   if(hot)chevron(lg,n,cx,cy,n.ra+5,hotCol(n),clamp(Math.abs(n.ds)*1.6,0,1));});
+  lg.globalCompositeOperation='destination-in';
+  var mg=lg.createRadialGradient(S.lx,S.ly,0,S.lx,S.ly,R);
+  for(var k=0;k<=10;k++){var x=k/10;mg.addColorStop(x,'rgba(0,0,0,'+(falloff(x,kind,pl)*S.lensA).toFixed(3)+')');}
+  lg.fillStyle=mg;lg.fillRect(bx,by,bw,bh);
+  lg.globalCompositeOperation='source-over';lg.restore();
+  g.save();g.setTransform(1,0,0,1,0,0);
+  g.drawImage(LY,bx*DPR,by*DPR,bw*DPR,bh*DPR,bx*DPR,by*DPR,bw*DPR,bh*DPR);g.restore();
+  /* the names the variant keeps outside the lens, if any */
+  return;}
+ inLens.forEach(function(o){var n=o.n,a=n.nameA; if(a<=0.01)return;
+  var hot=n.v>5, sz=size*(1+(VR.scaleWords||0)*n.lab);
+  radialRun(g,n,cx,cy,n.ra,n.nm,hot||VR.allValues?n.v.toFixed(1):null,sz,
+   mixc(INK,n.c,.12),hot?hotCol(n):mixc(INK,n.c,.35),a);
+  if(hot)chevron(g,n,cx,cy,n.ra+5,hotCol(n),a*clamp(Math.abs(n.ds)*1.6,0,1));});}
+
+/* ---------------- the running hot list ---------------- */
+var hotEl=document.getElementById('hot'), hotN=document.getElementById('hotn'), lastList=0;
+function listHot(){
+ var hot=W.filter(function(n){return n.v>5&&n.ea>=1;}).sort(function(a,b){return b.v-a.v;});
+ hotN.textContent=hot.length?hot.length+(hot.length===1?' address':' addresses'):'none yet';
+ var html=hot.map(function(n){
+  var dir=Math.abs(n.ds)<0.12?'turning':(n.ds>0?'expanding':'collapsing');
+  var c=n.v>=9?'#FF2E1F':PAL[n.b];
+  return '<li data-i="'+n.i+'"><button type="button"><span class="dot" style="background:'+PAL[n.b]+'"></span>'
+   +'<span class="nm">'+n.nm+'</span><span class="val" style="color:'+c+'">'+n.v.toFixed(1)+'</span>'
+   +'<span class="dir '+dir+'">'+dir+'</span>'
+   +'<span class="bar"><i style="width:'+(n.v*10).toFixed(0)+'%;background:'+c+'"></i></span></button></li>';}).join('');
+ if(hotEl.innerHTML!==html)hotEl.innerHTML=html;}
+hotEl.addEventListener('click',function(e){var li=e.target.closest('li');if(!li)return;
+ flyTo(W[+li.getAttribute('data-i')],2.9);});
+
+/* ---------------- the loop ---------------- */
+function frame(now){
+ now/=1000;
+ var dt=S.last===null?1/60:Math.min(0.1,now-S.last); S.last=now; S.t=now; S.dt=dt;
+ var moving=!REDUCED||S.dirty||S.fly||Math.abs(S.zt-S.zoom)>1e-4;
+ if(moving){step(dt);draw();S.dirty=false;}
+ if(now-lastList>0.15){lastList=now;listHot();}
+ var zr=document.getElementById('zro');
+ if(zr)zr.textContent='zoom '+S.zoom.toFixed(2)+(S.zoom<NAME_Z?'  ·  names from '+NAME_Z.toFixed(2):'');
+ requestAnimationFrame(frame);}
+
+/* ---------------- size ---------------- */
+function resize(){
+ var r=stage.getBoundingClientRect();
+ CW=Math.max(200,r.width);CH=Math.max(200,r.height);DPR=Math.min(2,window.devicePixelRatio||1);
+ [cv,LY].forEach(function(c){c.width=Math.round(CW*DPR);c.height=Math.round(CH*DPR);});
+ cv.style.width=CW+'px';cv.style.height=CH+'px';
+ BASE_U=Math.min(CW,CH)*0.5*0.78/0.66; S.dirty=true;}
+if(window.ResizeObserver)new ResizeObserver(resize).observe(stage); else window.addEventListener('resize',resize);
+resize();
+
+/* ---------------- input ---------------- */
+function local(e){var r=cv.getBoundingClientRect();return [e.clientX-r.left,e.clientY-r.top];}
+cv.addEventListener('wheel',function(e){e.preventDefault();
+ var p=local(e), notches=clamp(-e.deltaY/100,-3,3);
+ if(e.deltaMode===1)notches=clamp(-e.deltaY/3,-3,3);
+ S.zt=clamp(S.zt*Math.pow(NOTCH,notches),ZMIN,ZMAX); S.zpx=p[0];S.zpy=p[1];
+ S.px=p[0];S.py=p[1];S.pin=true;S.follow=null;S.fly=null;S.dirty=true;},{passive:false});
+var PT={};
+cv.addEventListener('pointerdown',function(e){var p=local(e);cv.setPointerCapture(e.pointerId);
+ PT[e.pointerId]={x:p[0],y:p[1]};S.follow=null;S.fly=null;
+ if(e.pointerType!=='mouse'){TOUCH=true;hint();}
+ var ids=Object.keys(PT);
+ if(ids.length===1){if(e.pointerType==='mouse')S.drag={x:p[0],y:p[1],ox:S.ox,oy:S.oy,moved:false};
+  else{S.px=p[0];S.py=p[1];S.pin=true;}}
+ if(ids.length===2){var a=PT[ids[0]],b=PT[ids[1]];
+  S.pinch={d:Math.hypot(a.x-b.x,a.y-b.y),z:S.zoom,mx:(a.x+b.x)/2,my:(a.y+b.y)/2};}
+ S.dirty=true;});
+cv.addEventListener('pointermove',function(e){var p=local(e);
+ if(PT[e.pointerId]){PT[e.pointerId].x=p[0];PT[e.pointerId].y=p[1];}
+ var ids=Object.keys(PT);
+ if(ids.length===2&&S.pinch){var a=PT[ids[0]],b=PT[ids[1]];
+  var d=Math.hypot(a.x-b.x,a.y-b.y), mx=(a.x+b.x)/2, my=(a.y+b.y)/2;
+  S.ox+=mx-S.pinch.mx;S.oy+=my-S.pinch.my;S.pinch.mx=mx;S.pinch.my=my;
+  var nz=clamp(S.pinch.z*d/Math.max(1,S.pinch.d),ZMIN,ZMAX);zoomAbout(nz,mx,my);S.zt=S.zoom;
+  S.dirty=true;return;}
+ if(e.pointerType==='mouse'){S.px=p[0];S.py=p[1];S.pin=true;S.follow=null;
+  if(S.drag){var dx=p[0]-S.drag.x,dy=p[1]-S.drag.y;
+   if(Math.abs(dx)+Math.abs(dy)>3)S.drag.moved=true;
+   if(S.drag.moved){S.ox=S.drag.ox+dx;S.oy=S.drag.oy+dy;}}}
+ else if(ids.length===1){S.px=p[0];S.py=p[1];S.pin=true;}
+ S.dirty=true;});
+function up(e){delete PT[e.pointerId];if(Object.keys(PT).length<2)S.pinch=null;S.drag=null;S.dirty=true;}
+cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',up);
+cv.addEventListener('pointerleave',function(e){if(e.pointerType==='mouse'){S.pin=false;S.drag=null;S.dirty=true;}});
+window.addEventListener('keydown',function(e){
+ if(e.target&&(e.target.tagName==='INPUT'||e.target.tagName==='SELECT'))return;
+ if(e.key==='+'||e.key==='='){S.zt=clamp(S.zt*NOTCH,ZMIN,ZMAX);S.zpx=S.px>-9e3?S.px:CW/2;S.zpy=S.py>-9e3?S.py:CH/2;}
+ if(e.key==='-'){S.zt=clamp(S.zt/NOTCH,ZMIN,ZMAX);S.zpx=S.px>-9e3?S.px:CW/2;S.zpy=S.py>-9e3?S.py:CH/2;}
+ if(e.key==='0')resetView();
+ S.dirty=true;});
+
+/* ---------------- controls ---------------- */
+function $(id){return document.getElementById(id);}
+function replay(){S.enterT0=S.t;S.story={from:0,to:0,t0:-1e9};
+ W.forEach(function(n){n.Td=0;n.Tv=0;n.pv=0;});S.dirty=true;}
+function storyTo(to){var cur=storyAmt(W.filter(function(n){return n.sIdx===0;})[0],S.t)/STORY_ADD;
+ S.story={from:cur,to:to,t0:S.t};S.dirty=true;}
+function resetView(){S.fly={t0:S.t,dur:0.42,z0:S.zoom,z1:1,ox0:S.ox,oy0:S.oy,ox1:0,oy1:0};S.zt=1;S.follow=null;S.dirty=true;}
+$('b-replay').onclick=replay;
+$('b-story').onclick=function(){storyTo(1);};
+$('b-release').onclick=function(){storyTo(0);};
+$('b-names').onclick=function(){flyTo(W.filter(function(n){return n.k==='Anger';})[0],2.9);};
+$('b-reset').onclick=resetView;
+var rm=$('b-motion');
+function rmLabel(){rm.textContent='Reduced motion: '+(REDUCED?'on':'off');rm.setAttribute('aria-pressed',REDUCED?'true':'false');}
+rm.onclick=function(){REDUCED=!REDUCED;rmLabel();S.dirty=true;
+ if(REDUCED){S.enterT0=-1e9;}};
+rmLabel();
+var rad=$('r-rad'), radv=$('r-radv');
+rad.value=S.R; radv.textContent=S.R+' px';
+rad.oninput=function(){S.R=+rad.value;radv.textContent=S.R+' px';S.radShow=1;S.dirty=true;};
+function hint(){var h=$('hint');
+ h.textContent=TOUCH?'Pinch to zoom. Touch the ring to set where names appear.'
+  :'Scroll to zoom toward the pointer. Drag to move. Names appear around the pointer from zoom 2.05.';}
+TOUCH=!!(window.matchMedia&&window.matchMedia('(pointer:coarse)').matches);
+hint();
+if(REDUCED)S.enterT0=-1e9;
+/* hooks for the capture script, which drives the page the way a person would */
+window.__proto={S:S,W:W,flyTo:flyTo,zoomAbout:zoomAbout,
+ point:function(x,y){S.px=x;S.py=y;S.lx=x;S.ly=y;S.pin=true;S.follow=null;S.dirty=true;},
+ storyTo:storyTo,replay:replay};
+requestAnimationFrame(frame);
+
+</script>
+</body>
+</html>

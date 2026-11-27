@@ -1,0 +1,55 @@
+{
+  "banks": [
+    {
+      "approval_reference": "",
+      "bank_version": "anxiety-candidate-2026-10-16-v1",
+      "canonical_payload_sha256": "8647ef2b2202cf517cdd56930f9ce12d5a4a16988898f16fdca9d35923986735",
+      "item_count": 100,
+      "nature_id": "anxiety",
+      "raw_file_sha256": "92c6f39ab09bf24d89bcfd88d10c171797fc2c4589786eeb8c954a0e936183fb",
+      "unique_id_count": 100
+    }
+  ],
+  "errors": [
+    "schema: approval_reference must be a non-empty string",
+    "schema: approved_by must be a non-empty string",
+    "schema: approved_at must be a non-empty string",
+    "banks: missing required bank file burnout.json",
+    "banks: missing required bank file depression.json",
+    "banks: missing required bank file grief.json",
+    "banks: missing required bank file overwhelm.json",
+    "banks: missing required bank file sadness.json",
+    "anxiety.json: approval_reference must be a non-empty string",
+    "anxiety.json: approved_by must be a non-empty string",
+    "anxiety.json: approved_at must be a non-empty string",
+    "mapping: approval_reference must be a non-empty string",
+    "mapping: approved_by must be a non-empty string",
+    "mapping: approved_at must be a non-empty string",
+    "mapping: keys must be exactly the six required gift natures",
+    "mapping: expected exactly four distinct stable track IDs, found 0"
+  ],
+  "mapping": {
+    "approval_reference": "",
+    "canonical_payload_sha256": "785590462ffbff7c4ed0bf93c6dae723bf3a8a910294799e9ee4bc1ab723d387",
+    "distinct_track_count": 0,
+    "mapping_version": "not-defined",
+    "nature_count": 0,
+    "raw_file_sha256": "755ad35697d32ac9b8ed37269421f149ed8f5c8bf0152c99990db43674a1ac09"
+  },
+  "nature_ids": [
+    "anxiety",
+    "overwhelm",
+    "burnout",
+    "depression",
+    "grief",
+    "sadness"
+  ],
+  "production_manifest_created": false,
+  "result": "rejected",
+  "schema": {
+    "approval_reference": "",
+    "raw_file_sha256": "8025807d892dd8646510a11658a36d4909ec8b4a22721ce8a6d2d3a87d48a2a7",
+    "schema_version": "gift-bank-item-candidate-2026-10-16-v1",
+    "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e"
+  }
+}

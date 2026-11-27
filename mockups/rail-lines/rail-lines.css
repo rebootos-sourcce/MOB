@@ -1,0 +1,120 @@
+/* RAIL, LINES. Round PC. Mockup sheet for rail-lines.js.
+   Reads the app's own tokens (--accent, --root ... --crown, --ink, --edge,
+   --on-accent, --num, --r-xs) so every lighting is free. Nothing here is built
+   into atuned_src. */
+
+.lr{
+ /* the pair. CQ is the accent family, one step down in saturation. DQ is the
+    root seat taken into the dark: a warm that is not the alarm. Both are
+    solid. */
+ --c-cq:color-mix(in srgb,var(--accent) 76%,#8A9096);
+ --c-dq:color-mix(in srgb,var(--root) 44%,#1B1416);
+ --on-cq:#0B1418; --on-dq:#F1EEE9;
+ /* the three that move through a person keep their seat's colour. Radiance
+    is the three summed, so it is the light they make together. */
+ --c-vit:color-mix(in srgb,var(--solar) 84%,#7A7F88); --c-aw:color-mix(in srgb,var(--eye) 84%,#7A7F88); --c-wi:color-mix(in srgb,var(--throat) 84%,#7A7F88);
+ --c-rad:color-mix(in srgb,var(--ink) 56%,#2A2D36);
+ /* the two pairs that are not shadow. Benign is the heart seat. Malignant is
+    the same warm dark as DQ, because it is the same thing: held and costing.
+    Masculine and feminine are the sacral and crown seats, one warm and one
+    cool, neither of them the shadow's colour. */
+ --c-ben:color-mix(in srgb,var(--heart) 60%,#7A7F88); --c-mal:var(--c-dq);
+ --c-m:color-mix(in srgb,var(--sacral) 58%,#7A7F88); --c-f:color-mix(in srgb,var(--crown) 58%,#7A7F88);
+ --on:#0B0D10;
+ display:flex;flex-direction:column;width:100%;gap:3px;font-family:inherit;
+}
+.lr.lr-lite{
+ --c-cq:color-mix(in srgb,var(--accent) 92%,#8A9096);
+ --c-dq:color-mix(in srgb,var(--root) 30%,#FFFFFF);
+ --on-cq:#F4F8FA; --on-dq:#16171C;
+ --on:#F6F4EF;
+ --c-rad:color-mix(in srgb,var(--ink) 62%,#fff);
+ --c-mal:var(--c-dq);
+}
+.lr .lr-gap{height:5px}
+
+/* the line. The rail's own bar: a tinted track with the 1px edge, the fill
+   inside it, the mark and the figure in the line. */
+.lr .lr-ln{position:relative;display:block;height:26px;border-radius:var(--r-xs,8px);overflow:hidden;
+ background:rgba(128,128,128,.14);box-shadow:inset 0 0 0 1px var(--edge,rgba(255,255,255,.09));
+ font-size:12px;line-height:1;color:var(--ink)}
+.lr .lr-ln .lr-fill{position:absolute;left:0;top:0;bottom:0;width:var(--w,0%);background:var(--c);border-radius:inherit}
+.lr .lr-ln .lr-fill::before{content:"";position:absolute;inset:0;transform:translateX(-100%);
+ background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.2) 50%,transparent 70%);
+ animation:lrsweep calc(6s / var(--rate,1)) cubic-bezier(.4,0,.2,1) infinite}
+@keyframes lrsweep{0%{transform:translateX(-100%)}62%,100%{transform:translateX(100%)}}
+.lr .lr-ln:nth-of-type(2) .lr-fill::before{animation-delay:0s}
+.lr .lr-ln.lr-off .lr-fill::before{display:none}
+
+/* the words, drawn twice: one copy in the panel's ink on the track and one
+   in the fill's ink clipped to the fill, so a mark changes ink at the edge */
+.lr .lr-tx{position:absolute;inset:0;display:flex;align-items:center;justify-content:space-between;
+ padding:0 9px;pointer-events:none;color:var(--ink)}
+.lr .lr-ln .lr-tx.lr-over{color:var(--on);clip-path:inset(0 calc(100% - var(--w,0%)) 0 0)}
+.lr .lr-tl,.lr .lr-tr{display:flex;align-items:center;gap:6px}
+.lr .lr-li{flex:0 0 auto;width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.7;
+ stroke-linecap:round;stroke-linejoin:round}
+.lr .lr-fg,.lr .lr-tx i{font-style:normal;font-family:var(--num,inherit);font-variant-numeric:tabular-nums;
+ font-size:12px;font-weight:600;letter-spacing:0}
+.lr .lr-ln.lr-off .lr-tx{color:var(--dim)}
+.lr .lr-ln.lr-off .lr-tx.lr-over{display:none}
+.lr .lr-ln.lr-off .lr-fill{display:none}
+
+/* the pair: one solid bar, two colours, and the line where they meet */
+.lr .lr-pair{height:44px;background:var(--c-dq);box-shadow:none}
+.lr .lr-pair.lr-off{background:rgba(128,128,128,.14);box-shadow:inset 0 0 0 1px var(--edge,rgba(255,255,255,.09))}
+.lr .lr-cqL{position:absolute;inset:0;background:var(--c-cq)}
+.lr .lr-pair.lr-off .lr-cqL{display:none}
+.lr .lr-split{background:var(--cB);box-shadow:none}
+.lr .lr-split.lr-off{background:rgba(128,128,128,.14);box-shadow:inset 0 0 0 1px var(--edge,rgba(255,255,255,.09))}
+.lr .lr-split .lr-cqL{background:var(--cA);clip-path:inset(0 calc(100% - var(--e,50%)) 0 0)}
+.lr .lr-split.lr-off .lr-cqL{display:none}
+.lr .lr-split .lr-tx.lr-base{clip-path:inset(0 0 0 var(--e,50%));color:var(--inB,var(--on))}
+.lr .lr-split .lr-tx.lr-over{clip-path:inset(0 calc(100% - var(--e,50%)) 0 0);color:var(--inA,var(--on))}
+.lr .lr-split[data-k=ori]{--inA:var(--on);--inB:var(--on-dq)}
+.lr .lr-split[data-k=bal]{--inA:var(--on);--inB:var(--on)}
+.lr .lr-split .lr-tx{padding:0 9px}
+.lr .lr-pair .lr-tx.lr-base,.lr .lr-pair .lr-tx.lr-over{padding:0 10px;gap:8px}
+.lr .lr-pair .lr-tx.lr-base{color:var(--on-dq)}
+.lr .lr-pair .lr-tx.lr-over{color:var(--on-cq)}
+.lr .lr-pair .lr-tx b{font-size:12px;font-weight:600;letter-spacing:.02em}
+.lr .lr-pair .lr-tx i{font-size:15px;font-weight:600}
+.lr .lr-pair .lr-tl,.lr .lr-pair .lr-tr{gap:5px}
+.lr .lr-pair.lr-off .lr-tx.lr-base{color:var(--dim)}
+/* the oscillation, drawn as the trail the edge leaves */
+.lr .lr-trl{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+/* the seven shadow seats stand in the DQ colour, root to crown, as the
+   rail's own hashes do, and only where the DQ colour is */
+.lr .lr-mk{position:absolute;right:76px;top:9px;bottom:9px;display:flex;align-items:flex-end;gap:2px;pointer-events:none}
+.lr .lr-mk s{position:relative;display:block;width:4px;height:100%;border-radius:2px;text-decoration:none;
+ background:color-mix(in srgb,var(--k) 22%,transparent)}
+.lr .lr-mk s::before{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;border-radius:1px;background:var(--k)}
+.lr .lr-mk b{position:absolute;inset:0;display:block;transform-origin:50% 100%}
+.lr .lr-mk u{position:absolute;inset:0;display:block;border-radius:2px;background:var(--k);transform-origin:50% 100%;
+ animation:lrhash 9.09s cubic-bezier(.4,0,.2,1) infinite;animation-delay:calc(var(--q) * -.6s)}
+@keyframes lrhash{0%,100%{transform:scaleY(1)}50%{transform:scaleY(calc(1 - var(--amp,0) * .5))}}
+.lr.lr-lite .lr-mk s::before,.lr.lr-lite .lr-mk u{filter:saturate(1.1) brightness(.92)}
+
+/* flow: the wave band, in the line. Icon at the left, figure at the right. */
+.lr .lr-flow{height:40px;display:flex;align-items:center;gap:8px;padding:0 9px}
+.lr .lr-flow .lr-wv{flex:1;min-width:0;height:28px;display:block;overflow:visible}
+.lr .lr-flow .lr-wb rect{opacity:.12}
+.lr .lr-flow .lr-wm{fill:none;stroke:var(--edge-2,rgba(255,255,255,.18));stroke-width:1;stroke-dasharray:2 4;vector-effect:non-scaling-stroke}
+.lr .lr-flow .lr-sq{fill:none;stroke:var(--mid);stroke-width:1;stroke-dasharray:1 3;opacity:.55;vector-effect:non-scaling-stroke}
+.lr .lr-flow .lr-wvp{fill:none;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.lr .lr-flow .lr-tl{color:var(--ink)}
+.lr .lr-flow .lr-fg{color:var(--ink)}
+.lr .lr-flow.lr-off .lr-wv{opacity:.5}
+
+/* the closed rail: the same lines, narrower, mark only, no figures */
+.lr.lr-mini{width:44px;gap:3px}
+.lr.lr-mini .lr-ln{height:20px;border-radius:6px}
+.lr.lr-mini .lr-pair{height:22px}
+.lr.lr-mini .lr-gap{height:4px}
+.lr.lr-mini .lr-flow{height:28px;padding:0 4px;gap:3px}
+.lr.lr-mini .lr-flow .lr-wv{height:18px}
+.lr.lr-mini .lr-tx{padding:0 4px}
+.lr.lr-mini .lr-li{width:13px;height:13px}
+.lr.lr-mini .lr-split .lr-tx{padding:0 3px}
+.lr.lr-mini .lr-flow .lr-tl .lr-li{width:12px;height:12px}
+.lr .lr-ln.lr-off .lr-tx.lr-base,.lr .lr-split.lr-off .lr-tx.lr-base,.lr .lr-pair.lr-off .lr-tx.lr-base{color:var(--dim)}

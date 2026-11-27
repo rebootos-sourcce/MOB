@@ -1,0 +1,18 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>bench</title>
+<link rel="stylesheet" href="rail-simple.css">
+<style>
+:root{--bg:#0C0D12;--panel:#1A1D26;--ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;--edge:rgba(255,255,255,.09);--edge-2:rgba(255,255,255,.14)}
+body{margin:0;background:var(--bg);color:var(--ink);font:13px Inter,system-ui,sans-serif;padding:16px}
+.row{display:flex;gap:16px;margin-bottom:16px}
+.cell{width:262px;background:var(--panel);border-radius:14px;padding:12px 14px;box-sizing:content-box}
+</style></head><body>
+<div id="g"></div>
+<script src="data.js"></script><script src="rail-simple.js"></script>
+<script>
+var q=new URLSearchParams(location.search), t=q.get('t');
+if(t!==null)RS.clock=+t;
+['a','b','c'].forEach(function(k){var r=document.createElement('div');r.className='row';
+ ['marcus','tomas','diane','you'].forEach(function(n){var c=document.createElement('div');c.className='cell';r.appendChild(c);
+  var h=document.createElement('div');c.appendChild(h);RS.mount(h,k,RS_DATA[n],{W:262});});
+ document.getElementById('g').appendChild(r);});
+</script></body></html>

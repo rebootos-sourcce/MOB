@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=1600">
+<title>The six gates, placed</title>
+<link rel="stylesheet" href="inter.css"><link rel="stylesheet" href="cb.css">
+<script src="cap/cap.js"></script><script src="cb.js"></script>
+<style>body{width:1600px}</style>
+</head><body>
+<div class="sheet">
+ <h1>The six gates, near the centre and in opposition</h1>
+ <p class="lede">"Do not stack the six above the centre, they're in opposition... I don't want them that far out from the
+ centre... we don't need to see it reading three or four times on the screen." The six are three oppositions:
+ awareness against ignorance, detachment against attachment, intention against aversion. Each layout below keeps every
+ pair visibly opposed and prints each share once. A and C keep the six within a gate's width of the core; B
+ reaches twice as far and trades that distance for a straight read. All three sit around
+ centre B from item 1. The shares are example values, since no reference profile has lit a gate yet; they sum to 100,
+ as the engine's do.</p>
+ <div class="band">The Dial, at 1600</div>
+ <div class="row" id="d"></div>
+ <div class="band">Nested frames, at 1600</div>
+ <div class="row" id="f"></div>
+ <div class="band">The Dial, at 390, for scale. On a phone item 3 moves the six out of the picture into the readout</div>
+ <div class="row" id="p"></div>
+ <p class="prov">Mockup. proto/field-cb/4-gates.html. James, example. Every distance in a caption is measured off the drawn
+ marks: how far past the core's own edge the furthest gate mark reaches, how many of the six figures overlap another,
+ and how many gate marks lie over the centre's type.</p>
+</div>
+<script>
+(function(){
+const OPTS=[
+ {v:'ship',h:'As it ships',t:'Three higher above the core and three lower below it, each pill a dash until a story lights it.'},
+ {v:'hex',h:'A. Three diameters',t:'Each pair on one line through the core: higher above the waist, lower below, every gate directly opposite the one it stands against. A hairline carries each axis to the core.'},
+ {v:'beams',h:'B. Three balances',t:'One row per opposition under the core, lower gate left, higher gate right. The split is the higher gate\'s share of the pair, so a reading that improves moves right on every row.'},
+ {v:'collar',h:'C. The collar',t:'Six arcs on the core\'s own rim, on the bearings of A. Across each diameter the two fills make one sector between them: a see-saw, so the opposition is drawn and not only placed.'}];
+const MEAS={};
+function cell(parent,key,o,S){
+ const c=document.createElement('div');c.className='cell';c.style.setProperty('--w',S+'px');
+ const pic=document.createElement('div');pic.className='pic';pic.style.cssText='width:'+S+'px;height:'+S+'px';c.appendChild(pic);parent.appendChild(c);
+ const M=CB.mount(pic,key);M.svg.style.position='absolute';M.svg.style.left=(S/2-M.cx)+'px';M.svg.style.top=(S/2-M.cy)+'px';
+ if(o.v!=='ship'){CB.centre(M,M.small?'arcs':'B');CB.gates(M,o.v);}
+ /* THE MEASURE. The furthest any gate mark reaches past the core's own
+    edge, and how many figures touch another mark of the gates or the core */
+ /* In the page's own pixels, less the picture's origin. getBBox reads a
+    glyph in its own 24 unit box, before its group's transform, and the first
+    cut of this measure put every glyph at the picture's corner: all four
+    layouts read 411. Checked after the fix against the shipped Dial, whose
+    reach can be worked by hand from the capture. */
+ const o0=M.svg.getBoundingClientRect(),BB=e=>{const r=e.getBoundingClientRect();return {x:r.x-o0.x,y:r.y-o0.y,width:r.width,height:r.height};};
+ const edge=M.disc;let far=0;const boxes=[];
+ [...M.gates.querySelectorAll('circle,path,text,rect,line')].forEach(e=>{const b=BB(e);
+  if(!b.width&&!b.height)return;
+  [[b.x,b.y],[b.x+b.width,b.y],[b.x,b.y+b.height],[b.x+b.width,b.y+b.height]].forEach(p=>{far=Math.max(far,Math.hypot(p[0]-M.cx,p[1]-M.cy));});
+  if(e.tagName==='text')boxes.push(b);});
+ const coreTexts=[...M.core.querySelectorAll('text')].map(BB);
+ const hit=(a,b)=>a.x<b.x+b.width&&b.x<a.x+a.width&&a.y<b.y+b.height&&b.y<a.y+a.height;
+ let touch=0;boxes.forEach((b,i)=>{if(boxes.some((q,j)=>j!==i&&hit(b,q))||coreTexts.some(q=>hit(b,q)))touch++;});
+ /* and the gates' own discs and pills lying over the centre's type, which is
+    the phone defect he named: a figure-to-figure count alone said nothing
+    touched on a Dial where a pill visibly sits on the 44 */
+ let over=0,overPx=0;[...M.gates.querySelectorAll('rect,circle')].forEach(e=>{const b=BB(e);
+  coreTexts.forEach(q=>{if(hit(b,q)){over++;overPx=Math.max(overPx,Math.min(b.x+b.width,q.x+q.width)-Math.max(b.x,q.x));}});});
+ const m={past:Math.round(far-edge),touch:touch,figures:boxes.length,over:over,overPx:Math.round(overPx*10)/10};
+ MEAS[key+':'+o.v]=m;
+ c.insertAdjacentHTML('beforeend','<h2>'+o.h+'</h2>'+(o.t?'<p>'+o.t+'</p>':'')
+  +'<p class="m">Reaches '+m.past+' pixels past the core\'s edge. '+m.figures+' figures, '+m.touch+' overlapping another figure. '
+  +(m.over?'<b>'+m.over+' gate marks lie over the centre\'s type, by up to '+m.overPx+' pixels.</b>':'No gate mark lies over the centre\'s type.')+'</p>');}
+OPTS.forEach(o=>cell(document.getElementById('d'),'dial-1600',o,340));
+OPTS.forEach(o=>cell(document.getElementById('f'),'frames-1600',Object.assign({},o,{t:''}),340));
+OPTS.filter(o=>o.v!=='beams').forEach(o=>cell(document.getElementById('p'),'dial-390',Object.assign({},o,{t:''}),240));
+window.__measure=MEAS;window.__ready=true;})();
+</script>
+</body></html>

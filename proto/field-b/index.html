@@ -1,0 +1,1002 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Field B. The shell, and four ways to atomise it</title>
+<!-- THE TOKENS ARE REFERENCED, NOT COPIED. tokens.css is generated from the
+     app's own stylesheet. A palette pasted into this page is correct on the
+     day it is pasted and silently wrong afterwards. It is a local sibling
+     file, so nothing is fetched off the machine this page is opened on. -->
+<link rel="stylesheet" href="../../funnel/tokens.css">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);
+ font-family:var(--sans);font-size:15px;line-height:1.5;
+ -webkit-font-smoothing:antialiased}
+body{padding:0 0 80px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+h1{font-size:30px;line-height:1.16;letter-spacing:-.02em;margin:10px 0 6px;font-weight:600}
+h2{font-size:21px;letter-spacing:-.01em;margin:0 0 4px;font-weight:600}
+h3{font-size:13px;letter-spacing:.06em;color:var(--dim);margin:26px 0 8px;font-weight:600}
+p{margin:0 0 10px;max-width:72ch}
+.eyebrow{font-size:12px;letter-spacing:.1em;color:var(--dim);margin:22px 0 0}
+.sm{font-size:13px;color:var(--mid)}
+.dim{color:var(--dim)}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;color:var(--mid)}
+hr{border:0;border-top:1px solid var(--edge);margin:26px 0}
+a{color:var(--accent)}
+
+/* ---- the control strip ---- */
+.bar{display:flex;flex-wrap:wrap;gap:var(--g2);align-items:center;
+ background:var(--panel);border:1px solid var(--edge);border-radius:var(--r-s);
+ padding:10px 12px;margin:16px 0 8px;z-index:5}
+@media(min-width:760px){.bar{position:sticky;top:0}}
+label.lb{font-size:12px;letter-spacing:.06em;color:var(--dim)}
+select,button.ctl{min-height:var(--tap);background:var(--panel-2);color:var(--ink);
+ border:1px solid var(--edge-2);border-radius:var(--r-xs);padding:0 12px;
+ font:inherit;font-size:14px;cursor:pointer;max-width:100%}
+select{max-width:calc(100vw - 56px)}
+button.ctl:hover,select:hover{border-color:var(--accent)}
+.stat{font-size:13px;color:var(--mid);font-variant-numeric:tabular-nums}
+.stat b{color:var(--ink);font-weight:600}
+.fail{background:rgba(255,46,31,.14);border:1px solid var(--bad);color:var(--ink);
+ border-radius:var(--r-s);padding:12px 14px;margin:16px 0}
+
+/* ---- one direction ---- */
+.dir{border:1px solid var(--edge);border-radius:var(--r);background:var(--panel);
+ padding:18px;margin:16px 0}
+.dir.killed{border-color:var(--bad);background:#15161C}
+.badge{display:inline-block;font-size:11px;letter-spacing:.1em;color:var(--dim);
+ border:1px solid var(--edge-2);border-radius:99px;padding:3px 9px;
+ vertical-align:3px;margin-left:8px}
+.dir.killed .badge{color:var(--bad);border-color:var(--bad)}
+.belief{font-size:17px;line-height:1.42;margin:6px 0 14px;max-width:78ch;color:var(--ink)}
+.two{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:18px;align-items:start}
+@media(max-width:900px){.two{grid-template-columns:minmax(0,1fr)}}
+.cw{position:relative;background:#08090D;border:1px solid var(--edge);
+ border-radius:var(--r-s);overflow:hidden;line-height:0}
+canvas{display:block;width:100%;touch-action:manipulation}
+canvas:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+
+/* ---- the readout. three slots, and a slot keeps its label. ---- */
+.ro{display:grid;grid-template-columns:54px minmax(0,1fr);gap:4px 10px;
+ font-size:13px;margin:0 0 12px}
+.ro dt{font-size:11px;letter-spacing:.08em;color:var(--dim);padding-top:2px}
+.ro dd{margin:0;color:var(--ink);font-variant-numeric:tabular-nums}
+.ro dd.seat{font-weight:600}
+.ro .none{color:var(--dim)}
+.deep{border-top:1px solid var(--edge);padding-top:12px;font-size:13px}
+.deep .none{color:var(--dim)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 10px}
+.chip{font-size:12px;border:1px solid var(--edge-2);border-radius:99px;
+ padding:3px 9px;color:var(--mid);font-variant-numeric:tabular-nums}
+.chip b{color:var(--ink);font-weight:600}
+.cost{font-size:12.5px;color:var(--mid);margin-top:12px;
+ font-variant-numeric:tabular-nums;border-top:1px solid var(--edge);padding-top:10px}
+.cost b{color:var(--ink);font-weight:600}
+.notes{font-size:13px;color:var(--mid);max-width:74ch}
+.notes b{color:var(--ink);font-weight:600}
+/* THE TABLE OVERFLOWED THE PAGE AT 390 and took the whole document with it:
+   scroll width 451 against a viewport of 390. Eight columns do not fit a
+   phone, so the table scrolls inside its own frame and the page does not. */
+.mw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table.m{border-collapse:collapse;font-size:13px;margin:8px 0 0;width:100%;
+ max-width:700px;min-width:520px}
+table.m th,table.m td{text-align:left;padding:6px 10px 6px 0;border-bottom:1px solid var(--edge);
+ font-variant-numeric:tabular-nums}
+table.m th{font-size:11px;letter-spacing:.08em;color:var(--dim);font-weight:600}
+.key{display:flex;flex-wrap:wrap;gap:10px;margin:8px 0 0;font-size:12px;color:var(--dim)}
+.key i{display:inline-block;width:22px;height:8px;border-radius:2px;
+ vertical-align:1px;margin-right:6px}
+@media(max-width:640px){
+ h1{font-size:24px} .dir{padding:14px} body{padding-bottom:60px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<p class="eyebrow">Field, round B</p>
+<h1>The shell. Seven bands, hover, and zoom that atomises</h1>
+<p class="sm">His words. "Another four directions. I want to maximise the space.
+But it could be seven bands of thicker colour making the kind of shell. If you
+hover over it, you get information. If you zoom in on it, it atomises and gives
+you a ton of information."</p>
+
+<h3>The same ring, and this is the third state of it, not a third drawing</h3>
+<p class="sm">A seven band ring already exists twice in the product and both are
+one object. The funnel's tab mark is that drawing with every band full. The quiz
+ring is the same call with loads, thickening seat by seat as a person answers.
+This page takes its geometry from <code>funnel/ring.js</code> by reference: the
+sweep, the start angle, the band fraction, the hairline and the function that
+turns a load into a width. Root sits at six o'clock and climbs the right here
+for the same reason it does there. Change that file and this changes with it.
+Nothing is retyped.</p>
+<p class="sm">One correction to the brief, because prior art is only useful if it
+is accurate. The app's boot mark is <b>not</b> a seven band ring. It is a spine,
+seven seat dots, one hairline ring and twenty four address ticks, and
+<code>funnel/ring.js</code> says so itself: the boot ring is a hairline at 1.29
+per cent of the diameter and has nothing to colour. The app carries no icon at
+all, so the mark state ships on the funnel and not in the product. Two instances
+to agree with, then, and the shell is the third state of one object.
+<b>Mark</b> at full band. <b>Meter</b> filling as answers land. <b>Shell</b> at
+the Field's own radius, where a band can be pressed.</p>
+
+<h3>What the space is worth, off the shipped constants</h3>
+<p class="sm">In <code>ui/wheel.js</code> the address ring ends at
+<code>R.shell</code>, which is <code>U*0.74</code> at depth C. The seven seat
+names are radial text at <code>R.shell*1.058</code> and their hit boxes run out
+to <code>R.shell*1.058+U*0.10</code>, which is <code>U*0.883</code>. So the
+seven words reserve an annulus a seventh of the radius thick, outside the
+drawing, where the room is scarcest. Hover carries the name here, so that
+annulus goes back to the shell: radius from <code>0.74U</code> to
+<code>0.883U</code> is nineteen per cent more radius and forty two per cent more
+disc. That is the space, and it is arithmetic off their own numbers rather than
+an impression.</p>
+
+<div class="bar" role="group" aria-label="Controls">
+ <label class="lb" for="who">Profile</label>
+ <select id="who"></select>
+ <button class="ctl" id="close" type="button">Close every band</button>
+ <button class="ctl" id="meas" type="button">Measure the frame cost</button>
+ <span class="stat" id="head"></span>
+</div>
+<div id="boot"></div>
+
+<div id="dirs"></div>
+
+<hr>
+<h3>The frame cost, measured on this machine</h3>
+<p class="sm">Each row is the atomise transition driven from shut to open in
+forty steps at device pixel ratio two, timing the paint only. The budget for
+sixty frames is 16.7 milliseconds and the paint is what a direction spends of
+it. Idle costs nothing, because nothing is drawn when nothing is moving: the
+loop stops at the end of the transition and a hover repaints one frame. The
+measurement is this container and not a handset, so the honest number is the
+share of the budget and the count of what is drawn, both below.</p>
+<div id="mt" class="mw"></div>
+
+<hr>
+<h3>His to rule, and the drawings cannot settle either one</h3>
+<p class="notes"><b>Does a band span its seventh, or its share of the hundred
+and eight?</b> The mark says a seventh, and the argument is in
+<code>funnel/ring.js</code>: seven equal arcs, because an alternating rhythm
+cannot close on an odd count. A reading says the share, because Crown holds
+twenty one addresses and Throat holds twelve, so at equal sevenths one address
+at Crown is drawn smaller than one address at Throat and the same amount of
+colour means two things in two places. Kerf takes the second answer and the
+other three take the first. One object cannot hold both, and whichever loses,
+the favicon and the shell stop being the same drawing.</p>
+<p class="notes"><b>Do the four anchors get a mark on the shell?</b> The count
+stated to a person is 112. The seven seats hold all but four of them, and those
+four are the field anchors above and below the body, seated nowhere. A shell of
+seven bands draws the seated ones and says nothing about the anchors, on a
+surface whose whole job is to be the field.</p>
+
+<hr>
+<h3>What is here and what is not</h3>
+<p class="notes">Live off <code>../../engine.js</code> and its own roster,
+loaded the way <code>tools/loopsim.js</code> loads it, so
+every number on this page is the engine's. Nothing is fetched: the page, the
+engine, the ring and the tokens are the only four files and all four are local
+siblings. The request log is beside this file at <code>requests.log</code>.</p>
+<p class="notes">Two things a reviewer should know before reading the drawings.
+<b>The seats are not equal.</b> Crown holds twenty one addresses and Throat
+holds twelve, read off <code>W</code> at run time and printed on every band
+below. Seven equal sevenths therefore draw an address at Crown smaller than an
+address at Throat, which is why one of these four divides the ring by address
+instead. <b>Held and filled in cannot both be true at one address.</b> In
+<code>compute()</code>, <code>sq</code> is the charge left after the pole and
+<code>pole</code> is the pole past the charge, both clamped at zero, so an
+address is carrying, or it is filled in, or it is clear. The three way split one
+of these directions draws is exact and not a bucket somebody chose.</p>
+</div>
+
+<!-- THE ENGINE IS REFERENCED, NOT COPIED, for the reason the quiz states. -->
+<script src="../../engine.js"></script>
+<script src="../../funnel/ring.js"></script>
+<script>
+/* ============================================================
+   FIELD B. FOUR SHELLS.
+
+   One object, four answers to what pressing a band does. The geometry comes
+   off RING, the numbers come off the engine, and nothing here computes a
+   reading of its own: a second arithmetic that agrees with the first on the
+   day it is written is a second arithmetic that drifts.
+   ============================================================ */
+var esc=function(s){return String(s==null?'':s)
+ .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');};
+
+/* ---- THE LOAD IS CHECKED OUT LOUD. A missing engine must look like a
+   failure and not like an empty page. ---- */
+var MISSING=[];
+if(typeof BANDS==='undefined'||typeof compute!=='function')MISSING.push('engine.js');
+if(typeof RING==='undefined')MISSING.push('funnel/ring.js');
+var SEATMISMATCH=(!MISSING.length)&&
+ RING.SEATS.map(function(s){return s[0];}).join('|')!==BANDS.join('|');
+if(MISSING.length||SEATMISMATCH){
+ document.getElementById('boot').innerHTML='<div class="fail"><b>This page did not load.</b> '
+  +esc(MISSING.length?('missing '+MISSING.join(' and ')):'the ring seats do not match the engine bands')
+  +'. Open it from the repository so the sibling files resolve.</div>';
+}else{
+
+/* TAU is the engine's own, declared in core.js. A second declaration of it
+   here threw at parse and took the whole page down, which is this project's
+   own lesson about one word per concept applied to a constant. */
+var clampv=function(v,a,b){return Math.max(a,Math.min(b,v));};
+var hx=function(h){h=h.replace('#','');
+ return [parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)];};
+var rgba=function(c,a){return 'rgba('+c[0]+','+c[1]+','+c[2]+','+a+')';};
+var mix=function(a,b,t){return [Math.round(a[0]+(b[0]-a[0])*t),
+ Math.round(a[1]+(b[1]-a[1])*t),Math.round(a[2]+(b[2]-a[2])*t)];};
+var WHITE=[255,255,255],BLACK=[0,0,0];
+var COL={};BANDS.forEach(function(b){COL[b]=hx(PAL[b]);});
+var INK=hx('#EFEDE8'),DIM=hx('#94908A'),ACC=hx('#7EB8D4');
+var EASE=function(t){return 1-Math.pow(1-t,3);};   /* the out curve, cubic */
+var REDUCED=window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+/* ---- the roster, loaded the way the sims load it ---- */
+function loadPerson(p){
+ S.dom=p.dom;S.doms=[p.dom];S.arcs=[p.a1,p.a2];S.roots=[];buildSoul();
+ CHARGES.forEach(function(c){
+  S.charge[c]=(p.c&&p.c[c]!==undefined)?p.c[c]:0;
+  S.replace[c]=(p.rep&&p.rep[c])||0;});
+ var LS=LAWSET[p.nm]||{_:LAW_DEFAULT};
+ SINAMES.forEach(function(l){S.law[l]=(LS[l]!==undefined)?LS[l]
+  :(LS._!==undefined?LS._:LAW_DEFAULT);});
+ return compute();}
+
+var R=null, ADDR={}, SEATLAW={}, PERSON=null;
+function setPerson(nm){
+ PERSON=PEOPLE.filter(function(p){return p.nm===nm;})[0]||PEOPLE[0];
+ R=loadPerson(PERSON);
+ ADDR={};BANDS.forEach(function(b){
+  ADDR[b]=W.filter(function(n){return n.b===b;});
+  SEATLAW[b]=SI.filter(function(l){return l.b===b;});});
+ DIRS.forEach(function(d){d.open=null;d.t=0;d.hov=null;d.hovA=null;});
+ head();paintAll();readAll();}
+
+function head(){
+ document.getElementById('head').innerHTML=
+  '<b>'+esc(PERSON.nm)+'</b> '+esc(PERSON.role)+' &middot; coherence <b>'
+  +R.CQ.toFixed(1)+'</b> '+esc(R.tier.toLowerCase())
+  +' &middot; resistance <b>'+R.DQ.toFixed(1)+'</b>'
+  +' &middot; held <b>'+R.loaded.length+'</b> addresses'
+  +(R.unread?' &middot; nothing entered':'');}
+
+/* ============================================================
+   WHAT A BAND CARRIES AND WHAT IT COSTS. Read off the engine's own field,
+   once per seat, so hover and zoom cannot disagree with each other or with
+   the reading. Nothing here is a threshold this page invented: 4 is the
+   engine's own carrying line and pole is its own filled in side.
+   ============================================================ */
+function seatRead(b){
+ var g=ADDR[b],held=0,carr=0,inst=0,dq=0,top=g[0],sum=0,psum=0;
+ g.forEach(function(n){
+  if(n.sq>=4){held++;dq+=n.sq/10;}
+  if(n.sq>0)carr++;
+  if(n.pole>=4)inst++;
+  sum+=n.sq;psum+=n.pole;
+  if(n.sq>top.sq)top=n;});
+ var laws=SEATLAW[b],weak=laws[0];
+ laws.forEach(function(l){if(S.law[l.nm]<S.law[weak.nm])weak=l;});
+ var sab=R.sabs.filter(function(s){
+  return s.parts.some(function(n){return n.b===b;});}).slice(0,3);
+ return {b:b,n:g.length,held:held,carr:carr,inst:inst,dq:dq,top:top,
+  weak:weak,laws:laws,sabs:sab,mean:sum/g.length,pole:psum/g.length};}
+
+/* THE THREE LINES. Which band, what it carries, what it costs.
+
+   The first cut read "carrying 18 of 21", which is the count against a total
+   the owner has already objected to: it invites a person to pass or fail at a
+   seat, and a reading is not a score. The count keeps its unit and loses its
+   denominator. Resistance keeps its denominator, because a share of the
+   field's own drag is a share and not a mark. */
+function roLines(b){
+ if(b==null)return {seat:null};
+ var x=seatRead(b);
+ return {seat:x.b,
+  load:(x.carr?x.carr+' addresses carrying':'nothing carrying')
+       +' &middot; '+(x.held?x.held+' held':'none held')
+       +(x.top.sq>0?' &middot; '+esc(x.top.k.toLowerCase())+' heaviest':''),
+  cost:(R.DQ>0?'resistance '+x.dq.toFixed(1)+' of the field\u2019s '+R.DQ.toFixed(1)
+              :'resistance none')
+       +' &middot; '+esc(x.weak.nm.toLowerCase())+' weakest'};}
+
+/* ============================================================
+   THE RING, OFF RING.JS. Every constant below is that file's.
+   ============================================================ */
+var SW=RING.SWEEP*Math.PI/180;              /* one seventh, in radians */
+var A0=RING.START*Math.PI/180;              /* six o'clock, y down */
+function bandPx(r){return RING.BANDFRAC*2*r;}          /* band thickness */
+function weightPx(v,r){return RING.weight(v)/RING.D*2*r;}  /* load to width */
+function hairPx(r){return RING.HAIR/RING.D*2*r;}
+
+/* AN ANNULUS SEGMENT, AND THE PATH IS ITS OWN CALL.
+
+   seg used to fill, and every outline in this page read
+   seg(...);g.stroke(), which filled the whole band with whatever fillStyle
+   was left over from the last address before stroking it. Every opened seat
+   came out as a solid wash with its own staves buried in it. The path and
+   the paint are two calls now: segP builds, seg fills. */
+function segP(g,cx,cy,r0,r1,a0,a1){
+ var lo=Math.min(a0,a1),hi=Math.max(a0,a1);
+ if(r0<0)r0=0;
+ g.beginPath();g.arc(cx,cy,r1,lo,hi,false);g.arc(cx,cy,r0,hi,lo,true);
+ g.closePath();}
+function seg(g,cx,cy,r0,r1,a0,a1){segP(g,cx,cy,r0,r1,a0,a1);g.fill();}
+
+/* ============================================================
+   WILL THE NAMES FIT, MEASURED RATHER THAN HOPED.
+
+   Radial names converge. Twenty one of them running inward from the band at
+   390 met in the middle as a knot with nothing readable in it, which is the
+   collision this repository already keeps a gate for. Two neighbours are one
+   line apart at a radius of fs divided by the angular step, so a name may run
+   from the band's inner edge in to that radius and no further. The type is
+   fitted to that run against the longest name in the seat, largest first, and
+   if nothing down to eight fits, the answer is not smaller type: it is that
+   this seat cannot be named on the ring at this width and the name goes to
+   the middle and to the readout instead. Returns 0 for that case.
+   ============================================================ */
+function fitRadial(g,names,inner,step){
+ var fs,i,wid,longest='';
+ names.forEach(function(n){if(n.length>longest.length)longest=n;});
+ for(fs=11;fs>=8;fs-=0.5){
+  g.font='600 '+fs+'px var(--sans),system-ui,sans-serif';
+  wid=g.measureText(longest).width;
+  if(wid<=inner-fs/step)return fs;}
+ return 0;}
+
+/* radial text, running outward or inward from a radius */
+function radial(g,txt,cx,cy,a,r,size,col,al,inward){
+ g.save();g.translate(cx+Math.cos(a)*r,cy+Math.sin(a)*r);
+ var deg=a*180/Math.PI,flip=(deg>90&&deg<270)||(deg<-90&&deg>-270);
+ g.rotate(a+(inward?Math.PI:0)+((flip&&!inward)||(!flip&&inward)?Math.PI:0));
+ g.font='600 '+size+'px var(--sans),system-ui,sans-serif';
+ g.fillStyle=rgba(col,al);
+ g.textBaseline='middle';
+ g.textAlign=((flip&&!inward)||(!flip&&inward))?'right':'left';
+ g.fillText(txt,0,0);g.restore();}
+
+/* ============================================================
+   DIRECTION ONE. SHELL. Killed, and the reason is measured on the phone.
+   ============================================================ */
+var D_SHELL={
+ id:'shell',nm:'Shell',killed:true,ratio:[1,1],
+ belief:'The ring already exists twice, so the third one is the same ring at the third scale, and pressing a band opens it where it stands.',
+ kill:function(G){
+  var BT=bandPx(G.r),RM=G.r-BT/2,n=ADDR['Crown'].length;
+  var w=(SW*RM)/n;
+  return 'Killed, and not on taste. Atomised, this is the shipped Field: the '
+   +'addresses come out as radial wedges at their own angles, which is what '
+   +'ui/wheel.js already draws, one seat at a time and with a lid on it. It is '
+   +'the thing we have. And it cannot pay for itself here, because a band that '
+   +'opens inside its own thickness has nowhere to open: at this width Crown\u2019s '
+   +n+' addresses come out '+w.toFixed(1)+' pixels wide, which carries a bar and '
+   +'never a name, so the ton of information stays behind hover.';},
+ space:'The seven words come off the outside of the drawing, so the shell takes the annulus they reserved. The radius goes up nineteen per cent and nothing else moves.',
+ how:'At rest the band is its seat. Pressing one holds the outer edge still and walks the inner edge in, and the addresses grow out of the band’s own thickness in angle order from the seat’s start, so the pieces are seen to leave the band they came from.',
+ paint:function(g,G,st){
+  var cx=G.cx,cy=G.cy,r=G.r,BT=bandPx(r),RM=r-BT/2,hair=hairPx(r);
+  BANDS.forEach(function(b,i){
+   var a0=A0-i*SW,a1=a0-SW,c=COL[b],x=G.rd[b];
+   var opened=(st.open===i)?st.te:0;
+   /* the track. this seat at a load of ten, low alpha, always there. */
+   g.fillStyle=rgba(c,st.open==null?0.2:(st.open===i?0.13:0.09));
+   seg(g,cx,cy,RM-BT/2,RM+BT/2,a0,a1);
+   /* the load, centred on the band spine. solid band is the reading. */
+   var w=weightPx(x.mean,r)*(1-opened);
+   if(w>0.4){
+    g.fillStyle=rgba(mix(c,WHITE,0.1),st.open==null||st.open===i?0.92:0.3);
+    seg(g,cx,cy,RM-w/2,RM+w/2,a0,a1);}
+   /* atomised. every address of the seat, out of the inner edge. */
+   if(opened>0){
+    var gs=ADDR[b],k=SW/gs.length;
+    gs.forEach(function(n,j){
+     var reveal=clampv(opened*gs.length-j,0,1);
+     if(reveal<=0)return;
+     var b0=a0-j*k,b1=b0-k*0.82;
+     var len=(hair+(clampv(n.sq,0,10)/10)*(BT-hair))*reveal;
+     g.fillStyle=rgba(n.sq>=4?mix(c,WHITE,0.3):mix(c,BLACK,0.32),n.sq>=4?0.95:0.5);
+     seg(g,cx,cy,RM-BT/2,RM-BT/2+len,b0,b1);
+     if(n.pole>=4){g.fillStyle=rgba(mix(c,WHITE,0.62),0.9*reveal);
+      seg(g,cx,cy,RM+BT/2-hair*1.6,RM+BT/2,b0,b1);}
+     if(st.hovA===n){g.strokeStyle=rgba(ACC,1);g.lineWidth=1.6;
+      segP(g,cx,cy,RM-BT/2,RM+BT/2,b0,b1);g.stroke();}});
+    /* the frame the pieces came out of stays where it was. */
+    g.strokeStyle=rgba(c,0.55);g.lineWidth=1;
+    segP(g,cx,cy,RM-BT/2,RM+BT/2,a0,a1);g.stroke();}
+   if(st.hov===i&&st.open!==i){g.strokeStyle=rgba(INK,0.7);g.lineWidth=1.4;
+    segP(g,cx,cy,RM-BT/2,RM+BT/2,a0,a1);g.stroke();}});
+  /* the outer hairline, so the band has an edge to fill toward */
+  g.strokeStyle=rgba(DIM,0.3);g.lineWidth=1;
+  g.beginPath();g.arc(cx,cy,RM+BT/2,0,TAU);g.stroke();
+  G.count=108;},
+ pick:function(G,x,y,st){
+  var dx=x-G.cx,dy=y-G.cy,d=Math.sqrt(dx*dx+dy*dy);
+  var BT=bandPx(G.r),RM=G.r-BT/2;
+  if(d<RM-BT/2-6||d>RM+BT/2+6)return null;
+  var a=Math.atan2(dy,dx),i=seatAt(a);
+  var out={seat:i,addr:null};
+  if(st.open===i){var gs=ADDR[BANDS[i]],k=SW/gs.length;
+   var off=norm(A0-i*SW-a);out.addr=gs[clampv(Math.floor(off/k),0,gs.length-1)];}
+  return out;}};
+
+/* which seventh an angle falls in */
+function norm(x){while(x<0)x+=TAU;while(x>=TAU)x-=TAU;return x;}
+function seatAt(a){var off=norm(A0-a);return clampv(Math.floor(off/SW),0,6);}
+
+/* ============================================================
+   DIRECTION TWO. KERF. One address is one angular unit everywhere.
+   ============================================================ */
+var FOCUS=150*Math.PI/180;
+var D_KERF={
+ id:'kerf',nm:'Kerf',ratio:[1,1],
+ belief:'A solid band lies about a seat, because a seat is its addresses and the load is never smooth, so the band is made of its parts from the first frame and the gaps are what is not carried.',
+ space:'The ring keeps every word inside its own disc, where the room actually is, one seat at a time, and where the disc cannot hold them it says so and names the one under the finger rather than printing a knot.',
+ how:'The arc is divided by address, not by seven, so Crown gets twenty one units and Throat twelve and one stave means the same thing everywhere. Pressing a seat opens its arc to a hundred and fifty degrees and compresses the rest, so the staves spread apart under the pointer and the ring never breaks.',
+ paint:function(g,G,st){
+  var cx=G.cx,cy=G.cy,r=G.r,BT=bandPx(r),RM=r-BT/2,hair=hairPx(r);
+  var sw=G.sweeps(st),a=A0,cnt=0;
+  if(st.open!=null){
+   var ob=BANDS[st.open],og=ADDR[ob];
+   if(G.fsFor!==ob+':'+Math.round(r)){
+    G.fs=fitRadial(g,og.map(function(n){return n.k.toLowerCase();}),
+     RM-BT/2-4,(sw[st.open]||FOCUS)/og.length);
+    G.fsFor=ob+':'+Math.round(r);}}
+  BANDS.forEach(function(b,i){
+   var c=COL[b],gs=ADDR[b],k=sw[i]/gs.length,seam=sw[i]*0.02;
+   var lit=(st.open==null||st.open===i)?1:0.34;
+   /* the track for the whole seat, which is the scale */
+   g.fillStyle=rgba(c,0.1*lit+0.04);
+   seg(g,cx,cy,RM-BT/2,RM+BT/2,a,a-sw[i]+seam);
+   gs.forEach(function(n,j){
+    var b0=a-j*k,b1=b0-k*0.78;
+    var len=hair+(clampv(n.sq,0,10)/10)*(BT-hair);
+    g.fillStyle=rgba(mix(c,WHITE,n.sq>=4?0.24:0),(n.sq>=4?0.92:0.42)*lit);
+    seg(g,cx,cy,RM-BT/2,RM-BT/2+len,b0,b1);
+    /* what is filled in reads from the other edge, inward */
+    if(n.pole>0){var pl=hair+(clampv(n.pole,0,10)/10)*(BT-hair)*0.5;
+     g.fillStyle=rgba(mix(c,WHITE,0.66),0.5*lit);
+     seg(g,cx,cy,RM+BT/2-pl,RM+BT/2,b0,b1);}
+    if(st.hovA===n){g.strokeStyle=rgba(ACC,1);g.lineWidth=1.6;
+     segP(g,cx,cy,RM-BT/2,RM+BT/2,b0,b1);g.stroke();}
+    cnt++;
+    /* the names, inward, and only for the seat that is open, and only at a
+       size that was measured to fit rather than one that was hoped for */
+    if(st.open===i&&st.te>0.55&&G.fs>0){
+     radial(g,n.k.toLowerCase(),cx,cy,b0-k*0.39,RM-BT/2-4,
+      G.fs,n.sq>=4?INK:DIM,(st.te-0.55)/0.45,true);}});
+   /* the seat mark. a ring, never a fill. */
+   if(st.open===i||st.hov===i){
+    g.strokeStyle=rgba(c,0.8);g.lineWidth=1.4;
+    segP(g,cx,cy,RM-BT/2-3,RM+BT/2+3,a,a-sw[i]+seam);g.stroke();}
+   a-=sw[i];});
+  /* THE REFUSAL, DRAWN. If the ring cannot hold the names at this width, the
+     address under the pointer is named once in the middle, where there is a
+     whole disc of room, and the full list is in the readout under the
+     drawing. One name large beats twenty one names overlapping. */
+  if(st.open!=null&&G.fs===0&&st.te>0.5){
+   var nm=st.hovA?st.hovA.k.toLowerCase():BANDS[st.open].toLowerCase();
+   var sub=st.hovA?('charge '+st.hovA.sq.toFixed(1)):(ADDR[BANDS[st.open]].length+' addresses');
+   g.textAlign='center';g.textBaseline='middle';
+   g.font='600 '+Math.max(13,r*0.085)+'px var(--sans),system-ui,sans-serif';
+   g.fillStyle=rgba(INK,0.94*Math.min(1,(st.te-0.5)*2));
+   g.fillText(nm,cx,cy-8,RM-BT/2-16);
+   g.font='500 '+Math.max(11,r*0.06)+'px var(--sans),system-ui,sans-serif';
+   g.fillStyle=rgba(DIM,0.9*Math.min(1,(st.te-0.5)*2));
+   g.fillText(sub,cx,cy+Math.max(14,r*0.075),RM-BT/2-16);
+   g.textAlign='left';}
+  G.count=cnt;},
+ sweeps:function(st){
+  var base=BANDS.map(function(b){return ADDR[b].length/108*TAU;});
+  if(st.open==null||st.te<=0)return base;
+  var rest=TAU-FOCUS,other=108-ADDR[BANDS[st.open]].length;
+  return base.map(function(v,i){
+   var tgt=(i===st.open)?FOCUS:(ADDR[BANDS[i]].length/other)*rest;
+   return v+(tgt-v)*st.te;});},
+ pick:function(G,x,y,st){
+  var dx=x-G.cx,dy=y-G.cy,d=Math.sqrt(dx*dx+dy*dy);
+  var BT=bandPx(G.r),RM=G.r-BT/2;
+  if(d<RM-BT/2-8||d>RM+BT/2+8)return null;
+  var off=norm(A0-Math.atan2(dy,dx)),sw=G.sweeps(st),acc=0,i,j;
+  for(i=0;i<7;i++){if(off<acc+sw[i]){
+   var gs=ADDR[BANDS[i]],k=sw[i]/gs.length;
+   j=clampv(Math.floor((off-acc)/k),0,gs.length-1);
+   return {seat:i,addr:gs[j]};} acc+=sw[i];}
+  return {seat:6,addr:null};}};
+
+/* ============================================================
+   DIRECTION THREE. STRATA. The band's width is a section, not a bar.
+   ============================================================ */
+var D_STRATA={
+ id:'strata',nm:'Strata',ratio:[1,1],
+ belief:'What a person needs off a glance is not which seat is loud but how deep the load sits, so the band’s width is a section through the seat and the three layers are carrying, filled in, and clear.',
+ space:'Nothing is printed outside the ring at rest, and the section means one band answers two questions at once, so the second ring the Field would need for the filled in side is not drawn at all.',
+ how:'Pressing a seat holds its outer edge and grows the band inward, and the addresses settle into the layer they belong to, carrying against the inner wall and filled in against the outer, each keeping its own angle so it is seen leaving the spine it sat on.',
+ paint:function(g,G,st){
+  var cx=G.cx,cy=G.cy,r=G.r,BT=bandPx(r),RM=r-BT/2,hair=hairPx(r);
+  BANDS.forEach(function(b,i){
+   var a0=A0-i*SW,a1=a0-SW,c=COL[b],x=G.rd[b];
+   var te=(st.open===i)?st.te:0;
+   var lit=(st.open==null||st.open===i)?1:0.3;
+   /* THE SECTION OPENS INWARD. The first cut pushed the layers apart in both
+      directions, so the filled in layer of the pressed seat floated outside
+      the ring and the silhouette broke at exactly the moment a person was
+      looking at it. The outer edge is fixed. The band grows in toward the
+      centre, where the room is, and the layers separate inside it. */
+   var grow=te*BT*0.55;
+   var hq=clampv(x.mean,0,10)/10*BT, hp=clampv(x.pole,0,10)/10*BT;
+   if(hq+hp>BT){var s=BT/(hq+hp);hq*=s;hp*=s;}
+   var p1=RM+BT/2, p0=p1-hp;
+   var i0=RM-BT/2-grow, i1=i0+hq;
+   /* the clear band, which is the scale and is there from the first frame */
+   g.fillStyle=rgba(c,0.11*lit+0.03);
+   seg(g,cx,cy,i0,p1,a0,a1);
+   /* carrying is the solid seat colour, because it is the thing that
+      matters. It was drawn a shade darker than its own track, which made
+      the one layer worth seeing the one layer hardest to see. */
+   g.fillStyle=rgba(mix(c,WHITE,0.08),0.95*lit);
+   seg(g,cx,cy,i0,i1,a0,a1);
+   g.fillStyle=rgba(mix(c,WHITE,0.5),0.62*lit);
+   seg(g,cx,cy,p0,p1,a0,a1);
+   /* atomised. every address into the layer it belongs to. */
+   if(te>0){
+    var gs=ADDR[b],k=SW/gs.length;
+    gs.forEach(function(n,j){
+     var reveal=clampv(te*1.6-j/gs.length*0.6,0,1);
+     if(reveal<=0)return;
+     var b0=a0-j*k,b1=b0-k*0.76,tgt,col,al;
+     if(n.sq>=4){tgt=[i0,i0+Math.max(hair,n.sq/10*hq)];
+      col=mix(c,WHITE,0.1);al=1;}
+     else if(n.pole>=4){tgt=[p1-Math.max(hair,n.pole/10*hp),p1];
+      col=mix(c,WHITE,0.78);al=0.96;}
+     else {tgt=[i1+hair,i1+hair*3];col=mix(c,WHITE,0.02);al=0.45;}
+     var s0=RM-hair,s1=RM+hair;
+     var e=EASE(reveal);
+     g.fillStyle=rgba(col,al*reveal);
+     seg(g,cx,cy,s0+(tgt[0]-s0)*e,s1+(tgt[1]-s1)*e,b0,b1);
+     if(st.hovA===n){g.strokeStyle=rgba(ACC,1);g.lineWidth=1.6;
+      segP(g,cx,cy,i0-2,p1+2,b0,b1);g.stroke();}});
+    g.strokeStyle=rgba(c,0.5);g.lineWidth=1;
+    segP(g,cx,cy,i0,p1,a0,a1);g.stroke();}
+   if(st.hov===i&&st.open!==i){g.strokeStyle=rgba(INK,0.7);g.lineWidth=1.4;
+    segP(g,cx,cy,i0,p1,a0,a1);g.stroke();}});
+  g.strokeStyle=rgba(DIM,0.3);g.lineWidth=1;
+  g.beginPath();g.arc(cx,cy,RM+bandPx(r)/2,0,TAU);g.stroke();
+  G.count=108;},
+ pick:D_SHELL.pick};
+
+/* ============================================================
+   DIRECTION FOUR. UNROLL. The band leaves the ring to name its parts.
+   ============================================================ */
+var D_UNROLL={
+ id:'unroll',nm:'Unroll',ratio:[1.34,1.16],
+ belief:'A ring is unbeatable for the whole and hopeless for the parts, so the band you press leaves the ring and straightens into a strip where every address can carry its own name.',
+ space:'The ring only has to be big enough to be read as a ring, so it sits small and the rectangle the screen actually is carries the detail. It is the only one of the four that gains room at 390 rather than spending it.',
+ how:'The pressed arc unbends. Its curvature is driven to zero over one beat while its length is kept, which is the real straightening and not a fade between two pictures, so the strip is visibly the band that was just pressed.',
+ paint:function(g,G,st){
+  var te=st.open==null?0:st.te;
+  /* the ring travels from its rest layout to its open one on the same
+     progress that unbends the band, and the live values are written back so
+     the hit test follows the drawing rather than the layout it had. */
+  var r=G.restR+(G.openR-G.restR)*te;
+  var cx=G.restCX+(G.openCX-G.restCX)*te;
+  var cy=G.restCY+(G.openCY-G.restCY)*te;
+  G.rr=r;G.cx=cx;G.rcy=cy;
+  var BT=bandPx(r),RM=r-BT/2;
+  BANDS.forEach(function(b,i){
+   var a0=A0-i*SW,a1=a0-SW,c=COL[b],x=G.rd[b];
+   var away=(st.open===i)?te:0;
+   /* the seat that has left keeps a trace of itself, so the ring says which
+      band the strip came out of after the motion has finished. */
+   g.fillStyle=rgba(c,(st.open==null?0.2:0.12)*(1-away*0.45));
+   seg(g,cx,cy,RM-BT/2,RM+BT/2,a0,a1);
+   var w=weightPx(x.mean,r)*(1-away);
+   if(w>0.4){g.fillStyle=rgba(mix(c,WHITE,0.1),0.9*(1-away*0.6));
+    seg(g,cx,cy,RM-w/2,RM+w/2,a0,a1);}
+   if(st.open===i||st.hov===i){g.strokeStyle=rgba(c,0.85);g.lineWidth=1.4;
+    segP(g,cx,cy,RM-BT/2-2,RM+BT/2+2,a0,a1);g.stroke();}});
+  g.strokeStyle=rgba(DIM,0.26);g.lineWidth=1;
+  g.beginPath();g.arc(cx,cy,RM+BT/2,0,TAU);g.stroke();
+  G.count=108;
+  if(st.open==null||te<=0.001)return;
+  /* ---- THE UNBEND. curvature driven to zero, arc length kept.
+     a point at arc length s on a circle of radius q sits at
+     (q sin(s/q), q(1 - cos(s/q))), which tends to (s,0) as q grows, so
+     driving 1/q to zero straightens the band and nothing is faked. ---- */
+  var b=BANDS[st.open],gs=ADDR[b],c=COL[b];
+  var L=SW*RM;                                  /* the arc length it had */
+  /* te is already the eased progress. It was eased a second time here, which
+     held the band on the ring for the first third of the press and then threw
+     it across, and the motion read as a jump with a wait in front of it. */
+  var e=te, k0=1/RM, k=k0*(1-e);
+  var q=k>1e-6?1/k:1e9;
+  var target=G.sw2;                             /* the strip it becomes */
+  var len=L+(target-L)*e;
+  var th=BT+((G.sh2-G.lab)-BT)*e;
+  g.save();
+  /* at te 0 the strip sits exactly on the pressed arc: same centre, same
+     mid angle, so the first frame of the strip is the band itself. */
+  var mid=A0-st.open*SW-SW/2;
+  var px=cx+Math.cos(mid)*RM,py=cy+Math.sin(mid)*RM;
+  var tx=G.sx+G.sw2/2, ty=G.sy+G.sh2/2;
+  g.translate(px+(tx-px)*e,py+(ty-py)*e);
+  g.rotate((mid+Math.PI/2)*(1-e));
+  var N=48,j,pts=[];
+  for(j=0;j<=N;j++){
+   var s=-len/2+len*(j/N), ang=s/q;
+   pts.push([q*Math.sin(ang), q*(1-Math.cos(ang))-(q*(1-Math.cos((len/2)/q)))/2]);}
+  g.beginPath();g.moveTo(pts[0][0],pts[0][1]-th/2);
+  for(j=0;j<=N;j++)g.lineTo(pts[j][0],pts[j][1]-th/2);
+  for(j=N;j>=0;j--)g.lineTo(pts[j][0],pts[j][1]+th/2);
+  g.closePath();
+  g.fillStyle=rgba(c,0.13);g.fill();
+  g.strokeStyle=rgba(c,0.5);g.lineWidth=1;g.stroke();
+  /* the addresses, as columns in the strip, once it is flat enough to read.
+     ONE SIZE FOR ALL THE NAMES, fitted to the longest one against the room
+     reserved for it, so the column of type is even and nothing is cut. The
+     floor is seven and the longest name is what sets it. */
+  var cw=len/gs.length;
+  if(G.fs==null||G.fsFor!==BANDS[st.open]){
+   var base=Math.min(11,Math.max(8,cw*0.62)),wid=0;
+   g.font='600 '+base+'px var(--sans),system-ui,sans-serif';
+   gs.forEach(function(n){wid=Math.max(wid,g.measureText(n.k.toLowerCase()).width);});
+   G.fs=Math.max(7,Math.min(base,base*(G.lab-10)/Math.max(1,wid)));
+   G.fsFor=BANDS[st.open];}
+  gs.forEach(function(n,jj){
+   var u=(jj+0.5)/gs.length, idx=Math.round(u*N);
+   var p=pts[Math.min(N,Math.max(0,idx))];
+   var h=(clampv(n.sq,0,10)/10)*th*0.92+2;
+   g.fillStyle=rgba(n.sq>=4?mix(c,WHITE,0.3):mix(c,BLACK,0.28),n.sq>=4?0.95:0.5);
+   g.fillRect(p[0]-cw*0.38,p[1]+th/2-h,cw*0.76,h);
+   if(n.pole>=4){g.fillStyle=rgba(mix(c,WHITE,0.7),0.9);
+    g.fillRect(p[0]-cw*0.38,p[1]-th/2,cw*0.76,Math.max(2,n.pole/10*th*0.22));}
+   if(st.hovA===n){g.strokeStyle=rgba(ACC,1);g.lineWidth=1.4;
+    g.strokeRect(p[0]-cw*0.38,p[1]-th/2,cw*0.76,th);}
+   if(e>0.72&&cw>7){
+    g.save();g.translate(p[0],p[1]+th/2+6);g.rotate(Math.PI/2);
+    g.font='600 '+G.fs.toFixed(1)+'px var(--sans),system-ui,sans-serif';
+    g.fillStyle=rgba(n.sq>=4?INK:DIM,(e-0.72)/0.28);
+    g.textBaseline='middle';g.fillText(n.k.toLowerCase(),0,0);g.restore();}});
+  g.restore();},
+ pick:function(G,x,y,st){
+  var dx=x-G.cx,dy=y-G.rcy,d=Math.sqrt(dx*dx+dy*dy);
+  var BT=bandPx(G.rr),RM=G.rr-BT/2;
+  if(d>=RM-BT/2-6&&d<=RM+BT/2+6)return {seat:seatAt(Math.atan2(dy,dx)),addr:null};
+  if(st.open!=null&&st.te>0.6&&x>=G.sx&&x<=G.sx+G.sw2&&y>=G.sy-6&&y<=G.sy+G.sh2+14){
+   var gs=ADDR[BANDS[st.open]],j=clampv(Math.floor((x-G.sx)/(G.sw2/gs.length)),0,gs.length-1);
+   return {seat:st.open,addr:gs[j]};}
+  return null;}};
+
+var DIRS=[D_SHELL,D_KERF,D_STRATA,D_UNROLL];
+
+/* ============================================================
+   THE HOST. One canvas a direction, painted only when something moved.
+   ============================================================ */
+var DPR=Math.min(2,window.devicePixelRatio||1);
+function build(){
+ var host=document.getElementById('dirs'),h='';
+ DIRS.forEach(function(d,i){
+  h+='<section class="dir'+(d.killed?' killed':'')+'" id="sec-'+d.id+'">'
+   +'<h2>'+(i+1)+'. '+esc(d.nm)+(d.killed?'<span class="badge">killed</span>':'')+'</h2>'
+   +'<p class="belief">'+esc(d.belief)+'</p>'
+   +(d.kill?'<p class="notes" id="kill-'+d.id+'" style="margin:-6px 0 14px"></p>':'')
+   +'<div class="two"><div>'
+   +'<div class="cw"><canvas id="cv-'+d.id+'" tabindex="0" role="img" '
+   +'aria-label="'+esc(d.nm)+'. the seven seats as a shell. press a band to atomise it."></canvas></div>'
+   +'<p class="cost" id="cost-'+d.id+'">&nbsp;</p>'
+   +'</div><div>'
+   +'<dl class="ro" aria-live="polite" role="status" id="ro-'+d.id+'">'
+   +'<dt>seat</dt><dd class="seat"></dd>'
+   +'<dt>load</dt><dd></dd>'
+   +'<dt>cost</dt><dd></dd></dl>'
+   +'<div class="deep" id="dp-'+d.id+'"></div>'
+   +'<p class="notes" style="margin-top:12px"><b>Space.</b> '+esc(d.space)+'</p>'
+   +'<p class="notes"><b>Zoom.</b> '+esc(d.how)+'</p>'
+   +'</div></div></section>';});
+ host.innerHTML=h;
+ DIRS.forEach(function(d){
+  d.cv=document.getElementById('cv-'+d.id);
+  d.g=d.cv.getContext('2d');
+  d.open=null;d.t=0;d.te=0;d.hov=null;d.hovA=null;d.G={};d.ms=[];
+  wire(d);});}
+
+function sizeOf(d){
+ var box=d.cv.parentNode.clientWidth||360;
+ var narrow=window.innerWidth<760;
+ var hgt=Math.round(box*(narrow?d.ratio[1]:1/d.ratio[0]));
+ if(d.ratio[0]===1)hgt=Math.round(Math.min(box,narrow?box:620));
+ d.cv.style.height=hgt+'px';
+ d.cv.width=Math.round(box*DPR);d.cv.height=Math.round(hgt*DPR);
+ var G=d.G;G.w=box;G.h=hgt;
+ G.rd={};BANDS.forEach(function(b){G.rd[b]=seatRead(b);});
+ if(d.id==='unroll'){
+  /* TWO LAYOUTS, AND THE PRESS TRAVELS BETWEEN THEM. At rest the ring is
+     the whole drawing, centred and as large as the box allows, because a
+     small ring beside an empty rectangle reads as a broken screen rather
+     than as room being held. Pressing a band moves the ring aside and
+     shrinks it, and the rectangle it vacates is the strip. One press, one
+     variable, both motions. */
+  G.restR=Math.min(box,hgt)/2-(narrow?10:16);
+  G.restCX=box/2;G.restCY=hgt/2;
+  var rr=Math.min(box,hgt)*(narrow?0.26:0.30);
+  G.openR=rr;G.openCX=narrow?box/2:rr+16;G.openCY=narrow?rr+14:hgt/2;
+  G.sx=narrow?14:rr*2+44;
+  G.sw2=(narrow?box-28:box-(rr*2+62));
+  /* the names run down the page under the strip, so the room they need is
+     reserved before the strip is sized. Unreserved, every one of them was
+     cut off at four letters at 390 and the direction was unreadable in the
+     one case it exists for. */
+  G.lab=narrow?96:124;
+  G.sh2=narrow?Math.max(150,hgt-(rr*2+88)):Math.min(340,hgt-96);
+  /* the strip is centred in the room it is given. top aligned, it left a
+     third of the box empty under it and the drawing read as unfinished. */
+  G.sy=narrow?(rr*2+28)+((hgt-(rr*2+28))-G.sh2)/2-10:(hgt-G.sh2)/2-14;
+  G.rr=G.restR;G.cx=G.restCX;G.rcy=G.restCY;
+ }else{
+  G.cx=box/2;G.rcy=G.cy=hgt/2;
+  G.r=Math.min(box,hgt)/2-(window.innerWidth<760?10:16);}
+ G.sweeps=d.sweeps;}
+
+function paint(d){
+ var g=d.g;
+ g.setTransform(DPR,0,0,DPR,0,0);
+ g.clearRect(0,0,d.G.w,d.G.h);
+ var t0=performance.now();
+ d.te=d.open==null?0:EASE(d.t);
+ d.paint(g,d.G,{open:d.open,t:d.t,te:d.te,hov:d.hov,hovA:d.hovA});
+ var ms=performance.now()-t0;
+ d.ms.push(ms);if(d.ms.length>90)d.ms.shift();
+ return ms;}
+function paintAll(){DIRS.forEach(function(d){sizeOf(d);paint(d);cost(d);killnote(d);});}
+
+/* one loop, and it stops. nothing is drawn when nothing is moving. */
+var RUN=false;
+function tick(){
+ var live=false,now=performance.now();
+ DIRS.forEach(function(d){
+  if(d.anim==null)return;
+  var p=(now-d.anim.at)/d.anim.dur;
+  if(p>=1){d.t=d.anim.to;d.anim=null;}
+  else{d.t=d.anim.from+(d.anim.to-d.anim.from)*p;live=true;}
+  paint(d);});
+ RUN=live;if(live)requestAnimationFrame(tick);}
+function drive(d,to){
+ if(REDUCED){d.t=to;paint(d);readOne(d);return;}
+ d.anim={from:d.t,to:to,at:performance.now(),dur:380};
+ if(!RUN){RUN=true;requestAnimationFrame(tick);}}
+
+function wire(d){
+ var pos=function(ev){var b=d.cv.getBoundingClientRect();
+  return [ev.clientX-b.left,ev.clientY-b.top];};
+ d.cv.addEventListener('pointermove',function(ev){
+  var p=pos(ev),h=d.pick(d.G,p[0],p[1],{open:d.open,te:d.te,sweeps:d.sweeps});
+  var s=h?h.seat:null,a=h?h.addr:null;
+  if(s===d.hov&&a===d.hovA)return;
+  d.hov=s;d.hovA=a;d.cv.style.cursor=h?'pointer':'default';
+  paint(d);readOne(d);});
+ d.cv.addEventListener('pointerleave',function(){
+  if(d.hov==null&&d.hovA==null)return;
+  d.hov=null;d.hovA=null;paint(d);readOne(d);});
+ d.cv.addEventListener('pointerdown',function(ev){
+  var p=pos(ev),h=d.pick(d.G,p[0],p[1],{open:d.open,te:d.te,sweeps:d.sweeps});
+  if(!h){shut(d);return;}
+  d.hov=h.seat;d.hovA=h.addr;
+  if(d.open===h.seat&&h.addr==null&&d.t>0.9){shut(d);return;}
+  if(d.open!==h.seat){d.open=h.seat;d.t=0;}
+  drive(d,1);readOne(d);});
+ d.cv.addEventListener('keydown',function(ev){
+  var k=ev.key,i=d.hov==null?(d.open==null?0:d.open):d.hov;
+  if(k==='ArrowRight'||k==='ArrowDown'){d.hov=(i+1)%7;}
+  else if(k==='ArrowLeft'||k==='ArrowUp'){d.hov=(i+6)%7;}
+  else if(k==='Enter'||k===' '){if(d.open===d.hov){shut(d);}else{d.open=d.hov;d.t=0;drive(d,1);}}
+  else if(k==='Escape'){shut(d);}
+  else return;
+  ev.preventDefault();d.hovA=null;paint(d);readOne(d);});
+ window.addEventListener('resize',function(){sizeOf(d);paint(d);});}
+function shut(d){d.hovA=null;if(d.open==null)return;
+ drive(d,0);setTimeout(function(){if(d.t<=0.001){d.open=null;paint(d);}},420);
+ readOne(d);}
+
+/* ---- the readout, and the deep panel zoom fills ---- */
+function readOne(d){
+ var b=d.hov!=null?BANDS[d.hov]:(d.open!=null?BANDS[d.open]:null);
+ var L=roLines(b);
+ var dd=document.getElementById('ro-'+d.id).querySelectorAll('dd');
+ if(b==null){
+  dd[0].innerHTML='<span class="none">nothing under the pointer</span>';
+  dd[1].innerHTML='<span class="none">nothing held</span>';
+  dd[2].innerHTML='<span class="none">no cost to read</span>';
+ }else{
+  dd[0].innerHTML=esc(b)+(d.hovA?' <span class="dim">'+esc(d.hovA.k.toLowerCase())+'</span>':'');
+  dd[1].innerHTML=d.hovA
+   ?('charge '+d.hovA.sq.toFixed(1)+' &middot; filled in '+d.hovA.pole.toFixed(1)
+     +' &middot; '+esc(String(d.hovA.n||'field anchor').toLowerCase()))
+   :L.load;
+  dd[2].innerHTML=d.hovA
+   ?(esc(String(d.hovA.a).toLowerCase())+' &middot; distorts to '
+     +esc(String(d.hovA.d).toLowerCase()))
+   :L.cost;}
+ deep(d);}
+
+function deep(d){
+ var el=document.getElementById('dp-'+d.id);
+ if(d.open==null){el.innerHTML='<span class="none">Press a band. It atomises into its addresses, '
+  +'the laws seated there and what is running in it.</span>';return;}
+ var b=BANDS[d.open],x=seatRead(b);
+ var h='<div class="chips">'
+  +'<span class="chip">addresses <b>'+x.n+'</b></span>'
+  +'<span class="chip">held <b>'+x.held+'</b></span>'
+  +'<span class="chip">filled in <b>'+x.inst+'</b></span>'
+  +'<span class="chip">clear <b>'+(x.n-x.carr-x.inst>0?x.n-x.carr-x.inst:0)+'</b></span></div>';
+ h+='<div class="chips">'+x.laws.map(function(l){
+  return '<span class="chip">'+esc(l.nm.toLowerCase())+' <b>'+S.law[l.nm].toFixed(1)+'</b></span>';
+ }).join('')+'</div>';
+ /* THE ATOMISED STATE IN WORDS. The drawing can run out of room for names
+    and the readout cannot, so the seat's own addresses are listed here
+    whenever a band is open. It is also the version a screen reader gets. */
+ var car=ADDR[b].filter(function(n){return n.sq>0||n.pole>0;});
+ h+='<p class="sm" style="margin:0 0 8px">'
+  +(car.length?car.map(function(n){
+    return n.sq>0?(esc(n.k.toLowerCase())+' <b>'+n.sq.toFixed(1)+'</b>')
+     :(esc(n.k.toLowerCase())+' <span class="dim">filled in</span> <b>'
+       +n.pole.toFixed(1)+'</b>');}).join(', ')
+   :'<span class="none">nothing carrying here</span>')
+  +(x.n-car.length>0?' <span class="dim">and '+(x.n-car.length)+' clear</span>':'')+'</p>';
+ h+='<p class="sm" style="margin:0">'+(x.sabs.length
+  ?'running here: '+x.sabs.map(function(s){return esc(s.nm.toLowerCase())
+    +' <span class="dim">'+s.w.toFixed(1)+'</span>';}).join(', ')
+  :'<span class="none">nothing running here</span>')+'</p>';
+ h+='<div class="key">'
+  +'<span><i style="background:'+PAL[b]+'"></i>carrying</span>'
+  +'<span><i style="background:'+rgba(mix(COL[b],WHITE,0.7),1)+'"></i>filled in</span>'
+  +'<span><i style="background:'+rgba(COL[b],0.16)+'"></i>clear</span></div>';
+ el.innerHTML=h;}
+function readAll(){DIRS.forEach(readOne);}
+
+function killnote(d){
+ if(!d.kill)return;
+ var el=document.getElementById('kill-'+d.id);
+ if(el)el.innerHTML='<b>Why it is dead.</b> '+esc(d.kill(d.G));}
+
+function cost(d){
+ var el=document.getElementById('cost-'+d.id);
+ var m=d.meas;
+ el.innerHTML='<b>'+esc(d.nm)+'</b> draws <b>'+(d.G.count||0)+'</b> arc segments a frame'
+  +(m?(' &middot; paint <b>'+m.mean.toFixed(2)+'</b> ms mean, <b>'+m.worst.toFixed(2)
+   +'</b> ms worst &middot; <b>'+Math.round(m.worst/16.7*100)+'</b> per cent of the sixty frame budget at its worst')
+   :' &middot; press measure for the paint cost');}
+
+/* ============================================================
+   THE MEASUREMENT, AND THE FIRST VERSION OF IT LIED.
+
+   Canvas queues. Timing the draw calls alone measured how long it takes to
+   fill a command buffer, which came out at four hundredths of a millisecond
+   for a hundred and eight segments and is not a frame cost, it is a receipt
+   for posting the letter. Every paint here is followed by a one pixel
+   getImageData, which forces the raster to finish before the clock is read,
+   so the number is the picture and not the queue. The flush is in the
+   harness only and never in the live path.
+
+   The transition is then driven a second time on the real frame clock, and
+   what is reported off that is the worst gap between frames and how many
+   gaps ran past the sixty frame budget. A mean paint cost with no dropped
+   frame count is the other half of the same lie.
+   ============================================================ */
+function flushed(d){
+ var t0=performance.now();
+ d.te=d.open==null?0:EASE(d.t);
+ d.g.setTransform(DPR,0,0,DPR,0,0);
+ d.g.clearRect(0,0,d.G.w,d.G.h);
+ d.paint(d.g,d.G,{open:d.open,t:d.t,te:d.te,hov:d.hov,hovA:d.hovA});
+ d.g.getImageData(0,0,1,1);                /* the raster has to finish */
+ return performance.now()-t0;}
+
+function measure(cb){
+ var rows=[];
+ DIRS.forEach(function(d){
+  var keep=[d.open,d.t,d.hov],worst=0,sum=0,N=40,i;
+  d.open=0;d.hov=null;
+  for(i=0;i<=N;i++){d.t=i/N;var ms=flushed(d);
+   if(i>2){sum+=ms;worst=Math.max(worst,ms);}}
+  var mean=sum/(N-2);
+  d.open=null;d.t=0;var rest=flushed(d);
+  for(i=0;i<6;i++)rest=Math.min(rest,flushed(d));
+  d.meas={mean:mean,worst:worst,rest:rest};
+  rows.push({nm:d.nm,count:d.G.count,mean:mean,worst:worst,rest:rest,killed:!!d.killed});
+  d.open=keep[0];d.t=keep[1];d.hov=keep[2];paint(d);cost(d);});
+ table(rows,null);
+ if(cb)frames(rows,cb);
+ return rows;}
+
+/* THE SAME TRANSITION ON THE REAL FRAME CLOCK, one direction at a time.
+
+   It warms up for three frames before the clock starts. The first callback
+   after the flushed pass carried four hundred and thirty three milliseconds
+   on the first direction measured and nothing on the other three, which is a
+   backed up compositor and not a drawing that drops frames. Discarding it by
+   a time cutoff would have been cooking the number, so the run is given three
+   real frames to settle and every gap after that is counted, however bad. */
+function frames(rows,cb){
+ var i=0;
+ (function next(){
+  if(i>=DIRS.length){table(rows,true);cb&&cb(rows);return;}
+  var d=DIRS[i],keep=[d.open,d.t],last=0,gaps=[],warm=3,start=0;
+  d.open=0;d.t=0;d.hov=null;
+  requestAnimationFrame(function tick(now){
+   if(warm>0){warm--;paint(d);last=now;if(!warm)start=now;
+    requestAnimationFrame(tick);return;}
+   gaps.push(now-last);last=now;
+   d.t=Math.min(1,(now-start)/380);
+   paint(d);
+   if(d.t<1){requestAnimationFrame(tick);return;}
+   gaps.sort(function(x,y){return y-x;});
+   rows[i].gapWorst=gaps[0]||0;
+   rows[i].over=gaps.filter(function(g){return g>17.5;}).length;
+   rows[i].gaps=gaps.length;
+   d.open=keep[0];d.t=keep[1];paint(d);
+   i++;next();});})();}
+
+function table(rows,live){
+ /* AN OVERFLOWING SCROLLER WITH A HIDDEN SCROLLBAR IS A MISSING FEATURE.
+    Eight columns do not fit 390, and a table that scrolls sideways inside a
+    frame nobody can see hides four of them. At narrow widths the same numbers
+    are stacked instead, so nothing is behind a gesture. */
+ if(window.innerWidth<760){
+  var b='';
+  rows.forEach(function(r){
+   b+='<div style="border-top:1px solid var(--edge);padding:10px 0">'
+    +'<b>'+esc(r.nm)+'</b>'+(r.killed?' <span class="dim">killed</span>':'')
+    +'<div class="chips" style="margin:6px 0 0">'
+    +'<span class="chip">segments <b>'+r.count+'</b></span>'
+    +'<span class="chip">rest <b>'+r.rest.toFixed(2)+'</b> ms</span>'
+    +'<span class="chip">mean <b>'+r.mean.toFixed(2)+'</b> ms</span>'
+    +'<span class="chip">worst <b>'+r.worst.toFixed(2)+'</b> ms</span>'
+    +'<span class="chip">worst share <b>'+Math.round(r.worst/16.7*100)+'</b> per cent</span>'
+    +'<span class="chip">past budget <b>'+(r.over==null?'not yet':r.over)+'</b>'
+    +(r.gaps==null?'':' of '+r.gaps+' frames')+'</span>'
+    +'</div></div>';});
+  document.getElementById('mt').innerHTML=b
+   +'<p class="sm">Width '+Math.round(window.innerWidth)+', device pixel ratio '
+   +DPR+', profile '+esc(PERSON.nm)+'. Paint is timed with the raster forced to '
+   +'finish. '+(live?'Frames are the real clock over one transition of 380 milliseconds.'
+    :'The frame counts fill when the live pass finishes.')+'</p>';
+  return;}
+ var h='<table class="m"><tr><th>direction</th><th>segments</th>'
+  +'<th>rest, ms</th><th>transition mean, ms</th><th>worst, ms</th>'
+  +'<th>worst, share of 16.7</th><th>frames</th><th>past budget</th></tr>';
+ rows.forEach(function(r){h+='<tr><td>'+esc(r.nm)+(r.killed?' <span class="dim">killed</span>':'')
+  +'</td><td>'+r.count+'</td><td>'+r.rest.toFixed(2)+'</td><td>'+r.mean.toFixed(2)
+  +'</td><td>'+r.worst.toFixed(2)+'</td><td>'+Math.round(r.worst/16.7*100)+' per cent</td>'
+  +'<td>'+(r.gaps==null?'&ndash;':r.gaps)+'</td>'
+  +'<td>'+(r.over==null?'&ndash;':(r.over+' of '+r.gaps))+'</td></tr>';});
+ h+='</table><p class="sm">Width '+Math.round(window.innerWidth)+', device pixel ratio '
+  +DPR+', profile '+esc(PERSON.nm)+'. Paint is timed with the raster forced to '
+  +'finish. '+(live?'Frames are the real clock over one transition of 380 milliseconds.'
+   :'The frame columns fill when the live pass finishes.')+'</p>';
+ document.getElementById('mt').innerHTML=h;}
+window.__measure=measure;
+window.__frames=function(){return new Promise(function(res){measure(res);});};
+window.__state=function(){return {person:PERSON.nm,CQ:R.CQ,DQ:R.DQ,
+ counts:BANDS.map(function(b){return b+':'+ADDR[b].length;}).join(' ')};};
+window.__open=function(i){DIRS.forEach(function(d){
+ d.open=i;d.t=i==null?0:1;d.hov=i;d.hovA=null;paint(d);readOne(d);});};
+
+/* ---- boot ---- */
+var sel=document.getElementById('who');
+sel.innerHTML=PEOPLE.map(function(p){
+ return '<option value="'+esc(p.nm)+'">'+esc(p.nm)+', '+esc(p.role)+'</option>';}).join('');
+sel.value='James';
+sel.addEventListener('change',function(){setPerson(sel.value);});
+document.getElementById('close').addEventListener('click',function(){
+ DIRS.forEach(shut);});
+document.getElementById('meas').addEventListener('click',measure);
+build();setPerson('James');
+window.addEventListener('resize',function(){
+ DIRS.forEach(function(d){sizeOf(d);paint(d);killnote(d);});});
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,1163 @@
+/* The trace graph gate, engine/trace.js. Run from tests/engine.js, which
+   hands it its own ok() and group printer, or alone:
+
+     node tests/trace.js
+
+   The vocabularies are read out of the design document itself, sections 16,
+   17 and 26, and never typed in here, so the gate and the document cannot
+   drift apart the way a count typed into a paragraph does. Section 16 has two
+   blocks, the types that may be added and then the chain's four rungs, which
+   are derived only; section 17's second block is the chain's four rules.
+
+   THE SUITE IS RUN TWICE OVER. Once against the real engine, which must
+   pass every check: that is the known good case, checked first. Then against
+   a set of deliberately broken implementations, each of which must FAIL at
+   least one check. A gate that passes a broken build is a tool that lies,
+   and the only way to know this one does not is to show it a broken build. */
+const path=require('path'), fs=require('fs');
+
+/* THE DOCUMENT'S OWN LISTS. The first fenced text block after a heading. */
+function docBlock(md,heading,after){
+ const at=md.indexOf(heading); if(at<0)return null;
+ let from=at;
+ if(after){const a=md.indexOf(after,at); if(a<0)return null; from=a;}
+ const s=md.indexOf('```text',from); if(s<0)return null;
+ const e=md.indexOf('```',s+7);
+ return md.slice(s+7,e).split('\n').map(x=>x.trim()).filter(Boolean);}
+
+/* the worked record. Angela is a roster person (engine/data/people.js),
+   and her own sentence is the first entry: it is the one roster story whose
+   addresses move with the loaded soul, which is what the determinism checks
+   need. The second entry names its fetter. The meter holds lines opened down
+   both kinds of channel at two of her addresses and one key that names no
+   address. The rituals are one done, one planned and one saved before done
+   existed. It goes through the boundary, so it is a record the app could
+   hold, not a shape invented for the test. */
+function worked(E){
+ const A=E.PEOPLE.find(p=>p.nm==='Angela');
+ const p=E.blankProfile('Angela');
+ p.soul={doms:[A.dom],arcs:[A.a1,A.a2],roots:[]};
+ p.story.entries=[
+  {t:'2026-09-20T08:00:00.000Z',text:A.says,imprints:4,bands:{},lex:E.LEX_VERSION},
+  {t:'2026-09-21T08:00:00.000Z',text:'I feel ashamed and my chest is tight when I speak up at work.',imprints:3,bands:{}}];
+ p.meter.unique=['53:Llimit:0','53:Llimit:1','53:Rlimit:0','53:Ltruth:0','54:Llimit:0','999:Llimit:0'];
+ p.rituals=[
+  {t:'2026-09-22T07:00:00.000Z',track:'Body',band:'Heart',steps:[],min:10,done:'2026-09-22T07:20:00.000Z'},
+  {t:'2026-09-23T07:00:00.000Z',track:'Body',band:'Heart',steps:[],min:5,done:false},
+  {t:'2026-09-10T07:00:00.000Z',track:'Body',band:'Heart',steps:[],min:5}];
+ /* every ritual carries a track and a seat. One without them passes the
+    boundary once as track '' and band '', and the same boundary refuses
+    those on the next pass, so it could not be re-read: a defect in vRitual,
+    engine/schema.js, reported rather than fixed from this seat. */
+ const v=E.validateProfile(JSON.parse(JSON.stringify(p)));
+ return v.ok?v.profile:null;}
+function soulOf(E,nm){
+ const Q=E.PEOPLE.find(p=>p.nm===nm), p=E.blankProfile(nm);
+ p.soul={doms:[Q.dom],arcs:[Q.a1,Q.a2],roots:[]}; return p;}
+/* the worked record with a field that reaches every rung of the chain: the
+   same person, stories, meter and rituals, with all nine axes held at 7,
+   which on 22 October reached the top rung. TG11c asserts that it still
+   does rather than trusting this sentence. Through the boundary, like
+   worked(). */
+function loadedRec(E){
+ const P=worked(E); if(!P)return null;
+ E.CHILD.forEach(c=>{P.axes[c.nm]={held:7,opp:0};});
+ const v=E.validateProfile(JSON.parse(JSON.stringify(P)));
+ return v.ok?v.profile:null;}
+
+/* TWO FIELDS THAT REACH THE NAMED SUPER COMPLEX, found by a sweep on 31
+   October, because the loaded record above does not reach it. In the first
+   only the named rule pairs Grandiosity with Predatory: the pairing by rank
+   puts other hyper complexes between them. In the second both rules pair the
+   same two. TG11d asserts each is still that case rather than trusting this
+   comment, and stops if one is not. Through the boundary, like worked(). */
+function namedRec(E,both){
+ const p=E.blankProfile(both?'named-both':'named-only');
+ p.id=both?'tg11d-both':'tg11d-only';
+ const hi=['Fear','Anger','Apathy'];
+ E.CHILD.forEach(c=>{p.axes[c.nm]={held:hi.indexOf(c.nm)>=0?7:(both?2:(c.nm==='Shame'?5:0)),opp:0};});
+ p.soul={doms:[both?6:3],arcs:[0,1],roots:[]};
+ const v=E.validateProfile(JSON.parse(JSON.stringify(p)));
+ return v.ok?v.profile:null;}
+
+/* an id that is valid for each type, two per type for same type rules */
+const IDS={pattern:['12','13'],release:['12:Llimit','13:Rlimit'],reframe:['12:Ltruth','13:Rtruth']};
+const idOf=(t,i)=>(IDS[t]||[t+'A',t+'B'])[i||0];
+const has=(r,frag)=>!!(r&&r.why&&r.why.indexOf(frag)>=0);
+const J=x=>JSON.stringify(x);
+
+function suite(T,E,ok,g){
+ const doc=fs.readFileSync(path.resolve(__dirname,'..','ATUNED-practice-ritual-accountability-trace-graph-TDD.md'),'utf8');
+ /* NP is what may be added, CT the chain, derived only, and NT both, in
+    the document's order. CR is the chain's rules, section 17's second block. */
+ const NP=docBlock(doc,'# 16. Graph Node Types'), CT=docBlock(doc,'# 16. Graph Node Types','## Derived only'),
+       AB=docBlock(doc,'# 16. Graph Node Types','## Derived only: above the chain'),
+       NT=(NP||[]).concat(CT||[]).concat(AB||[]), ET=docBlock(doc,'# 17. Graph Edge Types'),
+       CR=docBlock(doc,'# 17. Graph Edge Types','## The chain is held'),
+       ST=docBlock(doc,'# 26. AI Handshake','AI must distinguish');
+ const safe=f=>{try{return f();}catch(e){return {threw:e&&e.message};}};
+ /* DV is every derived-only type: the chain and, since 21 November, the rungs
+    above it (TRACE_ABOVE). touches is any rule with one at either end */
+ const CH=T.TRACE_CHAIN||[], AV=T.TRACE_ABOVE||[], DV=CH.concat(AV),
+  touches=r=>DV.indexOf(r[0])>=0||DV.indexOf(r[2])>=0;
+
+ g('TG1 · the vocabularies are the document\'s, exactly');
+ ok(NP&&NP.length&&CT&&CT.length&&J(T.TRACE_NODE_TYPES)===J(NT),
+  'node types are section 16, both its blocks, got '+J(T.TRACE_NODE_TYPES)+' against '+J(NT));
+ ok(J(CH)===J(CT),'the chain is section 16\'s derived only block, got '+J(CH)+' against '+J(CT));
+ ok(Array.isArray(E.PR_NODE)&&CH.length>0&&CH.every(t=>E.PR_NODE.indexOf(t)<0),
+  'no rung is in the practice build\'s own vocabulary, so no intent it emits can name one');
+ ok(['address','fetter','nerve','super complex'].every(t=>T.TRACE_NODE_TYPES.indexOf(t)<0),
+  'the chain renames nothing it should not: an address and a fetter stay a pattern');
+ /* ABOVE THE CHAIN, 21 November: the rest of the 23 October order, as its own
+    block of the document, and the top of it is character */
+ ok(AB&&AB.length&&J(AV)===J(AB)&&AV[0]==='mask'&&AV[AV.length-1]==='character',
+  'the rungs above the chain are section 16\'s own block, mask first and character last, got '+J(AV)+' against '+J(AB));
+ ok(Array.isArray(E.PR_NODE)&&AV.length>0&&AV.every(t=>E.PR_NODE.indexOf(t)<0),
+  'no rung above the chain is in the practice build\'s vocabulary either');
+ /* THE OWNER'S WORD FOR THE FOURTH RUNG, 23 October: "From fetter to super
+    complex... And then at the very top is the character." Held by the
+    document's block above as well; this names the ruling. */
+ ok(CH.length===4&&CH[3]==='super_complex'&&CH[2]==='hyper_complex',
+  'the fourth rung is super_complex, one above hyper_complex, got '+J(CH));
+ ok(ET&&ET.length&&J(T.TRACE_EDGE_TYPES)===J(ET),'edge types are section 17, got '+J(T.TRACE_EDGE_TYPES)+' against '+J(ET));
+ ok(ST&&ST.length===5&&J(T.TRACE_SRC)===J(ST),'provenance is section 26, got '+J(T.TRACE_SRC)+' against '+J(ST));
+ ok(T.TRACE_EDGE_TYPES.indexOf('related_to')<0,'there is no generic related_to');
+ const R=T.TRACE_RULES;
+ ok(R.every(r=>NT.indexOf(r[0])>=0&&NT.indexOf(r[2])>=0&&ET.indexOf(r[1])>=0&&typeof r[3]==='string'&&r[3].length),
+  'every rule is two node types, an edge type and a citation');
+ const usedT=new Set(), usedE=new Set();
+ R.forEach(r=>{usedT.add(r[0]);usedT.add(r[2]);usedE.add(r[1]);});
+ NT.forEach(t=>ok(usedT.has(t),'node type '+t+' is reachable by some rule'));
+ ET.forEach(e=>ok(usedE.has(e),'edge type '+e+' is used by some rule'));
+ const key=r=>r[0]+' '+r[1]+' '+r[2];
+ ok(new Set(R.map(key)).size===R.length,'no rule is listed twice');
+ ok(CR&&CR.length&&J(R.filter(touches).map(key).sort())===J(CR.slice().sort()),
+  'the chain\'s rules are section 17\'s second block, exactly, got '+J(R.filter(touches).map(key))+' against '+J(CR));
+ const pre=R.filter(r=>r[1]==='precedes').map(r=>r[2]+' follows '+r[0]).sort(),
+       fol=R.filter(r=>r[1]==='follows').map(key).sort();
+ ok(pre.length>0&&J(pre)===J(fol),'follows is precedes read backwards, rule for rule');
+ /* SECTION 15, every relationship it requires, and the triple it is held as */
+ const S15=[['goal','desired_outcome','outcome',[['goal','targets','outcome']]],
+  ['goal','requires','behavior',[['goal','requires','behavior']]],
+  ['goal','obstructed_by','pattern',[['pattern','obstructs','goal']]],
+  ['behavior','affected_by','pattern',[['pattern','obstructs','behavior'],['pattern','reinforces','behavior'],['pattern','associated_with','behavior']]],
+  ['behavior','produces','outcome',[['behavior','produces','outcome']]],
+  ['pattern','supported_by','evidence',[['evidence','supports','pattern']]],
+  ['pattern','addressed_by','protocol',[['protocol','addresses','pattern']]],
+  ['pattern','occurs_in','context',[['pattern','occurs_in','context']]],
+  ['protocol','targets','pattern',[['protocol','targets','pattern']]],
+  ['protocol','implements','behavior',[['protocol','implements','behavior']]],
+  ['protocol','executed_by','ritual',[['ritual','executes','protocol']]],
+  ['ritual','produces','practice_event',[['ritual','produces','practice_event']]],
+  ['practice_event','produces','evidence',[['practice_event','produces','evidence']]],
+  ['practice_event','produces','outcome',[['practice_event','produces','outcome']]],
+  ['evidence','supports','pattern',[['evidence','supports','pattern']]],
+  ['evidence','informs','behavior',[['evidence','supports','behavior'],['evidence','contradicts','behavior']]],
+  ['evidence','supports','outcome',[['evidence','supports','outcome']]],
+  ['outcome','measures','goal',[['outcome','measures','goal']]]];
+ const sec15=doc.slice(doc.indexOf('# 15. Trace Graph Integration'),doc.indexOf('# 16. Graph Node Types'));
+ S15.forEach(s=>{
+  ok(sec15.indexOf(s[1])>=0,'section 15 does name '+s[1]);
+  s[3].forEach(t=>ok(!!T.traceRuleOf(t[0],t[1],t[2]),'section 15 '+s.slice(0,3).join(' ')+' is held as '+t.join(' ')));});
+ /* ONLY THE NAMED KINDS CAN CYCLE. For every acyclic kind but the four that
+    hold same type rules, the rule table's own type graph for that kind has no
+    cycle, so no instance graph can. Asserted so a rule added later that
+    breaks the claim fails here and not in somebody's record. */
+ const free=['precedes','follows','replaces','generalizes_to'];
+ ET.filter(e=>T.TRACE_LOOP.indexOf(e)<0&&free.indexOf(e)<0).forEach(e=>{
+  const adj={}; R.filter(r=>r[1]===e).forEach(r=>{(adj[r[0]]=adj[r[0]]||[]).push(r[2]);});
+  const seen={}, on={}; let cyc=false;
+  const dfs=k=>{if(on[k]){cyc=true;return;} if(seen[k])return; seen[k]=on[k]=1; (adj[k]||[]).forEach(dfs); on[k]=0;};
+  Object.keys(adj).forEach(dfs);
+  ok(!cyc,'the rules for '+e+' cannot form a loop between types');});
+
+ g('TG2 · every allowed triple is accepted, every other one refused by name');
+ /* THE SWEEP WALKS WHAT MAY BE ADDED. A rung of the chain is refused by
+    every public door, so its four rules cannot be walked through one. They
+    are walked through the one door they have, the reading, in TG11c, and
+    here every rung is shown refused, under every provenance. */
+ let acc=0, refusedOk=0, all=0;
+ const badAcc=[], badRef=[];
+ const RP=R.filter(r=>!touches(r)), rule=new Set(RP.map(key));
+ NP.forEach(ft=>ET.forEach(e=>NP.forEach(tt=>{
+  all++;
+  const G=T.traceNew();
+  T.traceAddNode(G,ft,idOf(ft,0),T.TRACE_TABLE.indexOf(ft)>=0?'known':'proposed');
+  T.traceAddNode(G,tt,idOf(tt,ft===tt?1:0),T.TRACE_TABLE.indexOf(tt)>=0?'known':'proposed');
+  const src=e==='causes'?'proposed':'user_confirmed';
+  const r=safe(()=>T.traceAddEdge(G,{type:ft,id:idOf(ft,0)},e,{type:tt,id:idOf(tt,ft===tt?1:0)},src));
+  if(rule.has(ft+' '+e+' '+tt)){ if(r&&r.ok&&G.edges.length===1)acc++; else badAcc.push(ft+' '+e+' '+tt+': '+(r&&r.why)); }
+  else { if(r&&!r.ok&&has(r,'no rule lets')&&G.edges.length===0)refusedOk++; else badRef.push(ft+' '+e+' '+tt); }})));
+ ok(acc===RP.length,'every rule accepted, '+acc+' of '+RP.length+(badAcc.length?', first refused: '+badAcc.slice(0,3).join('; '):''));
+ ok(refusedOk===all-RP.length,'every triple outside the table refused by name, '+refusedOk+' of '+(all-RP.length)
+  +(badRef.length?', first let through: '+badRef.slice(0,3).join('; '):''));
+ const chainLet=[]; let chainAll=0;
+ DV.forEach(t=>T.TRACE_SRC.forEach(s=>{chainAll++;
+  const G=T.traceNew(), r=safe(()=>T.traceAddNode(G,t,t+'A',s));
+  if(!(r&&!r.ok&&has(r,'read off the reading')&&G.nodes.length===0))chainLet.push(t+' as '+s);}));
+ ok(chainAll>0&&chainAll===DV.length*T.TRACE_SRC.length&&!chainLet.length,
+  'every rung is refused by traceAddNode under every provenance, '+(chainAll-chainLet.length)+' of '+chainAll
+  +(chainLet.length?', let through: '+chainLet.join('; '):''));
+
+ g('TG3 · provenance: five kinds, never collapsed, never downgraded');
+ {
+  const G=T.traceNew();
+  T.traceAddNode(G,'protocol','P1','proposed'); T.traceAddNode(G,'pattern',12,'known');
+  T.TRACE_SRC.forEach((s,i)=>{const H=T.traceNew();
+   T.traceAddNode(H,'protocol','P1','proposed'); T.traceAddNode(H,'pattern',12,'known');
+   const r=T.traceAddEdge(H,'protocol:P1','targets','pattern:12',s);
+   ok(r.ok&&H.edges[0].src===s,s+' is held as '+s);});
+  ok(has(T.traceAddEdge(G,'protocol:P1','targets','pattern:12','maybe'),'provenance'),'an unknown provenance is refused by name');
+  ok(has(T.traceAddNode(G,'goal','G1','sure'),'provenance'),'a node with an unknown provenance is refused');
+  ok(has(T.traceAddNode(G,'pattern',13,'proposed'),'known'),'an address is known, never proposed');
+  ['inferred','known','observed'].forEach(s=>{const H=T.traceNew();
+   T.traceAddNode(H,'pattern',12,'known'); T.traceAddNode(H,'pattern',13,'known');
+   ok(has(T.traceAddEdge(H,'pattern:12','causes','pattern:13',s),'registration is not causation'),
+    'a cause held as '+s+' is refused: registration is not causation');});
+  const r1=T.traceAddEdge(G,'protocol:P1','targets','pattern:12','proposed');
+  const r2=T.traceAddEdge(G,'protocol:P1','targets','pattern:12','user_confirmed');
+  ok(r1.ok&&r2.ok&&r2.promoted&&G.edges.length===1&&G.edges[0].src==='user_confirmed'&&G.edges[0].was==='proposed',
+   'a proposal confirmed becomes user_confirmed and keeps what it was');
+  ok(!T.traceAddEdge(G,'protocol:P1','targets','pattern:12','proposed').ok&&G.edges[0].src==='user_confirmed',
+   'a confirmed edge is not downgraded back to a proposal');
+  const H=T.traceNew(); T.traceAddNode(H,'protocol','P1','proposed'); T.traceAddNode(H,'pattern',12,'known');
+  T.traceAddEdge(H,'protocol:P1','targets','pattern:12','inferred');
+  ok(!T.traceAddEdge(H,'protocol:P1','targets','pattern:12','known').ok,'an inference does not become known after the fact');
+  ok(T.traceAddEdge(H,'protocol:P1','targets','pattern:12','inferred').held===true&&H.edges.length===1,'the same edge twice is held once');
+  const N=T.traceNew(); T.traceAddNode(N,'goal','G1','proposed');
+  const nr=T.traceAddNode(N,'goal','G1','user_confirmed');
+  ok(nr.ok&&N.nodes[0].src==='user_confirmed'&&N.nodes[0].was==='proposed','a proposed goal the person accepts is theirs, and was a proposal');
+  ok(!T.traceAddNode(N,'goal','G1','inferred').ok,'and is not demoted to an inference');
+ }
+
+ g('TG4 · reference integrity');
+ {
+  const G=T.traceNew();
+  T.traceAddNode(G,'protocol','P1','proposed');
+  ok(has(T.traceAddEdge(G,'protocol:P1','targets','pattern:12','proposed'),'names no node'),'an edge to a node not in the graph is refused');
+  ok(G.nodes.length===1,'and makes no node');
+  ok(has(T.traceAddEdge(G,'goal:nope','requires','protocol:P1','proposed'),'from names no node'),'so is an edge from one');
+  ok(has(T.traceAddNode(G,'release','999:Llimit','known'),'112'),'a release at an address that does not exist is refused');
+  ok(has(T.traceAddNode(G,'goal','a\u0007b','proposed'),'control character'),'an id carrying a control character is refused');
+  const st=T.traceNew(); T.traceAddNode(st,'protocol','P','proposed'); T.traceAddNode(st,'pattern',12,'known');
+  const sr=T.traceAddEdge(st,'protocol:P','targets','pattern:12','proposed',{at:'2026-09-30T10:00:00.000Z'});
+  ok(sr.ok&&st.edges[0].at==='2026-09-30T10:00:00.000Z','a time handed to traceAddEdge is kept on the edge');
+  ok(has(T.traceAddNode(G,'pattern',999,'known'),'112'),'an address that is not one of the 112 is refused');
+  ok(has(T.traceAddNode(G,'pattern','abc','known'),'address number'),'a pattern id that is not a number is refused');
+  ok(has(T.traceAddNode(G,'release','12:Ltruth','known'),'reframe'),'a truth channel is not a release');
+  ok(has(T.traceAddNode(G,'reframe','12:Llimit','known'),'release'),'a limit channel is not a reframe');
+  ok(has(T.traceAddNode(G,'release','12','known'),'channel'),'a release names its channel');
+  ok(has(T.traceAddNode(G,'goal','x'.repeat(T.TRACE_ID_MAX+1),'proposed'),'cap'),'an id past the cap is refused, not cut');
+  ok(has(T.traceAddNode(G,'goal','','proposed'),'empty'),'an empty id is refused');
+  ok(has(T.traceAddNode(G,'goal',{},'proposed'),'string'),'an object for an id is refused');
+  ok(has(T.traceAddNode(G,'feeling','x','proposed'),'node type'),'a type outside section 16 is refused');
+  ok(T.traceAddNode(G,'pattern',12,'known').ok&&G.nodes.some(n=>n.type==='pattern'&&n.id==='12'),'a whole number id reads as its string');
+  ok(has(T.traceAddEdge(G,'protocol:P1','related_to','pattern:12','proposed'),'edge type'),'related_to is refused by name');
+  ok(has(T.traceAddEdge(G,'pattern:12','reinforces','pattern:12','proposed'),'itself'),'a node related to itself is refused');
+ }
+
+ g('TG5 · edge removal and neighbours');
+ {
+  const G=T.traceNew();
+  ['A','B','C'].forEach(x=>T.traceAddNode(G,'practice_event',x,'observed'));
+  T.traceAddNode(G,'ritual','R','known');
+  T.traceAddEdge(G,'practice_event:A','precedes','practice_event:B','observed');
+  T.traceAddEdge(G,'ritual:R','produces','practice_event:A','observed');
+  const nb=T.traceNeighbors(G,'practice_event:A');
+  ok(nb.length===2&&nb.some(x=>x.key==='practice_event:B'&&x.dir==='out')&&nb.some(x=>x.key==='ritual:R'&&x.dir==='in'),
+   'neighbours both ways, got '+J(nb.map(x=>[x.key,x.dir])));
+  ok(T.traceNeighbors(G,'practice_event:A','produces').length===1,'neighbours by edge type');
+  ok(T.traceNeighbors(G,'practice_event:A').every(x=>x.src==='observed'),'every neighbour carries its provenance');
+  ok(T.traceAddEdge(G,'practice_event:B','follows','practice_event:A','observed').held===true,
+   'B follows A is A precedes B, already held');
+  ok(T.traceRemoveEdge(G,'practice_event:B','follows','practice_event:A').ok&&G.edges.length===1,
+   'removing B follows A removes A precedes B');
+  ok(!T.traceRemoveEdge(G,'practice_event:A','precedes','practice_event:B').ok,'removing what is not there says so');
+  ok(T.traceNeighbors(G,'practice_event:B').length===0,'and B is left with nothing');
+  const P=T.traceNew(); T.traceAddNode(P,'pattern',12,'known'); T.traceAddNode(P,'pattern',13,'known');
+  T.traceAddEdge(P,'pattern:12','associated_with','pattern:13','proposed');
+  ok(T.traceAddEdge(P,'pattern:13','associated_with','pattern:12','proposed').held===true&&P.edges.length===1,
+   'association between two patterns has no direction, so the reverse is a repeat');
+ }
+
+ g('TG5b · traceDescendants, all the children down, over supports only');
+ {
+  const G=T.traceNew();
+  /* THE CHAIN, assembled directly. traceAddNode refuses a saboteur,
+     complex, hyper or super complex by name (traceChainWhy, trace.js: "a
+     ... is read off the reading on every read... never added by hand"),
+     so a graph carrying the chain is built the way traceFromRecord itself
+     builds one, past the public door, not through it -- the same
+     tolerance traceLive's own comment already names ("a graph assembled
+     by hand... must not throw"). Four real rungs, two addresses under the
+     one saboteur, so the branching case (two children, not one) is real
+     too. */
+  const sup=(from,to)=>({from:from, edge:'supports', to:to, src:'inferred'});
+  G.edges.push(sup('pattern:12','saboteur:S'), sup('pattern:13','saboteur:S'),
+   sup('saboteur:S','complex:C'), sup('complex:C','hyper_complex:H'),
+   sup('hyper_complex:H','super_complex:U'));
+  /* a non-supports edge touching one of the same keys must never leak into
+     a descent: the filter is the one thing this function exists to prove */
+  G.edges.push({from:'pattern:12', edge:'associated_with', to:'pattern:14', src:'proposed'});
+
+  const full=T.traceDescendants(G,'super_complex:U');
+  ok(J(full)===J(['complex:C','hyper_complex:H','pattern:12','pattern:13','saboteur:S']),
+   'the full subtree under the super-complex, all four rungs down, got '+J(full));
+  ok(J(T.traceDescendants(G,'saboteur:S'))===J(['pattern:12','pattern:13']),
+   'one hop down from the saboteur is its two addresses, branching kept, not just one');
+  ok(T.traceDescendants(G,'complex:C').length===3,'a complex\'s subtree is the saboteur and both addresses under it');
+  ok(T.traceDescendants(G,'pattern:12').length===0,'an address is the floor: nothing is under it');
+  ok(T.traceDescendants(G,'pattern:14').length===0,'associated_with is not supports, so it never surfaces as a descendant');
+  ok(T.traceDescendants(G,'saboteur:ghost').length===0,'a node not in the graph has no descendants, the empty answer, not a throw');
+  ok(T.traceDescendants(null,'saboteur:S').length===0,'not a graph at all is the same empty answer, not a throw');
+  ok(T.traceDescendants(G).length===0,'no key at all is the same empty answer, not a throw');
+ }
+
+ g('TG6 · paths, and a proposal never answers for a confirmation');
+ {
+  const G=T.traceNew();
+  T.traceAddNode(G,'goal','G','user_confirmed'); T.traceAddNode(G,'behavior','B','user_confirmed');
+  T.traceAddNode(G,'protocol','P','proposed'); T.traceAddNode(G,'pattern',12,'known');
+  T.traceAddEdge(G,'goal:G','requires','behavior:B','user_confirmed');
+  T.traceAddEdge(G,'protocol:P','implements','behavior:B','proposed');
+  T.traceAddEdge(G,'protocol:P','targets','pattern:12','proposed');
+  ok(T.tracePath(G,'goal:G','pattern:12')===null,'no directed chain from the goal to the pattern');
+  const u=T.tracePath(G,'goal:G','pattern:12',{undirected:true});
+  ok(u&&u.length===3&&u[0].edge==='requires'&&u[2].edge==='targets','walked either way there is one, of three edges, got '+J(u));
+  ok(T.tracePath(G,'goal:G','pattern:12',{undirected:true,src:['known','user_confirmed','observed']})===null,
+   'and none that is confirmed, because two of the three are proposals');
+  ok(J(T.tracePath(G,'goal:G','behavior:B'))===J([{from:'goal:G',edge:'requires',to:'behavior:B',src:'user_confirmed',dir:'out'}]),'a one step path');
+  ok(T.tracePath(G,'goal:G','goal:nope')===null,'a path to nothing is null');
+  ok(J(T.tracePath(G,'goal:G','goal:G'))==='[]','a node is no steps from itself');
+ }
+
+ g('TG7 · orphans and gaps are reported, never papered over');
+ {
+  const G=T.traceNew();
+  T.traceAddNode(G,'ritual','R','known'); T.traceAddNode(G,'goal','G','user_confirmed');
+  let o=T.traceOrphans(G);
+  ok(o.isolated.indexOf('ritual:R')>=0&&o.isolated.indexOf('goal:G')>=0,'a node with no edge is isolated');
+  ok(o.missing.some(m=>m.key==='ritual:R'&&m.edges[0]==='executes'),'a ritual that executes no protocol is missing one');
+  ok(o.missing.some(m=>m.key==='goal:G'&&m.edges[0]==='requires'),'a goal with no behaviour is missing one');
+  T.traceAddNode(G,'protocol','P','proposed');
+  T.traceAddEdge(G,'ritual:R','executes','protocol:P','user_confirmed');
+  o=T.traceOrphans(G);
+  ok(!o.missing.some(m=>m.key==='ritual:R'),'executing a protocol closes the ritual\'s gap');
+  ok(o.missing.some(m=>m.key==='protocol:P'),'and opens the protocol\'s: it targets nothing');
+  T.traceAddNode(G,'pattern',12,'known'); T.traceAddEdge(G,'protocol:P','targets','pattern:12','proposed');
+  o=T.traceOrphans(G);
+  ok(!o.missing.some(m=>m.key==='protocol:P'),'a proposed target still counts as a target; its provenance says it is proposed');
+  ok(o.isolated.indexOf('ritual:R')<0,'and nothing linked is called isolated');
+  G.nodes.push(null); G.edges.push(7);
+  o=T.traceOrphans(G);
+  ok(o.gaps.some(x=>x.kind==='malformed'&&/2 entries/.test(x.why)),'entries that are not objects are counted as a gap, not skipped in silence');
+ }
+
+ g('TG8 · cycles: legal only where the document allows feedback');
+ {
+  const G=T.traceNew();
+  ['A','B','C'].forEach(x=>T.traceAddNode(G,'practice_event',x,'observed'));
+  T.traceAddEdge(G,'practice_event:A','precedes','practice_event:B','observed');
+  T.traceAddEdge(G,'practice_event:B','precedes','practice_event:C','observed');
+  ok(has(T.traceAddEdge(G,'practice_event:C','precedes','practice_event:A','observed'),'does not loop'),'time does not loop');
+  ok(has(T.traceAddEdge(G,'practice_event:A','follows','practice_event:C','observed'),'does not loop'),'nor through its reverse');
+  ok(G.edges.length===2,'and nothing was added');
+  const L=T.traceNew(); [12,13,14].forEach(i=>T.traceAddNode(L,'pattern',i,'known'));
+  ok(T.traceAddEdge(L,'pattern:12','reinforces','pattern:13','user_confirmed').ok
+   &&T.traceAddEdge(L,'pattern:13','reinforces','pattern:14','user_confirmed').ok
+   &&T.traceAddEdge(L,'pattern:14','reinforces','pattern:12','user_confirmed').ok,'a loop of reinforcement is allowed');
+  const lc=T.traceCycles(L);
+  ok(lc.illegal.length===0&&lc.loops.length===1&&lc.loops[0].edge==='reinforces'&&lc.loops[0].nodes.length===3,
+   'and reported as a feedback loop, got '+J(lc));
+  const M=T.traceNew(); T.traceAddNode(M,'goal','G','user_confirmed'); T.traceAddNode(M,'outcome','O','user_confirmed');
+  ok(T.traceAddEdge(M,'goal:G','targets','outcome:O','user_confirmed').ok&&T.traceAddEdge(M,'outcome:O','measures','goal:G','user_confirmed').ok,
+   'a goal targets an outcome that measures it: two kinds, no contradiction');
+  ok(T.traceCycles(M).illegal.length===0,'and it is not called illegal');
+  /* a graph assembled by hand, past the gate, is still caught by the scan */
+  const H={v:1,nodes:['A','B','C'].map(x=>({type:'protocol',id:x,src:'known'})),
+   edges:[['A','B'],['B','C'],['C','A']].map(x=>({from:'protocol:'+x[0],to:'protocol:'+x[1],edge:'replaces',src:'known'}))};
+  const hc=T.traceCycles(H);
+  ok(hc.illegal.length===3&&hc.illegal.every(c=>c.kind==='replaces'&&c.cycle[0]===c.cycle[c.cycle.length-1]&&c.cycle.length===4),
+   'a loop of replacement is named edge by edge with its cycle, got '+J(hc.illegal.map(c=>c.cycle)));
+ }
+
+ g('TG9 · the boundary: validateTrace');
+ {
+  const vt=x=>safe(()=>T.validateTrace(x));
+  ok(vt(undefined).ok&&J(vt(undefined).trace)===J(T.traceNew()),'missing is an older record, read as empty');
+  ok(vt(null).ok,'null is missing too');
+  const bad=(x,frag,what)=>{const r=vt(x); ok(r&&!r.ok&&(r.errs||[]).join(' | ').indexOf(frag)>=0,what+' is refused by name: '+J(r&&r.errs).slice(0,120));};
+  bad([],'not an object','a list');
+  bad('graph','not an object','a string');
+  bad({v:1,nodes:[],edges:[],secret:1},'may not carry secret','an undeclared key');
+  bad({v:T.TRACE_V+1,nodes:[],edges:[]},'not 1 to','a graph from a newer build');
+  ok(vt({nodes:[],edges:[]}).ok,'a graph with no v is filled, not refused');
+  bad({nodes:{},edges:[]},'nodes is not a list','nodes that are not a list');
+  bad({nodes:[{type:'goal',id:'G',src:'proposed',why:'x'}]},'may not carry why','a node carrying a key nobody declared');
+  bad({nodes:[{type:'goal',id:'G',src:'proposed'},{type:'goal',id:'G',src:'proposed'}]},'repeats goal:G','a repeated node');
+  bad({nodes:[{type:'pattern',id:'999',src:'known'}]},'112','an address that does not exist');
+  bad({nodes:[{type:'pattern',id:'12',src:'proposed'}]},'known, not proposed','an address held as a proposal');
+  bad({nodes:[{type:'pattern',id:'addr:12',src:'known'}]},'stored as its number','an address stored in its spoken form');
+  const two={nodes:[{type:'protocol',id:'P',src:'proposed'},{type:'pattern',id:'12',src:'known'}]};
+  bad({...two,edges:[{from:'protocol:P',to:'pattern:99',edge:'targets',src:'proposed'}]},'names no node','an edge to a node not in the layer');
+  bad({...two,edges:[{from:'protocol:P',to:'pattern:12',edge:'targets',src:'proposed'},{from:'protocol:P',to:'pattern:12',edge:'targets',src:'user_confirmed'}]},
+   'repeats','one relation stored twice');
+  bad({...two,edges:[{from:'pattern:12',to:'protocol:P',edge:'targets',src:'proposed'}]},'no rule lets','a triple outside the table');
+  bad({...two,edges:[{from:'protocol:P',to:'pattern:12',edge:'targets',src:'proposed',at:'soon'}]},'not a date','a stamp that is not a date');
+  bad({...two,edges:[{from:'protocol:P',to:'pattern:12',edge:'targets',src:'proposed',was:'user_confirmed'}]},'cannot have become','a history that runs backwards');
+  bad({nodes:['A','B'].map(x=>({type:'practice_event',id:x,src:'observed'})),
+   edges:[{from:'practice_event:A',to:'practice_event:B',edge:'precedes',src:'observed'},{from:'practice_event:A',to:'practice_event:B',edge:'follows',src:'observed'}]},
+   'loop of precedes','a stored loop in time');
+  bad({nodes:new Array(T.TRACE_MAX+1).fill(null)},'cap is','a layer past the ceiling');
+  bad({nodes:[{type:'goal',id:'G',src:'user_confirmed',was:'known'}]},'cannot have become','a node whose history runs backwards');
+  const good={v:1,nodes:[{type:'protocol',id:'P',src:'user_confirmed',was:'proposed'},{type:'pattern',id:'12',src:'known'},
+    {type:'behavior',id:'B',src:'user_confirmed'}],
+   edges:[{from:'protocol:P',to:'pattern:12',edge:'targets',src:'proposed',at:'2026-09-30T10:00:00.000Z'},
+    {from:'protocol:P',to:'behavior:B',edge:'implements',src:'user_confirmed',was:'proposed'}]};
+  const gv=vt(good);
+  ok(gv.ok&&J(gv.trace)===J(good),'a good layer round trips exactly, got '+J(gv.errs));
+  /* through the profile boundary */
+  const base=E.saveProfile(E.blankProfile('tg'));
+  const old=JSON.parse(J(base)); delete old.trace;
+  const vo=E.validateProfile(old);
+  ok(vo.ok&&J(vo.profile.trace)===J(T.traceNew()),'a profile from before the graph loads with an empty layer');
+  const withT=JSON.parse(J(base)); withT.trace=good;
+  const vw=E.validateProfile(JSON.parse(J(withT)));
+  ok(vw.ok&&J(vw.profile.trace)===J(good),'a profile carrying a layer keeps it exactly');
+  ok(vw.ok&&vw.profile.trace.edges[0].src==='proposed','and a proposal is still a proposal on the far side');
+  const badT=JSON.parse(J(base)); badT.trace={nodes:[{type:'pattern',id:'999',src:'known'}]};
+  const vb=E.validateProfile(badT);
+  ok(!vb.ok&&vb.errs.some(e=>/^trace\.nodes\[0\]/.test(e)),'a profile with a bad layer is refused under trace., got '+J(vb.errs));
+  const nullT=JSON.parse(J(base)); nullT.trace=null;
+  ok(E.validateProfile(nullT).ok,'a profile whose layer is null is an older one');
+ }
+
+ g('TG10 · the contract with the practice build: traceApply');
+ {
+  const G=T.traceNew(), now='2026-10-01T09:00:00.000Z';
+  const I=[
+   {from:{type:'goal',id:'g1'},to:{type:'behavior',id:'b1'},edge:'requires',src:'user_confirmed'},
+   {from:{type:'protocol',id:'pr1'},to:{type:'pattern',id:53},edge:'targets',src:'proposed'},
+   {from:{type:'ritual',id:'r1'},to:{type:'protocol',id:'pr1'},edge:'executes',src:'user_confirmed'},
+   {from:{type:'goal',id:'g1'},to:{type:'pattern',id:53},edge:'targets',src:'proposed'},
+   {from:{type:'goal',id:'g2'},to:{type:'behavior',id:'b2'},edge:'requires',src:'user_confirmed',why:'x'},
+   {from:{type:'evidence',id:'e1'},to:{type:'pattern',id:53},edge:'causes',src:'proposed'}];
+  const n0=G.nodes.length;
+  const r=safe(()=>T.traceApply(G,I,now));
+  ok(r&&r.added===3,'three intents add three edges, got '+J(r&&{added:r.added,refused:r.refused&&r.refused.map(x=>x.why)}));
+  ok(r&&r.refused&&r.refused.length===3,'three are refused, and returned');
+  ok(r&&r.refused.every(x=>x.intent&&typeof x.why==='string'&&x.why.length),'each refusal carries its intent and its reason');
+  ok(r&&r.refused.some(x=>has(x,'no rule lets a goal targets a pattern')),'a goal does not target a pattern; it is obstructed by one');
+  ok(r&&r.refused.some(x=>has(x,'may not carry why')),'an intent outside the contract shape is refused by name');
+  ok(!G.nodes.some(n=>n.id==='g2'||n.id==='e1'),'a refused intent leaves no node behind, got '+J(G.nodes.map(n=>n.type+':'+n.id)));
+  ok(G.nodes.length===n0+5,'five nodes were made on demand: g1, b1, pr1, pattern 53, r1');
+  const pat=G.nodes.find(n=>n.type==='pattern');
+  ok(pat&&pat.id==='53'&&pat.src==='known','an address named by a proposal is still known');
+  ok(G.nodes.find(n=>n.id==='pr1').src==='proposed','a protocol made by a proposal is a proposal');
+  /* the record's own other spelling of an address, meterFirst's addr:N,
+     which is how the practice build names a pattern */
+  const al=T.traceApply(G,[{from:{type:'protocol',id:'pr1'},to:{type:'pattern',id:'addr:53'},edge:'addresses',src:'proposed'}],now);
+  ok(al.added===1&&G.nodes.filter(n=>n.type==='pattern').length===1&&G.edges.some(e=>e.edge==='addresses'&&e.to==='pattern:53'),
+   'addr:53 names address 53 and makes no second node for it, got '+J(al));
+  ok(G.edges.every(e=>e.at===now),'every edge is stamped with the time handed in');
+  const again=T.traceApply(G,I.slice(0,3),now);
+  ok(again.added===0&&again.held===3&&again.refused.length===0,'replaying the same intents holds them and is not a failure');
+  const up=T.traceApply(G,[{from:{type:'protocol',id:'pr1'},to:{type:'pattern',id:53},edge:'targets',src:'user_confirmed'}],now);
+  ok(up.promoted===1&&G.edges.find(e=>e.from==='protocol:pr1'&&e.edge==='targets').was==='proposed','the person accepting a proposal promotes it and keeps what it was');
+  const junk=[null,5,'x',[null],[{from:null}],[{from:{type:'goal',id:'g'},to:{type:'goal',id:'g'},edge:'requires',src:'proposed'}]];
+  junk.forEach(j=>{const x=safe(()=>T.traceApply(T.traceNew(),j,now));
+   ok(x&&!x.threw&&Array.isArray(x.refused)&&x.refused.length>=1&&x.added===0,'garbage is refused and reported, never thrown: '+J(j));});
+  const xe=T.traceApply(T.traceNew(),[{from:{type:'goal',id:'g',title:'t'},to:{type:'behavior',id:'b'},edge:'requires',src:'proposed'}],now);
+  ok(xe.refused.length===1&&has(xe.refused[0],'from may not carry title'),'an end carrying more than type and id is refused by name');
+  const nog=safe(()=>T.traceApply(null,I,now));
+  ok(nog&&nog.refused.length===I.length,'no graph refuses every intent by name');
+  const bt=safe(()=>T.traceApply(T.traceNew(),I,'tomorrow'));
+  ok(bt&&bt.refused.length===I.length&&bt.added===0,'a time that is not a date refuses the batch');
+ }
+
+ g('TG11 · traceFromRecord on a worked record');
+ {
+  const P=worked(E);
+  ok(!!P,'the worked record passes the boundary');
+  if(!P)return;
+  const G=T.traceFromRecord(P);
+  ok(G.refused.length===0,'every derived node and edge passes the rule table, refused '+J(G.refused));
+  ok(T.traceCycles(G).illegal.length===0,'the derived graph has no illegal loop');
+  ok(G.alg===T.TRACE_ALG&&G.lex===E.LEX_VERSION,'the graph names the derivation and the lexicon that made it');
+  /* the reading, checked against the product's own route: load the record,
+     then parse, which is what atomIndex does for the person on screen */
+  E.loadProfile(JSON.parse(J(P)));
+  const sids=T.traceStoryIds(P);
+  P.story.entries.forEach((e,i)=>{
+   const want=[...new Set(E.parseStory(e.text).imprints.map(x=>'pattern:'+x.node))].sort();
+   const got=G.edges.filter(x=>x.from==='story:'+sids[i]&&x.edge==='supports').map(x=>x.to).sort();
+   ok(want.length>0&&J(got)===J(want),'entry '+i+' supports the addresses the product shows for it, '+J(got)+' against '+J(want));});
+  ok(G.edges.filter(e=>e.from.indexOf('story:')===0&&e.to.indexOf('pattern:')===0).every(e=>e.src==='inferred'&&e.edge==='supports'),
+   'a reading is inferred and supports an address; it never causes');
+  ok(G.edges.some(e=>e.from.indexOf('story:')===0&&e.named===true)&&G.edges.some(e=>e.from.indexOf('story:')===0&&e.named===false),
+   'whether the words named it is carried beside the provenance, both kinds present');
+  ok(G.nodes.filter(n=>n.type==='story').every(n=>n.src==='known'),'an entry on the record is known');
+  const rel=G.nodes.find(n=>n.type==='release'&&n.id==='53:Llimit');
+  ok(rel&&rel.lines===2,'two lines opened down one channel at one address is one release of two lines');
+  ok(G.nodes.some(n=>n.type==='reframe'&&n.id==='53:Ltruth'),'a truth channel is a reframe');
+  ok(G.edges.filter(e=>/^(release|reframe):/.test(e.from)).every(e=>e.edge==='addresses'&&e.src==='observed'),
+   'a line run is observed, and addresses its pattern');
+  ok(G.gaps.some(x=>x.kind==='unreadable_key'&&x.key==='999:Llimit:0'),'a key naming no address is a gap, not dropped');
+  const rids=T.traceRitualIds(P);
+  const pe=k=>G.nodes.find(n=>n.type==='practice_event'&&n.id===k);
+  ok(pe(rids[0])&&pe(rids[0]).src==='observed','a ritual marked done produced an observed practice event');
+  ok(!pe(rids[1]),'a ritual planned and not done produced nothing');
+  ok(pe(rids[2])&&pe(rids[2]).src==='inferred','a ritual saved before done existed is read as practised, and says it was inferred');
+  const o=T.traceOrphans(G);
+  ok(rids.every(k=>o.missing.some(m=>m.key==='ritual:'+k&&m.edges[0]==='executes')),
+   'every saved ritual is reported executing no protocol, which is the record as it stands (21.J1)');
+  ok(o.isolated.indexOf('ritual:'+rids[1])>=0,'the planned ritual is isolated');
+  ok(G.restated.length===1&&G.restated[0].story==='story:'+sids[1]&&G.restated[0].lex===null,
+   'an entry read before the lexicon stamp is named as re-read under today\'s');
+  ok(J(G.unchecked)==='{}','nothing on this record is unchecked');
+ }
+
+ g('TG11b · unified signal / fetter / nerve-address path');
+ {
+  const p=worked(E);
+  const G=T.traceFromRecord(p);
+  const story=G.nodes.find(n=>n.type==='story'&&n.id==='2026-09-21T08:00:00.000Z');
+  const signal=story&&G.nodes.find(n=>n.type==='impression'&&n.id==='signal:'+story.id);
+  const signalEdge=story&&G.edges.find(e=>e.from==='story:'+story.id&&e.edge==='produces'&&e.to==='impression:signal:'+story.id);
+  const supported=signal&&G.edges.filter(e=>e.from==='impression:'+signal.id&&e.edge==='supports'&&e.to.indexOf('pattern:fetter:')===0);
+  ok(!!story,'worked source story exists for signal path');
+  ok(!!signal&&!!signalEdge,'source story produces a derived signal-impression node');
+  ok(!!supported&&supported.length>0,'signal impression derives an explicit fetter support edge');
+  ok(signalEdge&&signalEdge.src==='inferred'&&supported&&supported.every(e=>e.src==='inferred'&&e.derived===true),'signal→fetter path keeps inferred provenance and is derived, not duplicated');
+  const memberships=G.edges.filter(e=>e.edge==='associated_with'&&e.from.indexOf('pattern:')===0&&e.to.indexOf('pattern:fetter:')===0&&e.src==='known');
+  ok(memberships.length>0,'canonical address nodes connect to their canonical fetter by association');
+  ok(memberships.every(e=>e.why&&e.why.indexOf('does not imply causation')>=0),'address→fetter membership explicitly does not claim causation');
+  const address=G.nodes.find(n=>n.type==='pattern'&&n.id==='53');
+  const fetter=address&&address.fetter;
+  ok(!!address&&!!fetter,'nerve-address node retains canonical fetter metadata');
+  ok(address&&address.toneHz===T.seatHz(address.seat)&&address.toneSource==='FLOWSEAT seat-tone mapping',
+   'derived nerve-address view resolves its configured tone from FLOWSEAT without persisting duplicate truth');
+  const beforeLoop=JSON.stringify({meter:p.meter,axes:p.axes,laws:p.laws});
+  const loop=T.loopRead(p);
+  const afterLoop=JSON.stringify({meter:p.meter,axes:p.axes,laws:p.laws});
+  ok(beforeLoop===afterLoop,'render-data derivation for markers has no metric side effects');
+  const marked=loop&&loop.patterns.find(x=>Array.isArray(x.signalSources)&&x.signalSources.some(s=>s.id==='2026-09-21T08:00:00.000Z'));
+  ok(!!marked,'loop read exposes a source-backed signal marker through the existing fetter owner');
+  ok(marked&&marked.signalSources.every(s=>s.status==='candidate'&&s.src==='inferred'),
+   'signal marker retains inferred candidate status rather than implying user confirmation');
+  const confirmedAddress=JSON.parse(J(p));
+  confirmedAddress.story.entries[1].ob={yes:[53],no:[]};
+  const confirmedGraph=T.traceFromRecord(confirmedAddress);
+  const confirmedEdge=confirmedGraph.edges.find(e=>e.from==='story:'+story.id&&e.to==='pattern:53'&&e.edge==='supports');
+  ok(confirmedEdge&&confirmedEdge.src==='user_confirmed'&&confirmedEdge.yes===true,
+   'explicit mirror-card Yes remains a user-confirmed story-to-address edge');
+  const confirmedLoop=T.loopRead(confirmedAddress);
+  const confirmedMarker=confirmedLoop.patterns.find(x=>Array.isArray(x.signalSources)&&x.signalSources.some(z=>z.id===story.id));
+  ok(confirmedMarker&&confirmedMarker.signalSources.every(z=>z.status==='candidate'&&z.src==='inferred'),
+   'confirming an address does not silently promote the distinct signal-to-fetter interpretation');
+  const storyPath=story&&supported&&supported.length?T.tracePath(G,'story:'+story.id,supported[0].to):null;
+  ok(!!storyPath&&storyPath.length===2&&storyPath.every(e=>e.src==='inferred'),'story→signal→fetter is traversable with provenance intact');
+  const before=JSON.stringify({meter:p.meter,axes:p.axes,laws:p.laws});
+  T.traceFromRecord(p);
+  const after=JSON.stringify({meter:p.meter,axes:p.axes,laws:p.laws});
+  ok(before===after,'deriving signal/fetter/address links has no metric or persisted-record side effects');
+  ok(!Object.prototype.hasOwnProperty.call(p,'vritti'),'no parallel p.vritti collection is introduced');
+  const G2=T.traceFromRecord(p);
+  ok(J(G)===J(G2),'repeated derivation is deterministic and idempotent for the same profile');
+  const round=E.validateProfile(JSON.parse(J(p)));
+  ok(!!round&&round.ok,'profile export/import boundary accepts the current canonical record');
+  if(round&&round.ok){
+   const roundGraph=T.traceFromRecord(round.profile);
+   const roundLoop=T.loopRead(round.profile);
+   ok(J(G)===J(roundGraph),'derived signal markers survive JSON/profile export-import-reload without being persisted as duplicate truth');
+   ok(!!roundLoop.patterns.find(x=>Array.isArray(x.signalSources)&&x.signalSources.some(z=>z.id==='2026-09-21T08:00:00.000Z')),'source-backed marker remains navigable after profile round-trip');
+  }
+  const legacy=JSON.parse(J(p)); delete legacy.trace;
+  const old=E.validateProfile(legacy);
+  ok(!!old&&old.ok,'legacy profile without optional trace layer remains importable');
+  if(old&&old.ok){
+   const oldLoop=T.loopRead(old.profile);
+   ok(!!oldLoop.patterns.find(x=>Array.isArray(x.signalSources)&&x.signalSources.some(z=>z.id==='2026-09-21T08:00:00.000Z')),'legacy profile derives signal markers from canonical story/fetter owners');
+  }
+  const invalidQualium=T.validateTrace({v:1,nodes:[{type:'story',id:'bad-qualium',src:'known',qualium:'inward'}],edges:[]});
+  ok(!invalidQualium.ok&&invalidQualium.errs.some(x=>x.indexOf('may not carry qualium')>=0),'strict trace boundary refuses uncontracted qualium fields rather than inventing orientation values');
+  const fs=require('fs'), ui=fs.readFileSync(path.resolve(__dirname,'../atuned_src/ui/loopread.js'),'utf8');
+  ok(ui.indexOf('Candidate signal-to-fetter association')>=0&&ui.indexOf('Inferred candidate')>=0&&ui.indexOf('User confirmed')>=0,'marker UI explicitly distinguishes candidate and user-confirmed source status');
+  ok(ui.indexOf('Qualium orientation of distortion')>=0&&ui.indexOf('not yet captured')>=0,'marker UI exposes qualium as an explicit unrecorded dimension, not a guessed value');
+  ok(ui.indexOf('source text')>=0&&ui.indexOf('Configured seat-tone reference')>=0,'marker UI exposes source context and the qualified seat-tone reference');
+ }
+
+ g('TG11c · the chain, nerve to super-complex, read off the reading');
+ tg11c:{
+  const P=loadedRec(E);
+  ok(!!P,'the loaded record passes the boundary');
+  if(!P)return;
+  const RD=E.read(JSON.parse(J(P))).reading;
+  const LIST={saboteur:'sabs',complex:'cxs',hyper_complex:'hys',super_complex:'sups'};
+  const BELOW={complex:'saboteur',hyper_complex:'complex',super_complex:'hyper_complex'};
+  const typeOf=k=>T.traceSplit(k).type, isRung=t=>CH.indexOf(t)>=0;
+  /* THE KNOWN CASE FIRST. If this record ever stops reaching the top rung,
+     the checks below prove less than they say, and this says so, then
+     stops this group rather than throwing on a rung that is not there:
+     a suite that throws never finishes, and the groups after it go
+     unread. */
+  const reaches=CH.length===4&&CH.every(t=>Array.isArray(RD[LIST[t]])&&RD[LIST[t]].length>0);
+  ok(reaches,'the loaded record reaches every rung, '+CH.map(t=>t+' '+((RD[LIST[t]]||[]).length)).join(', '));
+  if(!reaches)break tg11c;
+  ok(typeof RD.rec==='string'&&RD.rec===P.id,'read() stamps the reading with the id of the record it read');
+  const G=T.traceFromRecord(P,undefined,RD);
+  ok(G.refused.length===0,'every rung and every part passes the rule table, refused '+J(G.refused).slice(0,240));
+  ok(T.traceCycles(G).illegal.length===0,'and the chain closes no illegal loop');
+  /* the named super complex is a super_complex node too, off its own field
+     and not off sups (TG11d), so it is counted here when this field holds it */
+  const NAMED=RD.psychopathy?[RD.psychopathy]:[];
+  CH.forEach(t=>{
+   const got=G.nodes.filter(n=>n.type===t).map(n=>n.id).sort(),
+    want=(RD[LIST[t]]||[]).map(x=>x.nm).concat(t==='super_complex'?NAMED.map(x=>x.named):[]).sort();
+   ok(want.length>0&&J(got)===J(want),'one '+t+' per entry of the reading\'s '+LIST[t]+', '+got.length+' against '+want.length);});
+  const rungs=G.nodes.filter(n=>isRung(n.type));
+  ok(rungs.length>0&&rungs.every(n=>n.src==='inferred'&&n.derived===true&&n.was===undefined),
+   'every rung is inferred and derived, and was never anything else');
+  ok(rungs.every(n=>n.d===undefined&&n.sub===undefined),'no rung carries the line a person is shown or the clinical correspondence');
+  /* the chain's own edges are the ones into a rung of it. An edge out of the
+     super complex goes to a mask, above the chain, and TG11e reads those */
+  const ce=G.edges.filter(e=>isRung(typeOf(e.to)));
+  ok(ce.length>0&&ce.every(e=>e.edge==='supports'&&e.src==='inferred'&&e.derived===true&&e.was===undefined&&/not a cause/.test(e.why||'')),
+   'every edge of the chain is supports, inferred and derived, and says it is not a cause');
+  const used=[...new Set(ce.map(e=>typeOf(e.from)+' '+e.edge+' '+typeOf(e.to)))].sort();
+  ok(J(used)===J(T.TRACE_RULES.filter(r=>isRung(r[2])).map(key).sort()),'the chain uses its four rules and nothing else, got '+J(used));
+  /* every part, once, at the rung that counted it, and nothing else */
+  const want=new Set();
+  CH.forEach(t=>(RD[LIST[t]]||[]).forEach(x=>x.parts.forEach(q=>
+   want.add((t==='saboteur'?'pattern:'+q.i:BELOW[t]+':'+q.nm)+' > '+t+':'+x.nm))));
+  NAMED.forEach(x=>x.parts.forEach(q=>want.add('hyper_complex:'+q.nm+' > super_complex:'+x.named)));
+  const got=new Set(ce.map(e=>e.from+' > '+e.to));
+  ok(want.size===got.size&&got.size===ce.length&&[...want].every(k=>got.has(k)),
+   'one edge per part the reading counted, '+ce.length+' edges against '+want.size+' parts');
+  /* NERVE TO SUPER-COMPLEX, the chain's part of the owner's "from nerve to
+     character" (23 October), as a path */
+  const top=RD.sups[0], hy=top.parts[0], cx=hy.parts[0], sb=cx.parts[0], addr=sb.parts[0].i;
+  const walk=T.tracePath(G,'pattern:'+addr,'super_complex:'+top.nm);
+  ok(!!walk&&walk.length===4&&walk.every(s=>s.edge==='supports'&&s.src==='inferred'),
+   'an address reaches its super-complex in four steps, one per rung, got '+J(walk));
+  const nerve=G.nodes.find(n=>n.type==='pattern'&&n.id===String(addr));
+  ok(!!nerve&&nerve.src==='known'&&typeof nerve.seat==='string'&&'nerve' in nerve,
+   'and it starts at the pattern node that carries the address\'s seat and nerve, not a type of its own');
+  ok(!T.traceOrphans(G).missing.some(m=>isRung(m.type)),'no rung is missing its parts');
+  const s0=RD.sabs[0], n0=G.nodes.find(n=>n.type==='saboteur'&&n.id===s0.nm);
+  ok(!!n0&&n0.w===Math.round(s0.w*10)/10&&n0.family===s0.hcx,'a saboteur carries its weight and family as the reading wrote them');
+  /* WITHOUT A READING, the graph every earlier caller gets */
+  const bare=T.traceFromRecord(P);
+  ok(!bare.nodes.some(n=>isRung(n.type))&&bare.refused.length===0,'with no reading there is no chain and nothing is refused');
+  ok(J(T.traceFromRecord(P,undefined,null))===J(bare),'and null is no reading');
+  const nk=n=>n.type+':'+n.id, ek=e=>e.from+'|'+e.edge+'|'+e.to;
+  const gN=new Map(G.nodes.map(n=>[nk(n),J(n)])), gE=new Map(G.edges.map(e=>[ek(e),J(e)]));
+  ok(bare.nodes.every(n=>gN.get(nk(n))===J(n))&&bare.edges.every(e=>gE.get(ek(e))===J(e))
+   &&J([bare.gaps,bare.restated,bare.unchecked,bare.alg,bare.lex])===J([G.gaps,G.restated,G.unchecked,G.alg,G.lex]),
+   'and the chain only adds: every node and edge of that graph is in this one exactly as it was');
+  /* SAME RECORD AND SAME READING, SAME GRAPH, whatever is loaded since */
+  const g1=J(G);
+  E.loadProfile(soulOf(E,'Sofia')); E.compute();
+  ok(J(T.traceFromRecord(P,undefined,RD))===g1,
+   'the same reading gives the same chain after another field is loaded and read, so nothing is taken off the live addresses');
+  ok(J(T.traceFromRecord(JSON.parse(J(P)),undefined,JSON.parse(J(RD))))===g1,'and a copy of the record with a copy of the reading gives the same graph');
+  /* A READING THAT IS NOT THIS RECORD'S is refused by name, whole */
+  const refusedAs=(r,frag,what)=>{const X=safe(()=>T.traceFromRecord(P,undefined,r));
+   ok(!!X&&!X.threw&&!X.nodes.some(n=>isRung(n.type))&&X.refused.some(x=>x.reading===true&&has(x,frag)),
+    what+', got '+J(X&&(X.threw||X.refused)).slice(0,200));
+   return X;};
+  const other=E.read(JSON.parse(J(loadedRec(E)))).reading;
+  const Xo=refusedAs(other,'another record','another record\'s reading is refused by name, even one of the very same field');
+  ok(!!Xo&&!Xo.threw&&J(Object.assign({},Xo,{refused:[]}))===J(Object.assign({},bare,{refused:[]})),
+   'and a refused reading leaves exactly the graph with no reading');
+  refusedAs(Object.assign({},RD,{rec:undefined}),'no record stamp','a reading with no stamp is refused by name');
+  E.loadProfile(JSON.parse(J(P)));
+  refusedAs(E.compute(),'no record stamp','a bare compute(), which reads whatever is loaded, is refused by name');
+  refusedAs(E.read(JSON.parse(J(P)),{story:'I was furious and my jaw was tight all day.'}).reading,'no record stamp',
+   'a reading past a story the record does not hold yet is refused by name');
+  refusedAs('x','not an object','a reading that is not an object is refused by name');
+  const noId=JSON.parse(J(P)); delete noId.id;
+  const Y=T.traceFromRecord(noId,undefined,RD);
+  ok(Y.refused.some(x=>x.reading===true&&has(x,'has no id'))&&!Y.nodes.some(n=>isRung(n.type)),
+   'a record with no id cannot be shown any reading is its own');
+  const cut=JSON.parse(J(RD)); cut.cxs[0].parts[0].nm='nobody';
+  refusedAs(cut,'which is not a saboteur of this reading','a complex counting a saboteur the reading does not hold refuses the whole reading');
+  const twice=JSON.parse(J(RD)); twice.sabs.push(twice.sabs[0]);
+  refusedAs(twice,'a second time','a rung named twice refuses the whole reading');
+  const off=JSON.parse(J(RD)); off.sabs[0].parts[0].i=999;
+  refusedAs(off,'112 addresses','a saboteur counting no address refuses the whole reading');
+  const empty=JSON.parse(J(RD)); empty.hys[0].parts=[];
+  refusedAs(empty,'has no parts','a rung with no parts refuses the whole reading');
+  const gone=JSON.parse(J(RD)); delete gone.sups;
+  refusedAs(gone,'no sups list','a reading missing a rung\'s list is refused by name');
+  const junkRung=JSON.parse(J(RD)); junkRung.cxs[0]=5;
+  refusedAs(junkRung,'cxs[0] is not an object','a rung that is not an object refuses the whole reading');
+  const junkName=JSON.parse(J(RD)); junkName.sabs[0].nm=7;
+  refusedAs(junkName,'sabs[0] id is not a string','a rung whose name is not text refuses the whole reading');
+  const junkPart=JSON.parse(J(RD)); junkPart.sabs[0].parts[0]=null;
+  refusedAs(junkPart,'has a part that is not an object','a part that is not an object refuses the whole reading');
+  /* EVERY DOOR REFUSES A RUNG BY NAME, on a derived graph too */
+  const sk='saboteur:'+RD.sabs[0].nm, pe=G.edges.find(e=>e.to===sk&&typeOf(e.from)==='pattern'), pk=pe&&pe.from;
+  const before=J(G);
+  const an=safe(()=>T.traceAddNode(G,'saboteur',RD.sabs[0].nm,'inferred'));
+  ok(!!an&&!an.ok&&has(an,'read off the reading')&&J(G)===before,'traceAddNode refuses a rung by name, even one the graph already holds');
+  T.TRACE_SRC.forEach(s=>{const r=safe(()=>T.traceAddEdge(G,pk,'supports',sk,s));
+   ok(!!r&&!r.ok&&has(r,'read off the reading')&&J(G)===before,'traceAddEdge refuses a part of the chain held as '+s+', and the graph is unchanged');});
+  const ap=safe(()=>T.traceApply(T.traceNew(),[{from:{type:'pattern',id:+T.traceSplit(pk||'pattern:0').id},
+   to:{type:'saboteur',id:RD.sabs[0].nm},edge:'supports',src:'inferred'}],'2026-10-22T09:00:00.000Z'));
+  ok(!!ap&&ap.added===0&&(ap.refused||[]).length===1&&has(ap.refused[0],'read off the reading'),'traceApply refuses an intent naming a rung, by name');
+  const ri=T.traceFromRecord(P,[{from:{type:'saboteur',id:RD.sabs[0].nm},to:{type:'complex',id:RD.cxs[0].nm},edge:'supports',src:'inferred'}],RD);
+  ok(ri.refused.some(x=>x.intent&&has(x,'read off the reading')),'and so does an intent handed in at read time, with the reading in hand');
+  const vn=safe(()=>T.validateTrace({nodes:[{type:'saboteur',id:'Judge',src:'inferred'}]}));
+  ok(!!vn&&!vn.ok&&(vn.errs||[]).some(x=>/^nodes\[0\] /.test(x)&&x.indexOf('read off the reading')>=0),
+   'validateTrace refuses a stored rung by name, got '+J(vn&&vn.errs));
+  const ve=safe(()=>T.validateTrace({nodes:[{type:'pattern',id:'12',src:'known'}],
+   edges:[{from:'pattern:12',to:'saboteur:Judge',edge:'supports',src:'inferred'}]}));
+  ok(!!ve&&!ve.ok&&(ve.errs||[]).some(x=>/^edges\[0\] /.test(x)&&x.indexOf('read off the reading')>=0),
+   'and a stored edge to one, by name, got '+J(ve&&ve.errs));
+  const vp=JSON.parse(J(E.saveProfile(E.blankProfile('tg11c'))));
+  vp.trace={nodes:[{type:'super_complex',id:'Rigidity / Dysregulation',src:'inferred'}],edges:[]};
+  const vr=E.validateProfile(vp);
+  ok(!vr.ok&&vr.errs.some(x=>/^trace\.nodes\[0\]/.test(x)&&x.indexOf('read off the reading')>=0),
+   'the profile boundary refuses a record carrying a rung, under trace., by name, got '+J(vr.errs).slice(0,200));
+  /* THE OLD NAME OF THE FOURTH RUNG, before 23 October. A record carrying one
+     was refused as a rung then and is refused as no type now: refused either
+     way, by name, so no record that passed the boundary on either side of
+     the rename can carry it. */
+  vp.trace={nodes:[{type:'character',id:'Rigidity / Dysregulation',src:'inferred'}],edges:[]};
+  const vc=E.validateProfile(vp);
+  ok(!vc.ok&&vc.errs.some(x=>/^trace\.nodes\[0\]/.test(x)&&x.indexOf('character')>=0),
+   'and a record carrying a node of the old name, character, is refused by that name, got '+J(vc.errs).slice(0,200));
+  const raw=JSON.parse(J(P));
+  raw.trace={v:1,nodes:[{type:'saboteur',id:RD.sabs[0].nm,src:'inferred'}],edges:[{from:pk,to:sk,edge:'supports',src:'user_confirmed'}]};
+  const RG=T.traceFromRecord(raw,undefined,RD);
+  ok(RG.refused.filter(x=>x.stored&&has(x,'read off the reading')).length===2,
+   'the stored layer of a record that skipped the boundary refuses a rung and an edge to one, by name, where the reading derived the same rung');
+  ok(RG.edges.filter(e=>e.to===sk).every(e=>e.src==='inferred'),'and nothing stored confirms a part of the chain');
+ }
+
+ g('TG11d · the named super complex is a node, read by name and never off sups');
+ /* The nerve to celestial audit's second gap, 31 October. compute() builds
+    r.psychopathy by asking for the two hyper complexes the DESCENT entry pairs,
+    and keeps it out of sups, and the chain read sups only, so the one super
+    complex the product names was never in any graph. Checked against the
+    build before this: every check below that looks for the node fails there. */
+ tg11d:{
+  const D=(E.DESCENT||[]).find(d=>d.nm==='Psychopathy');
+  ok(!!D&&Array.isArray(D.pair)&&D.pair.length===2,'the descent names the pair it is built from, got '+J(D&&D.pair));
+  if(!D)break tg11d;
+  const pairKeys=D.pair.map(h=>'hyper_complex:'+h).sort();
+  for(const both of [false,true]){
+   const tag=both?'where both rules pair them: ':'where only the named rule pairs them: ';
+   const P=namedRec(E,both);
+   ok(!!P,tag+'the record passes the boundary');
+   if(!P)break tg11d;
+   const RD=E.read(JSON.parse(J(P))).reading, X=RD.psychopathy;
+   /* THE KNOWN CASE FIRST, both halves of it */
+   const generic=(RD.sups||[]).some(s=>s.parts.map(h=>h.nm).sort().join()===D.pair.slice().sort().join());
+   ok(!!X&&X.inSups===both&&generic===both,
+    tag+'the field is the case it is named for, named '+J(X&&X.named)+', inSups '+J(X&&X.inSups)+', sups '+J((RD.sups||[]).map(s=>s.nm)));
+   if(!X||X.inSups!==both||generic!==both)break tg11d;
+   ok(X.named===D.nm&&J(X.parts.map(h=>h.nm).sort())===J(D.pair.slice().sort()),
+    tag+'the reading names it off the descent, '+X.named+' of '+J(X.parts.map(h=>h.nm)));
+   const G=T.traceFromRecord(P,undefined,RD);
+   ok(G.refused.length===0,tag+'nothing is refused, '+J(G.refused).slice(0,240));
+   const N=G.nodes.find(n=>n.type==='super_complex'&&n.id===D.nm);
+   ok(!!N&&N.src==='inferred'&&N.derived===true&&N.was===undefined,tag+'it is a super_complex node under its own name, inferred and derived, got '+J(N));
+   ok(!!N&&N.named===true&&N.inSups===both&&N.w===Math.round(X.w*10)/10,
+    tag+'carrying that it is the named one, whether rank paired it too, and its weight, got '+J(N));
+   ok(!!N&&N.d===undefined&&N.sub===undefined&&N.refer===undefined&&N.content===undefined,
+    tag+'and not the line, the referral or the descent\'s text, which a graph is no place to print from');
+   const into=G.edges.filter(e=>e.to==='super_complex:'+D.nm);
+   ok(J(into.map(e=>e.from).sort())===J(pairKeys)&&into.every(e=>e.edge==='supports'&&e.src==='inferred'&&e.derived===true&&/not a cause/.test(e.why||'')),
+    tag+'two edges in, one from each hyper complex of the pair, supports, inferred, and not a cause, got '+J(into.map(e=>e.from+' '+e.edge+' '+e.src)));
+   /* r.sups IS NOT MOVED: every other super_complex node is a pairing by rank */
+   const rest=G.nodes.filter(n=>n.type==='super_complex'&&n!==N).map(n=>n.id).sort();
+   ok(J(rest)===J((RD.sups||[]).map(s=>s.nm).sort()),tag+'and every other super complex is one of sups, exactly, got '+J(rest));
+   /* nerve to the named one */
+   const hy=X.parts[0], cx=hy.parts[0], sb=cx.parts[0], addr=sb.parts[0].i;
+   const walk=T.tracePath(G,'pattern:'+addr,'super_complex:'+D.nm);
+   ok(!!walk&&walk.length===4&&walk.every(s=>s.edge==='supports'),tag+'an address reaches it in four steps, got '+J(walk&&walk.map(s=>s.to)));
+   /* ABSENT AND NULL ARE NO NODE AND NO REFUSAL. Absent is a reading from
+      before 26 October; null is a field without it, or a plan that may not
+      see the rung (sightR, ui/lock.js) */
+   const gone=Object.assign({},RD); delete gone.psychopathy;
+   const G0=T.traceFromRecord(P,undefined,gone), Gn=T.traceFromRecord(P,undefined,Object.assign({},RD,{psychopathy:null}));
+   ok(!G0.nodes.some(n=>n.type==='super_complex'&&n.id===D.nm)&&G0.refused.length===0&&J(Gn)===J(G0),
+    tag+'a reading without it, or with it null, is the graph with no named node and nothing refused');
+   ok(!T.traceFromRecord(P).nodes.some(n=>n.id===D.nm),tag+'and with no reading there is none');
+   /* ALL OR NOTHING, the chain's own rule, on this one too */
+   const refusedAs=(mut,frag,what)=>{const r=JSON.parse(J(RD)); mut(r);
+    const Y=safe(()=>T.traceFromRecord(P,undefined,r));
+    ok(!!Y&&!Y.threw&&!Y.nodes.some(n=>CH.indexOf(n.type)>=0)&&Y.refused.some(x=>x.reading===true&&has(x,frag)),
+     tag+what+', got '+J(Y&&(Y.threw||Y.refused)).slice(0,200));};
+   refusedAs(r=>{r.psychopathy='x';},'psychopathy is not an object','a named one that is not an object refuses the whole reading');
+   refusedAs(r=>{r.psychopathy.named=7;},'id is not a string','a named one whose name is not text refuses it');
+   refusedAs(r=>{r.psychopathy.named=r.sups[0].nm;},'already names','a named one under a name the pairing by rank uses refuses it');
+   refusedAs(r=>{r.psychopathy.parts[0].nm='nobody';},'which is not a hyper_complex of this reading','a named one counting a hyper complex the reading does not hold refuses it');
+   refusedAs(r=>{r.psychopathy.parts.pop();},'does not count two','a named one counting one hyper complex refuses it');
+   refusedAs(r=>{r.psychopathy.parts[0]=null;},'has a part that is not an object','a named one with a part that is not an object refuses it');
+   refusedAs(r=>{r.psychopathy.parts[1]=r.psychopathy.parts[0];},'twice','a named one counting the same hyper complex twice refuses it');
+   const an=safe(()=>T.traceAddNode(G,'super_complex',D.nm,'inferred'));
+   ok(!!an&&!an.ok&&has(an,'read off the reading'),tag+'and it is never added by hand');}
+ }
+
+ g('TG11e · the graph a screen is drawn from is handed the reading, and loads nothing');
+ /* The nerve to celestial audit's first gap, 31 October. The Character page and
+    the loop read built their graphs with no reading. They cannot be handed
+    read(): it loads the record, which drops a working state that is ahead of
+    the disk and, on the practitioner page, leaves a stranger's field in S. So
+    they are handed readHeld, compute() of what is loaded, stamped only when
+    S.rec says it was loaded from that record. Checked against the build before
+    this, where readHeld does not exist and every check here fails. */
+ {
+  const P=loadedRec(E);
+  ok(!!P&&typeof E.readHeld==='function','the door exists and the record passes the boundary');
+  if(P&&typeof E.readHeld==='function'){
+   E.loadProfile(JSON.parse(J(P)));
+   const state=()=>J([E.S.charge,E.S.replace,E.S.law,E.S.doms,E.S.arcs,E.S.roots,E.S.addr,E.S.rec,E.W.map(n=>n.susc)]);
+   const before=state();
+   const H=E.readHeld(P);
+   ok(state()===before,'reading what is held loads nothing and writes nothing');
+   ok(!!H&&H.rec===P.id,'and it is stamped with the record the field was loaded from');
+   const GH=T.traceFromRecord(P,undefined,H), GR=T.traceFromRecord(P,undefined,E.read(JSON.parse(J(P))).reading);
+   const rungs=g=>g.nodes.filter(n=>CH.indexOf(n.type)>=0).map(n=>n.type+':'+n.id+':'+n.w).sort();
+   ok(GH.refused.length===0&&rungs(GH).length>0,'the graph takes it and carries the chain, '+rungs(GH).length+' rungs, refused '+J(GH.refused).slice(0,160));
+   ok(J(rungs(GH))===J(rungs(GR)),'the same chain read() would have given, on a field loaded from the record and not moved since');
+   E.loadProfile(soulOf(E,'Sofia'));
+   ok(E.readHeld(P)===null,'a record that is not the one loaded has no held reading, so its graph carries no chain');
+   const noId=JSON.parse(J(P)); delete noId.id;
+   ok(E.readHeld(noId)===null&&E.readHeld(null)===null,'nor does a record with no id, or no record');
+   /* THE LOOP READ SAYS THE SAME WITH THE CHAIN UNDER IT. Every row it lists is
+      a pattern, so the reading changes the graph and not the surface. */
+   E.loadProfile(JSON.parse(J(P)));
+   const L0=E.loopRead(P), L1=E.loopRead(P,E.readHeld(P));
+   ok(L0.patterns.length>0&&J(L1)===J(L0),'the loop read handed the reading lists exactly what it listed without one, '+L0.patterns.length+' patterns');}
+ }
+ g('TG11f · above the chain: mask, archetype, domain, character (21 November)');
+ tg11f:{
+  /* The rest of the owner's 23 October order, read off the same stamped
+     reading through the tables that hold each step. THE KNOWN CASE FIRST: the
+     loaded record reaches a super complex, and at least one of its two
+     archetypes is seated under a mask that super complex reaches. If either
+     stops being true this says so and stops, rather than proving less than it
+     says. */
+  const P=loadedRec(E);
+  if(!P){ok(false,'the loaded record passes the boundary'); break tg11f;}
+  const RD=E.read(JSON.parse(J(P))).reading;
+  const typeOf=k=>T.traceSplit(k).type, isAb=t=>AV.indexOf(t)>=0;
+  const G=T.traceFromRecord(P,undefined,RD);
+  const ch=G.nodes.find(n=>n.type==='character');
+  ok(!!ch&&ch.id===P.id,'the loaded record climbs to one character node, keyed by the record, got '+J(ch));
+  if(!ch)break tg11f;
+  ok(G.refused.length===0,'every rung above the chain passes the rule table, refused '+J(G.refused).slice(0,240));
+  ok(G.nodes.filter(n=>n.type==='character').length===1,'there is one character and only one');
+  const ab=G.nodes.filter(n=>isAb(n.type));
+  ok(ab.every(n=>n.src==='inferred'&&n.derived===true&&n.was===undefined),'every rung above the chain is inferred and derived');
+  const ae=G.edges.filter(e=>isAb(typeOf(e.to)));
+  ok(ae.length>0&&ae.every(e=>e.edge==='supports'&&e.src==='inferred'&&e.derived===true&&/not a cause/.test(e.why||'')),
+   'every edge into a rung above the chain is supports, inferred, derived, and says it is not a cause');
+  const used=[...new Set(ae.map(e=>typeOf(e.from)+' '+e.edge+' '+typeOf(e.to)))].sort();
+  ok(J(used)===J(T.TRACE_RULES.filter(r=>isAb(r[2])).map(key).sort()),'the climb uses its four rules and nothing else, got '+J(used));
+  /* a mask only where a super complex has an address at a seat it is worn over */
+  const masks=G.nodes.filter(n=>n.type==='mask');
+  ok(masks.length>0&&masks.every(m=>{
+   const ring=RD.maskRing.find(x=>x.nm===m.id);
+   return !!ring&&G.edges.some(e=>e.to==='mask:'+m.id&&typeOf(e.from)==='super_complex'&&e.w>0&&e.w<=1);}),
+   'every mask is one the reading took, under a super complex, with the share of its addresses on the edge');
+  const sups=G.nodes.filter(n=>n.type==='super_complex').map(n=>'super_complex:'+n.id);
+  const seats=new Set();
+  sups.forEach(k=>T.traceDescendants(G,k).filter(x=>/^pattern:[0-9]+$/.test(x)).forEach(x=>seats.add(E.BY[+x.slice(8)].b)));
+  const expectMasks=RD.maskRing.filter(m=>m.bands.some(b=>seats.has(b))).map(m=>m.nm).sort();
+  ok(J(masks.map(m=>m.id).sort())===J(expectMasks),'the masks are exactly the ones worn over a seat the super complexes hold, got '+J(masks.map(m=>m.id))+' against '+J(expectMasks));
+  /* the archetypes are the reading's own two, and only where a mask is worn over the seat */
+  const arcs=G.nodes.filter(n=>n.type==='archetype');
+  const two=[E.ARCH[RD.pi].nm,E.ARCH[RD.si].nm];
+  ok(arcs.length>0&&arcs.every(a=>two.indexOf(a.id)>=0),'every archetype is the reading\'s first or second, got '+J(arcs.map(a=>a.id))+' of '+J(two));
+  two.forEach(nm=>{
+   const A=E.ARCH.find(x=>x.nm===nm), under=masks.filter(m=>m.bands.indexOf(A.b)>=0);
+   const node=arcs.find(a=>a.id===nm), gap=G.stops.find(x=>x.kind==='unseated'&&x.archetype===nm);
+   ok(under.length?(!!node&&!gap):(!node&&!!gap&&/no mask/.test(gap.why)),
+    nm+' is a node exactly when a mask in the graph is worn over its seat, '+A.b+', and a named stop otherwise');});
+  ok(G.gaps.every(x=>x.kind!=='unseated'&&x.kind!=='no_domain'),'where the climb stops is not counted as a gap on the record');
+  arcs.forEach(a=>{
+   const up=(E.archDomainOf(a.id)||{}).upstream||a.id, row=E.ARCH18.find(r=>r[0]===up);
+   ok(a.primarySab===(row?row[1]:null)&&a.primarySabRunning===!!(row&&G.nodes.some(n=>n.type==='saboteur'&&n.id===row[1])),
+    a.id+' carries its ARCH18 primary saboteur, and whether it runs in this reading, as data');});
+  /* the domain is ARCHDOM's answer for each archetype, and carries no weight */
+  arcs.forEach(a=>{
+   const d=E.archDomainOf(a.id);
+   ok(!!d&&!!d.nm&&G.edges.some(e=>e.from==='archetype:'+a.id&&e.to==='domain:'+d.nm),
+    a.id+' points at '+(d&&d.nm)+', the archetype to domain table\'s own answer');});
+  ok(G.nodes.filter(n=>n.type==='domain').every(n=>n.w===undefined),'a domain carries no weight, because nothing about the person is carried up a table');
+  /* NERVE TO CHARACTER as one path, the whole 23 October order */
+  const top=RD.sups[0], addr=top.parts[0].parts[0].parts[0].parts[0].i;
+  const walk=T.tracePath(G,'pattern:'+addr,'character:'+P.id,{edges:['supports']});
+  const kinds=walk?walk.map(s=>typeOf(s.to)):[];
+  ok(!!walk&&J(kinds)===J(CH.concat(AV)),'an address climbs to the character through every rung in order, got '+J(kinds));
+  ok(!T.traceOrphans(G).missing.some(m=>isAb(m.type)),'no rung above the chain is missing what sits under it');
+  /* the doors */
+  ok(!T.traceFromRecord(P).nodes.some(n=>isAb(n.type)),'with no reading there is nothing above the chain');
+  const old=Object.assign({},RD); delete old.maskRing;
+  const Go=T.traceFromRecord(P,undefined,old);
+  ok(Go.refused.length===0&&!Go.nodes.some(n=>isAb(n.type))&&Go.nodes.some(n=>n.type==='super_complex'),
+   'a reading from before the climb keeps its chain and holds nothing above it, refusing nothing');
+  const locked=Object.assign({},RD,{sups:[],psychopathy:null});
+  ok(!T.traceFromRecord(P,undefined,locked).nodes.some(n=>isAb(n.type)),'a plan that cannot see the super complex sees nothing above it');
+  const refusedAs=(f,frag,m)=>{const q=JSON.parse(J(RD)); f(q); const Gq=T.traceFromRecord(P,undefined,q);
+   ok(Gq.refused.some(x=>x.reading&&(x.why||'').indexOf(frag)>=0)&&!Gq.nodes.some(n=>isAb(n.type)||isRung(n.type)),m);};
+  const isRung=t=>CH.indexOf(t)>=0;
+  refusedAs(q=>{q.maskRing='x';},'maskRing is not a list','a maskRing that is not a list refuses the whole reading');
+  refusedAs(q=>{q.maskRing[0].nm='Nobody';},'not one of the masks','a mask the table does not name refuses it');
+  refusedAs(q=>{q.maskRing[1].nm=q.maskRing[0].nm;},'a second time','a mask named twice refuses it');
+  refusedAs(q=>{q.maskRing[0].bands=['Elbow'];},'not one of the seven','a mask worn over a seat that is not one refuses it');
+  refusedAs(q=>{q.maskRing[0].w='heavy';},'carries no weight','a mask with no weight refuses it');
+  refusedAs(q=>{q.pi=99;},'not one of the','a first archetype that is not one of the twelve refuses it');
+  refusedAs(q=>{q.si=-1;},'not one of the','a second archetype that is not one of the twelve refuses it');
+  AV.forEach(t=>{
+   const v=T.validateTrace({v:1,nodes:[{type:t,id:'X',src:'inferred'}],edges:[]});
+   ok(!v.ok&&v.errs.some(x=>/read off the reading/.test(x)),'a stored '+t+' is refused at the boundary by name');});
+  const gs=T.traceNew(); T.traceAddNode(gs,'pattern','12','known');
+  const ap=T.traceApply(gs,[{from:{type:'pattern',id:'12'},to:{type:'archetype',id:'Sage'},edge:'supports',src:'proposed'}],'2026-11-21T00:00:00.000Z');
+  ok(ap.refused.length===1&&/read off the reading/.test(ap.refused[0].why),'an intent naming a rung above the chain is refused by name');
+  /* THE DESCENT IS ONE LADDER (SM16, 21 November). A rung the descent ties to
+     the chain carries its step and the ladder, Lucifer, as data; Geryon and
+     Asmodeus were checked against the two-piece rule and are not wired */
+  const PN=namedRec(E,true);
+  if(PN){
+   const RN=E.read(JSON.parse(J(PN))).reading, GN=T.traceFromRecord(PN,undefined,RN);
+   const D=E.DESCENT||[], tied=D.filter(d=>d.fam||d.pair);
+   const want=GN.nodes.filter(n=>(n.type==='hyper_complex'&&tied.some(d=>d.fam===n.id&&!n.over))||(n.type==='super_complex'&&n.named&&tied.some(d=>d.pair&&d.nm===n.id)));
+   ok(want.length>0&&want.every(n=>n.ladder==='Lucifer'&&tied.some(d=>d.nm===n.descent)),
+    'every rung the descent ties to the chain carries its step and the ladder it is on, got '+J(want.map(n=>[n.type,n.id,n.descent,n.ladder])));
+   ok(GN.nodes.filter(n=>n.ladder).length===want.length,'and no other rung does: nothing is lit by depth');
+   const psy=GN.nodes.find(n=>n.type==='super_complex'&&n.id==='Psychopathy');
+   ok(!!psy&&psy.descent==='Psychopathy'&&psy.ladder==='Lucifer','Psychopathy is a step on the ladder Lucifer names, not a rival to it');}
+  const SH=T.TRACE_SHADOW||{};
+  ok(SH.Lucifer&&SH.Lucifer.home==='ladder'&&SH.Lucifer.wired===true,'Lucifer names the ladder');
+  ok(['Geryon','Asmodeus'].every(k=>SH[k]&&SH[k].home==='pair'&&SH[k].pair.length===2&&SH[k].wired===false&&SH[k].why),
+   'Geryon and Asmodeus each carry the pair they were checked against, and why neither is wired');
+  ok(['Lucifer','Geryon','Asmodeus'].every(k=>T.TRACE_NODE_TYPES.indexOf(k.toLowerCase())<0),'no shadow figure is a node type');
+ }
+
+ g('TG12 · same record, same graph, whatever is loaded');
+ {
+  const P=worked(E); if(!P)return;
+  const A=P.story.entries[0].text;
+  /* THE KNOWN BAD CASE FIRST. Read under whatever soul is loaded, Angela's
+     own sentence lands somewhere else. If this ever stops being true the
+     check below proves nothing, and this says so. */
+  E.loadProfile(soulOf(E,'Sofia'));
+  const underSofia=E.parseStory(A).imprints.map(x=>x.node).sort().join();
+  E.loadProfile(JSON.parse(J(P)));
+  const underOwn=E.parseStory(A).imprints.map(x=>x.node).sort().join();
+  ok(underSofia!==underOwn,'the hazard is real: the sentence reads '+underOwn+' under her soul and '+underSofia+' under Sofia\'s');
+  const W0=J(E.W.map(n=>n.susc)), S0=J([E.S.doms,E.S.arcs,E.S.roots]);
+  const g1=J(T.traceFromRecord(P));
+  ok(J(E.W.map(n=>n.susc))===W0&&J([E.S.doms,E.S.arcs,E.S.roots])===S0,'deriving leaves the loaded state exactly as it was');
+  E.loadProfile(soulOf(E,'Sofia'));
+  const g2=J(T.traceFromRecord(P));
+  E.loadProfile(soulOf(E,'Marcus'));
+  const g3=J(T.traceFromRecord(JSON.parse(J(P))));
+  ok(g1===g2&&g2===g3,'the same record gives the same graph with Angela, Sofia or Marcus loaded');
+  ok(J(T.traceFromRecord(P))===g3,'and the same graph twice running');
+ }
+
+ g('TG13 · the stored layer over the derived one');
+ {
+  const P=worked(E); if(!P)return;
+  const sid='story:'+T.traceStoryIds(P)[0];
+  const r=T.traceApply(P.trace,[
+   {from:{type:'story',id:T.traceStoryIds(P)[0]},to:{type:'pattern',id:53},edge:'supports',src:'user_confirmed'},
+   {from:{type:'protocol',id:'pr1'},to:{type:'pattern',id:53},edge:'targets',src:'proposed'},
+   {from:{type:'protocol',id:'pr1'},to:{type:'release',id:'60:Llimit'},edge:'requires',src:'proposed'},
+   {from:{type:'story',id:'2020-01-01T00:00:00.000Z'},to:{type:'pattern',id:53},edge:'supports',src:'user_confirmed'}],
+   '2026-10-01T09:00:00.000Z');
+  ok(r.added===4&&r.refused.length===0,'four stored relations, got '+J(r));
+  const v=E.validateProfile(JSON.parse(J(P)));
+  ok(v.ok,'the record with its layer passes the boundary, '+J(v.errs));
+  const G=T.traceFromRecord(v.profile);
+  ok(G.refused.length===0,'nothing refused in the merge, '+J(G.refused));
+  const conf=G.edges.find(e=>e.from===sid&&e.to==='pattern:53');
+  ok(conf&&conf.src==='user_confirmed'&&conf.was==='inferred'&&conf.derived===true,
+   'the person confirming a reading makes it theirs and keeps that it was inferred, got '+J(conf));
+  ok(G.edges.find(e=>e.from==='protocol:pr1'&&e.edge==='targets').src==='proposed','a proposal over the record stays a proposal');
+  const rel=G.nodes.find(n=>n.type==='release'&&n.id==='60:Llimit');
+  ok(rel&&rel.lines===0&&G.edges.some(e=>e.from==='release:60:Llimit'&&e.edge==='targets'&&e.to==='pattern:60'&&e.src==='known')
+   &&!G.edges.some(e=>e.from==='release:60:Llimit'&&e.edge==='addresses'),
+   'a release nothing has run targets its address and does not address it');
+  const o=T.traceOrphans(G);
+  ok(o.dangling.some(d=>d.key==='story:2020-01-01T00:00:00.000Z'),'a stored story the record does not hold is dangling, got '+J(o.dangling));
+  ok(o.unchecked.protocol===1,'the protocol is counted as unchecked: the record cannot say it exists');
+  ok(T.tracePath(G,'protocol:pr1',sid,{undirected:true})!==null,'the protocol reaches the story through the pattern');
+  ok(T.tracePath(G,'protocol:pr1',sid,{undirected:true,src:['known','user_confirmed','observed']})===null,
+   'but not by a confirmed chain, because its own link is a proposal');
+  const before=J(v.profile.trace);
+  const R=T.traceFromRecord(v.profile,[{from:{type:'protocol',id:'pr1'},to:{type:'behavior',id:'b1'},edge:'implements',src:'proposed'},
+   {from:{type:'pattern',id:53},to:{type:'protocol',id:'pr1'},edge:'targets',src:'proposed'}]);
+  ok(R.edges.some(e=>e.from==='protocol:pr1'&&e.edge==='implements'),'an intent handed in at read time is in the graph');
+  ok(R.refused.some(x=>x.intent&&has(x,'no rule lets')),'and a bad one is reported on the graph');
+  ok(J(v.profile.trace)===before,'and none of it was written to the record');
+ }
+
+ g('TG13b · the mirror card\'s Yes is the person confirming the reading');
+ {
+  /* ob.yes is written by ui/onboard.js and checked by vEntryOb. Before 3
+     October nothing read it, so every Yes reached loopRead as unanswered. */
+  const P=worked(E); if(!P)return;
+  const ids=T.traceStoryIds(P), sid='story:'+ids[1];
+  const base=T.traceFromRecord(JSON.parse(J(P)));
+  const read=base.edges.filter(e=>e.from===sid&&e.edge==='supports').map(e=>+e.to.split(':')[1]);
+  ok(read.length>=2,'the second entry reads at two or more addresses, got '+J(read));
+  const far=E.NODES.find(n=>n.cf&&read.indexOf(n.i)<0&&n.b==='Crown').i;
+  P.story.entries[1].ob={pick:null,feel:null,place:null,yes:[read[0],far],no:[read[1]]};
+  const v=E.validateProfile(JSON.parse(J(P)));
+  ok(v.ok,'an entry carrying the mirror\'s answers passes the boundary, '+J(v.errs));
+  const G=T.traceFromRecord(v.profile);
+  ok(G.refused.length===0,'nothing refused reading the answers, '+J(G.refused));
+  const y=G.edges.find(e=>e.from===sid&&e.to==='pattern:'+read[0]);
+  ok(y&&y.src==='user_confirmed'&&y.was==='inferred'&&y.yes===true,
+   'a Yes on an address the reading made confirms that edge and keeps that it was inferred, got '+J(y));
+  const f=G.edges.find(e=>e.from===sid&&e.to==='pattern:'+far);
+  ok(f&&f.src==='user_confirmed'&&f.was===undefined,
+   'a Yes on an address today\'s reading no longer reaches is still held as the person\'s, with nothing it was before, got '+J(f));
+  const n=G.edges.find(e=>e.from===sid&&e.to==='pattern:'+read[1]);
+  ok(n&&n.src==='inferred','a Not me changes nothing in the graph: it has no provenance for a refusal, got '+J(n));
+  /* not typed as one number: 3 is the derivation that first read the Yes
+     and the signal to fetter path, and every later one still does */
+  ok(G.alg===T.TRACE_ALG&&T.TRACE_ALG>=3,'and the graph version is one that reads both the Yes and the signal to fetter path, got '+G.alg);
+  if(typeof E.loopRead==='function'){
+   const L=E.loopRead(Object.assign({},v.profile,{practice:null}));
+   const row=k=>L.patterns.find(x=>x.key==='pattern:'+k);
+   ok(row(read[0])&&row(read[0]).state==='confirmed','the loop read reports the Yes as confirmed');
+   ok(row(read[1])&&row(read[1]).state==='unanswered','and the Not me as unanswered, not confirmed');}
+ }
+
+ g('TG14 · privacy, and nothing thrown');
+ {
+  ok(E.OB_KEYS.indexOf('trace')<0,'the outbox has no key a graph could ride out on');
+  const fns=['traceAddNode','traceAddEdge','traceRemoveEdge','traceNeighbors','traceDescendants','tracePath','traceOrphans','traceCycles','validateTrace','traceApply','traceFromRecord'];
+  const junk=[undefined,null,0,'x',[],{},{nodes:5,edges:'e'},{nodes:[null],edges:[null]}];
+  fns.forEach(f=>{let threw=null;
+   junk.forEach(a=>junk.forEach(b=>{try{T[f](a,b,a,b,a);}catch(e){threw=threw||(f+'('+J(a)+','+J(b)+'): '+e.message);}}));
+   ok(!threw,f+' never throws on bad input'+(threw?': '+threw:''));});
+ }
+}
+
+/* ============================================================
+   THE BITES. Each of these is a plausible way to get this file wrong, and
+   the suite must fail on every one.
+   ============================================================ */
+function mutants(E){
+ const X=Object.assign({},E);
+ const keyOf=r=>typeof r==='string'?r:(r&&r.type+':'+r.id);
+ return [
+  ['the rule table is skipped', Object.assign({},X,{traceAddEdge:function(g,f,e,t,s,o){
+    const r=E.traceAddEdge(g,f,e,t,s,o);
+    if(!r.ok&&/no rule/.test(r.why)){g.edges.push({from:keyOf(f),to:keyOf(t),edge:e,src:s}); return {ok:true,added:true};}
+    return r;}})],
+  ['any provenance is taken', Object.assign({},X,{traceAddEdge:function(g,f,e,t,s,o){
+    const r=E.traceAddEdge(g,f,e,t,s,o);
+    if(!r.ok&&/provenance|causation/.test(r.why)){g.edges.push({from:keyOf(f),to:keyOf(t),edge:e,src:s}); return {ok:true,added:true};}
+    return r;}})],
+  ['provenance is collapsed to known', Object.assign({},X,{traceFromRecord:function(p,i,r){
+    const g=E.traceFromRecord(p,i,r); g.edges.forEach(e=>{e.src='known';}); return g;}})],
+  ['a missing node is made silently', Object.assign({},X,{traceAddEdge:function(g,f,e,t,s,o){
+    [f,t].forEach(k=>{const kk=keyOf(k); if(kk&&!g.nodes.some(n=>n.type+':'+n.id===kk)){
+     const i=kk.indexOf(':'); g.nodes.push({type:kk.slice(0,i),id:kk.slice(i+1),src:s});}});
+    return E.traceAddEdge(g,f,e,t,s,o);}})],
+  ['gaps are hidden', Object.assign({},X,{traceOrphans:function(){return {isolated:[],missing:[],dangling:[],gaps:[],unchecked:{}};}})],
+  /* traceDescendants stops at one hop, the exact defect TG5b exists to
+     catch: "all the children down" read as traceNeighbors' one hop, which
+     looks the same on a shallow graph and is wrong on every real chain
+     past a saboteur */
+  ['traceDescendants reads one hop, not the full subtree', Object.assign({},X,{
+    traceDescendants:function(g,key){
+     const n=E.traceNeighbors(g,key,'supports');
+     return n.filter(x=>x.dir==='in').map(x=>x.key).sort();}})],
+  ['loops are not checked', Object.assign({},X,{
+    traceAddEdge:function(g,f,e,t,s,o){const r=E.traceAddEdge(g,f,e,t,s,o);
+     if(!r.ok&&/does not loop/.test(r.why)){g.edges.push({from:keyOf(f),to:keyOf(t),edge:e,src:s}); return {ok:true,added:true};}
+     return r;},
+    traceCycles:function(){return {illegal:[],loops:[]};}})],
+  ['the boundary takes anything', Object.assign({},X,{validateTrace:function(o){
+    return {ok:true,errs:[],trace:(o&&typeof o==='object')?o:E.traceNew()};}})],
+  ['refused intents are dropped', Object.assign({},X,{traceApply:function(g,i,n){
+    const r=E.traceApply(g,i,n); r.refused=[]; return r;}})],
+  ['the reading follows whatever is loaded', Object.assign({},X,{traceFromRecord:function(p,i,r){
+    const q=JSON.parse(JSON.stringify(p));
+    q.soul={doms:E.S.doms.slice(),arcs:E.S.arcs.slice(),roots:E.S.roots.slice()};
+    return E.traceFromRecord(q,i,r);}})],
+  ['the mirror card\'s Yes is ignored', Object.assign({},X,{traceFromRecord:function(p,i,r){
+    const q=JSON.parse(JSON.stringify(p)); ((q.story&&q.story.entries)||[]).forEach(e=>{if(e)delete e.ob;});
+    return E.traceFromRecord(q,i,r);}})],
+  ['planned rituals count as done', Object.assign({},X,{traceFromRecord:function(p,i,rd){
+    const q=JSON.parse(JSON.stringify(p)); (q.rituals||[]).forEach(r=>{if(r&&r.done===false)r.done=true;});
+    return E.traceFromRecord(q,i,rd);}})],
+  /* the chain, 22 October. Each is a plausible way to get it wrong. */
+  ['a rung is added by hand', Object.assign({},X,{traceAddNode:function(g,t,i,s){
+    const r=E.traceAddNode(g,t,i,s);
+    if(!r.ok&&E.TRACE_CHAIN.indexOf(t)>=0&&g&&Array.isArray(g.nodes)){g.nodes.push({type:t,id:String(i),src:s}); return {ok:true,added:true};}
+    return r;}})],
+  ['a part of the chain can be confirmed', Object.assign({},X,{traceAddEdge:function(g,f,e,t,s,o){
+    const r=E.traceAddEdge(g,f,e,t,s,o);
+    if(!r.ok&&/read off the reading/.test(r.why||'')&&g&&Array.isArray(g.edges)){
+     const have=g.edges.find(x=>x&&x.from===keyOf(f)&&x.to===keyOf(t)&&x.edge===e);
+     if(have){have.was=have.src; have.src=s; return {ok:true,promoted:true};}}
+    return r;}})],
+  ['the chain takes any reading', Object.assign({},X,{traceFromRecord:function(p,i,r){
+    const q=(r&&typeof r==='object'&&!Array.isArray(r)&&p&&typeof p==='object')?Object.assign({},r,{rec:p.id}):r;
+    return E.traceFromRecord(p,i,q);}})],
+  ['the reading is ignored', Object.assign({},X,{traceFromRecord:function(p,i){return E.traceFromRecord(p,i);}})],
+  /* above the chain, 21 November: a build that never reads the masks, so the
+     climb stops at the super complex */
+  ['the climb above the chain is never read', Object.assign({},X,{traceFromRecord:function(p,i,r){
+    const q=(r&&typeof r==='object')?Object.assign({},r):r; if(q&&typeof q==='object')delete q.maskRing;
+    return E.traceFromRecord(p,i,q);}})],
+  /* the named super complex, 31 October. Each is a plausible way to wire it
+     wrong: leave it out, file it under its pair's name, or push it into sups,
+     which compute() refuses to do because it would move every count */
+  ['the named super complex is left out', Object.assign({},X,{traceFromRecord:function(p,i,r){
+    const q=(r&&typeof r==='object')?Object.assign({},r,{psychopathy:null}):r;
+    return E.traceFromRecord(p,i,q);}})],
+  ['the named super complex is filed under its pair\'s name', Object.assign({},X,{traceFromRecord:function(p,i,r){
+    const q=(r&&typeof r==='object'&&r.psychopathy)?Object.assign({},r,{psychopathy:Object.assign({},r.psychopathy,{named:r.psychopathy.nm})}):r;
+    return E.traceFromRecord(p,i,q);}})],
+  ['the named super complex is pushed into sups', Object.assign({},X,{traceFromRecord:function(p,i,r){
+    const x=r&&typeof r==='object'?r.psychopathy:null;
+    const q=(x&&Array.isArray(r.sups)&&!r.sups.some(s=>s.nm===x.named))
+     ?Object.assign({},r,{sups:r.sups.concat([Object.assign({},x,{nm:x.named})]),psychopathy:null}):r;
+    return E.traceFromRecord(p,i,q);}})],
+  ['a stored rung passes the boundary', Object.assign({},X,{validateTrace:function(o){
+    const r=E.validateTrace(o);
+    if(!r.ok&&r.errs.length&&r.errs.every(x=>/read off the reading/.test(x)))return {ok:true,errs:[],trace:o};
+    return r;}})],
+  /* the rename, 23 October: a build that kept the fourth rung's old name */
+  ['the fourth rung keeps its old name, character', Object.assign({},X,{
+    TRACE_CHAIN:E.TRACE_CHAIN.map(t=>t==='super_complex'?'character':t),
+    TRACE_NODE_TYPES:E.TRACE_NODE_TYPES.map(t=>t==='super_complex'?'character':t)})]];}
+
+function run(E,ok,g){
+ /* the known good case first */
+ let F0=0;
+ const okReal=(c,m)=>{if(!c)F0++; ok(c,m);};
+ suite(E,E,okReal,g);
+ /* then every broken build, quietly, counting what it fails */
+ g('TG15 · the gate bites: each broken build fails it');
+ mutants(E).forEach(([nm,M])=>{
+  let f=0;
+  try{suite(M,E,(c)=>{if(!c)f++;},()=>{});}catch(e){f++;}
+  ok(f>0,'a build where '+nm+' fails '+f+' check'+(f===1?'':'s'));});
+ /* leave the engine holding nothing of the worked record */
+ E.loadProfile(E.blankProfile('after the trace gate'));
+ return F0;}
+
+module.exports=run;
+if(require.main===module){
+ const E=require(path.resolve(process.env.ENGINE||'engine.js'));
+ let P=0,F=0;
+ const ok=(c,m)=>{if(c)P++; else{F++; console.log('  FAIL  '+m);}};
+ run(E,ok,n=>console.log('\n'+n));
+ console.log('\n===== '+P+' passed, '+F+' failed =====');
+ process.exit(F?1:0);}

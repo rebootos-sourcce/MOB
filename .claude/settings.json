@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__github__actions_list",
+      "mcp__github__get_job_logs",
+      "mcp__github__list_pull_requests",
+      "mcp__github__get_file_contents",
+      "mcp__github__list_commits",
+      "mcp__github__get_commit",
+      "mcp__github__pull_request_read",
+      "Bash(cd /home/user/reboot-os && git fetch origin main*)",
+      "Workflow",
+      "Agent",
+      "Artifact",
+      "ArtifactData",
+      "mcp__Claude_Code_Remote__add_repo"
+    ]
+  }
+}

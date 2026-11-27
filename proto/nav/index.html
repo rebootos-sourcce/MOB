@@ -1,0 +1,714 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Navigation</title>
+<!-- ============================================================
+     THE NAVIGATION PROTOTYPE. proto/nav/index.html
+
+     It stands alone, it has no siblings, and it makes no outbound request.
+     The engine is referenced at ../../engine.js and never copied, so TABDEF,
+     TABEXTRA, TABOF and TABREAL are the product's own tables and not a list
+     typed into this file. A list typed into a tool goes stale the first time
+     the bar moves, which is the lesson the render watch already paid for.
+
+     Nothing in atuned_src is touched. This page is the argument and
+     DESIGN-nav.md is the port.
+     ============================================================ -->
+<style>
+:root{
+ --bg:#0C0D12; --panel:#1A1D26; --panel-2:#252833; --sunk:#090A0E;
+ --edge:rgba(255,255,255,.09); --edge-2:rgba(255,255,255,.14);
+ --ink:#EFEDE8; --mid:#B4B0A8; --dim:#94908A;
+ --accent:#7EB8D4; --on-accent:#0B1418;
+ --hot:#C0705E;
+ /* Inter is carried in the build as an embedded variable font. This page has
+    no siblings and fetches nothing, so it runs on the host stack and the port
+    inherits the real face. Every weight named here exists in Inter 300 to 700. */
+ --sans:'Inter','Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;
+ --num:ui-monospace,'SF Mono',Menlo,monospace;
+ --tap:44px;
+ /* THE GUTTER IS ONE NUMBER AND BOTH BARS READ IT.
+    His ruling: the sub tools do not start underneath the logo, they start
+    left justified with the top menu items. The brand column is a fixed width
+    here, so the tab strip and the strip below it begin at the same x without
+    either of them measuring the other at run time. */
+ --gut:106px;
+ --pad-x:13px;
+ --t:120ms; --ease:cubic-bezier(.22,1,.36,1);
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+ font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+body{padding-bottom:64px}
+h1,h2,h3{font-weight:500;letter-spacing:-.01em;margin:0}
+p{margin:0 0 10px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+.lede{color:var(--mid);max-width:68ch;font-size:15px}
+.hd{padding:28px 0 18px}
+.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);
+ margin-bottom:8px}
+section{margin-top:34px}
+.sechd{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.sechd h2{font-size:19px}
+.sechd .note{color:var(--dim);font-size:13.5px}
+
+/* ---------- the chrome, both versions ---------- */
+/* THE CHROME IS SHOWN AT THE WIDTH IT WILL SHIP AT, not at the width of a
+   column of prose. Boxed inside the reading measure it reported Summary past
+   the right edge at 1600, which the build does not do, and a prototype that
+   overstates the defect is as useless as one that hides it. */
+.bleed{margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw);padding:0 13px}
+.chrome{border:1px solid var(--edge);border-radius:12px;overflow:hidden;
+ background:var(--panel)}
+
+/* THE BAR BEFORE. Nine flat doors, and the strip scrolls inside itself with a
+   26px fade as its only affordance. Reproduced rather than described, because
+   at 390 four of the nine sit past the right edge and that is the finding. */
+.barA{display:flex;align-items:center;gap:10px;padding:9px var(--pad-x);
+ border-bottom:1px solid var(--edge)}
+.barA .brand{width:var(--gut);flex:0 0 auto}
+/* THE SUB BAR AS THE BUILD SHIPS IT: its own slab, its own edge, and its
+   content starting under the logo rather than under the first menu item.
+   That is the thing he was pointing at, so it is drawn rather than described. */
+.subA{display:flex;align-items:center;gap:9px;min-height:44px;padding:8px var(--pad-x);
+ border-bottom:1px solid var(--edge);background:var(--panel-2)}
+.subA .tool{min-height:var(--tap);padding:0 11px;background:none;border:0;
+ color:var(--mid);font:500 13.5px/1 var(--sans);cursor:pointer;display:inline-flex;
+ align-items:center;gap:7px}
+.subA .tool svg{fill:none;stroke:currentColor;stroke-width:1.5}
+.stripA{flex:0 1 auto;min-width:0;display:flex;gap:5px;overflow-x:auto;
+ scrollbar-width:none;border-bottom:1px solid var(--edge);align-items:stretch;
+ mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 26px),transparent 100%);
+ -webkit-mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 26px),transparent 100%)}
+.stripA::-webkit-scrollbar{display:none}
+.stripA button{flex:0 0 auto;min-height:var(--tap);padding:8px 11px;background:none;
+ border:0;border-bottom:2px solid transparent;color:var(--dim);
+ font:500 14px/1 var(--sans);letter-spacing:.012em;cursor:pointer}
+.stripA button[aria-pressed=true]{color:var(--ink);border-bottom-color:var(--accent)}
+
+/* THE BAR AFTER.
+
+   Four doors. The children of the open door sit on the row beneath, starting
+   at the same x as the doors, which is his ruling made mechanical: both rows
+   are laid out against --gut and neither one measures the other.
+
+   SHARPENED, AND EVERY NUMBER IS AGAINST THE MEASURED BEFORE.
+     bar padding      9px  -> 6px vertical            33 per cent off
+     strip gap        5px  -> 2px                     60 per cent off
+     label            14px -> 13px                      7 per cent off
+     weight spread    0    -> 180 (420 against 600)
+     stacked slabs    2 glass blocks -> 1, with a hairline between the rows
+     and the two rows sit on that hairline with no gap, so the pressed door's
+     underline runs into the row it owns instead of floating above it
+   The tap target does not move. Every door is 44 high and the row is 44 high,
+   so the density rises in the chrome around the target and never in it. */
+.barB{padding:6px var(--pad-x) 0;border-bottom:1px solid var(--edge)}
+.rowB{display:flex;align-items:center;gap:10px}
+.rowB .brand{width:var(--gut);flex:0 0 auto}
+.stripB{display:flex;gap:2px;flex:0 1 auto;min-width:0}
+.stripB button{flex:0 0 auto;min-height:var(--tap);padding:8px 9px;background:none;
+ border:0;border-bottom:1.5px solid transparent;color:var(--dim);
+ font:420 13px/1 var(--sans);letter-spacing:.01em;cursor:pointer;
+ transition:color var(--t) var(--ease)}
+.stripB button:hover{color:var(--mid)}
+.stripB button[aria-pressed=true]{color:var(--ink);font-weight:600;
+ border-bottom-color:var(--accent)}
+/* a door that carries children says so. One mark, 3px, under the label, and it
+   is drawn only where there is something under the door. */
+.stripB button .kidmark{display:block;height:1.5px;margin:5px auto 0;width:11px;
+ border-radius:1px;background:var(--dim);opacity:.7}
+.stripB button[aria-pressed=true] .kidmark{background:var(--accent)}
+
+/* THE ROW IS ALWAYS THERE, EVEN WHERE THE DOOR HAS NOTHING UNDER IT.
+
+   Ritual carries no children, so the row could collapse and save 44 pixels on
+   that one surface. It does not. A bar whose height answers to which door is
+   pressed moves the whole stage down and up again on every press, and these
+   surfaces are instruments: a wheel that jumps 44 pixels when somebody changes
+   door costs more than the 44 pixels are worth. In the port the row is the
+   first row of the sub bar, so on Field and Body the surface's own tools sit
+   in it and it is never empty there either.
+
+   It begins at --gut, which is the ruling. */
+.kids{display:flex;align-items:center;gap:2px;min-height:var(--tap);
+ padding-left:calc(var(--gut) + 10px);border-top:1px solid var(--edge);
+ overflow-x:auto;scrollbar-width:none}
+.kids::-webkit-scrollbar{display:none}
+.kids button{flex:0 0 auto;min-height:var(--tap);padding:8px 9px;background:none;
+ border:0;color:var(--dim);font:420 13px/1 var(--sans);letter-spacing:.01em;
+ cursor:pointer;border-radius:0;transition:color var(--t) var(--ease)}
+.kids button:hover{color:var(--mid)}
+.kids button[aria-pressed=true]{color:var(--ink);font-weight:600}
+.kids .empty{color:var(--dim);font-size:13px;padding-left:2px}
+.brand{font-size:17px;font-weight:400;letter-spacing:.075em;color:var(--ink);
+ white-space:nowrap}
+.brand .um{color:var(--accent)}
+.brand .bs{display:block;font-size:8.5px;letter-spacing:.2em;color:var(--accent);
+ opacity:.85;margin-top:1px}
+.right{margin-left:auto;display:flex;gap:6px;align-items:center;flex:0 0 auto}
+.ctl{min-height:var(--tap);min-width:var(--tap);padding:0 12px;background:var(--panel-2);
+ border:1px solid var(--edge);border-radius:8px;color:var(--mid);
+ font:420 13px/1 var(--sans);cursor:pointer;display:inline-flex;align-items:center;
+ justify-content:center;gap:6px}
+.ctl svg{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;
+ stroke-linejoin:round}
+.toplab{color:var(--dim);font-size:12px;letter-spacing:.06em}
+.psel{min-height:var(--tap);max-width:190px;min-width:0;background:var(--panel-2);
+ border:1px solid var(--edge);border-radius:8px;color:var(--ink);
+ font:420 13px var(--sans);padding:0 9px}
+
+/* ---------- the body under the bar ---------- */
+.mid{display:flex;gap:12px;padding:12px;align-items:flex-start}
+.col{flex:0 0 232px;background:var(--sunk);border:1px solid var(--edge);
+ border-radius:10px;padding:10px}
+.stage{flex:1 1 auto;min-width:0;background:var(--sunk);border:1px solid var(--edge);
+ border-radius:10px;padding:18px;min-height:190px}
+/* THE INTAKE BUTTON. His ruling, and it is the only new control in the rail:
+   a button above Awareness that opens the intake surface. It is a door, so it
+   is drawn as one and not as a section header. */
+.intake{display:flex;align-items:center;gap:9px;width:100%;min-height:var(--tap);
+ padding:0 11px;background:var(--panel-2);border:1px solid var(--edge-2);
+ border-radius:8px;color:var(--ink);font:500 13.5px/1 var(--sans);cursor:pointer;
+ text-align:left;transition:border-color var(--t) var(--ease)}
+.intake:hover{border-color:var(--accent)}
+.intake[aria-pressed=true]{border-color:var(--accent);color:var(--accent)}
+.intake svg{fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;
+ stroke-linejoin:round;flex:0 0 auto}
+.lsec{margin-top:12px;border-top:1px solid var(--edge);padding-top:10px}
+.lsec-hd{display:flex;align-items:center;justify-content:space-between;width:100%;
+ min-height:var(--tap);background:none;border:0;color:var(--ink);
+ font:500 13.5px/1 var(--sans);cursor:pointer;padding:0}
+.tier1{font-size:11.5px;letter-spacing:.06em;color:var(--dim);margin:12px 0 6px}
+.ghost{height:9px;border-radius:3px;background:var(--panel-2);margin-bottom:6px}
+.ghost.w70{width:70%} .ghost.w45{width:45%} .ghost.w85{width:85%}
+.where{font:500 15px/1.3 var(--sans);margin-bottom:6px}
+.where small{display:block;font:400 12.5px/1.5 var(--sans);color:var(--dim);
+ font-family:var(--num);margin-top:6px;letter-spacing:.02em}
+
+/* ---------- controls and tables ---------- */
+.opts{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 14px}
+.opt{min-height:var(--tap);padding:0 14px;background:var(--panel);
+ border:1px solid var(--edge);border-radius:8px;color:var(--mid);
+ font:420 13.5px/1 var(--sans);cursor:pointer;display:inline-flex;align-items:center}
+.opt[aria-pressed=true]{border-color:var(--accent);color:var(--ink);font-weight:600}
+table{border-collapse:collapse;width:100%;font-size:13.5px;margin-top:6px}
+th,td{text-align:left;padding:7px 9px;border-bottom:1px solid var(--edge);
+ vertical-align:top}
+th{color:var(--dim);font-weight:500;font-size:12px;letter-spacing:.06em;
+ text-transform:uppercase}
+td.n{font-family:var(--num);font-size:13px;text-align:right;white-space:nowrap}
+td.up{color:var(--hot)} td.dn{color:var(--accent)}
+/* THE TABLE SCROLLS AND SAYS SO. Squeezed to the viewport the route column
+   collapsed and the rows grew to four lines of nothing. It has a floor and the
+   scrollbar is left visible, because a scroller with a hidden scrollbar is the
+   defect this project already has a rule about. */
+.scroll{overflow-x:auto;scrollbar-width:thin}
+.scroll table{min-width:700px}
+.pass{color:var(--accent)} .fail{color:var(--hot);font-weight:600}
+.tests{font-family:var(--num);font-size:12.5px;line-height:1.75;color:var(--mid);
+ background:var(--sunk);border:1px solid var(--edge);border-radius:10px;padding:12px 14px}
+.cap{color:var(--dim);font-size:13px;margin-top:8px;max-width:72ch}
+/* ON A PHONE THE BRAND TAKES ITS OWN LINE AND THE GUTTER GOES TO NOTHING.
+   Both strips then start at the bar's own left padding, which is the same
+   ruling holding at a width where there is no room for a gutter. The first
+   cut collapsed the brand to zero width instead of giving it a line, and the
+   gate read ten pixels apart: the row's gap, sitting where the gutter had
+   been. */
+@media (max-width:820px){
+ :root{--gut:0px}
+ .barA{flex-wrap:wrap}
+ .barA .brand{width:auto;flex:0 0 100%}
+ .rowB{flex-wrap:wrap}
+ .rowB .brand{width:auto;flex:0 0 100%}
+ .kids{padding-left:0}
+ .mid{flex-wrap:wrap}
+ .col{flex:1 1 100%}
+ .brand .bs{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+ <div class="hd">
+  <div class="eyebrow">Prototype</div>
+  <h1>Navigation</h1>
+  <p class="lede">Nine flat doors become four with children. Every surface keeps
+   its integer, nothing moves in the document, and the row of children starts at
+   the same x as the doors above it.</p>
+ </div>
+
+ <!-- ============ THE PROPOSAL ============ -->
+ <section>
+  <div class="sechd"><h2>After</h2>
+   <span class="note">built from the engine's own tables, read at run time</span></div>
+
+  <div class="opts" role="group" aria-label="What a parent does when pressed">
+   <button class="opt" id="modeA" type="button" aria-pressed="true">A door opens its first child</button>
+   <button class="opt" id="modeB" type="button" aria-pressed="false">A door only opens its row</button>
+  </div>
+  <p class="cap" id="modecap"></p>
+
+  <div class="bleed"><div class="chrome">
+   <div class="barB">
+    <div class="rowB">
+     <div class="brand"><span>At<span class="um">ü</span>ned</span><span class="bs">Source OS</span></div>
+     <div class="stripB" id="stripB" role="tablist" aria-label="Doors"></div>
+     <div class="right">
+      <label class="toplab" for="pselB">Profile</label><select class="psel" id="pselB"><option>Custom</option><option>Sofia</option><option>Diane</option></select>
+      <button class="ctl" type="button">Dark</button>
+      <button class="ctl" type="button" aria-label="Help">
+       <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
+        <circle cx="12" cy="12" r="9.2"/>
+        <path d="M9.4 9.2a2.7 2.7 0 1 1 3.4 2.6c-.6.2-.9.7-.9 1.3v.7"/>
+        <circle cx="12" cy="17.4" r="1"/></svg></button>
+      <button class="ctl" type="button" aria-label="Profile">
+       <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
+        <circle cx="12" cy="8" r="3.6"/><path d="M5 20c0-3.6 3.1-5.6 7-5.6s7 2 7 5.6"/></svg></button>
+     </div>
+    </div>
+    <div class="kids" id="kids" role="tablist" aria-label="Under the open door"></div>
+   </div>
+
+   <div class="mid">
+    <div class="col">
+     <!-- INTAKE SITS ABOVE AWARENESS. His ruling, verbatim. -->
+     <button class="intake" id="intakebtn" type="button" aria-pressed="false">
+      <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+       <path d="M5 4.5h14v15H5z"/><path d="M8.5 9h7M8.5 12.5h7M8.5 16h4"/></svg>
+      <span>Intake</span></button>
+     <div class="lsec">
+      <button class="lsec-hd" type="button"><span>Awareness</span>
+       <svg viewBox="0 0 24 24" width="13" height="13" aria-hidden="true"
+        style="fill:none;stroke:currentColor;stroke-width:1.8"><path d="M6 14.5l6-5.5 6 5.5"/></svg></button>
+      <div class="tier1">0 &middot; Orientation</div>
+      <div class="ghost w85"></div>
+      <div class="tier1">1 &middot; Balance</div>
+      <div class="ghost w70"></div>
+      <div class="tier1">2 &middot; Root domains</div>
+      <div class="ghost w85"></div><div class="ghost w45"></div>
+     </div>
+    </div>
+    <div class="stage">
+     <div class="where" id="where"></div>
+    </div>
+   </div>
+  </div>
+  <p class="cap">The rail is a stub. It carries the one control the ruling adds
+   and enough of Awareness to show where the control sits.</p>
+ </section>
+
+ <!-- ============ THE THING IT REPLACES ============ -->
+ <section>
+  <div class="sechd"><h2>Before</h2>
+   <span class="note">the same nine doors, reproduced with the strip the build ships</span></div>
+  <div class="bleed"><div class="chrome">
+   <div class="barA">
+    <div class="brand"><span>At<span class="um">ü</span>ned</span><span class="bs">Source OS</span></div>
+    <div class="stripA" id="stripA"></div>
+    <div class="right">
+     <label class="toplab" for="pselA">Profile</label><select class="psel" id="pselA"><option>Custom</option><option>Sofia</option><option>Diane</option></select>
+     <button class="ctl" type="button">Dark</button>
+     <button class="ctl" type="button" aria-label="Help">
+      <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
+       <circle cx="12" cy="12" r="9.2"/>
+       <path d="M9.4 9.2a2.7 2.7 0 1 1 3.4 2.6c-.6.2-.9.7-.9 1.3v.7"/>
+       <circle cx="12" cy="17.4" r="1"/></svg></button>
+     <button class="ctl" type="button" aria-label="Profile">
+      <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
+       <circle cx="12" cy="8" r="3.6"/><path d="M5 20c0-3.6 3.1-5.6 7-5.6s7 2 7 5.6"/></svg></button>
+    </div>
+   </div>
+   <div class="subA" id="subA">
+    <button class="tool" type="button" id="subA0">
+     <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+      <circle cx="12" cy="12" r="8.4"/><circle cx="12" cy="12" r="2.4"/></svg>
+     <span>Charge</span></button>
+   </div>
+   <div class="mid"><div class="stage" style="min-height:70px">
+    <div class="where" id="whereA"></div></div></div>
+  </div></div>
+  <p class="cap" id="cutoff"></p>
+  <p class="cap" id="align"></p>
+ </section>
+
+ <!-- ============ WHAT IT COSTS AND WHAT IT BUYS ============ -->
+ <section>
+  <div class="sechd"><h2>Presses</h2>
+   <span class="note">what each surface costs to reach, before and after</span></div>
+  <div class="scroll"><table id="presses"></table></div>
+ </section>
+
+ <section>
+  <div class="sechd"><h2>Choices</h2>
+   <span class="note">measured on this page at the live width</span></div>
+  <div class="scroll"><table id="choices"></table></div>
+  <p class="cap" id="chrome"></p>
+  <p class="cap"><b>These are the mock's numbers and the build's are heavier.</b>
+   The bar here carries a wordmark, four doors, a picker and three controls;
+   the build's carries an undo pair and a taller wordmark as well, so its
+   chrome is 65 pixels against this 64 at 1600 and 239 against this 154 at 390.
+   The port was measured on <span style="font-family:var(--num)">source.html</span>
+   itself and the run is in <span style="font-family:var(--num)">proto/nav/port.log</span>.
+   Read the figures off that run, not off this table.</p>
+  <p class="cap">A choice is an interactive element with a box on screen at the
+   moment the surface is open. Nothing behind a closed row counts, and the row
+   that holds it counts once. The same rule ran against the build to take the
+   before figures, in <span style="font-family:var(--num)">proto/nav/count.js</span>.</p>
+ </section>
+
+ <!-- ============ THE GATE ============ -->
+ <section>
+  <div class="sechd"><h2>Gate</h2>
+   <span class="note">grouping is not folding, and this is what proves it</span></div>
+  <div class="tests" id="tests"></div>
+  <p class="cap">A fold moved a host inside another host and the parent's
+   renderer deleted it on the way past. Grouping moves nothing. These checks
+   fail if any integer in the table stops resolving to its own entry, if two
+   doors claim one surface, or if a surface in the bar is missing from the
+   table.</p>
+ </section>
+</div>
+
+<script src="../../engine.js"></script>
+<script>
+/* ============================================================
+   THE TABLE, AND IT IS THE WHOLE PORT.
+
+   Four doors. Each one carries a key for its own surface, or null when it is
+   a container with no surface of its own, and the tab integers of whatever
+   sits under it. Every value is a TAB integer read off the engine's own
+   constant. Nothing here is a position and nothing here is a string a
+   renderer parses.
+
+   `own:null` is the open question and it is the owner's. A door with an own
+   surface opens it. A door with none either opens its first child or opens
+   only its row, which is the toggle above.
+   ============================================================ */
+var NAVBAR=[
+ {nm:'Ritual',  own:TAB.RITUAL, kids:[]},
+ {nm:'Story',   own:TAB.STORY,  kids:[TAB.SUMMARY]},
+ {nm:'Tools',   own:null,       kids:[TAB.FIELD,TAB.ENERGY,TAB.COMPASS]},
+ {nm:'Insight', own:null,       kids:[TAB.KNOW,TAB.GAMES]}];
+
+/* INTAKE COMES OFF THE BAR AND KEEPS ITS INTEGER. Ruled. Energetics is its
+   old label and Intake is the word, because a person arrives to be read and
+   the surface is where they enter what gets read. It is a rail button now, so
+   it is named here and not in NAVBAR. */
+var RAILDOOR=TAB.INTAKE;
+
+/* ---------- state ---------- */
+var MODE='A';          /* A: a door opens its first child. B: it opens its row */
+var OPEN=NAVBAR[2];    /* which door's row is showing */
+var CUR=TAB.FIELD;     /* which surface is open. The app opens on Field. */
+
+var $=function(id){return document.getElementById(id);};
+var nameOf=function(k){var T=TABOF(k);return T?T.nm:String(k);};
+var idOf=function(k){var T=TABOF(k);return T?T.id:'?';};
+/* Energetics is Intake everywhere a person reads it. TABDEF still carries the
+   old label, so the rename lands in one place here and in one place in the
+   port rather than being typed wherever a name is printed. */
+var RENAME={}; RENAME[TAB.INTAKE]='Intake';
+var label=function(k){return RENAME[k]||nameOf(k);};
+
+var doorOf=function(k){
+ for(var i=0;i<NAVBAR.length;i++){
+  if(NAVBAR[i].own===k)return NAVBAR[i];
+  if(NAVBAR[i].kids.indexOf(k)>=0)return NAVBAR[i];}
+ return null;};
+
+/* ---------- the after bar ---------- */
+/* THE ROW BELONGS TO THE OPEN DOOR, AND INTAKE HAS NO DOOR. So arriving at
+   Intake from the rail empties the row rather than leaving the last door's
+   children sitting under a bar where nothing is pressed. A row that outlives
+   the thing it belongs to is the stale reading defect in a new place. */
+function go(k,door){
+ CUR=k; OPEN=door||doorOf(k);
+ paint();}
+
+function pressDoor(D){
+ OPEN=D;
+ if(D.own!==null){go(D.own,D);return;}
+ if(MODE==='A'&&D.kids.length){go(D.kids[0],D);return;}
+ paint();}   /* mode B: the row opens and the centre does not move */
+
+function buildB(){
+ var s=$('stripB'); s.innerHTML='';
+ NAVBAR.forEach(function(D){
+  var b=document.createElement('button');
+  b.type='button'; b.setAttribute('role','tab');
+  b.innerHTML='<span>'+D.nm+'</span>'+(D.kids.length?'<i class="kidmark"></i>':'');
+  b.onclick=function(){pressDoor(D);};
+  D._el=b; s.appendChild(b);});}
+
+function paintB(){
+ NAVBAR.forEach(function(D){
+  var on=(OPEN&&D===OPEN);
+  D._el.setAttribute('aria-pressed',on?'true':'false');
+  D._el.setAttribute('aria-selected',on?'true':'false');});
+ var kw=$('kids'); kw.innerHTML='';
+ if(!OPEN){
+  var r=document.createElement('span'); r.className='empty';
+  r.textContent='Intake is reached from the rail. No door is open.';
+  kw.appendChild(r); }
+ else if(!OPEN.kids.length){
+  var e=document.createElement('span'); e.className='empty';
+  e.textContent=OPEN.nm+' has nothing under it.'; kw.appendChild(e); }
+ else{
+  /* A DOOR THAT IS ALSO A SURFACE SITS IN ITS OWN ROW. Story is a surface and
+     it holds Summary, so the row reads Story, Summary and the person can get
+     back to the parent surface without pressing the parent again. Tools has no
+     surface of its own, so it prints no entry for itself. */
+  var row=OPEN.own!==null?[OPEN.own].concat(OPEN.kids):OPEN.kids;
+  row.forEach(function(k){
+   var b=document.createElement('button'); b.type='button';
+   b.setAttribute('role','tab');
+   b.textContent=label(k);
+   b.setAttribute('aria-pressed',k===CUR?'true':'false');
+   b.onclick=function(){go(k,OPEN);};
+   kw.appendChild(b);});}
+ $('intakebtn').setAttribute('aria-pressed',CUR===RAILDOOR?'true':'false');
+ var T=TABOF(CUR);
+ $('where').innerHTML=label(CUR)+
+  '<small>integer '+CUR+' &middot; host #'+idOf(CUR)+' &middot; TABREAL '+TABREAL(CUR)+
+  ' &middot; under '+(doorOf(CUR)?doorOf(CUR).nm:'the rail')+'</small>';}
+
+$('intakebtn').onclick=function(){go(RAILDOOR,null);};
+
+/* ---------- the before bar, from TABDEF alone ----------
+   ONE SURFACE, TWO CHROMES. Both bars show whichever surface is open, so
+   every figure on this page is a comparison of the same screen under two
+   navigations rather than of two screens. The first cut let each bar keep its
+   own idea of where the person was, and the chrome heights it printed were
+   the heights of two different places. */
+function buildA(){
+ var st=$('stripA'); st.innerHTML='';
+ TABDEF.forEach(function(T){
+  var b=document.createElement('button'); b.type='button';
+  b.textContent=T.nm;
+  b.onclick=function(){go(T.k,doorOf(T.k));};
+  T._elA=b; st.appendChild(b);});}
+
+/* THE SUB BAR IS ON TWO SURFACES AND NOT ON NINE. The build carries
+   body.hassub and sets it for Field and Body alone, so a before bar that drew
+   a sub bar everywhere would have credited the change with removing a strip
+   that is not there on seven screens. */
+var HASSUB=function(k){return k===TAB.FIELD||k===TAB.ENERGY;};
+function paintA(){
+ TABDEF.forEach(function(T){
+  T._elA.setAttribute('aria-pressed',T.k===CUR?'true':'false');});
+ $('subA').style.display=HASSUB(CUR)?'flex':'none';
+ $('whereA').innerHTML=label(CUR)+
+  '<small>integer '+CUR+' &middot; host #'+idOf(CUR)+'</small>';}
+
+/* ---------- the counts ---------- */
+var SEL='button,a[href],input,select,textarea,[role="button"],[tabindex]:not([tabindex="-1"])';
+function choicesIn(host){
+ var n=0;
+ [].slice.call(host.querySelectorAll(SEL)).forEach(function(e){
+  if(e.disabled)return;
+  var r=e.getBoundingClientRect(); if(r.width<1||r.height<1)return;
+  var st=getComputedStyle(e);
+  if(st.display==='none'||st.visibility==='hidden')return;
+  n++;});
+ return n;}
+
+/* BOTH BARS CARRY THE SAME RIGHT HAND GROUP AND THE SAME BRAND, so the only
+   thing that differs between the two counts is the doors and the row under
+   them. The first cut gave the after bar one more control than the before bar
+   and the difference read as a saving. */
+var RIGHTN=function(sel){return document.querySelectorAll(sel).length;};
+function measure(){
+ /* the wordmark is a door in the build and is counted once on each side. The
+    picker and the three controls are real elements here and are counted by
+    the same rule as everything else. */
+ var beforeTop=choicesIn($('stripA'))+choicesIn(document.querySelector('.barA .right'))+1;
+ var beforeSub=HASSUB(CUR)?choicesIn($('subA')):0;
+ var afterRight=choicesIn(document.querySelector('.barB .right'))+1;
+
+ /* the after count depends on which door is open, so it is taken per surface
+    rather than once. Every surface has exactly one door, so it is defined. */
+ var rows=[];
+ TABDEF.forEach(function(T){
+  var after,note;
+  if(T.k===RAILDOOR){after=NAVBAR.length+afterRight;note='and one button in the rail';}
+  else{
+   var D=doorOf(T.k);
+   var kidrow=D.own!==null?[D.own].concat(D.kids).length:D.kids.length;
+   after=NAVBAR.length+kidrow+afterRight; note=D.nm+' open, '+kidrow+' under it';}
+  /* the Field and the Body carry their own tools in the sub bar on both
+     sides of the change, so that row is the same before and after and is
+     left out of both counts rather than added to one. */
+  rows.push([label(T.k),beforeTop+(HASSUB(T.k)?choicesIn($('subA')):0),after,note,
+   HASSUB(T.k)]);});
+
+ var t=$('choices');
+ /* THE CHROME PER SURFACE, and it is the number that actually moves. Before
+    is the bar plus a sub bar on the two surfaces that have one. After is the
+    bar with its reserved row, on every surface. */
+ var barA=Math.round(document.querySelector('.barA').getBoundingClientRect().height);
+ var wasd=$('subA').style.display; $('subA').style.display='flex';
+ var subA=Math.round($('subA').getBoundingClientRect().height);
+ $('subA').style.display=wasd;
+ var barB=Math.round(document.querySelector('.barB').getBoundingClientRect().height);
+ t.innerHTML='<tr><th>Surface</th><th style="text-align:right">Choices before</th>'
+  +'<th style="text-align:right">Choices after</th><th style="text-align:right">Delta</th>'
+  +'<th style="text-align:right">Chrome before</th><th style="text-align:right">Chrome after</th>'
+  +'<th style="text-align:right">Delta</th><th>What is open</th></tr>'
+  +rows.map(function(r){
+   var d=r[2]-r[1], cb=barA+(r[4]?subA:0), ca=barB, cd=ca-cb;
+   return '<tr><td>'+r[0]+'</td><td class="n">'+r[1]+'</td><td class="n">'+r[2]
+    +'</td><td class="n '+(d>0?'up':'dn')+'">'+(d>0?'+':'')+d+'</td>'
+    +'<td class="n">'+cb+'</td><td class="n">'+ca+'</td>'
+    +'<td class="n '+(cd>0?'up':'dn')+'">'+(cd>0?'+':'')+cd+'</td>'
+    +'<td style="color:var(--dim)">'+r[3]+'</td></tr>';}).join('');
+
+ /* AND THE CHROME ITSELF, IN PIXELS. His sharpening is a number or it is an
+    adjective, so it is measured here at the live width. */
+ var hb=Math.round(document.querySelector('.barA').getBoundingClientRect().height
+  +(HASSUB(CUR)?$('subA').getBoundingClientRect().height:0));
+ var ha=Math.round(document.querySelector('.barB').getBoundingClientRect().height);
+ var pct=Math.round((hb-ha)/hb*1000)/10;
+ $('chrome').innerHTML='On this surface the chrome above the stage is <b>'+hb
+  +' pixels</b> before and <b>'+ha+' pixels</b> after, at '+window.innerWidth+' wide, '
+  +(pct>=0?pct+' per cent off.':Math.abs(pct)+' per cent on.')
+  +' Chrome is in pixels and choices are counts, so the two are read in their own columns.';
+
+ /* the before strip's overflow, stated rather than described */
+ var sa=$('stripA'), hid=[].slice.call(sa.querySelectorAll('button'))
+  .filter(function(b){return b.getBoundingClientRect().right>sa.getBoundingClientRect().right+1;})
+  .map(function(b){return b.textContent;});
+ var t0=$('stripA').querySelector('button'), s0=$('subA0');
+ var was=$('subA').style.display; $('subA').style.display='flex';
+ var off=Math.round(t0.getBoundingClientRect().left)-Math.round(s0.getBoundingClientRect().left);
+ $('subA').style.display=was;
+ $('align').textContent=off>0
+  ? 'The sub bar starts '+off+' pixels to the left of the first menu item, under '
+    +'the logo. In the row above it starts at the same x.'
+  : 'At this width the logo takes its own line, so both strips already start at '
+    +'the bar\'s own left edge and there is nothing to correct.';
+ $('cutoff').textContent=hid.length
+  ? hid.length+' of the '+TABDEF.length+' doors sit past the right edge of the strip at this width: '
+    +hid.join(', ')+'. The only thing saying so is a 26 pixel fade.'
+  : 'Every door fits the strip at this width.';}
+
+/* ---------- presses ---------- */
+function presses(){
+ var rows=[];
+ TABDEF.forEach(function(T){
+  var D=doorOf(T.k), after, why;
+  if(T.k===RAILDOOR){after=1; why='rail button, and the rail is below the fold on a phone';}
+  else if(!D){after=1; why='no door';}
+  else if(D.own===T.k){after=1; why='the door is the surface';}
+  else if(MODE==='A'&&D.kids[0]===T.k){after=1; why='the door opens it';}
+  else {after=2; why='press '+D.nm+', then '+label(T.k);}
+  rows.push([label(T.k),T.k,1,after,why]);});
+ var t=$('presses');
+ t.innerHTML='<tr><th>Surface</th><th style="text-align:right">Integer</th>'
+  +'<th style="text-align:right">Before</th><th style="text-align:right">After</th>'
+  +'<th style="text-align:right">Delta</th><th>Route</th></tr>'
+  +rows.map(function(r){
+   var d=r[3]-r[2];
+   return '<tr><td>'+r[0]+'</td><td class="n">'+r[1]+'</td><td class="n">'+r[2]
+    +'</td><td class="n">'+r[3]+'</td><td class="n '+(d>0?'up':'')+'">'
+    +(d>0?'+'+d:'0')+'</td><td style="color:var(--dim)">'+r[4]+'</td></tr>';}).join('');}
+
+/* ---------- the gate ---------- */
+function gate(){
+ var out=[],bad=0;
+ function ck(name,ok,detail){
+  if(!ok)bad++;
+  out.push('<span class="'+(ok?'pass':'fail')+'">'+(ok?'pass':'FAIL')+'</span>  '
+   +name+(detail?'  '+detail:''));}
+
+ /* 1. Every surface in TABDEF is placed exactly once, in a door or in the rail. */
+ var placed={},dupe=[];
+ NAVBAR.forEach(function(D){
+  if(D.own!==null){if(placed[D.own])dupe.push(D.own);placed[D.own]=1;}
+  D.kids.forEach(function(k){if(placed[k])dupe.push(k);placed[k]=1;});});
+ placed[RAILDOOR]=1;
+ var missing=TABDEF.filter(function(T){return !placed[T.k];}).map(function(T){return T.nm;});
+ ck('every door in TABDEF is placed once',!missing.length&&!dupe.length,
+  missing.length?'missing '+missing.join(', '):(dupe.length?'twice: '+dupe.join(', '):''));
+
+ /* 2. Nothing in the table names a surface the engine does not carry. */
+ var known={}; TABDEF.forEach(function(T){known[T.k]=1;});
+ Object.keys(TABEXTRA).forEach(function(k){known[k]=1;});
+ var unknown=Object.keys(placed).filter(function(k){return !known[k];});
+ ck('no door names a surface the engine does not carry',!unknown.length,
+  unknown.length?unknown.join(', '):'');
+
+ /* 3. GROUPING IS NOT FOLDING, and this is the check that keeps them apart.
+       A fold changes where a host sits: #ana moved inside #sum. Grouping may
+       not change any host's id and may not make one surface's host a
+       descendant of another's. Every key in the table has to resolve through
+       TABOF to its own distinct host id. */
+ var ids={},clash=[];
+ Object.keys(placed).forEach(function(k){
+  var id=idOf(+k); if(ids[id])clash.push(id); ids[id]=1;});
+ ck('every grouped surface keeps its own host',!clash.length,
+  clash.length?'shared host '+clash.join(', '):Object.keys(ids).length+' distinct hosts');
+
+ /* 4. Knowledge and Games are under one door and are still two surfaces. The
+       unfold ruling is the reason this check exists by name. */
+ ck('Knowledge and Games are two hosts under one door',
+  idOf(TAB.KNOW)!==idOf(TAB.GAMES)&&doorOf(TAB.KNOW)===doorOf(TAB.GAMES),
+  '#'+idOf(TAB.KNOW)+' and #'+idOf(TAB.GAMES));
+
+ /* 5. Summary moved under Story and is not folded into it. */
+ ck('Summary is under Story and is its own host',
+  idOf(TAB.SUMMARY)!==idOf(TAB.STORY)&&doorOf(TAB.SUMMARY).own===TAB.STORY,
+  '#'+idOf(TAB.SUMMARY)+' under #'+idOf(TAB.STORY));
+
+ /* 6. The folded surface still folds. Analytics kept its integer and has no
+       door, and TABREAL still sends it to the tab that carries it. */
+ ck('Analytics still resolves to the surface that carries it',
+  TABREAL(TAB.ANALYTICS)===TAB.SUMMARY,'4 resolves to '+TABREAL(TAB.ANALYTICS));
+
+ /* 7. Settings has no door and still resolves to itself. */
+ ck('Settings has no door and resolves to itself',
+  TABREAL(TAB.SETTINGS)===TAB.SETTINGS&&!doorOf(TAB.SETTINGS),'integer 9');
+
+ /* 8. Intake keeps integer 5. */
+ ck('Intake keeps its integer',RAILDOOR===5&&idOf(RAILDOOR)==='iq','5, host #iq');
+
+ /* 9. Nothing is under 44. */
+ var small=[].slice.call(document.querySelectorAll('button')).filter(function(b){
+  var r=b.getBoundingClientRect();
+  return r.width>0&&(r.width<44||r.height<44);});
+ ck('every control is 44 by 44 or larger',!small.length,
+  small.length?small.length+' under the floor':'');
+
+ /* 10. The children row starts where the doors start. His ruling, measured. */
+ /* MEASURED BUTTON TO BUTTON, NOT BOX TO BOX, and the first cut of this check
+    measured the boxes and reported 116 pixels apart on a row that was already
+    aligned. A tool that lies is worse than no tool. What his ruling is about
+    is where the first word starts, so that is what is read. */
+ var d0=$('stripB').querySelector('button'), k0=$('kids').querySelector('button');
+ var dx=k0?Math.round(d0.getBoundingClientRect().left)
+          -Math.round(k0.getBoundingClientRect().left):0;
+ ck('the children start left justified with the doors',Math.abs(dx)<=1,
+  k0?dx+' pixels apart':'this door has no children to align');
+
+ $('tests').innerHTML=out.join('<br>')
+  +'<br><br>'+(bad?'<span class="fail">'+bad+' failing</span>'
+   :'<span class="pass">all clear</span>')+' at '+window.innerWidth+' wide';}
+
+/* ---------- wiring ---------- */
+function paint(){paintB();paintA();presses();measure();gate();}
+$('modeA').onclick=function(){MODE='A';modecap();paint();};
+$('modeB').onclick=function(){MODE='B';modecap();paint();};
+function modecap(){
+ $('modeA').setAttribute('aria-pressed',MODE==='A'?'true':'false');
+ $('modeB').setAttribute('aria-pressed',MODE==='B'?'true':'false');
+ $('modecap').textContent=MODE==='A'
+  ? 'Tools opens Field and Insight opens Knowledge. Every door lands somewhere, and the cost is that Tools becomes a second name for Field.'
+  : 'Tools and Insight open their row and leave the centre where it was. Nothing is renamed, and the cost is a press that changes only a strip of words.';}
+
+buildA(); buildB(); modecap(); paint();
+window.addEventListener('resize',function(){measure();gate();});
+</script>
+</body>
+</html>

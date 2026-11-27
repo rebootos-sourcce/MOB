@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Archetype picker B</title>
+<!--KIT-->
+<style>
+.one{max-width:760px;margin:0 auto}
+/* THE ROSTER STAYS ON SCREEN. The earlier pair screen showed two marks and
+   nothing else, so a person had no way to know there were sixteen more. Here
+   all eighteen sit above the question, grouped by seat, and each one changes
+   as the pairs go past: faint until it is shown, lit when kept, crossed when
+   set aside. */
+.strip{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;padding:12px;border-radius:14px;background:var(--sunk);border:1px solid var(--edge)}
+.sg{display:flex;flex-direction:column;align-items:center;gap:4px;padding:0 4px}
+.sg .sn{font-size:12px;color:var(--dim);white-space:nowrap}
+.sg .mk{display:flex;gap:4px}
+.mk i{width:30px;height:30px;display:grid;place-items:center;border-radius:50%;border:1px solid transparent;opacity:.28;transition:all .3s}
+.mk i.kept{opacity:1;border-color:currentColor;box-shadow:0 0 12px -3px currentColor}
+.mk i.now{opacity:1;outline:2px solid var(--ink);outline-offset:1px}
+.mk i.out{opacity:.5;position:relative}
+.mk i.out:after{content:'';position:absolute;left:4px;right:4px;top:50%;border-top:2px solid var(--ink);transform:rotate(-35deg)}
+.q{font-size:22px;line-height:1.35;margin:22px 0 4px;font-weight:600}
+.pick2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.pick2 button,.grid9 button{display:flex;flex-direction:column;align-items:center;gap:8px;padding:18px 10px;border-radius:16px;border:1px solid var(--edge-2);background:var(--sunk);cursor:pointer;text-align:center;min-height:44px}
+.pick2 button:hover,.grid9 button:hover{border-color:var(--accent)}
+.pick2 b,.grid9 b{font-size:17px}
+.pick2 span,.grid9 span{font-size:13px;color:var(--mid)}
+.pick2 em,.grid9 em{font-style:normal;font-size:12px}
+.grid9{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.left{display:flex;justify-content:space-between;align-items:center;margin-top:14px;gap:10px;flex-wrap:wrap}
+@media (max-width:620px){.grid9{grid-template-columns:repeat(2,1fr)}.q{font-size:19px}.mk i{width:26px;height:26px}.strip{gap:4px;padding:10px 6px}}
+</style></head><body>
+<div class="wrap"><div class="one">
+ <div class="eyebrow">Mockup B of four. Two at a time, the whole roster in view.</div>
+ <h1 class="ar-h1">Which of these is most like you?</h1>
+ <p class="ar-lede">Nine pairs cover all eighteen archetypes. Pick the one closer to you in each pair, then pick one from the nine you kept.</p>
+ <div id="strip"></div>
+ <div class="card" style="margin-top:14px" id="panel"></div>
+ <div id="foot"></div>
+</div></div>
+<!--DATA-->
+<script>
+/* NINE PAIRS OF OPPOSITES. The first six are the FW round's own pairs; the
+   three that bring in the drafts are new and are the owner's to overrule. */
+var PAIRS=[['Warrior','Sage'],['Rebel','Everyman'],['Caregiver','Explorer'],['Creator','Ruler'],['Magician','Innocent'],['Lover','Jester'],['Hero','Orphan'],['Mentor','Shapeshifter'],['Healer','Shadow']];
+var KEPT=[], OUT=[], FIRST=null;
+function mark(a){var cls=a.nm===FIRST?'kept now':KEPT.indexOf(a.nm)>=0?'kept':OUT.indexOf(a.nm)>=0?'out':'';
+ var cur=KEPT.length+OUT.length<PAIRS.length*2&&!FIRST?PAIRS[KEPT.length]:null;
+ if(cur&&cur.indexOf(a.nm)>=0)cls+=' now';
+ return '<i class="'+cls+'" style="color:'+col(a.b)+'" title="'+esc(a.nm)+'" aria-label="'+esc(a.nm)+'">'+aic(a,17)+'</i>';}
+function draw(){
+ document.getElementById('strip').innerHTML='<div class="strip" aria-label="All eighteen archetypes">'+SEATORD.map(function(b){
+  return '<div class="sg"><div class="mk">'+inSeat(b).map(mark).join('')+'</div><div class="sn" style="color:'+col(b)+'">'+esc(seatName(b))+'</div></div>';}).join('')+'</div>'
+  +'<div class="ar-key" style="justify-content:center">Lit: kept. Crossed: set aside. Dashed: a draft the instrument does not read yet.</div>';
+ var n=KEPT.length, p;
+ if(n<PAIRS.length){var pr=PAIRS[n];
+  p='<div class="eyebrow">Pick the closer one</div><div class="q">Which is closer to you on an ordinary day?</div><div class="pick2">'
+   +pr.map(function(nm){var a=A(nm);return '<button data-k="'+esc(nm)+'">'+aic(a,44)+'<b>'+esc(nm)+'</b><span>'+esc(a.v)+'</span><em style="color:'+col(a.b)+'">'+esc(seatName(a.b))+'</em></button>';}).join('')
+   +'</div><div class="left"><span class="small dim">'+(PAIRS.length-n)+' pair'+(PAIRS.length-n===1?'':'s')+' left</span>'
+   +(n?'<button class="btn-g" id="back">Back one</button>':'')+'</div>';}
+ else if(!FIRST){
+  p='<div class="eyebrow">From the nine you kept</div><div class="q">Which one is most you?</div><div class="grid9">'
+   +KEPT.map(function(nm){var a=A(nm);return '<button data-f="'+esc(nm)+'">'+aic(a,34)+'<b>'+esc(nm)+'</b><span>'+esc(a.v)+'</span></button>';}).join('')
+   +'</div><div class="left"><span></span><button class="btn-g" id="back">Back one</button></div>';}
+ else {var f=A(FIRST);p=detail(f)+compare(f)+saveRow(true)+'<div class="left"><span></span><button class="btn-g" id="again">Start again</button></div>';}
+ document.getElementById('panel').innerHTML=p;
+ document.querySelectorAll('[data-k]').forEach(function(b){b.onclick=function(){var pr=PAIRS[KEPT.length];KEPT.push(b.dataset.k);OUT.push(pr[0]===b.dataset.k?pr[1]:pr[0]);draw();};});
+ document.querySelectorAll('[data-f]').forEach(function(b){b.onclick=function(){FIRST=b.dataset.f;draw();};});
+ var e;
+ if(e=document.getElementById('back'))e.onclick=function(){KEPT.pop();OUT.pop();draw();};
+ if(e=document.getElementById('again'))e.onclick=function(){KEPT=[];OUT=[];FIRST=null;draw();};
+ wireSave();}
+document.getElementById('foot').innerHTML=foot('<p>The job: "make it quick and make it feel like a game." Two choices on the screen at any moment, the lowest load of the four, and it keeps the owner\'s own "which one is closer to you" mechanic. What changes is that the roster of eighteen is always above the question, grouped by seat, so the pair is visibly two out of a system and every choice lands somewhere on it.</p><p>Ten taps to a pin. The cost: an archetype is only ever weighed against its opposite, so somebody who is both Warrior and Sage loses one of them in round one.</p>');
+banner('Archetype picker, mockup B of four, round GQ');
+strangerChip(function(){draw();});
+window.draw=draw;
+window.shootPrep=function(){if(!KEPT.length){['Warrior','Everyman','Caregiver','Creator','Magician','Lover'].forEach(function(nm,i){KEPT.push(nm);var pr=PAIRS[i];OUT.push(pr[0]===nm?pr[1]:pr[0]);});draw();}};
+draw();
+</script></body></html>

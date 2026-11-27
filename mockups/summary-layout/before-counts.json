@@ -1,0 +1,96 @@
+{
+ "blank-1600": {
+  "controls": 4,
+  "controlsWholeScreen": 37,
+  "groups": 2,
+  "textBlocks": 5,
+  "words": 27,
+  "rings": 1,
+  "surfaceHeight": 591,
+  "balance": {
+   "rows": 0,
+   "worst": null,
+   "mean": null
+  },
+  "where": {
+   "storyTop": null,
+   "toldTop": null,
+   "actionTop": null,
+   "nineTop": null,
+   "slotTop": null
+  },
+  "fullHeight": 1000
+ },
+ "loaded-1600": {
+  "controls": 11,
+  "controlsWholeScreen": 40,
+  "groups": 10,
+  "textBlocks": 19,
+  "words": 293,
+  "rings": 11,
+  "surfaceHeight": 2462,
+  "balance": {
+   "rows": 2,
+   "worst": {
+    "cls": "s-side",
+    "n": 2,
+    "min": 1130,
+    "max": 2157,
+    "level": 0.52
+   },
+   "mean": 0.56
+  },
+  "where": {
+   "storyTop": 354,
+   "toldTop": 175,
+   "actionTop": 905,
+   "nineTop": null,
+   "slotTop": null
+  },
+  "fullHeight": 2498
+ },
+ "blank-390": {
+  "controls": 4,
+  "controlsWholeScreen": 11,
+  "groups": 2,
+  "textBlocks": 5,
+  "words": 27,
+  "rings": 1,
+  "surfaceHeight": 656,
+  "balance": {
+   "rows": 0,
+   "worst": null,
+   "mean": null
+  },
+  "where": {
+   "storyTop": null,
+   "toldTop": null,
+   "actionTop": null,
+   "nineTop": null,
+   "slotTop": null
+  },
+  "fullHeight": 3403
+ },
+ "loaded-390": {
+  "controls": 0,
+  "controlsWholeScreen": 5,
+  "groups": 2,
+  "textBlocks": 6,
+  "words": 124,
+  "rings": 1,
+  "surfaceHeight": 5006,
+  "balance": {
+   "rows": 0,
+   "worst": null,
+   "mean": null
+  },
+  "where": {
+   "storyTop": 398,
+   "toldTop": 194,
+   "actionTop": 1237,
+   "nineTop": null,
+   "slotTop": null
+  },
+  "fullHeight": 8540
+ }
+}

@@ -1,0 +1,580 @@
+/* ============================================================
+   THE MEANING TABLE. Round PO, ruled 2 October: UNPACK EVERY SYMBOL.
+
+   His words: "you have to unpack blueprint. They don't know what that means.
+   Earth, they don't know what that means. Architect, they don't know what
+   that means... And this is going to be a general rule for all information
+   across the board."
+
+   A label, a sign, a number or a term of art never stands alone. This is the
+   one table of what each one means, and it is the only place those sentences
+   are written. A surface asks it by name and prints the sentence beside the
+   term, either in the line itself or in the one tooltip the product already
+   has, so no surface keeps its own copy and none can say it differently.
+
+   ONE SENTENCE EACH. Short, present tense, words a ten year old has. A
+   sentence that is itself a claim says whose claim it is: numerology claims,
+   astrology claims. Nothing here says the instrument measured a sign or a
+   number, because it did not. The sun, moon and rising positions are
+   computed from the sky, and what a sign then means is an old symbol system's
+   say so. Where that matters the sentence says so in the sentence.
+
+   NO COUNT IS TYPED. Where a sentence names how many there are, the number is
+   read off the table it counts: SI for the laws, SAB33 for the saboteurs, ARCH
+   for the archetypes. This product has been bitten by a typed count twelve
+   times.
+
+   HOW A KEY IS WRITTEN. Lower case. A family has a prefix: sign:capricorn,
+   animal:tiger, path:9, law:truth, axis:light, feeling:fear, seat:root,
+   archetype:caregiver, domain:knowledge, year:fire. The Western element fire
+   is plain fire and the Chinese year element is year:fire, because one word
+   means two things.
+
+   HOW IT IS BUILT. The families are written from the tables the engine already
+   carries, SIGN_RUNS, LP_RUNS, CH_RUNS, CE_RUNS, IQ_STEM, CHILD, ARCH and
+   DOMAINS, so a meaning here cannot drift from what the engine says a thing
+   does. They are built on the first ask and not at load, because IQ_STEM
+   loads after this file. Host free: no document, no window, no storage.
+   ============================================================ */
+var UNPACK_BASE={
+ /* THE BLUEPRINT, AND WHAT IT IS READ FROM */
+ 'blueprint':'Blueprint is the pattern you started with, before life added anything.',
+ 'symbolic reading':'A symbolic reading is a meaning an old system gives to a date or a name, and nothing in your body is measured to get it.',
+ 'running':'Running is what is acting in you now, as against what you were born with.',
+ 'root':'A root is one of four basic ways of running, and each one groups several of the starting patterns in your blueprint.',
+ 'architect':'Architect is the root that builds order and keeps it, by working things out and doing what is owed.',
+ 'engine':'Engine is the root that drives things, makes them and takes them apart to make room.',
+ 'weaver':'Weaver is the root that joins people, trades fairly, mends what broke and plays.',
+ 'witness':'Witness is the root that watches without stepping in and stays with a question without forcing an answer.',
+
+ /* THE FOUR SYSTEMS A BIRTH IS READ BY */
+ 'western':'Western means Western astrology: your sun sign, your moon sign and your rising sign.',
+ 'eastern':'Eastern means the Chinese calendar: the animal and the element of your birth year.',
+ 'number':'Number means numerology: figures worked out from your birth date and your full name.',
+ 'design':'Design means Human Design, a modern system that turns the sun at your birth, and the sun 88 degrees of its path earlier, into gates and lines.',
+ 'overlap':'An overlap is where two of the four systems point at the same thing, such as both naming fire.',
+
+ /* THE SIGNS, AND WHERE THEY COME FROM */
+ 'sun sign':'Your sun sign is the sign the sun stood in on the day you were born.',
+ 'moon sign':'Your moon sign is the sign the moon stood in when you were born, so it needs your birth time to be right.',
+ 'rising sign':'Your rising sign is the sign coming up over the eastern horizon where you were born, so it needs your birth time and your birthplace.',
+ 'cardinal':'Cardinal signs start things.',
+ 'fixed':'Fixed signs hold on to what has been started.',
+ 'mutable':'Mutable signs adapt as things change.',
+ 'year animal':'Your year animal is the animal for your birth year in the twelve year Chinese cycle, and the year turns in early February.',
+ 'year element':'Your year element is the element for your birth year in the Chinese calendar, and it repeats every ten years, two years to each element.',
+
+ /* THE ELEMENTS ARE BUILT BELOW, from the sign table */
+
+ /* NUMBERS */
+ 'life path':'Life path is the number you get by adding every digit of your birth date until one digit is left, except 11, 22 and 33, which stay as they are.',
+ 'master number':'A master number is 11, 22 or 33, and it is kept as it is and not added down to one digit.',
+ 'expression':'Expression is the number you get by adding the value of every letter in your full name.',
+ 'soul urge':'Soul urge is the number you get by adding only the vowels in your full name.',
+ 'personality':'Personality is the number you get by adding only the consonants in your full name.',
+ 'birthday':'Birthday is the day of the month you were born on.',
+ 'maturity':'Maturity is your life path added to your expression, and numerology claims it shows what the second half of life is for.',
+
+ /* HUMAN DESIGN */
+ 'gate':'A gate is one of 64 positions on a wheel from the I Ching, an old Chinese book, and the sun passes through all of them in a year.',
+ 'line':'A line is one of six steps inside a gate, each under one degree of the sun’s path.',
+ 'profile':'A profile is two line numbers from 1 to 6: the line of your birth sun over the line of the sun 88 degrees earlier.',
+ 'personality gate':'Your personality gate is the gate the sun stood in at the moment you were born.',
+ 'design gate':'Your design gate is the gate the sun stood in 88 degrees of its path before you were born.',
+ 'gene key':'A gene key is the gate the sun stood in on your birth day, read for its shadow, its gift and its highest form.',
+
+ /* THE SEATS */
+ 'seat':'An assemblage point, or point, is one of seven places along your body, from the base of the spine to the top of the head, where the instrument reads what is held.',
+ 'assemblage point':'An assemblage point, or point, is one of seven places along the middle of your body where the instrument reads what is held.',
+ 'seat:root':'Root is the point at the base of the spine, and it holds what you stand on.',
+ 'seat:sacral':'Sacral is the point in the lower belly, and it holds what you want.',
+ 'seat:solar':'Solar is the point in the upper belly behind the stomach, and it holds what you carry.',
+ 'seat:heart':'Heart is the point in the middle of the chest, and it holds what you give.',
+ 'seat:throat':'Throat is the point at the neck, and it holds what you say.',
+ 'seat:3rd eye':'The 3rd Eye is the point in the forehead, and it holds what you see.',
+ 'seat:crown':'Crown is the point at the top of the head, and it holds what you belong to.',
+
+ /* THE SEATS IN THE YOGA TRADITION, which is where the Eastern lens takes its
+    names. The name, the element and the seed sound are that tradition's own. */
+ 'yoga:root':'In the yoga tradition the root point is called Muladhara, its element is earth and its seed sound is Lam.',
+ 'yoga:sacral':'In the yoga tradition the sacral point is called Svadhisthana, its element is water and its seed sound is Vam.',
+ 'yoga:solar':'In the yoga tradition the solar point is called Manipura, its element is fire and its seed sound is Ram.',
+ 'yoga:heart':'In the yoga tradition the heart point is called Anahata, its element is air and its seed sound is Yam.',
+ 'yoga:throat':'In the yoga tradition the throat point is called Vishuddha, its element is ether and its seed sound is Ham.',
+ 'yoga:3rd eye':'In the yoga tradition the 3rd Eye point is called Ajna, its element is light and its seed sound is Om.',
+ 'yoga:crown':'In the yoga tradition the crown point is called Sahasrara, its element is thought and its seed is silence.',
+
+ /* THE SEAT'S NERVES, TONE AND PAGE, AX8, closed 2 October. Two drills, the
+    Field shelf's seat answer (ui/mapshelf.js runSeatFlowDrill) and the seat
+    drill (ui/analytics.js anaDrill), printed FLOWSEAT's hz, nv, vt and src as
+    "Muladhara · 396 Hz · source 502" and "vritti L1 to L4": a pitch that read
+    as measured, a nerve name, a citation and a spine level, none explained.
+
+    VRITTI IS NOT A SPINE LEVEL. The codex defines the vritti as the composite
+    wave of sensory input and emotional charge (index.html:1526) and as the
+    field wrapped around a nerve (index.html:1529). FLOWSEAT.vt holds where
+    the nerve bundle sits, a level on the spine or a landmark in the skull, and
+    no vritti is read per seat, so the word is dropped from both screens
+    rather than redefined. The level is said in the sentence below, keyed by
+    the seat's own k, and tests/engine.js holds each sentence to the vt it
+    explains so the two cannot drift. The hz is a sound healing choice and
+    the sentence says whose. */
+ 'plexus':'A plexus is a bundle of nerves that meet and branch out at one place in your body.',
+ 'seat tone':'Hz counts how many times a note shakes in one second, and sound healers gave this point its note, so nothing in your body is measured to get it.',
+ 'codex page':'The codex is the book this instrument is built on, and this number is the page this point comes from.',
+ /* Two of the seven places a seat is found on the skin are anatomy words,
+    printed on the same two lines. The other five are already plain. */
+ 'spot:throat':'The suprasternal notch is the soft dip at the bottom of your neck, between your two collarbones.',
+ 'spot:heart':'Mid sternum is the middle of your breastbone, the flat bone down the centre of your chest.',
+ 'level:crown':'This bundle of nerves sits at the pineal gland, a small gland deep in the middle of your brain, and in the cortex, the wrinkled outer layer of your brain.',
+ 'level:eye':'This bundle of nerves sits in the cavernous sinus, a pool of veins beside the small bony cup in the middle of your skull.',
+ 'level:throat':'This bundle of nerves sits level with C1 to C4, the top four bones of your neck.',
+ 'level:heart':'This bundle of nerves sits level with T4 to T5, the fourth and fifth bones of your upper back, where the big artery from your heart arches over.',
+ 'level:solar':'This bundle of nerves sits level with T12 to L1, where the last bone of your upper back meets the first bone of your lower back.',
+ 'level:sacral':'This bundle of nerves sits level with L5, the lowest bone of your lower back, just below where the big artery from your heart splits toward each leg.',
+ 'level:root':'This bundle of nerves sits level with L1 to L4, the top four bones of your lower back, and its nerves run down into the floor of your pelvis.',
+
+ /* THE STORY PAGE'S THREE COLUMNS, round QB. Each column title is a carrier
+    of its own sentence, so the name over a column is never left for a person
+    to guess. Release says what kb.js says it is, in one sentence. */
+ 'journal':'The journal is where you write or say what happened, in your own words.',
+ 'imprint':'An imprint is a piece of what you wrote that lands as charge at one exact place in your body.',
+ 'release':'Release is stored charge leaving your body through the nerves.',
+
+ /* THE CHAIN OF PATTERNS */
+ 'address':'An address is one exact place in your body where a pattern sits.',
+ 'charge':'Charge is survival energy stuck at one place in your body.',
+ 'bind':'A bind is a pattern that keeps flipping between a feeling and its opposite over time, instead of settling into either one.',
+ 'fetter':'A fetter is a named pattern that sits at one address and fires when something matches it.',
+ 'complex':'A complex is two saboteurs from the same family joined into one pattern.',
+ 'hyper complex':'A hyper complex forms when complexes of the same family run together, one ring further in than a complex.',
+ /* THE FOURTH RUNG AND THE TOP ARE TWO WORDS, ruled 23 October. The sentence
+    character carried until then was the rung's, and it moves to super
+    complex unchanged in what it says. Character is his "total sum of the all
+    of it" (27 September), the top of the stack above the masks and above
+    what a person was born with (DECISIONS.md, "The full stack, nerve to
+    Character"), listed bottom to top in his order. */
+ 'super complex':'A super complex forms when two hyper complexes run together and are heavy enough, one ring further in than a hyper complex.',
+ 'character':'Character is the whole of you, added up: your charge, the patterns running on it, your masks and what you were born with.',
+ 'saboteur':'A saboteur is a named habit that runs on the charge held at several addresses at once.',
+ /* MASK AND SABOTEUR SAID ONE WAY, 18 November. The Wisdom school glossary
+    (GLOSS, engine/data/kb.js) opened Mask on "built up distortion that has
+    started to pass for who you are" and Saboteur on "a fetter squeezed into
+    a habit", while every tooltip said this table's sentence: two meanings for
+    one word on two screens. The canon makes a mask a developmental way of
+    showing up worn over the points it speaks from (MASKS, b) and a saboteur a
+    set of fetters at magnitude, so this table's sentences stand, the mask one
+    gains "you grow into" and the point, and GLOSS now opens on the same words.
+    tests/unpack.js holds the two places to one sentence. */
+ 'mask':'A mask is a way of showing up that you grow into, such as Child or Teen, read from the charge held at the points it speaks from.',
+ /* THE PAYWALL'S SEVENTH RING HAD NO ENTRY HERE, so pwMean (ui/paywall.js)
+    fell back to SIGHT's own lock sentence (engine/plan.js, the 'reg' row)
+    while the other six rings (saboteur, complex, hyper complex, super
+    complex, mask, and the laws ring built off SI) all resolved through this
+    one table. The sentence below is that same SIGHT sentence, moved here
+    unchanged rather than reworded, so all seven now read one table. Keyed
+    singular: pwMean strips the trailing s off "registers" the same way it
+    strips "masks" down to "mask" above. */
+ 'register':'The registers, your point cloud: where each pattern sits in the compass.',
+ /* THE CHILD EMOTIONS' LEVEL OF THE STACK, 18 November. The five-tab row printed
+    this sentence as the first tab's tooltip, in ui/ui.js, as a literal that
+    stood nowhere else. The tabs are gone ("Let's unnest them") and the sentence
+    is kept here, where the header of that level reads it. */
+ 'child emotions':'The child emotions are the nine feelings the chain of patterns runs on, and each bar leans from what is held toward what is installed.',
+ 'axis':'An axis is a feeling and its opposite, such as fear and trust, and the instrument reads how much of the first is held and how much of the second is in place.',
+ /* CQ IS THE INTEGRITY, NOT THE COHERENCE. This said "your coherence number",
+    which made CQ and coherence one thing. The 25 September ruling makes CQ
+    the 21 laws added up (cqSum, engine/compute.js), and coherence is what
+    that integrity holds up. The coherence sentence below is not touched. */
+ 'cq':'CQ is the Laws of Moral Integrity added up, the integrity that coherence is built on.',
+ /* THE LAWS OF ACTION, 22 October. The six gates took the name the three sets
+    of laws share, read as right action against wrong action. Each sentence
+    says what the move does to a strong feeling, the drill's own words, and
+    none says a gate multiplies anything held, because none does
+    (engine/verp.js). The Laws of Moral Integrity are built below, off SI. */
+ 'laws of action':'The Laws of Action are the moves you make when a strong feeling rises, and each one either meets the feeling or misses it.',
+ 'right action':'Right action is meeting a strong feeling: you notice it, stay out of its story and keep to what you meant.',
+ 'wrong action':'Wrong action is missing a strong feeling, following its story or going around it, and it is how a feeling sticks as charge.',
+ /* THE PSYCHE PANEL'S OWN WORDS, 18 November, the round that took the book's
+    levels, Child emotions and The chain off the Field's left rail. Two of the
+    terms kept a sentence here because something on a screen still says them
+    and now asks for it: the Matrix caption's "9 child emotions" (mxKey,
+    ui/personas.js) and the card a field anchor opens (nodeDrillHtml,
+    ui/drills.js). The third, "the chain", has no entry: the first cut of this
+    round wrote one, and the skeptic found nothing asked for it, so it was cut
+    rather than left as a sentence no screen can reach. Each tier of the chain
+    keeps its own entry (saboteur, complex, hyper complex, super complex), the
+    legend's colour key has no new home and is listed as open in DECISIONS.md,
+    and a wheel dot's hover still names its tier (describe, ui/ui.js). */
+ 'child emotions':'The child emotions are the nine basic feelings, such as fear, anger and shame, and every charge in your body is held as one of them.',
+ 'field anchor':'A field anchor is one of four places outside the body, two above the head and two below the feet, where no nerve sits.',
+ /* THE FOUR SUPEREGO SYMBOLS, 18 November, each said once, here. The figure
+    under a symbol is what the engine measures, the charge held at the address
+    the book seats that defence at (AMPLIFIER, engine/data/registers.js), and
+    never how much of the defence a person shows, so every sentence says the
+    figure is the charge at its place in the body and none says it is the
+    defence. Built in unpackAll below for the one address no feeling reaches. */
+ 'superego:justification':'Justification is the reason you give yourself that makes a pattern fine to keep, and its figure is the charge held at its place in the body.',
+ 'superego:entitlement':'Entitlement is the sense that you are owed, so the pattern feels like your right, and its figure is the charge held at its place in the body.',
+ 'superego:perfectionism':'Perfectionism is a bar set so high that nothing is ever done, so nothing has to change, and its figure is the charge held at its place in the body.',
+ 'superego:obsession':'Obsession is a thought that loops back on itself and holds the pattern in place, and its figure is the charge held at its place in the body.',
+ 'superego:judgment':'Judgment is the verdict you pass to make a pattern righteous instead of wrong, and its figure is the charge held at its place in the body.',
+ 'superego:comparison':'Comparison is measuring yourself against someone else to rank the pattern as better or worse, and its figure is the charge held at its place in the body.',
+ /* ACTION, the Field's rail and the Journal's, one word for the six moves
+    (10 November, his words: "change word laws of actions to action"). The
+    six bars each carry their own sentence under gate:, the family prefix, so
+    Awareness the gate keeps its own meaning beside Awareness the reading
+    (rail:awareness above) and the soul's window (GLOSS). Each says what the
+    move is and what its figure is, because a figure stands with its meaning:
+    the share of every action read in the person's stories (verpRead, the
+    six add to one whole). No sentence here says a count, a percent or a
+    score, the contract group PO in tests/engine.js holds. */
+ /* THE SUMMARY'S LEFT RAIL, 20 November: one flat reading from the sky down
+    to the archetype, where what is his stands lit and the rest stands dim
+    (ui/railtiles.js, rlSumPaint). His own word for the dim half: "the
+    elements that they are not are dimmed out." */
+ 'rail:lit':'Lit is yours, and dim is what you are not.',
+ 'rail:action':'Action is the move you make when a strong feeling rises, and each of the six either meets the feeling or misses it.',
+ 'gate:awareness':'Awareness, a right action, is noticing the feeling in your body as it rises, and its figure is its share of every action read in your stories.',
+ 'gate:detachment':'Detachment, a right action, is feeling it in full and staying out of the story it tells, and its figure is its share of every action read in your stories.',
+ 'gate:intention':'Intention, a right action, is feeling it rise and keeping to what you were already doing, and its figure is its share of every action read in your stories.',
+ 'gate:ignorance':'Ignorance, a wrong action, is not seeing the feeling coming or choosing not to look, and its figure is its share of every action read in your stories.',
+ 'gate:attachment':'Attachment, a wrong action, is the story taking hold and you going where it pulls, and its figure is its share of every action read in your stories.',
+ 'gate:aversion':'Aversion, a wrong action, is going around the feeling and away from what set it off, and its figure is its share of every action read in your stories.',
+ /* DQ stood as a bare label on the release clock. Round RG. */
+ 'dq':'DQ is your shadow weight: all the charge you carry, on every address, against the most your body could hold.',
+ 'coherence':'Coherence is when what you mean, what you do and what your body does point the same way.',
+ /* THE FIELD'S LEFT MENU, round RB and the P3 menu pass. Every reading on the
+    rail is one bar with its mark and its one word inside it, and the word is a
+    carrier of its sentence here, read with the rail context so a word that
+    means something else on another page (flow the loop station, will the
+    battery in GLOSS, awareness the soul's window) keeps that meaning there. CQ
+    and DQ are the two bare keys above, which the rail reads as they are. Each
+    sentence says what the engine computes: vitality, awareness and will are
+    compute() X, Y and Z, radiance the root of their squares, flow the seats'
+    passes multiplied, orientation leanRead, balance the outward and inward
+    means of balance(). */
+ 'rail:vitality':'Vitality is how much energy you have left once apathy and the charge you carry have taken their share.',
+ 'rail:awareness':'Awareness is how strong what you mean is, and how little of it gets bent on the way out.',
+ 'rail:will':'Will is how much of your integrity gets through the charge you are carrying.',
+ 'rail:radiance':'Radiance is vitality, awareness and will put together, and it sets how bright the field behind the wheel is.',
+ 'rail:flow':'Flow is how much gets from the base of your spine to the top of your head, each point passing on part of what it gets.',
+ 'rail:orientation':'Orientation is which way the charge you hold leans, toward costing you nothing or toward taking something from you.',
+ 'rail:positive':'Positive is charge you hold that is not costing you anything.',
+ 'rail:negative':'Negative is charge you hold that is taking something from you.',
+ 'rail:balance':'Balance is which way your body moves under what you feel, out toward the world or in toward yourself.',
+ 'rail:masculine':'Masculine is energy given a shape and a direction and sent outward, and it does not mean men.',
+ 'rail:feminine':'Feminine is energy held and taken inward, and it does not mean women.',
+ /* 30 October, r1 from mockups/dual-readings, which the owner picked for
+    the rail. Shadow is lawSQ, CQ's own complement, the other end of the
+    coherence pair; the two heads name the rail's two families, a pair read
+    from its centre and an amount read from none. */
+ 'rail:shadow':'Shadow, on this line, is the part of the laws your answers leave out, which is always 100 less CQ.',
+ 'rail:where you lean':'Each pair is one reading, where the line down the middle is 50 and 50 and the mark is where you sit.',
+ 'rail:how much':'Each is one reading, from none of it at the left end to all of it at the right.',
+ /* 21 November, the Avatar page's Energy card (ui/avdials.js). The head of
+    the four dials carries its sentence from here, as the two family heads
+    above do, so the word is never on screen without its meaning. */
+ 'rail:energy':'Energy is four readings, vitality, awareness, will and radiance, which is those three together, and each dial runs from none at its start to all of it at its end.',
+ /* ROUND RG, the copy sweep. His words: "you read 62 above the oscillating
+    band. Your integrity is 6.2. Integrity is the hull. It's got to be human."
+    Integrity was printed as a figure on the Compass with no meaning anywhere
+    on that screen, and the rail's own tooltip defined it by two more terms.
+    The sentence is the law family's own phrasing, so the two cannot drift. */
+ 'integrity':'Integrity is how well you keep the laws: how often you do what each one asks, when it costs you, when nobody would know and on an ordinary day.',
+ /* Shadow weight was printed as a bare figure in the Summary reading and in
+    Analytics. It is DQ: every address summed against the most they could
+    hold (compute.js), so the sentence says that and nothing more. */
+ 'shadow weight':'Shadow weight is all the charge you carry, on every address, against the most your body could hold.',
+ /* Expression the reading, as against expression the numerology number,
+    which keeps the bare key above. Two meanings sat on one Summary page. */
+ 'field:expression':'Expression is the part of your coherence that gets past the charge you carry.',
+ /* THE FOUR READINGS THAT HAD NO SENTENCE HERE, 18 November. Pull, Overshoot,
+    Installed and Self-read shadow had their meanings typed into ANA_MET in
+    ui/analytics.js and nowhere else, so the Analytics tile was the only place
+    that could say them: the session card, the axis card, the pole drill and
+    the release ledger print the same four words and had nothing to ask for,
+    and the owner read them on the status board with no idea what they were.
+    Overshoot's typed tip also carried "60%", which this table refuses. Each
+    sentence is what compute() builds: pull is leverPull averaged over every
+    address, overshoot is n.jq, the opposite past the helpful point, installed
+    is the opposite in place (S.replace, and n.pole where it has passed what is
+    held), and the self-read shadow is lawSQ, 100 less CQ. */
+ 'pull':'Pull is how hard the charge you hold drags on what you do, and a heavy place drags far harder than a light one.',
+ 'overshoot':'Overshoot is an opposite feeling put in past the point where it helps, so the fetter under it will not shut.',
+ 'installed':'Installed is how much of each opposite feeling is in place where its feeling was, such as trust where fear sat.',
+ 'self-read shadow':'Self-read shadow is the part of the laws your own answers leave out, always 100 less CQ, and only a changed law answer moves it.',
+ /* the line every surface counts held from, BELOW THE LINE in compute.js */
+ /* NO FIGURE IN THE MEANING, 17 October, percent phase 2. This said "reaches
+    4", the weight on nought to ten; every weight prints as a percent now, so
+    4 would contradict the 40% beside it, and this table refuses a percent in
+    any entry (tests/engine.js, PO). The meaning keeps the event; the figure
+    is printed where the line is drawn. */
+ 'the line':'The line is the point where the charge at one address gets heavy enough to start costing your body.',
+ /* YOUR PATTERNS, the trace graph's screen (ui/loopread.js, engine/loop.js).
+    Each word below is a label that block prints, and its meaning is the
+    graph's own: confirmed is a user_confirmed edge, unanswered is everything
+    the sniffer inferred that nobody has answered, from your words is a story
+    edge marked named. */
+ 'pattern':'A pattern is a reaction you keep having, and the instrument places it at one exact spot in your body.',
+ 'confirmed':'Confirmed means you said yes, this pattern is yours, or you chose a practice to work on it.',
+ 'unanswered':'Unanswered means the instrument read this from what you wrote, and you have not said yes or no to it yet.',
+ 'declined':'Declined means you turned down a practice the instrument suggested, and your record keeps that.',
+ 'practised':'Practised counts the rituals on your record that were done.',
+ 'not done':'Not done counts the times in a row a ritual came due and was not marked done.',
+ 'from your words':'From your words means a feeling word you wrote names this pattern.',
+ 'from the seat':'From the point means your words pointed at this part of the body, and the instrument picked the spot there because no word named one.',
+ 'release line':'A release line is one spoken line of a release, aimed at one address, to lower the charge held there.',
+ 'truth line':'A truth line is one spoken line that puts the opposite quality in at the address, where the limit was.',
+ 'evidence':'Evidence is something noticed or measured after a practice that backs a pattern up or goes against it.',
+ /* THE WORD THE GIFT AND THE ALLOWANCE COUNT IN. A hundred patterns of the gift
+    are a hundred lines, not a hundred reactions, so the sentence above is the
+    wrong one beside "Your gift: 100 patterns" on Summary. This is the gift's
+    own sentence, the one the first release card already prints beside the
+    count (obGiftSay, ui/onboard.js), so it is said one way. */
+ 'gift:pattern':'A pattern is one line you have not said before.',
+ /* THE SAME WORDS, READ BY A PRACTITIONER ABOUT A CLIENT, round QB (ui/
+    practitioner.js). The entries above speak to the person about themselves,
+    "you said yes", and on the practitioner's page the reader is somebody
+    else, so the same word carries a third person sentence under client:.
+    Same word, same meaning, a different reader. The day words are the
+    practice event's own states (engine/practice.js PR_EV_ST), one word each. */
+ 'client:confirmed':'Confirmed means the client said yes, this pattern is theirs, or chose a practice to work on it.',
+ 'client:unanswered':'Unanswered means the instrument suggested this pattern or a practice for it, and the client has not said yes or no.',
+ 'client:declined':'Declined means the client turned down a practice the instrument suggested, and the record keeps that.',
+ 'client:practised':'Practised counts the days in this window a practice was done in full or in part.',
+ 'client:done':'Done means the practice was run start to finish that day.',
+ 'client:part done':'Part done means the practice was started that day and some of its steps were run.',
+ 'client:skipped':'Skipped means the client chose not to run it that day, which is a choice and does not count as a miss.',
+ 'client:missed':'Missed means it came due and was not marked done by the end of the next day.',
+ 'client:not marked yet':'Not marked yet means it came due and nothing is recorded for it so far.',
+ 'client:nothing scheduled':'Nothing scheduled means no practice was due that day.',
+
+ /* THE COMPASS */
+ 'teacher':'A teacher here is a picture of one pole, named for the person who showed it most clearly, and the panel describes a behaviour and not that person.',
+ 'inversion':'An inversion is the same quality turned upside down, and it is a behaviour a person runs and not a being.',
+ 'pole':'A pole is one end of an axis, either the quality running clean or the same quality turned upside down.',
+ 'path pole':'A path pole is one end of a line through the body that is not an axis, either the quality running clean or the same quality turned upside down.',
+ 'axis:light':'Light is the axis of warmth, from care that is given freely to a glow put on for an audience.',
+ 'axis:desire and will':'Desire and will is the axis of wanting, from a want that moves you toward something larger to a want that having never fills.',
+ 'axis:order':'Order is the axis of structure, from rules people can lean on to disorder made on purpose.',
+ 'axis:power':'Power is the axis of strength, from strength you pay for yourself to strength that others are billed for.',
+ 'axis:perception':'Perception is the axis of seeing and showing, from seeing what is there to presenting a surface that hides what is underneath.',
+ 'axis:trust':'Trust is the axis of knowing, from feeling things straight away to waiting for proof before you let yourself feel.',
+ 'axis:charge':'Charge is the axis of intensity, from strong feeling that moves through you cleanly to strong feeling with no clean way out.',
+ 'axis:revelation':'Revelation is the axis of belief, from changing what you believe when your life says otherwise to guarding a belief against what you live through.'
+};
+
+/* THE ELEMENTS. What each stands for is what ROOT_SAYS and ROOT_ELSAYS already
+   say about it, put as a short phrase. The signs it names are read off ZSIGN. */
+var UNPACK_ELEM={fire:'starting things and burning hot', earth:'steady, solid and slow to move',
+ air:'watching and naming what it sees', water:'finding the low route and still arriving'};
+
+/* THE NINETEEN BLUEPRINT DOMAINS, read clear and read distorted. Added,
+   audit of 4 November: every one of the twelve archetypes already had a
+   plain meaning here, keyed archetype:<name>, and none of the nineteen
+   domains did, so a domain name could print with nothing beside it, which
+   is the exact thing round PO's unpack rule forbids.
+
+   Each pair below is a short summary of the clear and the distorted reading
+   DOMDEF (engine/data/kb.js) already carries for that domain. Nothing here
+   is invented: c paraphrases DOMDEF's own "c" field and x its own "x" field,
+   kept to one plain clause each. Four domains are stored in DOMDEF under the
+   book's original name, via KB_RENAME in the same file (Descent is
+   Sacrifice, Connection is Love, Exchange is Communication, Restoration is
+   Healing), and the sentence says so by the name this product uses,
+   DOMAINS' own nm, same as runDomDrill already does. */
+var UNPACK_DOM={
+ knowledge:{c:'reading patterns and teaching what you see before anyone asks',
+  x:'thinking your way into a wall instead of a bridge'},
+ justice:{c:'telling true from false and holding people to it without cruelty',
+  x:'judging so hard it turns into control'},
+ imperium:{c:'seeing how a system should be organized and putting that order in place',
+  x:'ruling people instead of ruling the mess'},
+ duty:{c:'doing the right thing even when nobody is watching',
+  x:'doing it only to be seen, or losing yourself in the obligation'},
+ fate:{c:'reading the pattern and its timing and moving at the right moment',
+  x:'using the pattern as an excuse to never act'},
+ power:{c:'holding your ground and aiming force at what is in the way, not at people',
+  x:'violence with no purpose'},
+ creation:{c:'building and bringing a vision into a real thing',
+  x:'being stopped by perfectionism, or needing to produce to feel like somebody'},
+ dissolution:{c:'clearing what is finished to make room for what comes next',
+  x:'tearing things down with nothing rebuilt'},
+ descent:{alt:'Sacrifice',c:'choosing to go down into what is hard, because it teaches',
+  x:'going down and not coming back'},
+ death:{c:'ending things cleanly so there is room for what is next',
+  x:'refusing every ending, or using it as a weapon'},
+ connection:{alt:'Love',c:'staying close to people without needing to cling',
+  x:'needing someone else to feel complete'},
+ exchange:{alt:'Communication',c:'trading fairly, and finding words that bridge two sides',
+  x:'saying one thing and meaning another to control someone'},
+ restoration:{alt:'Healing',c:'finding what is broken and helping it mend',
+  x:'needing to rescue people to feel like somebody'},
+ provision:{c:'making sure there is enough, including for a season nobody can see yet',
+  x:'measuring your worth only by what you supply'},
+ play:{c:'finding what is alive in something, with no reason needed',
+  x:'using play to dodge what is actually going on'},
+ nature:{c:'growing at the pace a body actually grows at, in cycles rather than a straight line',
+  x:'refusing all structure to escape anything complicated'},
+ trickster:{c:'turning a fixed pattern upside down to show what it was hiding',
+  x:'lying as a way of life, mistaking instability for freedom'},
+ mystery:{c:'staying with what cannot be seen yet, without being swallowed by it',
+  x:'building your identity entirely out of the dark'},
+ guardian:{c:'holding a perimeter so what is inside it can live',
+  x:'watching so hard it smothers, building walls that choke out life'}};
+
+/* THE SIGN LIST FOR AN ELEMENT, in the order the sky counts them from Aries */
+function unpackSigns(el){
+ if(typeof ZSIGN==='undefined')return [];
+ var order=['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
+ return order.filter(function(n){return ZSIGN.some(function(z){return z[2]===n&&z[3]===el;});});}
+function unpackList(a){return a.length>1?a.slice(0,-1).join(', ')+' and '+a[a.length-1]:(a[0]||'');}
+/* a or an, by the sound the word starts on: an Ox, an 8, an 11, a 9 */
+function unpackA(w){
+ var s=String(w);
+ return (/^[AEIOUaeiou]/.test(s)||/^(8|11|18)$/.test(s))?'an':'a';}
+
+var UNPACK_MEMO=null;
+function unpackAll(){
+ if(UNPACK_MEMO)return UNPACK_MEMO;
+ var t={}, k;
+ for(k in UNPACK_BASE)t[k]=UNPACK_BASE[k];
+ /* AN AMPLIFIER THE ENGINE CANNOT REACH SAYS SO. A story's charge lands on an
+    address through that address's child emotion (compute.js, n.held), and the
+    one amplifier seated at an address with none, Entitlement at the unnamed
+    Root address, can therefore never hold anything: its figure is always the
+    dash. The sentence says that while it is true and goes back to the plain
+    one the day the owner rules that address, because it is read off the
+    address and never typed. */
+ if(typeof AMPLIFIER!=='undefined'&&typeof BY!=='undefined')
+  AMPLIFIER.forEach(function(a){
+   var k='superego:'+a.nm.toLowerCase(), n=BY[a.i];
+   if(n&&!n.cf&&t[k])t[k]=t[k].replace(/ its figure is the charge held at its place in the body\.$/,' no story reaches its place in the body yet, so its figure is a dash.');});
+ /* the four Western elements */
+ Object.keys(UNPACK_ELEM).forEach(function(el){
+  var signs=unpackSigns(el), nm=el.charAt(0).toUpperCase()+el.slice(1);
+  t[el]=nm+' is the element of '+unpackList(signs)+', and it stands for '+UNPACK_ELEM[el]+'.';});
+ /* the twelve signs. astrology's claim, said as the claim */
+ if(typeof ZSIGN!=='undefined'&&typeof SIGN_RUNS!=='undefined')
+  ZSIGN.forEach(function(z){
+   t['sign:'+z[2].toLowerCase()]=z[2]+' is '+unpackA(z[3])+' '+z[3]+' sign, and astrology claims it '
+    +(SIGN_RUNS[z[2]]||'')+'.';});
+ /* the twelve year animals */
+ if(typeof CHINESE!=='undefined'&&typeof CH_RUNS!=='undefined')
+  CHINESE.forEach(function(a){
+   t['animal:'+a.toLowerCase()]='The Chinese calendar claims '+unpackA(a)+' '+a+' year '+(CH_RUNS[a]||'')+'.';});
+ /* the five Chinese elements */
+ if(typeof CE_RUNS!=='undefined')
+  Object.keys(CE_RUNS).forEach(function(e){
+   t['year:'+e.toLowerCase()]=e+' is one of the five elements of the Chinese calendar, and it '+(CE_RUNS[e]||'')+'.';});
+ /* every life path number, with what numerology claims for it */
+ if(typeof LP_RUNS!=='undefined')
+  Object.keys(LP_RUNS).forEach(function(n){
+   t['path:'+n]='Numerology claims '+unpackA(n)+' '+n+' is the one who '+(LP_RUNS[n]||'')+'.';});
+ /* the laws, from the question the intake asks about each */
+ if(typeof SI!=='undefined'&&typeof IQ_STEM!=='undefined'){
+  SI.forEach(function(l){
+   t['law:'+l.nm.toLowerCase()]=l.nm+' is how often you '+(IQ_STEM[l.nm]||'')
+    +', when it costs you, when nobody would know and on an ordinary day.';});
+  t['law']='A law is one of '+SI.length+' ways of keeping your integrity, read from three questions you answer about each.';}
+ /* the set by its name, 22 October. Its own guard, because it needs only SI,
+    and the law entry above waits on IQ_STEM as well */
+ if(typeof SI!=='undefined')
+  t['laws of moral integrity']='The Laws of Moral Integrity are '+SI.length+' ways of behaving, and each one you keep blocks one way your body gets pulled into stress.';
+ /* the nine feelings, as the ends of the nine axes */
+ if(typeof CHILD!=='undefined')
+  CHILD.forEach(function(c){
+   t['feeling:'+c.nm.toLowerCase()]=c.nm+' is one end of an axis, felt in the '+c.loc.replace(', ',' and ')
+    +', with '+c.opp.toLowerCase()+' as its opposite.';});
+ /* and the nine opposites, which are the other end of each axis: the slider
+    that says how much of the opposite is in place at the same address */
+ if(typeof CHILD!=='undefined')
+  CHILD.forEach(function(c){
+   t['opposite:'+c.opp.toLowerCase()]=c.opp+' is the opposite of '+c.nm.toLowerCase()
+    +', and this is how much of it is in place at the same address.';});
+ /* the twelve archetypes */
+ if(typeof ARCH!=='undefined')
+  ARCH.forEach(function(a){
+   t['archetype:'+a.nm.toLowerCase()]=a.nm+' is one of '+ARCH.length+' kinds of character, the one that '+a.v+'.';});
+ t['archetype']='An archetype is one of '+(typeof ARCH!=='undefined'?ARCH.length:'twelve')+' kinds of character you are born leaning toward.';
+ /* THE NINETEEN BLUEPRINT DOMAINS. UNPACK_DOM just above carries the short
+    clear and distorted clause for each; this builds the sentence off
+    DOMAINS so the count is read from the table and never typed, same
+    precedent as archetype: just above. A domain with no entry in UNPACK_DOM
+    is left out rather than printed half built. */
+ if(typeof DOMAINS!=='undefined'){
+  DOMAINS.forEach(function(d){
+   var u=UNPACK_DOM[String(d.nm).toLowerCase()]; if(!u)return;
+   t['domain:'+d.nm.toLowerCase()]=d.nm+' is one of '+DOMAINS.length+' domains in the blueprint, '
+    +(u.alt?'called '+u.alt+' in the codex, ':'')+'from '+u.c+' to '+u.x+'.';});
+  t['domain']='A domain is one of '+DOMAINS.length+' named parts of your blueprint, each read clear and read distorted.';}
+ /* THE TEN COHERENCE TIERS, round PT, added for the Practitioner page. TIERDEF
+    already carries one sentence per tier in its own def field, written for
+    exactly this job (tierOf, tierRange), so this is the same precedent as
+    law: and archetype: just above: a meaning table entry built from the
+    table the engine already carries, never typed a second time here. A gap
+    this closed: before it, the tier word a reading is built on, "severe",
+    "oscillating", "mastery", printed with no meaning beside it at all, which
+    round PO's unpack rule names as a gate and not a preference.
+
+    ONE SENTENCE, THE GATE'S OWN RULE, caught this file's first pass: def is
+    sometimes two sentences ("Fifty is the median... The field crosses it
+    both ways...") and this prepended the tier's own name as a third, "Gaining.
+    The field builds...", so every one of the ten failed PO's own check for
+    it. The display word already carries the name, unp()'s own label, so the
+    tip needs only the first sentence of def and not the name again: split on
+    the first ". " and keep one trailing full stop, never two. */
+ if(typeof TIERDEF!=='undefined')
+  TIERDEF.forEach(function(x){
+   t['tier:'+x.nm.toLowerCase()]=String(x.def||'').split('. ')[0].replace(/\.+$/,'')+'.';});
+ /* THE GENERAL VOCABULARY, WIRED INTO THE SAME TOOLTIP. GLOSS (kb.js) is the
+    product's own glossary, Address, Charge, Coherence, Fetter and the rest,
+    and until now it answered only on the Knowledge page's own search, never
+    at the place a reading actually uses one of its words. Filled in last and
+    only where no more specific table above already holds the key, so a real
+    collision is won by the table that knows the context rather than by load
+    order.
+
+    COLLISIONS DO EXIST, and this paragraph said none did. Checked 12
+    November: a set of GLOSS words already have a sentence in UNPACK_BASE
+    above, so the tooltip says that table's wording and not GLOSS's. Most
+    say the same thing twice; a few do not, and which wording is canon is
+    the owner's call, not this file's. tests/engine.js group GW names every
+    one off the run, so a new collision is a named difference rather than a
+    silent one. The count is not typed here.
+
+    ONLY THE FIRST SENTENCE, the same cut `dlyGloss` already makes for a
+    Daily Summary card, because this table is held to a stricter contract
+    than GLOSS itself: one plain sentence, tests/engine.js group PO. A GLOSS
+    entry is free to run longer since it answers a search on its own page;
+    its first sentence still has to earn a place in the one table every
+    short tooltip in the product reads from, so a sentence that fails this
+    table's own checks, a percent or a dash in it, over the word ceiling, or
+    carrying a word this table bans outright (vritti, named in PO), is left
+    out rather than let the rule bend for one term. */
+ if(typeof GLOSS!=='undefined')
+  GLOSS.forEach(function(g){
+   var gk=g.t.toLowerCase(); if(t[gk])return;
+   var first=String(g.d||'').split('. ')[0].replace(/\.+$/,'')+'.';
+   var dashRx=new RegExp(String.fromCharCode(0x2014)+'|'+String.fromCharCode(0x2013));
+   if(first.length<12)return;
+   if(first.split(/\s+/).length>34)return;
+   if(/%|\bpercent\b|\bper cent\b|\bscore\b|\b\d+\s*(of|out of)\s*\d+\b|vritti/i.test(first)||dashRx.test(first))return;
+   t[gk]=first;});
+ UNPACK_MEMO=t;
+ return t;}
+
+/* ONE LOOKUP. A term, and optionally the family it belongs to. Case and the
+   Brow spelling of the 3rd Eye are folded here so no caller has to. Returns the
+   sentence, or the empty string when the table has none, and a caller never
+   prints a guess in its place. */
+function unpackKey(term,ctx){
+ var k=String(term||'').toLowerCase().replace(/^\s+|\s+$/g,'');
+ if(k==='brow'||k==='third eye')k='3rd eye';
+ var t=unpackAll();
+ if(ctx&&t[ctx+':'+k])return ctx+':'+k;
+ return t[k]?k:'';}
+function unpackOf(term,ctx){
+ var k=unpackKey(term,ctx);
+ return k?unpackAll()[k]:'';}

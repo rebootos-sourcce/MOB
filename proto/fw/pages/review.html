@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>C plus to B</title>
+<!--KIT-->
+<style>
+.doc{max-width:1080px;margin:0 auto}
+.doc h2{font-size:22px;margin:34px 0 10px}
+.doc h3{font-size:16px;margin:18px 0 6px}
+.doc p,.doc li{color:var(--ink)}
+.doc ul{padding-left:20px}
+.pri{display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:999px;margin-right:6px;vertical-align:1px}
+.p0{background:#4a1d1a;color:#ffb4ab}.p1{background:#43301a;color:#f3c98b}.p2{background:#1d3240;color:#a9d6ee}.p3{background:#23303a;color:#c9d4dc}
+.it{border:1px solid var(--edge);background:var(--panel);border-radius:14px;padding:14px 16px;margin:10px 0}
+.it .f{font-weight:600;font-size:16px}
+.it dl{display:grid;grid-template-columns:90px 1fr;gap:4px 12px;margin:10px 0 0;font-size:14px}
+.it dt{color:var(--dim)}
+.it dd{margin:0;color:var(--mid)}
+.grade{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0}
+.grade div{background:var(--sunk);border:1px solid var(--edge);border-radius:12px;padding:12px}
+.grade b{font-size:28px;display:block}
+.files li{font-family:ui-monospace,Menlo,monospace;font-size:13px;color:var(--mid)}
+@media (max-width:700px){.grade{grid-template-columns:1fr}.it dl{grid-template-columns:1fr}}
+</style></head><body>
+<div class="wrap"><div class="doc">
+ <div class="eyebrow">Round FW. The whole team review, and what moves it from C plus to B.</div>
+ <h1 style="font-size:32px;margin:6px 0 4px">C plus to B</h1>
+ <p class="muted">Ines Halldors, creative director, for the team. 27 September. Built and walked fresh on commit <b id="cm"></b> at 1600 and 390 in real Chromium, on a blank record and on Gordon, and read against RESEARCH-firstrun.md, RESEARCH-90day.md, DECISIONS.md and the log from DG to FY. Every number below was measured tonight unless it says otherwise.</p>
+
+ <h2>The grade, and the one sentence under it</h2>
+ <p><b>The idea is a B plus and the product is a C plus, because it keeps saying things that are not true, keeps asking a stranger to hold more than four things at once, and draws its three most important ideas, the patterns, the fetters and the flow, in a visual language that does not carry them.</b> None of that is the idea being wrong. It is the execution, which means it is fixable, and most of it is small.</p>
+ <div class="grade"><div><span class="small muted">Where it is</span><b>C plus</b><span class="small">The instrument is real and the drawing is good. The first minute, the patterns and the navigation undo it.</span></div>
+  <div><span class="small muted">After the five small fixes</span><b>B minus</b><span class="small">Nothing on screen claims a reading that is not there. About a day of engineering.</span></div>
+  <div><span class="small muted">After the mockups are ruled and built, and the loop moves a number</span><b>B</b><span class="small">Needs two rulings from you, listed at the end, and the six designs below.</span></div></div>
+
+ <h2>The punch list, in the order I would spend the money</h2>
+ <p class="muted">Each one is a defect, its cause, the move, what it costs, and the evidence. P0 is trust: the product says something untrue. P1 is the loop. P2 is load and navigation. P3 is the visual language.</p>
+ <div id="list"></div>
+
+ <h2>What I took from the research you gave the team</h2>
+ <p class="muted">Nine rules, each with where it came from and where it now shows up in tonight's work. These are the brain the mockups were built with.</p>
+ <div id="rules"></div>
+
+ <h2>The six mockups, and what each one proves</h2>
+ <div id="mocks"></div>
+
+ <h2>Next, in order</h2>
+ <ol>
+  <li>Ship the five P0 fixes. They need no design and no ruling, except the name for the unnamed fetter.</li>
+  <li>You rule on the six mockups: one option each, or send them back.</li>
+  <li>Build the Body page first (items 1 to 4 share one figure and one set of overlays), then Knowledge and Summary with the FY restructuring, then Energetics.</li>
+  <li>Ask the art seat for the 55 universal law marks and a second pass on the 21 law marks drawn tonight.</li>
+  <li>Take the two loop rulings (the headline number, and what days 31 to 89 give) into the next build round.</li>
+ </ol>
+
+ <h2>Questions for you</h2>
+ <div id="qs"></div>
+</div></div>
+<!--DATA-->
+<script>
+document.getElementById('cm').textContent=DATA.stamp.commit;
+var L=[
+ ['p0','A blank record still asserts a reading.','On a profile with nothing entered, the right rail prints archetypes at 26, 19 and 19 percent and a first domain at 100, and the left rail captions it Warrior plus Sage, directly under "Nothing has been entered yet".',
+  'The unread guard was added to Summary and the Field centre, and never reached the rail\'s person panel or the left rail caption (ui/ui.js, the rail rows; the Root energetics rail).',
+  'Gate the archetype and domain rows and the caption on r.unread, the guard Summary already uses.','Small. One module, one gate.','Measured tonight at both widths. Logged AV24 on 25 September and again in RESEARCH-firstrun.md on 26 September. Still present.'],
+ ['p0','Summary prints readings as counts of a total.','Seven readings on Summary carry a denominator under them ("of 10", "of 1", and a hundred), and the Field wheel draws one on canvas. The house rule is that a reading is not a score.',
+  'The numbers were given a scale to make them legible. The scale turned them into grades.','Drop the denominators. Say the state and what it means, the way mockup 6B does.','Small. ui/summary.js and ui/wheel.js.','Seven counted on HEAD for Gordon.'],
+ ['p0','The engine lists one saboteur twice.','Gordon carries Aggressor twice in one reading, once from the named detector and once from the cluster table, and both count toward "Saboteurs 40" on the Body page.',
+  'compute() takes saboteurs from SAB33 detection and from the library clusters and never merges by name.','Merge by name in compute(), keeping the heavier, and acknowledge it through tools/equiv.py as a named diff.','Small, engine side.','Read from compute() on HEAD; drawn in mockup 2 with the duplicate labelled.'],
+ ['p0','A raw identifier reaches the screen.','"Root_08_Unnamed" prints in Knowledge at 0 percent, with its underscores.',
+  'The address has no name yet. That is your open item, and the code prints the key instead of admitting it.','Until you name it, print its structure, the cauda equina, with an unnamed tag.','Small. Needs the name from you to close.','Present in Knowledge on HEAD.'],
+ ['p0','A worked example opens Energetics blank.','Load Gordon, open Energetics: name and birth are empty, Save says "Enter a name or a date of birth first", and the rail beside it says Gordon.',
+  'Worked examples carry no birth record, and the form does not say so.','Say it on the form: "Worked example. No birth record on file." Or give the examples one.','Small.','Measured tonight.'],
+ ['p1','The first thing a person writes usually reads as nothing.','Eight of the nine first entries in the roster\'s own voice light nothing, 850 of the 1,000 panel weighted. The first story never crosses the line, and the first commit empties the panel and answers "nothing reaches the line yet" beside a 0 in the largest numeral on the rail.',
+  'The sniffer reads a narrow lexicon, and applyStory lands 0.35 of what it reads by design. The render then treats under the line as absent.','Two moves. Draw the addresses under the line faint where they sit after the first commit, calibrating, not empty, the way WHOOP and Oura do. And ship the stemmer and frame layer already built and measured in proto/game.','Medium. The render is small; the reader is engine work with a named diff.','RESEARCH-firstrun.md sections 3 and 4; RESEARCH-90day.md rows 4, 5 and 9.'],
+ ['p1','The number a person watches does not move.','Without the 63 questions, the headline reads 0 on day 90 as on day 1. With them, ninety days of daily release moves it by 0.13 to 0.50, and expression ends lower for all seven ICPs.',
+  'The headline is the laws alone since 25 September, and a release barely moves the laws.','Lead with something a release moves. FY\'s Bank and Vault, with a count that ticks, is exactly that. Needs your ruling on which number is the headline.','A ruling, then small.','RESEARCH-90day.md rows 12 to 14, question 4.'],
+ ['p1','Nothing leads a person to the most valuable control.','The When row on Ritual, the if then plan that measured a 7.5 percent lift in opens elsewhere, is never reached by a stranger.',
+  'The first run ends on the Field, not on the plan.','End the first turn of the loop on the When row, as storyboard frame T4 already draws.','Small, once the first run is built.','RESEARCH-firstrun.md, Sofia\'s walk and section 5.3.'],
+ ['p1','Days 30 to 89 are silent.','Somebody who never misses earns their last new mark between day 30 and day 42, then nothing until day 90.',
+  'Every later mark needs releases, and the ladder has no marks on the coherent side.','The coherent side awards already designed in losssim.js pass 6: an axis held for seven days. No countdowns, no streak penalties.','Medium.','RESEARCH-90day.md row 17, question 5.'],
+ ['p2','The Body page puts its navigation above its picture.','Two rows of chips, layers then regions, sit above the figure. On a phone the figure starts about 420 pixels down, half the first screen.',
+  'Each layer added a button to a bar, and Pain added a second bar.','Layers and regions as overlays inside the picture, and the seven seats pressable on the heat map. Mockup 3.','Medium.','Measured: figure top at 419 px at 390, 158 px at 1600.'],
+ ['p2','Every surface asks a stranger to hold too much.','Controls in view on the first screen at 1600: landing 102, Field 103, Energetics 91, Summary 83, Compass 87, Knowledge 133. The left rail, about forty marks with Architect, Engine, Weaver and Witness, is the same on every tab.',
+  'The rails are global. Each surface inherited both of them whether it needed them or not.','Rails belong to the surface that needs them. FY moves the tools off the Field; mockup 5 takes both rails off Energetics. Target under forty on any first screen.','Architectural. The decision is already half made by FY.','Measured tonight. The 57 to 71 figure in CLAUDE.md used a different counter; compare this one with itself.'],
+ ['p2','Knowledge is one strip and a wall.','Eleven decks in one row that runs 311 pixels past the edge at 1600 and 821 at 390, opening on 112 fetters.',
+  'Built as a codex to search, not as a place to arrive.','Bands, closed until opened, in your order: universal laws, the psyche architecture, then down to the fetters. Mockup 6A.','Medium.','Measured tonight.'],
+ ['p2','Energetics makes a stranger read before it asks.','It opens on a five line paragraph about the cut from the mother, then a form with Save disabled, then "0 answered, 63 left". The fifteen minutes is stated below the fold.',
+  'The page explains the instrument to somebody who has not met it yet.','Arrive on the seven seats filling in, one mark per question, and the question opens where you press. Mockup 5.','Medium.','RESEARCH-firstrun.md item 8; walked again tonight.'],
+ ['p3','The patterns have no face.','Saboteurs, Complexes, Hyper and Masks are all the same drawing: rings outside the body with curves to the seats. A voice that says "This will destroy everything" is drawn as a circle.',
+  'One idiom, the pattern bead, was stretched to four different kinds of thing.','A mask grammar built from the engine\'s own data: the outline is the family, the expression is the charge, the colour is the seat. Mockup 2.','Medium. One icon generator and four renders.','Walked tonight on Gordon.'],
+ ['p3','28 fetters have no place of their own.','They stand on a spiral round their seat\'s ring, drawn with the same confidence as the 80 that are measured.',
+  'Neither of your two charts names their structures, so the anatomy pass left them gathered.','Place each at the nerve structure nodes.js already names, from standard anatomy, on a grid in centimetres, and score the rest against your charts. Mockup 1.','Small once ruled: one data table.','proto/anatomy-ref measurements; mockup 1.'],
+ ['p3','The flow is not a nervous system.','Seven rings on a column over faint traced fragments, and one label.',
+  'The branches were traced from a raster, not drawn from anatomy.','An anatomical front and back, built on vertebral levels calibrated to your charts. Mockup 4.','Medium.','Walked tonight.'],
+ ['p3','Laws and universal laws have no marks of their own.','The law rail is a dot, a name, a slider and a number. The 55 universal laws outside the 21 share one mark per family, so thirteen waves sit side by side under Nature.',
+  'Marks were drawn per family to get every card coloured, and never per law.','21 new law marks drawn tonight as a first draft (mockup 5). The 55 universal marks are the next art batch.','The 21 are done in draft. The 55 are about two days of art.','Mockup 6A shows the thirteen waves as they stand.']];
+var ORD={p0:'P0',p1:'P1',p2:'P2',p3:'P3'};
+document.getElementById('list').innerHTML=L.map(function(x,i){return '<div class="it"><div class="f"><span class="pri '+x[0]+'">'+ORD[x[0]]+'</span>'+(i+1)+'. '+esc(x[1])+'</div><p style="margin:8px 0 0">'+esc(x[2])+'</p><dl><dt>Cause</dt><dd>'+esc(x[3])+'</dd><dt>Move</dt><dd>'+esc(x[4])+'</dd><dt>Cost</dt><dd>'+esc(x[5])+'</dd><dt>Evidence</dt><dd>'+esc(x[6])+'</dd></dl></div>';}).join('')
+ +'<p class="small muted">Checked and not on the list. Title case on headers is your ruling, recorded in shell/head.html, not a defect. The free tier lockout from the ninety day run is fixed and verified (FU). The Compass hero is being fixed by another seat tonight. The copy of numbers read as arithmetic ("held 5.0 opposite install 0.0") is the copy seat\'s pitch from FV and is not repeated here.</p>';
+var R=[
+ ['Teach through the thing itself.','Nintendo\'s four beats and Valve\'s Portal, in RESEARCH-firstrun.md 5.8, and NN/g\'s finding that tutorial decks do not help, 5.1.','Every mockup explains itself by doing: the fetters are pressed, the masks are pressed, the seats are pressed. No page opens on a paragraph.'],
+ ['Calibrating, never empty.','WHOOP and Oura, 5.4. A thing still learning is drawn faint and says when it fills.','Punch list item 6. Mockup 5 draws the seven seats dim until their laws are answered, then lights them.'],
+ ['One thing at a time for a stranger, everything at once for the fluent.','The four Energetics layouts walked by six ICPs, RESEARCH-firstrun.md section 7: staged wins every stranger measure, tiles win the fluent, and they are the same page at different moments.','Mockup 5 option A is staged, option B keeps every mark visible, and both are one page.'],
+ ['Four things in working memory.','CLAUDE.md, cognitive load, and tonight\'s control counts.','Overlays in mockup 3, bands closed by default in mockup 6, both rails gone from mockup 5.'],
+ ['Say what it costs.','RESEARCH-90day.md section 2: 450 of the 1,000 came for a cost and the storyboard never names one.','Mockup 6B, Summary, is built on three answers, and the second is what it costs.'],
+ ['A voice is easier to recognise than a diagram.','Your own words tonight, and the codex\'s own line for each saboteur.','Mockup 2 puts the saboteur\'s sentence under its face everywhere it appears.'],
+ ['A real head start, never a fake one.','Nunes and Dreze, 5.5.','The Energetics hero changes to "It is starting to see you" the moment one thing is given, and the strip under it lights what is known.'],
+ ['Ask, then give something back every time.','Headspace and Noom, 5.3 and 5.11.','Every law answered in mockup 5 comes back as a ring and a plain sentence about you, not a percent.'],
+ ['Overlap is truth, divergence is range.','Your ruling in FV on Root energetics.','The archetype pin in mockup 5 keeps both what the field reads and what you pinned, and names the gap as a reading.']];
+document.getElementById('rules').innerHTML=R.map(function(x,i){return '<div class="it"><div class="f">'+(i+1)+'. '+esc(x[0])+'</div><dl><dt>From</dt><dd>'+esc(x[1])+'</dd><dt>Used in</dt><dd>'+esc(x[2])+'</dd></dl></div>';}).join('');
+var M=[['fetters','1. Fetter placement','Every fetter at its nerve structure on a grid read in centimetres, front and back, both sides of every paired structure, scored against your two charts, with your chart beside it and the matched point ringed. Three options: exact places, against your charts, today.'],
+ ['masks','2. Saboteur, complex and hyper complex masks','A face per saboteur built from family, charge and seat, its sentence underneath. The cast, on the body with no lines, the descent from character to fetters, how a mask is built, and today.'],
+ ['pain','3. Pain map and its navigation','Layers and regions as overlays in the picture, the seven seats pressable on the heat map. A: overlays as you described. B: an icon rail in the picture. Today.'],
+ ['nervous','4. The Flow tab as a nervous system','Brain, cord and 31 root pairs, the plexuses, both vagus nerves, both sympathetic chains, and the main nerves of the limbs, front and back, with sources. The flow runs up through the seats.'],
+ ['energetics','5. Energetics, arriving','No rails. The seven seats fill in as you answer; each question is a mark with its seat symbol and name; 21 law marks drawn new; the archetype pinned by two symbols and a scene.'],
+ ['knowledge','6. Knowledge and Summary','Knowledge as bands in your order, closed until opened. Summary as three answers with nothing printed against a total.']];
+document.getElementById('mocks').innerHTML=M.map(function(x){return '<div class="it"><div class="f">'+esc(x[1])+'</div><p style="margin:6px 0 0" class="muted">'+esc(x[2])+'</p><p class="small dim" style="margin:6px 0 0">proto/fw/out/'+x[0]+'-packed.html</p></div>';}).join('');
+var Q=[['Fetters, item 1','Is the classical marma chart the rule wherever your two charts disagree? The 112 chart is the pasted document that docs/research/marma-validation.md found partly unsupported. Your own words in CS were a question about this, still open: "is the classical marma chart the rule whenever the two disagree, or was that one address\'s own call?"','Marma rules: the 112 chart becomes a secondary reference and six placements move a few centimetres. Case by case: no change, slower.'],
+ ['Fetters, item 1','You said on 26 September, "I\'ll generate one for you... I\'ll drop in the image when it\'s ready", about a reference with the muscles drawn. It has not arrived. Do you still want to send it, or should the team source one?','Yours: the 28 proposed places are checked against your own reference. Sourced: faster, and a licence question for any image we keep.'],
+ ['Masks, item 2','The six developmental Masks already own the word and a face. If saboteurs become faces, which one changes? One word per concept.','Saboteurs are called voices and keep the faces: no rename of Masks. Or the developmental Masks move to a figure by age, and saboteurs keep the word mask: a rename across the product.'],
+ ['Flow, item 4','Two seats and their plexuses do not meet. The Heart seat is drawn about 9 cm below the cardiac plexus, which sits at the tracheal bifurcation. The Root seat is named for the lumbar plexus while it sits at the pelvic floor, which the sacral and coccygeal plexuses serve. Move the seats, rename the plexuses, or keep both as they are?','Move the Heart seat up: every Body picture shifts. Rename Root to the sacral plexus: one line of data. Keep both: the Flow tab has to say why.'],
+ ['Flow, item 4','Do you need to generate a front and back image for the nervous system? My read: no, for accuracy, since the anatomy comes from sources. Yes, if you want it rendered like a medical illustration rather than a clean schematic.','Schematic, as mocked tonight: buildable now. Illustrated: needs your image or a licensed one, and an art pass.'],
+ ['Loop','Which number is the headline for someone who has not answered the 63? Today it reads 0 for ninety days whatever they do.','Keep it, honest and still. Or lead with what a release moves, the Vault count from FY.'],
+ ['Energetics, item 5','The archetype pin starts from the four the field already leans toward. Should a person be able to pin one the field does not see at all?','Yes: an "other" door, one more tap. No: faster, and the pin can only confirm or choose among what is read.']];
+document.getElementById('qs').innerHTML=Q.map(function(x,i){return '<div class="it"><div class="small muted">'+esc(x[0])+'</div><div class="f" style="margin-top:4px">'+(i+1)+'. '+esc(x[1])+'</div><dl><dt>The ways</dt><dd>'+esc(x[2])+'</dd></dl></div>';}).join('');
+banner('The whole team review, round FW',false);
+</script></body></html>

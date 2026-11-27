@@ -1,0 +1,11 @@
+--- /tmp/claude-0/-home-user-MOB/e909b21c-7092-5fcd-af76-1092a869307f/scratchpad/audit-review/work/index.orig.js	2026-10-09 06:58:01.662790864 +0000
++++ src/index.js	2026-10-09 06:58:01.665108881 +0000
+@@ -506,7 +506,7 @@
+ export default {
+   async fetch(request, env){
+     const url = new URL(request.url);
+-    const cors = {'access-control-allow-origin': env.ALLOWED_ORIGIN||'*', 'access-control-allow-headers':'authorization, content-type, x-funnel-credential', 'access-control-allow-methods':'GET, POST, PUT, DELETE, OPTIONS'};
++    const cors = {'access-control-allow-origin': env.ALLOWED_ORIGIN||'*', 'access-control-allow-headers':'authorization, content-type, x-funnel-credential', 'access-control-allow-methods':'GET, POST, PUT, PATCH, DELETE, OPTIONS'};
+     if(request.method==='OPTIONS') return new Response(null, {status:204, headers:cors});
+     const hit = match(request.method, url.pathname);
+     if(!hit) return withHeaders(err(404,'no such route'), cors);

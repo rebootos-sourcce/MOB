@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Record the opening</title>
+<style>
+@font-face{font-family:Inter;font-weight:300 700;src:url(inter.woff2) format('woff2')}
+:root{--bg:#0C0D12;--panel:#171A22;--panel2:#20232D;--ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;--edge:rgba(255,255,255,.12);
+ --acc:#7EB8D4;--on:#0B1418;--rec:#FF2E1F;--ok:#86BFA4;--font:Inter,system-ui,-apple-system,'Segoe UI',sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 var(--font);-webkit-font-smoothing:antialiased}
+main{max-width:720px;margin:0 auto;padding:24px 16px 80px}
+h1{font-size:28px;font-weight:600;letter-spacing:-.01em;margin:8px 0 4px}
+h2{font-size:18px;font-weight:600;margin:0 0 8px}
+p{margin:0 0 12px}
+.lede{color:var(--mid);max-width:34em}
+ol.steps{margin:18px 0 8px;padding:0;list-style:none;counter-reset:s;display:grid;gap:10px}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:36px 1fr;gap:12px;align-items:start;padding:12px 14px;border:1px solid var(--edge);border-radius:14px;background:var(--panel)}
+ol.steps li::before{content:counter(s);width:36px;height:36px;border-radius:50%;border:1.5px solid var(--acc);color:var(--acc);display:flex;align-items:center;justify-content:center;font-weight:600}
+ol.steps b{color:var(--ink)}
+.pill{display:inline-block;padding:0 8px;border-radius:8px;background:var(--panel2);border:1px solid var(--edge);font-size:14px}
+.card{margin:22px 0;padding:18px;border:1px solid var(--edge);border-radius:18px;background:var(--panel)}
+.card.on{border-color:var(--acc)}
+.card .top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.card .top span{font-size:13px;color:var(--dim)}
+.say{margin:10px 0 14px;font-size:22px;line-height:1.55;font-weight:300;color:var(--ink)}
+.say .w{opacity:.28;transition:opacity .12s}
+.say .w.on{opacity:1}
+.say.plain .w{opacity:1}
+.say .row{display:block;margin-bottom:.25em}
+textarea.edit{width:100%;min-height:92px;font:inherit;font-size:18px;color:var(--ink);background:var(--bg);border:1px solid var(--edge);border-radius:12px;padding:12px;margin:0 0 12px}
+.ctl{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+button{font:inherit;color:var(--ink);min-height:48px;padding:0 18px;border-radius:24px;border:1px solid var(--edge);background:transparent;cursor:pointer}
+button:hover:not(:disabled){border-color:var(--mid);background:var(--panel2)}
+button:disabled{opacity:.35;cursor:default}
+button.rec{min-width:176px;min-height:64px;border-radius:32px;border:2px solid var(--rec);font-size:18px;font-weight:600;display:inline-flex;align-items:center;justify-content:center;gap:12px}
+button.rec i{width:18px;height:18px;border-radius:50%;background:var(--rec);display:block}
+button.rec.live{background:var(--rec);color:#fff}
+button.rec.live i{background:#fff;border-radius:4px}
+button.pri{background:var(--acc);border-color:var(--acc);color:var(--on);font-weight:600}
+button:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.meter{flex:1;min-width:140px;height:10px;border-radius:5px;background:var(--panel2);overflow:hidden;position:relative}
+.meter i{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--ok);transition:width .06s linear}
+.stat{font-size:14px;color:var(--dim);min-height:22px;margin-top:10px}
+.stat b{color:var(--ink);font-weight:500}
+.ok{color:var(--ok)}
+.warn{color:#E8B05A}
+.final{border-color:var(--ok)}
+.fine{font-size:14px;color:var(--dim);max-width:40em}
+.err{display:none;margin:16px 0;padding:14px;border-radius:12px;border:1px solid var(--rec);color:#ffb4ab}
+.err.on{display:block}
+details{margin:18px 0;border:1px solid var(--edge);border-radius:14px;padding:4px 14px;background:var(--panel)}
+summary{min-height:48px;display:flex;align-items:center;cursor:pointer;font-weight:500}
+code{font-size:13px;background:var(--panel2);padding:1px 6px;border-radius:6px}
+</style></head><body><main>
+<h1>Record the opening</h1>
+<p class="lede">You read three short lines aloud. This page records them, shows you the words writing themselves out in time with your voice, and saves two files to send back. Nothing leaves this page: it has no network, no account and no upload.</p>
+
+<div class="err" id="err" role="alert"></div>
+
+<h2 style="margin-top:22px">Before you start</h2>
+<ol class="steps">
+ <li><span><b>Use Chrome or Edge, on a computer.</b> Sit somewhere quiet, a few inches from the microphone, with the door closed. Headphones are fine and keep the app's own sound out of the take.</span></li>
+ <li><span><b>Press the big red Record button</b> on the first line below. A small box appears at the <b>top left of the browser window, just under the address bar</b>. It asks to use your microphone. Click <span class="pill">Allow</span>. (It may say <span class="pill">Allow this time</span> or <span class="pill">Allow while visiting the site</span>. Any of the three is right.) You only do this once.</span></li>
+ <li><span><b>Read the line aloud</b> at your own pace, with a short pause between sentences. When you finish, press <span class="pill">Stop</span>. Press <span class="pill">Play</span> to hear it and watch the words write out. Not happy? Press <span class="pill">Record again</span>. You can do it as many times as you like.</span></li>
+ <li><span><b>Do the same for the next two lines.</b> You can change any wording first: press <span class="pill">Edit the words</span>, change them, and the timing follows.</span></li>
+ <li><span><b>Press Download both files</b> at the bottom. Your browser saves two files into your <b>Downloads folder</b> (Chrome shows a small arrow at the top right of the window: click it, then click <span class="pill">Show in folder</span>). <b>Send both files back:</b> <code>atuned-opening.wav</code> and <code>atuned-opening-timing.json</code>.</span></li>
+</ol>
+
+<div id="lines"></div>
+
+<div class="card" id="final">
+ <h2>Save</h2>
+ <p class="fine" id="sum">Record all three lines to unlock the download.</p>
+ <div class="ctl"><button class="pri" id="dl" disabled>Download both files</button><button id="playall" disabled>Play the whole opening</button></div>
+ <p class="fine" id="dlnote" style="margin-top:12px"></p>
+</div>
+
+<details><summary>If something does not work</summary>
+ <p><b>No box asked for the microphone.</b> Click the small padlock or settings icon at the left end of the address bar, find Microphone, and set it to Allow. Then reload this page.</p>
+ <p><b>The page says it cannot find a microphone.</b> Plug in a headset or check the computer's sound settings, then reload.</p>
+ <p><b>The words write out too early or too late.</b> Record the line again a little slower, with a clear short pause at each full stop. The page finds the pauses and spreads the words between them.</p>
+ <p><b>Safari.</b> Safari does not allow the microphone on a page opened from a file. Use Chrome or Edge, or ask for this page as a web link.</p>
+</details>
+<p class="fine">For the team: the recording is captured as raw audio (not with MediaRecorder), so the page can read the loudness of every 10 milliseconds, find the pauses, and place each word. The timing file lists, for each line, the start and end of every word in seconds from the start of the saved clip. The build step turns the clip into a small compressed file and embeds it.</p>
+</main>
+<script>
+(function(){
+'use strict';
+/* ---- the script. PROPOSED, and his to edit on this page. ---- */
+var LINES=[
+ {id:'intro',title:'Line 1. The opening',hint:'Say each sentence, and pause a beat at each full stop.',
+  text:'Sit down. Feet on the floor. Move your awareness inside your body. Take one deep breath. When you are ready, repeat this in your mind.',tail:false},
+ {id:'stem-first',title:'Line 2. The first sentence you read',hint:'Stop after “I am” and let the silence hold for a breath. The three dots on screen are that silence.',
+  text:'I am releasing believing, thinking, feeling, behaving and acting that I am',tail:true},
+ {id:'stem-six',title:'Line 3. The same sentence for every run after the first',hint:'This is the six channel version the app uses from the second run on. Again stop after “I am”.',
+  text:'I am letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am',tail:true}];
+LINES.forEach(function(L){L.pcm=null;L.rate=0;L.segs=null;L.dur=0;});
+var GAP=0.5;                       /* seconds of silence between lines in the saved clip */
+var ctx=null, stream=null, src=null, proc=null, recIdx=-1, chunks=[], mute=null;
+var $=function(id){return document.getElementById(id);};
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function fail(m){var e=$('err');e.textContent=m;e.classList.add('on');}
+
+/* ---- words, and the one splitter the app uses too ---- */
+function wordsOf(L){var w=L.text.trim().split(/\s+/).filter(Boolean);if(L.tail)w.push('...');return w;}
+
+/* ---- finding the pauses: 10 ms of loudness at a time ---- */
+function analyse(L){
+ var x=L.pcm, sr=L.rate, hop=Math.round(sr*0.01), n=Math.floor(x.length/hop), db=new Float32Array(n), i,j;
+ for(i=0;i<n;i++){var s=0;for(j=0;j<hop;j++){var v=x[i*hop+j];s+=v*v;}db[i]=10*Math.log10(s/hop+1e-12);}
+ var sorted=Array.prototype.slice.call(db).sort(function(a,b){return a-b;});
+ var floor=sorted[Math.floor(n*0.15)], peak=sorted[Math.floor(n*0.97)];
+ var thr=Math.max(floor+8,peak-26);                 /* well above the room, well below the loud words */
+ var on=[];for(i=0;i<n;i++)on.push(db[i]>thr);
+ /* close gaps shorter than 120 ms (the dip inside a word), drop blips under 60 ms */
+ var segs=[],st=-1;
+ for(i=0;i<=n;i++){var v2=i<n&&on[i];if(v2&&st<0)st=i;if(!v2&&st>=0){segs.push([st,i]);st=-1;}}
+ var m=[];segs.forEach(function(s){if(m.length&&s[0]-m[m.length-1][1]<12)m[m.length-1][1]=s[1];else m.push(s.slice());});
+ m=m.filter(function(s){return s[1]-s[0]>=6;});
+ L.segs=m.map(function(s){return [s[0]*0.01,s[1]*0.01];});
+ L.floorDb=floor;L.thrDb=thr;L.peakDb=peak;
+}
+/* ---- placing the words. Sentences are the units the pauses can see. ---- */
+function align(L){
+ var segs=(L.segs||[]).map(function(s){return s.slice();}); if(!segs.length)return null;
+ var ws=wordsOf(L), spoken=ws.filter(function(w){return w!=='...';});
+ /* sentence breaks are the words that end . ! ? */
+ var sent=[],cur=[];spoken.forEach(function(w,i){cur.push(i);if(/[.!?]$/.test(w)||i===spoken.length-1){sent.push(cur);cur=[];}});
+ /* join segments that are closer than 280 ms: a pause shorter than that is a breath inside a sentence */
+ var merged=[];segs.forEach(function(s){if(merged.length&&s[0]-merged[merged.length-1][1]<0.28)merged[merged.length-1][1]=s[1];else merged.push(s);});
+ /* too many pieces: join the pair with the smallest gap until it matches */
+ while(merged.length>sent.length){var bi=0,bg=1e9;for(var k=0;k<merged.length-1;k++){var g=merged[k+1][0]-merged[k][1];if(g<bg){bg=g;bi=k;}}
+  merged[bi][1]=merged[bi+1][1];merged.splice(bi+1,1);}
+ var spans=[];
+ if(merged.length===sent.length){spans=merged;}
+ else{ /* fewer pauses than sentences: share the whole spoken stretch by the weight of each sentence */
+  var a=segs[0][0], b=segs[segs.length-1][1], tw=0, ww=sent.map(function(S){var t=0;S.forEach(function(i){t+=spoken[i].length+1.5;});tw+=t;return t;}),t0=a;
+  ww.forEach(function(w){var d=(b-a)*w/tw;spans.push([t0,t0+d]);t0+=d;});}
+ var out=new Array(spoken.length);
+ sent.forEach(function(S,si){
+  var sp=spans[si], tw2=0, wt=S.map(function(i){var w=spoken[i];var x=w.replace(/[^\w']/g,'').length+1.2+(/,$/.test(w)?1.4:0);tw2+=x;return x;});
+  var t=sp[0];S.forEach(function(i,k){var d=(sp[1]-sp[0])*wt[k]/tw2;out[i]=[t,t+d*(/,$/.test(spoken[i])?0.72:0.92)];t+=d;});});
+ var words=out.slice();
+ if(L.tail){var last=out[out.length-1];words.push([last[1],last[1]+0.5]);}
+ return {start:out[0][0],end:(L.tail?words[words.length-1][1]:out[out.length-1][1]),words:words,spans:spans,nsegs:merged.length,nsent:sent.length};
+}
+
+/* ---- capture: raw samples, so nothing is lost to a codec ---- */
+function ensureCtx(){
+ if(ctx)return Promise.resolve();
+ return navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:true,autoGainControl:false,channelCount:1}}).then(function(s){
+  stream=s;ctx=new (window.AudioContext||window.webkitAudioContext)();src=ctx.createMediaStreamSource(s);
+  proc=ctx.createScriptProcessor(4096,1,1);mute=ctx.createGain();mute.gain.value=0;
+  src.connect(proc);proc.connect(mute);mute.connect(ctx.destination);
+  proc.onaudioprocess=function(e){
+   var d=e.inputBuffer.getChannelData(0),pk=0;
+   if(recIdx>=0){chunks.push(new Float32Array(d));}
+   for(var i=0;i<d.length;i+=8){var a=Math.abs(d[i]);if(a>pk)pk=a;}
+   var m=document.querySelector('.card.on .meter i');if(m)m.style.width=Math.min(100,Math.round(Math.sqrt(pk)*110))+'%';};
+ });}
+function startRec(i){
+ ensureCtx().then(function(){
+  if(ctx.state==='suspended')ctx.resume();
+  stopPlay();chunks=[];recIdx=i;$('card'+i).classList.add('on');t0=performance.now();ui(i,'rec');tick();
+ }).catch(function(e){fail(e&&e.name==='NotAllowedError'?'The microphone was blocked. Click the padlock at the left end of the address bar, set Microphone to Allow, then reload this page.':'This page could not open a microphone: '+(e&&e.message||e)+'.');});}
+var t0=0,tmr=0;
+function tick(){clearTimeout(tmr);if(recIdx<0)return;var s=(performance.now()-t0)/1000;var el=$('time'+recIdx);if(el)el.textContent=s.toFixed(1)+' s';tmr=setTimeout(tick,100);}
+function stopRec(i){
+ var n=0;chunks.forEach(function(c){n+=c.length;});var pcm=new Float32Array(n),o=0;chunks.forEach(function(c){pcm.set(c,o);o+=c.length;});
+ recIdx=-1;chunks=[];clearTimeout(tmr);
+ var L=LINES[i];L.pcm=pcm;L.rate=ctx.sampleRate;L.dur=pcm.length/L.rate;analyse(L);ui(i,'done');summary();}
+/* ---- playback with the words writing out ---- */
+var player=null, raf=0;
+function stopPlay(){if(player){try{player.stop();}catch(e){}player=null;}cancelAnimationFrame(raf);document.querySelectorAll('.say').forEach(function(s){s.classList.add('plain');});}
+function buf(L){var b=ctx.createBuffer(1,L.pcm.length,L.rate);b.copyToChannel(L.pcm,0);return b;}
+function playLine(i){
+ stopPlay();var L=LINES[i],A=align(L);var s=ctx.createBufferSource();s.buffer=buf(L);s.connect(ctx.destination);
+ var started=ctx.currentTime;player=s;s.start();s.onended=function(){if(player===s){stopPlay();}};
+ var say=$('say'+i);say.classList.remove('plain');
+ (function f(){var t=ctx.currentTime-started;if(A)say.querySelectorAll('.w').forEach(function(w,k){var c=A.words[k];w.classList.toggle('on',c&&t>=c[0]);});raf=requestAnimationFrame(f);})();
+}
+function playAll(){
+ stopPlay();var tot=0,offs=[];LINES.forEach(function(L){offs.push(tot);tot+=trimLen(L)+GAP;});
+ var s=ctx.createBufferSource(),b=mix();s.buffer=b;s.connect(ctx.destination);var st=ctx.currentTime+0.05;player=s;s.start(st);
+ s.onended=function(){if(player===s)stopPlay();};
+ LINES.forEach(function(L,i){$('say'+i).classList.remove('plain');});
+ (function f(){var t=ctx.currentTime-st;LINES.forEach(function(L,i){var A=align(L);if(!A)return;var base=offs[i]-A.start+PAD;
+   $('say'+i).querySelectorAll('.w').forEach(function(w,k){var c=A.words[k];w.classList.toggle('on',c&&t>=base+c[0]);});});raf=requestAnimationFrame(f);})();
+}
+/* ---- the saved clip: three trimmed takes, half a second apart, mono 16 bit ---- */
+var PAD=0.15, TAILPAD=0.3, OUTRATE=24000;
+function trimmed(L){var A=align(L);var a=Math.max(0,(A?A.start:0)-PAD), b=Math.min(L.dur,(A?(L.tail?A.words[A.words.length-2][1]:A.end):L.dur)+TAILPAD);return [a,b];}
+function trimLen(L){var t=trimmed(L);return t[1]-t[0];}
+function resample(x,from,to){if(from===to)return x;var r=from/to,n=Math.floor(x.length/r),o=new Float32Array(n);for(var i=0;i<n;i++){var p=i*r,i0=Math.floor(p),f=p-i0;o[i]=x[i0]*(1-f)+(x[Math.min(x.length-1,i0+1)])*f;}return o;}
+function mix(){ /* returns an AudioBuffer at the context rate, for playback */
+ var parts=[],tot=0;LINES.forEach(function(L){var t=trimmed(L),a=Math.round(t[0]*L.rate),b=Math.round(t[1]*L.rate);var seg=L.pcm.subarray(a,b);parts.push(resample(seg,L.rate,ctx.sampleRate));tot+=parts[parts.length-1].length+Math.round(GAP*ctx.sampleRate);});
+ var bf=ctx.createBuffer(1,tot,ctx.sampleRate),d=bf.getChannelData(0),o=0;parts.forEach(function(p){d.set(p,o);o+=p.length+Math.round(GAP*ctx.sampleRate);});return bf;}
+function wav(){
+ var parts=[],gap=new Float32Array(Math.round(GAP*OUTRATE)),tot=0;
+ LINES.forEach(function(L,i){var t=trimmed(L),a=Math.round(t[0]*L.rate),b=Math.round(t[1]*L.rate);var seg=resample(L.pcm.subarray(a,b),L.rate,OUTRATE);
+  /* a 10 ms fade at each end so a join never clicks */
+  var f=Math.round(OUTRATE*0.01);for(var k=0;k<f&&k<seg.length;k++){seg[k]*=k/f;seg[seg.length-1-k]*=k/f;}
+  parts.push(seg,gap);tot+=seg.length+gap.length;});
+ /* one loudness for the whole clip: the loudest take sets it to about -3 dB */
+ var pk=0;parts.forEach(function(p){for(var i=0;i<p.length;i++){var a=Math.abs(p[i]);if(a>pk)pk=a;}});var g=pk>0?0.7/pk:1;
+ var buf=new ArrayBuffer(44+tot*2),v=new DataView(buf);
+ function s(o,t){for(var i=0;i<t.length;i++)v.setUint8(o+i,t.charCodeAt(i));}
+ s(0,'RIFF');v.setUint32(4,36+tot*2,true);s(8,'WAVEfmt ');v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,1,true);
+ v.setUint32(24,OUTRATE,true);v.setUint32(28,OUTRATE*2,true);v.setUint16(32,2,true);v.setUint16(34,16,true);s(36,'data');v.setUint32(40,tot*2,true);
+ var o=44;parts.forEach(function(p){for(var i=0;i<p.length;i++){var x=Math.max(-1,Math.min(1,p[i]*g));v.setInt16(o,x<0?x*32768:x*32767,true);o+=2;}});
+ return new Blob([buf],{type:'audio/wav'});}
+function timing(){
+ var off=0,out={version:1,clip:'atuned-opening.wav',sampleRate:OUTRATE,gapSeconds:GAP,lines:[]};
+ LINES.forEach(function(L){var A=align(L),t=trimmed(L),base=off-(t[0]);
+  out.lines.push({id:L.id,text:L.text,silentTail:!!L.tail,clipStart:+off.toFixed(3),clipEnd:+(off+t[1]-t[0]).toFixed(3),
+   start:+(base+A.start).toFixed(3),end:+(base+A.end).toFixed(3),
+   words:wordsOf(L).map(function(w,k){return {w:w,s:+(base+A.words[k][0]).toFixed(3),e:+(base+A.words[k][1]).toFixed(3)};})});
+  off+=t[1]-t[0]+GAP;});
+ out.durationSeconds=+off.toFixed(3);return out;}
+function save(blob,name){var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},4000);}
+
+/* ---- the page ---- */
+function sayHtml(L){
+ var ws=wordsOf(L);return ws.map(function(w){return '<span class="w">'+esc(w)+'</span>';}).join(' ');}
+function build(){
+ $('lines').innerHTML=LINES.map(function(L,i){return '<section class="card" id="card'+i+'"><div class="top"><h2>'+L.title+'</h2><span id="time'+i+'"></span></div>'
+  +'<div class="say plain" id="say'+i+'">'+sayHtml(L)+'</div><p class="fine">'+L.hint+'</p>'
+  +'<textarea class="edit" id="ed'+i+'" hidden aria-label="Edit the words of line '+(i+1)+'">'+esc(L.text)+'</textarea>'
+  +'<div class="ctl"><button class="rec" id="rec'+i+'" aria-label="Record line '+(i+1)+'"><i></i><span>Record</span></button>'
+  +'<button id="play'+i+'" disabled>Play</button><button id="ed'+i+'b">Edit the words</button><div class="meter" aria-hidden="true"><i></i></div></div>'
+  +'<div class="stat" id="st'+i+'">Not recorded yet.</div></section>';}).join('');
+ LINES.forEach(function(L,i){
+  $('rec'+i).onclick=function(){if(recIdx===i)stopRec(i);else if(recIdx<0)startRec(i);};
+  $('play'+i).onclick=function(){if(L.pcm)playLine(i);};
+  $('ed'+i+'b').onclick=function(){var t=$('ed'+i);t.hidden=!t.hidden;this.textContent=t.hidden?'Edit the words':'Done editing';if(t.hidden){L.text=t.value.replace(/\s+/g,' ').trim();$('say'+i).innerHTML=sayHtml(L);if(L.pcm)ui(i,'done');summary();}};
+ });
+}
+function ui(i,mode){
+ var b=$('rec'+i),L=LINES[i],st=$('st'+i);
+ $('card'+i).classList.toggle('on',mode==='rec');
+ if(mode==='rec'){b.classList.add('live');b.querySelector('span').textContent='Stop';st.innerHTML='<b>Recording.</b> Read the line aloud, then press Stop.';
+  LINES.forEach(function(x,k){if(k!==i){$('rec'+k).disabled=true;$('play'+k).disabled=true;}});$('dl').disabled=true;return;}
+ b.classList.remove('live');b.querySelector('span').textContent=L.pcm?'Record again':'Record';
+ LINES.forEach(function(x,k){$('rec'+k).disabled=false;$('play'+k).disabled=!x.pcm;});
+ if(mode==='done'&&L.pcm){var A=align(L);
+  if(!A){st.innerHTML='<span class="warn">No voice was heard.</span> Check that the microphone is the one you are speaking into, then record again.';return;}
+  var ok=A.nsegs===A.nsent;
+  st.innerHTML='<span class="ok">Recorded, '+L.dur.toFixed(1)+' s.</span> '+(ok?'Found '+A.nsent+(A.nsent===1?' sentence':' sentences')+' and placed every word.'
+   :'<span class="warn">Found '+A.nsegs+' pauses for '+A.nsent+' sentences, so the words are spread evenly.</span> Record again with a clearer pause at each full stop for tighter timing.')+' Press Play to watch it write out.';
+  $('say'+i).classList.add('plain');}
+}
+function summary(){
+ var all=LINES.every(function(L){return L.pcm&&align(L);});
+ $('dl').disabled=!all;$('playall').disabled=!all;
+ if(!all){$('sum').textContent='Record all three lines to unlock the download.';return;}
+ var t=timing(),kb=Math.round(t.durationSeconds*24000*2/1000);
+ $('sum').innerHTML='<b>All three lines are recorded.</b> The clip is '+t.durationSeconds.toFixed(1)+' seconds. The saved file is about '+kb+' KB; inside the app it is compressed to roughly '+Math.round(t.durationSeconds*4)+' KB (about '+Math.round(t.durationSeconds*5.3)+' KB with the encoding the file needs).';
+ $('dlnote').textContent='Two files will be saved to your Downloads folder: atuned-opening.wav and atuned-opening-timing.json. Send both back.';}
+$('dl')&&0;
+document.addEventListener('DOMContentLoaded',function(){});
+build();
+$('dl').onclick=function(){save(wav(),'atuned-opening.wav');setTimeout(function(){save(new Blob([JSON.stringify(timing(),null,1)],{type:'application/json'}),'atuned-opening-timing.json');},400);
+ $('dlnote').innerHTML='<span class="ok">Saved.</span> Look in your Downloads folder for <code>atuned-opening.wav</code> and <code>atuned-opening-timing.json</code>, and send both back.';};
+$('playall').onclick=function(){if(!ctx)return;playAll();};
+window.REC={LINES:LINES,align:align,timing:timing,analyse:analyse,wav:wav};
+})();
+</script></body></html>

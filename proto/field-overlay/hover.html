@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Field hover overlay</title>
+<!-- A LOOKS ROUND, NOT A BUILD. CU in TASKS.md. The picture under the overlay
+     is the shipped Field at the Chains depth, shot by capture.js off the
+     current build; every line a pointer can land on is a chord that build
+     strokes, and everything moving is drawn by hover.js. There is no Active
+     button any more: resting the pointer on a line is the whole control. -->
+<style>
+:root{--ground:#0b0b0d;--panel:#141419;--edge:rgba(255,255,255,.09);--edge-2:rgba(255,255,255,.16);
+ --ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;--accent:#7EB8D4;
+ --ease-out:cubic-bezier(.22,1,.36,1);--t-micro:.12s;
+ --sans:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+*{box-sizing:border-box}
+html,body{background:var(--ground)}
+body{margin:0;color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.45}
+.bar{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--edge)}
+.bar h1{font-size:15px;font-weight:600;margin:0 8px 0 0}
+.grp{display:flex;gap:4px;align-items:center;flex-wrap:wrap}
+.grp span{color:var(--dim);font-size:12.5px;margin-right:4px}
+.bar button,.bar label,.try button{background:transparent;border:1px solid var(--edge);border-radius:8px;color:var(--mid);
+ font:inherit;font-size:13px;padding:6px 11px;min-height:34px;cursor:pointer;
+ transition:border-color var(--t-micro) var(--ease-out),color var(--t-micro) var(--ease-out)}
+.bar label{display:flex;gap:6px;align-items:center}
+.xl{color:var(--accent);font-size:13px;text-underline-offset:3px}
+.bar button:hover,.try button:hover{border-color:var(--edge-2);color:var(--ink)}
+.bar button[aria-pressed=true]{color:var(--accent);border-color:rgba(126,184,212,.45)}
+.wrap{display:flex;gap:16px;padding:16px;align-items:flex-start;flex-wrap:wrap}
+.view{position:relative;overflow:hidden;border-radius:12px;border:1px solid var(--edge);flex:0 0 auto;touch-action:manipulation}
+.view.on-line{cursor:pointer}
+.plate{position:absolute;left:0;top:0;transform-origin:0 0}
+.plate img{position:absolute;left:0;top:0;display:block;user-select:none;pointer-events:none}
+.plate canvas{position:absolute;pointer-events:none}
+.side{flex:1 1 320px;max-width:460px;min-width:0}
+.side h2{font-size:15px;font-weight:600;margin:0 0 6px}
+.side p{margin:0 0 10px;color:var(--mid)}
+.meter{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;padding:10px 12px;border:1px solid var(--edge);
+ border-radius:10px;margin:12px 0;font-variant-numeric:tabular-nums}
+.meter b{font-weight:500;color:var(--ink);overflow-wrap:anywhere}
+.meter span{color:var(--dim)}
+.try{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 4px}
+.note{color:var(--dim);font-size:12.5px}
+@media (max-width:700px){.side{max-width:none}}
+</style>
+</head>
+<body>
+<div class="bar">
+ <h1>Field overlay, hover round</h1>
+ <div class="grp" id="g-look"><span>Look</span></div>
+ <div class="grp" id="g-who"><span>Profile</span></div>
+ <div class="grp" id="g-w"><span>Width</span></div>
+ <div class="grp" id="g-sc"><span>Trace</span></div>
+ <div class="grp" id="g-rd"><span>Hum reads</span></div>
+ <div class="grp"><label><input type="checkbox" id="rm"> Reduced motion</label>
+  <label><input type="checkbox" id="close"> Close up</label></div>
+ <a class="xl" href="hover-compare.html">All five side by side</a>
+</div>
+<div class="wrap">
+ <div class="view" id="view"><div class="plate" id="plate">
+  <img id="ship" alt=""><img id="dim" alt="">
+  <canvas id="ov"></canvas>
+ </div></div>
+ <div class="side">
+  <h2 id="lk-nm"></h2>
+  <p id="lk-d"></p>
+  <p class="note">Rest the pointer on any line in the wheel. On a phone, tap a line, and tap outside the wheel to let it go.</p>
+  <div class="try" id="try"></div>
+  <div class="meter">
+   <span>Line</span><b id="m-nm">none held</b>
+   <span>Its charge</span><b id="m-ld">-</b>
+   <span>Wheel tension</span><b id="m-tn">-</b>
+   <span>Hum</span><b id="m-a">-</b>
+   <span>Chain</span><b id="m-ch">-</b>
+   <span>Density</span><b id="m-al">-</b>
+   <span>Overlay draw</span><b id="m-ms">-</b>
+   <span>Profile</span><b id="m-who">-</b>
+  </div>
+  <p class="note">Charge is the line's own, as a percentage, the way a saboteur's weight is shown everywhere else in the product. Chain is the route through the line from an address to the character it builds, and its weight is the mean charge along it. The draw time is this page's own measurement of the overlay alone, on whatever machine is showing it.</p>
+ </div>
+</div>
+<script src="data-sofia.js"></script>
+<script src="data-james.js"></script>
+<script src="data-gordon.js"></script>
+<script src="overlay.js"></script>
+<script src="hover.js"></script>
+<script>
+(function(){
+var LOOKS=[
+ {k:'trace',nm:'Trace and hum',d:'The mechanic as he described it. A bright head crosses the line from its address end inward and lays it down, the bead it lands on rings, then the line holds and hums like a plucked string for as long as the pointer stays. How wide it swings is the line\'s own charge: 5.2 pixels at 93 percent, 0.8 at 27, nothing at 5. How firmly it is drawn is its whole chain\'s weight.'},
+ {k:'coil',nm:'1. Coil',d:'Charge wound around the line. A spark runs the line and two strands wind on behind it, then turn around it as a double helix, bright in front and faint behind, with a crackle stepped on twos like an electrical arc. The helix is as wide as the line\'s charge, so a cold line is a bare wire. The strands carry the chain\'s density.'},
+ {k:'current',nm:'2. Current',d:'The charge runs inward, continuously. Instead of a string plucked in place, crests keep travelling from the address end to the pattern end, as tall as the line\'s charge. The rest of the line\'s chain is drawn still beneath it, faint or firm by the chain\'s weight, so the hovered line is seen as one link of it.'},
+ {k:'stitch',nm:'3. Stitch',d:'The line as a row of beads, stitched in one after another and then shivering, each on its own, as hard as the line\'s charge. Density read literally: a heavy chain is stitched tight, one bead every 5 pixels, a light one loose, one every 15, with no change of colour.'},
+ {k:'pressure',nm:'4. Pressure',d:'No sideways motion at all. A swelling runs the line to trace it, then pressure pulses keep travelling inward, the line throbbing up to three times its width at full charge, 48 to 120 a minute from the wheel\'s tension, a resting heart\'s range. A faint sheath around it carries the chain\'s weight.'}];
+var WHO=['Sofia','James','Gordon'],WS=[1600,390];
+var q=new URLSearchParams(location.search);
+var st={look:q.get('look')||'trace',who:q.get('who')||'James',w:+(q.get('w')||1600),scope:q.get('scope')||'line',
+ reads:q.get('reads')||'charge',rm:q.get('rm')==='1',close:q.get('close')==='1'};
+var REC=q.get('rec')==='1';
+var clock=REC?{t:0,now:function(){return this.t;}}:{now:function(){return performance.now();}};
+var $=function(id){return document.getElementById(id);};
+var ov=null,G=null,VW={k:1,vx:0,vy:0};
+function group(id,list,lab,key){var g=$(id);
+ list.forEach(function(v){var b=document.createElement('button');b.type='button';b.textContent=lab(v);b.dataset.v=v;
+  b.addEventListener('click',function(){st[key]=(typeof st[key]==='number')?+v:v;mount();});g.appendChild(b);});}
+function press(){[['g-look','look'],['g-who','who'],['g-w','w'],['g-sc','scope'],['g-rd','reads']].forEach(function(x){
+ $(x[0]).querySelectorAll('button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.v==String(st[x[1]])));});});}
+group('g-look',LOOKS.map(function(l){return l.k;}),function(k){return LOOKS.filter(function(l){return l.k===k;})[0].nm;},'look');
+group('g-who',WHO,function(v){return v;},'who');
+group('g-w',WS,function(v){return v+' wide';},'w');
+group('g-sc',['line','chain'],function(v){return v==='line'?'This line':'Whole chain';},'scope');
+group('g-rd',['charge','tension'],function(v){return v==='charge'?'Charge, his example':'Tension, the wheel\'s word';},'reads');
+$('rm').checked=st.rm;$('close').checked=st.close;
+$('rm').addEventListener('change',function(){st.rm=this.checked;mount();});
+$('close').addEventListener('change',function(){st.close=this.checked;mount();});
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');}
+function pct(x){return Math.round(x*10)+' percent';}
+/* ---- the pointer. Screen to canvas through the plate's own transform ---- */
+function toCanvas(cx,cy){var r=$('view').getBoundingClientRect();
+ return [(cx-r.left)/VW.k+VW.vx-G.cv.x,(cy-r.top)/VW.k+VW.vy-G.cv.y];}
+function toScreen(x,y){var r=$('view').getBoundingClientRect();
+ return [r.left+(x+G.cv.x-VW.vx)*VW.k,r.top+(y+G.cv.y-VW.vy)*VW.k];}
+var RAD=9;
+function pick(ev){var c=toCanvas(ev.clientX,ev.clientY);return ov.hit(c[0],c[1],RAD/VW.k);}
+$('view').addEventListener('pointermove',function(ev){if(ev.pointerType!=='mouse')return;
+ var l=pick(ev);ov.hover(l,clock.now());this.classList.toggle('on-line',!!l);});
+$('view').addEventListener('pointerleave',function(ev){if(ev.pointerType!=='mouse')return;ov.hover(null,clock.now());});
+$('view').addEventListener('pointerdown',function(ev){if(ev.pointerType==='mouse')return;ov.hover(pick(ev),clock.now());});
+/* on a phone there is no leaving, so a tap anywhere off the picture lets go */
+document.addEventListener('pointerdown',function(ev){if(ev.pointerType==='mouse'||$('view').contains(ev.target))return;ov.hover(null,clock.now());});
+function mount(){
+ press();var D=window.OV[st.who];G=D.sizes[st.w];var tag=st.who.toLowerCase()+'-'+st.w;
+ $('ship').src='plates/'+tag+'-ship.png';$('dim').src='plates/'+tag+'-dim.png';
+ var pw=st.w,ph=st.w===1600?1000:844,plate=$('plate'),view=$('view');
+ var avail=Math.max(300,Math.min(window.innerWidth-32,st.w===1600?1600:520));
+ var k,vx=0,vy=0,vw,vh;
+ if(st.close){var cx=G.cv.x+G.CX,cy=G.cv.y+G.CY,r=G.U*1.12;
+  k=Math.min(avail,760)/(2*r);vw=2*r*k;vh=2*r*k;vx=cx-r;vy=cy-r;}
+ else{k=Math.min(1,avail/pw);vw=pw*k;vh=ph*k;}
+ VW={k:k,vx:vx,vy:vy};
+ view.style.width=vw+'px';view.style.height=vh+'px';
+ plate.style.width=pw+'px';plate.style.height=ph+'px';
+ plate.style.transform='scale('+k+') translate('+(-vx)+'px,'+(-vy)+'px)';
+ var cv=$('ov');cv.style.left=G.cv.x+'px';cv.style.top=G.cv.y+'px';
+ var dpr=REC?Math.max(1,k):Math.min(4,Math.max(1,(window.devicePixelRatio||1)*k));
+ ov=new OVL_Hover({canvas:cv,G:G,look:st.look,scope:st.scope,reads:st.reads,reduced:st.rm,dpr:dpr});
+ ov.size(G.cv.w,G.cv.h);
+ var L=LOOKS.filter(function(l){return l.k===st.look;})[0];
+ $('lk-nm').textContent=L.nm;$('lk-d').textContent=L.d;
+ $('m-who').textContent=st.who+', '+G.links.length+' connections, build '+D.build.commit;
+ /* a few lines worth trying first, found by their numbers, never placed */
+ var by=G.links.slice().sort(function(a,b){return b.load-a.load;});
+ var cool=G.links.filter(function(l){return l.load>0;}).sort(function(a,b){return a.load-b.load;})[0];
+ var zero=G.links.filter(function(l){return l.load===0;})[0];
+ var vic=G.links.filter(function(l){return /^Victim into/.test(l.nm);})[0];
+ var T=[['Hottest',by[0]],['Coolest with charge',cool],['No charge',zero],['Victim',vic]].filter(function(x){return x[1];});
+ $('try').innerHTML=T.map(function(x,i){return '<button type="button" data-i="'+x[1].i+'">'+esc(x[0])+', '+Math.round(x[1].load*10)+'%</button>';}).join('');
+ $('try').querySelectorAll('button').forEach(function(b){b.addEventListener('click',function(){
+  var l=G.links[+b.dataset.i];ov.hover(ov.cur===l?null:l,clock.now());});});
+ if(q.get('title')==='0')document.querySelector('.bar').style.display='none';}
+var lastUI=-1e9;
+function paint(now){
+ var s=ov.frame(now);$('dim').style.opacity=s.dim.toFixed(3);
+ if(REC||now-lastUI<150)return;lastUI=now;var p=s.probe;
+ $('m-ms').textContent=(s.ms||s.last).toFixed(2)+' ms a frame, '+s.lines+(s.lines===1?' line':' lines');
+ if(!p){['m-ld','m-tn','m-a','m-ch','m-al'].forEach(function(id){$(id).textContent='-';});$('m-nm').textContent='none held';return;}
+ $('m-nm').textContent=p.nm;$('m-ld').textContent=pct(p.load);
+ $('m-tn').textContent=Math.round(p.ten*100)+' percent taut';
+ $('m-a').textContent=p.A.toFixed(1)+' px swing, '+p.f.toFixed(1)+' a second'+(p.capped?', held to the line\'s length':'');
+ $('m-ch').textContent=p.chain+' lines, weight '+pct(p.W);
+ $('m-al').textContent='opacity '+p.alpha.toFixed(2);}
+mount();
+window.__ov=function(){return ov;};
+if(REC){
+ /* the recorder steps a virtual clock, so every frame is the frame the design
+    asks for. The pointer is a real one: record-hover.js moves the mouse and
+    the page's own pointermove handler does the rest. */
+ window.__rec={at:function(ms){clock.t=ms;paint(ms);return ov.stat;},
+  set:function(o){for(var k in o)st[k]=o[k];clock.t=0;mount();},st:st,ov:function(){return ov;},G:function(){return G;},
+  box:function(i){var b=G.links[i].bb,a=toScreen(b[0],b[1]),c=toScreen(b[2],b[3]);return {x:a[0],y:a[1],width:c[0]-a[0],height:c[1]-a[1]};},
+  hoverIdx:function(i,ms){clock.t=ms;ov.hover(i==null?null:G.links[i],ms);},
+  /* the point along a line furthest from every other line, so a pointer set
+     there lands on this line and not a neighbour */
+  point:function(i){var l=G.links[i],best=null,bd=-1;
+   for(var s=.2;s<=.8;s+=.02){var p=OVL_LIB.at(l.S,s),m=1e9;
+    G.links.forEach(function(o){if(o===l)return;var P=o.S.pts;for(var j=1;j<P.length;j++){
+     var a=P[j-1],b=P[j],dx=b[0]-a[0],dy=b[1]-a[1],L=dx*dx+dy*dy||1,t=Math.max(0,Math.min(1,((p[0]-a[0])*dx+(p[1]-a[1])*dy)/L));
+     m=Math.min(m,Math.hypot(p[0]-a[0]-dx*t,p[1]-a[1]-dy*t));}});
+    if(m>bd){bd=m;best=p;}}
+   var sc=toScreen(best[0],best[1]);return {x:sc[0],y:sc[1],clear:bd,cx:best[0],cy:best[1]};}};
+}else{(function loop(){paint(clock.now());requestAnimationFrame(loop);})();}
+window.addEventListener('resize',function(){if(!REC)mount();});
+})();
+</script>
+</body>
+</html>

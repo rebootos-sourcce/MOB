@@ -1,0 +1,97 @@
+/* kit.css. The one stylesheet every onboarding mockup inlines.
+   Tokens are the product's own (atuned_src/shell/head.html, Dark lighting),
+   named by what they do. Motion only runs under no-preference, so every
+   screenshot is the settled state and a person who asks for less motion gets
+   the same screen without the travel. */
+:root{
+ --bg:#0C0D12; --panel:#1A1D26; --panel-2:#252833; --sunk:#090A0E;
+ --edge:rgba(255,255,255,.09); --edge-2:rgba(255,255,255,.16);
+ --ink:#EFEDE8; --mid:#B4B0A8; --dim:#94908A;
+ --root:#D6524C; --sacral:#D8924E; --solar:#DABF6A; --heart:#5FD5A6;
+ --throat:#5EBBDB; --eye:#7D93E0; --crown:#A77EDB;
+ --alarm:#FF2E1F; --accent:#7EB8D4; --on-accent:#0B1418;
+ --sans:'Inter','Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;
+ --ctl:rgba(255,255,255,.38); --gut:16px; --tap:48px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
+ font-family:var(--sans);-webkit-text-size-adjust:100%;font-size:16px;line-height:1.5}
+body{overflow:hidden}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+svg{display:block}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* the stage is the viewport and nothing scrolls inside the first screen */
+.stage{position:fixed;inset:0;overflow:hidden;background:var(--bg)}
+.fieldbg{position:absolute;inset:0;pointer-events:none}
+.fieldbg svg{width:100%;height:100%}
+
+/* wordmark. The umlaut sits on the bar, as ruled. */
+.mark{font-size:22px;font-weight:600;letter-spacing:-.02em;color:var(--ink);position:relative;display:inline-block}
+
+/* type. Five sizes, one face, weight and value do the hierarchy. */
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.02em;color:var(--dim)}
+.display{font-size:44px;line-height:1.08;font-weight:500;letter-spacing:-.025em;margin:0}
+.h1{font-size:32px;line-height:1.14;font-weight:500;letter-spacing:-.02em;margin:0}
+.lead{font-size:18px;line-height:1.5;color:var(--mid);margin:0}
+.small{font-size:13px;line-height:1.45;color:var(--mid)}
+.dim{color:var(--dim)}
+.num{font-variant-numeric:tabular-nums}
+
+/* buttons. Ring, not fill, except the one primary per screen. */
+.btn{min-height:var(--tap);padding:0 22px;border-radius:999px;border:1.5px solid var(--ctl);
+ background:transparent;color:var(--ink);font-size:15px;font-weight:500;display:inline-flex;
+ align-items:center;justify-content:center;gap:10px;transition:border-color .2s,background .2s}
+.btn:hover{border-color:var(--mid)}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:600}
+.btn.pri:hover{background:#93c6de}
+.btn.ghost{border-color:transparent;color:var(--mid)}
+.btn.ghost:hover{color:var(--ink);border-color:var(--edge)}
+.btn:focus-visible,.fld input:focus-visible,.chip:focus-visible,.pick:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.btn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* icons are ring, not fill */
+.ic{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* chip: a pressable word with an icon */
+.chip{min-height:var(--tap);padding:0 16px 0 12px;border-radius:999px;border:1.5px solid var(--ctl);
+ background:transparent;display:inline-flex;align-items:center;gap:10px;font-size:15px;color:var(--mid)}
+.chip svg{width:24px;height:24px}
+.chip[aria-pressed=true]{border-color:var(--c,var(--accent));color:var(--ink)}
+.chip[aria-pressed=true] svg{color:var(--c,var(--accent))}
+
+/* trust tiers. Fact, observation, hypothesis are drawn differently, never only
+   labelled differently: a rule for what was said, a ring for what was noticed,
+   a dashed edge for what is still to test. */
+.t-said{border-left:2px solid var(--ink);padding-left:16px}
+.t-noticed{border:1.5px solid var(--accent);border-radius:16px}
+.t-test{border:1.5px dashed var(--edge-2);border-radius:16px}
+
+/* corner controls */
+.leave{position:absolute;left:var(--gut);bottom:14px;z-index:5;font-size:13px;color:var(--dim);
+ background:none;border:0;min-height:44px;padding:0 8px;display:flex;align-items:center;gap:8px}
+.leave:hover{color:var(--ink)}
+.leave svg{width:16px;height:16px}
+.trace{position:absolute;top:20px;right:28px;z-index:5;display:flex;align-items:center;gap:0}
+.trace svg{width:auto;height:24px;overflow:visible}
+
+/* the six node states, drawn as one path with six stops, never a ring: the
+   ring is reserved for the loop */
+.states{display:flex;align-items:flex-start;justify-content:center;gap:0;width:100%}
+
+/* animation vocabulary. Each keyframe names the state it means. */
+@media (prefers-reduced-motion:no-preference){
+ .breathe{animation:breathe 9s ease-in-out infinite}
+ @keyframes breathe{0%,100%{opacity:.55}50%{opacity:.95}}
+ .draw{stroke-dasharray:var(--len,1000);stroke-dashoffset:var(--len,1000);animation:draw var(--dur,1.6s) ease-out forwards;animation-delay:var(--del,0s)}
+ @keyframes draw{to{stroke-dashoffset:0}}
+ .appear{opacity:0;animation:appear .6s ease-out forwards;animation-delay:var(--del,0s)}
+ @keyframes appear{to{opacity:1}}
+ .pulse-r{transform-box:fill-box;transform-origin:center;animation:pulse-r 4.2s ease-in-out infinite}
+ @keyframes pulse-r{0%,100%{transform:scale(1)}50%{transform:scale(1.14)}}
+}
+
+.seg{display:inline-flex;gap:4px;padding:4px;border:1.5px solid var(--edge);border-radius:999px;align-self:flex-start}
+.seg button{min-height:44px;padding:0 18px;border-radius:999px;border:1.5px solid transparent;background:none;color:var(--mid);font-size:14px;font-weight:500}
+.seg button[aria-pressed=true]{border-color:var(--accent);color:var(--ink)}

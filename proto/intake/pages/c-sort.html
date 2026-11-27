@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Archetype picker C</title>
+<!--KIT-->
+<style>
+.lay{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:20px;align-items:start;max-width:1100px;margin:0 auto}
+.deck{max-width:640px;width:100%;margin:0 auto}
+.cardx{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;padding:34px 20px 26px;border-radius:20px;background:var(--panel);border:1px solid var(--edge-2)}
+.cardx h2{margin:0;font-size:30px;font-weight:600}
+.cardx .v{font-size:18px;color:var(--mid)}
+.cardx .st{font-size:13px}
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.three button{min-height:56px;border-radius:14px;border:1px solid var(--edge-2);background:var(--sunk);cursor:pointer;font-size:15px}
+.three button:hover{border-color:var(--accent)}
+.left{display:flex;justify-content:space-between;align-items:center;margin-top:12px;gap:10px}
+/* THE SEVEN SEATS FILL AS YOU SORT. This is what the seats were for on the
+   earlier screen and never did: each one is named, says what it governs, and
+   holds the archetypes that act from it. A kept card lands at its seat in the
+   seat's colour, so the column becomes a picture of where your answers sit. */
+.col{display:flex;flex-direction:column;gap:6px}
+.sr{display:grid;grid-template-columns:28px minmax(0,1fr);gap:8px;align-items:center;padding:8px 10px;border-radius:12px;background:var(--panel);border:1px solid var(--edge)}
+.sr b{font-size:14px;font-weight:600;display:block}
+.sr .ln{font-size:12px;color:var(--dim);display:block}
+.sr .ms{display:flex;gap:4px;margin-top:4px}
+.ms i{width:28px;height:28px;display:grid;place-items:center;border-radius:50%;opacity:.25}
+.ms i.yes{opacity:1;background:color-mix(in srgb,currentColor 20%,transparent)}
+.ms i.some{opacity:.9;box-shadow:inset 0 0 0 1px currentColor}
+.ms i.no{opacity:.12}
+.ms i.now{opacity:1;outline:2px solid var(--ink);outline-offset:1px}
+.pile{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.pile button{display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 8px;border-radius:14px;border:1px solid var(--edge-2);background:var(--sunk);cursor:pointer;min-height:44px}
+.pile button:hover{border-color:var(--accent)}
+.pile span{font-size:13px;color:var(--mid)}
+@media (max-width:980px){.lay{grid-template-columns:1fr}.col{display:grid;grid-template-columns:repeat(2,1fr)}}
+@media (max-width:620px){.cardx h2{font-size:25px}.three button{font-size:14px}.pile{grid-template-columns:repeat(2,1fr)}.col{grid-template-columns:1fr}}
+</style></head><body>
+<div class="wrap">
+ <div class="eyebrow" style="text-align:center">Mockup C of four. One at a time, sorted into three piles.</div>
+ <h1 class="ar-h1" style="text-align:center">Which of these sound like you?</h1>
+ <p class="ar-lede" style="margin:0 auto 18px;text-align:center">Each archetype comes up once. Sort it: not me, sometimes, or that is me. When all eighteen are sorted, pick the one that is most you.</p>
+ <div class="lay"><div class="deck" id="deck"></div><div class="col" id="col"></div></div>
+ <div id="foot"></div>
+</div>
+<!--DATA-->
+<script>
+/* ROUND ROBIN ACROSS THE SEATS, so the column fills evenly and no seat runs
+   out of cards before another has shown one. */
+var ORDER=(function(){var q=SEATORD.map(inSeat),o=[],k=0;while(o.length<ROSTER.length){q.forEach(function(L){if(L[k])o.push(L[k].nm);});k++;}return o;})();
+var SORT={}, HIST=[], FIRST=null;
+function draw(){
+ var i=HIST.length, cur=i<ORDER.length?A(ORDER[i]):null, h;
+ if(cur){
+  h='<div class="cardx">'+aic(cur,72)+'<h2>'+esc(cur.nm)+'</h2><div class="v">'+esc(cur.v)+'</div>'
+   +'<div class="st" style="color:'+col(cur.b)+'">'+esc(seatName(cur.b))+', '+esc(SEATLINE[cur.b])+'</div>'
+   +(cur.draft?'<div class="small dim">Draft. Not read by the instrument yet.</div>':'')+'</div>'
+   +'<div class="three"><button data-s="no">Not me</button><button data-s="some">Sometimes</button><button data-s="yes" class="yes">That is me</button></div>'
+   +'<div class="left"><span class="small dim">'+(ORDER.length-i)+' left</span>'+(i?'<button class="btn-g" id="undo">Back one</button>':'')+'</div>';}
+ else if(!FIRST){
+  var yes=ORDER.filter(function(n){return SORT[n]==='yes';}), some=ORDER.filter(function(n){return SORT[n]==='some';});
+  var pool=yes.length?yes:some;
+  if(!pool.length)h='<div class="card"><p>Nothing was sorted as you or as sometimes, so there is nothing to pick from. Sort again, or leave it: nothing else waits on this.</p><button class="btn-g" id="again">Sort again</button></div>';
+  else {var bySeat={};pool.forEach(function(n){var b=A(n).b;bySeat[b]=(bySeat[b]||0)+1;});
+   var top=Object.keys(bySeat).sort(function(x,y){return bySeat[y]-bySeat[x];});
+   var said=bySeat[top[0]]>1&&(top.length<2||bySeat[top[0]]>bySeat[top[1]])?'<p class="muted" style="margin:6px 0 0">Most of what you kept acts from the <b style="color:'+col(top[0])+'">'+esc(seatName(top[0]).toLowerCase())+'</b>, '+esc(SEATLINE[top[0]])+'.</p>':'';
+   h='<div class="card"><div class="eyebrow">'+(yes.length?'The ones you said are you':'None were that is me, so these are your sometimes')+'</div><h2 style="margin:6px 0 0;font-size:22px">Which one is most you?</h2>'+said
+    +'<div class="pile">'+pool.map(function(n){var a=A(n);return '<button data-f="'+esc(n)+'">'+aic(a,32)+'<b>'+esc(n)+'</b><span>'+esc(a.v)+'</span></button>';}).join('')+'</div>'
+    +'<div class="left"><span></span><button class="btn-g" id="undo">Back one</button></div></div>';}}
+ else {var f=A(FIRST);h='<div class="card">'+detail(f)+compare(f)+saveRow(true)+'<div class="left"><span></span><button class="btn-g" id="again">Sort again</button></div></div>';}
+ document.getElementById('deck').innerHTML=h;
+ document.getElementById('col').innerHTML=SEATORD.map(function(b){
+  return '<div class="sr"><span>'+seatIc(b,22)+'</span><div><b>'+esc(seatName(b))+'</b><span class="ln">'+esc(SEATLINE[b])+'</span><div class="ms">'
+   +inSeat(b).map(function(a){return '<i class="'+(SORT[a.nm]||'')+(cur&&cur.nm===a.nm?' now':'')+'" style="color:'+col(b)+'" title="'+esc(a.nm)+'" aria-label="'+esc(a.nm)+'">'+aic(a,17)+'</i>';}).join('')
+   +'</div></div></div>';}).join('')+'<div class="ar-key" style="margin:2px 4px;grid-column:1/-1">Filled: that is me. Ringed: sometimes. Faint: not me, or not sorted yet.</div>';
+ document.querySelectorAll('[data-s]').forEach(function(b){b.onclick=function(){SORT[cur.nm]=b.dataset.s;HIST.push(cur.nm);draw();};});
+ document.querySelectorAll('[data-f]').forEach(function(b){b.onclick=function(){FIRST=b.dataset.f;draw();};});
+ var e;
+ if(e=document.getElementById('undo'))e.onclick=function(){if(FIRST){FIRST=null;}else{var n=HIST.pop();delete SORT[n];}draw();};
+ if(e=document.getElementById('again'))e.onclick=function(){SORT={};HIST=[];FIRST=null;draw();};
+ wireSave();}
+document.getElementById('foot').innerHTML=foot('<p>The job: "let me say yes to more than one without it becoming a test." Three choices per card and one card on screen, so the load stays near three. It is the only one of the four where a person can say they are several archetypes and have it kept, and the only one that gives back something of their own before they pick: which seat most of their yeses act from.</p><p>Nineteen taps. The column of seats is the reason the seven seats exist on this screen at all: it is where the sorted cards land.</p>');
+banner('Archetype picker, mockup C of four, round GQ');
+strangerChip(function(){draw();});
+window.draw=draw;
+window.shootPrep=function(){if(!HIST.length){var s=['yes','no','some','no','yes','some','no','no','yes','some'];s.forEach(function(v,i){SORT[ORDER[i]]=v;HIST.push(ORDER[i]);});draw();}};
+draw();
+</script></body></html>

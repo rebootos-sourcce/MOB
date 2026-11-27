@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>What gaining means</title>
+<link rel="stylesheet" href="inter.css"><link rel="stylesheet" href="cb.css">
+<script src="cap/cap.js"></script><script src="cb.js"></script>
+<style>
+body{margin:0;background:#0C0D12}
+.pg{position:relative}
+.cols{display:flex;align-items:flex-start}
+/* THE BLOCK. It sits under "where it goes" and over "what you told it", the
+   one place on the Summary that already talks about the scale. Its own head is
+   in sentence case; the page's shipped heads are not, which is its own defect. */
+.gm{background:var(--panel);box-sizing:border-box}
+.gm h3{font-size:11px;font-weight:600;color:var(--dim);margin:0 0 8px;letter-spacing:.02em}
+.gm .top{display:flex;gap:24px;align-items:flex-start}
+.gm .lede{font-size:15px;line-height:23px;color:var(--ink);margin:0;flex:1 1 auto}
+.gm .lede em{font-style:normal;color:var(--tier)}
+.gm .lede i{font-style:normal;color:var(--dq)}
+.gm .ro{padding:0;flex:0 0 auto}
+.gm .foot{font-size:13px;line-height:20px;color:var(--mid);margin:14px 0 0}
+.ladder svg{display:block;overflow:visible}
+.grp{display:grid;gap:16px;margin-top:14px}
+.grp div{font-size:12.5px;line-height:18px;color:var(--mid)}
+.grp b{display:block;font-size:13px;color:var(--ink);font-weight:600;margin-bottom:2px}
+.grp .on b{color:#6FC5C9}
+/* the phone ladder: ten rows, high at the top, the way the compass runs */
+.vl{border:1px solid var(--edge);border-radius:var(--r-s);margin-top:12px;overflow:hidden}
+.vl .sep{font-size:11px;font-weight:600;color:var(--dim);padding:8px 12px 4px;background:rgba(255,255,255,.02)}
+.vl .sep span{font-weight:500;color:var(--dim);margin-left:4px}
+.vl .r{display:grid;grid-template-columns:4px 1fr auto;gap:10px;align-items:center;min-height:30px;padding:0 12px 0 0;font-size:12.5px}
+.vl .r i{align-self:stretch;display:block}
+.vl .r .w{color:var(--mid);font-weight:500}
+.vl .r .n{color:var(--dim);font-size:11px}
+.vl .r.me{background:rgba(125,147,224,.10)}
+.vl .r.me .w{color:var(--tier);font-weight:600}
+.vl .r.gain .w{color:#6FC5C9;font-weight:600}
+.tag{font-size:11px;color:var(--dim);padding:10px 16px}
+</style>
+</head><body>
+<div class="pg" id="pg"></div>
+<script>
+(function(){
+const W=/w=390/.test(location.search)?390:1600;
+const G=CAP.geo[W].sum, IMG='cap/page-summary-'+W+'.png', pg=document.getElementById('pg');
+/* TIERDEF in engine/data/canon.js, quoted: the word, where it starts, its colour */
+const T=[['Collapsed',0,'#A48986'],['Severe',11,'#B58379'],['Corrupt',21,'#CF8958'],['Incoherent',31,'#CFAB64'],
+ ['Oscillating',41,'#7D93E0'],['Even',51,'#5EBBDB'],['Gaining',61,'#6FC5C9'],['Compounding',71,'#5FD5A6'],
+ ['Embodied',81,'#8BD4A7'],['Mastery',91,'#E8DBA4']];
+const rng=i=>T[i][1]+' to '+(i<9?T[i+1][1]-1:100);
+const me=T.findIndex((t,i)=>CB.R.CQ>=t[1]&&(i===9||CB.R.CQ<T[i+1][1]));
+/* the three readings of the line, each the band's own definition from TIERDEF */
+const GROUPS=[
+ {h:'Under 40. It costs more than it builds.',t:'The field costs more than it builds. Charge is held at more addresses than are clearing.',w:40},
+ {h:'40 to 60, the median range.',t:'Fifty is the centre of the line. The field crosses it in both directions.',w:20},
+ {h:'Over 60. It builds more than it spends.',t:'Gaining is the first band of it, 61 to 70: the field builds more than it spends, and the margin is thin. Each band above widens the margin.',w:40,on:1}];
+const LEDE='<em>Coherence</em> is the 21 laws, out of 100. <i>Shadow</i> is the weight held at your 112 addresses, out of 100. Gaining is coherence going up while shadow comes off.';
+const FOOT='The two move separately. A release takes weight off an address, and shadow falls with it. Coherence moves when the laws are answered again and hold higher. They are two scales, which is why '+Math.round(CB.R.CQ)+' and '+Math.round(CB.R.DQ)+' do not add to 100.';
+
+const cut=G.told[1]-14;
+if(W===1600){
+ pg.appendChild(CB.crop(IMG,0,0,1600,cut));
+ const cols=document.createElement('div');cols.className='cols';pg.appendChild(cols);
+ cols.appendChild(CB.crop(IMG,0,cut,322,1000-cut));
+ const mid=document.createElement('div');mid.style.cssText='width:922px;flex:0 0 auto';cols.appendChild(mid);
+ cols.appendChild(CB.crop(IMG,1244,cut,356,1000-cut));
+ const gm=document.createElement('section');gm.className='gm';gm.style.cssText='padding:10px 25px 22px;border-left:1px solid var(--edge);border-right:1px solid var(--edge);margin:0';
+ mid.appendChild(gm);
+ gm.innerHTML='<h3>What gaining means</h3><div class="top"><p class="lede">'+LEDE+'</p></div><div class="ladder" id="lad"></div><div class="grp" id="grp"></div><p class="foot">'+FOOT+'</p>';
+ CB.readout(gm.querySelector('.top'),{gates:false}).style.width='330px';
+ /* THE LINE. Ten bands of ten, the swing drawn over it as the core draws it,
+    a mark at the reading, and the median range bracketed under the words */
+ const LW=872,sg=LW/10,x=v=>v/100*LW;
+ let s='<svg width="'+LW+'" height="96" viewBox="0 0 '+LW+' 96" aria-label="The coherence line, ten bands.">';
+ s+='<rect x="'+x(CB.R.lo).toFixed(1)+'" y="20" width="'+(x(CB.R.hi)-x(CB.R.lo)).toFixed(1)+'" height="3" rx="1.5" fill="#7D93E0" opacity=".55"/>';
+ s+='<path d="M'+(x(CB.R.CQ)-5).toFixed(1)+' 10L'+(x(CB.R.CQ)+5).toFixed(1)+' 10L'+x(CB.R.CQ).toFixed(1)+' 17Z" fill="#7D93E0"/>';
+ s+='<text x="'+(x(CB.R.CQ)+9).toFixed(1)+'" y="15" font-size="11" font-weight="600" fill="#7D93E0">You, '+Math.round(CB.R.CQ)+'</text>';
+ T.forEach((t,i)=>{const on=i===me,gn=t[0]==='Gaining';
+  s+='<rect x="'+(i*sg+1).toFixed(1)+'" y="27" width="'+(sg-2).toFixed(1)+'" height="8" rx="2" fill="'+t[2]+'" opacity="'+(on?1:gn?.75:.3)+'"/>';
+  s+='<text x="'+(i*sg+sg/2).toFixed(1)+'" y="52" text-anchor="middle" font-size="11.5" font-weight="'+(on||gn?600:500)+'" fill="'+(on?'#7D93E0':gn?'#6FC5C9':'#B4B0A8')+'">'+t[0]+'</text>';
+  s+='<text x="'+(i*sg+sg/2).toFixed(1)+'" y="67" text-anchor="middle" font-size="11" fill="#969592">'+rng(i)+'</text>';});
+ s+='<path d="M'+x(40)+' 76V82H'+x(60)+'V76" fill="none" stroke="rgba(255,255,255,.3)"/><text x="'+x(50)+'" y="94" text-anchor="middle" font-size="11" fill="#969592">median range</text>';
+ gm.querySelector('#lad').innerHTML=s+'</svg>';
+ const gr=gm.querySelector('#grp');gr.style.gridTemplateColumns=GROUPS.map(g=>g.w+'fr').join(' ');
+ gr.innerHTML=GROUPS.map(g=>'<div class="'+(g.on?'on':'')+'"><b>'+g.h+'</b>'+g.t+'</div>').join('');
+ mid.appendChild(CB.crop(IMG,322,cut,922,990-cut));
+}else{
+ pg.appendChild(CB.crop(IMG,0,0,390,cut));
+ const gm=document.createElement('section');gm.className='gm';gm.style.cssText='margin:0 7px;padding:4px 7px 16px;border-left:1px solid var(--edge);border-right:1px solid var(--edge)';
+ pg.appendChild(gm);
+ gm.innerHTML='<h3>What gaining means</h3><p class="lede" style="font-size:14px;line-height:21px">'+LEDE+'</p><div id="ro"></div><div class="vl" id="vl"></div><p class="foot">'+FOOT+'</p>';
+ CB.readout(gm.querySelector('#ro'),{gates:false}).style.padding='12px 0 0';
+ let h='';const sepAt={9:['Over 60.','It builds more than it spends.'],5:['40 to 60.','The median range.'],3:['Under 40.','It costs more than it builds.']};
+ for(let i=9;i>=0;i--){if(sepAt[i])h+='<div class="sep">'+sepAt[i][0]+'<span>'+sepAt[i][1]+'</span></div>';
+  const t=T[i],on=i===me,gn=t[0]==='Gaining';
+  h+='<div class="r'+(on?' me':'')+(gn?' gain':'')+'"><i style="background:'+t[2]+';opacity:'+(on?1:gn?.8:.35)+'"></i><span class="w">'+t[0]+(on?' <span style="font-weight:500;color:var(--dim)">you, '+Math.round(CB.R.CQ)+'</span>':'')+'</span><span class="n">'+rng(i)+'</span></div>';}
+ gm.querySelector('#vl').innerHTML=h;
+ pg.appendChild(CB.crop(IMG,0,cut,390,844-cut));
+}
+const t=document.createElement('div');t.className='tag';t.textContent='Mockup. The Summary, with a breakdown of gaining under "where it goes". James, example.';pg.appendChild(t);
+window.__ready=true;})();
+</script>
+</body></html>

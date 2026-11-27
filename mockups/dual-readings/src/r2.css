@@ -1,0 +1,47 @@
+/* R2, the instruments. Every cell the same size, the name above, the figure below */
+.dials,.row3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.row2{display:grid;grid-template-columns:repeat(2,calc((100% - 16px)/3));justify-content:center;gap:8px;margin-top:8px}
+.dial,.ins{background:var(--panel-2);border-radius:12px;padding:8px 6px 8px;display:flex;flex-direction:column;align-items:center;min-width:0}
+.dn{font-size:12px;color:var(--mid);font-weight:500;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;outline:none}
+.dsv{width:100%;max-width:96px;margin-top:4px;overflow:visible}
+.arc{fill:none;stroke-width:6;stroke-linecap:butt;opacity:.55}
+.arc.l{stroke:var(--lc)}.arc.r{stroke:var(--rc)}
+.off .arc{opacity:.14}
+.band{fill:none;stroke:var(--ink);stroke-width:2;opacity:.45;stroke-dasharray:1.5 2.2}
+.tick{stroke:var(--ink);stroke-width:1.6;opacity:.7}
+.nd path{stroke:var(--ink);stroke-width:2.6;stroke-linecap:round}
+.gn path{stroke:var(--ink);stroke-width:1.4;opacity:.3;stroke-linecap:round}
+.piv{fill:var(--panel-2);stroke:var(--ink);stroke-width:1.6}
+.ends{display:grid;grid-template-columns:auto 1fr auto;align-items:center;width:100%;max-width:104px;margin-top:2px}
+.ends .ic{width:16px;height:16px}
+.ends .fg{text-align:center;font-size:16px;font-weight:600;color:var(--sc)}
+.off .fg{color:var(--dim)}
+.dw{font-size:11.5px;color:var(--mid);margin-top:1px}
+.isv{width:64px;height:64px;margin:4px 0 2px;overflow:visible}
+.ins .fg{font-size:16px;font-weight:600;color:var(--ink)}
+.isv .trk{fill:none;stroke:rgba(239,237,232,.12);stroke-width:5;stroke-linecap:round}
+.isv .val{fill:none;stroke:var(--c);stroke-width:5;stroke-linecap:round;stroke-dasharray:0 200}
+.isv .ic{width:24px;height:24px;color:var(--c)}
+.isv .iris{fill:none;stroke:var(--c);stroke-width:1.7;stroke-linecap:round}
+.ins[data-k="Awareness"] .trk{stroke-width:3}
+.ins[data-k="Will"] .trk{stroke-width:2;stroke-dasharray:2 3}
+.isv .gate{stroke:var(--mid);stroke-width:4;stroke-linecap:round}
+.isv .shaft{fill:none;stroke:var(--c);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.thru .gate{stroke:var(--c);opacity:.5}
+.isv .sun{fill:none;stroke:var(--c);stroke-width:.85;stroke-linecap:round}
+.isv .glow{opacity:0}
+.flow{background:var(--panel-2);border-radius:12px;padding:10px 10px 8px;margin-top:8px}
+.fh{display:flex;align-items:center;justify-content:space-between}
+.fh .dn{color:var(--ink);font-size:13px}
+.fh em{font-style:normal;font-size:11.5px;margin-left:4px}
+.fh .fg{font-size:16px;font-weight:600}
+.fsv{width:100%;height:64px;margin-top:6px;display:block}
+.fb{opacity:.07}.fb.bk{opacity:.22}
+.wm{stroke:rgba(239,237,232,.22);stroke-width:1;stroke-dasharray:2 3;vector-effect:non-scaling-stroke}
+.wv{fill:none;stroke-width:1.8;vector-effect:non-scaling-stroke;stroke-linejoin:round}
+.bead{fill:var(--ink)}
+.fs{display:grid;grid-template-columns:repeat(7,1fr);margin-top:4px}
+.fs span{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;color:var(--dim);outline:none}
+.fs i{width:8px;height:8px;border-radius:50%;border:1.6px solid var(--sc)}
+.fs .bk{color:var(--ink);font-weight:600}
+.fs .bk i{box-shadow:0 0 0 2.5px var(--panel-2),0 0 0 4px var(--ink)}

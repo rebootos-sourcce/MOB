@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=390">
+<title>Field on a phone</title>
+<link rel="stylesheet" href="inter.css"><link rel="stylesheet" href="cb.css">
+<script src="cap/cap.js"></script><script src="cb.js"></script>
+<style>
+body{width:390px;margin:0;background:#0C0D12;position:relative}
+.stage{margin:0 0 0 7px;width:376px;box-sizing:border-box;background:var(--stage);border:1px solid var(--edge);border-radius:var(--r);overflow:hidden}
+.keyrow{display:flex;gap:6px;padding:4px 6px 6px;min-height:54px;box-sizing:border-box;align-items:center}
+.fig{position:relative;width:374px;height:335px}
+.fold{position:absolute;left:0;right:0;height:0;border-top:1px dashed rgba(126,184,212,.8);z-index:9}
+.fold span{position:absolute;right:6px;top:-16px;font-size:11px;color:var(--accent);background:#0C0D12;padding:0 4px}
+.tag{font-size:11px;color:var(--dim);padding:10px 14px 16px;line-height:15px}
+</style>
+</head><body>
+<script>
+(function(){
+const q=new URLSearchParams(location.search),v=q.get('v')||'dial',o=q.get('o')||'a';
+const G=CAP.geo[390][v],IMG='cap/page-'+v+'-390.png';
+/* the chrome above the stage, the product's own, as a picture */
+document.body.appendChild(CB.crop(IMG,0,0,390,Math.floor(G.stage[1])));
+const st=document.createElement('div');st.className='stage';document.body.appendChild(st);
+/* (b) keeps coherence and shadow where a phone reads first, in the key row,
+   with SQ gone and coherence in its tier colour rather than Crown purple:
+   one reading, one colour */
+if(o==='b'){const k=document.createElement('div');k.className='keyrow';
+ const chip=(lab,f,c,val)=>'<span class="kb"><span class="cr" style="--c:'+c+'"><span class="ring"><svg class="arc" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="rgba(128,128,128,.22)" stroke-width="2.4"/>'
+  +'<circle cx="12" cy="12" r="9" fill="none" stroke="'+c+'" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="56.5" stroke-dashoffset="'+(56.5*(1-f)).toFixed(1)+'"/></svg><span class="gl-t">'+lab+'</span></span><span class="v">'+val+'</span></span></span>';
+ k.innerHTML=chip('CQ',CB.R.CQ/100,'#7D93E0',Math.round(CB.R.CQ)+'%')+chip('DQ',CB.R.DQ/100,'#B9757B',Math.round(CB.R.DQ)+'%');
+ st.appendChild(k);}
+/* the three way switch, the product's own, as a picture */
+st.appendChild(CB.crop(IMG,G.fview[0],G.fview[1],374,G.fview[3]));
+/* THE FIGURE. The shipped picture, with its centre emptied of every figure:
+   the two arcs stay, drawn and never stated, and the six gates leave it */
+const fig=document.createElement('div');fig.className='fig';st.appendChild(fig);
+const M=CB.mount(fig,v+'-390');CB.centre(M,'arcs');CB.gates(M,'none');
+M.svg.querySelectorAll('text').forEach(t=>{if(/\. SQ /.test(t.textContent))t.textContent=t.textContent.replace('. SQ ','. Held at ');});
+/* THE READOUT, directly under the figure */
+const ro=CB.readout(st,{pair:o==='a',gates:true});
+const cap=document.createElement('div');cap.className='ro-cap';
+cap.textContent='Gate shares are example values. No reference profile has lit a gate yet.';ro.appendChild(cap);
+/* accuracy, the product's own, as a picture */
+st.appendChild(CB.crop(IMG,G.acc[0],G.acc[1],374,G.acc[3]));
+const f=document.createElement('div');f.className='fold';f.style.top='844px';document.body.appendChild(f);
+const t=document.createElement('div');t.className='tag';
+t.textContent='Mockup. '+(v==='dial'?'Dial':'Frames')+', option '+o+(o==='a'?': one readout under the figure.':': figures in the key row, gates under the figure.')+' James, example.';
+document.body.appendChild(t);
+/* where the numbers land against the fold, measured */
+const y=e=>Math.round(e.getBoundingClientRect().top+scrollY),b=e=>Math.round(e.getBoundingClientRect().bottom+scrollY);
+const pr=ro.querySelector('.ro-pair'),gt=ro.querySelector('.ro-gates');
+window.__measure={figBottom:b(fig),pairTop:pr?y(pr):null,gatesTop:y(gt),gatesBottom:b(gt),coreR:M.R,fold:844};
+window.__ready=true;})();
+</script>
+</body></html>

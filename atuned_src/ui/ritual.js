@@ -1,0 +1,2082 @@
+/* ============================================================
+   RITUAL. Release names what is running. The ritual turns it into
+   something repeatable. Which practice the state calls for is decided
+   by the seat carrying the most, not by preference.
+
+   ROUND JQ, 27 September, his words, and they are the specification for
+   everything below ritFor: "the ritual page needs to be visual, like super
+   visual ... right now it's all text based ... attach the accountability
+   tracker to it ... very visual, very simple, and pass data from my story to
+   the bank to the work I need to do ritually. I need to be able to see it as
+   a calendar, see which ones are running, edit, remove, log, delete,
+   rearrange, see a list, have history."
+
+   One page, four parts, and none of them is a second mechanism:
+
+     the chain    what you wrote, what it left held in your body (the bank,
+                  impLive, the same list the Imprints page draws), and the one
+                  practice the seat holding the most calls for (ritFor). The
+                  seat's colour runs through all three, so the line from story
+                  to work is drawn in colour and not explained in words.
+     today        one ring per active ritual, one dash per step in it, his own
+                  design from RT1: four things is four dashes. A ring closes
+                  when the ritual is marked done today. The streak sits in the
+                  middle and is streakRead's, the one streak in the product.
+     active       the rituals a person is doing now, in the order they put
+                  them. Mark done, open to read how, edit, move up, stop.
+     the record   a month of days, each a small ring cut into the rituals that
+                  day carried, and the same record as a list. Tap a day to see
+                  it; mark today or yesterday done; delete an entry and put it
+                  back.
+
+   THE WORD IS ACTIVE, NOT RUNNING. He said "which ones are running", and the
+   UX skill reserves running for a saboteur (rule 1, one word per concept).
+   Active is one of his own four figure words from NW1: "Recurring, missed,
+   active, streak." So the page says Active and Missed, and nothing on it says
+   running.
+
+   WHERE EACH THING IS KEPT, said here so nothing claims otherwise.
+     the record   CURP.rituals, the shape the boundary already validates, one
+                  entry a day a ritual was set or done. Nothing new is written
+                  into it and no field is added. Schema v2 is the owner's call.
+     active       what is active, in what order, until when. On the record
+                  since 21 November, p.practice.plans, practice schema 2, his
+                  words: "rituals travel with the record, they don't stay on
+                  the device." It sat beside the record under its own key
+                  until then, because the boundary rebuilds a record from the
+                  fields it names and would have dropped it; the boundary
+                  names it now (engine/practice.js), so it goes with an
+                  export and a record link. ritAdopt moves what a browser
+                  still holds under the old key.
+   ============================================================ */
+/* THE PAGE IS TWO TOOL SETS NOW, 2 October, his words: "On the flow pages, get
+   rid of the left and right menu. Actually, sorry. Move the new ritual to the
+   right menu. And you're supposed to move accountability to its own tool set."
+   The four parts above are no longer one page. DESIGN-flow-tools.md is the
+   rulebook and every rule in it names its gate.
+
+     Ritual          what a person will do. The chain and the Active list on the
+                     stage; New ritual, the builder, in the right menu.
+     Accountability  what they did. Today's rings, the streak, the marks and
+                     the record on the stage; what is due and what was missed in
+                     the right menu. Drawn by ui/accountability.js, and every
+                     write it makes goes through ritWrite below, so there is
+                     still one writer and one failure message.
+
+   Flow has no left column. The right column holds only the menu of the tool
+   set the person is in, #flowrail. Both tool sets repaint through ritRender,
+   which every writer in this file already calls, so no caller had to learn
+   that there are two now.
+
+   WHAT BROKE WHEN THE BUILDER LEFT THE STAGE, and is fixed below. ritOpen used
+   to paint a modal over whatever tab the release or the avatar was on, and the
+   builder was inside that modal. The builder lives in a menu that exists on
+   Flow only, so a caller off the tab now goes to the tab. The same menu is the
+   reason ritRender paints nothing when neither Flow tab is showing: the
+   shipped version set #rit to display flex whenever RIT.open was true, and a
+   page that the Compass add had touched would have drawn a ritual over the
+   Compass. */
+/* ROUND LT, his words, and they are the specification for tags, on and tm:
+   "I should be able to add tags to create the ritual, put a timer for it, how
+   often I want to do it, I should see a list of my active running tasks for
+   the day." All three live on the plan beside the record, where ritPlanOk
+   already decides what is kept, so none of them is a schema change.
+
+     tags   the seats a ritual is for, a closed set of seven read against
+            BANDS. TG4 ruled the shape before this round: "tags set for each
+            major chakra", a closed field and never free text, because free
+            text is a field the practitioner model would later have to hide.
+            A tag creates the ritual by drafting the practice that seat calls
+            for, ritFor's own answer, so a tag carries no second library.
+     on     the weekdays it is due, Monday 0 to Sunday 6, the week starting
+            Monday as RU2 ruled. SV24 reversed RU2 for what is drawn, his words
+            "start with Sunday", and not for what is stored: every calendar
+            shows Sunday first through ritWc, and this index does not move,
+            because every saved plan is written in it. Missing is every day, which is what every plan
+            written before this round meant, so an older plan reads unchanged.
+            One day is weekly and any set is custom: one shape for all three.
+     tm     the timer, whole minutes. Missing is the minutes its steps add up
+            to, so a plan with no timer set still has an honest one.
+   run is the timer counting now, and rang is the one that reached zero and is
+   waiting to be marked. Neither is kept: a timer is a moment, not a record. */
+var RIT={open:false, sel:{}, order:[], from:null, all:false, when:'', where:'',
+ days:7, add:false, edit:null, exp:null, view:'month', mo:0, day:null, gone:null, hn:40,
+ /* ROUND LT, HIS WORDS: "I should be able to add tags to create the ritual,
+    put a timer for it, how often I want to do it." tags is a closed set of
+    seats, TG4's own shape, "no to free text tags... yes to a closed field
+    validated against a table"; on is the weekdays it is due, Monday first;
+    run and rang are the live timer's own state, named by the plan id it
+    counts against so switching rituals cannot leave two ticking against one
+    render, and never persisted, the same posture as hover and pin. */
+ tags:[], on:null, tm:null, run:null, rang:null,
+ /* the repeat band's, 20 November (ritRecurOf): the time of day, Set days
+    chosen while every day is lit, and which of When and Where is open. The
+    last is a moment, like hover and pin, and never persisted. */
+ at:'', rown:false, wp:null};
+var TRACK4BAND={Root:'Body',Sacral:'Somatic',Solar:'Somatic',Heart:'Body',
+                Throat:'Mind','3rd Eye':'Mind',Crown:'Energy'};
+function ritFor(r){
+ var band=r.darkB||'Root', track=TRACK4BAND[band]||'Body';
+ /* HEAVY LOAD STARTS AT 70, AND IT WAS STARTING AT 8. This read DQ>=8 and
+    DQ>=4, written when the shadow score ran zero to ten, and it never moved
+    when compute() rescaled DQ to zero to a hundred. So a DQ of 8 out of 100,
+    barely any held charge, was treated as heavy load and locked a person to
+    the entry practices. Measured on the roster: nine of fourteen profiles sat
+    in tier 1 at DQ 10.7 to 54.3, and the heaviest person in it, Gordon at
+    54.3, is median on the scale below. The bands are the owner's, ruled 26
+    September on a zero to ten scale: "heavy would be seven eight nine, four
+    five six would be median, one two three would be impaired, zero is
+    flowing, ten is blocked or collapsed." Times ten onto DQ: heavy and
+    collapsed from 70, median from 40, impaired and flowing below.
+    tools/loopsim.js carries a copy of this line and moved with it.
+    tools/ritualsim.js keeps 8 and 4 on purpose: it is the AP2 snapshot, it
+    still calls the first practice rather than the lightest, and it reproduces
+    the numbers that were taken with both. */
+ var tier=r.DQ>=70?1:(r.DQ>=40?2:3);
+ /* a teacher's own practice (tc) is reached through its teacher and is never
+    what a seat calls for, so the call and the builder's library are what they
+    were before the rituals of becoming existed. See engine/data/practice.js. */
+ var fit=PRACTICE.filter(function(p){return p.tier<=tier&&!p.tc;});
+ var first=fit.filter(function(p){return p.track===track;});
+ /* at tier 1 some tracks hold nothing. say so rather than naming a track and
+    then calling for a practice from a different one. */
+ /* THE LIGHTEST ONE IN THE TRACK, NOT THE FIRST ONE IN THE TABLE. Measured:
+    835 of 1000 arrivals were asked for fifteen minutes or more as a first
+    practice and 585 of 1000 for twenty, because the table order happened to put
+    the long ones first. The track is the diagnosis and stays. Which practice
+    inside it is the entry is a question about what a person will actually do
+    once, and the answer is the short one. */
+ var lightest=function(set){return set.slice().sort(function(a,b){
+  return (a.min-b.min)||(a.tier-b.tier);})[0];};
+ var called=first.length?lightest(first):lightest(fit);
+ return {band:band, track:track, tier:tier, called:called,
+  substituted:!first.length, actualTrack:called?called.track:track, all:fit};}
+/* OPENING THE PAGE DOES NOT PICK FOR THE PERSON ANY MORE. It used to write the
+   called practice into the selection on open, and the selection then outlived
+   a change of profile: measured on the shipped page, the blank profile's Box
+   Breathing was still the ritual below a card that called Active Listening
+   for Marcus. The called practice is read on every render now, and the
+   selection only holds what a person or a caller put there.
+
+   Two callers still hand a selection in. The release passes the log of what
+   it just released, and the page opens with a new ritual started. The avatar
+   sets RIT.sel to the practices it queued and RIT.all, then renders, and the
+   page opens with exactly those steps in the builder. */
+function ritOpen(fromLog){
+ RIT.open=true; RIT.from=fromLog||null; RIT.sel={}; RIT.order=[]; RIT.all=false;
+ RIT.when=''; RIT.where=''; RIT.edit=null; RIT.exp=null; RIT.days=7;
+ RIT.tags=[]; RIT.on=null; RIT.tm=null; RIT.at=''; RIT.rown=false; RIT.wp=null;
+ RIT.add=!!(fromLog&&fromLog.length);
+ /* A CALLER OFF THE TAB GOES TO THE TAB. The builder is in Flow's right menu
+    and that menu exists on Flow only, so the modal this used to draw over the
+    release or the avatar would have had a chain and a list and no way to
+    start anything. setTab(TAB.RITUAL) paints through ritRender, and RIT.open
+    is already true so it does not reset what was just set. When this is
+    called from setTab itself the tab is already the ritual and this is the
+    plain repaint it always was. */
+ if(!ritTab()&&typeof setTab==='function'&&typeof TAB!=='undefined'){setTab(TAB.RITUAL);return;}
+ ritRender();}
+/* THE ONE ALREADY SAVED, newest first. A ritual is a plan and a plan a person
+   cannot find again is not a plan. */
+function ritLast(){
+ var a=(CURP&&CURP.rituals)||[];
+ return a.length?a[a.length-1]:null;}
+function ritToday(){
+ var r=ritLast();
+ if(!r||typeof pracDay!=='function')return null;
+ return (pracDay(r.t)===pracDay(Date.now()))?r:null;}
+/* the steps of a saved ritual, read back out of the keys it stored */
+function ritSteps(r){
+ return ((r&&r.steps)||[]).map(function(k){
+  return PRACTICE.filter(function(p){return p.k===k;})[0];}).filter(Boolean);}
+/* Closing means leaving the surface, not emptying it. While Ritual is the tab
+   there is nothing behind it to go back to, so a close that blanked the host
+   would leave a named tab showing an empty box. */
+function ritTab(){
+ return typeof TAB!=='undefined'&&typeof S!=='undefined'&&S.tab===TAB.RITUAL;}
+/* acctTab is gone, round QF. Accountability had a tab of its own for one round
+   and is the right column of this page now, so there is no second Flow tab to
+   ask about: TAB.ACCOUNT is folded onto TAB.RITUAL in engine/core.js and
+   ritTab above answers for the whole of Flow. */
+function ritClose(){
+ if(typeof TAB!=='undefined'&&typeof S!=='undefined'&&S.tab===TAB.RITUAL){
+  if(typeof setTab==='function'){setTab(TAB.SUMMARY);return;} }
+ RIT.open=false;ritRender();}
+
+/* ---------------- whose record this is ----------------
+   A worked example is a demonstration and not a record, so nothing on this
+   page writes to one. The shipped Save and Done both wrote to it and then said
+   Saved and Marked done, and pSave had already answered false: that is the
+   status lie rule 3 names. The refusal is the one the avatar and the release
+   give for the same crossing. */
+function ritOwn(){
+ return !!(typeof S!=='undefined'&&S.who===0&&CURP&&PROFILES.indexOf(CURP)>=0);}
+function ritWhose(){
+ var p=(typeof PEOPLE!=='undefined'&&typeof S!=='undefined')?PEOPLE[S.who]:null;
+ return (p&&p.nm)||'This';}
+
+/* ---------------- what is active, beside the record ---------------- */
+var RIT_KEY='atuned-ritual-active';
+/* how long a ritual stays active. His three from the avatar, "a week or two
+   weeks or a day", and the avatar's own names for them so the two pages say
+   the same thing, plus one with no end, because a morning breath is not a two
+   week project. 0 is no end. */
+/* A NUMBER, NOT FOUR WORDS, 20 November, his words on the builder: "how long
+   a day, a week, 2 weeks, no end ... that's just a number." So the length is
+   one dropdown of weeks (ritRecurHtml, ui/ritbank.js) and A day became Once,
+   which is the Repeat dropdown's answer and never a length. nm is what the
+   dropdown prints and say is what a sentence carries, because "1 week from
+   today" reads as a count and "a week from today" reads as speech. 21 and 28
+   are new; ritPlanOk already keeps any whole number of days up to 3660, so
+   no stored plan moves. */
+var RIT_SPANS=[{d:1,nm:'Once',say:'a day'},{d:7,nm:'1 week',say:'a week'},{d:14,nm:'2 weeks',say:'two weeks'},
+ {d:21,nm:'3 weeks',say:'three weeks'},{d:28,nm:'4 weeks',say:'four weeks'},{d:0,nm:'No end',say:'no end'}];
+var RIT_SPAN_D=RIT_SPANS.map(function(s){return s.d;});
+/* THE OLD KEY, read so ritAdopt can empty it, and kept so accForget can
+   clear what is left of a deleted profile. Nothing writes it any more. */
+function ritSideAll(){
+ if(typeof STORE==='undefined')return {};
+ try{var o=JSON.parse(STORE.get(RIT_KEY)||'{}');
+  return (o&&typeof o==='object'&&!Array.isArray(o))?o:{};}catch(e){return {};}}
+/* THE BOUNDARY'S RULE, asked whether it found anything. This was the rule
+   itself, one long boolean, until 21 November; the conditions are named
+   refusals in practicePlanCheck (engine/practice.js) now, because a plan on
+   the record that is out of shape has to be refused by name and not quietly
+   left out. Here, where the answer only decides whether a plan is drawn or
+   adopted, the yes or no is enough. ritExOk moved there with it. */
+function ritPlanOk(p){var e=[]; practicePlanCheck(e,'plan',p); return !e.length;}
+/* the longest timer the builder offers is the boundary's own ceiling on a
+   ritual's minutes, every practice in the library once, so the two cannot
+   disagree and no number is typed here */
+var RIT_TM_MAX=RIT_MIN_MAX;
+/* A WORKED EXAMPLE'S PLANS, held in memory and never in the store, round RB.
+   Every example opened this page on nothing, because ritPlanPut refuses one
+   and so the store never had a list under its id. engine/ritex.js builds each
+   example's plans and loadP hands them here, keyed by the scratch record's
+   id. Read only when the record has no plans, so a person's own plans can
+   never be shadowed by a demonstration's. */
+var RIT_EX={};
+/* the one shape a plan is written in. A plan adopted off the device is
+   rebuilt through it, so nothing lands on the record that its closed key set
+   would refuse. */
+function ritPlanShape(p){
+ return {id:p.id, steps:p.steps.slice(), when:p.when||'', where:p.where||'',
+  days:p.days, from:p.from, stop:p.stop||null, band:p.band||'', track:p.track||'',
+  rel:(p.rel==null?null:p.rel), tc:(p.tc==null?null:p.tc),
+  tags:(p.tags||[]).slice(), on:(p.on?p.on.slice().sort():null), tm:(p.tm==null?null:p.tm),
+  at:(p.at==null?null:p.at), ex:(p.ex?p.ex.slice().sort(function(a,b){return a-b;}):null)};}
+function ritPlans(){
+ if(!CURP||!CURP.id)return [];
+ ritAdopt();
+ var a=CURP.practice&&CURP.practice.plans;
+ if((!Array.isArray(a)||!a.length)&&!ritOwn())a=RIT_EX[CURP.id];
+ if(!Array.isArray(a))return [];
+ return a.filter(ritPlanOk).map(ritPlanShape);}
+/* The list goes onto the record in memory, and only when the boundary would
+   take it back: a plan the next load refuses would set the whole record
+   aside. ritWrite saves and puts both back on a refusal, so this answers
+   whether the list is fit to save and never claims a save itself. */
+function ritPlanPut(list){
+ if(!ritOwn()||!CURP)return false;
+ var P=CURP.practice||(CURP.practice=practiceBlank());
+ var shaped=(list||[]).map(ritPlanShape), e=[];
+ practicePlansCheck(e,'plans',shaped,PR_PLANS_CAP,practicePlanCheck);
+ if(e.length)return false;
+ P.plans=shaped; return true;}
+
+/* MOVED ONTO THE RECORD, ONCE, 21 November. A browser that held plans under
+   atuned-ritual-active, or affirmation and challenge rows under
+   atuned-ritual-sched, before the ruling still holds them there, keyed by
+   profile id, and the record it opens has none. So the first read for that
+   record moves them across: each one through the boundary's own rule and
+   its one shape, a plan the record already holds by id kept as the record
+   has it, then the record is saved, and only once that save has landed is
+   the id taken out of the old keys. A save that does not land leaves both
+   keys as they were and the plans in memory, so the next write saves them
+   and the next read tries again; nothing is lost either way. Only the
+   person's own record: a worked example never had a list there, and a
+   demonstration is never written. A row out of shape on the old key is left
+   behind, which is what the old read already did with it. */
+function ritAdopt(){
+ if(!ritOwn()||typeof STORE==='undefined'||typeof STORE_BOUND==='undefined'||!STORE_BOUND)return false;
+ var side=ritSideAll(), rows=(typeof ritSchedAll==='function')?ritSchedAll():{};
+ var hasP=Object.prototype.hasOwnProperty.call(side,CURP.id), hasS=Object.prototype.hasOwnProperty.call(rows,CURP.id);
+ if(!hasP&&!hasS)return false;
+ var P=CURP.practice||(CURP.practice=practiceBlank());
+ var merge=function(have,from,ok,shape,cap,one){
+  var out=(have||[]).slice(), ids={};
+  out.forEach(function(x){ids[x.id]=1;});
+  (Array.isArray(from)?from:[]).forEach(function(x){
+   if(ok(x)&&!ids[x.id]){var y=shape(x); out.push(y); ids[y.id]=1;}});
+  var e=[]; practicePlansCheck(e,'adopt',out,cap,one);
+  return e.length?null:out;};
+ var plans=hasP?merge(P.plans,side[CURP.id],ritPlanOk,ritPlanShape,PR_PLANS_CAP,practicePlanCheck):P.plans;
+ var sched=hasS?merge(P.sched,rows[CURP.id],ritSchedOk,ritSchedShape,PR_SCHED_CAP,practiceSchedCheck):P.sched;
+ /* a merge over the ceiling is left where it is rather than cut */
+ if(!plans||!sched)return false;
+ P.plans=plans; P.sched=sched;
+ if(!pSave())return false;
+ try{
+  if(hasP){delete side[CURP.id]; STORE.set(RIT_KEY,JSON.stringify(side));}
+  if(hasS){delete rows[CURP.id]; STORE.set(RIT_SCHED_KEY,JSON.stringify(rows));}}
+ catch(e){}
+ return true;}
+
+function ritToday0(){return pracDay(Date.now());}
+function ritStart0(p){return pracDay(p.from);}
+function ritActive(p,today){
+ if(p.stop)return false;
+ /* a day set Once ahead keeps a plan running until that day has come, or
+    the plan would end with the day the person just put on the week still
+    in front of it */
+ return p.days===0||today<ritStart0(p)+p.days||!!(p.ex&&p.ex.some(function(d){return d>=today;}));}
+/* a day is on a ritual from the day it started, for as long as it runs, and
+   not on or after the day it was stopped. */
+/* the weekday of a day key, Monday 0. Day 0 of pracDay is 1 January 1970, a
+   Thursday, which is why the three. */
+function ritWd(day){return ((day%7)+7+3)%7;}
+var RIT_WDN=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+var RIT_WDF=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+/* EVERY CALENDAR HERE STARTS ON SUNDAY, SV24, his words: "The whole column,
+   Monday through Sunday, start with Sunday." ritWd above is NOT moved to do
+   it, because it is not a display index: it is the number a plan's on list
+   is stored under (on:[5,6] is a weekend ritual on every saved record), and
+   engine/ritex.js ritexWd carries the same arithmetic for the worked
+   examples. Turning ritWd to Sunday 0 would have moved every saved weekday
+   ritual one day to the left with nothing failing. So the stored weekday
+   stays Monday 0 and the calendars ask a second question: which column a day
+   sits in on a Sunday first week (ritWc), and which stored weekday each
+   column carries (RIT_WCOL). Every calendar on the page reads these two, so
+   the Week, the thirty days, Success over time, the Record month and the
+   builder's day picker cannot start on different days. */
+function ritWc(day){return (ritWd(day)+1)%7;}
+var RIT_WCOL=[6,0,1,2,3,4,5];
+/* DUE IS NOT ACTIVE. Active is whether a ritual is still running at all;
+   due is whether today is one of its days. A ritual kept on Mondays is active
+   all week and due on one day of it, and a Tuesday is not a missed Monday. */
+function ritDue(p,day){return !p.on||p.on.indexOf(ritWd(day))>=0;}
+function ritOften(on){
+ if(!on||on.length===7)return 'Every day';
+ if(on.join()==='0,1,2,3,4')return 'Weekdays';
+ if(on.join()==='5,6')return 'Weekends';
+ /* six of seven is said by the one it leaves out, not by listing six */
+ if(on.length===6)return 'Every day but '+RIT_WDN.filter(function(n,d){return on.indexOf(d)<0;})[0];
+ /* listed in the calendars' order, so a Sunday and Monday ritual reads Sun,
+    Mon the way its two columns sit, and not Mon, Sun */
+ return RIT_WCOL.filter(function(d){return on.indexOf(d)>=0;}).map(function(d){return RIT_WDN[d];}).join(', ');}
+/* the timer a ritual runs for, its own when one was set */
+function ritTm(p){return (p&&p.tm)||ritMin(p&&p.steps)||1;}
+function ritCovers(p,day){
+ var s=ritStart0(p);
+ /* a day set Once is on the plan whatever its weekday and its span say, and
+    before the plan's own first day too: a Tuesday plan with today dropped on
+    it covers today. Only a stop takes it off. */
+ if(p.ex&&p.ex.indexOf(day)>=0)return !(p.stop&&day>=pracDay(p.stop));
+ if(day<s)return false;
+ if(!ritDue(p,day))return false;
+ if(p.days&&day>=s+p.days)return false;
+ if(p.stop&&day>=pracDay(p.stop))return false;
+ return true;}
+function ritKey(steps){return (steps||[]).join('+');}
+function ritPr(k){return PRACTICE.filter(function(p){return p.k===k;})[0]||null;}
+function ritMin(steps){return (steps||[]).reduce(function(a,k){var p=ritPr(k);return a+(p?p.min:0);},0);}
+function ritName(steps){
+ return (steps||[]).map(function(k){var p=ritPr(k);return p?p.nm:'';}).filter(Boolean).join(', ');}
+/* the seat's colour, which is what threads the chain: the seat carrying the
+   most colours the bank, the practice it calls for, its ring and its days. */
+function ritCol(x){
+ if(x&&x.band)return seatCol(x.band);
+ if(x&&x.track&&PTRACK[x.track])return PTRACK[x.track];
+ return 'var(--accent)';}
+/* an entry with no done key was saved before done existed and is read as
+   practised, which is ledgerRead's posture for the same record. */
+function ritIsDone(x){return x&&(x.done===undefined?true:!!x.done);}
+function ritEntries(day){
+ var out=[];
+ ((CURP&&CURP.rituals)||[]).forEach(function(x,i){
+  if(x&&pracDay(x.t)===day)out.push({x:x,i:i});});
+ return out;}
+function ritEntryFor(p,day){
+ var k=ritKey(p.steps);
+ return ritEntries(day).filter(function(e){return ritKey(e.x.steps)===k;})[0]||null;}
+/* a day's key back to a moment inside it, local noon, so a day marked
+   yesterday lands on yesterday in whatever zone the person is in. */
+function ritDayIso(day){
+ if(day===ritToday0())return new Date().toISOString();
+ var off=new Date().getTimezoneOffset()*60000;
+ return new Date(day*DAY_MS+off+12*3600000).toISOString();}
+
+/* ---------------- one writer ----------------
+   Every write on this page goes through here. It refuses a worked example by
+   name, writes the store and then the record, and if either one does not take
+   it puts both back and says so. Nothing claims success before pSave has
+   answered, which is rule 3. */
+function ritWrite(fn,okMsg){
+ if(!ritOwn()){status(ritWhose()+' is a worked example, so nothing was saved to it.','fail');return false;}
+ CURP.rituals=CURP.rituals||[];
+ var was=JSON.stringify(CURP.rituals), wasP=ritPlans(), ok=false;
+ try{ var plans=fn(ritPlans());
+  ok=(plans?ritPlanPut(plans):true)&&!!pSave(); }
+ catch(e){ ok=false; }
+ if(!ok){
+  CURP.rituals=JSON.parse(was); ritPlanPut(wasP);
+  try{pSave();}catch(e){}
+  status('Could not save that. Nothing changed.','fail');
+  ritRender(); return false;}
+ if(okMsg)status(okMsg);
+ ritRender(); if(typeof render==='function')render();
+ return true;}
+
+/* ONE SHAPE FOR AN ENTRY. A seat or a track nobody measured is left out, not
+   written empty: the boundary refuses an empty band as "not a seat", measured
+   on a Start made before any reading, which would have put a record past its
+   own boundary. The boundary also writes band '' itself when one is missing,
+   so a record that crossed it once is refused the second time; that half is in
+   schema.js and is reported rather than touched from here. */
+function ritEntryOf(o){
+ var x={t:o.t, steps:o.steps.slice(), min:ritMin(o.steps), when:o.when||'', where:o.where||'', done:o.done};
+ if(o.track&&RIT_TRACK[o.track])x.track=o.track;
+ if(o.band&&BANDS.indexOf(o.band)>=0)x.band=o.band;
+ return x;}
+/* the steps a person is building, in the order they picked them */
+function ritDraft(){
+ var on=Object.keys(RIT.sel).filter(function(k){return RIT.sel[k]&&ritPr(k);});
+ var out=RIT.order.filter(function(k){return on.indexOf(k)>=0;});
+ on.forEach(function(k){if(out.indexOf(k)<0)out.push(k);});
+ return out;}
+function ritPick(k){
+ RIT.sel[k]=!RIT.sel[k];
+ if(RIT.sel[k]){RIT.order=RIT.order.filter(function(x){return x!==k;}); RIT.order.push(k);}
+ else RIT.order=RIT.order.filter(function(x){return x!==k;});}
+/* START. The plan is written beside the record and today goes on the record as
+   set and not done, which is exactly what Save ritual wrote before: said is
+   what intentionRead counts, and ritToday is what the avatar reads back. */
+function ritStartPlan(q,msg){
+ /* 20 NOVEMBER, THREE MORE THINGS A START MAY CARRY, from the pop-up's When
+    (ui/ritbank.js): at, the time of day; fromDay, a first day ahead, so a
+    Thursday ritual added on a Monday starts on Thursday and Monday is not
+    written as set and then counted missed; and join.
+    JOIN IS THE FIX FOR THE SECOND DAY. A start for steps already running
+    woke that plan and REPLACED its day list with the new one, so Box
+    Breathing put on Tuesday and then on Thursday ended on Thursday only, and
+    the Tuesday the person had set was gone with nothing said. With join the
+    new days are added to the days it has. The builder's own Start does not
+    join: there the days chosen are the whole answer, and Edit is the route
+    that changes them. */
+ var today=ritToday0(), fd=(q.fromDay!=null&&q.fromDay>today)?q.fromDay:today;
+ var now=fd===today?new Date().toISOString():ritDayIso(fd), steps=q.steps;
+ var track=(ritPr(steps[0])||{}).track||q.track||'';
+ var id='r'+Date.now().toString(36);
+ return ritWrite(function(plans){
+  var k=ritKey(steps);
+  /* the same steps twice is one ritual. Starting it again wakes the one there
+     rather than drawing a second ring for the same practice. */
+  var same=plans.filter(function(p){return ritKey(p.steps)===k&&ritActive(p,today);})[0];
+  /* AND WAKING ONE ONLY EVER LENGTHENS IT. The span counts from the day it
+     started, so writing a week onto a ritual started thirty six days ago ended
+     it on the spot: measured, pressing A week on the release schedule took Box
+     Breathing off the Active list and its missed days off the month. A ritual
+     with no end keeps none; one with an end runs at least the new span from
+     the new first day. */
+  if(same){same.when=q.when||same.when; same.where=q.where||same.where;
+   if(same.days){var need=q.days?fd-ritStart0(same)+q.days:0;
+    if(!need||need>same.days)same.days=need;}
+   if(q.rel!=null)same.rel=q.rel;
+   if(q.tc)same.tc=q.tc;
+   /* a wake carries what the builder set and keeps what it did not: a
+      release schedule that sets none of the three leaves them as they were */
+   if(q.tags&&q.tags.length)same.tags=q.tags.slice();
+   /* joined, the union, and an every day plan already holds every day */
+   if(q.join)same.on=(!same.on||!q.on)?null:same.on.concat(q.on.filter(function(d){return same.on.indexOf(d)<0;})).sort();
+   else if(q.on)same.on=q.on.slice();
+   if(same.on&&same.on.length===7)same.on=null;
+   if(q.tm)same.tm=q.tm;
+   if(q.at)same.at=q.at;}
+  else plans.push({id:id, steps:steps, when:q.when||'', where:q.where||'', days:q.days,
+   from:now, stop:null, band:q.band||'', track:track, rel:(q.rel==null?null:q.rel),
+   tc:q.tc||null, tags:(q.tags&&q.tags.length?q.tags.slice():null),
+   on:(q.on?q.on.slice():null), tm:(q.tm||null), at:(q.at||null)});
+  /* today goes on the record as set only when the plan starts today: a
+     Thursday ritual added on a Monday is not a Monday left undone */
+  /* AND ONLY WHEN TODAY IS ONE OF ITS DAYS, 20 November. A Tuesday and
+     Thursday ritual started from the builder on a Monday wrote Monday as set,
+     so the week drew it on Monday, Today said Nothing due today under it, and
+     the next morning Monday counted as missed: a day the person never chose. */
+  if(fd===today&&(!q.on||q.on.indexOf(ritWd(today))>=0)&&!ritEntryFor({steps:steps},today))
+   CURP.rituals.push(ritEntryOf({t:now, track:track, band:q.band, steps:steps,
+    when:q.when, where:q.where, done:false}));
+  return plans;},msg||'Started.');}
+function ritStart(c){
+ var steps=ritDraft(); if(!steps.length)return;
+ /* the builder carries a time since 20 November, the pop-up's own, and it is
+    checked the pop-up's way: 24:00 is refused by name and nothing is written */
+ if(typeof ritAtCheck==='function'&&!ritAtCheck({at:RIT.at}))return;
+ /* a tagged ritual is kept at the first seat it was tagged for, so its ring
+    carries the colour of the seat the person named and not the heaviest one */
+ var ok=ritStartPlan(ritOnceOf({steps:steps, band:RIT.tags.length?RIT.tags[0]:(compute().unread?'':c.band), track:c.track,
+  days:RIT.days, when:RIT.when, where:RIT.where, tags:RIT.tags, on:RIT.on, tm:RIT.tm, at:RIT.at||null}));
+ if(ok){RIT.sel={}; RIT.order=[]; RIT.when=''; RIT.where=''; RIT.add=false; RIT.all=false;
+  RIT.tags=[]; RIT.on=null; RIT.tm=null; RIT.from=null; RIT.at=''; RIT.rown=false; RIT.wp=null; RIT.days=7; ritRender();}}
+/* A RELEASE SCHEDULE. The practice the pattern's own seat calls for, every day
+   for the span he named, carrying the place it is for, so the Active row can
+   open the release on that place any day. The record holds practices and not
+   releases, so the day marked done is the practice. A release on that place
+   that runs to its end marks the same day, ruled in round KG, and rel is what
+   ties the two: see ritRelDone. */
+function ritStartFor(bc,days){
+ var r=compute(), c=ritFor({darkB:bc.seat, DQ:r.DQ}); if(!c.called)return;
+ ritStartPlan({steps:[c.called.k], band:bc.seat, track:c.called.track, days:days, rel:bc.n.i},
+  'Set. '+c.called.nm+' each day, for '+String(bc.n.k).toLowerCase()+'.');}
+/* ---------------- a ritual of becoming, from a teacher ----------------
+   Round KQ. The Compass carries the teachers; pressing one opens its drill,
+   and the drill offers the ritual that moves toward that teacher's quality.
+   It is a release schedule's twin: ritStartPlan does the writing, so it is
+   one ritual among the others on the page, with the same ring, the same
+   record and the same streak, and nothing about it is a second mechanism.
+
+   WHICH STEPS, AND PACING. The steps are the teacher's (BECOMING). ritFor's
+   tier is the pacing, and pacing is the safety system here: a step above the
+   tier a person's load allows waits, and says so. If every step waits, the
+   ritual starts on the practice the person's state calls for instead, and
+   says that too. Nothing is handed to a heavy field that ritFor would not
+   hand it.
+
+   WHICH SEAT. An axis teacher's ritual carries the seat the compass reads
+   that axis at. A path sits at no seat, so its ritual carries the seat
+   holding the most today, which is ritFor's own band. */
+function ritTeach(k){
+ var b=(typeof becomingOf==='function')?becomingOf(k):null; if(!b)return null;
+ var r=compute(), c=ritFor(r), s=becomingSteps(b.k,c.tier);
+ var entry=!s.steps.length;
+ return {b:b, steps:entry?(c.called?[c.called.k]:[]):s.steps, held:s.held, entry:entry,
+  seat:b.seat||(r.unread?'':c.band)};}
+function ritTeachStart(k,days){
+ var t=ritTeach(k); if(!t||!t.steps.length)return false;
+ var nm=ritSteps({steps:t.steps}).map(function(p){return p.nm;});
+ return ritStartPlan({steps:t.steps, band:t.seat, days:days, tc:t.b.k},
+  'Set. '+(nm.length>1?nm.slice(0,-1).join(', ')+' and '+nm[nm.length-1]:nm[0])
+  +' each day, toward '+String(t.b.q).toLowerCase()+'.');}
+/* the section the teacher drill carries. Only the coherent pole: nobody
+   practises toward the inversion. */
+function ritTeachHtml(k){
+ var t=ritTeach(k); if(!t)return '';
+ ritCss();
+ var today=ritToday0(), key=ritKey(t.steps);
+ var act=ritPlans().filter(function(p){
+  return ritActive(p,today)&&(p.tc===t.b.k||ritKey(p.steps)===key);})[0]||null;
+ var nm=function(ks){return ks.map(function(x){var p=ritPr(x);return p?p.nm:'';}).filter(Boolean);};
+ var h='<div class="pm-eye">A ritual toward '+esc(String(t.b.q).toLowerCase())+'</div>'
+  +'<div class="tb-rit" data-tb="'+t.b.k+'">'
+  +ritSteps({steps:t.steps}).map(function(p){
+   return '<div class="rv-step"><b>'+esc(p.nm)+' <small>'+p.min+' min</small></b>'+(p.d?'<p>'+esc(p.d)+'</p>':'')+'</div>';}).join('');
+ /* the pacing, said once, after the steps and never instead of them */
+ var many=t.held.length>1;
+ if(t.entry)h+='<p class="ad-p">At the charge you carry now, '+esc(nm(t.held).join(' and '))
+  +(many?' wait':' waits')+'. This starts on '+esc(nm(t.steps)[0]||'')
+  +', the practice your state calls for, and the rest opens as the charge drops.</p>';
+ else if(t.held.length)h+='<p class="ad-p">'+esc(nm(t.held).join(' and '))
+  +(many?' open':' opens')+' as the charge drops.</p>';
+ h+='<p class="ad-p">'+(t.b.path
+   ?(t.seat?'The five paths sit at no one point, so this is kept at the '+esc(ritSeatNm(t.seat))+', where you carry the most.'
+     :'The five paths sit at no one point, and nothing is read yet, so this is kept without one.')
+   :'Kept at the '+esc(ritSeatNm(t.seat))+', the point this axis is read at.')+'</p>';
+ if(act)h+='<p class="ad-p"><b>Active</b>, '+esc(ritLeft(act,today).toLowerCase())+'.</p>'
+  +'<div class="rv-acts"><button type="button" class="btn" data-tbgo="1">Open the ritual</button></div>';
+ /* on a worked example the starts are not drawn, as before SV19; only the
+    line that said so is gone (ritNote says why) */
+ else if(t.steps.length&&ritOwn())h+='<div class="rv-acts">'
+  +'<button type="button" class="btn pri" data-tbd="7">Start for a week</button>'
+  +'<button type="button" class="btn pri" data-tbd="14">Start for two weeks</button></div>';
+ return h+'</div>';}
+/* one wire for the section, wherever a drill put it. redraw is the drill
+   that holds it, so after a start the section says Active in place. */
+function ritTeachWire(redraw){
+ var box=document.querySelector('#rdrill .tb-rit'); if(!box)return;
+ var k=box.getAttribute('data-tb');
+ box.querySelectorAll('[data-tbd]').forEach(function(b){
+  b.onclick=function(){if(ritTeachStart(k,+b.getAttribute('data-tbd'))&&redraw)redraw();};});
+ var go=box.querySelector('[data-tbgo]');
+ if(go)go.onclick=function(){if(typeof setTab==='function'&&typeof TAB!=='undefined')setTab(TAB.RITUAL);};}
+/* ---------------- the behaviour complex, from a teacher ----------------
+   Round PL, J14. His words, the click on the Compass: "I want to see the
+   behaviors that I need to install. I want to see a summary of who this person
+   is, not the person per se, but I want to see the behavior complex. Of both
+   behaviors." So a press on a teacher opens the pole as a pair of behaviours,
+   what is released and what is installed, with a few starter rituals toward
+   the second. The teacher is a small credit under the line and never the
+   headline, and nothing on the panel is a biography.
+
+   WHAT WAS TAKEN OFF THE PANEL. The drill used to print the seat's load as a
+   percent and the position on the axis as a number out of a hundred. Both are
+   scores and the ruling for this panel is no percent and no score, so they are
+   gone and not softened. The two descriptions of the ends were the codex's
+   own sentences about the pole and read as a biography, which is also what he
+   said he did not want. The content is engine/data/teachers_recipes.js, a
+   table he can edit with no code, and nothing on this panel is typed here.
+
+   THE ADD IS THE BUILDER'S OWN WRITER. ritStartPlan does the writing, so a
+   ritual added from here is one ritual among the others on the page with the
+   same ring, record and streak, and ritWrite is what reports a failed save
+   through status(). The two refusals that happen before the writer is reached
+   say so through status() as well: a control must never claim success it does
+   not have, and a press that does nothing and says nothing is that claim.
+
+   PACING STAYS. A step above the tier the person's load allows waits, and the
+   card says which, in words, exactly as ritTeachHtml does. A tc is set on the
+   plan only for a pole becomingOf knows, because ritPlanOk refuses a plan
+   whose tc it cannot answer and one pole's absence from the Compass must not
+   cost a person the whole ritual. */
+var RIT_TCX={};
+function ritTcxNames(ks){
+ return ks.map(function(x){var p=ritPr(x);return p?p.nm:'';}).filter(Boolean);}
+function ritTcxJoin(a){
+ return a.length>1?a.slice(0,-1).join(', ')+' and '+a[a.length-1]:(a[0]||'');}
+/* the active plan that is exactly these steps, if there is one */
+function ritTcxActive(steps,today){
+ var key=ritKey(steps);
+ return ritPlans().filter(function(p){return ritActive(p,today)&&ritKey(p.steps)===key;})[0]||null;}
+function ritComplexHtml(k){
+ var row=(typeof recipeOf==='function')?recipeOf(k):null; if(!row)return '';
+ ritCss();
+ var b=(typeof becomingOf==='function')?becomingOf(row.k):null;
+ var r=compute(), c=ritFor(r), today=ritToday0();
+ var pole=(typeof compassPoleOf==='function')?compassPoleOf(row.k):null;
+ var pick=RIT_TCX[row.k];
+ if(!row.rituals.some(function(x){return x.id===pick;}))pick=row.rituals[0].id;
+ var list=function(a){
+  return a&&a.length?'<ul class="tcx-l">'+a.map(function(t){return '<li>'+esc(t)+'</li>';}).join('')+'</ul>'
+   :'<p class="tcx-none">–</p>';};
+ /* THE AXIS MEANING ONLY FOR AN AXIS, round RB. The quality word was read
+    through the axis table for every pole, so Akhenaten's Light, which is no
+    axis, would have printed the Heart axis's sentence about warmth. Every
+    other pole's headline line above is what its word means. And the mark is
+    the pole's own when becomingOf does not know the pole. */
+ var onAxis=!!(pole&&MIRROR.indexOf(pole)>=0);
+ var ic=(b&&b.ic)||(pole&&pole.ic)||null;
+ var h='<div class="tcx" data-tcx="'+esc(row.k)+'">'
+  +'<div class="ad-nm plain">'+(ic?'<svg class="ad-ic" viewBox="0 0 24 24" aria-hidden="true">'
+   +'<path d="'+ic+'"/></svg>':'')+esc(row.line)+'</div>'
+  /* ROUND PO, UNPACK EVERY SYMBOL. "After Jesus · Light · Heart" was three
+     names and no meaning. Each is a carrier of its sentence, and under the two
+     columns the pole is said phrase by phrase, each phrase with what it means,
+     at both ends. The codex lines it reads from are in engine/data/compass.js.
+
+     THE CREDIT IS THE POLE'S OWN WORD, 17 NOVEMBER. The line opened on "After"
+     and the teacher's name for every pole, so "After Buddha" sat under a panel
+     whose other end now reads Fraud, a person on one side and a behaviour on
+     the other. A row with a behaviour word has no who (engine/data/
+     teachers_recipes.js), and the line opens on that word, read off the pole
+     so a rename in compass.js is a rename here. No row carries a who any more
+     (the last five lost theirs on 17 November), so the credit branch is kept
+     only for a teacher he may name again. A pole on no axis says what a path
+     pole is, since "one end of an axis" would be false of it. */
+  +'<div class="ad-sub">'+(row.who?'After '+unp('teacher',row.who):unp(onAxis?'pole':'path pole',pole?pole.up:row.q))+' \u00b7 '
+   +(onAxis?unp(String(row.q).toLowerCase(),row.q,'axis'):esc(row.q))
+   +(b&&b.seat?' \u00b7 '+unp(String(b.seat).toLowerCase(),b.seat,'seat'):'')+'</div>'
+  +'<div class="tcx-pair">'
+  +'<div class="tcx-col"><div class="pm-eye">Release</div>'
+  +'<div class="tcx-cap">The old pattern'+(row.opp?', as '+unp('inversion',row.opp):'')+'</div>'+list(row.release)+'</div>'
+  +'<div class="tcx-col tcx-in"><div class="pm-eye">Install</div>'
+  +'<div class="tcx-cap">Practise this instead</div>'+list(row.install)+'</div></div>'
+  /* the pole, phrase by phrase, under the two columns it explains and above the
+     rituals that act on it */
+  +((pole&&pole.upm)?'<div class="pm-eye">At full expression</div>'+poleMeansHtml(pole,'up')
+    +'<div class="pm-eye">At full inversion</div>'+poleMeansHtml(pole,'dn'):'')
+  +'<div class="pm-eye">Starter rituals</div><div class="tcx-rits" role="group" aria-label="Starter rituals">';
+ row.rituals.forEach(function(x){
+  var s=recipeSteps(x,c.tier), act=s.steps.length?ritTcxActive(s.steps,today):null;
+  var many=s.held.length>1;
+  h+='<button type="button" class="tcx-rit'+(x.id===pick?' tcx-on':'')+'" aria-pressed="'+(x.id===pick)
+   +'" data-tcxr="'+esc(x.id)+'" data-act="'+(act?1:0)+'">'
+   +'<span class="tcx-rh"><span class="tcx-rn">'+esc(x.nm)+'</span>'
+   +'<span class="tcx-rm">'+(s.steps.length?ritMin(s.steps)+' min':'–')+'</span></span>'
+   +'<span class="tcx-rs">'+esc(ritTcxJoin(ritTcxNames(x.steps)))+'</span>'
+   +'<span class="tcx-sd">'
+   +ritSteps({steps:s.steps}).map(function(p){
+     return '<span class="tcx-st"><b>'+esc(p.nm)+' <small>'+p.min+' min</small></b>'+(p.d?'<span>'+esc(p.d)+'</span>':'')+'</span>';}).join('')
+   +(s.held.length?'<span class="tcx-pace">'+esc(ritTcxJoin(ritTcxNames(s.held)))+(many?' open':' opens')
+     +' as the charge drops.</span>':'')
+   +(act?'<span class="tcx-pace"><b>Active</b>, '+esc(ritLeft(act,today).toLowerCase())+'.</span>':'')
+   +'</span></button>';});
+ h+='</div>';
+ if(b&&typeof affDoorHtml==='function')h+='<div class="rv-acts">'+affDoorHtml('path',null,b.k)+'</div>';
+ if(ritOwn())h+='<div class="rv-acts"><button type="button" class="btn pri" data-tcxgo="1">Add to my ritual</button></div>'
+  +'<p class="tcx-hint">Runs for a week from today. The Ritual page changes the span.</p>';
+ if(row.draft!==false)h+='<p class="tcx-draft">First draft. These are starting behaviours and rituals, to be refined. '
+  +'They describe behaviours a reading can place, not people.</p>';
+ return h+'</div>';}
+/* ADD ONE STARTER RITUAL. Returns true only when the plan is written. */
+function ritRecipeAdd(id){
+ var f=(typeof recipeRitual==='function')?recipeRitual(id):null;
+ if(!f){status('That ritual is no longer in the list. Nothing was added.','fail'); return false;}
+ var r=compute(), c=ritFor(r), s=recipeSteps(f.ritual,c.tier);
+ if(!s.steps.length){status('Every step in that ritual waits at the charge you carry now. Nothing was added.','fail'); return false;}
+ var b=(typeof becomingOf==='function')?becomingOf(f.pole.k):null;
+ return ritStartPlan({steps:s.steps, band:(b&&b.seat)||(r.unread?'':c.band), days:7, tc:b?b.k:null},
+  'Added. '+ritTcxJoin(ritTcxNames(s.steps))+' each day for a week.');}
+/* one wire for the panel. Picking a ritual changes it in place and never
+   redraws, so the panel keeps the scroll position the person had; redraw is
+   only called after an add, so the card then says Active. */
+function ritComplexWire(redraw){
+ var box=document.querySelector('#rdrill .tcx'); if(!box)return;
+ var k=box.getAttribute('data-tcx');
+ var cards=box.querySelectorAll('[data-tcxr]'), go=box.querySelector('[data-tcxgo]');
+ var cur=(box.querySelector('.tcx-on')||cards[0]).getAttribute('data-tcxr');
+ function sync(){
+  cards.forEach(function(b){var on=b.getAttribute('data-tcxr')===cur;
+   b.classList.toggle('tcx-on',on); b.setAttribute('aria-pressed',on?'true':'false');
+   if(on&&go)go.textContent=b.getAttribute('data-act')==='1'?'Open the ritual':'Add to my ritual';});}
+ cards.forEach(function(b){b.onclick=function(){cur=b.getAttribute('data-tcxr'); RIT_TCX[k]=cur; sync();};});
+ if(go)go.onclick=function(){
+  var on=box.querySelector('[data-tcxr="'+cur+'"]');
+  if(on&&on.getAttribute('data-act')==='1'){
+   if(typeof setTab==='function'&&typeof TAB!=='undefined')setTab(TAB.RITUAL); return;}
+  if(ritRecipeAdd(cur)&&redraw)redraw();};
+ sync();}
+function ritSaveEdit(){
+ var steps=ritDraft(); if(!steps.length||!RIT.edit)return;
+ if(typeof ritAtCheck==='function'&&!ritAtCheck({at:RIT.at}))return;
+ var id=RIT.edit, today=ritToday0();
+ var ok=ritWrite(function(plans){
+  var p=plans.filter(function(x){return x.id===id;})[0]; if(!p)throw new Error('gone');
+  /* today's entry, if it is only set and not done, follows the edit, because
+     it was the plan for today and the plan just changed. A day already done
+     is history and is not rewritten. */
+  var e=ritEntryFor(p,today);
+  p.steps=steps; p.when=RIT.when||''; p.where=RIT.where||'';
+  /* the seat follows the tags only when there are tags. A teacher's ritual
+     carries the seat its axis is read at, and an edit that sets no tag must
+     not move it to wherever the heaviest charge sits today. */
+  p.tags=RIT.tags.length?RIT.tags.slice():null; if(RIT.tags.length)p.band=RIT.tags[0];
+  p.on=RIT.on?RIT.on.slice():null; p.tm=RIT.tm||null; p.at=RIT.at||null;
+  /* a span chosen while editing runs from today, not from the day the ritual
+     began, or a week chosen on a ritual five weeks old would end it */
+  if(RIT.days>=0)p.days=RIT.days?today-ritStart0(p)+RIT.days:0;
+  if(e&&!ritIsDone(e.x)){e.x.steps=steps; e.x.min=ritMin(steps); e.x.when=p.when; e.x.where=p.where;}
+  return plans;},'Saved.');
+ if(ok){RIT.edit=null; RIT.sel={}; RIT.order=[]; RIT.when=''; RIT.where=''; RIT.all=false;
+  RIT.tags=[]; RIT.on=null; RIT.tm=null; RIT.at=''; RIT.rown=false; RIT.wp=null; RIT.days=7;}}
+function ritEditOpen(id){
+ var p=ritPlans().filter(function(x){return x.id===id;})[0]; if(!p)return;
+ RIT.edit=id; RIT.add=false; RIT.sel={}; RIT.order=p.steps.slice();
+ p.steps.forEach(function(k){RIT.sel[k]=true;});
+ /* no span is chosen on the way in. A chip reading A week on a ritual with two
+    days left would be a claim, so the chips start empty with what is left
+    beside them, and a span chosen here runs from today. */
+ RIT.when=p.when; RIT.where=p.where; RIT.days=-1; RIT.all=false;
+ RIT.tags=p.tags.slice(); RIT.on=p.on?p.on.slice():null; RIT.tm=p.tm;
+ RIT.at=p.at||''; RIT.rown=false; RIT.wp=null; ritRender();
+ var f=document.querySelector('.rv-build'); if(f&&f.scrollIntoView)f.scrollIntoView({block:'nearest'});}
+/* MARK DONE, AND UNDO IT WITH THE SAME PRESS. Today, and yesterday, because
+   the streak already forgives a day (streakRead) and a person who practised
+   late and forgot to press should be able to say so the next morning. Nothing
+   older: a record a person can rewrite at will is not a record. */
+function ritLog(id,day){
+ var today=ritToday0(); if(day===undefined)day=today;
+ if(day!==today&&day!==today-1)return;
+ var p=ritPlans().filter(function(x){return x.id===id;})[0]; if(!p)return;
+ var e=ritEntryFor(p,day), on=e&&ritIsDone(e.x);
+ if(ritWrite(function(plans){
+  if(e&&on){
+   /* the day it was started keeps its entry, as set, because that is what
+      the person said that day. Any other day's entry was made by the press
+      being taken back, so it goes: left behind it would count as a practised
+      day on the streak, which reads every entry and not only the done ones. */
+   if(day===ritStart0(p))CURP.rituals[e.i].done=false;
+   else CURP.rituals.splice(e.i,1);}
+  else ritMarkOn(p,day);
+  return null;}, on?'Taken off.':'Done.')&&!on&&typeof sfx==='function')sfx('done');}
+/* THE ON HALF OF THE PRESS, AND ONLY THAT. It sat inline in ritLog, and the
+   release now marks a day too. ritLog is a toggle, so a release that called it
+   on a day the person had already pressed would have taken that day off the
+   record and the streak, the one outcome a finished release must never have.
+   This half only ever turns a day on, and on a day already done it does
+   nothing, so the press and the release cannot count a day twice. Inside a
+   ritWrite, which is what saves it and puts it back on a failure. */
+function ritMarkOn(p,day){
+ var e=ritEntryFor(p,day);
+ if(e){if(!ritIsDone(e.x))CURP.rituals[e.i].done=new Date().toISOString(); return;}
+ CURP.rituals.push(ritEntryOf({t:ritDayIso(day), track:p.track, band:p.band,
+  steps:p.steps, when:p.when, where:p.where, done:new Date().toISOString()}));}
+/* A RELEASE THAT RAN TO ITS END IS THE DAY DONE. Round KG, his words: "Is
+   someone really does a release and it's part of the ritual that should count
+   their day as done automatically?" relCoolDown calls this with the addresses
+   the run worked, and only for a run that was not stopped.
+
+   Part of the ritual is read as a ritual carrying that address in rel, which
+   is what a release schedule is (ritStartFor) and the only row that offers
+   Release now. A ritual started from the builder carries a seat and no
+   address, and a release somewhere at that seat is not the breath it asked
+   for, so it is not counted; that wider reading is his call and is asked.
+
+   Returns how many rituals it marked. Nothing to mark is not a failure and
+   says nothing: most releases are not part of any ritual. A worked example is
+   refused before this is reached, by the release itself, so it is not refused
+   a second time here. */
+function ritRelDone(ids){
+ if(!ritOwn()||!ids||!ids.length)return 0;
+ var today=ritToday0(), on={};
+ ids.forEach(function(i){on[i]=1;});
+ var hit=ritPlans().filter(function(p){
+  if(p.rel==null||!on[p.rel]||!ritActive(p,today))return false;
+  var e=ritEntryFor(p,today); return !(e&&ritIsDone(e.x));});
+ if(!hit.length)return 0;
+ var nm=hit.map(function(p){return ritName(p.steps);});
+ var ok=ritWrite(function(){hit.forEach(function(p){ritMarkOn(p,today);}); return null;},
+  'Release finished. '+(nm.length>1?nm.slice(0,-1).join(', ')+' and '+nm[nm.length-1]+' are':nm[0]+' is')+' done for today.');
+ return ok?hit.length:0;}
+/* ritMove is gone, 21 November, with the Today list's Move up: order
+   inside a day is by kind now (ui/ritweek.js), so a stored order moved
+   nothing a person could see. */
+function ritStop(id){
+ RIT.exp=null; RIT.edit=null;
+ ritWrite(function(plans){
+  plans.forEach(function(p){if(p.id===id)p.stop=new Date().toISOString();});
+  return plans;},'Stopped. The days you did stay on the record.');}
+/* ritAgain is gone, round QN: its one caller was the Record list's Ended row,
+   and History's Back in rotation (ui/accountability.js, acctRotate) is that
+   choice now, one press and through the same writer. */
+/* DELETE, AND PUT IT BACK. Undo beats confirm, rule 5. The engine's undo
+   holds the field and not this list, so the one thing deleted last is held
+   here until the next write, and the page offers it back in place. */
+function ritDelPlan(id){
+ var today=ritToday0(), gone=null;
+ ritWrite(function(plans){
+  var i=-1; plans.forEach(function(p,j){if(p.id===id)i=j;}); if(i<0)throw new Error('gone');
+  var p=plans[i], e=ritEntryFor(p,today);
+  gone={kind:'plan', x:p, i:i, ent:null};
+  /* today's entry leaves with it only when it was set and never done: a plan
+     that was deleted was not a thing that happened. Anything done stays. */
+  if(e&&!ritIsDone(e.x)&&ritStart0(p)===today){gone.ent={x:e.x,i:e.i}; CURP.rituals.splice(e.i,1);}
+  plans.splice(i,1); return plans;},'Deleted.');
+ if(gone){RIT.gone=gone; RIT.edit=null; RIT.exp=null; ritRender();}}
+function ritDelEntry(i){
+ var x=CURP&&CURP.rituals&&CURP.rituals[i]; if(!x)return;
+ var ok=ritWrite(function(){CURP.rituals.splice(i,1); return null;},'Deleted.');
+ if(ok){RIT.gone={kind:'entry', x:x, i:i}; ritRender();}}
+function ritPutBack(){
+ var g=RIT.gone; if(!g)return;
+ var ok=ritWrite(function(plans){
+  if(g.kind==='entry')CURP.rituals.splice(Math.min(g.i,CURP.rituals.length),0,g.x);
+  else{plans.splice(Math.min(g.i,plans.length),0,g.x);
+   if(g.ent)CURP.rituals.splice(Math.min(g.ent.i,CURP.rituals.length),0,g.ent.x);}
+  return g.kind==='plan'?plans:null;},'Put back.');
+ if(ok){RIT.gone=null; ritRender();}}
+
+function ritHeld(){
+ return ((typeof impLive==='function')?impLive():[]).filter(function(n){return n.sq>=4;});}
+function ritSeatNm(b){return b==='3rd Eye'?'third eye':String(b||'').toLowerCase();}
+
+/* ---------------- who you want to become, and what is in the way ----------------
+   Round JX, his words, as the shape of the line and not the line itself:
+   "your avatar wants to be a public speaker, you're holding on to fear of
+   judgment of others, would you like to set up a release schedule for that."
+
+   Every part of it is the person's own data. The becoming is the newest avatar
+   pair's own first line, quoted and never paraphrased. The seat is the one the
+   pair was written at when the record carries it, and otherwise where the
+   sniffer hears the second line, readSeat, which is where the avatar page puts
+   it. The pattern in the way is the heaviest place held at that seat, off the
+   bank. If nothing is held there, there is nothing to release and the page
+   says nothing, rather than inventing an obstacle. */
+function ritBecoming(){
+ var pairs=(CURP&&CURP.avatar&&CURP.avatar.pairs)||[];
+ if(!pairs.length)return null;
+ var held=ritHeld();
+ for(var i=pairs.length-1;i>=0;i--){
+  var pr=pairs[i]; if(!pr||!pr.be)continue;
+  var b=(pr.seat&&BANDS.indexOf(pr.seat)>=0)?pr.seat
+   :((typeof readSeat==='function')?readSeat(pr.notbe||''):null);
+  if(!b)continue;
+  var n=held.filter(function(x){return x.b===b&&x.cf;})[0];
+  if(n)return {be:String(pr.be).trim(), seat:b, n:n};}
+ return null;}
+/* ritBecomingHtml is gone, round QN. The becoming is the Ongoing goal card's
+   now (ui/ritstage.js, ritGoalHtml), in the slot he named for it, and a second
+   renderer of the same card is how one of the two goes stale. */
+
+/* ---------------- drawing ---------------- */
+function ritP(n){return (+n).toFixed(2);}
+/* one ring cut into n pieces with a small gap between each. A piece is done,
+   set for a day still to come, set and not done yet today, or missed. */
+function ritArcs(cx,cy,r,segs,w){
+ var n=segs.length, out='';
+ if(!n)return '';
+ /* THE GAP IS MEASURED OFF THE STROKE, NOT TYPED IN DEGREES. A round cap
+    reaches half a stroke past each end, so a fixed 14 degree gap on a small
+    ring was eaten whole and a two step ritual drew one unbroken circle, which
+    is the one thing RT1 says a ring must never do: the dashes are the count.
+    The gap is a stroke and a half of clear space, and never more than half a
+    piece, so ten steps still draw ten. */
+ var gap=n>1?Math.min((w*2.5)/r*180/Math.PI,180/n):0;
+ segs.forEach(function(s,i){
+  var cls='rv-s rv-s-'+s.st;
+  if(n===1){out+='<circle class="'+cls+'" cx="'+cx+'" cy="'+cy+'" r="'+r+'" style="stroke:'+s.col
+   +';stroke-width:'+w+'"/>';return;}
+  var a0=(-90+i*360/n+gap/2)*Math.PI/180, a1=(-90+(i+1)*360/n-gap/2)*Math.PI/180;
+  out+='<path class="'+cls+'" d="M'+ritP(cx+r*Math.cos(a0))+' '+ritP(cy+r*Math.sin(a0))
+   +' A'+r+' '+r+' 0 '+((a1-a0)>Math.PI?1:0)+' 1 '+ritP(cx+r*Math.cos(a1))+' '+ritP(cy+r*Math.sin(a1))
+   +'" style="stroke:'+s.col+';stroke-width:'+w+'"/>';});
+ return out;}
+/* what a day carries: what the record holds for it, and every active ritual
+   that covered it without an entry. The record comes first, because it is
+   what happened; a plan only fills a day nothing was written on. */
+function ritDaySegs(day,plans,today){
+ var segs=[], seen={};
+ ritEntries(day).forEach(function(e){
+  var k=ritKey(e.x.steps); seen[k]=1;
+  segs.push({col:ritCol(e.x), st:ritIsDone(e.x)?'done':(day<today?'miss':'plan'),
+   x:e.x, i:e.i, nm:ritName(e.x.steps)||'A ritual'});});
+ plans.forEach(function(p){
+  if(seen[ritKey(p.steps)]||!ritCovers(p,day))return;
+  segs.push({col:ritCol(p), st:day<today?'miss':(day===today?'plan':'ahead'), p:p, nm:ritName(p.steps)});});
+ return segs;}
+var RIT_IC={
+ pen:'<path d="M4 20h4L19 9l-4-4L4 16z M13 7l4 4"/>',
+ body:'<circle cx="12" cy="5" r="2.2"/><path d="M12 8v7 M8 11h8 M9 21l3-6 3 6"/>',
+ ring:'<circle cx="12" cy="12" r="8"/><path d="M12 4v3"/>',
+ arrow:'<path d="M5 12h14 M14 7l5 5-5 5"/>',
+ edit:'<path d="M4 20h4L19 9l-4-4L4 16z"/>',
+ up:'<path d="M12 19V5 M6 11l6-6 6 6"/>',
+ x:'<path d="M6 6l12 12 M18 6L6 18"/>',
+ back:'<path d="M15 5l-7 7 7 7"/>', fwd:'<path d="M9 5l7 7-7 7"/>', down:'<path d="M6 9l6 6 6-6"/>',
+ plus:'<path d="M12 5v14 M5 12h14"/>', check:'<path d="M5 12l5 5 9-10"/>',
+ clock:'<circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2 M10 3h4"/>',
+ stop:'<circle cx="12" cy="12" r="8"/><path d="M9.5 9.5h5v5h-5z"/>',
+ minus:'<path d="M5 12h14"/>',
+ /* the repeat band's two, 20 November (ritRecurHtml, ui/ritbank.js):
+    When is a calendar with a clock on its corner because it carries a time
+    and a cue, not a date; Where is a pin */
+ cal:'<path d="M11 18H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3 M4 9.5h14 M8 3v4 M14 3v4"/><circle cx="17" cy="17" r="4"/><path d="M17 15.2V17l1.3 1"/>',
+ pin:'<path d="M12 21s-6-5.6-6-10.5a6 6 0 0 1 12 0C18 15.4 12 21 12 21z"/><circle cx="12" cy="10.5" r="2.2"/>'};
+function ritIc(k,cls){
+ return '<svg viewBox="0 0 24 24" class="'+(cls||'rv-ic')+'" aria-hidden="true">'+RIT_IC[k]+'</svg>';}
+
+/* THE CHAIN. His words: "pass data from my story to the bank to the work I
+   need to do ritually." Three stops and the seat's colour through them. */
+function ritChainHtml(c,r,act){
+ var own=CURP||{}, n=((own.story&&own.story.entries)||[]).length;
+ /* HELD IS CHARGE, AND ONLY CHARGE. impLive is the Imprints page's list and
+    it carries installed places too, a place holding its opposite at 4 or more.
+    Counting those here printed eight places held on a field holding none,
+    measured on the seed. The bank's held is what a release can reach. */
+ var held=ritHeld(), by={};
+ held.forEach(function(x){by[x.b]=(by[x.b]||0)+1;});
+ var bar=BANDS.map(function(b){
+  if(!by[b])return '';
+  return '<i class="rv-bar-s'+(b===c.band?' rv-on':'')+'" style="flex:'+by[b]+';background:'+seatCol(b)+'" title="'
+   +esc(b)+', '+by[b]+' held"></i>';}).join('');
+ /* no reading yet, no seat: the practice is where to start and not what a
+    seat called for, so it takes the accent and not Root's colour. */
+ var p=c.called, col=r.unread?'var(--accent)':seatCol(c.band);
+ var running=act.some(function(x){return x.steps.indexOf(p&&p.k)>=0;});
+ var fromN=(RIT.from&&RIT.from.length)||0;
+ /* ROUND LT, five cuts on this chain, his words and in his reading order:
+    "Get rid of the text 'your words', just put 'Imprints'. Get rid of the
+    text says 'write the first one'. Get rid of the text says 'held in your
+    body'. Get rid of the text says 'most at the throat'. ... change 'do
+    this' to 'goal'." The first stop's label was You wrote, which is the one he
+    read as your words, and it is Imprints now, the Story page's own word for
+    what a story leaves. Write the first one and Held in your body are gone.
+    Most at the throat was a pattern and not one line, Most at the plus
+    whichever seat carries the most, so the pattern is gone on every seat; the
+    bar under it still marks that seat by its outline. What rode on the same
+    line, how many were released just now, is a figure of its own and keeps
+    its own line. The unread label, Start here, is not his to cut and stays. */
+ var out='<div class="rv-chain" role="group" aria-label="From your story to your ritual">';
+ out+='<button type="button" class="rv-node rv-n-imp" data-act="go-story">'
+  +'<span class="rv-lb">Imprints</span>'
+  +'<span class="rv-nv">'+ritIc('pen','rv-nic')+(n?'<b>'+n+'</b><em>'+(n===1?'story':'stories')+'</em>':'<em>No story yet</em>')+'</span>'
+  +'</button>';
+ out+='<span class="rv-arr" aria-hidden="true">'+ritIc('arrow')+'</span>';
+ /* ROUND LT, HIS WORDS: "get rid of the text 'your words', just put
+    'Imprints'." This node already opens the Imprints bank (data-act="go-bank",
+    impLive, the same list the Imprints page draws), so the label now names
+    the surface it opens rather than describing what sits there. That same
+    edit removes "held in your body", which he named as its own line: it was
+    the phrase this label used to carry. rv-n-held and --c carry the round LT
+    colour by part rule onto this node too: the seat colour on the held
+    place, ritCss's own words. */
+ out+='<button type="button" class="rv-node rv-n-held" data-act="go-bank" style="--c:'+col+'">'
+  +'<span class="rv-lb">Imprints</span>'
+  +(held.length
+    ?'<span class="rv-nv">'+ritIc('body','rv-nic')+'<b>'+held.length+'</b><em>'+(held.length===1?'place':'places')+'</em></span>'
+     +'<span class="rv-bar">'+bar+'</span>'
+     /* "GET RID OF THE TEXT SAYS 'MOST AT THE THROAT'." The seat name was a
+        second reading of the same bar the coloured segments already draw, and
+        it was the seat holding the most on every profile, worded to sound like
+        news. The "released just now" note is kept: it is not the phrase he
+        named and it is the one piece of information here a bar cannot draw. */
+     +(fromN?'<span class="rv-ns">'+fromN+' released just now</span>':'')
+    :'<span class="rv-nv">'+ritIc('body','rv-nic')+'<em>Nothing held</em></span>')
+  +'</button>';
+ out+='<span class="rv-arr" aria-hidden="true">'+ritIc('arrow')+'</span>';
+ out+='<div class="rv-node rv-do" style="--c:'+col+'">'
+  /* "CHANGE 'DO THIS' TO 'GOAL'." Do this named the action; Goal names what
+     the action is for, which is the word he asked for in its place. */
+  +'<span class="rv-lb">'+(r.unread?'Start here':'Goal')+'</span>'
+  +'<span class="rv-nv"><svg viewBox="0 0 24 24" class="rv-nic" aria-hidden="true"><circle cx="12" cy="12" r="8" style="stroke:'+col+'"/></svg>'
+  +'<b class="rv-pn">'+esc(p?p.nm:'')+'</b></span>'
+  +'<span class="rv-ns">'+(p?p.min+' minutes':'')+'</span>'
+  /* THE START LEFT THE CHAIN, round QN. The left column is where a ritual is
+     started, and its Suggested list now carries this same practice first, with
+     the reason the seat calls for it. Two Starts for one practice on one page
+     is the same choice offered twice, so the chain is a read now. */
+  +(running?'<span class="rv-tag">Active</span>':'')
+  +'</div>';
+ return out+'</div>';}
+
+/* TODAY'S RING, ritTodayHtml, IS GONE, SV19. It drew a 180 pixel ring per
+   due ritual with the streak in the middle, on the Done card, and he struck
+   it: "The gigantic graphic, this is done and 14, taking up all that space by
+   itself." Today's rituals are today's column of the week, the streak is the
+   strip at the top of the right rail (acctStreakHtml, ui/accountability.js),
+   and the rules this function carried went with the figures: Kept is the
+   engine's own count, and Best is streakRead's strict row, which can be
+   shorter than the streak, so the streak's tooltip says what Best means. */
+
+/* ACTIVE. The list a person keeps, in their order. */
+function ritLeft(p,today){
+ if(!p.days)return 'No end';
+ var left=ritStart0(p)+p.days-today;
+ return left<=1?'Last day':left+' days left';}
+/* THE TIMER ON A ROW. Round LT: "put a timer for it". One runs at a time, the
+   way a person does one thing at a time, and pressing it again stops it. It
+   counts down on the row and nowhere else, and reaching zero does not mark
+   the day done: a timer that ran out is a phone left on a table as often as
+   it is a practice finished, and ritLog's rule is that a person says so. It
+   says Time is up on the row, and the ring beside it is the press. */
+function ritClock(s){s=Math.max(0,Math.ceil(s)); return Math.floor(s/60)+':'+('0'+(s%60)).slice(-2);}
+function ritTimerHtml(p){
+ var run=RIT.run&&RIT.run.id===p.id, rang=RIT.rang===p.id, m=ritTm(p);
+ var lab=run?'Stop the timer':'Start a '+m+' minute timer for '+ritName(p.steps);
+ /* at rest it is the clock alone, and the minutes it will run are on the
+    line under the name. Counting, it prints what is left; at zero, that the
+    time is up. Only then does it take the width a figure needs. */
+ return '<button type="button" class="rv-tmr'+(run?' rv-run':'')+(rang?' rv-rang':'')+'" data-act="timer" data-id="'+p.id+'" aria-label="'+esc(lab)+'" title="'+esc(lab)+'">'
+  +ritIc(run?'stop':'clock')
+  /* AT REST IT SAYS TIMER, SV24: the clock alone was one of the marks he
+     could not read ("icons ... with numbers and pills, I don't know what
+     that's for"), and its only words were its accessible name. Counting it
+     still prints what is left, and at zero that the time is up. */
+  +'<span data-tmr="'+p.id+'">'+(run?ritClock((RIT.run.end-Date.now())/1000):(rang?'Time is up':'Timer'))+'</span></button>';}
+function ritTimer(id){
+ var p=ritPlans().filter(function(x){return x.id===id;})[0]; if(!p)return;
+ var was=RIT.run&&RIT.run.id; RIT.rang=null;
+ if(RIT.run){clearInterval(RIT.run.iv); RIT.run=null;}
+ if(was===id){ritRender(); ritPopNow(); return;}
+ var end=Date.now()+ritTm(p)*60000;
+ RIT.run={id:id, end:end, iv:setInterval(function(){
+  /* THE TIMER COUNTS IN THE POP-UP, 21 November: the Today list's row it
+     counted on is gone, and the pop-up is the sheet, outside #rit, so the
+     figure is found by its plan id anywhere in the document */
+  var left=(end-Date.now())/1000, el=document.querySelector('[data-tmr="'+id+'"]');
+  if(left<=0){clearInterval(RIT.run.iv); RIT.run=null; RIT.rang=id;
+   status(ritName(p.steps)+', time is up.'); if(typeof sfx==='function')sfx('time'); ritRender(); ritPopNow(); return;}
+  /* only the figure is written each second. A render every second would take
+     the focus out of the When field while a person typed in it. */
+  if(el)el.textContent=ritClock(left);},1000)};
+ ritRender(); ritPopNow();}
+/* an open pop-up redrawn from a fresh read after a timer starts, stops or
+   reaches zero, so the press a person made shows what it now holds */
+function ritPopNow(){
+ var sh=document.getElementById('sheet');
+ if(RIT.pop&&sh&&!sh.hidden&&typeof ritBankRedraw==='function')ritBankRedraw(null);}
+/* THE ACTIVE TODAY CARD IS GONE, 18 November. ritActiveHtml drew the whole
+   Active today card on every render into P.active, and nothing has read
+   P.active since round QX put the list inside the Today card through
+   ritActiveBody below. A drawing nobody reads is work on every press and a
+   second, stale shape of the list for the next reader to mistake for the
+   live one, so the function and the field went together. */
+/* ritActiveBody is gone, 21 November, with the Today card it drew
+   (ui/ritcal.js, the today section, lists where each control went). */
+/* one ritual's ring for one day, a dash per step, ticked when the day is done.
+   The Active list and the week's sheet draw the same ring (Accountability's
+   due list drew it until SV17), so the press means the same thing in both
+   places and there is one drawing of it. */
+/* ---------------- ROUND QS: THE SYMBOL, THE PERCENT AND THE PRESS ----------------
+   His words, 3 October, on a screenshot of this page: "for the ritual
+   everything like the rest of the app has to be visually symbolic it's also a
+   UI element that's tied to the system to show the percent complete and more
+   show less tell if you want tell you press on something to get information".
+
+   So a ritual carries the object the rest of the product already uses for a
+   measured value, crBadge (ui/component.js): its seat's own mark inside, a
+   ring round the rim in the seat's colour, and the figure in a pill at the
+   lower right. That is the ruled shape (DECISIONS.md, "A measured value is a
+   circle with its icon inside, a ring round the rim, and a small pill at the
+   lower right carrying the number"), not a new one.
+
+   WHAT THE RING IS. Percent complete of what the ritual is set for: the days
+   it was kept, over the days its span covers on the days it is set for. It
+   only fills, because a kept day stays kept and the span does not move. It is
+   not a rate and not a grade: a missed day does not empty it, it just does not
+   fill it. A ritual with no end has nothing to complete, so its ring stays
+   empty and the pill carries the days kept, a count, which is what every
+   other record figure on the page already is. SUPERSEDED, SV17: neither
+   branch fills the ring now, and both pills carry a count, at ritPctHtml.
+
+   THE TELL IS ON THE PRESS. The badge is a carrier for the one tooltip
+   (ui/tip.js): a hover on a desk, a tap on a phone, and the sentence says what
+   the ring and the pill are, with the figure and what it is out of. */
+function rvTip(t,b,n,k){
+ return ' tabindex="0" data-tip-t="'+esc(t)+'" data-tip="'+esc(b)+'"'+(n?' data-tip-n="'+esc(n)+'"':'')
+  +(k?' data-tip-k="'+esc(k)+'"':'');}
+/* the one seat a ritual sits at: its band, or its first seat tag */
+function ritSeat(p){
+ if(p&&p.band&&BANDS.indexOf(p.band)>=0)return p.band;
+ return ((p&&p.tags)||[]).filter(function(b){return BANDS.indexOf(b)>=0;})[0]||'';}
+function ritPct(p,today){
+ if(!p||!p.days)return null;
+ var s=ritStart0(p), due=0, kept=0;
+ for(var d=s;d<s+p.days;d++){
+  if(!ritCovers(p,d))continue; due++;
+  var e=ritEntryFor(p,d); if(e&&ritIsDone(e.x))kept++;}
+ return due?{kept:kept, due:due, pct:100*kept/due}:null;}
+/* ritPctHtml and ritRowSeats are gone, 21 November: their one caller was
+   the Today list's row. The sheet a block opens says Kept as a count
+   (ritSashSheet), the count SV17 and SV24 ruled, never kept of set. */
+function ritRingHtml(p,d,col){
+ return '<svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="14" class="rv-track" style="stroke-width:4"/>'
+  +ritArcs(20,20,14,p.steps.map(function(){return {col:col, st:d?'done':'plan'};}),4)
+  +(d?'<path d="M13 20l5 5 9-10" class="rv-tick" style="stroke:'+col+'"/>':'')+'</svg>';}
+/* a seat's name as a tag carries it: sentence case, and the third eye spelled
+   out, the way ritSeatNm spells it inside a sentence */
+function ritTagNm(b){return b==='3rd Eye'?'Third eye':String(b||'');}
+
+/* THE BUILDER. New and edit are one card. The steps a person picked sit at
+   the top in their order, the practice the state calls for is the first tile,
+   and the rest of the library is one press away rather than nineteen rows. */
+/* THE SEVEN TAGS AND THE CLOSED NEW RITUAL ARE GONE, SV16. His words, on an
+   annotated screenshot of this page: "when I hit new ritual, I want its
+   default state to be open and accessible. These tags at the bottom don't do
+   anything because I'm creating the ritual. Doesn't matter what I select as a
+   tag." The closed card was a New ritual press over "Start from a tag" and
+   seven seat pills, and the builder opened on its own row of the same seven.
+   A tag did one thing, put on the draft the practice its seat calls for, and
+   every one of those practices is already a tile one press away. So the
+   builder is the column's resting state, ritRender, and neither row is drawn.
+   A plan keeps its tags field: rituals made before this keep theirs, an edit
+   carries them through untouched (ritEditOpen, ritSaveEdit), and the Called
+   for cards still write the seats they were offered for, which is what the
+   avatar card's fed dot reads. */
+function ritBuildHtml(c,nAct,unread){
+ var draft=ritDraft(), editing=!!RIT.edit, mins=ritMin(draft);
+ /* the minutes the steps add up to used to sit in this heading. The timer
+    below starts at that figure and prints it, so it is said once, there. */
+ /* THE HEADING SAYS EDIT, OR NOTHING, round QF. It said New ritual, and the
+    column's own head one line above it now says New, so the two said one
+    thing twice. Editing is a state the column head cannot carry, because a
+    slot keeps its label and the value carries the state, so that word stays
+    and the other one goes. */
+ var out='<div class="rv-sec rv-build rv-new">'
+  +(editing?'<div class="rv-hd"><span class="rv-h">Edit</span></div>':'');
+ if(RIT.from&&RIT.from.length)
+  out+='<p class="rit-from">After releasing '+esc(RIT.from.slice(0,3).map(function(x){return x.name;}).join(', '))
+   +(RIT.from.length>3?' and '+(RIT.from.length-3)+' more':'')+'</p>';
+ if(draft.length){
+  out+='<ol class="rv-steps">';
+  draft.forEach(function(k,i){var p=ritPr(k);
+   out+='<li class="rv-st" style="--c:'+(PTRACK[p.track]||'var(--accent)')+'"><i></i><span>'+esc(p.nm)+'</span><small>'+p.min+' min</small>'
+    +(i>0?'<button type="button" class="rv-ib" data-act="step-up" data-k="'+k+'" aria-label="Move '+esc(p.nm)+' up">'+ritIc('up')+'</button>':'')
+    +'<button type="button" class="rv-ib" data-act="pick" data-k="'+k+'" aria-label="Take '+esc(p.nm)+' out">'+ritIc('x')+'</button></li>';});
+  out+='</ol>';}
+ /* the tiles. Called first; then, one press on, every practice this state
+    allows, by track, each tile the colour of its track. */
+ var tile=function(p,big){
+  var on=!!RIT.sel[p.k];
+  return '<button type="button" class="rv-tile'+(on?' rv-on':'')+(big?' rv-big':'')+'" data-act="pick" data-k="'+p.k
+   +'" aria-pressed="'+on+'" style="--c:'+(PTRACK[p.track]||'var(--accent)')+'">'
+   +'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/>'+(on?'<path d="M8 12l3 3 5-6"/>':'')+'</svg>'
+   +'<span class="rv-tn">'+esc(p.nm)+'</span><span class="rv-tm">'+p.min+' min</span>'
+   /* ", called for" is cut from the minutes, SV19, struck in red on the live
+      page. The tile is first because its seat calls for it, and the Called
+      for list under the builder says why, one press away, so the two words
+      were the third tier line he keeps striking. */
+   /* THE BIG TILE CARRIED p.d UNDER ITS NAME, and it is gone, SV17. His
+      reaction to the page: too much text, and the line read as one more
+      paragraph on a card whose job is one press. The line is what the
+      practice is, so it was not cut: it is the first line under each step in
+      the sash's popup (ritSashSheet, ui/ritcal.js), one press away. */
+   +'</button>';};
+ if(c.called&&!RIT.all&&!RIT.sel[c.called.k])out+='<div class="rv-tiles">'+tile(c.called,true)+'</div>';
+ if(RIT.all){
+  ['Somatic','Body','Energy','Mind'].forEach(function(tr){
+   var set=c.all.filter(function(p){return p.track===tr;}); if(!set.length)return;
+   out+='<div class="rv-trk" style="--c:'+(PTRACK[tr]||'var(--accent)')+'">'+tr+'</div><div class="rv-tiles">'
+    +set.map(function(p){return tile(p,false);}).join('')+'</div>';});}
+ /* ONE LABEL, AND THE CHEVRON CARRIES THE STATE, SV17. It read More
+    practices shut and Fewer practices open, so the press changed its name
+    under the finger, and a slot keeps its label while the value carries the
+    state (UX rule 2). Open and shut are aria-expanded, the attribute the
+    Active list's rows and the Called for marks already carry, and the
+    chevron's turn, which is the attribute drawn.
+    PRACTICES, NOT MORE PRACTICES, SV24, his words: "Where it says more
+    practices, just get rid of the word more." The press opens the whole
+    library, the called for one included.
+    RITUALS, NOT PRACTICES, 20 November, his words: "And then change
+    practices to rituals." It is still the one place the string is written:
+    the button has no aria-label or title of its own, so its name is this
+    text. Only this control's word moved; a practice in engine/data/
+    practice.js is the library's own unit and keeps its name. */
+ /* ROW TWO, THREE CONTROLS, 20 November, his "maybe we do more icons, maybe
+    we focus on more drop downs". Rituals, the timer and Affirm were three
+    rows of 44 with 12 between them, and the timer was a stepper with a
+    label over it, 123 pixels with How often beside it. They are one row
+    now: the timer is a dropdown with its ring and the minutes on its face,
+    Timer itself is the tip, and Affirm is its ring alone (affDoorHtml's ic). */
+ /* THE 104 WAS TOO NARROW FOR ITS OWN LONGEST VALUE, found in the 21
+    November independent pass: the timer starts at the sum of the ritual's
+    steps and the library sums to 408, so the dropdown's own real options run
+    "1 min" to "408 min", not a fixed 1 to 2 digits. Measured in a real
+    Chromium, the longest of them ("400 min", the widest at this font) needs
+    120.6 of the 38 the old 104 pixel box left for text once its icon and
+    chevron padding are paid, and every width from 121 up renders every real
+    option with no overflow, checked against each one of them, not the
+    longest alone. 124 is that 121 plus 3 for the hinting slack between
+    render engines. The rit-more button beside it (flex 1 1 auto) carries
+    the give: it measured 56 pixels of slack at 390 before this changed and
+    only loses the 20 this adds, nowhere near its own 96 pixel floor. */
+ out+='<div class="rv-tools">'
+  +'<button type="button" class="rit-more rv-more-t" id="ritall" data-act="all" aria-expanded="'+!!RIT.all+'">'
+  +'<span>Rituals</span>'+ritIc('down')+'</button>';
+ /* THE TIMER STARTS AT THE MINUTES THE STEPS ADD UP TO, and offers a minute
+    at a time under ten and five at a time above, the steps the stepper took,
+    because that is the size of the difference at each end. A figure off
+    those steps, twelve minutes of steps or the ceiling, is offered as itself
+    and never rounded to the nearest step, which would be a timer the person
+    did not set. */
+ var tm=RIT.tm||mins||1, tms=[];
+ for(var t=1;t<=RIT_TM_MAX;t+=(t<10?1:5))tms.push(t);
+ if(tms.indexOf(tm)<0)tms.push(tm);
+ if(tms.indexOf(RIT_TM_MAX)<0)tms.push(RIT_TM_MAX);
+ tms.sort(function(x,y){return x-y;});
+ out+='<label class="rv-rsel rv-tmsel" data-tip-t="Timer" data-tip="How long the steps run together.">'+ritIc('clock')
+  +'<select data-act="tm" aria-label="Timer">'+tms.map(function(v){
+   return '<option value="'+v+'"'+(v===tm?' selected':'')+'>'+v+' min</option>';}).join('')+'</select></label>';
+ /* AFFIRM, 18 November: the affirmation generator's one door here, ui/affirmui.js */
+ if(typeof affDoorHtml==='function')out+=affDoorHtml('ritual',null,null,true);
+ out+='</div>';
+ /* THE IF THEN PLAN. Two fields, and they are the largest single item in the
+    whole loop: 72 of 1000 at day thirty, measured. Gollwitzer and Sheeran
+    2006, ninety four studies, d 0.65: a plan that names a time and a place is
+    acted on and a plan that names an intention is not. Both optional. The
+    cap comes from the boundary, RIT_PLAN_MAX, and is not typed again here. */
+ /* NO PLACEHOLDER, SV19, CO-32. The two fields carried a made up person's
+    answer as their sample, a morning with a kettle in it and a chair by a
+    window, lifted from the Gollwitzer and Sheeran citation in
+    DESIGN-firstrun.md, where it is the rationale and not copy. He struck both
+    in red: "All that like third tier text you keep putting in, like after I
+    put the kettle on, is fucking stupid." It survived four rounds of cuts
+    because no gate read an attribute, so every cut took the text he struck
+    and left this. The labels, Cue and Where, say what goes in; the field is
+    empty. check.py --objections, invented-example-copy, now reads every
+    placeholder and value and fails a build on a sample answer. */
+ /* AND BOTH ARE ONE TAP DEEP NOW, 20 November: they are the When and Where
+    icons on the repeat band (ritRecurHtml, ui/ritbank.js), and the band draws
+    them hidden until the icon is pressed. When holds the time and this cue,
+    and the sentence they make sits under the cue, where it fills in as it is
+    typed. Whether a plan one tap deep is set as often as a field always on
+    screen is the measure to read next round, not an assumption. */
+ var cue='<label class="rv-rf"><span>Cue</span><input type="text" id="ritwhen" maxlength="'+RIT_PLAN_MAX
+  +'" value="'+esc(RIT.when||'')+'"></label>'
+  +((RIT.when||RIT.where)&&draft.length
+    ?'<p class="rv-if">When '+esc(RIT.when||'it is time')+', '+esc(RIT.where?'at '+RIT.where:'wherever you are')
+     +', you will '+esc(String(ritPr(draft[0]).nm).toLowerCase())+'.</p>':'');
+ var where='<label class="rv-rf"><span>Where</span><input type="text" id="ritwhere" maxlength="'+RIT_PLAN_MAX
+  +'" value="'+esc(RIT.where||'')+'"></label>';
+ /* an edit opens on no length chosen, and what is left is the For
+    dropdown's first answer rather than a line of its own under it: For 12
+    days is the same fact as 12 days left, said in the dropdown's own words
+    and short enough to read whole beside Repeat on a phone */
+ var left=null;
+ if(RIT.days<0&&RIT.edit){var q=ritPlans().filter(function(x){return x.id===RIT.edit;})[0];
+  if(q){var lt=q.days?ritStart0(q)+q.days-ritToday0():0; left=!q.days?'No end':(lt<=1?'1 day':lt+' days');}}
+ out+=ritRecurHtml(ritRecurOf(),{a:'data-act', id:'rv-', cue:cue, cueV:RIT.when||'', where:where, whereV:RIT.where||'', left:left});
+ out+='<div class="rv-acts">'
+  +(editing?'<button type="button" class="btn" data-act="del-plan" data-id="'+RIT.edit+'">Delete</button>':'')
+  /* CANCEL WHEN THERE IS SOMETHING TO CANCEL, SV16. Round QN put it on every
+     paint because the builder was opened with a press and a thing opened
+     with a press closes with one. The builder is the column's resting state
+     now and cannot be shut, so on an empty draft Cancel would be a press that
+     does nothing. It is drawn while editing, while a step, a day, a timer or
+     a field is set, and over another tab, where it reads Close and is the way
+     back. */
+  +((editing||!ritTab()||ritDirty())?'<button type="button" class="btn" id="ritx" data-act="cancel">'+(ritTab()?'Cancel':'Close')+'</button>':'')
+  +'<button type="button" class="btn pri" id="ritsave" data-act="save"'+(draft.length?'':' disabled')+'>'+(editing?'Save':'Start')+'</button>'
+  +'</div>';
+ return out+'</div>';}
+
+/* whether the builder holds anything a Cancel would empty */
+function ritDirty(){
+ return ritDraft().length>0||!!RIT.on||!!RIT.tm||!!RIT.when||!!RIT.where||!!RIT.at||RIT.days!==7||!!(RIT.from&&RIT.from.length);}
+/* the builder's half of the repeat band. The band reads and writes one
+   shape, the pop-up's W, so the builder hands it a W made of its own fields
+   and takes the answer back: days is the band's rep, and at, rown and wp are
+   the time, Set days and which panel is open. */
+function ritRecurOf(){
+ return {on:RIT.on, rep:RIT.days, own:!!RIT.rown, at:RIT.at||'', wp:RIT.wp||null};}
+function ritRecurPut(R){
+ RIT.on=R.on; RIT.days=R.rep; RIT.rown=!!R.own; RIT.at=R.at; RIT.wp=R.wp;}
+/* a Once start: the dates lit inside the coming seven are the plan, from the
+   first of them, which ritStartPlan already takes as fromDay. ritWhenSpan is
+   the pop-up's own reading of the same answer. */
+function ritOnceOf(q){
+ if(RIT.days!==1)return q;
+ var S=ritWhenSpan({on:RIT.on, rep:1},ritToday0()), on=[];
+ S.list.forEach(function(d){var w=ritWd(d); if(on.indexOf(w)<0)on.push(w);});
+ q.fromDay=S.from; q.days=S.days; q.on=on.length===7?null:on.sort();
+ return q;}
+/* THE RECORD AS A MONTH. Each day is a ring cut into what it carried. */
+var RIT_WD=['M','T','W','T','F','S','S'];
+function ritDayName(day,today){
+ if(day===today)return 'Today';
+ if(day===today-1)return 'Yesterday';
+ var off=new Date().getTimezoneOffset()*60000, d=new Date(day*DAY_MS+off+12*3600000);
+ return d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});}
+function ritCalHtml(plans,today,empty){
+ var now=new Date(), y=now.getFullYear(), m=now.getMonth()+RIT.mo;
+ var first=new Date(y,m,1,12), yy=first.getFullYear(), mm=first.getMonth();
+ var nd=new Date(yy,mm+1,0).getDate(), lead=first.getDay();
+ var mon='<span class="rv-mon">'+first.toLocaleDateString('en-GB',{month:'long',year:'numeric'})+'</span>';
+ var out='<div class="rv-cal"><div class="rv-calh">'
+  +(empty?mon:'<button type="button" class="rv-ib" data-act="mo" data-d="-1" aria-label="Month before">'+ritIc('back')+'</button>'
+   +mon+'<button type="button" class="rv-ib" data-act="mo" data-d="1" aria-label="Month after"'+(RIT.mo>=1?' disabled':'')+'>'+ritIc('fwd')+'</button>')
+  +'</div><div class="rv-grid">';
+ RIT_WCOL.forEach(function(w){out+='<span class="rv-wd" aria-hidden="true">'+RIT_WD[w]+'</span>';});
+ for(var i=0;i<lead;i++)out+='<span class="rv-blank"></span>';
+ for(var d=1;d<=nd;d++){
+  var day=pracDay(new Date(yy,mm,d,12)), segs=ritDaySegs(day,plans,today);
+  var sel=RIT.day===day;
+  var doneN=segs.filter(function(s){return s.st==='done';}).length;
+  var tag=empty?'span':'button';
+  out+='<'+tag+(empty?'':' type="button"')+' class="rv-day'+(day===today?' rv-now':'')+(sel?' rv-sel':'')+(day>today?' rv-fut':'')
+   +'"'+(empty?' aria-hidden="true"':' data-act="day" data-d="'+day+'" aria-pressed="'+sel+'" aria-label="'+esc(ritDayName(day,today))+', '+d
+   +(segs.length?(doneN?', '+doneN+' done':', none done'):'')+'"')+'>'
+   +'<svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="15" class="rv-track" style="stroke-width:3.5"/>'
+   +ritArcs(20,20,15,segs,3.5)+'</svg><span>'+d+'</span></'+tag+'>';}
+ out+='</div><div class="rv-key" aria-hidden="true">'
+  +'<span><i class="rv-k-done"></i>Done</span><span><i class="rv-k-plan"></i>Planned</span><span><i class="rv-k-miss"></i>Missed</span></div>';
+ return out+'</div>';}
+/* one day read back: what it carried, marked done or not, and deletable */
+function ritDayRows(day,plans,today){
+ var segs=ritDaySegs(day,plans,today), can=(day===today||day===today-1);
+ if(!segs.length)return '<p class="rv-empty">Nothing on this day.</p>';
+ return '<ul class="rv-days">'+segs.map(function(s){
+  var st=s.st==='done'?'Done':(s.st==='miss'?'Missed':'Planned');
+  var pid=s.p?s.p.id:(function(){var k=ritKey(s.x.steps);
+   var q=plans.filter(function(p){return ritKey(p.steps)===k;})[0]; return q?q.id:null;})();
+  return '<li class="rv-dr" style="--c:'+s.col+'"><i class="rv-dot rv-s-'+s.st+'"></i>'
+   +'<span class="rv-dn">'+esc(s.nm)+'</span><span class="rv-ds">'+st+'</span>'
+   +(can&&pid?'<button type="button" class="rv-ib" data-act="logday" data-id="'+pid+'" data-d="'+day+'" aria-pressed="'+(s.st==='done')
+     +'" aria-label="'+(s.st==='done'?'Take off':'Mark done')+'">'+ritIc('check')+'</button>':'')
+   +(s.x?'<button type="button" class="rv-ib" data-act="del-entry" data-i="'+s.i+'" aria-label="Delete this entry">'+ritIc('x')+'</button>':'')
+   +'</li>';}).join('')+'</ul>';}
+/* THE SAME RECORD AS A LIST, newest first, and the rituals that have ended,
+   which can be started again. */
+function ritListHtml(plans,today){
+ var rows=((CURP&&CURP.rituals)||[]).map(function(x,i){return {x:x,i:i,d:pracDay(x&&x.t)};})
+  .filter(function(e){return e.d!==null;}).sort(function(a,b){return b.d-a.d||b.i-a.i;});
+ /* THE ENDED ROWS AND THEIR AGAIN ARE GONE FROM HERE, round QN. History, one
+    section up in the same column, carries every ritual that has ended with
+    Back in rotation beside it, which is the same choice. Offered twice under
+    two names, a person is left asking whether the two do different things. */
+ var out='';
+ if(!rows.length)return out+'<p class="rv-empty">Nothing on the record yet.</p>';
+ var last=null, n=0;
+ out+='<ul class="rv-days">';
+ rows.slice(0,RIT.hn).forEach(function(e){
+  if(e.d!==last){out+='<li class="rv-dg">'+esc(ritDayName(e.d,today))+'</li>'; last=e.d;}
+  var st=ritIsDone(e.x)?'done':(e.d<today?'miss':'plan');
+  out+='<li class="rv-dr" style="--c:'+ritCol(e.x)+'"><i class="rv-dot rv-s-'+st+'"></i><span class="rv-dn">'
+   +esc(ritName(e.x.steps)||'A ritual')+' <small>'+((+e.x.min)||0)+' min</small></span>'
+   +'<span class="rv-ds">'+(st==='done'?'Done':(st==='miss'?'Missed':'Planned'))+'</span>'
+   +'<button type="button" class="rv-ib" data-act="del-entry" data-i="'+e.i+'" aria-label="Delete this entry">'+ritIc('x')+'</button></li>';
+  n++;});
+ out+='</ul>';
+ if(rows.length>RIT.hn)out+='<button type="button" class="rit-more" data-act="more">Show more</button>';
+ return out;}
+function ritRecordHtml(plans,today){
+ /* A DAY OPENS WHEN IT IS PRESSED. It used to open on today, and today's
+    rows repeated the Active list's own mark done controls one column over:
+    three more choices on the working screen, measured, for nothing new. */
+ var sel=RIT.day;
+ /* AN EMPTY RECORD IS A PICTURE AND NOT A CONTROL PANEL. On a first visit the
+    month is drawn so a person can see what will fill, and its arrows, its
+    view switch and its thirty days were thirty four things to press on a
+    record holding nothing. They arrive with the first entry. */
+ var empty=!((CURP&&CURP.rituals)||[]).length&&!plans.length&&!RIT.gone;
+ if(empty){RIT.view='month'; sel=null;}
+ var out='<div class="rv-sec rv-rec"><div class="rv-hd"><span class="rv-h">Record</span>'
+  +(empty?'':'<div class="rv-seg" role="tablist" aria-label="Record view">'
+  +[['month','Month'],['list','List']].map(function(v){var on=RIT.view===v[0];
+   return '<button type="button" role="tab" aria-selected="'+on+'" class="rv-sg'+(on?' rv-on':'')+'" data-act="view" data-v="'+v[0]+'">'+v[1]+'</button>';}).join('')
+  +'</div>')+'</div>';
+ /* Put back is offered where the delete was pressed. A delete from the Keep or
+    delete card offers it there, round QN, and not one column over. */
+ if(RIT.gone&&RIT.goneAt!=='keep')out+='<div class="rv-gone" role="status"><span>Deleted.</span><button type="button" class="btn" data-act="putback">Put back</button></div>';
+ if(RIT.view==='list')out+=ritListHtml(plans,today);
+ else out+=ritCalHtml(plans,today,empty)
+  /* THE KEY UNDER THE MONTH IS THREE WORDS AND A DRAWING, and the drawing is
+     the part nobody can guess: a ring cut into pieces. Said once, in the same
+     place, as the unpack rule asks. */
+  +'<p class="rv-mean">Each ring is a day. Each piece of it is a ritual: solid is done, faint is planned, dashed is missed.</p>'
+  +(sel===null?'':'<div class="rv-dayh">'+esc(ritDayName(sel,today))+'</div>'+ritDayRows(sel,plans,today));
+ return out+'</div>';}
+
+/* THE CENTRE PIECE. Round LT put six parts on this one card and measured 969
+   pixels of content in 867. Round PO took three of them off it. Round QF names
+   what is left: "Center piece is for the ritual." So the stage is the chain
+   from story to work and the Active list under it, in one column, with no grid
+   to keep honest, and the two columns beside it carry the other two jobs.
+
+   It names itself, because the three columns each say what they are for and a
+   centre with no name is the one a stranger cannot place. The sentence under
+   the name is the unpack rule: a word a person has to guess is a defect. */
+/* ROUND QN made the centre six cards in his slots, ui/ritstage.js. The chain
+   and the Active list are two of the six; the becoming card is inside the
+   Ongoing goal. The still layer sits first so it is behind everything. */
+/* THE LINE UNDER THE NAME IS CUT, 4 November, struck in red on a screenshot
+   of the live page with his words "things just to cut out". It read "A set of
+   practices you repeat on days you choose." The paragraph above gave it the
+   unpack rule's job, but the three columns already say what each is for and
+   the builder asks for the days, so it was the page reading its own heading
+   aloud, which is V1. Its style rule went with it. */
+function ritLayout(P){
+ return P.live+'<div class="rv-pagehd"><span class="rv-pagenm">'+ritIc('ring','rv-nic')+'Ritual</span></div>'
+  +P.note+'<div class="rv-main">'+P.stage+'</div>';}
+
+/* WHAT BOTH TOOL SETS READ, and nothing they write. Pure: the builder's own
+   opening on a first visit is not here, because it writes RIT.sel and a read
+   of the record for the Accountability page must not choose a practice. */
+function ritRead(){
+ var r=compute(), c=ritFor(r), today=ritToday0(), plans=ritPlans();
+ var L=(typeof ladderRead==='function')?ladderRead(CURP,Date.now())
+  :{streak:{run:0,best:0},ledger:{minutes:0},earned:[],next:null};
+ return {r:r, c:c, today:today, plans:plans,
+  act:plans.filter(function(p){return ritActive(p,today);}), L:L};}
+/* THE WORKED EXAMPLE LINE IS CUT, SV19, his words: "Get rid of Ana is worked
+   example, so nothing is saved." It printed under the page's name for every
+   example, and on the teacher and complex panels below. The profile picker
+   already reads "Ana, example", and a write on an example is still refused by
+   name, through status(), at the moment it is tried (ritWrite: "is a worked
+   example, so nothing was saved to it"), which is the one time it is news.
+   ritNote stays as the slot, empty, so P.note keeps its place in the layout. */
+function ritNote(){return '';}
+
+/* A MENU'S HEAD, one writer for both menus. It names what the column is for,
+   and it leaves the right end free because each rail's fold control is pinned
+   there, head.html beside .fl-hd. The meaning is said in the same place, which
+   is the unpack rule: a word a person has to guess is a defect. */
+/* says may be empty, and then the head is its name alone, round RB: the two
+   menu heads on this page lost their lines to his "Get rid of all the
+   sec[ond] third tier text", and an empty span under the name would still
+   hold a line's height of nothing. */
+function flowHeadAt(id,nm,says,ic){
+ var h=document.getElementById(id); if(!h)return;
+ h.innerHTML='<span class="fl-nm">'+ritIc(ic)+esc(nm)+'</span>'+(says?'<span class="fl-says">'+esc(says)+'</span>':'');}
+/* the right menu's head, kept under its own name because the Compass, the
+   release and the gate all reach the Flow menu through it */
+function flowHead(nm,says,ic){flowHeadAt('flowhd',nm,says,ic);}
+
+/* ONE PAGE, THREE COLUMNS, round QF. Every paint writes all three, because a
+   column that is only written on some paths is a column that goes stale: the
+   Accountability page and the Ritual page each used to write one menu, and the
+   other one's markup stayed in the document until the tab changed.
+
+     left    inputting new. One press and the seven tags, or the builder.
+     centre  the ritual. The chain, and the Active list.
+     right   the accountability tracker. The loop, Done, Missed, the record.
+
+   ritbuild on the body says the builder is holding something. It only drives
+   the phone stack, where it brings the left column to the front: a person who
+   pressed Start or Edit asked for that column and a builder three screens down
+   is an opening nobody sees. */
+function ritRender(){
+ var h=document.getElementById('rit'), left=document.getElementById('flowleft'),
+     side=document.getElementById('flowside');
+ var onR=ritTab();
+ /* #rit IS SHOWN ON ITS OWN TAB AND NOWHERE ELSE. It was shown whenever RIT.open
+    was true, which was right while it was a modal over any tab and is a ritual
+    drawn over the Compass now: the Compass add writes through ritWrite, which
+    ends here. Hidden hosts are emptied, so a closed surface never sits in the
+    document holding a stale record, setTab's own rule for Summary. */
+ if(h&&(!onR||!RIT.open)){h.style.display='none';h.innerHTML='';}
+ if(!onR){
+  if(left)left.innerHTML=''; if(side)side.innerHTML='';
+  if(document.body){document.body.classList.remove('ritbuild'); document.body.classList.remove('ritnone');}
+  /* the next arrival draws in again, round QN, and opens on this week, SV16 */
+  RIT.arrive=true; RIT.wk=0;
+  return;}
+ ritCss(); ritStageCss(); if(typeof ritCalCss==='function')ritCalCss(); if(typeof ritWeekCss==='function')ritWeekCss(); if(typeof ritBankCss==='function')ritBankCss();
+ if(!h||!RIT.open)return;
+ h.style.display='flex';
+ var st=ritRead(), c=st.c, r=st.r, today=st.today, act=st.act;
+ var drafting=Object.keys(RIT.sel).some(function(k){return RIT.sel[k];});
+ /* THE BUILDER NO LONGER OPENS ITSELF ON A FIRST VISIT, round QN. It did, from
+    round JQ, with the called practice picked, because then that was the only
+    place the practice had a Start. Suggested carries it now, first, with the
+    reason the seat calls for it and one press to start it, and an open builder
+    hid the list: a person with nothing running, the one who most needs a
+    suggestion, was shown none. Measured 3 October on a first visit at 1600,
+    the left column's controls on screen at once went from 28 to 10. FT24. */
+ var building=!!RIT.edit||RIT.add||drafting;
+ /* the page draws in on arrival and not on every press: a press repaints the
+    whole page, and a reading that replayed its entrance each time would read
+    as a page that cannot sit still */
+ var arrive=!!RIT.arrive; RIT.arrive=false;
+ /* Called for is drawn into the centre now, under the week (ritStageHtml),
+    and not while an existing ritual is being edited: a Start pressed there
+    would leave the edit half done, round QN's rule, unchanged */
+ var P={note:ritNote(), live:ritLiveHtml(), building:building, sug:RIT.edit?'':ritSugHtml(st)};
+ P.stage=ritStageHtml(st,P);
+ h.innerHTML='<div class="rel-card rit-card rv'+(arrive?' rv-arrive':'')+'">'+ritLayout(P)+'</div>';
+ flowHeadAt('flownewhd','New','','plus');
+ flowHead('Accountability','','check');
+ /* THE STREAK IS THE TOP RIGHT OF THE PAGE, SV19, his words: "Move the streak
+    to the upper right hand side and then accountability will be underneath
+    that." So the strip goes into the right menu's head, ahead of its name,
+    where the fold control already sits at the end of the same row. Written
+    after flowHead, which writes the head whole, and only on this tab: the
+    Compass, the release and the gate write their own heads and carry none. */
+ var fh=document.getElementById('flowhd');
+ if(fh)fh.insertAdjacentHTML('afterbegin',acctStreakHtml(st));
+ /* THE INPUT AND WHAT IS SUGGESTED, BOTH, round QN. His words: "I not only want
+    the input there but I want all the suggested ones." So Suggested sits under
+    the input whether the builder is shut or open. The one time it goes is
+    while an existing ritual is being edited, which is a different job, and a
+    Start pressed there would leave the edit half done. */
+ /* THE BUILDER IS ALWAYS OPEN, SV16, his "default state to be open and
+    accessible". building above still means a person is holding something in
+    it, which is what brings the column to the front on a phone; the builder
+    itself is drawn either way. */
+ /* THE LEFT COLUMN IS THE BUILDER ALONE, 21 November: Called for moved to
+    the centre under the week, where its cards are dragged onto a day */
+ if(left)left.innerHTML=ritBuildHtml(c,act.length,r.unread);
+ /* A RITUAL A PRACTITIONER SENT, round PS, C3: its own row at the head of
+    the column the person starts their own rituals from, drawn and wired by
+    ui/praclive.js, and only on the person's own record */
+ if(left&&ritOwn()&&typeof pracRitHtml==='function')left.insertAdjacentHTML('afterbegin',pracRitHtml());
+ /* RITUAL TO AVATAR AND ONGOING GOAL IN THE RIGHT MENU, SV16, his words:
+    "Ongoing goals, and ritual to avatar move that to the right menu." After
+    Accountability and not inside it: he ruled the tracker stays as it is, so
+    its parts keep their order and the two cards follow them. */
+ /* SV19 took the Ongoing goal back to the centre (ritStageHtml), so Avatar
+    is the one card that follows Accountability now */
+ if(side)side.innerHTML=acctSideHtml(st,arrive)+ritAvHtml(st);
+ if(document.body){document.body.classList.toggle('ritbuild',building);
+  /* nothing active: starting one is the page's one job, so on a phone the
+     column that starts one comes first, shell/head.html, round QN */
+  document.body.classList.toggle('ritnone',!act.length);}
+ ritWire(h,c); if(left)ritWire(left,c); if(side)ritWire(side,c);
+ if(left&&typeof pracRitWire==='function')pracRitWire(left);
+ [h,left,side].forEach(ritTell);
+ /* the rings move into their values, the same tween the dock's circles and
+    every badge in the rails use (crMotion, ui/component.js): from empty on
+    first sight, and after that only when a value moves. Reduced motion gets
+    the value in the frame it is written. */
+ if(typeof crMotion==='function')crMotion([h,left,side]);}
+
+/* THE TELL IS ON THE PRESS, round QS. His words: "more show less tell if you
+   want tell you press on something to get information." Every part of this
+   page carried its meaning as a sentence under its heading, the unpack rule
+   (CLAUDE.md, round PO). The sentence is not cut: it moves onto the heading,
+   which becomes a carrier for the one tooltip, the shape the unpack rule
+   already accepts ("the term inside a carrier whose tooltip is that
+   sentence", tests/unpack.js). Hover on a desk, tap on a phone, focus from
+   the keyboard. The sentence stays in the document, folded, so nothing that
+   reads it loses it. Only the first sentence of a part moves: a second one is
+   advice tied to a state (Missed's "does not fit your days") and stays where
+   the state is. */
+function ritTell(root){
+ if(!root)return;
+ root.querySelectorAll('.rv-sec').forEach(function(sec){
+  var hd=sec.querySelector(':scope>.rv-hd'), h=hd&&hd.querySelector('.rv-h'), m=sec.querySelector(':scope>.rv-mean');
+  if(!h||!m||h.hasAttribute('data-tip'))return;
+  h.setAttribute('tabindex','0'); h.setAttribute('data-tip',m.textContent);
+  h.setAttribute('data-tip-t',h.textContent); h.classList.add('rv-hq'); m.classList.add('rv-told');});}
+
+/* the builder repaints its column on every press, so a press on the band
+   puts the keyboard back on the control that made it, found by what it does
+   and not by where it sits */
+function ritRefocus(a,v){
+ var L=document.querySelector('.rv-build'); if(!L)return;
+ var f=[].slice.call(L.querySelectorAll('[data-act="'+a+'"]')).filter(function(x){
+  return v==null||x.getAttribute('data-d')===v||x.getAttribute('data-v')===v;})[0];
+ if(f&&f.focus)f.focus({preventScroll:true});}
+/* one listener on the host. Every control carries what it does in data-act,
+   so a layout that moves a control does not have to move its wiring. */
+function ritWire(h,c){
+ h.onclick=function(ev){
+  var b=ev.target.closest&&ev.target.closest('[data-act]'); if(!b||!h.contains(b)||b.disabled)return;
+  /* a dropdown answers on change, below; its click is only the list opening */
+  if(b.tagName==='SELECT')return;
+  var a=b.getAttribute('data-act'), id=b.getAttribute('data-id');
+  /* the offer to put a deletion back lasts until the next thing that writes
+     or builds. Looking around the record does not spend it. */
+  if(['putback','view','day','mo','exp','more','hmore','hist','wk','rng','wsash','wday','bank','aff-set','chal-set','miss-why','pgoal'].indexOf(a)<0)RIT.gone=null;
+  /* a dismissed suggestion's Put back lasts the same way, round QX */
+  if(['sug-back','wk','rng','exp','view','day','mo','hist','wsash','wday','bank','aff-set','chal-set','miss-why','pgoal'].indexOf(a)<0)RIT.sgGone=null;
+  switch(a){
+   case 'go-story': if(typeof setTab==='function')setTab(TAB.STORY); return;
+   /* EDIT ON A MISSED RITUAL IS NOW ONE PRESS AND NO NAVIGATION, round QF.
+      While Accountability was a page of its own this went through
+      setTab(TAB.RITUAL) first and had to open the edit afterwards, because
+      setTab resets the builder. The tracker and the builder are two columns of
+      one page now, so the press opens the ritual in the left column where the
+      person is already looking. The ritbuild class brings that column to the
+      front on a phone, ritRender above. */
+   case 'miss-edit': ritEditOpen(id); return;
+   case 'go-bank': if(typeof setTab==='function')setTab(TAB.STORY);
+    if(typeof stBank==='function'&&typeof STV!=='undefined'&&!STV.bank)stBank(); return;
+   case 'add': RIT.add=true; RIT.edit=null; RIT.sel={}; RIT.order=[]; RIT.tags=[]; RIT.on=null; RIT.tm=null;
+    if(c.called)ritPick(c.called.k); break;
+   /* the repeat band's presses, ritRecurAct in ui/ritbank.js, the same
+      function the pop-up's go through. The keyboard stays on the press that
+      was made, found again by what it does, because the column repaints. */
+   case 'rc-d': case 'rc-pop': case 'rc-any': {var R=ritRecurOf(), v=b.getAttribute(a==='rc-d'?'data-d':'data-v');
+    ritRecurAct(R,a,v); ritRecurPut(R); ritRender(); ritRefocus(a,v); return;}
+   case 'timer': ritTimer(id); return;
+   case 'pick': ritPick(b.getAttribute('data-k')); break;
+   case 'step-up': {var k=b.getAttribute('data-k'), d=ritDraft(), i=d.indexOf(k);
+    if(i>0){d.splice(i,1); d.splice(i-1,0,k); RIT.order=d;} break;}
+   case 'all': RIT.all=!RIT.all; break;
+   /* cancel empties the builder. Opened over another tab by the release, it
+      is the close as well, because there is a tab behind it to go back to. */
+   case 'cancel': RIT.add=false; RIT.edit=null; RIT.sel={}; RIT.order=[]; RIT.all=false; RIT.from=null;
+    RIT.tags=[]; RIT.on=null; RIT.tm=null;
+    /* AND THE THREE FIELDS, SV16. While Cancel shut the builder, a When, a
+       Where or a How long left behind was never seen. The builder stays open
+       now, so a Cancel that left them would be a press that cleared half the
+       card and stayed on screen, since ritDirty still counts them. */
+    RIT.when=''; RIT.where=''; RIT.days=7; RIT.at=''; RIT.rown=false; RIT.wp=null;
+    if(!ritTab()){ritClose();return;} break;
+   case 'save': if(RIT.edit)ritSaveEdit(); else ritStart(c); return;
+   case 'why': {var bc=ritBecoming(); if(bc)ritStartFor(bc,+b.getAttribute('data-d')); return;}
+   /* the release is its own surface and its own door. relPick is the one the
+      avatar and the Story page already use, and it refuses nothing here that
+      it would not refuse there. */
+   case 'rel': if(typeof relPick==='function')relPick([+b.getAttribute('data-n')]); return;
+   case 'log': ritLog(id); return;
+   case 'logday': ritLog(id,+b.getAttribute('data-d')); return;
+   case 'exp': RIT.exp=RIT.exp===id?null:id; break;
+   case 'edit': ritEditOpen(id); return;
+   case 'stop': ritStop(id); return;
+   case 'del-plan': RIT.goneAt='record'; ritDelPlan(id); return;
+   case 'del-entry': RIT.goneAt='record'; ritDelEntry(+b.getAttribute('data-i')); return;
+   /* round QN, ui/ritstage.js and ui/accountability.js. Each goes through the
+      one writer, so a failed save says so and a worked example is refused. */
+   /* ADD WRITES, AND THROUGH THE BANK'S ONE WRITER, D-4, 20 November. This
+      called ritSugStart, a second writer beside ritBankAdd that the bank's
+      own header rules out: it skipped the join, so a practice already running
+      on Tuesday was replaced by an Add, and it said its result in words of
+      its own. It is ritBankAdd now with the pop-up's default, ritWhen0(null),
+      every day, any time, a week, which is the span Add always set. No sheet
+      opens: his words, "If I click on add, that should automatically add it
+      to my schedule, not give me the pop-up." The name is the pop-up. */
+   case 'sug': {var sx=(RIT.sug||[])[+b.getAttribute('data-i')]; if(sx)ritBankAdd(sx,ritWhen0(null)); return;}
+   /* round QX, ui/ritcal.js: the two other answers to a suggestion, the
+      saved shelf, the goals' three views, the span of the record, and the
+      day's affirmations and challenges. Every write goes through
+      ritMoreWrite, which refuses a worked example and says so on a failure. */
+   case 'sug-save': ritSugSave(+b.getAttribute('data-i')); return;
+   case 'sug-x': ritSugDrop(+b.getAttribute('data-i')); return;
+   case 'sug-back': ritSugBack(); return;
+   case 'sug-all': ritSugAll(); return;
+   case 'sv-add': ritSavedStart(+b.getAttribute('data-i')); return;
+   case 'sv-rm': ritSavedDrop(+b.getAttribute('data-i')); return;
+   /* the week's arrows, and This week, which is 0. ritWeekCalHtml keeps it
+      inside the record's first week and RIT_WK_AHEAD. */
+   case 'wk': {var wd0=+b.getAttribute('data-d'); RIT.wk=wd0?RIT.wk+wd0:0; break;}
+   /* a sash on the week opens its ritual in the sheet, and a day's +N opens
+      that day's list, SV17, ui/ritcal.js. Neither writes, so neither repaints
+      the page under the sheet. */
+   case 'wsash': ritSashOpen(+b.getAttribute('data-d'),+b.getAttribute('data-i')); return;
+   case 'wday': ritDayOpen(+b.getAttribute('data-d')); return;
+   case 'rng': RIT.span=b.getAttribute('data-v'); break;
+   case 'said': ritDayMark('said',id); return;
+   case 'did': ritDayMark('did',id); return;
+   /* the bank's pop-ups, 20 November, ui/ritbank.js. Opening one writes
+      nothing, so nothing repaints under it */
+   case 'bank': {var bx=(RIT.sug||[])[+b.getAttribute('data-i')]; if(bx)ritBankOpen({t:'sug', x:bx}); return;}
+   case 'aff-set': ritBankOpen({t:'aff'}); return;
+   /* the law of the week's name, ui/ritlaw.js. The law is pinned on the
+      press, so its third answer does not swap the pop-up to the next law */
+   case 'law-open': ritBankOpen({t:'law', li:+b.getAttribute('data-wlaw'), W:{}}); return;
+   case 'chal-set': ritBankOpen({t:'chal', id:id}); return;
+   /* the Goal tile's name, ui/ritweek.js */
+   case 'pgoal': ritBankOpen({t:'goal'}); return;
+   case 'miss-why': ritBankOpen({t:'chal', id:id, at:'why'}); return;
+   case 'keep': ritKeep(id); return;
+   case 'del-keep': RIT.goneAt='keep'; ritDelPlan(id); return;
+   case 'rot': acctRotate(+b.getAttribute('data-i')); return;
+   case 'hmore': RIT.hh+=6; break;
+   /* History opens and shuts in the right menu, SV19, ui/accountability.js */
+   case 'hist': RIT.histOpen=!RIT.histOpen; break;
+   case 'go-avatar': if(typeof setTab==='function')setTab(TAB.INTAKE); return;
+   case 'putback': ritPutBack(); return;
+   case 'view': RIT.view=b.getAttribute('data-v'); break;
+   case 'mo': RIT.mo=Math.min(1,RIT.mo+(+b.getAttribute('data-d'))); RIT.day=null; break;
+   case 'day': {var dd=+b.getAttribute('data-d'); RIT.day=RIT.day===dd?null:dd; break;}
+   case 'more': RIT.hn+=40; break;
+   default: return;}
+  ritRender();};
+ /* the two fields write to state on the way past rather than on render, so
+    the sentence under them updates as they are typed and nothing is lost when
+    the card redraws. */
+ ['when','where'].forEach(function(k){
+  var el=document.getElementById('rit'+k); if(!el)return;
+  el.oninput=function(){RIT[k]=el.value;};
+  el.onchange=function(){RIT[k]=el.value; ritRender();};});
+ /* the time, the same way, kept as typed and checked on Start, so a half
+    typed 07: is not refused while it is still being written */
+ var at=document.getElementById('rv-at');
+ if(at)at.oninput=at.onchange=function(){RIT.at=at.value.trim();};
+ /* the three dropdowns: the timer, Repeat and For */
+ h.onchange=function(ev){
+  var s=ev.target; if(!s||s.tagName!=='SELECT'||!h.contains(s))return;
+  var a=s.getAttribute('data-act');
+  if(a==='tm'){var t=+s.value; if(t>=1&&t<=RIT_TM_MAX&&Math.floor(t)===t)RIT.tm=t;}
+  /* the span of Success over time, one dropdown in the rail since 21
+     November; a value not in his ten is ignored, never stored */
+  else if(a==='rng'){if(RIT_RANGES.some(function(x){return x.k===s.value;}))RIT.span=s.value;}
+  else if(a==='rc-rep'||a==='rc-for'){var R=ritRecurOf(); ritRecurAct(R,a,s.value); ritRecurPut(R);}
+  else return;
+  ritRender(); ritRefocus(a,null);};
+ /* a Called for card or a block dragged onto a day, ui/ritbank.js */
+ if(typeof ritBankDragWire==='function')ritBankDragWire(h);}
+
+/* ---------------- the look ----------------
+   Carried by this file and injected once, the way intakeui.js carries its own,
+   so the page ships from the one file it lives in. Every colour is a token, so
+   all four lightings are the page's own. Rules inside a container query name
+   two classes, because the design gate walks into a container rule and reads a
+   single class that sets geometry twice as a collision. */
+function ritCss(){
+ if(document.getElementById('rit-css'))return;
+ var st=document.createElement('style'); st.id='rit-css';
+ st.textContent=[
+  /* 1180 was the cap that left the width unused at 1600, round LT. The stage
+     is the limit now; 1760 only stops three columns spreading past reading
+     distance on a very wide screen with both rails shut. */
+  'body.tab-ritual #rit .rit-card.rv{max-width:1760px}',
+  /* THE CENTRE NAMES ITSELF, round QF. Three columns each saying what they are
+     for leaves the middle one unnamed, and the middle one is the page. */
+  '.rv-pagehd{display:flex;flex-direction:column;gap:3px;margin:0 0 14px}',
+  '.rv-pagenm{display:flex;align-items:center;gap:9px;font-size:19px;font-weight:600;color:var(--ink)}',
+  '.rv-pagenm svg{stroke:var(--sec-flow)}',
+  '.rv{container-type:inline-size;container-name:rv;text-align:left}',
+  '.rv-note{margin:0 0 12px;font-size:14px;color:var(--mid)}',
+  '.rv-lb{display:block;font-size:12.5px;color:var(--dim);font-weight:500}',
+  '.rv-h{font-size:15px;font-weight:600;color:var(--ink)}',
+  '.rv-h2{display:block;margin:4px 0 6px}',
+  '.rv-hd{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 10px}',
+  /* ONE STEP BETWEEN CARDS, ON ALL THREE COLUMNS, SV24, his words: "In the
+     entire screen, make it symmetrical, make it evenly spaced." Measured on
+     Ana at 1600 before this: the three panels were already even, 400, 760
+     and 400 wide with 10 between them and every card inset 19 on both sides,
+     and the cards inside them were not. The rails stacked theirs 18 apart off
+     this margin, the centre's grid put 14 between its own, one empty grid
+     row (Keep or delete, absent on most profiles) put 27 above Success over
+     time, History stood 20 under the thirty days and flush on the Avatar
+     card, 0 pixels, and a column's head stood 12 or 14 over its first card.
+     So the page has one step, --rv-gap, and it is 14: the centre's gap and
+     the padding inside every card already, so a card's inside and the space
+     between cards are the same measure. */
+  '.rv,.rvr{--rv-gap:14px}',
+  '.rv-sec{margin:0 0 var(--rv-gap,14px);padding:14px;border:1px solid var(--edge);border-radius:14px;background:var(--panel)}',
+  '.rv-empty{margin:4px 0;font-size:14px;color:var(--dim)}',
+  '.rv-ic{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}',
+  '.rv-nic{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}',
+  /* the becoming */
+  '.rv-why{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:10px 18px;margin:0 0 14px;padding:14px 16px;',
+  ' border-radius:14px;border:1px solid color-mix(in srgb,var(--c) 45%,transparent);background:color-mix(in srgb,var(--c) 9%,var(--panel))}',
+  '.rv-why-t{flex:1 1 320px;min-width:0}',
+  '.rv-why-be{margin:3px 0 6px;font-size:19px;line-height:1.35;color:var(--ink);font-weight:500}',
+  '.rv-why-p{margin:0;font-size:15px;line-height:1.55;color:var(--mid);max-width:62ch}',
+  '.rv-why-p b{color:var(--c);font-weight:600}',
+  '.rv-why-a{margin-top:0}',
+  /* the chain */
+  '.rv-chain{display:grid;grid-template-columns:1fr 14px 1fr 14px 1.25fr;gap:4px;margin:0 0 18px;align-items:stretch}',
+  '.rv-node{display:flex;flex-direction:column;align-items:flex-start;gap:5px;min-height:44px;padding:12px 14px;',
+  ' border:1px solid var(--edge);border-radius:14px;background:var(--panel);color:var(--ink);text-align:left;font:inherit;cursor:pointer;',
+  ' transition:border-color var(--t-micro) var(--ease-out)}',
+  'button.rv-node:hover{border-color:var(--accent)}',
+  '.rv-nv{display:flex;align-items:center;gap:9px;color:var(--mid)}',
+  '.rv-nv b{font-size:26px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums;line-height:1}',
+  '.rv-nv em{font-style:normal;font-size:14px;color:var(--mid)}',
+  '.rv-nv .rv-pn{font-size:18px;line-height:1.25}',
+  '.rv-ns{font-size:13px;color:var(--mid)}',
+  '.rv-bar{display:flex;gap:2px;width:100%;height:8px}',
+  '.rv-bar-s{display:block;border-radius:3px;opacity:.55}',
+  '.rv-bar-s.rv-on{opacity:1;box-shadow:0 0 0 1.5px var(--ink)}',
+  '.rv-do{border-color:color-mix(in srgb,var(--c) 45%,transparent);background:color-mix(in srgb,var(--c) 8%,var(--panel));cursor:default}',
+  '.rv-do svg circle{fill:none;stroke-width:3}',
+  '.rv-tag{margin-top:4px;padding:3px 10px;border-radius:999px;font-size:12.5px;color:var(--c);border:1px solid var(--c)}',
+  '.rv-arr{display:flex;align-items:center;justify-content:center;color:var(--dim)}',
+  '.rv-arr .rv-ic{width:14px;height:14px}',
+  '@container (min-width:620px){.rv .rv-chain{grid-template-columns:1fr 28px 1.1fr 28px 1.2fr;gap:6px}',
+  ' .rv .rv-arr .rv-ic{width:18px;height:18px}}',
+  /* on a phone the chain is one row of three small stops, so the ring that
+     marks today done is on the first screen and not under three cards. */
+  '@container (max-width:619px){.rv .rv-node{padding:9px 8px;gap:3px;border-radius:12px}',
+  ' .rv .rv-nv{gap:5px;flex-wrap:wrap} .rv .rv-nv b{font-size:20px} .rv .rv-nv em{font-size:12.5px}',
+  ' .rv .rv-nv .rv-pn{font-size:14px} .rv .rv-nic{width:18px;height:18px} .rv .rv-lb{font-size:12px}',
+  ' .rv .rv-ns{font-size:12px} }',
+  /* THE CENTRE IS ONE COLUMN, round QF, and that is the whole of this rule
+     now. Round LT had a grid of six areas on this card, the chain, the new
+     ritual, today, the list, the marks and the record, and it needed three
+     container queries and a display:contents to keep them off each other.
+     Four of the six are in the two side columns now, so the stage is a column
+     and there is no grid left to keep honest. The pair that Accountability's
+     own page used went with the page. */
+  '.rv-main,.rv-col{min-width:0}',
+  /* a meaning is a sentence under the heading it explains, quiet and short */
+  '.rv-mean{margin:0 0 10px;font-size:13px;line-height:1.55;color:var(--dim);max-width:62ch}',
+  '.rv-txt{flex:1 1 auto;min-width:0;padding:8px 10px 8px 2px}',
+  /* the right column's four parts, in one scroll, each already a .rv-sec with
+     its own edge and its own heading, so the wrap only has to stop the last
+     one hanging a margin off the foot of the rail */
+  '.rvr-wrap>:last-child{margin-bottom:0}',
+  /* and the wrap keeps the step to the card after it, which it did not:
+     with History shut, History is the wrap's last child, the rule above took
+     its margin, and the Avatar card sat flush under it */
+  '.rvr-wrap:not(:last-child){margin-bottom:var(--rv-gap,14px)}',
+  /* ---- colour, round LT: "I want color on this page to separate things,
+     everything is gray." Each part takes one hue from tokens the product
+     already carries and themes, as a ring before its heading, a wash behind
+     it and an edge around it, never as a fill. The loop colours are the
+     stations': Imprints is Discover's, because the Story page is there; the
+     list of what is active today is Flow's, because Ritual is there; the
+     record is Embody's, time kept in the body; the accountability figures
+     take Play's green, the one loop colour no part above already holds; and
+     the new ritual takes the accent, the colour of every primary press. The
+     seat colours stay what they were, the seat's, on the held place, the
+     goal and every ring. ---- */
+  '.rv-sec{--k:var(--edge-2)}',
+  '.rv-act{--k:var(--sec-flow)} .rv-rec{--k:var(--sec-embody)} .rv-new{--k:var(--accent)}',
+  '.rv-act,.rv-rec,.rv-new{border-color:color-mix(in srgb,var(--k) 38%,transparent);',
+  ' background:color-mix(in srgb,var(--k) 6%,var(--panel))}',
+  /* Accountability's two parts, after the rule above on purpose: .rv-sec sets
+     --k itself, and a rule written before it loses to it at equal weight. Done
+     is Play's green, the accountability figures' own colour since round LT, and
+     Missed is the quiet one, because a miss is counted and not coloured. */
+  '.rv-done{--k:var(--sec-play)} .rv-miss{--k:var(--dim)}',
+  '.rv-done,.rv-miss{border-color:color-mix(in srgb,var(--k) 38%,transparent);',
+  ' background:color-mix(in srgb,var(--k) 6%,var(--panel))}',
+  '.rv-sec>.rv-hd .rv-h::before{content:"";display:inline-block;width:8px;height:8px;margin:0 9px 1px 0;',
+  ' border:2px solid var(--k);border-radius:50%}',
+  /* Record and its month, the field he named: the heading and the month in
+     Embody's colour on a band of it, so the date reads as the record's own */
+  '.rv-rec>.rv-hd .rv-h{color:var(--k)}',
+  '.rv-calh{padding:2px 6px;border-radius:10px;background:color-mix(in srgb,var(--k) 13%,transparent)}',
+  '.rv-mon{color:var(--k)}',
+  '.rv-n-imp{--c:var(--sec-discover)}',
+  '.rv-n-imp,.rv-n-held{border-color:color-mix(in srgb,var(--c) 32%,var(--edge));background:color-mix(in srgb,var(--c) 5%,var(--panel))}',
+  '.rv-n-imp .rv-nic,.rv-n-held .rv-nic{color:var(--c)}',
+  'button.rv-n-imp:hover,button.rv-n-held:hover{border-color:var(--c)}',
+  '.rv-track{fill:none;stroke:var(--edge-2);opacity:.6}',
+  '.rv-s{fill:none;stroke-linecap:round}',
+  '.rv-s-done{opacity:1}',
+  '.rv-s-plan{opacity:.34}',
+  '.rv-s-ahead{opacity:.5;stroke-dasharray:1.5 4}',
+  '.rv-s-miss{opacity:.9;stroke:var(--dim)!important;stroke-dasharray:2 3}',
+  '.rv-figs{display:flex;gap:10px;flex:1 1 180px;flex-wrap:wrap}',
+  '.rv-fig{flex:1 1 70px;padding:10px 12px;border-radius:12px;background:var(--panel);border:1px solid var(--edge)}',
+  '.rv-fig b{display:block;font-size:22px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}',
+  '.rv-fig small{font-size:13px;font-weight:400;color:var(--mid)}',
+  '.rv-fig span{font-size:13px;color:var(--dim)}',
+  /* the figures take Play's green, round LT; since SV19 the only ones left
+     on the page are Success over time's, which set their own colour */
+  '.rv-fig{border-color:color-mix(in srgb,var(--k) 40%,transparent);background:color-mix(in srgb,var(--k) 8%,var(--panel))}',
+  '.rv-fig b{color:var(--k)}',
+  '.rv-fig span{color:var(--mid)}',
+  /* active */
+  '.rv-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}',
+  '.rv-item{border-radius:12px;background:var(--panel-2);border:1px solid var(--edge)}',
+  '.rv-item.rv-done{border-color:color-mix(in srgb,var(--c) 55%,transparent)}',
+  '.rv-row{display:flex;align-items:center;gap:4px}',
+  '.rv-log{flex:0 0 56px;height:56px;padding:4px;border:0;background:none;cursor:pointer;border-radius:12px;color:inherit}',
+  '.rv-log svg{width:100%;height:100%}',
+  '.rv-log:focus-visible,.rv-open:focus-visible,.rv-day:focus-visible,.rv-tile:focus-visible{outline:2px solid var(--accent);outline-offset:1px}',
+  '.rv-tick{fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}',
+  '.rv-open{flex:1 1 auto;min-width:0;min-height:56px;padding:8px 10px 8px 2px;border:0;background:none;color:var(--ink);text-align:left;font:inherit;cursor:pointer}',
+  '.rv-nm{display:block;font-size:16px;font-weight:500;line-height:1.3}',
+  '.rv-sub{display:flex;flex-wrap:wrap;gap:4px 10px;font-size:13px;color:var(--mid);margin-top:3px}',
+  '.rv-sub i{font-style:normal;color:var(--dim)}',
+  '.rv-more{padding:0 14px 14px 60px}',
+  '.rv-step{margin:0 0 10px}',
+  '.rv-step b{display:block;font-size:15px;font-weight:600;color:var(--ink);margin-bottom:4px}',
+  '.rv-step small{font-weight:400;color:var(--dim);font-size:13px}',
+  '.rv-step p{margin:0;font-size:15px;line-height:1.65;color:var(--mid);max-width:62ch}',
+  /* the behaviour complex on a teacher's panel. Two columns that stack when the
+     rail is narrower than two readable lines, never a hidden scroller */
+  '.tcx .ad-nm{font-size:18px;line-height:1.3;margin:2px 0 4px}',
+  '.tcx-pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(138px,1fr));gap:14px;margin:12px 0 16px}',
+  '.tcx-col{min-width:0;padding-top:10px;border-top:2px solid var(--edge-2)}',
+  '.tcx-in{border-top-color:var(--accent)}',
+  '.tcx-col .pm-eye{margin:0}',
+  '.tcx-cap{font-size:13px;line-height:1.45;color:var(--dim);margin:2px 0 8px}',
+  '.tcx-l{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px}',
+  '.tcx-l li{position:relative;padding-left:15px;font-size:14px;line-height:1.5;color:var(--mid)}',
+  '.tcx-l li::before{content:"";position:absolute;left:0;top:.5em;width:7px;height:7px;box-sizing:border-box;border-radius:50%;border:1.5px solid var(--dim)}',
+  '.tcx-in .tcx-l li{color:var(--ink)}',
+  '.tcx-in .tcx-l li::before{border-color:var(--accent)}',
+  '.tcx-none{margin:0;color:var(--dim)}',
+  '.tcx-rits{display:flex;flex-direction:column;gap:8px;margin:6px 0 4px}',
+  '.tcx-rit{display:block;width:100%;min-height:var(--tap);padding:10px 12px;text-align:left;font:inherit;color:var(--ink);',
+  ' background:var(--panel-2);border:1px solid var(--edge);border-radius:12px;cursor:pointer;',
+  ' transition:border-color var(--t-micro) var(--ease-out)}',
+  '.tcx-rit:hover{border-color:var(--edge-2)}',
+  '.tcx-rit:focus-visible{outline:2px solid var(--accent);outline-offset:2px}',
+  '.tcx-rit.tcx-on{border-color:var(--accent)}',
+  '.tcx-rh{display:flex;align-items:baseline;justify-content:space-between;gap:10px}',
+  '.tcx-rn{font-size:15px;font-weight:600}',
+  '.tcx-rm{font-size:13px;color:var(--mid);white-space:nowrap}',
+  '.tcx-rs{display:block;margin-top:2px;font-size:13px;line-height:1.45;color:var(--dim)}',
+  '.tcx-sd{display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--edge)}',
+  '.tcx-on .tcx-sd{display:block}',
+  '.tcx-st{display:block;margin:0 0 9px}',
+  '.tcx-st b{display:block;font-size:14px;font-weight:600;color:var(--ink)}',
+  '.tcx-st small{font-weight:400;font-size:13px;color:var(--dim)}',
+  '.tcx-st span{display:block;margin-top:2px;font-size:14px;line-height:1.5;color:var(--mid)}',
+  '.tcx-pace{display:block;font-size:13px;line-height:1.5;color:var(--mid)}',
+  '.tcx-hint{margin:8px 0 0;font-size:13px;line-height:1.5;color:var(--dim);text-align:right}',
+  '.tcx-draft{margin:14px 0 0;padding-top:12px;border-top:1px solid var(--edge);font-size:13px;line-height:1.55;color:var(--dim)}',
+  '.rv-if{margin:8px 0 0;font-size:14px;line-height:1.6;color:var(--mid)}',
+  '.rv-acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;justify-content:flex-end}',
+  '.rv-acts .btn{display:inline-flex;align-items:center;gap:6px}',
+  /* builder */
+  '.rv-min{font-size:14px;color:var(--mid);font-variant-numeric:tabular-nums}',
+  '.rv-steps{list-style:none;margin:0 0 10px;padding:0;display:flex;flex-direction:column;gap:6px}',
+  '.rv-st{display:flex;align-items:center;gap:8px;padding:0 0 0 12px;border-radius:10px;background:var(--panel-2)}',
+  '.rv-st i{width:10px;height:10px;border-radius:50%;background:var(--c);flex:0 0 auto}',
+  '.rv-st span{flex:1 1 auto;font-size:15px;color:var(--ink)}',
+  '.rv-st small{font-size:13px;color:var(--dim)}',
+  '.rv-ib{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;flex:0 0 44px;',
+  ' border:0;border-radius:10px;background:none;color:var(--mid);cursor:pointer}',
+  '.rv-ib:hover{color:var(--ink);background:var(--panel-2)}',
+  '.rv-ib[disabled]{opacity:.3;cursor:default}',
+  '.rv-ib[aria-pressed=true]{color:var(--accent)}',
+  /* THE PRACTICES ARE STACKED, ONE A ROW, SV19. His words, pressing More
+     practices: "the dropdown got a bunch of somatic ... I don't want these
+     side by side, I want these stacked. They're taking up too much space side
+     by side." They were tiles two to a row, 150 pixels each, so a name like
+     The Somatic Truth Check wrapped to two lines and the minutes took a third,
+     and seventeen practices were nine rows of boxes three lines tall. The
+     seventeen are not near duplicates: each is its own practice, and seven
+     are Somatic because the library has seven. So each is one row, the ring,
+     the name, and the minutes at the right, the list grammar the Active rows
+     and the Called for cards already use. The colour is the track's, flat,
+     and nothing is outlined. */
+  '.rv-tiles{display:flex;flex-direction:column;gap:6px;margin:0 0 8px}',
+  '.rv-tile{display:grid;grid-template-columns:22px minmax(0,1fr) auto;align-items:center;column-gap:10px;width:100%;min-height:44px;padding:8px 12px;',
+  ' border:0;border-radius:12px;background:color-mix(in srgb,var(--c) 10%,var(--panel-2));',
+  ' color:var(--ink);text-align:left;font:inherit;cursor:pointer;transition:background var(--t-micro) var(--ease-out)}',
+  '.rv-tile:hover{background:color-mix(in srgb,var(--c) 18%,var(--panel-2))}',
+  '.rv-tile svg{width:22px;height:22px;fill:none;stroke:var(--c);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}',
+  '.rv-tile.rv-on{background:color-mix(in srgb,var(--c) 26%,var(--panel-2))}',
+  '.rv-tile.rv-big{padding:12px}',
+  '.rv-tn{font-size:15px;font-weight:500}',
+  '.rv-tm{font-size:13px;color:var(--mid);white-space:nowrap;text-align:right}',
+  '.rv-trk{margin:10px 0 6px;font-size:13px;font-weight:600;color:var(--c)}',
+  '.rv-left{margin:10px 0 0;font-size:14px;color:var(--mid)}',
+  '.rv-plan{margin-top:12px;padding-top:12px;border-top:1px solid var(--edge)}',
+  '.rv-span,.rv-seg{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}',
+  '.rv-sp,.rv-sg{min-height:44px;padding:0 14px;border-radius:999px;border:1px solid var(--edge-2);background:none;',
+  ' color:var(--mid);font:inherit;font-size:14px;cursor:pointer}',
+  '.rv-sp.rv-on,.rv-sg.rv-on{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}',
+  '.rv-seg{margin-top:0}',
+  /* the new ritual: the closed panel, its tags, the timer, and the week */
+  /* the last part in a column ends the column; its gap was 18 pixels of
+     scroll with nothing under it */
+  '.rv-col>:last-child{margin-bottom:0}',
+  '.rv-fl{display:block;margin:10px 0 5px;font-size:12.5px;font-weight:500;color:var(--dim)}',
+  '.rv .rit-f{margin:7px 0}',
+  '.rv-row2{display:flex;flex-wrap:wrap;gap:0 16px}',
+  '.rv-fld{flex:0 0 auto}',
+  '.rv-stp{display:flex;align-items:center;gap:2px;border:1px solid var(--edge-2);border-radius:999px}',
+  '.rv-stp b{min-width:58px;text-align:center;font-size:14px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}',
+  '.rv-stp .rv-ib{border-radius:999px}',
+  '.rv-oft{margin-top:0}',
+  '.rv-wk{display:grid;grid-template-columns:repeat(7,minmax(44px,1fr));gap:4px;margin-top:8px}',
+  '.rv-wkd{min-height:44px;padding:0;border-radius:10px;border:1px solid var(--edge-2);background:none;color:var(--mid);font:inherit;font-size:14px;cursor:pointer}',
+  '.rv-wkd.rv-on{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 16%,transparent);color:var(--ink);font-weight:600}',
+  /* THE BUILDER ON TWO STEPS, SV24, his words: "The new ritual, tighten this
+     up." Measured on Ana at 1600 before this, top to bottom: 10, 10, 5, 10,
+     5, 8, 12 and then 20, 7, 10, 10, 12 pixels between the parts. Six values
+     for two jobs, so nothing read as belonging to anything. Now a label sits
+     4 over its control, the parts of one setting sit 8 apart, and one
+     setting sits 12 from the next. The plan's own rule keeps its 12 either
+     side. The fields are block siblings, so their margins collapse and the
+     larger of the two is the gap: Where's 8 under and How long's 12 over
+     make 12, which is the step between settings. */
+  '.rv-new .rv-fl{margin:0 0 4px}',
+  '.rv-new .rit-more{margin-top:8px}',
+  '.rv-new .rv-row2{gap:8px 16px;margin-top:12px;align-items:flex-end}',
+  '.rv-new .rv-wk{margin-top:8px}',
+  '.rv-new .rit-f{margin:0 0 8px}',
+  '.rv-new .rv-plan .rv-fl{margin-top:12px}',
+  '.rv-new .rv-plan .rv-span{margin-top:0}',
+  '.rv-new .rv-acts{margin-top:12px}',
+  /* ROW TWO AND THE BAND, 20 November: one row of three presses 12 under
+     the steps, and the repeat band 12 under that running the card's full
+     width, so its seven days have the 44 a press needs at 390. The band's
+     inset is the card's own padding, so its rows line up with every row
+     above and below it. */
+  '.rv-new .rv-tools{display:flex;align-items:center;gap:8px;margin-top:12px}',
+  '.rv-new .rv-tools:first-child{margin-top:0}',
+  '.rv-new .rv-tools .rit-more{flex:1 1 auto;width:auto;min-width:0;margin:0;display:flex;padding:0 12px;border:1px solid var(--edge);',
+  ' border-radius:12px;background:var(--panel);color:var(--ink);font-size:14px}',
+  '.rv-new .rv-tools .rv-tmsel{flex:0 0 124px}',
+  '.rv-new .rv-tools .aff-door-ic{position:relative;flex:0 0 44px;width:44px;min-width:44px;height:44px;padding:0;justify-content:center;border-radius:12px}',
+  '.rv-new .aff-door-ic span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}',
+  '.rv-new .rv-rc{--c:var(--accent);margin:12px -14px 0;padding:8px 14px}',
+  /* the timer on a row, and its three states: set, counting, time is up */
+  '.rv-tmr{display:inline-flex;align-items:center;gap:6px;flex:0 0 auto;min-height:44px;min-width:44px;margin-right:6px;padding:0 12px;',
+  ' border:1px solid var(--edge-2);border-radius:999px;background:none;color:var(--mid);font:inherit;font-size:13.5px;',
+  ' font-variant-numeric:tabular-nums;cursor:pointer;white-space:nowrap}',
+  '.rv-tmr span:empty{display:none}',
+  '.rv-tmr:hover{color:var(--ink);border-color:var(--c)}',
+  '.rv-tmr.rv-run{border-color:var(--c);color:var(--ink);background:color-mix(in srgb,var(--c) 14%,transparent)}',
+  '.rv-tmr.rv-rang{border-color:var(--c);color:var(--ink);font-weight:600}',
+  '.rv-tg{display:inline-flex;align-items:center;padding:0 8px;border-radius:999px;font-style:normal;font-size:12.5px;',
+  ' color:var(--mid);border:1px solid color-mix(in srgb,var(--t) 50%,transparent)}',
+  '.rv-item{box-shadow:inset 3px 0 0 var(--c)}',
+  '.rv-other{margin:14px 0 8px;font-size:13px;color:var(--dim)}',
+  /* the record */
+  '.rv-calh{display:flex;align-items:center;justify-content:space-between;margin:0 0 6px}',
+  '.rv-mon{font-size:15px;font-weight:600;color:var(--ink)}',
+  '.rv-grid{display:grid;grid-template-columns:repeat(7,minmax(44px,1fr));gap:4px}',
+  '.rv-wd{text-align:center;font-size:12px;color:var(--dim);padding:2px 0}',
+  '.rv-day{position:relative;display:flex;align-items:center;justify-content:center;min-height:48px;aspect-ratio:1/1;max-height:74px;padding:0;border:1px solid transparent;border-radius:12px;',
+  ' background:var(--panel-2);color:var(--mid);font:inherit;cursor:pointer}',
+  '.rv-day svg{position:absolute;inset:3px;width:calc(100% - 6px);height:calc(100% - 6px)}',
+  '.rv-day span{position:relative;font-size:13px;font-variant-numeric:tabular-nums}',
+  '.rv-day.rv-now{color:var(--ink);font-weight:600;border-color:var(--edge-2)}',
+  '.rv-day.rv-sel{border-color:var(--accent)}',
+  '.rv-day.rv-fut{background:none}',
+  '.rv-key{display:flex;gap:14px;margin:10px 0 0;font-size:12.5px;color:var(--dim)}',
+  '.rv-key span{display:inline-flex;align-items:center;gap:6px}',
+  '.rv-key i{display:inline-block;width:12px;height:12px;border-radius:50%;border:2.5px solid var(--accent)}',
+  '.rv-key .rv-k-plan{opacity:.4}',
+  '.rv-key .rv-k-miss{border-color:var(--dim);border-style:dashed}',
+  '.rv-dayh{margin:14px 0 4px;font-size:14px;font-weight:600;color:var(--ink)}',
+  '.rv-days{list-style:none;margin:0;padding:0}',
+  '.rv-dg{margin:12px 0 2px;font-size:13px;font-weight:600;color:var(--dim)}',
+  '.rv-dr{display:flex;align-items:center;gap:10px;min-height:44px;border-bottom:1px solid var(--edge)}',
+  '.rv-dot{width:12px;height:12px;border-radius:50%;flex:0 0 auto;border:2.5px solid var(--c)}',
+  '.rv-dot.rv-s-done{background:var(--c)}',
+  '.rv-dot.rv-s-plan,.rv-dot.rv-s-ahead{opacity:.5}',
+  '.rv-dot.rv-s-miss{border-color:var(--dim);border-style:dashed}',
+  '.rv-dn{flex:1 1 auto;min-width:0;font-size:14.5px;color:var(--ink)}',
+  '.rv-dn small{color:var(--dim);font-size:13px}',
+  '.rv-ds{font-size:13px;color:var(--mid)}',
+  '.rv-gone{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 10px;padding:6px 6px 6px 12px;',
+  ' border-radius:10px;background:var(--panel-2);font-size:14px;color:var(--ink)}',
+  '@container (max-width:520px){.rv .rv-more{padding-left:14px}',
+  ' .rv .rv-figs{flex-direction:column;gap:6px;flex:1 1 auto}',
+  ' .rv .rv-fig{display:flex;align-items:baseline;justify-content:space-between;gap:8px;padding:7px 10px;flex:0 0 auto}',
+  ' .rv .rv-fig b{font-size:18px}}'
+ ].join('\n');
+ document.head.appendChild(st);}

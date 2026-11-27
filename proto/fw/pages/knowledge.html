@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Knowledge and Summary</title>
+<!--KIT-->
+<style>
+.grp{margin:22px 0 8px;display:flex;align-items:baseline;gap:12px}
+.grp h2{margin:0;font-size:13px;font-weight:600;color:var(--dim);letter-spacing:.04em}
+.grp span{font-size:13px;color:var(--dim)}
+.band{border:1px solid var(--edge);border-radius:18px;background:var(--panel);margin:8px 0;overflow:hidden;transition:border-color .2s}
+.band.open{border-color:var(--edge-2)}
+.bh{display:grid;grid-template-columns:56px 1fr auto 28px;gap:16px;align-items:center;width:100%;border:0;background:transparent;padding:14px 18px;cursor:pointer;text-align:left;min-height:76px}
+.bh:hover{background:rgba(255,255,255,.025)}
+.bh .ico{width:56px;height:56px;border-radius:16px;display:grid;place-items:center;border:1px solid}
+.bh b{font-size:18px;font-weight:600;display:block}
+.bh .d{font-size:14px;color:var(--mid)}
+.bh .n{font-size:13px;color:var(--dim)}
+.bh .chev{transition:transform .25s}
+.band.open .chev{transform:rotate(180deg)}
+.bb{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s ease}
+.band.open .bb{grid-template-rows:1fr}
+.bb>div{overflow:hidden}
+.items{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;padding:4px 18px 18px}
+.it{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;padding:14px 8px 12px;border-radius:14px;background:var(--sunk);border:1px solid var(--edge);cursor:pointer;font-size:13px}
+.it:hover,.it.on{border-color:var(--edge-2);background:#14161d}
+.it small{color:var(--dim);font-size:11.5px;line-height:1.35}
+.sub{padding:0 18px 4px;font-size:12px;color:var(--dim)}
+.ladder{display:flex;flex-direction:column;gap:4px;padding:4px 18px 18px}
+.ladder div{display:grid;grid-template-columns:14px 140px 1fr;gap:12px;align-items:center;padding:8px 10px;border-radius:10px;background:var(--sunk);font-size:13px}
+.ladder i{width:12px;height:12px;border-radius:50%}
+.detail{position:fixed;right:20px;bottom:20px;width:380px;max-height:70vh;overflow:auto;z-index:20;display:none}
+.detail.open{display:block}
+.srch{width:100%;max-width:520px;background:var(--sunk);border:1px solid var(--edge-2);border-radius:999px;padding:12px 18px;color:var(--ink);font:inherit}
+/* summary */
+.sum h1{font-size:40px;margin:0}
+.sum .lead{font-size:22px;line-height:1.4;max-width:900px;margin:10px 0 22px}
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.three .card{display:flex;flex-direction:column;gap:10px}
+.three h3{margin:0;font-size:13px;color:var(--dim);font-weight:600;letter-spacing:.03em}
+.big{font-size:22px;font-weight:600}
+.seatl{display:grid;grid-template-columns:18px 90px 1fr;gap:8px;align-items:center;font-size:13px;padding:4px 0}
+.bar{height:6px;border-radius:3px;background:var(--edge-2);overflow:hidden}
+.bar i{display:block;height:100%}
+.under{display:flex;gap:14px;flex-wrap:wrap;margin-top:14px}
+.under .card{flex:1;min-width:260px;display:flex;gap:14px;align-items:center}
+@media (max-width:900px){.three{grid-template-columns:1fr}.sum h1{font-size:30px}.sum .lead{font-size:18px}}
+@media (max-width:620px){.bh{grid-template-columns:44px 1fr 22px}.bh .n{display:none}.bh .ico{width:44px;height:44px}.items{grid-template-columns:repeat(2,1fr)}.detail{left:10px;right:10px;width:auto;bottom:10px}.ladder div{grid-template-columns:14px 100px 1fr}}
+</style></head><body>
+<div class="wrap">
+ <div class="hd"><div>
+  <div class="eyebrow">Knowledge and Summary. Item 6 of 6.</div>
+  <h1 id="ttl">Knowledge, in bands</h1>
+  <p id="sub"></p>
+ </div></div>
+ <div style="margin-bottom:12px" id="mode"></div>
+ <div id="view"></div>
+ <div class="card detail" id="detail"></div>
+</div>
+<!--DATA-->
+<script>
+var MODE=(location.hash.match(/mode=(\w+)/)||[])[1]||'bands', OPEN={}, Q='';
+var AXNM={nature:'Nature',human:'Human nature',spirit:'Moral integrity',express:'Expression',emotion:'The nine architectures',measure:'The instruments',meta:'The frame'};
+var AXD={nature:'What holds for everything, whether anyone notices',human:'What holds for any person, in any body',spirit:'The twenty one the instrument measures in you',express:'How what is inside gets out',emotion:'The nine charges every feeling is built from',measure:'The ways a person can be measured',meta:'What everything else stands on'};
+function harmIc(e){if(e.a==='spirit')return LAWIC[e.t]||(T.SI.filter(function(l){return l.nm===e.t;})[0]||{}).ic||'';var f=T.HARM_FAM[e.a];return f&&f.ic||'M12 12m-6 0a6 6 0 1012 0 6 6 0 10-12 0';}
+function harmCol(e){if(e.a==='spirit'){var l=T.SI.filter(function(x){return x.nm===e.t;})[0];return col(l?l.b:'Heart');}var f=T.HARM_FAM[e.a];return col(f&&f.b||'Root');}
+function sabList(){
+ var seen={},out=[];
+ T.SAB33.forEach(function(s){var ch=s[1][0][0],key=ch.charAt(0).toUpperCase()+ch.slice(1);if(key==='Sadness')key='Sad';
+  var fam=T.FAM_OF[key]||'Collapse';seen[s[0].toLowerCase()]=1;out.push({nm:s[0],hcx:fam,charges:s[1].map(function(c){return c[0];}),w:5,parts:[],seat:famSeat(fam)});});
+ T.SAB_LIB.forEach(function(s){if(seen[s.nm.toLowerCase()])return;seen[s.nm.toLowerCase()]=1;out.push({nm:s.nm,hcx:s.hcx,w:5,parts:s.nids,seat:(NODE[s.nids[0]]||{}).b});});
+ return out.sort(function(a,b){return a.nm<b.nm?-1:1;});}
+function tileIt(icon,name,line,c,key,maskObj){
+ return '<div class="it" data-key="'+esc(key)+'">'+(maskObj?maskSvg(maskObj,40,{c:c}):ic(icon,34,c,1.5))+'<span>'+esc(name)+'</span>'+(line?'<small>'+esc(line)+'</small>':'')+'</div>';}
+var DET={};
+function bands(){
+ var B=[];
+ /* ONE. Universal laws, first, by his order */
+ ['nature','human','spirit','express','emotion','measure','meta'].forEach(function(ax){
+  var items=T.HARM.filter(function(e){return e.a===ax;});if(!items.length)return;
+  var c=ax==='spirit'?col('Heart'):col((T.HARM_FAM[ax]||{}).b||'Root');
+  B.push({g:1,k:'h-'+ax,nm:AXNM[ax],d:AXD[ax],n:items.length,ic:ax==='spirit'?LAWIC.Justice:(T.HARM_FAM[ax]||{}).ic,c:c,
+   body:'<div class="items">'+items.map(function(e){var k='h:'+e.c;DET[k]={ic:harmIc(e),c:harmCol(e),nm:e.t.replace(' · ',' and '),kind:AXNM[ax],d:'Universal law, from '+e.ch+' of the book. '+(ax==='spirit'?'Measured in you by three questions on Energetics.':'Holds for everyone; nothing about you changes it.')};
+    return tileIt(harmIc(e),e.t.replace(' · ',' and '),'',harmCol(e),k);}).join('')+'</div>'});});
+ /* TWO. The architecture of the psyche: the scale, archetypes, domains, masks */
+ B.push({g:2,k:'scale',nm:'The scale',d:'Ten states, from collapsed to mastery. Where the laws put you today',n:T.TIERDEF.length,ic:'M6 21V3 M6 5h8 M6 9h6 M6 13h10 M6 17h7',c:'var(--au)',
+  body:'<div class="ladder">'+T.TIERDEF.map(function(t){return '<div><i style="background:'+(T.TIERCOL[t.nm]||'#888')+'"></i><b>'+esc(t.nm)+'</b><span class="muted">'+esc(t.state||t.def||'')+'</span></div>';}).join('')+'</div>'});
+ B.push({g:2,k:'arch',nm:'Archetypes',d:'Twelve ways of moving through a situation',n:T.ARCH.length,ic:T.ARCH[1].ic,c:col('Crown'),
+  body:'<div class="items">'+T.ARCH.map(function(a){var k='a:'+a.nm;DET[k]={ic:a.ic,c:col(a.b),nm:a.nm,kind:'Archetype',d:'It '+a.v+'. Pinned on Energetics by two symbols and a scene.'};return tileIt(a.ic,a.nm,a.v,col(a.b),k);}).join('')+'</div>'});
+ B.push({g:2,k:'dom',nm:'Domains',d:'Nineteen modes a life can be organised around',n:T.DOMAINS.length,ic:T.DOMAINS[0].ic,c:col('3rd Eye'),
+  body:'<div class="items">'+T.DOMAINS.map(function(a){var k='d:'+a.nm;DET[k]={ic:a.ic,c:col('3rd Eye'),nm:a.nm,kind:'Domain',d:(a.d||'').replace(/^./,function(x){return x.toUpperCase();})+'.'};return tileIt(a.ic,a.nm,a.d,col('3rd Eye'),k);}).join('')+'</div>'});
+ B.push({g:2,k:'mask',nm:'Masks',d:'Six faces worn at six ages, still worn now',n:T.MASKS.length,ic:T.MASKS[0].ic,c:col('Throat'),
+  body:'<div class="items">'+T.MASKS.map(function(a){var k='m:'+a.nm;DET[k]={ic:a.ic,c:col(a.b[0]),nm:a.nm,kind:'Mask',d:'It '+a.v+'. Sits at '+a.b.join(' and ')+'.'};return tileIt(a.ic,a.nm,a.v,col(a.b[0]),k);}).join('')+'</div>'});
+ /* THREE. What runs it */
+ var sl=sabList();
+ B.push({g:3,k:'sab',nm:'Saboteurs',d:'The voices. Each one says the same sentence every time',n:sl.length,ic:FAM_OUT.Predatory+' M8 11h2.6 M13.4 11H16',c:col('Solar'),
+  body:'<div class="items">'+sl.map(function(s){var v=sabVoice(s),k='s:'+s.nm,df=T.SABDEF[s.nm.toLowerCase().replace(/-/g,' ')]||{};DET[k]={mask:s,c:col(s.seat||'Heart'),nm:s.nm,kind:'Saboteur, '+sabFam(s),d:(v.own?'\u201c'+v.q+'\u201d ':'')+(df.t?'It fires: '+df.t.replace(/^./,function(x){return x.toLowerCase();}):'')+(df.i?' The move: '+df.i:'')};
+   return tileIt('',s.nm,v.own?'\u201c'+v.q+'\u201d':'',col(s.seat||'Heart'),k,s);}).join('')+'</div>'});
+ B.push({g:3,k:'hcx',nm:'Complexes and hyper complexes',d:'Where two voices run together, and six families they build',n:T.HCX_LIB.length,ic:FAM_OUT.Rigidity,c:col('Solar'),
+  body:'<div class="items">'+T.HCX_LIB.map(function(h){var k='x:'+h.nm;DET[k]={ic:FAM_OUT[h.nm],c:col(h.b),nm:h.nm,kind:'Family',d:h.d.replace(/^./,function(x){return x.toUpperCase();})+'. Two saboteurs of this family make a complex; two complexes make the hyper complex. Its overshoot is '+T.FAM_POLE[h.nm]+'.'};return tileIt(FAM_OUT[h.nm],h.nm,h.d,col(h.b),k);}).join('')+'</div>'});
+ B.push({g:3,k:'child',nm:'Child emotions',d:'Nine charges, felt first as a child and still the ones that fire',n:T.CHILD.length,ic:T.CHILD[0].ic,c:col('Root'),
+  body:'<div class="items">'+T.CHILD.map(function(c){var k='c:'+c.nm;DET[k]={ic:c.ic,c:col(c.seat),nm:c.nm,kind:'Child emotion',d:(c.addr?'Felt '+c.addr.toLowerCase()+(c.loc?', at the '+c.loc:'')+'. ':'')+(c.opp?'Its opposite is '+c.opp+'.':'')};return tileIt(c.ic,c.nm,c.opp?'opposite: '+c.opp:'',col(c.seat),k);}).join('')+'</div>'});
+ /* FOUR. Where it sits: down to the fetters */
+ var fb='';['Crown','3rd Eye','Throat','Heart','Solar','Sacral','Root'].forEach(function(b){
+  var L=T.NODES.filter(function(n){return n.b===b;});
+  fb+='<div class="sub" style="color:'+col(b)+'">'+seatIc(b,13)+' '+esc(SEATNM[SEATK[b]])+', '+L.length+'</div><div class="items" style="grid-template-columns:repeat(auto-fill,minmax(170px,1fr))">'
+   +L.map(function(n){var k='f:'+n.i;DET[k]={ic:null,c:col(b),nm:n.k,kind:'Fetter at the '+SEATNM[SEATK[b]].toLowerCase(),d:'Sits at the '+n.n+'. '+(n.a?'What it is about: '+n.a.toLowerCase()+'. ':'')+(n.d?'When it runs: '+n.d.toLowerCase()+'.':'')};
+    return '<div class="it" data-key="'+k+'" style="flex-direction:row;justify-content:flex-start;text-align:left;padding:10px"><svg width="10" height="10"><circle cx="5" cy="5" r="4" fill="'+col(b)+'"/></svg><span>'+esc(n.k.replace(/_/g,' '))+'<br><small>'+esc(n.n)+'</small></span></div>';}).join('')+'</div>';});
+ B.push({g:4,k:'fet',nm:'Fetters',d:'The places the charge is held, each on a nerve structure, seat by seat',n:112,ic:'M12 12m-1.5 0a1.5 1.5 0 103 0 1.5 1.5 0 10-3 0M6 7m-1.2 0a1.2 1.2 0 102.4 0 1.2 1.2 0 10-2.4 0M18 8m-1.2 0a1.2 1.2 0 102.4 0 1.2 1.2 0 10-2.4 0M8 18m-1.2 0a1.2 1.2 0 102.4 0 1.2 1.2 0 10-2.4 0M17 17m-1.2 0a1.2 1.2 0 102.4 0 1.2 1.2 0 10-2.4 0',c:col('Root'),body:fb});
+ return B;}
+var GRP={1:['Universal laws','What holds for everyone, before anything is about you'],2:['The architecture of the psyche','The scale, the archetypes, the domains and the masks'],3:['What runs it','The voices, the families they build, and the charges under them'],4:['Where it sits','Down to the fetters, on the body']};
+function vBands(){
+ var B=bands(),g=0,h='<input class="srch" id="srch" placeholder="Search everything it knows" value="'+esc(Q)+'">';
+ B.forEach(function(b){
+  var body=b.body;
+  if(Q){var q=Q.toLowerCase();var hit=new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'i');if(!hit.test(body.replace(/<[^>]+>/g,' '))&&!hit.test(b.nm))return;}
+  if(b.g!==g){g=b.g;h+='<div class="grp"><h2>'+esc(GRP[g][0])+'</h2><span>'+esc(GRP[g][1])+'</span></div>';}
+  var open=OPEN[b.k]||!!Q;
+  h+='<div class="band'+(open?' open':'')+'" data-b="'+b.k+'"><button class="bh"><span class="ico" style="border-color:'+b.c+';color:'+b.c+'">'+ic(b.ic,28,b.c,1.5)+'</span>'
+   +'<span><b>'+esc(b.nm)+'</b><span class="d">'+esc(b.d)+'</span></span><span class="n">'+b.n+'</span><span class="chev">'+ic('M6 9l6 6 6-6',20)+'</span></button>'
+   +'<div class="bb"><div>'+(open?body:'')+'</div></div></div>';});
+ return h;}
+/* ============================================================
+   SUMMARY. Three answers and nothing printed against a total: what is
+   running you, what it costs, and the one move. Every line is the engine's
+   own reading for this person; the voice and the move are the codex's.
+   ============================================================ */
+function vSummary(){
+ var P=PP(),t=T.TIERDEF.filter(function(x){return P.CQ>=x.at;})[0]||T.TIERDEF[T.TIERDEF.length-1];
+ var heavy=P.seats.slice().sort(function(a,b){return b.load-a.load;})[0];
+ /* the product's own rule, ui/map.js: the flow stops at the lowest held seat */
+ var order=['root','sacral','solar','heart','throat','eye','crown'],stop=null;order.forEach(function(k){var s=P.seats.filter(function(x){return x.k===k;})[0];if(!stop&&s.held)stop=k;});
+ var top=P.sabs[0], v=top?sabVoice(top):null, df=top?(T.SABDEF[top.nm.toLowerCase().replace(/-/g,' ')]||{}):{}, hy=P.hys[0];
+ var ai=(P.aff||[]).map(function(v,i){return [v,i];}).sort(function(a,b){return b[0]-a[0];})[0], arch=ai?T.ARCH[ai[1]]:null;
+ var lead='Most of what you carry sits at the '+SEATNM[heavy.k].toLowerCase()+(stop?', and the flow stops at the '+SEATNM[stop].toLowerCase()+'.':', and the flow still runs through every seat.');
+ var h='<div class="sum"><h1>'+esc(WHO)+'</h1><div class="lead">'+esc(lead)+'</div><div class="three">';
+ h+='<div class="card"><h3>What is running you</h3>'+(top?'<div style="display:flex;gap:14px;align-items:center">'+maskSvg(top,64)+'<div><div class="big">'+esc(top.nm)+'</div><div class="small muted">'+esc(sabFam(top))+', at the '+esc((SEATNM[SEATK[sabSeat(top)]]||'').toLowerCase())+'</div></div></div>'
+  +'<div style="font-size:18px;'+(v.own?'font-style:italic':'')+'">'+(v.own?'\u201c'+esc(v.q)+'\u201d':esc(v.q))+'</div>'+(df.t?'<div class="small muted">It fires: '+esc(df.t.replace(/^./,function(x){return x.toLowerCase();}))+'</div>':''):'<div class="muted">Nothing is running hard enough to name.</div>')+'</div>';
+ h+='<div class="card"><h3>What it costs</h3><div class="big" style="color:'+(T.TIERCOL[t.nm]||'var(--ink)')+'">'+esc(t.nm)+'</div><div class="small muted">'+esc(t.state||t.def||'')+'</div>'
+  +order.slice().reverse().map(function(k){var s=P.seats.filter(function(x){return x.k===k;})[0];return '<div class="seatl">'+seatIc(({crown:'Crown',eye:'3rd Eye',throat:'Throat',heart:'Heart',solar:'Solar',sacral:'Sacral',root:'Root'})[k],14)+'<span>'+esc(SEATNM[k])+'</span><span class="bar"><i style="width:'+Math.round(s.load*100)+'%;background:'+colK(k)+'"></i></span></div>';}).join('')
+  +'<div class="small dim">The bars are how much each seat is carrying. Longer is heavier.</div></div>';
+ h+='<div class="card"><h3>The one move</h3>'+(df.i?'<div style="font-size:17px">'+esc(df.i)+'</div>':'<div>Run one release over the heaviest address.</div>')
+  +'<div class="small muted">'+(t.toward?esc(t.toward):'')+'</div><div style="margin-top:auto;display:flex;gap:8px;flex-wrap:wrap"><button class="chip on">Run a release at the '+esc(SEATNM[heavy.k].toLowerCase())+'</button><button class="chip">Set when</button></div><div class="small dim">Buttons are not wired in this mockup.</div></div>';
+ h+='</div><div class="under">';
+ if(arch)h+='<div class="card">'+ic(arch.ic,44,col(arch.b),1.4)+'<div><div class="eyebrow">What moves you</div><b>'+esc(arch.nm)+'</b><div class="small muted">It '+esc(arch.v)+'. Read off the field; pin it on Energetics.</div></div></div>';
+ if(hy)h+='<div class="card">'+ic(FAM_OUT[hy.nm]||FAM_OUT[POLE_OF[hy.nm]]||'',44,col(famSeat(hy.nm)),1.4)+'<div><div class="eyebrow">The family it builds</div><b>'+esc(hy.nm)+'</b><div class="small muted">'+esc(hy.d)+'.</div></div></div>';
+ h+='</div><p class="small dim" style="margin-top:14px">Every name on this page opens its entry in Knowledge. Nothing here is a score: the only word for how you are doing is the state, and it comes with the way toward the next one.</p></div>';
+ return h;}
+function vToday(){return '<div class="grid2"><div class="today"><img src="{{img:today-knowledge.jpg}}" alt="Knowledge today"><div class="cap">Knowledge today: one strip of eleven decks that runs off the edge, Fetters first, and 112 rows under it.</div></div>'
+ +'<div class="today"><img src="{{img:today-summary.jpg}}" alt="Summary today"><div class="cap">Summary today: a paragraph of reading, then eight numbers printed as a count of a total, which the house rules forbid.</div></div></div>';}
+function draw(){
+ document.getElementById('ttl').textContent=MODE==='summary'?'Summary, three answers':MODE==='today'?'Today, for comparison':'Knowledge, in bands';
+ document.getElementById('sub').textContent=MODE==='summary'?'What is running you, what it costs, and the one move. Nothing printed against a total.':MODE==='today'?'':'Closed until you open one. Universal laws first, then the architecture of the psyche, then down to the fetters.';
+ var v=document.getElementById('view');v.innerHTML=MODE==='summary'?vSummary():MODE==='today'?vToday():vBands();
+ v.querySelectorAll('.bh').forEach(function(b){b.onclick=function(){var k=b.parentNode.dataset.b;OPEN[k]=!OPEN[k];draw();};});
+ v.querySelectorAll('.it[data-key]').forEach(function(e){e.onclick=function(){var d=DET[e.dataset.key];if(!d)return;var el=document.getElementById('detail');
+  el.innerHTML='<div style="display:flex;gap:12px;align-items:center">'+(d.mask?maskSvg(d.mask,52,{c:d.c}):d.ic?ic(d.ic,44,d.c,1.5):'<svg width="22" height="22"><circle cx="11" cy="11" r="9" fill="'+d.c+'"/></svg>')+'<div><div class="eyebrow">'+esc(d.kind)+'</div><h2 style="margin:0">'+esc(d.nm)+'</h2></div></div><p>'+esc(d.d)+'</p><button class="chip" onclick="document.getElementById(\'detail\').classList.remove(\'open\')">Close</button>';
+  el.classList.add('open');};});
+ var s=document.getElementById('srch');if(s){s.oninput=function(){Q=s.value;var p=s.selectionStart;draw();var n=document.getElementById('srch');n.focus();n.setSelectionRange(p,p);};}}
+banner('Knowledge in bands, and Summary, item 6 of the FW round');
+window.draw=draw;
+seg(document.getElementById('mode'),[['bands','A. Knowledge, in bands'],['summary','B. Summary, three answers'],['today','Today, for comparison']],MODE,function(k){MODE=k;draw();});
+window.shootPrep=function(){if(MODE==='bands'&&!OPEN['h-nature']){OPEN['h-nature']=1;draw();}};
+draw();
+</script></body></html>

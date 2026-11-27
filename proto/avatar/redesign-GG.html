@@ -1,0 +1,843 @@
+<!doctype html>
+<html lang="en" data-build="prototype redesign-GG over e0659f3"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Avatar redesign prototype</title>
+<!-- ============================================================
+  AVATAR REDESIGN, ROUND GG. A PROTOTYPE, NOT THE APP.
+
+  Standalone. Plain HTML, CSS and script, no dependencies, no network.
+  Nothing under atuned_src/ is touched and nothing here is wired to the
+  engine. It carries none of the shipped app's navigation, on purpose:
+  round FB recorded two scares from a prototype wearing the real tab bar.
+
+  Extends proto/avatar/seats4 (layout "Told", measured 9.4 against the
+  D minus baseline's 5.4). What is carried over: the sentence above the
+  ring, the ring as the hero, one action. What is new: the seat names are
+  replaced by icon and percent satellites, five badges per satellite,
+  the pair flow per area feeding the sniffer, and the Boundary overlay
+  built on engine/avatar.js (PUR_SIDES, PUR_PER_SIDE, boundaryCount,
+  boundaryCross, purposeRead).
+
+  Mock data only. The journal lines are sim/stories.js plus a few written
+  for this mock and marked in the notes. Pairs are proto/avatar/seats/pairs.js.
+  ============================================================ -->
+<style>
+:root{
+ --bg:#0C0D12; --bg2:#12141B; --panel:#171922; --panel2:#1E212B; --line:#2A2E3A;
+ --ink:#EFEDE8; --dim:#94908A; --faint:#5E5B57;
+ --root:#D6524C; --sacral:#D8924E; --solar:#DABF6A; --heart:#5FD5A6;
+ --throat:#5EBBDB; --eye:#7D93E0; --crown:#A77EDB;
+ --acc:#5EBBDB; --proto:#E0A93B; --protobg:#231C0E;
+ --r:14px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);
+ font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Inter,sans-serif;-webkit-text-size-adjust:100%}
+body{overflow-x:hidden}
+button,input,textarea,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ---------- THE PROTOTYPE'S OWN CHROME. Striped amber, never the product's look. ---------- */
+.pbar{position:relative;z-index:60;display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;
+ padding:8px 16px;background:var(--protobg);border-bottom:2px solid var(--proto);
+ background-image:repeating-linear-gradient(135deg,rgba(224,169,59,.10) 0 10px,transparent 10px 20px)}
+.pbar .tag{display:inline-flex;align-items:center;gap:8px;font-weight:700;color:#1A1405;background:var(--proto);
+ padding:4px 10px;border-radius:6px;letter-spacing:.02em}
+.pbar .say{color:#F2D9A6;font-size:14px;line-height:1.35;flex:1 1 280px}
+.pbar .say b{color:#FFE7B8}
+.pbar label{display:flex;align-items:center;gap:8px;font-size:14px;color:#F2D9A6}
+.pbar select,.pbar .pbtn{min-height:44px;background:#16120A;border:1px dashed var(--proto);border-radius:10px;padding:0 12px;color:#FFE7B8}
+.pbar .pbtn[aria-pressed="true"]{background:#3A2C10}
+[data-proto] .pbtn{font-size:14px}
+
+@media (min-width:1000px){.pbar{position:sticky;top:0}}
+.ptag{position:fixed;left:12px;bottom:12px;z-index:70;display:flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;
+ background:var(--proto);color:#1A1405;font:700 13px/1.2 system-ui,sans-serif;box-shadow:0 4px 18px rgba(0,0,0,.5);pointer-events:none}
+.pin{position:absolute;z-index:5;width:26px;height:26px;border-radius:50%;border:1.5px dashed var(--proto);
+ background:#16120A;color:var(--proto);font:700 12px/1 system-ui,sans-serif;display:grid;place-items:center;padding:0}
+.pin::after{content:"";position:absolute;inset:-9px}  /* 44px hit area around a 26px mark */
+body.nonotes .pin, body.nonotes .notes{display:none!important}
+
+/* ---------- PAGE ---------- */
+.page{max-width:1480px;margin:0 auto;padding:20px 16px 64px}
+.head{text-align:center;max-width:760px;margin:6px auto 18px;position:relative}
+.eyebrow{color:var(--dim);font-size:15px;margin:0}
+.head h1{font-size:clamp(22px,3.2vw,30px);line-height:1.25;font-weight:600;margin:4px 0 10px;text-wrap:balance}
+.quote{font-size:clamp(17px,2vw,20px);margin:0 0 4px;text-wrap:balance}
+.quote::before,.quote::after{color:var(--c,var(--acc))}
+.quote::before{content:"\201C"}.quote::after{content:"\201D"}
+.inway{color:var(--dim);margin:0;font-size:15px}
+.inway b{color:var(--ink);font-weight:600}
+
+.grid{display:grid;gap:24px 32px;grid-template-columns:minmax(0,1fr);
+ grid-template-areas:"fig" "panel" "queue" "notes"}
+@media (min-width:880px){
+ .grid{grid-template-columns:minmax(0,600px) minmax(340px,420px);justify-content:center;
+  grid-template-areas:"fig panel" "queue panel" "notes notes"}}
+@media (min-width:1420px){
+ .grid{grid-template-columns:minmax(0,600px) 400px 360px;
+  grid-template-areas:"fig panel notes" "queue panel notes"}
+ .notes{max-height:calc(100vh - 110px);overflow:auto;position:sticky;top:84px}}
+.figcol{grid-area:fig;min-width:0}
+.panel{grid-area:panel;min-width:0}
+.queue{grid-area:queue;min-width:0}
+.notes{grid-area:notes;min-width:0}
+
+/* ---------- THE FIGURE. Sized in container units so the ring, the
+   satellites and the pips scale as one object at every width. ---------- */
+.figwrap{container-type:inline-size;width:100%;max-width:600px;margin:0 auto;position:relative}
+.fig{position:relative;width:100%;aspect-ratio:1/1}
+.fig svg.draw{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.sat{position:absolute;width:13cqw;height:13cqw;min-width:46px;min-height:46px;transform:translate(-50%,-50%);
+ border-radius:50%;border:0;background:var(--bg2);display:flex;flex-direction:column;align-items:center;justify-content:center;
+ gap:1px;padding:0;color:var(--ink);transition:background .2s, box-shadow .2s}
+.sat svg{width:clamp(16px,4.2cqw,26px);height:clamp(16px,4.2cqw,26px);stroke:var(--c);fill:none;stroke-width:1.7;
+ stroke-linecap:round;stroke-linejoin:round}
+.sat .pc{font-size:clamp(12px,2.9cqw,17px);font-weight:650;line-height:1;font-variant-numeric:tabular-nums}
+.sat .pc.none{color:var(--dim);font-weight:400}
+.sat:hover{background:color-mix(in srgb,var(--c) 10%,var(--bg2))}
+.sat[aria-pressed="true"]{background:color-mix(in srgb,var(--c) 18%,var(--bg2));
+ box-shadow:0 0 0 2px var(--c),0 0 26px color-mix(in srgb,var(--c) 45%,transparent)}
+.slab{position:absolute;transform:translate(-50%,-50%);font-size:clamp(12px,2.35cqw,14px);color:var(--dim);
+ pointer-events:none;white-space:nowrap;background:var(--bg);padding:0 4px;border-radius:4px;line-height:1.3}
+.slab.on{color:var(--ink)}
+.core{position:absolute;left:50%;top:50%;width:34cqw;height:34cqw;transform:translate(-50%,-50%);border-radius:50%;
+ border:0;background:radial-gradient(circle at 50% 40%,#1B1E28,#101218 70%);display:flex;flex-direction:column;
+ align-items:center;justify-content:center;gap:2px;padding:0}
+.core svg{width:11cqw;height:11cqw;stroke:var(--ink);opacity:.85;fill:none;stroke-width:1.4;stroke-linecap:round}
+.core .big{font-size:clamp(20px,5.2cqw,32px);font-weight:650;line-height:1;font-variant-numeric:tabular-nums}
+.core .lb{font-size:clamp(12px,2.3cqw,14px);color:var(--dim)}
+.core[aria-pressed="true"]{box-shadow:0 0 0 2px var(--ink)}
+
+.figrow{display:flex;justify-content:center;gap:10px;margin-top:8px;position:relative}
+.bbtn{min-height:48px;display:inline-flex;align-items:center;gap:10px;padding:0 18px;border-radius:999px;
+ background:var(--panel);border:1px solid var(--line)}
+.bbtn svg{width:20px;height:20px;stroke:var(--ink);fill:none;stroke-width:1.6;stroke-linejoin:round}
+.bbtn:hover{border-color:var(--dim)}
+
+/* ---------- PANEL ---------- */
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:20px;position:relative}
+.ph{display:flex;align-items:center;gap:14px}
+.ph .ic{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:color-mix(in srgb,var(--c) 16%,var(--bg2));flex:none}
+.ph .ic svg{width:24px;height:24px;stroke:var(--c);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.ph h2{margin:0;font-size:22px;line-height:1.2;font-weight:620}
+.ph p{margin:2px 0 0;color:var(--dim);font-size:14px}
+.ph .fig2{margin-left:auto;text-align:right}
+.ph .fig2 b{display:block;font-size:26px;line-height:1;font-variant-numeric:tabular-nums}
+.ph .fig2 span{font-size:13px;color:var(--dim)}
+.sec{margin-top:18px}
+.lbl{font-size:14px;color:var(--dim);margin:0 0 4px}
+.be{font-size:18px;line-height:1.35;margin:0}
+.nb{margin:0;font-size:16px}
+.lands{display:flex;align-items:flex-start;gap:10px;margin-top:12px;padding:10px 12px;border-radius:10px;background:var(--bg2);font-size:15px;position:relative}
+.lands i{flex:none;width:12px;height:12px;border-radius:50%;margin-top:6px;border:2px solid var(--s,var(--dim))}
+.badges{display:flex;justify-content:space-between;gap:4px;margin-top:6px}
+.bdg{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:13px;color:var(--dim);text-align:center}
+.bdg .ring{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;border:1.5px solid var(--line)}
+.bdg .ring svg{width:20px;height:20px;fill:none;stroke:var(--faint);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.bdg.lit{color:var(--ink)}
+.bdg.lit .ring{border:2px solid var(--c);box-shadow:0 0 14px color-mix(in srgb,var(--c) 35%,transparent)}
+.bdg.lit .ring svg{stroke:var(--c)}
+.bdg.next .ring{border:1.5px dashed var(--dim)}
+.bdg.next .ring svg{stroke:var(--dim)}
+.hint{margin:8px 0 0;font-size:14px;color:var(--dim)}
+.acts{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px;align-items:center}
+.go{min-height:52px;padding:6px 22px;border-radius:999px;border:1px solid color-mix(in srgb,var(--c) 70%,#fff 0%);
+ background:color-mix(in srgb,var(--c) 26%,#171922);color:var(--ink);font-weight:620;display:inline-flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.15}
+.go small{font-weight:400;color:var(--dim);font-size:13px}
+.go[disabled]{opacity:.45;cursor:not-allowed}
+.go.busy{background-image:linear-gradient(90deg,transparent,rgba(255,255,255,.10),transparent);background-size:200% 100%;animation:sweep 1s linear infinite}
+@keyframes sweep{from{background-position:200% 0}to{background-position:-200% 0}}
+.ghost{min-height:44px;padding:0 16px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--ink)}
+.field{margin-top:14px}
+.field label{display:block;font-weight:600;margin-bottom:2px}
+.field .h{display:block;color:var(--dim);font-size:14px;margin-bottom:6px}
+textarea{width:100%;min-height:76px;resize:vertical;background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;line-height:1.4}
+textarea:focus{border-color:var(--c,var(--acc));outline:none}
+.listen{margin-top:14px;padding:12px;border-radius:10px;border:1px dashed var(--line);position:relative}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.chip{font-size:14px;padding:3px 10px;border-radius:999px;background:var(--panel2);border:1px solid var(--line)}
+.chip em{font-style:normal;color:var(--dim);margin-right:4px}
+.status{min-height:24px;margin:12px 0 0;font-size:15px;color:var(--ink)}
+.status.warn{color:#E8B27A}
+.empty{color:var(--dim)}
+
+/* ---------- RELEASE ORDER ---------- */
+.queue h3,.notes h3{font-size:17px;margin:0 0 4px;font-weight:620}
+.queue .sub{margin:0 0 10px;color:var(--dim);font-size:14px}
+.qi{display:grid;grid-template-columns:36px 1fr;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+.qi:first-of-type{border-top:0}
+.qi .qic{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:color-mix(in srgb,var(--c) 16%,var(--bg2))}
+.qi .qic svg{width:17px;height:17px;stroke:var(--c);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.qi p{margin:0}
+.qi .why{font-size:14px;color:var(--dim);margin-top:2px}
+.qi.moved{animation:flash 1.6s ease-out}
+@keyframes flash{from{background:color-mix(in srgb,var(--acc) 22%,transparent)}to{background:transparent}}
+.tryj{margin-top:14px;padding:12px;border:1px dashed var(--proto);border-radius:10px;background:var(--protobg)}
+.tryj label{font-size:14px;color:#F2D9A6;display:block;margin-bottom:6px}
+.tryj .row{display:flex;gap:8px}
+.tryj input{flex:1;min-height:44px;background:#16120A;border:1px solid #4A3A18;border-radius:10px;padding:0 12px;min-width:0}
+.tryj .pbtn{min-height:44px;background:#16120A;border:1px dashed var(--proto);border-radius:10px;padding:0 14px;color:#FFE7B8}
+.tryj .out{font-size:14px;color:#F2D9A6;margin:8px 0 0;min-height:20px}
+
+/* ---------- NOTES, the prototype's own ---------- */
+.notes{border:1.5px dashed var(--proto);border-radius:var(--r);padding:16px;background:#110F0A}
+.notes h3{color:var(--proto)}
+.notes .meas{font-size:14px;color:#F2D9A6;margin:6px 0 12px;padding:8px 10px;border-radius:8px;background:var(--protobg)}
+.notes ol{margin:0;padding-left:0;list-style:none;counter-reset:n}
+.notes li{margin:0 0 14px;font-size:14px;line-height:1.5;color:#DCD6CB;padding-left:34px;position:relative}
+.notes li .n{position:absolute;left:0;top:0;width:24px;height:24px;border-radius:50%;border:1.5px dashed var(--proto);color:var(--proto);font-size:12px;font-weight:700;display:grid;place-items:center}
+.notes li b{color:#FFE7B8}
+.notes li.hl{animation:flashp 2s ease-out}
+@keyframes flashp{from{background:rgba(224,169,59,.25)}to{background:transparent}}
+.notes .q{margin-top:6px;color:#F2D9A6}
+.notes code{font-size:13px;color:#FFE7B8}
+
+/* ---------- THE BOUNDARY OVERLAY ---------- */
+.ov{position:fixed;inset:0;z-index:40;background:rgba(6,7,10,.84);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);
+ overflow:auto;padding:64px 16px 32px;opacity:0;transition:opacity .22s}
+.ov.show{opacity:1}
+.ov[hidden]{display:none}
+.ovin{max-width:1060px;margin:0 auto;display:grid;gap:20px 32px;grid-template-columns:minmax(0,1fr)}
+@media (min-width:880px){.ovin{grid-template-columns:minmax(0,520px) minmax(320px,1fr);align-items:start}}
+.ovhead{grid-column:1/-1;display:flex;align-items:flex-start;gap:12px}
+.ovhead h2{margin:0;font-size:24px;font-weight:620}
+.ovhead p{margin:2px 0 0;color:var(--dim)}
+.xbtn{margin-left:auto;flex:none;width:48px;height:48px;border-radius:50%;border:1px solid var(--line);background:var(--panel);display:grid;place-items:center}
+.xbtn svg{width:20px;height:20px;stroke:var(--ink);stroke-width:1.8}
+.hexwrap{container-type:inline-size;width:100%;max-width:520px;margin:0 auto;position:relative}
+.hex{position:relative;width:100%;aspect-ratio:1/1}
+.hex > svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.side{position:absolute;transform:translate(-50%,-50%);min-height:44px;min-width:44px;padding:0 12px;border-radius:999px;
+ background:var(--panel);border:1px solid var(--line);font-size:clamp(13px,2.8cqw,15px);white-space:nowrap}
+.side[aria-pressed="true"]{border-color:var(--ink);background:var(--panel2);box-shadow:0 0 18px rgba(94,187,219,.25)}
+.side.thin::after{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:#E8B27A;margin-left:7px;vertical-align:middle}
+.hub{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:2px}
+.hub .nm{font-size:clamp(15px,3.4cqw,19px);font-weight:620;line-height:1.1}
+.hub .ct{font-size:13px;color:var(--dim)}
+.arr{width:52px;height:44px;border-radius:12px;border:1px solid var(--line);background:var(--panel);display:grid;place-items:center}
+.arr svg{width:22px;height:22px;stroke:var(--ink);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.arr[disabled]{opacity:.35;cursor:not-allowed}
+.tri{position:absolute;transform:translate(-50%,-50%);font-size:12px;color:var(--dim);white-space:nowrap;pointer-events:none}
+.bline{display:flex;gap:8px;align-items:center;margin-top:8px}
+.bline .dot{flex:none;width:10px;height:10px;border-radius:2px;border:1.5px solid var(--acc)}
+.bline .dot.lit{background:var(--acc)}
+.bline input{flex:1;min-height:44px;background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:0 12px;min-width:0}
+.bline input:focus{border-color:var(--acc);outline:none}
+.rem{padding:10px 12px;border-radius:10px;background:var(--bg2);margin-top:8px}
+.rem p{margin:0}
+.rem .why{font-size:14px;color:var(--dim);margin-top:2px}
+.rem.thin{background:transparent;border:1px dashed #6A5234}
+details.pur{margin-top:16px;border-top:1px solid var(--line);padding-top:8px}
+details.pur summary{min-height:44px;display:flex;align-items:center;cursor:pointer;font-weight:600;list-style:none}
+details.pur summary::-webkit-details-marker{display:none}
+details.pur summary::after{content:"";width:8px;height:8px;border-right:1.8px solid var(--dim);border-bottom:1.8px solid var(--dim);transform:rotate(45deg);margin-left:10px;margin-top:-4px;transition:transform .2s}
+details.pur[open] summary::after{transform:rotate(-135deg);margin-top:4px}
+.pur dl{margin:4px 0 0;display:grid;grid-template-columns:auto 1fr;gap:6px 12px;font-size:15px}
+.pur dt{color:var(--dim)}
+.pur dd{margin:0}
+
+/* the note sheet, the prototype's own, above everything */
+.sheet{position:fixed;inset:auto 16px 16px 16px;z-index:80;max-width:560px;margin:0 auto;background:#16120A;border:1.5px dashed var(--proto);
+ border-radius:14px;padding:16px 18px;color:#EDE3CF;font-size:15px;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+.sheet[hidden]{display:none}
+.sheet h4{margin:0 40px 6px 0;color:var(--proto);font-size:16px}
+.sheet p{margin:0 0 8px}
+.sheet .xbtn{position:absolute;top:8px;right:8px;background:#16120A;border-color:#4A3A18}
+.sheet .xbtn svg{stroke:#FFE7B8}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head>
+<body>
+
+<div class="pbar" data-proto role="region" aria-label="Prototype controls">
+ <span class="tag">Prototype</span>
+ <span class="say"><b>Not the app.</b> Avatar redesign for round GG. Mock data: nothing is saved, nothing is read by the real engine.</span>
+ <label>Person <select id="who">
+  <option value="James">James, 57, level 3</option>
+  <option value="Angela">Angela, 36, level 5</option>
+  <option value="Derek">Derek, 39, level 7</option>
+  <option value="blank">Nobody yet, first run</option>
+ </select></label>
+ <button type="button" class="pbtn" id="notesT" aria-pressed="true">Design notes on</button>
+</div>
+
+<div class="ptag" data-proto aria-hidden="true">Prototype, not the app</div>
+
+<main class="page">
+ <header class="head" id="head"></header>
+ <div class="grid">
+  <section class="figcol" aria-label="Your avatar">
+   <div class="figwrap"><div class="fig" id="fig"></div></div>
+   <div class="figrow">
+    <button type="button" class="bbtn" id="openB" aria-haspopup="dialog">
+     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8l8 4.6v9.2l-8 4.6-8-4.6V7.4z"/></svg>Boundaries</button>
+    <button type="button" class="pin" data-proto data-note="6" style="right:calc(50% - 110px);top:-6px" aria-label="Design note 6">6</button>
+   </div>
+  </section>
+  <aside class="panel" aria-live="polite"><div class="card" id="panel"></div></aside>
+  <section class="queue card" id="queue" aria-label="Next to release"></section>
+  <aside class="notes" id="notes" data-proto aria-label="Design notes"></aside>
+ </div>
+</main>
+
+<div class="ov" id="ov" hidden role="dialog" aria-modal="true" aria-labelledby="ovT">
+ <div class="ovin">
+  <div class="ovhead">
+   <div><h2 id="ovT">Boundaries</h2><p>Six sides, five lines each. Inside is yours to protect.</p></div>
+   <button type="button" class="xbtn" id="closeB" aria-label="Close boundaries"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  </div>
+  <div class="hexwrap"><div class="hex" id="hex"></div></div>
+  <div class="card" id="bpanel"></div>
+ </div>
+</div>
+
+<div class="sheet" id="sheet" data-proto hidden role="dialog" aria-labelledby="shT">
+ <button type="button" class="xbtn" id="shX" aria-label="Close note"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+ <h4 id="shT"></h4><div id="shB"></div>
+</div>
+
+<script>
+(function(){
+'use strict';
+
+/* ================= ICONS. Ring, never fill. ================= */
+var IC={
+ ground:'<path d="M4 11.5L12 5l8 6.5"/><path d="M6.5 10v9h11v-9"/><path d="M10.5 19v-4.5h3V19"/>',
+ pleasure:'<path d="M3 9.5c2-2.6 4-2.6 6 0s4 2.6 6 0 4-2.6 6 0"/><path d="M3 15c2-2.6 4-2.6 6 0s4 2.6 6 0 4-2.6 6 0"/>',
+ drive:'<circle cx="12" cy="12" r="4"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/>',
+ love:'<path d="M12 19.5s-7.5-4.4-7.5-9.7A4.1 4.1 0 0 1 12 7.6a4.1 4.1 0 0 1 7.5 2.2c0 5.3-7.5 9.7-7.5 9.7z"/>',
+ voice:'<path d="M4.5 5.5h15v10h-9l-4.5 3.5v-3.5h-1.5z"/><path d="M8.5 10.5h7"/>',
+ clarity:'<path d="M2.5 12s3.6-6.5 9.5-6.5 9.5 6.5 9.5 6.5-3.6 6.5-9.5 6.5S2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/>',
+ meaning:'<path d="M12 3l2.4 6.6L21 12l-6.6 2.4L12 21l-2.4-6.6L3 12l6.6-2.4z"/>',
+ said:'<path d="M5 19l1-4L16 5l3 3L9 18z"/><path d="M14 7l3 3"/>',
+ heard:'<path d="M8 8.5a5 5 0 0 1 8 0"/><path d="M5.5 6a8.5 8.5 0 0 1 13 0"/><circle cx="12" cy="13.5" r="2"/><path d="M12 15.5v4"/>',
+ released:'<circle cx="12" cy="12" r="8.5"/><path d="M12 16V8M8.5 11.5L12 8l3.5 3.5"/>',
+ practised:'<path d="M19 12a7 7 0 1 1-2.1-5"/><path d="M19 4.5V8h-3.5"/>',
+ embodied:'<circle cx="12" cy="5.5" r="2.3"/><path d="M12 8v7M7 11l5-2 5 2M9 21l3-6 3 6"/>',
+ up:'<path d="M6 15l6-6 6 6"/>', down:'<path d="M6 9l6 6 6-6"/>'};
+function svg(k,cls){return '<svg viewBox="0 0 24 24" aria-hidden="true"'+(cls?' class="'+cls+'"':'')+'>'+IC[k]+'</svg>';}
+
+/* ================= THE SEVEN AREAS =================
+   Each satellite is still a seat underneath. The ring keeps the body's order
+   read top to bottom: Meaning at the crown, Ground at the root. The one word
+   names are proposals for his ruling, not settled. */
+var AREAS=[
+ {k:'meaning', seat:'crown',  nm:'Meaning',  about:'purpose, faith, what it is for',   a:-90},
+ {k:'clarity', seat:'eye',    nm:'Clarity',  about:'seeing straight, deciding',        a:-38.57},
+ {k:'voice',   seat:'throat', nm:'Voice',    about:'saying it, being heard',           a:-141.43},
+ {k:'love',    seat:'heart',  nm:'Love',     about:'partner, family, closeness',       a:12.86},
+ {k:'drive',   seat:'solar',  nm:'Drive',    about:'work, will, pressure',             a:167.14},
+ {k:'pleasure',seat:'sacral', nm:'Pleasure', about:'desire, play, making things',      a:64.29},
+ {k:'ground',  seat:'root',   nm:'Ground',   about:'body, money, home, rest',          a:115.71}];
+var AK={}; AREAS.forEach(function(x){AK[x.k]=x;});
+var THE={root:'the root',sacral:'the sacral',solar:'the solar plexus',heart:'the heart',throat:'the throat',eye:'the third eye',crown:'the crown'};
+var BADGES=[
+ {k:'said',nm:'Said',how:'Write both halves of the pair.'},
+ {k:'heard',nm:'Heard',how:'Lights when a journal entry echoes your words here.'},
+ {k:'released',nm:'Released',how:'Lights on the first release for this area.'},
+ {k:'practised',nm:'Practised',how:'Lights when the ritual for this area is done once.'},
+ {k:'embodied',nm:'Embodied',how:'Lights when this area stays clear for seven days.'}];
+
+/* ================= ENGINE, COPIED VERBATIM from atuned_src/engine/avatar.js
+   so the overlay's data shape is the engine's own. Not imported: this file
+   stays standalone. ================= */
+var PUR_SIDES=['partner','family','friends','community','coworkers','alone'];
+var PUR_PER_SIDE=5;
+function boundaryCount(p){
+ if(!p||!p.sides)return {filled:0, of:PUR_SIDES.length*PUR_PER_SIDE, thin:PUR_SIDES.slice()};
+ var n=0, thin=[];
+ PUR_SIDES.forEach(function(s){
+  var a=(p.sides[s]||[]).filter(function(x){return x&&String(x).trim();});
+  n+=Math.min(a.length,PUR_PER_SIDE);
+  if(a.length<PUR_PER_SIDE)thin.push(s);});
+ return {filled:n, of:PUR_SIDES.length*PUR_PER_SIDE, thin:thin};}
+function boundaryCross(text){
+ var t=String(text||'').toLowerCase();
+ var MAP={partner:/\b(wife|husband|partner|girlfriend|boyfriend|spouse|marriage)\b/,
+  family:/\b(mum|mom|mother|dad|father|parent|brother|sister|son|daughter|family)\b/,
+  friends:/\b(friend|mate|friends)\b/,
+  community:/\b(neighbour|neighbor|church|team|club|community|group)\b/,
+  coworkers:/\b(boss|manager|colleague|coworker|co-worker|client|work)\b/,
+  alone:/\b(myself|alone|on my own|by myself)\b/};
+ for(var i=0;i<PUR_SIDES.length;i++)
+  if(MAP[PUR_SIDES[i]].test(t))return PUR_SIDES[i];
+ return null;}
+function avatarValid(pair){
+ return !!(pair&&typeof pair.be==='string'&&pair.be.trim()
+  &&typeof pair.notbe==='string'&&pair.notbe.trim());}
+function purposeCentre(three){
+ var a=(three||[]).filter(function(x){return x&&String(x).trim();});
+ return a.length===3?a.join(', '):null;}
+
+/* ================= A STAND IN FOR THE RESOLVER AND THE SNIFFER =================
+   A dozen words, so the mock can show where words land and what is listened
+   for. The real resolver is readSeat in ui/drills.js and the real scoring is
+   the ai director's. "tired" and "shoulders" deliberately resolve to nothing,
+   because the real resolver does not read them either (round FB). */
+var BODY={chest:'heart',heart:'heart',breath:'heart',throat:'throat',jaw:'throat',neck:'throat',voice:'throat',
+ face:'eye',head:'eye',eyes:'eye',stomach:'solar',gut:'solar',belly:'sacral',hips:'sacral',legs:'root',feet:'root'};
+var FEEL={numb:'sacral',angry:'solar',ashamed:'solar',disgusted:'solar',afraid:'root',terrified:'root',scared:'root',
+ sad:'heart',alone:'heart',nothing:'heart',lonely:'heart',lost:'eye',confused:'eye',guilty:'solar',frightens:'root'};
+var UNREAD={tired:1,shoulders:1,exhausted:1};
+var STOP=('the and that this with have from what when were they them their there then than just like into about been being '+
+ 'every because would could should which while where your yours mine ours after before again still some more most very '+
+ 'said says will shall does doing done make made call called know knew each other anything everything').split(' ');
+var STOPS={}; STOP.forEach(function(w){STOPS[w]=1;});
+function words(s){return String(s||'').toLowerCase().replace(/[^a-z\s'-]/g,' ').split(/\s+/).filter(Boolean);}
+function stem(w){return w.replace(/'s$/,'').replace(/(ing|ed)$/,'').replace(/s$/,'');}
+function toks(s){var o={};words(s).forEach(function(w){if(FEEL[w]||BODY[w]||UNREAD[w]){o[stem(w)]=w;return;}
+ if(w.length<5||STOPS[w])return; o[stem(w)]=w;});return o;}
+function landsAt(text){var ws=words(text),i;
+ for(i=0;i<ws.length;i++)if(BODY[ws[i]])return BODY[ws[i]];
+ for(i=0;i<ws.length;i++)if(FEEL[ws[i]])return FEEL[ws[i]];
+ return null;}
+function listenFor(text){
+ var ws=words(text), f=[], b=[], u=[];
+ ws.forEach(function(w){if(FEEL[w]&&f.indexOf(w)<0)f.push(w);if(BODY[w]&&b.indexOf(w)<0)b.push(w);if(UNREAD[w]&&u.indexOf(w)<0)u.push(w);});
+ return {feel:f, body:b, unread:u, side:boundaryCross(text), seat:landsAt(text)};}
+
+/* ================= MOCK PEOPLE =================
+   Pairs from proto/avatar/seats/pairs.js. Journal lines from sim/stories.js,
+   plus the ones flagged add:1, written for this mock so the Boundary feed has
+   a person named in it. Loads are illustrative. */
+var PEOPLE={
+ James:{about:'57, C suite, third turnaround', ideal:'voice',
+  areas:{
+   voice:{be:'A great public speaker. I stand up and the room hears me.',
+    notbe:'My chest is tight and my throat closes when I stand up in front of the board, so I read the slides.',load0:6.0,load:4.1,rel:2},
+   ground:{be:'Rested, for real, not managed.',notbe:'I am numb every evening and I call it discipline.',load0:5.5,load:5.5,rel:0},
+   drive:{be:'Someone my team can bring bad news to.',notbe:'I am angry before they finish the sentence and they stop bringing it.',load0:4.2,load:1.8,rel:3,prac:1},
+   love:{be:'Present with my people when the news is bad.',notbe:'I felt nothing when we let forty people go and I left the room first.',load0:3.9,load:3.4,rel:1},
+   clarity:{be:'Honest with my doctor and my wife.',notbe:'I have told no one about my chest and I am ashamed of hiding it.',load0:3.2,load:3.2,rel:0}},
+  journal:[
+   {t:'I am numb. I have been numb since the second company and I called it discipline.',d:1},
+   {t:'My wife asked about the doctor again and I changed the subject.',d:2,add:1},
+   {t:'My chest is tight in every meeting and I have told no one, including my doctor.',d:3},
+   {t:'I read the slides to the board again and my team watched me do it.',d:4,add:1},
+   {t:'The finance manager brought me bad news and I was angry before she finished.',d:5,add:1},
+   {t:'I felt nothing when we let forty people go and that is the part that frightens me.',d:6},
+   {t:'Third turnaround. I know exactly what it costs and I do it anyway.',d:8}],
+  sides:{partner:['Tell her the true answer when she asks how I am.','Home by seven on Thursdays.'],
+   family:['Call my father on Sundays.'],friends:[],community:[],
+   coworkers:['Bad news gets heard to the end.','No calls after nine.','Lunch away from the desk.'],
+   alone:['Twenty minutes without the phone before the first meeting.','A walk with no headphones on Saturday.']},
+  soul:['Knowledge','Freedom','Truth'],ego:['Health','Wealth','Family']},
+ Angela:{about:'36, seeker, six modalities tried', ideal:'ground',
+  areas:{
+   ground:{be:'Held, for once, instead of holding.',notbe:'I am so tired of being the one who understands everybody else.',load0:0,load:0,rel:0},
+   love:{be:'Choosing a partner who is good for me.',notbe:'I keep choosing the same kind of person and I am afraid it is who I am.',load0:4.6,load:3.6,rel:1},
+   clarity:{be:'Committed to one practice long enough to feel it land.',notbe:'I drop each modality after a month and feel ashamed that nothing stuck.',load0:3.8,load:3.8,rel:0},
+   meaning:{be:'Grieving what happened, instead of explaining it.',notbe:'I said everything happens for a reason at the funeral and felt sad for weeks.',load0:5.1,load:3.0,rel:3,prac:1}},
+  journal:[
+   {t:'I am so tired of being the one who understands everybody else.',d:1},
+   {t:'My sister called and I listened for an hour and said nothing about me.',d:2,add:1},
+   {t:'I am sad in a way that does not attach to anything and it has been weeks.',d:3},
+   {t:'I want to know why I keep choosing the same kind of person.',d:4},
+   {t:'My friend cancelled on me and I was relieved, then sad.',d:5,add:1},
+   {t:'I have done six modalities and I am still looking for the one that lands.',d:6},
+   {t:'I am afraid that this is just who I am now.',d:7}],
+  sides:{partner:[],family:['Say one thing about my own week on every call.'],
+   friends:['Ask for the lift instead of offering it.','Leave when I am tired, not when everyone else does.'],
+   community:['One class a week, the same one, for three months.'],coworkers:['Lunch is mine.'],
+   alone:['Sunday morning with nobody to understand.']},
+  soul:['Wisdom','Freedom','Compassion'],ego:['Health','Home','Partner']},
+ Derek:{about:'39, endurance athlete', ideal:'drive',
+  areas:{
+   drive:{be:'An athlete who listens to his body.',notbe:'I raced on a stress fracture and my shoulders were up by my ears the whole way.',load0:0,load:0,rel:0},
+   love:{be:'Calm with my family after a hard session.',notbe:'I am angry all the time and I snap at my kids when I get home.',load0:5.8,load:4.9,rel:1},
+   ground:{be:'Someone who sleeps.',notbe:'I have not slept properly in eleven days and I am afraid to stop training.',load0:4.4,load:2.4,rel:3,prac:1},
+   pleasure:{be:'Feeling the last ten percent again.',notbe:'I am numb through the end of every race and I used to feel everything there.',load0:5.0,load:5.0,rel:0}},
+  journal:[
+   {t:'I am angry all the time and there is nothing to be angry at.',d:1},
+   {t:'I snapped at my son when I got home from the session.',d:2,add:1},
+   {t:'I am numb through the last ten percent and I used to feel everything there.',d:3},
+   {t:'My coach wants a rest week and I said no.',d:4,add:1},
+   {t:'My shoulders are up by my ears before I even start. My chest is tight on the warm up.',d:5},
+   {t:'I have not slept properly in eleven days and I am still training twice a day.',d:6},
+   {t:'Pain is information. I have raced on a stress fracture and I would do it again.',d:8}],
+  sides:{partner:['Phone in the kitchen after nine.'],
+   family:['Ten minutes on the floor with the kids before I shower.','No training talk at dinner.'],
+   friends:[],community:['The Saturday group run is for talking, not pace.'],coworkers:[],
+   alone:['One day a week with no watch.','Stretch before the screen.']},
+  soul:['Freedom','Mastery','Truth'],ego:['Fitness','Health','Family']},
+ blank:{about:'first run', ideal:null, areas:{}, journal:[],
+  sides:{partner:[],family:[],friends:[],community:[],coworkers:[],alone:[]}, soul:['','',''],ego:['','','']}};
+
+/* ================= STATE ================= */
+var ST={who:'James', sel:null, edit:false, P:null, side:null, undo:null, moved:null, busy:false, notes:true};
+function clone(o){return JSON.parse(JSON.stringify(o));}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function bare(t){return String(t||'').replace(/\.\s*$/,'');}
+function cap(s){return s.charAt(0).toUpperCase()+s.slice(1);}
+function col(seat){return 'var(--'+seat+')';}
+function $(id){return document.getElementById(id);}
+
+function load(who){
+ ST.who=who; ST.P=clone(PEOPLE[who]); ST.edit=false; ST.moved=null; ST.undo=null;
+ var P=ST.P;
+ Object.keys(P.areas).forEach(function(k){var a=P.areas[k]; a.seat=landsAt(a.notbe); a.rel=a.rel||0; a.prac=a.prac||0; a.emb=a.emb||0;});
+ P.journal.forEach(function(e){e.done=false;});
+ ST.sel=lead()||(who==='blank'?'ground':AREAS[0].k);
+ ST.side=thinnest();
+ paint();}
+
+/* percent complete: the share of the weight held when the pair was written
+   that has since been released. seats4 calls it closure. null when nothing
+   is read, which prints as a dash and never as zero. */
+function pct(k){var a=ST.P.areas[k]; if(!a)return null; if(!a.seat||!(a.load0>0))return null;
+ return Math.round(100*Math.max(0,Math.min(1,1-a.load/a.load0)));}
+function overall(){var v=AREAS.map(function(x){return pct(x.k);}).filter(function(x){return x!=null;});
+ return v.length?Math.round(v.reduce(function(s,x){return s+x;},0)/v.length):null;}
+function lead(){var best=null,bl=-1;Object.keys(ST.P.areas).forEach(function(k){var a=ST.P.areas[k];if(a.seat&&a.load>bl&&a.load>0){bl=a.load;best=k;}});return best;}
+
+/* THE SNIFFER, AS A MOCK. For each journal entry, the area whose pair it
+   echoes: shared words first, then landing at the same seat. */
+function match(e){
+ var et=toks(e.t), eseat=landsAt(e.t), best=null;
+ Object.keys(ST.P.areas).forEach(function(k){var a=ST.P.areas[k];
+  var pt=toks(a.notbe), shared=[];
+  Object.keys(et).forEach(function(s){if(pt[s])shared.push(et[s]);});
+  var same=!!(eseat&&a.seat&&eseat===a.seat);
+  var sc=shared.length*2+(same?1.5:0);
+  if(sc>0&&(!best||sc>best.sc))best={k:k,sc:sc,shared:shared,same:same,seat:eseat};});
+ return best;}
+function order(){
+ return ST.P.journal.filter(function(e){return !e.done;}).map(function(e){return {e:e,m:match(e)};})
+  .sort(function(x,y){var a=x.m?x.m.sc:0,b=y.m?y.m.sc:0;return b-a||x.e.d-y.e.d;});}
+function badges(k){var a=ST.P.areas[k]; if(!a)return [0,0,0,0,0];
+ var heard=ST.P.journal.some(function(e){var m=match(e);return m&&m.k===k;});
+ return [1,heard?1:0,a.rel>0?1:0,a.prac?1:0,a.emb?1:0];}
+
+/* ================= PAINT: HEAD ================= */
+function paintHead(){
+ var P=ST.P, h='';
+ var ideal=P.ideal&&P.areas[P.ideal], L=lead(), la=L&&P.areas[L];
+ if(!ideal){
+  h='<p class="eyebrow">Your avatar</p><h1>Seven parts of a life, around you.</h1>'
+   +'<p class="inway">Pick one. Say who you want to be there, and who you do not.</p>';}
+ else{
+  h='<p class="eyebrow">Becoming</p><h1>'+esc(bare(ideal.be))+'</h1>';
+  if(la)h+='<p class="quote" style="--c:'+col(la.seat)+'">'+esc(bare(la.notbe))+'.</p>'
+   +'<p class="inway">'+(L!==P.ideal?'In the way of <b>'+esc(bare(la.be))+'</b>. ':'')+'Held at '+THE[la.seat]+', and it is costing you.</p>';}
+ h+='<button type="button" class="pin" data-proto data-note="0" style="right:-8px;top:0" aria-label="Design note 0">0</button>';
+ $('head').innerHTML=h;}
+
+/* ================= PAINT: THE FIGURE ================= */
+function pos(a,r){var t=a*Math.PI/180;return [50+r*Math.cos(t),50+r*Math.sin(t)];}
+function arc(cx,cy,r,f){ /* a progress arc from twelve o'clock, f in 0..1 */
+ if(f<=0)return ''; if(f>=1)f=0.9999;
+ var a0=-Math.PI/2, a1=a0+f*Math.PI*2, x0=cx+r*Math.cos(a0), y0=cy+r*Math.sin(a0), x1=cx+r*Math.cos(a1), y1=cy+r*Math.sin(a1);
+ return 'M'+x0.toFixed(2)+' '+y0.toFixed(2)+' A'+r+' '+r+' 0 '+(f>0.5?1:0)+' 1 '+x1.toFixed(2)+' '+y1.toFixed(2);}
+var ORB=37.5, SR=6.5;
+function paintFig(){
+ var P=ST.P, s='<svg class="draw" viewBox="0 0 100 100" aria-hidden="true">';
+ /* ticks around the core, carried from Told's ring */
+ for(var i=0;i<72;i++){var a=i*5, p0=pos(a,19.2), p1=pos(a,i%6===0?21.4:20.4);
+  s+='<line x1="'+p0[0].toFixed(2)+'" y1="'+p0[1].toFixed(2)+'" x2="'+p1[0].toFixed(2)+'" y2="'+p1[1].toFixed(2)+'" stroke="#3A3E4A" stroke-width=".25"/>';}
+ s+='<circle cx="50" cy="50" r="17.6" fill="none" stroke="#2A2E3A" stroke-width=".5"/>';
+ var ov=overall(); if(ov!=null)s+='<path d="'+arc(50,50,17.6,ov/100)+'" fill="none" stroke="var(--ink)" stroke-width=".9" stroke-linecap="round" opacity=".8"/>';
+ AREAS.forEach(function(x){
+  var c=pos(x.a,ORB), p0=pos(x.a,22.2), p1=pos(x.a,ORB-SR-0.6), has=!!P.areas[x.k], on=ST.sel===x.k;
+  s+='<line x1="'+p0[0].toFixed(2)+'" y1="'+p0[1].toFixed(2)+'" x2="'+p1[0].toFixed(2)+'" y2="'+p1[1].toFixed(2)+'" stroke="'+(has?col(x.seat):'#2A2E3A')+'" stroke-opacity="'+(on?.8:has?.35:.6)+'" stroke-width="'+(on?.5:.3)+'"'+(has?'':' stroke-dasharray="1 1.2"')+'/>';
+  s+='<circle cx="'+c[0].toFixed(2)+'" cy="'+c[1].toFixed(2)+'" r="'+SR+'" fill="none" stroke="'+(has?col(x.seat):'#3A3E4A')+'" stroke-opacity="'+(has?.3:1)+'" stroke-width=".55"/>';
+  var pc=pct(x.k); if(pc!=null&&pc>0)s+='<path d="'+arc(c[0],c[1],SR,pc/100)+'" fill="none" stroke="'+col(x.seat)+'" stroke-width="1" stroke-linecap="round"/>';
+  /* the five badge pips, on the outward side, never buttons */
+  var b=badges(x.k), nx=b.indexOf(0);
+  [-44,-22,0,22,44].forEach(function(d,j){var q=[c[0]+9.6*Math.cos((x.a+d)*Math.PI/180),c[1]+9.6*Math.sin((x.a+d)*Math.PI/180)];
+   s+='<circle cx="'+q[0].toFixed(2)+'" cy="'+q[1].toFixed(2)+'" r="1.15" fill="'+(b[j]?col(x.seat):'none')+'" stroke="'+(b[j]?col(x.seat):(has&&j===nx?'var(--dim)':'#3A3E4A'))+'" stroke-width=".35"'+(has&&j===nx&&!b[j]?' stroke-dasharray=".6 .5"':'')+'/>';});});
+ s+='</svg>';
+ var core='<button type="button" class="core" id="core" aria-pressed="'+(ST.sel==='core')+'" aria-label="Your avatar, all seven areas">'
+  +'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7" r="3.4"/><path d="M4.5 21c0-4.6 3.4-7.8 7.5-7.8s7.5 3.2 7.5 7.8"/></svg>'
+  +'<span class="big">'+(ov==null?'–':ov+'%')+'</span><span class="lb">Complete</span></button>';
+ var sats=AREAS.map(function(x){
+  var c=pos(x.a,ORB), pc=pct(x.k), has=!!P.areas[x.k];
+  return '<button type="button" class="sat" data-a="'+x.k+'" style="left:'+c[0].toFixed(2)+'%;top:'+c[1].toFixed(2)+'%;--c:'+col(x.seat)+'" aria-pressed="'+(ST.sel===x.k)+'"'
+   +' aria-label="'+x.nm+', '+(pc==null?(has?'nothing read yet':'no pair yet'):pc+' percent complete')+'">'
+   +svg(x.k)+'<span class="pc'+(pc==null?' none':'')+'">'+(pc==null?'–':pc+'%')+'</span></button>';}).join('');
+ var labs=AREAS.map(function(x){var l=pos(x.a,ORB-SR-4.6);
+  return '<span class="slab'+(ST.sel===x.k?' on':'')+'" style="left:'+l[0].toFixed(2)+'%;top:'+l[1].toFixed(2)+'%">'+x.nm+'</span>';}).join('');
+ var pins='<button type="button" class="pin" data-proto data-note="1" style="left:50%;top:0;transform:translate(24px,0)" aria-label="Design note 1">1</button>'
+  +'<button type="button" class="pin" data-proto data-note="2" style="right:0;top:18%" aria-label="Design note 2">2</button>'
+  +'<button type="button" class="pin" data-proto data-note="10" style="left:0;bottom:4%" aria-label="Design note 10">10</button>';
+ $('fig').innerHTML=s+labs+core+sats+pins;}
+
+/* ================= PAINT: THE PANEL ================= */
+function badgeRow(k,seat){
+ var b=badges(k), nx=b.indexOf(0);
+ var h='<div class="badges" role="list">'+BADGES.map(function(B,j){
+  return '<div class="bdg'+(b[j]?' lit':(j===nx?' next':''))+'" role="listitem" style="--c:'+col(seat)+'">'
+   +'<span class="ring" aria-hidden="true">'+svg(B.k)+'</span>'+B.nm
+   +'<span class="vh">'+(b[j]?', lit':', not yet')+'</span></div>';}).join('')+'</div>';
+ if(nx>=0)h+='<p class="hint">Next: '+BADGES[nx].how+'</p>';
+ else h+='<p class="hint">All five lit. The pair is due for review, and you can write it higher.</p>';
+ return h;}
+function paintPanel(){
+ var P=ST.P, h='';
+ if(ST.sel==='core'){
+  var n=Object.keys(P.areas).length, L=lead();
+  h='<div class="ph" style="--c:var(--ink)"><div><h2>All seven</h2><p>The avatar is the seven areas together.</p></div>'
+   +'<div class="fig2"><b>'+(overall()==null?'–':overall()+'%')+'</b><span>Complete</span></div></div>'
+   +'<div class="sec"><p class="lbl">Written</p><p class="nb">'+(n?n+(n===1?' area has a pair.':' areas have a pair.'):'No pairs yet.')+'</p></div>'
+   +(L?'<div class="sec"><p class="lbl">Heaviest</p><p class="nb">'+AK[L].nm+', held at '+THE[P.areas[L].seat]+'.</p></div>'
+     +'<div class="acts"><button type="button" class="go" data-go="'+L+'" style="--c:'+col(AK[L].seat)+'">Open '+AK[L].nm+'</button></div>':'');
+  $('panel').innerHTML=h; return;}
+ var A=AK[ST.sel], a=P.areas[ST.sel], pc=pct(ST.sel);
+ h='<div class="ph" style="--c:'+col(A.seat)+'"><span class="ic">'+svg(A.k)+'</span><div><h2>'+A.nm+'</h2><p>'+A.about+'</p></div>'
+  +'<div class="fig2"><b>'+(pc==null?'–':pc+'%')+'</b><span>Complete</span></div></div>';
+ h+='<div class="sec" style="position:relative"><p class="lbl">Badges</p>'+badgeRow(ST.sel,A.seat)+'</div>';
+ if(a&&!ST.edit){
+  h+='<div class="sec"><p class="lbl">Who you want to be here</p><p class="be">'+esc(a.be)+'</p></div>'
+   +'<div class="sec"><p class="lbl">Who you do not want to be here</p><p class="nb quote" style="--c:'+col(a.seat||A.seat)+'">'+esc(bare(a.notbe))+'.</p></div>';
+  h+=landsLine(A,a.seat,listenFor(a.notbe).unread);
+  var canGo=a.seat&&a.load>0;
+  h+='<div class="acts">'
+   +(canGo?'<button type="button" class="go" id="rel" style="--c:'+col(a.seat)+'">Release it<small>Under a minute</small></button>'
+     :(a.seat?'<span class="empty">Nothing held. This area is clear.</span>':''))
+   +'<button type="button" class="ghost" id="rew">Rewrite</button></div>';}
+ else{
+  h+=formHTML(A,a);}
+ h+='<p class="status" id="st" role="status" aria-live="polite"></p>';
+ $('panel').innerHTML=h;
+ if(ST.edit||!a)wireForm(A);}
+function landsLine(A,seat,unread){
+ var pin='<button type="button" class="pin" data-proto data-note="5" style="right:-10px;top:-10px" aria-label="Design note 5">5</button>';
+ if(!seat)return '<div class="lands">'+pin+'<i></i><span>Nothing read yet, so this area has no weight to release.'
+  +(unread&&unread.length?' The instrument does not read "'+unread.join('", "')+'" yet.':'')+' Name what your body does or what you feel.</span></div>';
+ if(seat===A.seat)return '<div class="lands" style="--s:'+col(seat)+'">'+pin+'<i></i><span>Your words land at '+THE[seat]+'. The release runs there.</span></div>';
+ return '<div class="lands" style="--s:'+col(seat)+'">'+pin+'<i></i><span>You put this under '+A.nm+'. Your words land at <b>'+THE[seat]+'</b>, and the release runs there.</span></div>';}
+function formHTML(A,a){
+ return '<div style="--c:'+col(A.seat)+';position:relative">'
+  +'<button type="button" class="pin" data-proto data-note="3" style="right:-10px;top:4px" aria-label="Design note 3">3</button>'
+  +'<div class="field"><label for="fbe">Who you want to be here</label><span class="h" id="fbeh">Your best day in this part of your life. One sentence.</span>'
+  +'<textarea id="fbe" aria-describedby="fbeh" maxlength="200">'+esc(a?a.be:'')+'</textarea></div>'
+  +'<div class="field"><label for="fnb">Who you do not want to be here</label><span class="h" id="fnbh">A bad day. What your body does, or what you feel. One sentence.</span>'
+  +'<textarea id="fnb" aria-describedby="fnbh" maxlength="200">'+esc(a?a.notbe:'')+'</textarea></div>'
+  +'<div class="listen" id="lsn"></div>'
+  +'<div class="acts"><button type="button" class="go" id="keep" disabled>Keep both</button>'
+  +(a?'<button type="button" class="ghost" id="cancel">Cancel</button>':'')+'</div></div>';}
+function paintListen(A){
+ var be=$('fbe').value, nb=$('fnb').value, L=listenFor(nb), h='';
+ h='<button type="button" class="pin" data-proto data-note="4" style="right:-10px;top:-10px" aria-label="Design note 4">4</button>'
+  +'<p class="lbl" style="margin:0">Listening for, in your journal</p>';
+ if(!nb.trim())h+='<p class="hint" style="margin-top:4px">Write the second sentence and the words it listens for appear here.</p>';
+ else{
+  var chips=L.feel.map(function(w){return '<span class="chip"><em>feeling</em>'+esc(w)+'</span>';})
+   .concat(L.body.map(function(w){return '<span class="chip"><em>body</em>'+esc(w)+'</span>';}))
+   .concat(L.side?['<span class="chip"><em>boundary</em>'+L.side+'</span>']:[]);
+  var rest=Object.keys(toks(nb)).map(function(k){return toks(nb)[k];}).filter(function(w){return !FEEL[w]&&!BODY[w]&&!UNREAD[w];}).slice(0,5);
+  chips=chips.concat(rest.map(function(w){return '<span class="chip">'+esc(w)+'</span>';}));
+  h+='<div class="chips">'+(chips.join('')||'<span class="empty">No words it reads yet.</span>')+'</div>';
+  h+=L.seat?(L.seat===A.seat?'<p class="hint">Lands at '+THE[L.seat]+'.</p>'
+    :'<p class="hint">You put this under '+A.nm+'. These words land at <b style="color:var(--ink)">'+THE[L.seat]+'</b>.</p>')
+   :'<p class="hint">Nothing read yet'+(L.unread.length?', and "'+L.unread.join('", "')+'" is not read':'')+'. Name what your body does or what you feel.</p>';}
+ $('lsn').innerHTML=h;
+ $('keep').disabled=!avatarValid({be:be,notbe:nb});
+ $('keep').title=$('keep').disabled?'Both halves are kept together.':'';}
+function wireForm(A){
+ var f=function(){paintListen(A);}; $('fbe').addEventListener('input',f); $('fnb').addEventListener('input',f); f();}
+
+/* ================= PAINT: RELEASE ORDER ================= */
+function paintQueue(){
+ var Q=order(), P=ST.P;
+ var h='<button type="button" class="pin" data-proto data-note="4" style="right:10px;top:10px" aria-label="Design note 4">4</button>'
+  +'<h3>Next to release</h3><p class="sub">Your journal, in the order the sniffer puts it. What echoes your own words goes first.</p>';
+ if(!Q.length)h+='<p class="empty" style="margin:0">You have not written anything yet. Whatever you write is read against your pairs and lined up here.</p>';
+ Q.slice(0,4).forEach(function(q){
+  var m=q.m, A=m?AK[m.k]:null, seat=A?A.seat:(landsAt(q.e.t)||null);
+  var why=m?(m.shared.length?'Echoes your words for '+A.nm+': '+m.shared.slice(0,3).join(', ')+'.':'Lands where your '+A.nm+' words land, '+THE[m.seat]+'.')
+   :'Echoes no pair yet.';
+  var side=boundaryCross(q.e.t);
+  if(side)why+=' Names your '+side+' side.';
+  h+='<div class="qi'+(ST.moved===q.e?' moved':'')+'" style="--c:'+(seat?col(seat):'var(--dim)')+'">'
+   +'<span class="qic">'+(A?svg(A.k):'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/></svg>')+'</span>'
+   +'<div><p>'+esc(q.e.t)+'</p><p class="why">'+esc(q.e.d===0?'Just now. ':q.e.d+(q.e.d===1?' day ago. ':' days ago. '))+why+'</p></div></div>';});
+ h+='<div class="tryj" data-proto><label for="tj">Prototype only: try a journal line and watch where it lands in the order</label>'
+  +'<div class="row"><input id="tj" autocomplete="off" placeholder="My jaw was tight all through the call with my boss."><button type="button" class="pbtn" id="tjgo">Add</button></div>'
+  +'<p class="out" id="tjout" role="status"></p></div>';
+ $('queue').innerHTML=h;
+ $('tjgo').onclick=tryLine; $('tj').onkeydown=function(e){if(e.key==='Enter')tryLine();};}
+function tryLine(){
+ var t=$('tj').value.trim(); if(!t){$('tj').focus();return;}
+ var e={t:t,d:0,add:1}; ST.P.journal.unshift(e); ST.moved=e;
+ var Q=order(), at=0; Q.forEach(function(q,i){if(q.e===e)at=i+1;});
+ var m=match(e), side=boundaryCross(t);
+ paint();
+ $('tjout').textContent='Placed '+(at===1?'first':'at '+at)+'. '+(m?'Echoes '+AK[m.k].nm+'.':'Echoes no pair.')+(side?' Touches your '+side+' side, so it also feeds the boundary reminders.':'');}
+
+/* ================= NOTES ================= */
+var NOTES={
+ 0:['What this page is for','The job, in James\'s words: <i>show me who I said I would become, what is in the way, and the one thing to do today.</i> Told\'s order is kept: the sentence above, the ring as the hero, one action. There is no app chrome on this page, on purpose.'],
+ 1:['Seven satellites replace the seat names','Each circle is a part of a life with an icon and a percent complete. Underneath, each is still a seat: the ring keeps the body\'s order top to bottom (Meaning at the crown, Ground at the root) and keeps the seat colour. <b>Percent complete</b> is the share of the weight held when the pair was written that has since been released. seats4 already computes it as <code>closure()</code>, from <code>avatarGap().load</code>. That is work done, which is why it does not break the rule that a reading is not a score. When nothing is read it prints a dash, never a zero.<div class="q">The one word names (Ground, Pleasure, Drive, Love, Voice, Clarity, Meaning) are placeholders for his ruling.</div>'],
+ 2:['Five badges per satellite','Drawn as pips outside each circle, and labelled only in the panel. <b>Said, Heard, Released, Practised, Embodied.</b> That is the loop: Said and Heard are discover, Released is play, Practised is flow, Embodied is embody. The pips are not buttons, on purpose: 35 more buttons around one figure would put the page over 40 choices. The next unlit badge says how it lights, so a badge teaches the next step instead of decorating.'],
+ 3:['The pair, per area','Press a circle, then two sentences: who you want to be here, and who you do not. <b>Keep both</b> stays off until both halves have words, which is <code>avatarValid()</code>: "a pair is written as a pair." Stored per pair: <code>{area, be, notbe, at}</code>. The <code>area</code> field is new: an additive schema change to <code>avatar.pairs</code>, and the schema is his call. One pair per area in this design; the engine allows any number.'],
+ 4:['What the sniffer takes, and how it orders release','From the "do not want to be" sentence it keeps the feeling words, the body words, the person named (read by <code>boundaryCross()</code> into one of the six boundary sides) and the seat the words land at. <b>Priority rule:</b> a journal entry that echoes a person\'s own words for an area goes to the front of the release order, ranked by shared words, then by landing at the same seat, then by how recent it is. The reason is printed beside each entry so the order is never a black box. The listening here is a dozen word stand in. The real one is the ai director\'s scoring.'],
+ 5:['Where you put it, and where it lands','A person files a pair under an area, and the resolver reads the sentence to a seat. They can disagree. James files his public speaking pair under Voice, and "my chest is tight" lands at the heart. This design keeps both: the satellite shows where he wants it to show, the release runs where the words land. Two of the six reference people, Angela and Derek, have pairs that land nowhere, because the real resolver does not read "tired" or "shoulders" (round FB). The page says so rather than printing zero.'],
+ 6:['The Boundary overlay','It opens over the avatar and dims everything else. The shape is the engine\'s own: <code>PUR_SIDES</code> (partner, family, friends, community, coworkers, alone) and <code>PUR_PER_SIDE</code> of five. How full each side is gets drawn as five segments and never printed as "12 of 30". The sides <code>boundaryCount().thin</code> reports carry an amber dot. The two triangles behind it are the Purpose Map: the engine\'s own comment reads "two overlapping triangles, and the overlap is the boundary", and the overlap of two triangles is this hexagon.'],
+ 7:['The arrows','Built as asked: press a side, then the up arrow adds a line to it and the down arrow takes the last line off, with undo. An empty line does not count, which is <code>boundaryCount()</code>\'s own filter.<div class="q">Open, and his to read: in the engine the Purpose Map is an upward triangle (higher purpose, three soul values) and a downward one (earthly purpose, three ego values). His words were "the up arrow, down arrow, and the six sides that you fill in". That may mean these two triangles and the hexagon, not per side arrows.</div>'],
+ 8:['How it feeds ritual reminders','<code>boundaryCross()</code> reads each journal entry and names the side it touches. If that side has lines, the next ritual carries one of them as a reminder, with the entry that raised it quoted. With accounts, the same line goes out as a push notification. A thin side named in the journal gets a prompt instead. <b>Three engine findings, visible in this mock:</b> "team" reads as community, not coworkers, so James\'s board meeting lands on the wrong side. An entry naming a wife and a boss returns partner only, because the first match wins. "Coach" is not read at all.'],
+ 9:['Purpose, folded','Six values in, three per triangle. The centre of each is derived and never typed (<code>purposeCentre()</code>), and the line between them is the engine\'s own sentence. Folded by default behind a visible control, because the page is about boundaries when this opens.'],
+ 10:['The count, measured live','A working screen should offer fewer than 12 simultaneous choices. The live figure above counts every visible button, field and link that is not the prototype\'s own. Told measured 11 on its first screen, 17 on its own surface and 86 across the whole screen. The 69 between those last two sit outside the surface, in the tab bar and the two rails, and this page carries neither. So compare the surface figures, never the whole screen ones.']};
+function paintNotes(){
+ var h='<h3>Design notes</h3><p class="meas" id="meas"></p><ol>';
+ Object.keys(NOTES).forEach(function(k){h+='<li id="n'+k+'"><span class="n">'+k+'</span><b>'+NOTES[k][0]+'.</b> '+NOTES[k][1]+'</li>';});
+ h+='</ol><p style="font-size:13px;color:#A89F8C;margin:8px 0 0">Mock data. Pairs from proto/avatar/seats/pairs.js. Journal lines from sim/stories.js, plus two or three per person written for this mock so a person is named in the journal. Nothing is wired to the engine; the engine functions it names are copied in verbatim and marked.</p>';
+ $('notes').innerHTML=h;}
+function measure(){
+ var ovOpen=!$('ov').hidden;
+ var root=ovOpen?$('ov'):document.querySelector('main');
+ var els=[].slice.call(root.querySelectorAll('button,input,textarea,select,a[href],summary'));
+ var vis=els.filter(function(e){return e.offsetParent!==null&&!e.closest('[data-proto]')&&!e.disabled;});
+ var first=vis.filter(function(e){var r=e.getBoundingClientRect();return r.top<innerHeight&&r.bottom>0;});
+ var m=$('meas'); if(m)m.textContent=(ovOpen?'Boundary overlay open. ':'')+'Choices in view now: '+first.length+'. On the whole '+(ovOpen?'overlay':'page')+': '+vis.length+'. Target: under 12.';}
+
+/* ================= THE BOUNDARY OVERLAY ================= */
+var SIDEA={partner:-90,family:-30,friends:30,community:90,coworkers:150,alone:210};
+var HINT={partner:'Phone face down at the table.',family:'Leave the room when the voice goes up.',friends:'Say no the same day.',
+ community:'One evening a week nobody else books.',coworkers:'Nothing answered after nine.',alone:'A walk with no headphones.'};
+function lines(s){return ST.P.sides[s]||[];}
+function filled(s){return lines(s).filter(function(x){return x&&String(x).trim();}).length;}
+function thinnest(){var P=ST.P,b=null,n=99;PUR_SIDES.forEach(function(s){var f=filled(s);if(f<n){n=f;b=s;}});return b;}
+function paintHex(){
+ var R=44, H=R/Math.sqrt(3), s='<svg viewBox="0 0 100 100" aria-hidden="true">';
+ var up=[-90,30,150].map(function(a){return pos(a,R);}), dn=[90,210,330].map(function(a){return pos(a,R);});
+ var pts=function(a){return a.map(function(p){return p[0].toFixed(2)+','+p[1].toFixed(2);}).join(' ');};
+ s+='<polygon points="'+pts(up)+'" fill="var(--crown)" fill-opacity=".06" stroke="var(--crown)" stroke-opacity=".45" stroke-width=".35"/>';
+ s+='<polygon points="'+pts(dn)+'" fill="var(--sacral)" fill-opacity=".06" stroke="var(--sacral)" stroke-opacity=".45" stroke-width=".35"/>';
+ var ready=purposeCentre(ST.P.soul)&&purposeCentre(ST.P.ego);
+ PUR_SIDES.forEach(function(sd){
+  var t=SIDEA[sd], v0=pos(t-30,H), v1=pos(t+30,H), n=filled(sd), total=lines(sd).length, on=ST.side===sd;
+  for(var j=0;j<PUR_PER_SIDE;j++){
+   var f0=(j+0.1)/PUR_PER_SIDE, f1=(j+0.9)/PUR_PER_SIDE;
+   var x0=v0[0]+(v1[0]-v0[0])*f0, y0=v0[1]+(v1[1]-v0[1])*f0, x1=v0[0]+(v1[0]-v0[0])*f1, y1=v0[1]+(v1[1]-v0[1])*f1;
+   var lit=j<n, pend=!lit&&j<total;
+   s+='<line x1="'+x0.toFixed(2)+'" y1="'+y0.toFixed(2)+'" x2="'+x1.toFixed(2)+'" y2="'+y1.toFixed(2)+'" stroke="'+(lit?'var(--acc)':pend?'var(--dim)':'#343844')
+    +'" stroke-width="'+(lit?(on?1.9:1.5):1)+'" stroke-linecap="round"'+(pend?' stroke-dasharray="1 .9"':'')+'/>';}});
+ s+='</svg>';
+ var chips=PUR_SIDES.map(function(sd){var p=pos(SIDEA[sd],35.5), thin=filled(sd)<PUR_PER_SIDE&&filled(sd)<=1;
+  return '<button type="button" class="side'+(thin?' thin':'')+'" data-side="'+sd+'" aria-pressed="'+(ST.side===sd)+'" style="left:'+p[0].toFixed(2)+'%;top:'+p[1].toFixed(2)+'%"'
+   +' aria-label="'+cap(sd)+(thin?', thin':'')+'">'+cap(sd)+'</button>';}).join('');
+ var tl=pos(-90,48.5), bl=pos(90,48.5);
+ var tri='<span class="tri" style="left:'+tl[0]+'%;top:'+tl[1]+'%">Higher purpose</span><span class="tri" style="left:'+bl[0]+'%;top:'+bl[1]+'%">Earthly purpose</span>';
+ var n=filled(ST.side), tot=lines(ST.side).length;
+ var hub='<div class="hub"><button type="button" class="arr" id="upA" aria-label="Add a line to '+ST.side+'"'+(tot>=PUR_PER_SIDE?' disabled':'')+'>'+svg('up')+'</button>'
+  +'<span class="nm">'+cap(ST.side)+'</span><span class="ct" aria-hidden="true">'+dots(n)+'</span>'
+  +'<button type="button" class="arr" id="dnA" aria-label="Take the last line off '+ST.side+'"'+(tot<=0?' disabled':'')+'>'+svg('down')+'</button></div>';
+ var pins='<button type="button" class="pin" data-proto data-note="6" style="left:2%;top:2%" aria-label="Design note 6">6</button>'
+  +'<button type="button" class="pin" data-proto data-note="7" style="left:50%;top:50%;transform:translate(46px,-60px)" aria-label="Design note 7">7</button>';
+ $('hex').innerHTML=s+tri+chips+hub+pins;}
+function dots(n){var o='';for(var i=0;i<PUR_PER_SIDE;i++)o+=i<n?'●':'○';return o;}
+function reminders(){
+ var P=ST.P, out=[], thin={}, used={};
+ P.journal.slice().sort(function(a,b){return a.d-b.d;}).forEach(function(e){
+  var sd=boundaryCross(e.t); if(!sd)return;
+  var L=lines(sd).filter(function(x){return x&&x.trim();});
+  if(L.length){var i=(used[sd]=(used[sd]||0)+1)-1; if(i<L.length)out.push({sd:sd,line:L[i],e:e});}
+  else thin[sd]=(thin[sd]||[]).concat([e]);});
+ return {out:out.slice(0,3), thin:thin};}
+function paintB(){
+ var sd=ST.side, L=lines(sd), P=ST.P, h='';
+ h+='<h3 style="margin:0;font-size:19px">'+cap(sd)+'</h3>';
+ if(!L.length)h+='<p class="empty" style="margin:6px 0 0">Nothing written for '+sd+' yet. The up arrow adds a line.</p>';
+ L.forEach(function(x,i){h+='<div class="bline"><span class="dot'+(x&&x.trim()?' lit':'')+'" aria-hidden="true"></span>'
+  +'<label class="vh" for="bl'+i+'">'+cap(sd)+', line '+(i+1)+'</label><input id="bl'+i+'" data-i="'+i+'" value="'+esc(x)+'" placeholder="'+esc(HINT[sd])+'" maxlength="140"></div>';});
+ h+='<p class="status" id="bst" role="status" aria-live="polite"></p>';
+ var R=reminders();
+ h+='<div style="position:relative;margin-top:14px"><button type="button" class="pin" data-proto data-note="8" style="right:-10px;top:-4px" aria-label="Design note 8">8</button>'
+  +'<p class="lbl" style="font-weight:600;color:var(--ink);font-size:16px">Feeds your ritual</p>';
+ if(!R.out.length&&!Object.keys(R.thin).length)h+='<p class="empty" style="margin:0">No journal entry names anybody yet. When one does, the line you wrote for that side comes back as a reminder.</p>';
+ R.out.forEach(function(r){h+='<div class="rem"><p>Reminder: '+esc(bare(r.line))+'.</p><p class="why">Your entry '+(r.e.d===0?'just now':r.e.d+(r.e.d===1?' day ago':' days ago'))+' named your '+r.sd+' side: "'+esc(bare(r.e.t))+'."</p></div>';});
+ Object.keys(R.thin).forEach(function(s){var n=R.thin[s].length;
+  h+='<div class="rem thin"><p>'+cap(s)+' has no lines, and '+(n===1?'one entry names it':n+' entries name it')+'.</p><p class="why">"'+esc(bare(R.thin[s][0].t))+'." One line here becomes a reminder.</p></div>';});
+ h+='</div>';
+ var hi=purposeCentre(P.soul), ea=purposeCentre(P.ego);
+ h+='<details class="pur" style="position:relative"><summary>Purpose</summary>'
+  +'<button type="button" class="pin" data-proto data-note="9" style="right:-10px;top:4px" aria-label="Design note 9">9</button>'
+  +(hi&&ea?'<dl><dt>Higher</dt><dd>'+esc(hi)+'</dd><dt>Earthly</dt><dd>'+esc(ea)+'</dd></dl>'
+    +'<p class="hint">Where those two meet is how you make money and how you find fulfilment doing it.</p>'
+   :'<p class="hint">Three values for the upward triangle, three for the downward one. Nothing written yet.</p>')+'</details>';
+ $('bpanel').innerHTML=h;
+ [].forEach.call($('bpanel').querySelectorAll('.bline input'),function(inp){
+  inp.addEventListener('input',function(){L[+inp.dataset.i]=inp.value; paintHex();
+   inp.previousElementSibling.previousElementSibling.classList.toggle('lit',!!inp.value.trim());});
+  inp.addEventListener('change',function(){paintB();});});}
+function bStatus(t,undo){var s=$('bst'); if(!s)return; s.innerHTML=esc(t)+(undo?' <button type="button" class="ghost" id="undoB" style="min-height:44px;margin-left:6px">Undo</button>':'');
+ if(undo)$('undoB').onclick=function(){lines(ST.undo.sd).push(ST.undo.x); ST.undo=null; paintOv(); bStatus('Put back.');};}
+function paintOv(){paintHex(); paintB(); measure();}
+var lastFocus=null;
+function openOv(){lastFocus=document.activeElement; var o=$('ov'); o.hidden=false;
+ var pb=document.querySelector('.pbar'); o.style.top=(getComputedStyle(pb).position==='sticky'?pb.offsetHeight:0)+'px'; o.style.paddingTop=(innerWidth<600?'24px':'40px'); ST.side=ST.side||thinnest(); paintOv();
+ requestAnimationFrame(function(){o.classList.add('show');}); $('closeB').focus(); document.body.style.overflow='hidden';}
+function closeOv(){var o=$('ov'); o.classList.remove('show'); setTimeout(function(){o.hidden=true; measure();},200);
+ document.body.style.overflow=''; paint(); if(lastFocus&&lastFocus.focus)$('openB').focus();}
+
+/* ================= RELEASE, MOCKED =================
+   Two seconds, so the indicator is honest (one to three seconds: a moving
+   state). It lowers the load on this area and retires the top matching
+   entry. Nothing is written anywhere. */
+function release(){
+ if(ST.busy)return; var k=ST.sel, a=ST.P.areas[k], A=AK[k]; if(!a||!a.seat)return;
+ ST.busy=true; var b=$('rel'); b.classList.add('busy'); b.disabled=true; b.firstChild.textContent='Releasing';
+ setTimeout(function(){
+  var before=pct(k);
+  a.load=Math.max(0,+(a.load-a.load0*0.22).toFixed(2)); if(a.load<0.25)a.load=0; a.rel++;
+  var q=order().filter(function(q){return q.m&&q.m.k===k;})[0]; if(q)q.e.done=true;
+  ST.busy=false; paint();
+  var after=pct(k);
+  $('st').textContent='Released. '+A.nm+' went from '+before+'% to '+after+'% complete.'+(a.load===0?' Clear. Embodied lights after seven days clear.':'')+(q?' One journal entry left the order.':'');
+ },2000);}
+
+/* ================= WIRING ================= */
+function paint(){paintHead(); paintFig(); paintPanel(); paintQueue(); measure();}
+document.addEventListener('click',function(e){
+ var t=e.target.closest('button,summary'); if(!t)return;
+ if(t.classList.contains('pin')){showNote(t.dataset.note);return;}
+ if(t.dataset.a){ST.sel=t.dataset.a; ST.edit=false; paintFig(); paintPanel(); measure();
+  var p=document.querySelector('.panel'); if(p.getBoundingClientRect().top>innerHeight*0.75)p.scrollIntoView({behavior:'smooth',block:'start'}); return;}
+ if(t.id==='core'){ST.sel='core'; ST.edit=false; paintFig(); paintPanel(); measure(); return;}
+ if(t.dataset.go){ST.sel=t.dataset.go; paintFig(); paintPanel(); measure(); return;}
+ if(t.id==='rel'){release();return;}
+ if(t.id==='rew'){ST.edit=true; paintPanel(); measure(); $('fbe').focus(); return;}
+ if(t.id==='cancel'){ST.edit=false; paintPanel(); measure(); return;}
+ if(t.id==='keep'){
+  var be=$('fbe').value.trim(), nb=$('fnb').value.trim(); if(!avatarValid({be:be,notbe:nb}))return;
+  var k=ST.sel, old=ST.P.areas[k], seat=landsAt(nb), lo=seat?(old&&old.seat===seat?old.load0:4.0):0;
+  ST.P.areas[k]={be:be,notbe:nb,seat:seat,load0:lo,load:seat?(old&&old.seat===seat?old.load:lo):0,rel:old?old.rel:0,prac:old?old.prac:0,emb:0,at:new Date().toISOString()};
+  if(!ST.P.ideal)ST.P.ideal=k;
+  var heard=ST.P.journal.filter(function(e){var m=match(e);return m&&m.k===k;}).length;
+  ST.edit=false; paint();
+  $('st').textContent='Kept. '+(heard?(heard===1?'One journal entry echoes':heard+' journal entries echo')+' these words and moved up the release order.':'Journal entries that echo these words will go to the front of the release order.');
+  return;}
+ if(t.id==='openB'){openOv();return;}
+ if(t.id==='closeB'){closeOv();return;}
+ if(t.dataset.side){ST.side=t.dataset.side; paintOv(); return;}
+ if(t.id==='upA'){var L=lines(ST.side); if(L.length>=PUR_PER_SIDE)return; L.push(''); paintOv();
+  var ins=$('bpanel').querySelectorAll('.bline input'); ins[ins.length-1].focus(); bStatus('A line opened on '+ST.side+'. It counts once it has words.'); return;}
+ if(t.id==='dnA'){var L2=lines(ST.side); if(!L2.length)return; var x=L2.pop(); ST.undo={sd:ST.side,x:x}; paintOv();
+  if(x&&x.trim())bStatus('Took "'+bare(x)+'" off '+ST.side+'.',true); else bStatus('Took the empty line off.'); return;}
+ if(t.id==='notesT'){ST.notes=!ST.notes; document.body.classList.toggle('nonotes',!ST.notes); t.setAttribute('aria-pressed',ST.notes); t.textContent=ST.notes?'Design notes on':'Design notes off'; measure(); return;}
+ if(t.id==='shX'){$('sheet').hidden=true; return;}
+});
+$('ov').addEventListener('click',function(e){if(e.target===$('ov')||e.target.classList.contains('ovin'))closeOv();});
+document.addEventListener('keydown',function(e){
+ if(e.key!=='Escape')return;
+ if(!$('sheet').hidden){$('sheet').hidden=true;return;}
+ if(!$('ov').hidden)closeOv();});
+$('who').addEventListener('change',function(){load(this.value);});
+function showNote(k){var n=NOTES[k]; if(!n)return; $('shT').textContent='Design note '+k+'. '+n[0];
+ $('shB').innerHTML='<p>'+n[1]+'</p>'; $('sheet').hidden=false; $('shX').focus();
+ var li=$('n'+k); if(li&&ST.notes){li.classList.remove('hl'); void li.offsetWidth; li.classList.add('hl');}}
+addEventListener('resize',measure); addEventListener('scroll',function(){clearTimeout(measure.t);measure.t=setTimeout(measure,120);},{passive:true});
+
+paintNotes();
+var hw=(location.hash.match(/who=(\w+)/)||[])[1]; if(hw&&PEOPLE[hw])$('who').value=hw;
+load(hw&&PEOPLE[hw]?hw:'James');
+if(/boundary=1/.test(location.hash))openOv();
+if(/nonotes=1/.test(location.hash))$('notesT').click();
+addEventListener('hashchange',function(){var w=(location.hash.match(/who=(\w+)/)||[])[1];
+ if(w&&PEOPLE[w]&&w!==ST.who){$('who').value=w; if(!$('ov').hidden)closeOv(); load(w);}});
+})();
+</script>
+</body></html>

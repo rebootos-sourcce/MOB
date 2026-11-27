@@ -1,0 +1,44 @@
+{
+ "h1": {
+  "nm": "Bullied at work",
+  "kind": "harm",
+  "says": "a person describing being bullied",
+  "t": "My manager took credit for the whole project in front of everyone. It was typical of them.\nI was the only one who worked the weekend on it. They started it when they moved my name off\nthe deck. I did not tell anyone at the time because I needed the job. Nobody appreciates what\nthat cost me. They owe me that year."
+ },
+ "h2": {
+  "nm": "A parent",
+  "kind": "harm",
+  "says": "a person describing a parent",
+  "t": "He was drunk again and he came into my room. I was eleven. I had no choice about any of it.\nIt was their fault, not mine. They always said I was making it up and they never once asked me\nwhat happened. My mother should have known. She was in the next room and she did not move.\nNobody believed me."
+ },
+ "h3": {
+  "nm": "An assault",
+  "kind": "harm",
+  "says": "a person describing an assault",
+  "t": "She hit me and then she cried and I ended up apologising to her. They always turn it around.\nI had no choice but to stay because of the kids. It was not my fault. If they had got help when\nI asked them to stop, none of this would have happened. They owe me those four years. I said no\nand he would not stop."
+ },
+ "h4": {
+  "nm": "Coercive control",
+  "kind": "harm",
+  "says": "the hardest case this seat could write",
+  "t": "I shouted at her once, near the end, and I am not proud of it. Everything else was her.\nShe always did this. It was her fault that I stopped seeing my friends, and if she had not gone\nthrough my phone every night none of this would have happened. I had no choice but to hand over\nmy wages. I was not allowed to see my sister. She screamed at me in front of everyone at my\nbrother's wedding and afterwards she told me I was overreacting. I kept it to myself for six\nyears because nobody believed me the first time. She owes me those years."
+ },
+ "own": {
+  "nm": "Doing harm, owned",
+  "kind": "own",
+  "says": "a person taking responsibility for harm they caused",
+  "t": "I was wrong about how I handled her. I shouted at her and I said things I cannot take back.\nI lied to her about where I had been, twice, and I hid it from her for months. It was my fault.\nI apologised properly and I told her the truth and I made amends as far as she would let me.\nI can see what I did. I know why I did it and that does not excuse any of it."
+ },
+ "defl": {
+  "nm": "Doing harm, refused",
+  "kind": "defl",
+  "says": "a person refusing their own part",
+  "t": "None of it was my fault. It was her fault from the start. If she had just listened to me\nonce I would not have had to raise my voice. I shouted at her, yes, but anyone would have.\nWhat was I supposed to do. She is pathetic when she gets like that and she had it coming.\nI kept it to myself because she did not need to know. She owes me an apology, not the other way\nround. After everything I did for her."
+ },
+ "mine": {
+  "nm": "Your own text",
+  "kind": "free",
+  "says": "",
+  "t": ""
+ }
+}

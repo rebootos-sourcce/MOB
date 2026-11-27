@@ -1,0 +1,155 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Left rail, lines: round PC</title>
+<link rel="stylesheet" href="tokens.css"><link rel="stylesheet" href="rail-lines.css">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+.wrap{max-width:1380px;margin:0 auto;padding:36px 24px 80px}
+h1{font-size:26px;font-weight:600;margin:0 0 6px;letter-spacing:-.01em}
+h2{font-size:20px;font-weight:600;margin:0 0 4px}
+h3{font-size:12px;font-weight:600;color:var(--dim);margin:26px 0 10px}
+p{margin:0 0 10px;color:var(--mid);max-width:80ch}
+.sub{color:var(--dim);margin-bottom:24px}
+section{border-top:1px solid var(--edge-2);padding:30px 0 10px;margin-top:30px}
+.row{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-start}
+.row figure{margin:0}
+img{display:block;border-radius:10px;border:1px solid var(--edge);background:#000;max-width:100%;height:auto}
+figcaption{font-size:12px;color:var(--dim);margin-top:6px;max-width:60ch}
+.note{background:var(--panel);border:1px solid var(--edge);border-radius:14px;padding:16px 18px;margin-top:18px}
+.note p{max-width:none}.note b{color:var(--ink);font-weight:600}
+ul{margin:4px 0 0;padding-left:18px;color:var(--mid)}li{margin:3px 0}
+table{border-collapse:collapse;font-size:13px;margin:8px 0}
+td,th{border-bottom:1px solid var(--edge-2);padding:5px 14px 5px 0;text-align:left;font-weight:400;color:var(--mid)}
+th{color:var(--dim);font-size:12px}
+td b{color:var(--ink);font-weight:600}
+.live{display:grid;grid-template-columns:repeat(4,minmax(250px,1fr));gap:12px}
+.live .cell{background:var(--panel);border-radius:14px;padding:14px 14px 10px}
+.live h4{margin:0 0 10px;font-size:11px;color:var(--dim);font-weight:500}
+.sw{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.sw span{display:flex;align-items:center;gap:8px;background:var(--panel);border:1px solid var(--edge);border-radius:999px;padding:4px 12px 4px 5px;font-size:12px;color:var(--mid)}
+.sw i{width:22px;height:22px;border-radius:50%;display:block}
+a{color:var(--accent)}
+.phones{display:flex;gap:10px;flex-wrap:wrap}.phones img{width:195px}
+.lr{--x:0}
+@media(max-width:900px){.live{grid-template-columns:1fr 1fr}}
+</style></head><body><div class="wrap">
+
+<h1>Left rail, lines: round PC</h1>
+<p class="sub">Mockups only, nothing in atuned_src is touched. Every picture is the built app (source.html) with the readings block of the left rail swapped for the new one, figures read from the engine. This goes back to the rail's own grammar and changes only what you asked to change: one two-colour bar for CQ and DQ with a moving edge, and every other reading on its own horizontal line with the mark inside the line.</p>
+
+<h3>The change, today on the left, hard edge in the middle, soft edge on the right. Diane, 1600 by 1000, rail open</h3>
+<div class="row"><img src="shots/crops/trio-diane-open.png" width="946" alt="Today, hard edge, soft edge: Diane"></div>
+
+<div class="note"><p><b>What changed, and what did not.</b></p><ul>
+ <li><b>CQ and DQ</b> are one solid bar. CQ's colour on the left, DQ's on the right, no gradient. The seam is the termination point: its x is CQ's share of the bar and it swings left and right by the oscillation range, 2.5 + (1 - CQ/100)^2 x 26 points, <code>cqRange</code> in ui/personas.js, on the drift renderPol2 writes. The bar is a hundred points wide, so the range in points is the range in per cent of the bar. Nothing is converted to pixels.</li>
+ <li><b>CQ and DQ</b> are the only words on screen. The two numerals sit inside the ends, painted twice so a letter changes ink where the colour does, the way the rail's own rows do. The seven shadow marks stand in the DQ colour, root to crown, and are clipped to it.</li>
+ <li><b>Every other reading</b> is one horizontal line in the same bar the rail has now: tinted track, fill, the mark inside the line at the left, the figure at the right in small type. No names. Names live in the tooltip.</li>
+ <li><b>Orientation and Balance</b> use the same two-colour bar with a static edge, because they are the same kind of thing, two systems and a share. Halo and pitchfork sit inside the ends. Masculine and feminine sit inside the ends.</li>
+ <li><b>Removed from the block</b>: the vertical wire down the left, the Radiance caption that had no bar, and the Style Bar and Arc toggle. The Arc is the dial form.</li>
+</ul></div>
+
+<section>
+<h2>Alive</h2>
+<p>Both edges run live on the Compass's own drift. The fills carry the rail's own travelling light. Flow is a live sine. Open <a href="live.html">live.html</a> for the lighting switch.</p>
+<h3>Hard edge, with the last three seconds of where it was as a faint trail</h3>
+<div class="live" id="lh"></div>
+<h3>Soft edge, the blend is as wide as the range, so a settled person has a crisp edge and a wandering one a wash</h3>
+<div class="live" id="ls"></div>
+</section>
+
+<section>
+<h2>The termination point oscillating</h2>
+<p>Eight frames, 1.4 seconds apart, of the pair alone. The top row is today's Coherence and Decoherence rows photographed in the real app at the same eight moments: nothing at the edge moves. Edge positions are printed over each frame, read from the same function the bar draws with.</p>
+<h3>Marcus, CQ 62, range 6.2 points, so the edge walks 59.0 to 65.2</h3>
+<img src="shots/frames-marcus.png" width="2400" alt="Frame strip, Marcus">
+<h3>Tomas, CQ 31, range 14.9 points, so the edge walks 23.3 to 38.3</h3>
+<img src="shots/frames-tomas.png" width="2400" alt="Frame strip, Tomas">
+</section>
+
+<section>
+<h2>The four people, 1600 by 1000, rail open</h2>
+<div class="row">
+ <figure><img src="shots/crops/trio-marcus-open.png" width="650" alt="Marcus"><figcaption>Marcus. Today, hard, soft. CQ 62, DQ 11, range 6.2.</figcaption></figure>
+ <figure><img src="shots/crops/trio-tomas-open.png" width="650" alt="Tomas"><figcaption>Tomas. CQ 31, DQ 53, range 14.9. Flow near zero, so the wave is choppy and the seven shadow marks stand tall.</figcaption></figure>
+ <figure><img src="shots/crops/trio-you-open.png" width="650" alt="You"><figcaption>You, near blank. Nothing is drawn off the defaults: dashes, empty tracks, no edge, no oscillation. The bar does not claim a reading nobody entered.</figcaption></figure>
+</div>
+<h3>Full screen, Marcus and Tomas, hard edge</h3>
+<div class="row">
+ <img src="shots/1600-hard-marcus-open.png" width="680" alt="Marcus full screen">
+ <img src="shots/1600-hard-tomas-open.png" width="680" alt="Tomas full screen">
+</div>
+</section>
+
+<section>
+<h2>Rail closed, 1600 by 1000</h2>
+<p>Today the closed rail is a single fold button. The mock carries the same lines in the 58 pixel column, 44 wide, marks only and no figures, with the edge still moving. It is an addition, and it can come out.</p>
+<div class="row">
+ <figure><img src="shots/crops/trio-marcus-closed.png" width="320" alt="Closed, Marcus"><figcaption>Marcus. Today, hard, soft.</figcaption></figure>
+ <figure><img src="shots/crops/trio-tomas-closed.png" width="320" alt="Closed, Tomas"><figcaption>Tomas.</figcaption></figure>
+ <figure><img src="shots/crops/trio-diane-closed.png" width="320" alt="Closed, Diane"><figcaption>Diane.</figcaption></figure>
+ <figure><img src="shots/crops/trio-you-closed.png" width="320" alt="Closed, You"><figcaption>You.</figcaption></figure>
+</div>
+</section>
+
+<section>
+<h2>390 by 844</h2>
+<p>The rail stacks under the picture. The whole rail, readings and Energy and Psyche, fits one screen where today the readings alone are most of one.</p>
+<div class="phones">
+ <figure><img src="shots/base-390-marcus.png" alt="Today, Marcus"><figcaption>Today, Marcus</figcaption></figure>
+ <figure><img src="shots/390-hard-marcus.png" alt="Hard, Marcus"><figcaption>Hard, Marcus</figcaption></figure>
+ <figure><img src="shots/390-soft-marcus.png" alt="Soft, Marcus"><figcaption>Soft, Marcus</figcaption></figure>
+ <figure><img src="shots/base-390-tomas.png" alt="Today, Tomas"><figcaption>Today, Tomas</figcaption></figure>
+ <figure><img src="shots/390-hard-tomas.png" alt="Hard, Tomas"><figcaption>Hard, Tomas</figcaption></figure>
+ <figure><img src="shots/390-soft-tomas.png" alt="Soft, Tomas"><figcaption>Soft, Tomas</figcaption></figure>
+ <figure><img src="shots/390-hard-diane.png" alt="Hard, Diane"><figcaption>Hard, Diane</figcaption></figure>
+ <figure><img src="shots/390-hard-you.png" alt="Hard, You"><figcaption>Hard, You</figcaption></figure>
+</div>
+</section>
+
+<section>
+<h2>Snow, the light lighting</h2>
+<p>Same tokens, different grounds. CQ deepens to the Snow accent and DQ goes pale: the pair swaps which side is dark so the edge still has the largest value step on the page. Today, hard, soft.</p>
+<div class="row">
+ <img src="shots/crops/trio-marcus-snow.png" width="650" alt="Snow, Marcus"><img src="shots/crops/trio-tomas-snow.png" width="650" alt="Snow, Tomas">
+</div>
+</section>
+
+<section>
+<h2>Footprint, counted</h2>
+<table>
+<tr><th>At 1600 by 1000, Marcus</th><th>Today</th><th>Lines</th></tr>
+<tr><td>Readings block, top of the first bar to the foot of the last</td><td><b>617 px</b></td><td><b>285 px</b>, 8 lines</td></tr>
+<tr><td>Foot of the Archetype row</td><td>997 of 1000</td><td><b>669</b>, with Psyche and Matrix in view below it</td></tr>
+<tr><td>Line heights</td><td>44 each, Flow 68, Orientation and Balance a bar and a caption row each</td><td>pair 44, Flow 40, six lines at 26</td></tr>
+<tr><td>Same block with every line held to the 44 floor</td><td></td><td>about 397, still 36 per cent under today</td></tr>
+</table>
+<p>The 26 pixel lines are under the 44 pixel tap floor. See the questions in the report: the floor and the stack cannot both hold unless the lines stop being separate buttons.</p>
+
+<h3>Colours, from the tokens</h3>
+<div class="sw">
+ <span><i style="background:color-mix(in srgb,#7EB8D4 76%,#8A9096)"></i>CQ: accent #7EB8D4, a step down in saturation</span>
+ <span><i style="background:color-mix(in srgb,#D6524C 44%,#1B1416)"></i>DQ: root seat taken into the dark. Not the alarm #FF2E1F</span>
+ <span><i style="background:#DABF6A"></i>Vitality: Solar</span><span><i style="background:#7D93E0"></i>Awareness: 3rd Eye</span><span><i style="background:#5EBBDB"></i>Will: Throat</span>
+ <span><i style="background:#5FD5A6"></i>Benign: Heart</span><span><i style="background:#D8924E"></i>Masculine: Sacral</span><span><i style="background:#A77EDB"></i>Feminine: Crown</span>
+</div>
+<p>The large fields are mixed toward a mid grey, 84 per cent seat on the three readings and 58 to 60 on the two split bars, because saturation, not hue, is what makes a surface read calm. High on any of them is never red. The alarm token is not used anywhere in the block.</p>
+</section>
+
+<section>
+<h2>How the pictures were made</h2>
+<ul>
+ <li><code>make-data.js</code> reads the four people's readings out of the built engine into data.json.</li>
+ <li><code>make.js</code> opens source.html, empties the readings from the left rail, mounts rail-lines.js in the same place and photographs it. <code>make-frames.js</code> and <code>make-crops.py</code> do the strips and the side by sides.</li>
+ <li>The clock is frozen at 5.0 seconds for the stills, a moment when the edge is moving, so the trail shows.</li>
+</ul>
+</section>
+
+</div>
+<script src="data.js"></script><script src="rail-lines.js"></script>
+<script>
+['marcus','tomas','diane','you'].forEach(function(k){
+ [['hard','lh'],['soft','ls']].forEach(function(a){
+  var c=document.createElement('div');c.className='cell';c.innerHTML='<h4>'+RS_DATA[k].nm+'</h4><div></div>';
+  document.getElementById(a[1]).appendChild(c);
+  RL.mount(c.lastChild,a[0],RS_DATA[k],{still:matchMedia('(prefers-reduced-motion:reduce)').matches});});});
+</script></body></html>

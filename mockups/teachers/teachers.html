@@ -1,0 +1,512 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Teacher panel</title>
+<!-- MOCKUP, NOT THE BUILD. Round OT. The numbers are Derek's reading, computed on the built
+     engine with the alignment proposed in DESIGN-teachers.md, and drawn on a real-record layout.
+     #empty swaps in Marcus, whose reading has nothing carrying at the opposite's addresses.
+     Ring icons, seat colours and surfaces are the app's own tokens (shell/head.html). -->
+<style>
+:root{
+ --bg:#0C0D12; --panel:#1A1D26; --panel-2:#252833; --sunk:#090A0E;
+ --edge:rgba(255,255,255,.09); --edge-2:rgba(255,255,255,.14);
+ --ink:#EFEDE8; --mid:#B4B0A8; --dim:#94908A;
+ --root:#D6524C; --sacral:#D8924E; --solar:#DABF6A; --heart:#5FD5A6; --throat:#5EBBDB; --eye:#7D93E0; --crown:#A77EDB;
+ --accent:#7EB8D4; --on-accent:#0B1418; --good:#68CBA4; --bad:#D4736D;
+ --sans:'Inter','Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;
+ --r:14px; --r-s:9px; --tap:44px;
+}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 var(--sans);-webkit-font-smoothing:antialiased}
+svg{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+button{font:inherit;color:inherit}
+.wrap{max-width:1600px;margin:0 auto;padding:10px 16px 28px}
+
+/* top bar and second tier, as the app draws them */
+.top{display:flex;align-items:center;gap:18px;padding:10px 18px;border:1px solid var(--edge);border-radius:var(--r);background:linear-gradient(#171922,#12141b)}
+.mark{font-weight:300;font-size:21px;letter-spacing:.02em}
+.mark small{display:block;font-size:8px;letter-spacing:.3em;color:var(--dim);margin-top:-3px}
+.secs{display:flex;gap:6px;flex:1;flex-wrap:wrap}
+.sec{display:flex;align-items:center;gap:8px;padding:0 12px;min-height:var(--tap);color:var(--mid);font-size:13px}
+.sec svg{width:18px;height:18px}
+.sec.on{color:var(--ink);font-weight:500}
+.sec.on svg{color:#9FC56E}
+.chip{display:flex;align-items:center;gap:8px;min-height:var(--tap);padding:0 14px;border:1px solid var(--edge-2);border-radius:var(--r-s);background:var(--panel);font-size:13px}
+.chip small{color:var(--dim);font-size:11px}
+.sub{display:flex;gap:4px;padding:2px 18px 0 86px;border-bottom:1px solid var(--edge);margin:0 0 12px}
+.tab{display:flex;align-items:center;gap:7px;min-height:var(--tap);padding:0 12px;font-size:12px;color:var(--dim);border-bottom:2px solid transparent}
+.tab svg{width:15px;height:15px}
+.tab.on{color:var(--ink);font-weight:500;border-color:var(--accent)}
+
+/* the two panels */
+.frame{display:grid;grid-template-columns:372px 1fr;gap:14px;align-items:start}
+.panel{border:1px solid var(--edge);border-radius:var(--r);background:var(--panel)}
+.list{padding:16px 14px 18px}
+.hd{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--dim);margin:0 0 3px}
+.list h2{font-size:17px;font-weight:600;margin:0 0 3px}
+.list .lede{font-size:12.5px;color:var(--mid);margin:0 0 14px}
+.grp{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--dim);margin:16px 4px 6px}
+.grp i{font-style:normal;text-transform:none;letter-spacing:0;color:var(--dim);font-size:11px;margin-left:6px}
+
+.row{display:grid;grid-template-columns:48px 1fr;gap:10px;align-items:center;width:100%;text-align:left;
+ background:transparent;border:0;border-radius:var(--r-s);padding:6px 8px;min-height:var(--tap);cursor:pointer}
+.row:hover{background:rgba(255,255,255,.03)}
+.row.on{background:var(--panel-2);box-shadow:inset 2px 0 0 var(--c)}
+.row .q{font-size:11px;color:var(--dim);display:block}
+.row .nm{font-size:14.5px;font-weight:600;color:var(--c);display:block}
+.row .op{font-size:12px;color:var(--dim);display:flex;align-items:center;gap:6px}
+.row .op svg{width:13px;height:13px}
+.row .nm em,.row .op em,em.pill{font-style:normal;font-size:10px;letter-spacing:.04em;color:var(--on-accent);background:var(--accent);border-radius:20px;padding:1px 7px;margin-left:8px;font-weight:600;vertical-align:2px;white-space:nowrap}
+.dh h1 em.pill,.opp b em.pill{font-size:11px;vertical-align:6px}
+.step b em.pill{vertical-align:1px}
+.pair{border-radius:var(--r-s);padding:2px 0}
+.pair .row{padding-top:4px;padding-bottom:4px}
+.pair .who{display:flex;gap:10px;align-items:center;padding:6px 8px 0}
+.pair .who b{font-size:14.5px;color:var(--c)}
+.pair .who span{font-size:11px;color:var(--dim)}
+
+/* ring badge: the app's own figure object, icon inside a ring with a pill */
+.rg{position:relative;width:48px;height:48px;flex:0 0 auto}
+.rg svg.ring{position:absolute;inset:0;width:48px;height:48px;stroke:none}
+.rg .ic{position:absolute;left:12px;top:12px;width:24px;height:24px;color:var(--c)}
+.rg .n{position:absolute;right:-3px;bottom:-2px;min-width:22px;height:17px;padding:0 5px;border-radius:9px;background:#2a2d38;border:1px solid var(--edge-2);
+ font-size:10.5px;line-height:15px;text-align:center;font-weight:600;color:var(--ink)}
+.rg.sm{width:22px;height:22px}
+.rg.big{width:72px;height:72px}
+.rg.big svg.ring{width:72px;height:72px}
+.rg.big .ic{left:18px;top:18px;width:36px;height:36px}
+.rg.big .n{min-width:30px;height:22px;font-size:13px;line-height:20px;border-radius:11px}
+
+/* the dossier */
+.dos{padding:22px 26px 26px}
+.dh{display:flex;gap:18px;align-items:center;margin-bottom:6px}
+.dh h1{font-size:30px;font-weight:600;margin:0;color:var(--c);letter-spacing:-.01em}
+.dh .sub2{color:var(--mid);font-size:13px}
+.dh .sw{margin-left:auto;display:flex;gap:6px}
+.sw button{min-height:var(--tap);padding:0 14px;border-radius:var(--r-s);border:1px solid var(--edge-2);background:transparent;color:var(--mid);font-size:12.5px;cursor:pointer}
+.sw button.on{background:var(--panel-2);color:var(--ink);border-color:var(--edge-2)}
+.read{color:var(--mid);font-size:13px;margin:4px 0 0}
+.read b{color:var(--ink);font-weight:600}
+.sect{margin-top:24px}
+.sect>.hd{margin-bottom:8px}
+p{margin:0 0 8px}
+.q2{border-left:2px solid var(--c);padding:2px 0 2px 12px;color:var(--ink);margin:10px 0 0}
+.src{font-size:12px;color:var(--dim)}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.col{border:1px solid var(--edge);border-radius:var(--r-s);padding:14px 16px;background:var(--sunk)}
+.col h3{font-size:12px;margin:0 0 8px;letter-spacing:.06em;text-transform:uppercase;font-weight:600;display:flex;align-items:center;gap:8px}
+.col.up h3{color:var(--c)}
+.col.dn h3{color:var(--bad)}
+.col h3 svg{width:18px;height:18px}
+.col ul{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+.col li{padding-left:14px;position:relative;font-size:13.5px}
+.col li:before{content:"";position:absolute;left:0;top:.62em;width:6px;height:6px;border-radius:50%;border:1.4px solid currentColor;color:var(--dim)}
+.opp{display:grid;grid-template-columns:48px 1fr;gap:14px;align-items:start;padding:14px 16px;border:1px dashed var(--edge-2);border-radius:var(--r-s)}
+.opp b{font-size:16px;display:block;margin-bottom:2px;color:var(--bad)}
+.ring-dash circle{stroke-dasharray:2 3.4}
+
+.laws{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.law{display:flex;align-items:center;gap:8px;border:1px solid var(--edge);border-radius:var(--r-s);padding:6px 10px;font-size:12.5px;background:var(--sunk)}
+.law svg{width:16px;height:16px;color:var(--c)}
+.law b{font-weight:600}
+.law.thin{border-color:var(--c)}
+.law.thin:after{content:"thinnest";font-size:10.5px;color:var(--c);margin-left:2px}
+
+.adr{display:grid;gap:7px;margin-top:6px}
+.a{display:grid;grid-template-columns:1fr 150px 52px;gap:12px;align-items:center;font-size:13px}
+.a .t{height:7px;border-radius:5px;background:var(--panel-2);position:relative}
+.a .t i{position:absolute;left:0;top:0;bottom:0;border-radius:5px;background:var(--dim)}
+.a.hot .t i{background:var(--c)}
+.a .t:after{content:"";position:absolute;left:40%;top:-3px;bottom:-3px;width:1px;background:var(--edge-2)}
+.a .v{text-align:right;font-variant-numeric:tabular-nums;color:var(--mid)}
+.a.hot .v{color:var(--ink);font-weight:600}
+.a.hot span:first-child{font-weight:600}
+.note{font-size:12.5px;color:var(--dim);margin-top:8px}
+.lock{display:flex;gap:12px;align-items:center;margin-top:12px;padding:10px 14px;border:1px solid var(--edge);border-radius:var(--r-s);color:var(--mid);font-size:12.5px;background:var(--sunk)}
+.lock svg{width:20px;height:20px;color:var(--dim);flex:0 0 auto}
+
+/* the library lanes */
+.lanes{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.lane{border:1px solid var(--edge);border-radius:var(--r);padding:16px 18px 18px;background:var(--panel-2)}
+.lane h3{font-size:15px;font-weight:600;margin:0 0 2px}
+.lane .tag{font-size:12px;color:var(--dim);margin-bottom:12px}
+.step{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid var(--edge)}
+.step:first-of-type{border-top:0}
+.step b{font-size:13.5px}
+.step small{color:var(--dim);font-size:12px;white-space:nowrap}
+.step p{font-size:12.5px;color:var(--mid);margin:2px 0 0}
+.why{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 0}
+.why span{font-size:11.5px;color:var(--mid);border:1px solid var(--edge-2);border-radius:20px;padding:2px 10px}
+.why span.y{color:var(--ink);border-color:var(--c)}
+.cost{font-size:12.5px;color:var(--mid);margin:12px 0 0}
+.cost b{color:var(--ink)}
+.acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.btn{min-height:var(--tap);padding:0 18px;border-radius:var(--r-s);border:1px solid var(--edge-2);background:transparent;color:var(--ink);font-size:13px;cursor:pointer}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:600}
+.empty{padding:10px 0 2px;color:var(--mid);font-size:13px}
+.empty b{color:var(--ink)}
+.shelf{margin-top:14px;padding-top:12px;border-top:1px solid var(--edge);font-size:12.5px;color:var(--mid)}
+.foot{margin-top:26px;padding-top:14px;border-top:1px solid var(--edge);font-size:12.5px;color:var(--dim)}
+
+/* phone: the list becomes a wrapped grid of rings, never a hidden scroller */
+.strip{display:none}
+@media (max-width:720px){
+ .wrap{padding:8px 16px 24px}
+ .top{padding:8px 12px;gap:8px;flex-wrap:wrap}
+ .secs{order:3;flex-basis:100%;justify-content:space-between}
+ .sec{padding:0 6px;font-size:12px}
+ .sec span{display:none}
+ .sec.on span{display:inline}
+ .chip{margin-left:auto}
+ .chip.th{display:none}
+ .sub{padding-left:0;overflow:hidden}
+ .tab{padding:0 9px}
+ .frame{grid-template-columns:1fr}
+ .list{display:none}
+ .strip{display:block;padding:14px 12px 12px;margin-bottom:12px}
+ .strip .hd{margin-left:4px}
+ .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:8px}
+ .gi{display:flex;flex-direction:column;align-items:center;gap:6px;background:transparent;border:0;border-radius:var(--r-s);padding:8px 2px 6px;min-height:var(--tap);cursor:pointer}
+ .gi.on{background:var(--panel-2);box-shadow:inset 0 -2px 0 var(--c)}
+ .gi span{font-size:11px;color:var(--mid);line-height:1.2;text-align:center}
+ .gi.on span{color:var(--ink)}
+ .dos{padding:18px 16px 20px}
+ .dh{flex-wrap:wrap;gap:12px}
+ .dh h1{font-size:25px}
+ .dh .sw{margin-left:0;flex-basis:100%}
+ .sw button{flex:1}
+ .cols,.lanes{grid-template-columns:1fr}
+ .a{grid-template-columns:1fr 84px 40px;gap:8px}
+ .step{flex-direction:column;gap:2px}
+ .acts .btn{flex:1;padding:0 10px}
+}
+</style></head>
+<body>
+<div class="wrap">
+
+<div class="top">
+ <div class="mark">atüned<small>SOURCE OS</small></div>
+ <div class="secs">
+  <div class="sec"><svg viewBox="0 0 24 24"><path d="M2.5 12s3.6-6 9.5-6 9.5 6 9.5 6-3.6 6-9.5 6-9.5-6-9.5-6zM12 9.4a2.6 2.6 0 110 5.2 2.6 2.6 0 010-5.2"/></svg><span>Discover</span></div>
+  <div class="sec on"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M10 8.5l5 3.5-5 3.5z"/></svg><span>Play</span></div>
+  <div class="sec"><svg viewBox="0 0 24 24"><path d="M3 10c3-4 6 4 9 0s6-4 9 0M3 16c3-4 6 4 9 0s6-4 9 0"/></svg><span>Flow</span></div>
+  <div class="sec"><svg viewBox="0 0 24 24"><path d="M12 4v6M6 8l6 4 6-4M8 20l4-8 4 8"/></svg><span>Embody</span></div>
+ </div>
+ <div class="chip th"><small>Profile</small> <span id="who">Derek</span></div>
+ <div class="chip">Dark</div>
+</div>
+<div class="sub">
+ <div class="tab"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/></svg>Field</div>
+ <div class="tab"><svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="2"/><path d="M12 8v7M8 11h8M10 21l2-6 2 6"/></svg>Body</div>
+ <div class="tab on"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M15 9l-2 6-4 0 2-6z"/></svg>Compass</div>
+ <div class="tab"><svg viewBox="0 0 24 24"><path d="M12 3l8 4v6c0 4-3.5 7-8 8-4.5-1-8-4-8-8V7z"/></svg>Character</div>
+</div>
+
+<div class="strip panel" id="strip"></div>
+<div class="frame">
+ <aside class="panel list" id="list"></aside>
+ <section class="panel dos" id="dos"></section>
+</div>
+</div>
+
+<script>
+/* ---------- what the panel draws. Teachers, opposites, icons and the codex lines are read off
+   engine/data/compass.js. Behaviours, the five marks per opposite, the twelfth teacher and the opposites
+   marked proposed are DRAFTS for the owner. The readings are computed on the built engine. ---------- */
+var SEAT={Root:'#D6524C',Sacral:'#D8924E',Solar:'#DABF6A',Heart:'#5FD5A6',Throat:'#5EBBDB','3rd Eye':'#7D93E0',Crown:'#A77EDB'};
+var ACC='#7EB8D4';
+var IC={
+ jesus:'M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1M12 8a4 4 0 110 8 4 4 0 010-8',
+ lucifer:'M12 4l2.4 5.2 5.6.6-4.2 3.8 1.2 5.6L12 16.4 6.99 19.2l1.2-5.6L4 9.8l5.6-.6z',
+ furies:'M4 5h16v12H4zM8 9h8M8 13h5',
+ ramak:'M12 20s-7-4.4-7-9.4A4 4 0 0112 8a4 4 0 017 2.6c0 5-7 9.4-7 9.4z',
+ asmo:'M4 9h16l-2.2 10.4a1 1 0 01-1 .6H7.2a1 1 0 01-1-.6zM9 9V6a3 3 0 016 0v3',
+ moses:'M4 6h16M4 12h16M4 18h11M19 16.5v3.6M17.4 18.3h3.2',
+ set:'M4.6 5.4l14.8 13.2M19.4 5.4L4.6 18.6M12 4v16',
+ musashi:'M6.5 17.5L17 7M15 5l4 4M6 18l-1.6 1.6M4.5 15.5l4 4',
+ moloch:'M5 20V9l7-5 7 5v11M9 20v-5h6v5M9.5 11.5h5',
+ buddha:'M2.5 12s3.6-6 9.5-6 9.5 6 9.5 6-3.6 6-9.5 6-9.5-6-9.5-6zM12 9.4a2.6 2.6 0 110 5.2 2.6 2.6 0 010-5.2',
+ geryon:'M2.5 12s3.6-6 9.5-6 9.5 6 9.5 6-3.6 6-9.5 6-9.5-6-9.5-6zM5 5l14 14',
+ rumi:'M12 20.5S4.5 15.6 4.5 10.2A3.8 3.8 0 0112 8a3.8 3.8 0 017.5 2.2c0 5.4-7.5 10.3-7.5 10.3z',
+ charon:'M4 17h16M6.4 17V9.6M17.6 17V9.6M4 9.6h16L12 4.6z',
+ elijah:'M13 2.5L5.5 13.5H11L10 21.5l7.5-11H12z',
+ phleg:'M12 3v8M12 15v6M6 9l-2.6-2.6M18 9l2.6-2.6M4 13.5h3.4M16.6 13.5H20',
+ krishna:'M3 10c3-4 6 4 9 0s6-4 9 0M3 16c3-4 6 4 9 0s6-4 9 0',
+ kaliya:'M3 11c2.4-3.4 4.8 3.4 7.2 0 1.3-1.8 3-2.8 5-2.8a3.6 3.6 0 010 7.2 2.2 2.2 0 010-4.4 1 1 0 010 2M3 19h18',
+ rama:'M12 21V9.5M12 9.5L5 4M12 9.5L19 4M12 9.5V3M6.5 14.5h11',
+ ravana:'M5 3.6a2.4 2.4 0 110 4.8 2.4 2.4 0 010-4.8M12 2.6a2.4 2.4 0 110 4.8 2.4 2.4 0 010-4.8M19 3.6a2.4 2.4 0 110 4.8 2.4 2.4 0 010-4.8M6.6 8L12 13.5M12 7.4v6.1M17.4 8L12 13.5M12 13.5v7M8 20.5h8',
+ lao:'M3 8.5h18M3 14.5c3-3.2 6 3.2 9 0s6-3.2 9 0M3 19h18',
+ shuhu:'M12 8.5a6 6 0 110 12 6 6 0 010-12M8.8 3v8.4M15.2 3v8.4M7 3h3.6M13.4 3h3.6',
+ akh:'M12 3.5a3.5 3.5 0 110 7 3.5 3.5 0 010-7M9 11.5l-2.6 5.4M12 12v6.2M15 11.5l2.6 5.4M5.4 18.4h2M11 19.6h2M16.6 18.4h2',
+ apep:'M6 12a6 6 0 1112 0 6 6 0 01-12 0M3 7.5c4 0 4 9 9 9s5-9 9-9',
+ soc:'M4 11h16M4 11a8 8 0 0016 0',
+ thras:'M4 10v4h4l7 4V6L8 10zM18 9c1.5 1 1.5 5 0 6',
+ law:'M12 21V4 M8 8l4-4 4 4 M6 14h12',
+ lock:'M7 11V8a5 5 0 0110 0v3M5 11h14v9H5z'
+};
+function icon(p,cls){return '<svg class="'+(cls||'ic')+'" viewBox="0 0 24 24" aria-hidden="true"><path d="'+p+'"/></svg>';}
+function ring(p,col,num,o){
+ o=o||{}; var cls='rg'+(o.big?' big':''), S=o.big?72:48, r=S/2-4, C=2*Math.PI*r;
+ var has=(num!==null&&num!==undefined);
+ var arc=has?Math.max(0,Math.min(100,+num))/100*C:0;
+ var svg='<svg class="ring" viewBox="0 0 '+S+' '+S+'" aria-hidden="true">';
+ if(o.dash)svg+='<circle cx="'+S/2+'" cy="'+S/2+'" r="'+r+'" stroke="'+col+'" stroke-opacity=".75" stroke-width="2" stroke-dasharray="2.4 3.6"/>';
+ else{svg+='<circle cx="'+S/2+'" cy="'+S/2+'" r="'+r+'" stroke="rgba(255,255,255,.12)" stroke-width="2.4"/>';
+  if(arc)svg+='<circle cx="'+S/2+'" cy="'+S/2+'" r="'+r+'" stroke="'+col+'" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="'+arc.toFixed(1)+' '+C.toFixed(1)+'" transform="rotate(-90 '+S/2+' '+S/2+')"/>';}
+ svg+='</svg>';
+ return '<span class="'+cls+'" style="--c:'+col+'">'+svg+icon(p)+(has?'<span class="n">'+num+'</span>':'')+'</span>';}
+
+/* ---------- the roster. k is the pole key: identity, persisted, never renamed. Order here is display only. ---------- */
+var T=[
+ {k:'IL',nm:'Jesus',q:'Light',seat:'Heart',ic:IC.jesus,op:'Lucifer',oic:IC.lucifer},
+ {k:'RE',nm:'Jesus',q:'Revelation',seat:'Crown',ic:IC.jesus,op:'The Furies',oic:IC.furies},
+ {k:'DE',nm:'Ramakrishna',q:'Desire and will',seat:'Sacral',ic:IC.ramak,op:'Asmodeus',oic:IC.asmo},
+ {k:'OR',nm:'Moses',q:'Order',seat:'Throat',ic:IC.moses,op:'Set',oic:IC.set},
+ {k:'PO',nm:'Musashi',q:'Power',seat:'Solar',ic:IC.musashi,op:'Moloch',oic:IC.moloch},
+ {k:'PE',nm:'Buddha',q:'Perception',seat:'3rd Eye',ic:IC.buddha,op:'Geryon',oic:IC.geryon},
+ {k:'TR',nm:'Rumi',q:'Trust',seat:'Heart',ic:IC.rumi,op:'Charon',oic:IC.charon},
+ {k:'CH',nm:'Elijah',q:'Charge',seat:'Root',ic:IC.elijah,op:'Phlegyas',oic:IC.phleg},
+ {k:'FL',nm:'Krishna',q:'Flow',seat:null,ic:IC.krishna,op:'Kaliya',oic:IC.kaliya},
+ {k:'AL',nm:'Rama',q:'Alignment',seat:null,ic:IC.rama,op:'Ravana',oic:IC.ravana},
+ {k:'HO',nm:'Lao Tzu',q:'The horizontal',seat:null,ic:IC.lao,op:'Shu and Hu',oic:IC.shuhu},
+ {k:'SA',nm:'Akhenaten',q:'Truth and light',seat:null,ic:IC.akh,op:'Apep',oic:IC.apep,oprop:true},
+ {k:'SO',nm:'Socrates',q:'Humility',seat:null,ic:IC.soc,op:'Thrasymachus',oic:IC.thras,prop:true,oprop:true}
+];
+var BYK={}; T.forEach(function(t){BYK[t.k]=t;});
+
+/* ---------- the text. Lines marked (codex) are quoted from engine/data/compass.js. The rest are drafts. ---------- */
+var D={
+ IL:{who:'Love generated from within. Freely given. No transaction. Light that has a source.',
+  who2:'Giving here costs the giver nothing they need back. The warmth is the same with the room full or empty.',
+  src:'Source: the eight mirror pairs, the pair for light.',
+  opd:'Pride as false light. Shine performed for reflection, not generated from Source.',
+  ask:'Does this person’s warmth cost them anything, or does it require an audience?',
+  up:['You give something away and tell nobody.','You are warm to someone who can do nothing for you.','You finish helping before you check who saw.'],
+  dn:['You are warm in the room and flat when it empties.','You check who noticed before the kindness is done.','You tell the story of the favour afterwards.'],
+  how:'Light reads clean when the Heart seat carries little and the laws seated there are answered high. It turns over when warmth is made for a watcher.'},
+ RE:{who:'Love as the highest charge. The state every other frequency reorganises around, and the one that transmutes what it meets rather than opposing it.',
+  who2:'He stands at two poles, by the owner’s ruling: love given freely at the Heart, and love as the thing everything else reorganises around at the Crown.',
+  src:'Source: the eight mirror pairs, the pair for revelation. Ruled.',
+  opd:'The map takes the place of the ground, for good. The belief system is guarded against any experience that contradicts it.',
+  ask:'Can this person change what they believe when what they live through says otherwise?',
+  up:['Something you live through cuts against what you believed, and you hold it before you answer.','You change your mind in front of people without defending the old one.','You ask what it would change if it were true.'],
+  dn:['You decide what a thing means before it has finished happening.','You stop listening once you have an answer.','You steer around the place that would test the belief.'],
+  how:'Revelation reads clean when the Crown seat carries little and its laws are answered high. It turns over when the belief is guarded from the experience.'},
+ DE:{who:'Will surrendered to Source. Desire as devotion. Wanting that moves toward something beyond the self.',
+  who2:'Wanting is allowed to be large. What changes is where it points.',
+  src:'Source: the eight mirror pairs, the pair for desire and will.',
+  opd:'Craving without closure. Appetite that cannot satisfy. Having never resolves the wanting.',
+  ask:'Does wanting move them toward something, or does having never satisfy?',
+  up:['You name one want and ask who else it would serve.','A craving comes and you let it sit for ten breaths without acting.','You stop when you have enough.'],
+  dn:['You get what you wanted and reach for the next one within the hour.','You buy, scroll or eat past the point of wanting it.','Having it does not end the wanting.'],
+  how:'Desire reads clean when the Sacral seat carries little and its laws are answered high. It turns over when each thing got only makes room for the next.'},
+ OR:{who:'Structure in service of liberation. Law that creates freedom. Order others can stand within.',
+  who2:'Where macro intelligence becomes something local people can use, as structure.',
+  src:'Source: the eight mirror pairs and the master list.',
+  opd:'Chaos engineered to prevent coherence. Betrayal as systemic strategy. Disruption from inside trusted systems.',
+  ask:'Does this person build structures others can stand in, or dismantle what others depend on?',
+  up:['You set one rule others can lean on and keep it on the day it costs you.','You say what the plan is before it starts.','You write it down so nobody has to guess.'],
+  dn:['You change the rule after others have built on it.','You agree to the plan and work against it quietly.','You are one person in the room and another in the message afterwards.'],
+  how:'Order reads clean when the Throat seat carries little and its laws are answered high. It turns over when the rule is used against the people standing on it.'},
+ PO:{who:'Mastery that costs the practitioner. Power in service of precision. Discipline the self bears.',
+  who2:'Sustained application of will, at the same place, over time. Two steps forward, one step back. A miss is data and not a verdict.',
+  src:'Source: the eight mirror pairs and the master list.',
+  opd:'Power that extracts from others. The machine that must be fed. Discipline that others pay for.',
+  ask:'Who pays the cost of this person’s discipline?',
+  up:['You do the same hard thing at the same hour and pay for it yourself.','You write one line on a missed day and nothing about what it says about you.','You practise the small version when the big one is not on offer.'],
+  dn:['Your standard is met with other people’s time.','Somebody always covers for your schedule.','A day does not count unless you won it.'],
+  how:'Power reads clean when the Solar seat carries little and the laws seated there are answered high. It turns over when the same discipline is paid for by somebody else.'},
+ PE:{who:'Clear seeing. Reality without overlay. The compositor running on present signal.',
+  who2:'Be with the emotions, do not become them. The awareness kept clean, without identification locking the wave into a node.',
+  src:'Source: the eight mirror pairs and the master list.',
+  opd:'Engineered surface. Beautiful above, serpentine beneath. Perception itself weaponised.',
+  ask:'Does this person’s self presentation match their interior state?',
+  up:['You notice what you feel and name it without becoming it.','You describe a situation to yourself the way you would to the person in it.','You see the thing before the story about the thing.'],
+  dn:['What people meet is a version you run, and you manage the gap.','You edit how you say you are before it leaves your mouth.','You read people as terrain.'],
+  how:'Perception reads clean when the 3rd Eye seat carries little and its laws are answered high. It turns over when the picture is built for somebody else to see.'},
+ TR:{who:'Direct encounter with the field. Felt knowing. The heart as the instrument.',
+  who2:'The nervous system recognising coherent structure and stabilising around it.',
+  src:'Source: the eight mirror pairs and the master list.',
+  opd:'Threshold paralysis. Cannot cross what cannot be measured. The rational mind forever preparing to arrive.',
+  ask:'Does this person feel things straight away, or wait for proof before they let themselves feel?',
+  up:['You feel it straight away and let it show.','You go toward what moves you before there is proof.','You let someone in before you have checked everything.'],
+  dn:['You wait at the edge until it can be proven.','You prepare for the feeling instead of having it.','You ask for more information about something you already feel.'],
+  how:'Trust reads clean when the Heart seat carries little and its laws are answered high. It turns over when proof is asked for before anything is let in.'},
+ CH:{who:'Grounded fire. Intensity moving through the body without destroying the container or the target.',
+  who2:'The charge is large and has somewhere to go.',
+  src:'Source: the eight mirror pairs and the master list.',
+  opd:'Charge split at the root. Outward as rage or inward as paralysis. The same current, no clean exit.',
+  ask:'Where does this person’s intensity go when it has nowhere to land?',
+  up:['Anger comes and you move it through your body, walking or lifting, and nobody pays.','You feel the heat and stay on your feet.','The intensity ends in an action and not in a freeze.'],
+  dn:['It goes off at somebody, or you go flat for the afternoon.','There is no middle setting.','The same charge comes out as shouting or as shutdown.'],
+  how:'Charge reads clean when the Root seat carries little and its laws are answered high. It turns over when the charge has one of two exits and neither is clean.'},
+ FL:{who:'The field wants to move, and most suffering is the result of blocking that motion.',
+  who2:'Ananda in motion. Nothing here is forced to move. It is let.',
+  src:'Source: the master list. One of the five paths.',
+  opd:'Flow held in one pool until it turns to poison. The river still runs, and nothing downstream can drink from it.',
+  ask:'Is anything in this day held still by force that wants to move?',
+  up:['You move when the day wants to move.','A call you were holding gets made.','A plan changes and you let it.'],
+  dn:['You hold one routine, plan or grievance in place until it sours.','You keep running what has stopped feeding anyone.','Nobody downstream can take anything from what you keep going.'],
+  how:'Flow stands at no one seat, so it is read across the whole field: the less held at the seats, the more passes through. The addresses below are where a pool forms.'},
+ AL:{who:'Sat, Chit and Ananda clear at once. Duty as the spine that keeps all three upright under pressure.',
+  who2:'What was said and what is done are the same line, including when nobody would check.',
+  src:'Source: the master list. One of the five paths.',
+  opd:'Learning and power with no line held. He knows the law and crosses it, because the wanting outranks it.',
+  ask:'Is there a line this person holds when nobody would check?',
+  up:['You say what you will do and then do it.','You hold the line you named this morning.','You keep a promise nobody would check.'],
+  dn:['You know the rule and cross it because you want the thing more.','You explain why this one is an exception.','You are very good at reasons.'],
+  how:'Alignment stands at no one seat. The laws read for it are Duty and Responsibility, both seated at the Solar. The addresses below are where the line gets crossed.'},
+ HO:{who:'Perpendicular to the vertical axes. Stop the activity generating the interference.',
+  who2:'Water goes round the rock. Nothing is pushed through it.',
+  src:'Source: the master list. One of the five paths.',
+  opd:'Haste that means well. They forced openings into what was whole, one a day, and on the seventh day it died.',
+  ask:'What is making the noise, and can it stop for a day?',
+  up:['You find the one activity making the noise and stop it for the day.','You let the water go round the rock.','You wait for a thing to finish instead of pushing it.'],
+  dn:['You hurry to help and make it worse.','You fix what nobody asked you to fix.','You open up what was whole, meaning well, once more each day.'],
+  how:'The horizontal stands at no one seat. The laws read for it are Patience and Nature. The addresses below are where the pushing shows.'},
+ SA:{who:'Maximum Sat. Energy conducting without distortion. The output is literal light.',
+  who2:'What he said, what he meant and what he did were one line. The one image he left is the sun disc whose rays end in hands.',
+  src:'Source: the master list. No opposite is named in the codex, so this one is proposed.',
+  opd:'The serpent that swallows the light each night. Light taken in and nothing handed on.',
+  ask:'When something is plainly lit, does this person say so?',
+  up:['What you say, what you mean and what you do are one line.','You say the true thing once and plainly.','You let a thing be seen as it is.'],
+  dn:['You answer a plain fact with a story that makes it smaller.','You put your own shadow over what somebody else lit.','You deny what everybody can see.'],
+  how:'Truth and light has no axis of its own in the product, so it is read across the field. The laws read for it are Truth and Transparency, both seated at the Throat.'},
+ SO:{who:'Knows the edge of what he knows and says so. Asks until the other person finds the hole in their own answer, and starts with his own.',
+  who2:'Proposed to cover Humility, the one law that no other teacher holds.',
+  src:'Source: not in the codex. Proposed, with the opposite.',
+  opd:'Certainty used to win. The answer arrives before the question has finished, and a louder answer stands in for a reason.',
+  ask:'When this person is shown to be wrong, does the day carry on?',
+  up:['You say I do not know where others would guess.','You ask the question that shows you were wrong.','You test what you are sure of on somebody who disagrees.'],
+  dn:['You win the argument before the question is finished.','You answer how do you know with a louder answer.','Being wrong feels like being removed.'],
+  how:'Humility stands at no one seat. The law read for it is Humility, seated at the 3rd Eye. The addresses below are where certainty is doing the winning.'}
+};
+/* the two practices drafted for the teachers who have none yet */
+var NEWSTEPS={
+ SA:[['The Somatic Truth Check',2,'Expansion is true. Contraction is distortion.',0],['Plain Statement',5,'Say one true thing today, once, with no cushion and no story, and notice where your body answers.',1]],
+ SO:[['Noting Meditation',15,'Observer of thoughts. No engagement.',0],['The Honest Unknown',5,'Three times today, say I do not know where you would have guessed, and write what your body did.',1]]};
+
+/* ---------- the reading, computed ---------- */
+var RD={"derek":{"pos":{"IL":65,"RE":65,"DE":62,"OR":62,"PO":67,"PE":64,"TR":65,"CH":58},"seat":{"Root":{"hot":3,"tot":16,"ig":3.8,"pos":58,"laws":[["Non-Harm",2.9],["Patience",4.6]]},"Sacral":{"hot":5,"tot":16,"ig":3.2,"pos":62,"laws":[["Temperance",1.8],["Detachment",4.6]]},"Solar":{"hot":7,"tot":16,"ig":7.4,"pos":67,"laws":[["Courage",9],["Duty",8.3],["Responsibility",7.7],["Accountability",4.6]]},"Heart":{"hot":0,"tot":15,"ig":4.6,"pos":65,"laws":[["Compassion",4.6],["Forgiveness",4.6],["Generosity",4.6],["Aesthetic Beauty",4.6]]},"Throat":{"hot":5,"tot":12,"ig":4.6,"pos":62,"laws":[["Truth",4.6],["Transparency",4.6],["Justice",4.6]]},"3rd Eye":{"hot":0,"tot":12,"ig":4.1,"pos":64,"laws":[["Presence",4.6],["Humility",4.6],["Equanimity",3.1]]},"Crown":{"hot":0,"tot":21,"ig":4.6,"pos":65,"laws":[["Unity",4.6],["Awareness",4.6],["Nature",4.6]]}},"marks":{"IL":[["Manipulative Kindness",2.9,"Anger"],["False Love",2.3,"Disgust"],["Stage Performing",0,"Shock"],["Spiritual Pride",1.9,"Disgust"],["Seeking Validation",2.8,"Shame"]],"RE":[["Speaking To Be Right",5,"Anger"],["Dogma",2.8,"Disgust"],["Condemnation",2.8,"Anger"],["Knowing Better Than God",3,"Anger"],["Denial Of Truth",3,"Anger"]],"DE":[["Addiction",0,"Apathy"],["Lust",0,"Apathy"],["Hypersexuality",0,"Apathy"],["Infatuation",0,"Apathy"],["Obsession",5.4,"Anticipation"]],"OR":[["Manipulation Through Emotion",6,"Anger"],["Betrayal",1.2,"Surprise"],["Deceit",2.9,"Disgust"],["Lying",2.9,"Disgust"],["Spiritual Language To Manipulate",2.8,"Disgust"]],"PO":[["Competition",5.4,"Anger"],["Entitlement",4.7,"Anger"],["Force",2.3,"Fear"],["Need To Win",2.8,"Anger"],["Superiority",2.8,"Anger"]],"PE":[["False Love",2.3,"Disgust"],["Stage Performing",0,"Shock"],["Delusion",2.8,"Disgust"],["Projection",2.2,"Disgust"],["Distortion",2.2,"Disgust"]],"TR":[["Closed Heart",1.5,"Sad"],["Cynicism",2.8,"Disgust"],["Distrust",2.7,"Fear"],["Overanalysis",0,"Shock"],["Doubt",2.1,"Fear"]],"CH":[["Fear",3.5,"Fear"],["Lethargy",3.1,"Sad"],["Panic",1.8,"Surprise"],["Collapse",2.4,"Sad"],["Anger",4.7,"Anger"]],"FL":[["Control",3.5,"Fear"],["Possession",0,"Shock"],["Resistance",3.9,"Fear"],["Compulsion",5.4,"Anticipation"],["Avoidance Of Grief",1.7,"Sad"]],"AL":[["Lust",0,"Apathy"],["Entitlement",4.7,"Anger"],["Excuse",3.3,"Disgust"],["Hubris",2.9,"Anger"],["Knowing Better Than God",3,"Anger"]],"HO":[["Force",2.3,"Fear"],["Need To Be Needed",2.3,"Disgust"],["Interrupting",4.4,"Anger"],["Savior Complex",1.9,"Disgust"]],"SA":[["Deceit",2.9,"Disgust"],["Distortion",2.2,"Disgust"],["Denial Of Truth",3,"Anger"],["Denial Of Light",3.7,"Anger"]],"SO":[["Arrogance",5.4,"Anger"],["Superiority",2.8,"Anger"],["Speaking To Be Right",5,"Anger"],["Hubris",2.9,"Anger"],["Knowing Better Than God",3,"Anger"]]},"laws":{"FL":[],"AL":[["Duty",8.3],["Responsibility",7.7]],"HO":[["Patience",4.6],["Nature",4.6]],"SA":[["Truth",4.6],["Transparency",4.6]],"SO":[["Humility",4.6]]}},"marcus":{"pos":{"IL":75,"RE":76,"DE":79,"OR":80,"PO":80,"PE":84,"TR":75,"CH":80},"seat":{"Root":{"hot":0,"tot":16,"ig":6.4,"pos":80,"laws":[["Non-Harm",6.4],["Patience",6.4]]},"Sacral":{"hot":0,"tot":16,"ig":6.4,"pos":79,"laws":[["Temperance",6.4],["Detachment",6.4]]},"Solar":{"hot":0,"tot":16,"ig":6.4,"pos":80,"laws":[["Courage",6.4],["Duty",6.4],["Responsibility",6.4],["Accountability",6.4]]},"Heart":{"hot":0,"tot":15,"ig":5.2,"pos":75,"laws":[["Compassion",2.8],["Forgiveness",2.4],["Generosity",6.4],["Aesthetic Beauty",9.2]]},"Throat":{"hot":0,"tot":12,"ig":6.9,"pos":80,"laws":[["Truth",7.9],["Transparency",6.4],["Justice",6.4]]},"3rd Eye":{"hot":0,"tot":12,"ig":7.2,"pos":84,"laws":[["Presence",6.4],["Humility",8.8],["Equanimity",6.4]]},"Crown":{"hot":0,"tot":21,"ig":5.4,"pos":76,"laws":[["Unity",3.3],["Awareness",6.4],["Nature",6.4]]}},"marks":{"IL":[["Manipulative Kindness",1.7,"Anger"],["False Love",2.4,"Disgust"],["Stage Performing",0.8,"Shock"],["Spiritual Pride",1.4,"Disgust"],["Seeking Validation",0.7,"Shame"]],"RE":[["Speaking To Be Right",1.4,"Anger"],["Dogma",1.3,"Disgust"],["Condemnation",1.2,"Anger"],["Knowing Better Than God",1.4,"Anger"],["Denial Of Truth",1.4,"Anger"]],"DE":[["Addiction",1.3,"Apathy"],["Lust",1.3,"Apathy"],["Hypersexuality",1.2,"Apathy"],["Infatuation",0.9,"Apathy"],["Obsession",0,"Anticipation"]],"OR":[["Manipulation Through Emotion",1.6,"Anger"],["Betrayal",0,"Surprise"],["Deceit",2.1,"Disgust"],["Lying",2.1,"Disgust"],["Spiritual Language To Manipulate",1.3,"Disgust"]],"PO":[["Competition",1.2,"Anger"],["Entitlement",1.2,"Anger"],["Force",0.7,"Fear"],["Need To Win",1.3,"Anger"],["Superiority",1.3,"Anger"]],"PE":[["False Love",2.4,"Disgust"],["Stage Performing",0.8,"Shock"],["Delusion",1.3,"Disgust"],["Projection",1.3,"Disgust"],["Distortion",1.3,"Disgust"]],"TR":[["Closed Heart",0.7,"Sad"],["Cynicism",1.3,"Disgust"],["Distrust",0.7,"Fear"],["Overanalysis",0.6,"Shock"],["Doubt",0.6,"Fear"]],"CH":[["Fear",1.3,"Fear"],["Lethargy",1.1,"Sad"],["Panic",0,"Surprise"],["Collapse",1,"Sad"],["Anger",1.2,"Anger"]],"FL":[["Control",1.3,"Fear"],["Possession",1.4,"Shock"],["Resistance",1.5,"Fear"],["Compulsion",0,"Anticipation"],["Avoidance Of Grief",0.9,"Sad"]],"AL":[["Lust",1.3,"Apathy"],["Entitlement",1.2,"Anger"],["Excuse",1.6,"Disgust"],["Hubris",1.2,"Anger"],["Knowing Better Than God",1.4,"Anger"]],"HO":[["Force",0.7,"Fear"],["Need To Be Needed",2.4,"Disgust"],["Interrupting",1.8,"Anger"],["Savior Complex",1.4,"Disgust"]],"SA":[["Deceit",2.1,"Disgust"],["Distortion",1.3,"Disgust"],["Denial Of Truth",1.4,"Anger"],["Denial Of Light",1.8,"Anger"]],"SO":[["Arrogance",1.2,"Anger"],["Superiority",1.3,"Anger"],["Speaking To Be Right",1.4,"Anger"],["Hubris",1.2,"Anger"],["Knowing Better Than God",1.4,"Anger"]]},"laws":{"FL":[],"AL":[["Duty",6.4],["Responsibility",6.4]],"HO":[["Patience",6.4],["Nature",6.4]],"SA":[["Truth",7.9],["Transparency",6.4]],"SO":[["Humility",8.8]]}},"addr":{"Fear":"Lumbar plexus","Anger":"Celiac plexus","Shame":"Pudendal plexus","Disgust":"Sacral and dermis","Apathy":"Shoulder girdle and throat","Shock":"Prefrontal and dermis","Sad":"Cardiac plexus","Surprise":"Upper chest and back","Anticipation":"Below the heart"},"steps":{"IL":[["Heart Point Focus",10,"A white point at the centre of the heart, held for ten minutes.",2,0],["Given Freely",5,"Give one thing today with nothing asked back.",1,1]],"DE":[["Controlled Breath",10,"Two to six breaths a minute. Gets the energy below the heart.",1,0],["The Offered Want",5,"Name one want, and ask what it is for beyond you.",1,1]],"OR":[["The Somatic Truth Check",2,"Expansion is true. Contraction is distortion.",2,0],["One Rule Kept",5,"Set one rule someone else can lean on, and keep it.",1,1]],"PO":[["Box Breathing",5,"Four and four, or eight and eight. The entry into a grounded state.",1,0],["The Same Cut",10,"One hard thing, the same one, every day. A miss is data.",1,1]],"PE":[["Noting Meditation",15,"Observer of thoughts. No engagement.",2,0],["Active Listening",10,"Ten minutes on sound. No labelling.",2,0]],"TR":[["The Somatic Truth Check",2,"Expansion is true. Contraction is distortion.",2,0],["Heart Point Focus",10,"A white point at the centre of the heart, held for ten minutes.",2,0]],"CH":[["Controlled Breath",10,"Two to six breaths a minute. Gets the energy below the heart.",1,0],["Feel the Resistance",10,"Direct contact dissolves charge. No analysis, no escape.",2,0]],"RE":[["Heart Point Focus",10,"A white point at the centre of the heart, held for ten minutes.",2,0],["Meet It Unopposed",5,"When something cuts against what you believe, hold it before you answer it.",2,1]],"FL":[["Systematic Body Breathing",15,"Breathe through each region in turn. Stimulates the whole nerve network.",2,0],["Let It Move",10,"Find where the day is held still, and move it.",1,1]],"AL":[["Box Breathing",5,"Four and four, or eight and eight. The entry into a grounded state.",1,0],["The Line Held",5,"Name the one line you will not cross today, and check it at night.",1,1]],"HO":[["Feel the Resistance",10,"Direct contact dissolves charge. No analysis, no escape.",2,0],["Stop One Thing",2,"Find the one activity making the noise, and stop it for today.",1,1]]}};
+var STATE=(location.hash.indexOf('empty')>=0)?'marcus':'derek', R=RD[STATE];
+var CUR=(location.hash.match(/k=(\w\w)/)||[])[1]||'PO';
+document.getElementById('who').textContent=STATE==='marcus'?'Marcus':'Derek';
+var GIFT=100; R.addr=RD.addr;
+
+/* ---------- the list ---------- */
+function rowHtml(t,on,showNm){
+ var col=t.seat?SEAT[t.seat]:ACC, pos=t.seat?R.pos[t.k]:null;
+ return '<button class="row'+(on?' on':'')+'" style="--c:'+col+'" data-k="'+t.k+'" aria-pressed="'+on+'">'
+  +ring(t.ic,col,pos)
+  +'<span><span class="q">'+t.q+(t.seat?', '+t.seat:', no one seat')+'</span>'
+  +(showNm?'<span class="nm">'+t.nm+(t.prop?'<em>proposed</em>':'')+'</span>':'')
+  +'<span class="op">'+icon(t.oic,'')+t.op+(t.oprop?'<em>proposed</em>':'')+'</span></span></button>';}
+function listHtml(){
+ var jes=T.filter(function(t){return t.nm==='Jesus';});
+ var h='<div class="hd">Compass</div><h2>Teachers</h2>'
+  +'<p class="lede">Twelve teachers, and what each one turns into when it runs the other way. Press a name.</p>'
+  +'<div class="grp">Read at a seat<i>a position on an axis</i></div>';
+ T.forEach(function(t){
+  if(!t.seat)return;
+  if(t.nm==='Jesus'){
+   if(t.k!=='IL')return;
+   h+='<div class="pair" style="--c:'+SEAT.Heart+'"><div class="who"><b>Jesus</b><span>stands at two poles</span></div>'
+    +jes.map(function(x){return rowHtml(x,CUR===x.k,false);}).join('')+'</div>';
+   return;}
+  h+=rowHtml(t,CUR===t.k,true);});
+ h+='<div class="grp">Read across the field<i>no one seat, so no position</i></div>';
+ T.forEach(function(t){if(!t.seat)h+=rowHtml(t,CUR===t.k,true);});
+ return h;}
+function stripHtml(){
+ var seen={},h='<div class="hd">Teachers, twelve</div><div class="grid">';
+ T.forEach(function(t){
+  if(seen[t.nm])return; seen[t.nm]=1;
+  var col=t.seat?SEAT[t.seat]:ACC, on=(BYK[CUR].nm===t.nm);
+  h+='<button class="gi'+(on?' on':'')+'" style="--c:'+col+'" data-k="'+t.k+'" aria-pressed="'+on+'">'+ring(t.ic,col,t.seat?R.pos[t.k]:null)+'<span>'+t.nm+'</span></button>';});
+ return h+'</div>';}
+
+/* ---------- the opened teacher ---------- */
+function charges(marks){
+ /* the carrying addresses grouped by the charge they sit on; the heaviest group is the protocol offered */
+ var g={}; marks.forEach(function(m){if(m[1]>=4){(g[m[2]]=g[m[2]]||{w:0,a:[]}); g[m[2]].w+=m[1]; g[m[2]].a.push(m[0]);}});
+ var k=Object.keys(g).sort(function(a,b){return g[b].w-g[a].w;});
+ return {top:k[0]||null,g:g,rest:k.slice(1).reduce(function(n,c){return n+g[c].a.length;},0)};}
+function listAnd(a){return a.length<2?a.join(''):a.slice(0,-1).join(', ')+' and '+a[a.length-1];}
+function dossier(t){
+ var d=D[t.k], col=t.seat?SEAT[t.seat]:ACC, pos=t.seat?R.pos[t.k]:null;
+ var marks=R.marks[t.k], carry=marks.filter(function(m){return m[1]>=4;}).length;
+ var seat=t.seat?R.seat[t.seat]:null;
+ var laws=t.seat?seat.laws:(R.laws[t.k]||[]);
+ var h='<div class="dh" style="--c:'+col+'">'+ring(t.ic,col,pos,{big:true})
+  +'<div><div class="hd" style="margin:0">'+t.q+(t.seat?', at the '+t.seat+' seat':', read across the field')+'</div><h1>'+t.nm+(t.prop?'<em class="pill">proposed</em>':'')+'</h1></div>';
+ if(t.nm==='Jesus')h+='<div class="sw"><button data-k="IL" class="'+(t.k==='IL'?'on':'')+'">Light, Heart</button><button data-k="RE" class="'+(t.k==='RE'?'on':'')+'">Revelation, Crown</button></div>';
+ h+='</div>';
+ h+='<p class="read">'+(t.seat
+   ?'The '+t.seat+' seat carries <b>'+seat.hot+' of '+seat.tot+'</b> addresses and its integrity reads <b>'+seat.ig.toFixed(1)+'</b>. That puts you at <b>'+pos+'</b> on this axis.'
+   :'This teacher stands at no one seat, so there is no position on an axis. What is read is how much of '+t.op+' is carrying: <b>'+carry+' of '+marks.length+'</b> addresses.')+'</p>';
+
+ h+='<div class="sect" style="--c:'+col+'"><div class="hd">Who this is</div><p>'+d.who+'</p><p>'+d.who2+'</p><p class="src">'+d.src+' A behaviour a person runs. Nobody here is a person to become.</p></div>';
+
+ h+='<div class="sect"><div class="hd">The opposite</div><div class="opp">'
+  +ring(t.oic,'#D4736D',null,{dash:true})
+  +'<div><b>'+t.op+(t.oprop?'<em class="pill">proposed</em>':'')+'</b><p style="margin:0">'+d.opd+'</p><p class="q2" style="margin-top:10px;--c:#D4736D">'+d.ask+'</p></div></div></div>';
+
+ var lo=laws.reduce(function(a,x){return x[1]<a?x[1]:a;},99), many=laws.length>1;
+ h+='<div class="sect" style="--c:'+col+'"><div class="hd">How the behaviour operates</div><div class="cols">'
+  +'<div class="col up"><h3>'+icon(t.ic,'')+' Runs clean</h3><ul>'+d.up.map(function(x){return '<li>'+x+'</li>';}).join('')+'</ul></div>'
+  +'<div class="col dn"><h3>'+icon(t.oic,'')+' Runs as '+t.op+'</h3><ul>'+d.dn.map(function(x){return '<li>'+x+'</li>';}).join('')+'</ul></div></div>'
+  +'<p style="margin-top:12px;color:var(--mid)">'+d.how+'</p>'
+  +(laws.length?'<div class="laws">'+laws.map(function(l){
+     var thin=many&&l[1]===lo&&laws.filter(function(x){return x[1]===lo;}).length===1;
+     return '<span class="law'+(thin?' thin':'')+'">'+icon(IC.law,'')+'<b>'+l[0]+'</b> '+l[1].toFixed(1)+'</span>';}).join('')+'</div>':'<p class="note">No law is named for this teacher. Flow is read from how much is held at the seats.</p>')
+  +'</div>';
+
+ h+='<div class="sect" style="--c:'+col+'"><div class="hd">Where '+t.op+' shows up in your reading</div>'
+  +'<p style="margin:0 0 4px;color:var(--mid)">'+marks.length+' addresses, chosen from what the codex says '+t.op+' does. An address counts as carrying at 4.</p>'
+  +'<div class="adr">'+marks.slice().sort(function(a,b){return b[1]-a[1];}).map(function(m){
+    return '<div class="a'+(m[1]>=4?' hot':'')+'"><span>'+m[0]+'</span><span class="t"><i style="width:'+(m[1]*10)+'%"></i></span><span class="v">'+m[1].toFixed(1)+'</span></div>';}).join('')+'</div>'
+  +'<p class="note"><b style="color:var(--ink)">'+carry+' of '+marks.length+'</b> are carrying.'+(carry===0?' Nothing here is pushing against this teacher right now.':'')+'</p>'
+  +'<div class="lock">'+icon(IC.lock,'')+'<span>Which saboteurs are running on these addresses opens at tier one. The addresses above are open on every plan.</span></div></div>';
+
+ h+='<div class="sect" style="--c:'+col+'"><div class="hd">Protocols from your library</div>'
+  +'<p style="margin:0 0 12px;color:var(--mid)">Matched on what is stored: the steps written for this teacher, the seat they are kept at, and the addresses that are carrying. The reason sits under each one.</p>'
+  +'<div class="lanes">';
+ var C=charges(marks);
+ h+='<div class="lane"><h3>Release what '+t.op+' is running</h3>';
+ if(C.top){
+  var gr=C.g[C.top], n=gr.a.length;
+  h+='<div class="tag">'+C.top+' protocol, '+R.addr[C.top]+'</div>'
+   +'<div class="step"><div><b>'+listAnd(gr.a)+'</b><p>'+(n===1?'The address':'The '+n+' addresses')+' of '+t.op+'’s '+marks.length+' that '+(n===1?'is':'are')+' carrying on the '+C.top+' charge, which is the charge this card is written for.</p></div><small>4 channels each</small></div>'
+   +'<div class="why"><span class="y">'+(n===1?'Carrying':'All carrying')+'</span><span class="y">Charge matches the card</span><span>New ground</span></div>'
+   +(C.rest?'<p class="note">'+C.rest+' more carrying address'+(C.rest===1?' sits':'es sit')+' on another charge and waits for that charge’s own protocol.</p>':'')
+   +'<p class="cost">Costs <b>'+(n*4)+' patterns of the '+GIFT+' you have left</b>. Anything you have already opened reruns for nothing.</p>'
+   +'<div class="acts"><button class="btn pri">Run the protocol</button></div>';}
+ else{
+  h+='<div class="tag">Nothing carrying, so nothing offered</div>'
+   +'<div class="empty"><b>Nothing to release here.</b> No address at '+t.op+'’s '+marks.length+' is carrying, so a run would be a ritual and not a protocol. It opens when one is.</div>'
+   +'<div class="shelf">Ground you have opened: <b style="color:var(--ink)">none yet</b>. A rerun needs something open.</div>';}
+ h+='</div>';
+ var steps=(NEWSTEPS[t.k]||(RD.steps[t.k]||[]).map(function(s){return [s[0],s[1],s[2],s[4]];}));
+ var prop=!!NEWSTEPS[t.k];
+ h+='<div class="lane"><h3>Practise toward '+t.nm+'</h3><div class="tag">A ritual toward '+t.q.toLowerCase()+'.'+(t.seat?' Kept at the '+t.seat+' seat.':' Kept at the seat holding the most today.')+'</div>';
+ steps.forEach(function(s,i){
+  h+='<div class="step"><div><b>'+s[0]+(prop&&s[3]?'<em class="pill">draft</em>':'')+'</b><p>'+s[2]+'</p></div><small>'+s[1]+' min</small></div>';});
+ h+='<div class="why">'+steps.map(function(s,i){return '<span class="y">'+(s[3]?'Written for '+t.nm:'Step '+(i+1)+' of '+t.nm+'’s ritual')+'</span>';}).join('')+'</div>'
+  +'<p class="cost">At your charge every step is open. Free, and nothing is spent from the '+GIFT+'.</p>'
+  +'<div class="acts"><button class="btn pri">Start for a week</button><button class="btn">Start for two weeks</button></div>'
+  +'<div class="shelf">Your saved rituals: <b style="color:var(--ink)">none yet</b>. Starting this one saves it there.</div></div>';
+ h+='</div></div>';
+
+ h+='<div class="foot">These are behaviours a reading can place, not people. A reading shows where charge sits and does not say why. A protocol here supports the work and does not cause a change, and nothing on this page diagnoses or treats anything.</div>';
+ return h;}
+
+function draw(){
+ document.getElementById('list').innerHTML=listHtml();
+ document.getElementById('strip').innerHTML=stripHtml();
+ document.getElementById('dos').innerHTML=dossier(BYK[CUR]);
+ document.querySelectorAll('[data-k]').forEach(function(b){b.onclick=function(){CUR=b.getAttribute('data-k');draw();};});}
+draw();
+
+</script>
+</body></html>

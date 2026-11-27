@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Knowledge prototype C, Codex</title>
+<!--CSS-->
+<style>
+.hdr{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:center;margin-bottom:20px}
+.hdr h1{font-size:24px;margin-bottom:6px}
+.hdr p{color:var(--mid);max-width:66ch}
+.legend{display:flex;align-items:center;gap:16px}
+.legend svg{flex:none}
+.legend small{display:block;color:var(--dim);font-size:13px;max-width:26ch;line-height:1.4}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:16px}
+.bar input{flex:1 1 260px;height:48px;padding:0 14px;border-radius:12px;border:1px solid var(--line);background:var(--panel);color:var(--ink);font-size:16px}
+.next{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;border:1px solid var(--line);border-radius:14px;padding:12px 16px;background:var(--panel);margin-bottom:18px}
+.next .eyebrow{flex:none}
+.next b{font-weight:600}
+.plates{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px}
+.plate{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--sunk);
+ cursor:pointer;text-align:left;min-height:60px}
+.plate:hover{background:var(--panel);border-color:#454B5E}
+.plate .t{display:flex;flex-direction:column;line-height:1.25;min-width:0}
+.plate .t span{overflow-wrap:anywhere}
+.plate .t small{color:var(--dim);font-size:13px}
+.layers{display:flex;flex-direction:column;gap:14px;max-width:72ch}
+.layer{border:1px solid var(--line);border-radius:14px;padding:16px 18px;background:var(--panel)}
+.layer.shut{background:transparent;border-style:dashed}
+.layer-h{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.layer-h b{font-size:17px}
+.layer-h .q{width:14px;height:14px;border-radius:50%;border:2px solid var(--c)}
+.layer-h .q.on{background:var(--c)}
+.layer-h .st{margin-left:auto;font-size:13px;color:var(--dim)}
+.layer p{color:#DAD7D0}
+.layer .how{color:var(--mid)}
+.sim{border:1px dashed var(--proto);color:#E6D9B8;background:rgba(217,180,90,.06)}
+.ent{display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,340px);gap:32px;align-items:start}
+.ent h2{font-size:30px;margin:4px 0 14px}
+@media (max-width:760px){
+ .hdr{grid-template-columns:1fr}
+ .plates{grid-template-columns:1fr}
+ .ent{grid-template-columns:1fr}
+ .ent h2{font-size:26px}
+}
+</style></head>
+<body>
+<main class="stage" id="stage"></main>
+<!--JS-->
+<script>
+/* ============================================================
+   C. THE CODEX. Every entry is open to read on day one, and every
+   entry also carries the loop, discover, play, flow, embody, as a
+   closed ring of four. A quarter closes when the person does that
+   thing to that entry somewhere in the product. The ring is the
+   record, and a quarter closing is the event an award can hang on.
+
+   Built on: the Hades codex, where an entry deepens as you meet its
+   subject in play, so reading and playing feed each other; Loewenstein's
+   information gap, which motivates only when the gap is specific and
+   reachable, so a shut quarter always names the one thing that opens it;
+   and the owner's ruling that the loop is a circle and never a list.
+
+   Honest about what it cannot do: in a prototype nothing practises or
+   releases, so those two quarters are closed by a dashed prototype
+   control that stands in for the ritual and the release.
+   ============================================================ */
+var esc=KB.esc, SEC='axis', Q='', OPEN=null;
+var LOOP=['Discover','Play','Flow','Embody'];
+var HOW=['Answer one question about it.','Write a story that lands here, so your reading carries it.',
+ 'Practise it in a ritual.','Run a release here until it empties.'];
+KB.chrome('C','Codex','<b>Why this design.</b> Nothing is locked: every entry reads in full on day one. '
+ +'Each entry also carries the loop, discover, play, flow, embody, as a closed ring of four, and a quarter closes when you do that thing to that entry somewhere in the product. '
+ +'The Hades codex works this way: an entry deepens as you meet its subject in play. '
+ +'Curiosity only pulls when the gap is specific and reachable (Loewenstein), so a shut quarter always names the one thing that opens it. '
+ +'Only closed quarters are ever counted. The ones not yet closed are named one at a time, never totalled.');
+
+/* the four quarters for one entry. Play is read off the person's real
+   figures. Discover is a right answer. Flow and Embody are simulated. */
+function q(e){var R=KB.rec(), s=R.sim||{};
+ var y=KB.pct(e), play=false, p=KB.person();
+ /* your reading carries it: an axis at a weight of 4 or more, an address
+    on the held list, a saboteur running. Nothing else, so the count on
+    arrival is what the reading actually says and not a head start. */
+ if(p){ if(e.kind==='axis')play=p.charge[e.nm]>=4; else if(e.kind==='node')play=KB.held(e);
+  else if(e.kind==='sab')play=!!p.sab[e.nm];}
+ return [KB.known(e.id), play, !!(s.flow&&s.flow[e.id]), !!(s.emb&&s.emb[e.id])];}
+function loopRing(e,size){size=size||40; var c=KB.col(e), Qs=q(e), r=size/2-4, C=2*Math.PI*r, seg=C/4, gap=3;
+ var h='<svg class="ring" width="'+size+'" height="'+size+'" viewBox="0 0 '+size+' '+size+'" aria-label="'+
+  LOOP.filter(function(_,i){return Qs[i];}).join(', ')+'" role="img">';
+ for(var i=0;i<4;i++){h+='<circle cx="'+size/2+'" cy="'+size/2+'" r="'+r+'" fill="none" stroke="'+c+'" stroke-width="'+(Qs[i]?3:1.5)
+  +'" stroke-opacity="'+(Qs[i]?1:.3)+'" stroke-dasharray="'+(seg-gap).toFixed(1)+' '+(C-seg+gap).toFixed(1)
+  +'" stroke-dashoffset="'+(-seg*i).toFixed(1)+'" transform="rotate(-90 '+size/2+' '+size/2+')"/>';}
+ var g=e.ic||KBD.glyph[e.seat]||''; if(g&&g.charAt(0)!=='<')g='<path d="'+g+'"/>';
+ var s=size*0.42,o=(size-s)/2;
+ return h+'<g fill="none" stroke="'+c+'" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" transform="translate('+o+' '+o+') scale('+(s/24)+')">'+g+'</g></svg>';}
+
+/* the legend is the loop itself, drawn closed */
+function legend(){var r=34, C=2*Math.PI*r, seg=C/4;
+ var lab=[[50,8,'Discover'],[96,50,'Play'],[50,96,'Flow'],[4,50,'Embody']];
+ var h='<svg width="200" height="104" viewBox="-50 0 200 104" aria-label="The loop: discover, play, flow, embody, and back to discover" role="img">';
+ for(var i=0;i<4;i++)h+='<circle cx="50" cy="52" r="'+r+'" fill="none" stroke="#7EB8D4" stroke-width="2" stroke-dasharray="'+(seg-5)+' '+(C-seg+5)+'" stroke-dashoffset="'+(-seg*i)+'" transform="rotate(-90 50 52)"/>';
+ h+='<text x="50" y="12" fill="#B4B0A8" font-size="12" text-anchor="middle">Discover</text>'
+  +'<text x="92" y="56" fill="#B4B0A8" font-size="12">Play</text>'
+  +'<text x="50" y="100" fill="#B4B0A8" font-size="12" text-anchor="middle">Flow</text>'
+  +'<text x="8" y="56" fill="#B4B0A8" font-size="12" text-anchor="end">Embody</text>';
+ return h+'</svg>';}
+
+/* the next quarter to close, named with what it takes. Never a list of
+   everything not yet done: the ladder ruling, applied here. */
+function nextOne(){var p=KB.person();
+ var L=KB.E.filter(function(e){return e.kind==='axis';}).concat(KB.E.filter(function(e){return e.kind==='sab'&&p&&p.sab[e.nm];}));
+ if(p)L.sort(function(a,b){return (KB.pct(b)||0)-(KB.pct(a)||0);});
+ for(var i=0;i<L.length;i++){var Qs=q(L[i]); for(var j=0;j<4;j++)if(!Qs[j]){
+  if(j===1&&!p)continue; return [L[i],j];}}
+ return null;}
+
+function closedCount(){var n=0; KB.E.forEach(function(e){q(e).forEach(function(x){if(x)n++;});}); return n;}
+
+function index(){
+ var st=document.getElementById('stage'), n=nextOne();
+ var list=KB.E.filter(function(e){return Q?(e.nm+' '+e.fam).toLowerCase().indexOf(Q.toLowerCase())>=0:e.kind===SEC;});
+ var chapters=['axis','seat','sab','hcx','mask','arch','dom','node','term'];
+ var h='<div class="hdr"><div><h1>The codex</h1><p>Every entry reads in full now. Each one also carries the loop, and a quarter closes when you do that thing to it.</p></div>'
+  +'<div class="legend">'+legend()+'<small>A closed quarter is on your record. '+closedCount()+' closed so far.</small></div></div>';
+ if(n)h+='<div class="next"><span class="eyebrow">Next</span><span><b>'+esc(n[0].nm)+'</b>, '+LOOP[n[1]].toLowerCase()+'. '+esc(HOW[n[1]])+'</span>'
+  +'<button type="button" class="btn" data-open="'+esc(n[0].id)+'" style="margin-left:auto">Open '+esc(n[0].nm)+'</button></div>';
+ h+='<div class="bar"><input id="q" type="search" placeholder="Search the codex" aria-label="Search the codex" value="'+esc(Q)+'">'
+  +chapters.map(function(k){return '<button type="button" class="chip'+(!Q&&SEC===k?' on':'')+'" data-sec="'+k+'">'+KB.KIND[k][1]+'</button>';}).join('')+'</div>';
+ h+='<div class="plates">'+list.slice(0,Q?60:200).map(function(e){var y=KB.pct(e);
+  return '<button type="button" class="plate" data-open="'+esc(e.id)+'">'+loopRing(e,40)
+   +'<span class="t"><span>'+esc(e.nm)+'</span><small>'+(y==null?esc(KB.KIND[e.kind][0]):y+'% · '+esc(KB.KIND[e.kind][0]))+'</small></span></button>';}).join('')+'</div>';
+ st.innerHTML=h;
+ st.querySelectorAll('[data-sec]').forEach(function(el){el.onclick=function(){SEC=el.getAttribute('data-sec'); Q=''; index();};});
+ st.querySelectorAll('[data-open]').forEach(function(el){el.onclick=function(){entry(el.getAttribute('data-open'));};});
+ var qi=document.getElementById('q'); qi.oninput=function(){Q=qi.value; index(); var e=document.getElementById('q'); e.focus(); e.setSelectionRange(e.value.length,e.value.length);};}
+
+function entry(id){
+ var e=KB.BY[id], st=document.getElementById('stage'), Qs=q(e), c=KB.col(e), y=KB.youLine(e);
+ KB.markSeen(id);
+ var L=[];
+ L.push(['Discover',Qs[0],'<p style="font-size:18px;margin-bottom:12px">'+esc(e.def)+'</p>'
+  +(e.where?'<p class="how" style="margin-bottom:8px">'+esc(e.where)+'</p>':'')
+  +(e.body&&e.body!==e.def?'<p style="margin-bottom:8px">'+esc(e.body)+'</p>':'')
+  +(e.says?'<p class="say" style="margin-bottom:12px">'+esc(e.says)+'</p>':'')
+  +(Qs[0]?'<p class="state known"><i></i>Known</p>':KB.checkHtml(e))]);
+ L.push(['Play',Qs[1],Qs[1]?'<p>'+esc(y)+'</p>'
+  :'<p class="how">'+(KB.person()?(y?esc(y)+' ':'')+'This quarter closes when your reading carries it, which a story that lands here does.':'Nothing read yet. This quarter closes when your reading carries it, which a story that lands here does.')+'</p>']);
+ L.push(['Flow',Qs[2],(e.out||e.inst?'<p style="margin-bottom:10px">'+esc(e.kind==='sab'?e.out:(e.inst||e.out))+'</p>':'')
+  +(Qs[2]?'':'<p class="how" style="margin-bottom:10px">This quarter closes when you practise it in a ritual.</p><button type="button" class="btn sim" data-sim="flow">Prototype only: mark practised</button>')]);
+ L.push(['Embody',Qs[3],(e.kind==='axis'&&e.out?'<p style="margin-bottom:10px">'+esc(e.out)+'</p>':'')
+  +(Qs[3]?'':'<p class="how" style="margin-bottom:10px">This quarter closes when a release runs here until the address empties.</p><button type="button" class="btn sim" data-sim="emb">Prototype only: mark released</button>')]);
+ var h='<button type="button" class="btn" id="back" style="margin-bottom:18px">Back to the codex</button>'
+  +'<div class="ent"><div><div style="display:flex;align-items:center;gap:14px">'+loopRing(e,64)
+  +'<div><div class="eyebrow">'+esc(KB.KIND[e.kind][0])+(e.fam&&e.kind!=='term'?' · '+esc(e.fam):'')+'</div><h2>'+esc(e.nm)+'</h2></div></div>'
+  +'<div class="layers" style="--c:'+c+'">'+L.map(function(l){return '<section class="layer'+(l[1]||l[0]==='Discover'?'':' shut')+'">'
+   +'<div class="layer-h"><span class="q'+(l[1]?' on':'')+'"></span><b>'+l[0]+'</b><span class="st">'+(l[1]?'Closed':'Open')+'</span></div>'+l[2]+'</section>';}).join('')
+  +'</div><div style="margin-top:16px">'+KB.award('a quarter of the loop closing on an entry')+'</div></div>'
+  +linksOnly(e)+'</div>';
+ st.innerHTML=h; window.scrollTo(0,0);
+ document.getElementById('back').onclick=index;
+ st.querySelectorAll('[data-open]').forEach(function(el){el.onclick=function(){entry(el.getAttribute('data-open'));};});
+ st.querySelectorAll('[data-sim]').forEach(function(el){el.onclick=function(){var R=KB.rec(); R.sim=R.sim||{}; var k=el.getAttribute('data-sim');
+  R.sim[k]=R.sim[k]||{}; R.sim[k][id]=Date.now(); try{localStorage.setItem('kbp-rec-'+(KB.who()||'stranger'),JSON.stringify(R));}catch(err){} entry(id);};});
+ KB.wireCheck(st,function(ok){if(ok)setTimeout(function(){entry(id);},900);});}
+function linksOnly(e){var tmp=document.createElement('div'); tmp.innerHTML=KB.sheet(e,{check:false});
+ var a=tmp.querySelector('.links'); return a?a.outerHTML:'';}
+
+var hide=KB.preview(document.getElementById('stage'));
+KB.on(function(){OPEN=null; index();});
+index();
+</script>
+</body></html>

@@ -1,0 +1,602 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Character, Mosaic, three loads</title>
+<style>:root{--bg:#0C0D12;--panel:#14161D;--sunk:#090A0E;--ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;
+ --line:rgba(239,237,232,.09);--line2:rgba(239,237,232,.2);--acc:#7EB8D4;--lead:#7EB8D4;--mc1:#7EB8D4;--mc2:#7EB8D4}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--bg);color:var(--ink);font:15px/1.45 Inter,'Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;
+ -webkit-font-smoothing:antialiased;overflow:hidden}
+button{font:inherit;color:inherit}
+.app{display:grid;grid-template-columns:288px minmax(0,1fr) 336px;grid-template-rows:auto minmax(0,1fr);height:100vh}
+.hd{grid-column:1/-1;display:flex;gap:24px;align-items:flex-start;justify-content:space-between;
+ padding:16px 24px 12px;border-bottom:1px solid var(--line)}
+.hd .ey{font-size:12px;color:var(--dim)}
+.hd h1{margin:2px 0 4px;font-size:21px;font-weight:600;letter-spacing:-.01em}
+.hd p{margin:0;max-width:820px;color:var(--mid);font-size:13.5px}
+.nav{display:flex;gap:8px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end}
+.nav a{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border:1px solid var(--line);border-radius:22px;
+ color:var(--mid);text-decoration:none;font-size:13px}
+.nav a:hover,.nav a[aria-current]{color:var(--ink);border-color:var(--line2)}
+.stage{position:relative;overflow:hidden;background:radial-gradient(ellipse at 50% 44%,#13151C 0%,#0C0D12 62%,#090A0E 100%)}
+.stk{position:absolute;inset:0;overflow:hidden}
+.opaque .stk:after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 46%,rgba(9,10,14,0) 38%,rgba(9,10,14,.8) 100%);pointer-events:none;z-index:1}
+.opaque .mrow,.opaque .tbtn,.opaque .badge,.opaque .cap{z-index:3}
+.stage canvas.cv{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:manipulation}
+.stage canvas.cv.hit{cursor:pointer}
+/* the mask icons, upper left of the page, full colour. each is a button because each becomes a protocol */
+.mrow{position:absolute;left:20px;top:18px;display:flex;gap:12px;z-index:3}
+.mb{position:relative;width:60px;height:60px;border-radius:50%;border:0;background:rgba(14,16,22,.55);cursor:pointer;padding:0;
+ transition:transform .25s,box-shadow .25s,filter .25s;box-shadow:0 0 0 0 transparent;filter:saturate(1.05)}
+.mb svg.bt{position:absolute;inset:0;width:60px;height:60px;overflow:visible}
+.mb:hover{transform:translateY(-1px);box-shadow:0 0 18px -4px var(--mc2)}
+.mb[aria-pressed="true"]{box-shadow:0 0 0 1px var(--mc1),0 0 calc(20px + 20px*var(--pu,.5)) -2px var(--mc2),0 0 62px -14px var(--mc1)}
+.mb:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
+.mb[aria-pressed="true"]{transform:scale(1.08);box-shadow:0 0 0 1px var(--mc1),0 0 30px -2px var(--mc2),0 0 62px -14px var(--mc1);filter:saturate(1.25) brightness(1.12)}
+.mb[aria-pressed="true"] .wash{fill-opacity:1}
+.mb .tip{position:absolute;top:calc(100% + 12px);left:0;width:max-content;max-width:220px;padding:8px 12px;border-radius:10px;background:rgba(14,16,22,.95);border:1px solid var(--line2);
+ color:var(--mid);font-size:12.5px;line-height:1.35;text-align:left;opacity:0;pointer-events:none;transition:opacity .18s;z-index:6;transform:none;filter:none}
+.mb .tip b{display:block;color:var(--ink);font-weight:600;font-size:13px;margin-bottom:1px}
+.mb:hover .tip,.mb:focus-visible .tip,.mb.showtip .tip{opacity:1}
+.badge{position:absolute;left:20px;bottom:20px;z-index:3;display:flex;align-items:center;gap:10px;padding:8px 14px 8px 10px;border-radius:26px;
+ background:rgba(14,16,22,.6);border:1px solid var(--line2);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);min-height:48px}
+.badge>svg{width:30px;height:30px;flex:none}
+.badge .bt{display:flex;flex-direction:column;line-height:1.15}
+.badge .bt b{font-size:14px;font-weight:600;color:var(--ink)}
+.badge .bt i{font-style:normal;font-size:12px;color:var(--lead)}
+.badge .ticks{display:flex;gap:3px;align-items:flex-end;margin-left:6px}
+.badge .ticks u{width:3px;height:14px;border-radius:2px;background:rgba(239,237,232,.14);display:block}
+.badge .ticks u.on{background:var(--tc)}
+.cap{position:absolute;left:0;right:0;bottom:20px;text-align:center;font-size:13px;color:var(--mid);pointer-events:none;z-index:2;padding:0 16px}
+.cap b{color:var(--ink);font-weight:500}
+.cap .cap2{display:block;margin-top:3px;color:var(--dim);font-size:12px}
+.tbtn{position:absolute;top:16px;right:16px;z-index:4;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px 0 12px;border-radius:22px;
+ border:1px solid var(--line2);background:rgba(20,22,29,.62);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:var(--mid);cursor:pointer;font-size:13px}
+.tbtn svg{width:22px;height:22px}
+.tbtn:hover{color:var(--ink);border-color:rgba(239,237,232,.4)}
+.tbtn[aria-pressed="true"]{color:var(--ink);border-color:var(--lead);box-shadow:0 0 0 1px var(--lead)}
+.tbtn:focus-visible{outline:2px solid var(--acc);outline-offset:3px}
+.hint{position:absolute;top:24px;left:24px;z-index:2;font-size:12.5px;color:var(--dim);max-width:260px;pointer-events:none}
+.hover{position:absolute;z-index:5;pointer-events:none;padding:6px 10px;border-radius:8px;background:rgba(14,16,22,.92);border:1px solid var(--line2);font-size:12.5px;color:var(--mid);opacity:0;transition:opacity .12s;white-space:nowrap}
+.hover b{color:var(--ink);font-weight:600}
+/* the trace card */
+.trace{position:absolute;z-index:4;right:28px;top:50%;width:348px;transform:translateY(-50%);padding:18px 18px 16px;border-radius:16px;
+ background:rgba(18,20,27,.9);border:1px solid var(--line2);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+ opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;transform:translateY(-46%)}
+.tracing .trace{opacity:1;pointer-events:auto;transform:translateY(-50%)}
+.trace h2{margin:0 0 2px;font-size:12px;font-weight:500;color:var(--dim);display:flex;align-items:center;gap:8px}
+.trace h2 svg{width:16px;height:16px}
+.trace .ttl{display:flex;align-items:center;gap:10px;margin:6px 0 12px}
+.trace .ttl svg{width:28px;height:28px;flex:none}
+.trace .ttl b{font-size:20px;font-weight:600;letter-spacing:-.01em;color:var(--tc)}
+.trace .ttl span{margin-left:auto;font-size:12.5px;color:var(--mid)}
+.step{position:relative;padding:0 0 0 20px;margin:0}
+.step+.step{margin-top:12px}
+.step:before{content:"";position:absolute;left:3px;top:5px;width:9px;height:9px;border-radius:50%;border:1.5px solid var(--tc)}
+.step:after{content:"";position:absolute;left:7.5px;top:17px;bottom:-14px;border-left:1.5px dotted rgba(239,237,232,.3)}
+.step:last-of-type:after{display:none}
+.step .k{display:flex;gap:8px;align-items:baseline;font-size:12px;color:var(--dim)}
+.step .k i{font-style:normal;margin-left:auto;padding:1px 8px;border-radius:10px;border:1px solid var(--line2);color:var(--mid);font-size:11.5px}
+.step .q{margin:2px 0 0;color:var(--ink);font-size:14px;line-height:1.4}
+.step .m{margin:2px 0 0;color:var(--mid);font-size:13px}
+.edge{margin:10px 0 0 20px;font-size:12px;color:var(--dim)}
+.edge+.step{margin-top:6px}
+.trace .why{margin:14px 0 0;padding-top:12px;border-top:1px solid var(--line);font-size:12.5px;color:var(--mid)}
+.trace .acts{display:flex;gap:8px;margin-top:12px}
+.trace .acts button{min-height:44px;padding:0 16px;border-radius:22px;border:1px solid var(--line2);background:transparent;cursor:pointer;color:var(--mid);font-size:13px}
+.trace .acts button:hover{color:var(--ink);border-color:rgba(239,237,232,.4)}
+.trace .acts button:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+/* the rail */
+.rail{background:var(--panel);border-left:1px solid var(--line);overflow:auto;padding:20px 20px 28px}
+.lab{font-size:12px;color:var(--dim);margin-bottom:6px}
+.read{padding-bottom:16px;border-bottom:1px solid var(--line)}
+.lead{display:flex;align-items:center;gap:12px}
+.lead svg{width:40px;height:40px;flex-shrink:0}
+.lead b{font-size:28px;font-weight:600;letter-spacing:-.01em;color:var(--lead)}
+.lead .fig{margin-left:auto;font-size:20px;font-variant-numeric:tabular-nums}
+.where{color:var(--mid);font-size:13px;margin:2px 0 14px 52px}
+.blk{margin-top:12px}
+.val{font-size:17px;font-weight:500}
+.sub{color:var(--mid);font-size:13px;margin-top:2px}
+.sec{padding:16px 0;border-bottom:1px solid var(--line)}
+.sec:last-child{border-bottom:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{min-height:44px;padding:0 14px;border-radius:22px;border:1px solid var(--line);background:transparent;color:var(--mid);cursor:pointer;
+ font-size:13px;display:inline-flex;align-items:center;gap:8px}
+.chip:hover{color:var(--ink);border-color:var(--line2)}
+.chip[aria-pressed="true"]{color:var(--ink);border-color:var(--c,var(--acc));box-shadow:inset 0 0 0 1px var(--c,var(--acc))}
+.chip i{width:8px;height:8px;border-radius:50%;border:1.5px solid var(--c,var(--acc))}
+.leg{display:flex;flex-direction:column;gap:0}
+.lg{display:grid;grid-template-columns:24px 98px minmax(0,1fr) 30px;align-items:center;gap:10px;min-height:44px;border-radius:8px;padding:0 6px;margin:0 -6px;
+ cursor:pointer;background:none;border:0;text-align:left;width:calc(100% + 12px)}
+.lg:hover{background:rgba(239,237,232,.04)}
+.lg:focus-visible{outline:2px solid var(--acc);outline-offset:-2px}
+.lg svg{width:20px;height:20px}
+.lg .n{font-size:13px;color:var(--mid)}
+.lg.on .n{color:var(--ink);font-weight:500}
+.lg .tr{position:relative;height:4px;border-radius:2px;background:rgba(239,237,232,.07)}
+.lg .tr i{position:absolute;left:0;top:0;bottom:0;border-radius:2px}
+.lg .f{font-size:13px;text-align:right;font-variant-numeric:tabular-nums;color:var(--mid)}
+.note{color:var(--dim);font-size:12px;margin:10px 0 0}
+/* the left menu strip, drawn here only to show the shared colour and rhythm. nothing connects it to the page. */
+.stage{grid-column:2;grid-row:2}
+.lrail{grid-column:1;grid-row:2}
+.rail{grid-column:3;grid-row:2}
+.lrail{background:var(--panel);border-right:1px solid var(--line);overflow:auto;padding:16px 16px 20px}
+.lrail .lh{display:flex;align-items:center;gap:10px;min-height:44px;padding:0 12px;border:1px solid var(--line);border-radius:12px;font-size:13px;font-weight:500;margin-bottom:12px}
+.lrail .lh svg{width:18px;height:18px}
+.rw{position:relative;height:50px;border-radius:8px;margin-bottom:6px;overflow:hidden;background:rgba(239,237,232,.035);border:1px solid transparent}
+.rw canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.rw .rl{position:absolute;left:12px;top:0;bottom:0;display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink);pointer-events:none;text-shadow:0 0 6px rgba(9,10,14,.9)}
+.rw .rv{position:absolute;right:12px;top:0;bottom:0;display:flex;align-items:center;font-size:14px;font-variant-numeric:tabular-nums;color:var(--ink);pointer-events:none;text-shadow:0 0 6px rgba(9,10,14,.9)}
+.rw.linked{border-color:var(--mc1)}
+.rw .rl svg{width:20px;height:20px}
+.lrail .ln{margin:12px 2px 0;font-size:12px;color:var(--dim)}
+.range{display:flex;align-items:center;gap:12px;margin-top:12px}
+.range input{flex:1;accent-color:var(--lead);min-height:44px}
+.range output{min-width:44px;text-align:right;font-variant-numeric:tabular-nums;color:var(--ink);font-size:14px}
+@media (max-width:1380px){.app{grid-template-columns:240px minmax(0,1fr) 300px}}
+@media (max-width:860px){
+ .stage,.lrail,.rail{grid-column:1;grid-row:auto}
+ body{overflow:auto}
+ .app{grid-template-columns:1fr;grid-template-rows:auto auto auto;height:auto}
+ .hd{flex-direction:row;align-items:center;justify-content:space-between;padding:8px 16px}
+ .hd h1{font-size:17px;margin:0}
+ .hd p,.hd .ey{display:none}
+ .nav .opt{display:none}
+ .nav a{min-height:44px;padding:0 12px;font-size:12.5px}
+ .stage{overflow:visible;padding-bottom:12px}
+ .stk{position:relative;inset:auto;height:calc(100vw*1.3);overflow:hidden}
+ .tracing .stk{height:calc(100vw*1.0)}
+ .mrow{left:14px;top:12px;gap:8px}
+ .mb{width:52px;height:52px}.mb svg.bt{width:52px;height:52px}
+ .mb .tip{max-width:200px}
+ .tbtn{top:auto;bottom:14px;right:14px}
+ .badge{left:14px;bottom:14px;padding:6px 12px 6px 8px;min-height:44px}
+ .badge .ticks{display:none}
+ .cap{bottom:72px;padding:0 14px}
+ .cap .cap2{display:none}
+ .tracing .cap{display:none}
+ .trace{position:relative;right:auto;top:auto;width:auto;margin:0 12px;transform:none;opacity:0;display:none;border-radius:14px;padding:14px 14px 12px}
+ .tracing .trace{display:block;opacity:1;transform:none}
+ .lrail{border-right:0;border-top:1px solid var(--line);padding:14px 16px}
+ .lrail .ln{display:none}
+ .rw{height:40px}
+ .rail{border-left:0;border-top:1px solid var(--line);padding:16px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style></head><body>
+<div class="app" id="app"></div>
+<script>
+const SYSTEMS=[{"id":"a-aura","name":"Aura"},{"id":"b-contour","name":"Contour"},{"id":"c-mosaic","name":"Mosaic"}];
+"use strict";
+/* Character, round ON to OQ mockups. Three systems, one person.
+   The tables below are copied out of the shipping canon (atuned_src/engine/data/canon.js)
+   on the day the mockups were made: the seat palette, the nine axes with their ring icons
+   and the masks a reading is taken on. Nothing here reads a profile. The two example
+   profiles are toy numbers. The page is one calm human figure that every mask bends into
+   its own symbol, by how heavy the load is, and every pattern bends differently. Zero load
+   is the plain person. There is no ring round anything: the nine pattern colours live in
+   the marks themselves. */
+const PAL={Root:'#D6524C',Sacral:'#D8924E',Solar:'#DABF6A',Heart:'#5FD5A6',Throat:'#5EBBDB','3rd Eye':'#7D93E0',Crown:'#A77EDB'};
+const AX=[
+ {nm:'Fear',seat:'Root',ic:'M12 3l8 14H4z',loc:'lower back, gut',addr:'Lumbar plexus'},
+ {nm:'Anger',seat:'Solar',ic:'M13 2L4 14h6l-1 8 9-12h-6z',loc:'upper abdomen',addr:'Celiac plexus'},
+ {nm:'Shame',seat:'Sacral',ic:'M5 20V9a7 7 0 0114 0v11M9 20v-6h6v6',loc:'pelvic floor',addr:'Pudendal plexus'},
+ {nm:'Disgust',seat:'Sacral',ic:'M4 8c4 4 12 4 16 0M6 16c3-3 9-3 12 0',loc:'lower abdomen, skin',addr:'Sacral and dermis'},
+ {nm:'Apathy',seat:'Throat',ic:'M4 12h16M4 7h16M4 17h16',loc:'base of neck',addr:'Shoulder girdle and throat'},
+ {nm:'Shock',seat:'3rd Eye',ic:'M12 12m-9 0a9 9 0 1018 0 9 9 0 10-18 0M12 12m-4.5 0a4.5 4.5 0 109 0 4.5 4.5 0 10-9 0',loc:'forehead, skin',addr:'Prefrontal and dermis'},
+ {nm:'Sad',seat:'Heart',ic:'M12 20s-8-5-8-11a4 4 0 018-2 4 4 0 018 2c0 6-8 11-8 11z',loc:'centre chest',addr:'Cardiac plexus'},
+ {nm:'Surprise',seat:'Heart',ic:'M12 3v18M7 7c-3 2-3 9 0 11M17 7c3 2 3 9 0 11',loc:'upper torso',addr:'Upper chest and back'},
+ {nm:'Anticipation',seat:'Solar',ic:'M12 4v11M8 11l4 4 4-4M6 20h12',loc:'lower sternum',addr:'Below the heart'}];
+/* the four masks the owner named, in the canon's own order. Professional is not drawn
+   (round OO withdrew it). Adult is in the canon's MASKS_READ and is left out here because
+   the round OO list does not name it, which is asked at the foot of the report. */
+const MASKS=[
+ {nm:'Child',b:['Root','Sacral'],v:'gets small so somebody else decides',per:4.2,row:'Vitality'},
+ {nm:'Preteen',b:['Solar','Throat'],v:'checks the room before it says the thing',per:3.0,row:'Awareness'},
+ {nm:'Teen',b:['Throat'],v:'pushes back on the person, not the problem',per:1.8,row:'Will'},
+ {nm:'Ideological',b:['3rd Eye'],v:'answers from the position instead of the moment',per:7.2,row:'Flow'}];
+const PROFILES={
+ anger:{key:'anger',label:'Anger leads',
+  w:{Fear:2.5,Anger:7.8,Shame:5.5,Disgust:4,Apathy:5.2,Shock:1.2,Sad:1.6,Surprise:1.4,Anticipation:2.2}},
+ apathy:{key:'apathy',label:'Apathy leads',
+  w:{Fear:1,Anger:1.8,Shame:4.6,Disgust:1.5,Apathy:6.4,Shock:1.2,Sad:3,Surprise:.8,Anticipation:2}}};
+/* what the leading pattern is doing, in a word, for the badge */
+const VERB=['tightening','rising','sinking','recoiling','flat','bursting','falling','widening','leaning'];
+/* invented but plausible trace lines. A story supports a pattern, it never causes it. */
+const TRACES={
+ anger:{
+  Anger:{date:'14 Sep',q:'He rewrote my section and sent it on without asking. I said fine. Jaw tight for an hour.',prov:'inferred',rel:2,last:'22 Sep'},
+  Shame:{date:'2 Sep',q:'They asked about the missed deadline. I said it was handled. It was not handled.',prov:'inferred',rel:1,last:'9 Sep'},
+  Apathy:{date:'29 Aug',q:'Closed the laptop. Watched the wall for forty minutes. Shoulders did not drop.',prov:'inferred',rel:0,last:''},
+  Disgust:{date:'21 Aug',q:'Smiled through the whole dinner. Felt it in the skin of my forearms.',prov:'proposed',rel:0,last:''}},
+ apathy:{
+  Apathy:{date:'30 Sep',q:'Sat in the car outside the house for twenty minutes. Did not go in.',prov:'inferred',rel:3,last:'27 Sep'},
+  Shame:{date:'22 Sep',q:'They asked what I wanted. I said I did not mind. I did mind.',prov:'inferred',rel:1,last:'25 Sep'},
+  Sad:{date:'11 Sep',q:'The song came on in the shop. Chest went flat. Paid and left.',prov:'inferred',rel:0,last:''},
+  Anticipation:{date:'4 Sep',q:'Lay awake rehearsing the call. Stomach held until it was over.',prov:'proposed',rel:0,last:''}}};
+
+/* ---------- helpers ---------- */
+const $=id=>document.getElementById(id);
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const lerp=(a,b,k)=>a+(b-a)*k;
+const sstep=(a,b,v)=>{const t=clamp((v-a)/(b-a),0,1);return t*t*(3-2*t);};
+const hx=c=>{const n=parseInt(c.slice(1),16);return[n>>16&255,n>>8&255,n&255];};
+const mixc=(a,b,k)=>[a[0]+(b[0]-a[0])*k,a[1]+(b[1]-a[1])*k,a[2]+(b[2]-a[2])*k];
+const INK=[239,237,232];
+const cap1=s=>s.charAt(0).toUpperCase()+s.slice(1);
+function rng(s){return function(){s|=0;s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+/* a stable hash of an integer and a salt, 0 to 1 */
+function hash(i,k){let h=(i*374761393+(k||0)*668265263)|0;h=(h^(h>>>13))*1274126177|0;h^=h>>>16;return (h>>>0)/4294967296;}
+function hsl2rgb(h,s,l){h=((h%360)+360)%360/360;const q=l<.5?l*(1+s):l+s-l*s,p=2*l-q;
+ const f=t=>{t=(t+1)%1;return t<1/6?p+(q-p)*6*t:t<.5?q:t<2/3?p+(q-p)*(2/3-t)*6:p;};return[f(h+1/3)*255,f(h)*255,f(h-1/3)*255];}
+function rgb2hsl(c){const r=c[0]/255,g=c[1]/255,b=c[2]/255,mx=Math.max(r,g,b),mn=Math.min(r,g,b);let h=0,s=0;const l=(mx+mn)/2;
+ if(mx!==mn){const d=mx-mn;s=l>.5?d/(2-mx-mn):d/(mx+mn);h=mx===r?(g-b)/d+(g<b?6:0):mx===g?(b-r)/d+2:(r-g)/d+4;h*=60;}return[h,s,l];}
+const css=(c,a)=>'rgba('+(c[0]|0)+','+(c[1]|0)+','+(c[2]|0)+','+(a===undefined?1:a)+')';
+const hex=c=>'#'+c.map(v=>('0'+Math.round(v).toString(16)).slice(-2)).join('');
+
+/* ---------- the nine pattern colours ----------
+   Seven seats, nine patterns: Sacral, Solar and Heart each carry two. The seven seat colours are the
+   canon's own. The second pattern in a seat takes a sibling of its seat colour, searched (src/pcol2.js)
+   so that no two of the nine sit closer than 22 in CIELAB and each stays as near its seat as that
+   allows: Disgust is the darker earth of Sacral, Anticipation the paler sand of Solar, Surprise the
+   cooler aqua of Heart. */
+const SIBLING={Disgust:'#AD613B',Anticipation:'#DAC99D',Surprise:'#74D5CB'};
+const PCOL=AX.map(a=>hx(SIBLING[a.nm]||PAL[a.seat]));
+/* the seats run down the body where the body map seats them, crown at the head, root at the
+   pelvis. A pair of patterns in one seat takes the body's left and its right. Legs carry Root. */
+const SEATY={Crown:-1.0,'3rd Eye':-.9,Throat:-.72,Heart:-.5,Solar:-.3,Sacral:-.12,Root:.06};
+const PFIELD=AX.map(a=>{const pair=AX.filter(b=>b.seat===a.seat),idx=pair.indexOf(a);
+ return{y:SEATY[a.seat],x:pair.length>1?(idx?.17:-.17):0,sx:pair.length>1?.26:.6,sy:.12};});
+function affs(x,y){const out=PFIELD.map(f=>Math.exp(-Math.pow((x-f.x)/f.sx,2)-Math.pow((y-f.y)/f.sy,2)));
+ /* below the pelvis everything is Root: the legs hold the ground */
+ if(y>.06){const r=Math.min(1,(y-.06)/.2);out[0]=Math.max(out[0],r*1.1);}
+ return out;}
+function leadPat(w){let b=0;AX.forEach((a,i)=>{if(w[a.nm]>w[AX[b].nm])b=i;});return b;}
+function maskLoad(m,w){return m.b.reduce((s,seat)=>s+AX.filter(a=>a.seat===seat).reduce((x,a)=>Math.max(x,w[a.nm]),0),0)/m.b.length;}
+function leadMask(w){let b=null;MASKS.forEach(m=>{const s=maskLoad(m,w);if(!b||s>b.s+1e-9)b={m,s};});return b.m;}
+function maskTop(m,w){let b=-1;AX.forEach((a,i)=>{if(m.b.indexOf(a.seat)<0)return;if(b<0||w[a.nm]>w[AX[b].nm])b=i;});return b;}
+function maskCols(m){const a=m.b.map(s=>PAL[s]);return[a[0],a[a.length-1]];}
+
+/* ---------- the person ----------
+   One base figure and a pose vector. The vector is the whole feasibility story: nine
+   pattern weights each push the vector along their own direction, the mask pulls it toward
+   its own symbol by how loaded the mask is, and at zero load every term is zero and the
+   vector is REST, a plain calm person. The cost is nine multiply-adds per pose key, then
+   one forward kinematics pass of about twenty segments. */
+const REST={scale:1,ox:0,oy:0,lean:.012,curl:0,shL:0,shR:0,roll:0,shW:1,headDrop:0,headTurn:0,headTilt:.02,
+ a1L:.13,a2L:.09,a1R:.15,a2R:.1,b1L:.05,b2L:.03,b1R:.045,b2R:.02,legShort:0,hipSep:1,neckExt:0,rigid:0};
+const KEYS=Object.keys(REST);
+/* each mask's own symbol, as a pose. Child folds and shrinks, Preteen turns and checks,
+   Teen thrusts, Ideological goes rigid and tall. */
+const MASKPOSE={
+ Child:{scale:.64,curl:.95,roll:.6,shW:.92,headDrop:.9,headTilt:.0,lean:0,a1L:.22,a2L:-2.05,a1R:.22,a2R:-2.05,b1L:.1,b2L:-.06,b1R:.1,b2R:-.06,legShort:.34,hipSep:.82},
+ Preteen:{lean:.07,shL:.1,shR:-.35,headTurn:1,headTilt:.22,headDrop:.12,roll:.2,a1L:.3,a2L:.15,a1R:1,a2R:-2.5,b1L:-.03,hipSep:.95},
+ Teen:{lean:-.17,shW:1.16,shL:.1,headDrop:-.55,headTilt:-.12,a1L:1.5,a2L:1.52,a1R:.75,a2R:.3,b1L:.2,b2L:.1,b1R:.14,b2R:-.08,hipSep:1.15,legShort:.08},
+ Ideological:{lean:0,curl:-.4,shW:1.2,roll:-.4,shL:.25,shR:.25,headDrop:-.4,headTilt:0,neckExt:.05,a1L:.0,a2L:.0,a1R:.0,a2R:.0,b1L:0,b2L:0,b1R:0,b2R:0,hipSep:.7,rigid:1}};
+/* what each pattern does to a body, as a push on the same vector */
+const PATD=[
+ /* Fear */ {roll:.35,shL:.5,shR:.5,headDrop:.3,scale:-.05,a1L:-.08,a1R:-.08,legShort:.05},
+ /* Anger */ {shW:.16,shL:.7,shR:.7,headDrop:-.6,a1L:.25,a1R:.25,a2L:.2,a2R:.2,lean:-.03},
+ /* Shame */ {curl:.4,headDrop:.8,roll:.35,shL:.2,shR:.2,scale:-.04},
+ /* Disgust */ {lean:.07,headTurn:-.8,a1R:.6,a2R:-.7,headTilt:-.12},
+ /* Apathy */ {curl:.2,shL:-.7,shR:-.7,headDrop:.45,headTilt:.1,a1L:-.06,a2L:-.08,a1R:-.06,a2R:-.08,legShort:.02},
+ /* Shock */ {a1L:1,a1R:1,a2L:.9,a2R:.9,b1L:.1,b1R:.1,headDrop:-.5,hipSep:.15},
+ /* Sad */ {headDrop:.9,curl:.3,shL:-.4,shR:-.4},
+ /* Surprise */ {a1L:.6,a1R:.6,headDrop:-.7,shL:.3,shR:.3},
+ /* Anticipation */ {lean:-.07,a1L:.2,a1R:.2,b1L:-.04,b1R:.07,headDrop:-.15}];
+/* weights to a target pose. w is the nine weights already scaled by the load. */
+function mixPose(maskNm,w,opt){opt=opt||{};
+ const M=MASKS.find(x=>x.nm===maskNm);const ws=AX.map(a=>w[a.nm]);
+ const mxw=Math.max.apply(null,ws),L=clamp(mxw/9,0,1);
+ const m=clamp(maskLoad(M,w)/6.5,0,1);
+ let ss=0;ws.forEach(v=>ss+=v*v);
+ const p={};KEYS.forEach(k=>{p[k]=REST[k];});
+ const T=MASKPOSE[maskNm];
+ if(!opt.noMask)for(const k in T)p[k]+=m*(T[k]-REST[k]);
+ if(ss>0)ws.forEach((v,i)=>{const sh=v*v/ss*L*1.7;if(sh<=0)return;const d=PATD[i];for(const k in d)p[k]+=sh*d[k];});
+ return {p,m,L};}
+
+/* the forward kinematics. figure units: y down, head top about -0.99, feet about 0.97 */
+function buildFig(p){
+ const sl=p.lean,u=[Math.sin(sl),-Math.cos(sl)],v=[Math.cos(sl),Math.sin(sl)];
+ const P=[0,0],Ls=.64*(1-.32*p.curl);
+ const nb=[P[0]+u[0]*Ls,P[1]+u[1]*Ls];
+ const S0=[nb[0]-u[0]*.04,nb[1]-u[1]*.04+p.curl*.02];
+ const nl=.07+p.neckExt-.04*p.curl;
+ const nt=[nb[0]+u[0]*nl,nb[1]+u[1]*nl];
+ const th=p.headTilt+sl;
+ const Hc=[nt[0]+Math.sin(th)*.12+p.headTurn*.06,nt[1]-Math.cos(th)*.12+p.headDrop*.095];
+ const hw=.205*p.shW*(1-.4*p.roll);
+ const SL=[S0[0]-v[0]*hw,S0[1]-v[1]*hw-p.shL*.085],SR=[S0[0]+v[0]*hw,S0[1]+v[1]*hw-p.shR*.085];
+ const arm=(S,s,a1,a2)=>{const E=[S[0]+s*Math.sin(a1)*.27,S[1]+Math.cos(a1)*.27];const W=[E[0]+s*Math.sin(a2)*.25,E[1]+Math.cos(a2)*.25];return[E,W];};
+ const [EL,WL]=arm(SL,-1,p.a1L,p.a2L),[ER,WR]=arm(SR,1,p.a1R,p.a2R);
+ const HL=[P[0]-v[0]*.085*p.hipSep,P[1]-v[1]*.085*p.hipSep],HR=[P[0]+v[0]*.085*p.hipSep,P[1]+v[1]*.085*p.hipSep];
+ const lt=.47*(1-.35*p.legShort),ls=.45*(1-.3*p.legShort);
+ const leg=(H,s,b1,b2)=>{const K=[H[0]+s*Math.sin(b1)*lt,H[1]+Math.cos(b1)*lt];const A=[K[0]+s*Math.sin(b2)*ls,K[1]+Math.cos(b2)*ls];return[K,A];};
+ const [KL,AL]=leg(HL,-1,p.b1L,p.b2L),[KR,AR]=leg(HR,1,p.b1R,p.b2R);
+ const mid1=[P[0]+u[0]*Ls*.5,P[1]+u[1]*Ls*.5],mid2=[P[0]+u[0]*Ls*.16,P[1]+u[1]*Ls*.16];
+ const hd=a=>{const L=Math.hypot(a[0]-S0[0],a[1]-S0[1])||1;return L;};
+ const C=[];
+ const cap=(a,b,ra,rb,id)=>C.push({ax:a[0],ay:a[1],bx:b[0],by:b[1],ra,rb,id});
+ const disc=(c,rx,ry,rot,id)=>C.push({ax:c[0],ay:c[1],bx:c[0],by:c[1],ra:rx,rb:ry,rot:rot||0,disc:1,id});
+ disc(Hc,.104,.126,th,'head');
+ cap(nb,nt,.044,.039,'neck');
+ cap(S0,mid1,.205*Math.min(1.1,p.shW)*(1-.1*p.roll),.165,'chest');
+ cap(mid1,mid2,.165,.146,'belly');
+ cap(mid2,P,.146,.158,'pelvis');
+ cap(S0,SL,.075,.058,'shL');cap(S0,SR,.075,.058,'shR');
+ cap(SL,EL,.056,.047,'uaL');cap(EL,WL,.047,.036,'faL');
+ cap(SR,ER,.056,.047,'uaR');cap(ER,WR,.047,.036,'faR');
+ const hl=[WL[0]+(WL[0]-EL[0])*.16,WL[1]+(WL[1]-EL[1])*.16],hr=[WR[0]+(WR[0]-ER[0])*.16,WR[1]+(WR[1]-ER[1])*.16];
+ disc(hl,.038,.044,0,'hL');disc(hr,.038,.044,0,'hR');
+ cap(HL,KL,.094,.066,'thL');cap(KL,AL,.064,.042,'shnL');
+ cap(HR,KR,.094,.066,'thR');cap(KR,AR,.064,.042,'shnR');
+ cap([AL[0]-.03,AL[1]+.018],[AL[0]-.07,AL[1]+.018],.03,.03,'ftL');cap([AR[0]+.03,AR[1]+.018],[AR[0]+.07,AR[1]+.018],.03,.03,'ftR');
+ /* ground the figure, scale it about the feet, move it */
+ const gy=.955-Math.max(AL[1],AR[1])-.02;
+ const Qx=0,Qy=.955,s=p.scale;
+ C.forEach(c=>{c.ax=Qx+(c.ax-Qx)*s+p.ox;c.ay=Qy+(c.ay+gy-Qy)*s+p.oy;c.bx=Qx+(c.bx-Qx)*s+p.ox;c.by=Qy+(c.by+gy-Qy)*s+p.oy;
+  c.ra*=s;c.rb*=s;});
+ const J=n=>[Qx+(n[0]-Qx)*s+p.ox,Qy+(n[1]+gy-Qy)*s+p.oy];
+ return {caps:C,J:{head:J(Hc),SL:J(SL),SR:J(SR),EL:J(EL),ER:J(ER),WL:J(WL),WR:J(WR),P:J(P),S0:J(S0),KL:J(KL),KR:J(KR),AL:J(AL),AR:J(AR)},scale:s};}
+
+/* signed distance to a capsule or disc, negative inside */
+function capD(c,x,y){
+ if(c.disc){const ca=Math.cos(c.rot),sa=Math.sin(c.rot),dx=x-c.ax,dy=y-c.ay;
+  const lx=(dx*ca+dy*sa)/c.ra,ly=(-dx*sa+dy*ca)/c.rb;return (Math.hypot(lx,ly)-1)*Math.min(c.ra,c.rb);}
+ const bx=c.bx-c.ax,by=c.by-c.ay,l2=bx*bx+by*by;let t=l2?((x-c.ax)*bx+(y-c.ay)*by)/l2:0;t=t<0?0:t>1?1:t;
+ const px=c.ax+bx*t-x,py=c.ay+by*t-y;return Math.sqrt(px*px+py*py)-(c.ra+(c.rb-c.ra)*t);}
+/* the smooth union of the whole figure. a box round each part is made once per figure, so a point
+   far from any part costs a handful of comparisons and not twenty distance tests */
+function figBoxes(F){if(F.bb)return F.bb;const pad=.05;let X0=9,X1=-9,Y0=9,Y1=-9;
+ F.bb=F.caps.map(c=>{const r=Math.max(c.ra,c.rb)+pad,rr=c.disc?Math.max(c.ra,c.rb)+pad:r;
+  const b=[Math.min(c.ax,c.bx)-rr,Math.max(c.ax,c.bx)+rr,Math.min(c.ay,c.by)-rr,Math.max(c.ay,c.by)+rr];
+  X0=Math.min(X0,b[0]);X1=Math.max(X1,b[1]);Y0=Math.min(Y0,b[2]);Y1=Math.max(Y1,b[3]);return b;});
+ F.box=[X0,X1,Y0,Y1];return F.bb;}
+function figD(F,x,y,k){k=k||.035;const bb=figBoxes(F),B=F.box;if(x<B[0]-.06||x>B[1]+.06||y<B[2]-.06||y>B[3]+.06)return .3;
+ let d=9;const C=F.caps;
+ for(let i=0;i<C.length;i++){const b=bb[i];if(x<b[0]||x>b[1]||y<b[2]||y>b[3])continue;
+  const e=capD(C[i],x,y);const h=Math.max(k-Math.abs(d-e),0)/k;d=Math.min(d,e)-h*h*k*.25;}
+ return d>8?.3:d;}
+
+/* distance fields, and the pattern shares the symbols bend by */
+function sdEll(x,y,cx,cy,rx,ry){const dx=(x-cx)/rx,dy=(y-cy)/ry;return (Math.hypot(dx,dy)-1)*Math.min(rx,ry);}
+function sdBox(x,y,cx,cy,hx,hy){const dx=Math.abs(x-cx)-hx,dy=Math.abs(y-cy)-hy;return Math.min(Math.max(dx,dy),0)+Math.hypot(Math.max(dx,0),Math.max(dy,0));}
+function sdStar(x,y,cx,cy,n,ro,ri,rot){const dx=x-cx,dy=y-cy,r=Math.hypot(dx,dy),a=Math.atan2(dy,dx)-rot;const u=((a*n/(2*Math.PI))%1+1)%1;
+ const tri=1-Math.abs(u*2-1);const R=ri+(ro-ri)*Math.pow(tri,1.15);return (r-R)*.62;}
+/* a pattern share, from the eased charges: how much of the push each pattern owns */
+function shares(sc){let s=0;const q=sc.pc.map(v=>{const w=v*v;s+=w;return w;});return q.map(v=>s?v/s:0);}
+
+/* ---------- the scene: one canvas, one person, one system ----------
+   Everything a system draws is a pure function of time, the eased pose and the eased charges,
+   so a frame strip is the same on every run and a still frame can be asked for at any second. */
+const REDUCED=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const Q=new URLSearchParams(location.search);
+const MANUAL=Q.has('manual');              /* ?manual=1: no clock, the harness sets the time, for frame strips */
+const sat=(a,b,v)=>clamp((v-a)/(b-a),0,1);
+const saw=u=>u<.2?sstep(0,.2,u):1-sstep(.2,1,u);   /* a quick lunge and a slow return */
+class Scene{
+ constructor(host,sys,o){o=o||{};this.host=host;this.sys=sys;this.o=o;
+  this.cv=document.createElement('canvas');this.cv.className='cv';host.insertBefore(this.cv,host.firstChild);this.g=this.cv.getContext('2d');
+  this.dpr=Math.min(2,devicePixelRatio||1);this.t=0;this.small=o.small!==undefined?o.small:innerWidth<700;
+  this.mask=o.mask||'Preteen';this.profKey=o.prof||'anger';this.carry=!!o.carry;this.kT=o.load!==undefined?o.load:1;
+  this.sel=-1;this.hov=-1;this.ts=0;this.tsT=0;this.anchor=null;this.fade=.6;
+  this.pc=new Array(9).fill(0);this.pv=Object.assign({},REST);this.m=0;this.L=0;
+  this.hx=[];this.hy=[];this.hp=[];this.regN=0;this.sprites={};this.mem={};
+  this.ready=false;this.lineup=!!o.lineup;this.W=0;this.H=0;
+  this.setTarget();if(o.snap)this.snap();
+  if(sys.init)sys.init(this);}
+ get prof(){return PROFILES[this.profKey];}
+ /* the weights this scene draws: the profile's own, scaled by the load */
+ weights(){const w={};const p=this.prof.w;AX.forEach(a=>w[a.nm]=p[a.nm]*this.kT);
+  /* carry: show the mask as if it were the one carrying the load, its own seats lifted to near the leader */
+  if(this.carry){const M=MASKS.find(x=>x.nm===this.mask);let mx=0;AX.forEach(a=>mx=Math.max(mx,w[a.nm]));
+   AX.forEach(a=>{if(M.b.indexOf(a.seat)>=0)w[a.nm]=Math.max(w[a.nm],.85*mx);});}
+  return w;}
+ setTarget(){const M=MASKS.find(x=>x.nm===this.mask);const w=this.weights();
+  const r=mixPose(this.mask,w,this.sys.noMaskPose?{noMask:true}:{});this.tp=r.p;this.tm=r.m;this.tL=r.L;
+  /* charges, seen through the mask: a seat the mask does not wear is held back to a third */
+  this.tpc=AX.map(a=>Math.min(1,w[a.nm]/9)*(M.b.indexOf(a.seat)>=0?1:.34));
+  this.lead=leadPat(w);this.per=M.per;this.col2=maskCols(M);}
+ snap(){this.pv=Object.assign({},this.tp);this.m=this.tm;this.L=this.tL;this.pc=this.tpc.slice();this.fade=1;this.ready=true;}
+ set(o){if(o.carry!==undefined)this.carry=o.carry;if(o.mask!==undefined)this.mask=o.mask;if(o.prof!==undefined)this.profKey=o.prof;if(o.load!==undefined)this.kT=o.load;
+  this.setTarget();if(this.sys.reset)this.sys.reset(this);}
+ resize(){const r=this.host.getBoundingClientRect();const d=this.dpr,w=Math.round(r.width*d),h=Math.round(r.height*d);
+  if(this.cv.width!==w||this.cv.height!==h){this.cv.width=w;this.cv.height=h;}this.W=w;this.H=h;this.w=r.width;this.h=r.height;this.mobile=r.width<700;}
+ /* where the figure stands on the stage. the figure is two units tall, centre at its middle */
+ layout(){const w=this.w,h=this.h;let cx,cy,k;
+  if(this.lineup){k=(h-14)/2.1;return{cx:w/2,cy:h/2,k};}
+  if(!this.mobile){k=(h-120)/2.1;cx=w*(.5-.13*this.ts);cy=h*.5+4;}
+  else{const top=80,bot=this.sel>=0?60:100;k=Math.min((h-top-bot)/2.1,w/2.9);cx=w/2;cy=top+(h-top-bot)/2;}
+  return{cx,cy,k};}
+ toFig(px,py){const L=this.Lo||this.layout();return[(px-L.cx)/L.k,(py-L.cy)/L.k];}
+ ease(dt){const q=1-Math.exp(-dt*(this.ready?3.2:2.4));
+  for(const k in this.tp)this.pv[k]+=(this.tp[k]-this.pv[k])*q;
+  this.m+=(this.tm-this.m)*q;this.L+=(this.tL-this.L)*q;
+  for(let i=0;i<9;i++)this.pc[i]+=(this.tpc[i]-this.pc[i])*q;
+  this.fade=Math.min(1,this.fade+dt*1.5);
+  this.ts+=(this.tsT-this.ts)*(1-Math.exp(-dt*6));if(Math.abs(this.tsT-this.ts)<.002)this.ts=this.tsT;}
+ update(dt){
+  /* a person who asked the system for less motion gets the settled picture, held still */
+  if(REDUCED){if(!this._r){this._r=1;this.snap();this.t=3.2;}return;}
+  this.ease(dt);this.t+=dt;this.ready=true;}
+ /* the idle motion each mask owns, at its own tempo. the person at rest only breathes. */
+ posed(){const p=Object.assign({},this.pv),t=this.t,m=this.m,ph=this.ph=(t/this.per)%1,s=Math.sin(Math.PI*2*ph);
+  const br=Math.sin(Math.PI*2*t/4.2);
+  /* the plain person: a slow breath, a small sway */
+  p.shL+=.025*br;p.shR+=.025*br;p.lean+=.006*Math.sin(Math.PI*2*t/9)*(1-m);p.headTilt+=.01*Math.sin(Math.PI*2*t/7.3)*(1-m);
+  const a=Math.max(.2,m);
+  if(this.sys.noMaskPose){/* this system draws the mask as a symbol, not as a posture */}
+  else if(this.mask==='Child'){p.curl+=.05*s*a;p.headDrop+=.14*s*a;p.scale-=.01*s*a;}
+  else if(this.mask==='Preteen'){p.headTurn+=.5*s*a;p.headTilt+=.05*s*a;p.shR+=.1*Math.sin(Math.PI*2*ph+1)*a;}
+  else if(this.mask==='Teen'){const th=saw(ph);p.a1L+=.16*th*a;p.a2L+=.16*th*a;p.lean-=.035*th*a;p.shW+=.03*th*a;}
+  else if(this.mask==='Ideological'){/* rigid: it does not move. the light moves across it. */}
+  /* what the leading pattern adds, as small continuing motion */
+  const l=this.lead,lw=this.pc[l];
+  if(l===0)p.shL+=.012*Math.sin(t*31)*lw,p.shR+=.012*Math.sin(t*29)*lw;     /* Fear trembles */
+  if(l===4)p.headDrop+=.01*Math.sin(t*.7)*lw;                                /* Apathy barely moves */
+  if(l===1)p.shL+=.03*(.5+.5*Math.sin(Math.PI*2*t/2.2))*lw,p.shR+=.03*(.5+.5*Math.sin(Math.PI*2*t/2.2))*lw;
+  return p;}
+ /* the intro: every mark has its own late start so the page opens as a gathering */
+ e(i,t0){const tt=this.t-(t0||0)-.04-hash(i,3)*.55;return sstep(0,1.15,tt);}
+ /* the factor a pattern's marks take when one is selected or hovered */
+ pa(p){if(this.sel>=0)return p===this.sel?1.18:(this.sys.dimTo||.26);if(this.hov>=0)return p===this.hov?1.12:.72;return 1;}
+ /* brightness a pattern carries: charge, with a floor so a quiet one is still seen */
+ bright(p){return .3+.7*Math.pow(Math.max(0,this.pc[p]),.8);}
+ rgb(p,l){let c=PCOL[p];const q=this.pc[p];c=mixc([150,158,174],c,.5+.5*Math.min(1,q*1.15));return l?mixc(c,INK,l):c;}
+ /* the colour of a place on the body, blended across the patterns that own it */
+ rgbAt(x,y,l){const a=affs(x,y);let s=0,r=0,g=0,b=0;for(let i=0;i<9;i++){const w=a[i]*(.1+this.pc[i]);s+=w;const c=this.rgb(i,0);r+=c[0]*w;g+=c[1]*w;b+=c[2]*w;}
+  const c=s?[r/s,g/s,b/s]:[150,158,174];return l?mixc(c,INK,l):c;}
+ patAt(x,y){const a=affs(x,y);let b=0,bw=-1;for(let i=0;i<9;i++){const w=a[i]*(.1+this.pc[i]);if(w>bw){bw=w;b=i;}}return b;}
+ /* mark registration, so a press finds the pattern that owns what it touched */
+ reg(x,y,p){if((this.regN++&3)||this.hx.length>1800)return;this.hx.push(x);this.hy.push(y);this.hp.push(p);}
+ near(px,py,max){let b=-1,bd=max*max;for(let i=0;i<this.hx.length;i++){const dx=this.hx[i]-px,dy=this.hy[i]-py,d=dx*dx+dy*dy;if(d<bd){bd=d;b=this.hp[i];}}return b;}
+ originOf(p){let sx=0,sy=0,n=0;for(let i=0;i<this.hx.length;i++)if(this.hp[i]===p){sx+=this.hx[i];sy+=this.hy[i];n++;}
+  if(!n)return null;sx/=n;sy/=n;let b=null,bd=1e18;for(let i=0;i<this.hx.length;i++)if(this.hp[i]===p){const d=(this.hx[i]-sx)**2+(this.hy[i]-sy)**2;if(d<bd){bd=d;b=[this.hx[i],this.hy[i]];}}return b;}
+ /* a soft light, from a cached sprite */
+ glow(x,y,r,rgb,a){const key=((rgb[0]/16)|0)+','+((rgb[1]/16)|0)+','+((rgb[2]/16)|0);let s=this.sprites[key];
+  if(!s){s=document.createElement('canvas');s.width=s.height=64;const c=s.getContext('2d'),gr=c.createRadialGradient(32,32,0,32,32,32);
+   const q=[(rgb[0]/16|0)*16+8,(rgb[1]/16|0)*16+8,(rgb[2]/16|0)*16+8];
+   gr.addColorStop(0,css(q,1));gr.addColorStop(.35,css(q,.38));gr.addColorStop(1,css(q,0));c.fillStyle=gr;c.fillRect(0,0,64,64);this.sprites[key]=s;}
+  const g=this.g,d=this.dpr;g.globalAlpha=clamp(a,0,1);g.drawImage(s,(x-r)*d,(y-r)*d,r*2*d,r*2*d);}
+ dot(x,y,s,rgb,a){const g=this.g,d=this.dpr;g.globalAlpha=clamp(a,0,1);g.fillStyle='rgb('+(rgb[0]|0)+','+(rgb[1]|0)+','+(rgb[2]|0)+')';g.fillRect((x-s/2)*d,(y-s/2)*d,s*d,s*d);}
+ render(){if(!this.W)this.resize();const g=this.g,d=this.dpr;
+  g.setTransform(1,0,0,1,0,0);g.globalCompositeOperation='source-over';g.globalAlpha=1;g.clearRect(0,0,this.W,this.H);
+  if(this.sys.bg){g.fillStyle=this.sys.bg;g.fillRect(0,0,this.W,this.H);}
+  const L=this.Lo=this.layout();this.hx.length=0;this.hy.length=0;this.hp.length=0;this.regN=0;
+  const P=this.posed();this.fig=buildFig(P);this.P=P;
+  this.k=L.k;this.cx=L.cx;this.cy=L.cy;
+  g.globalCompositeOperation='lighter';
+  this.sys.draw(this);
+  g.globalAlpha=1;
+  if(this.sel>=0&&this.anchor)this.thread();
+  g.globalCompositeOperation='source-over';g.globalAlpha=1;}
+ /* figure units to css px */
+ X(x){return this.cx+x*this.k;}
+ Y(y){return this.cy+y*this.k;}
+ thread(){const g=this.g,d=this.dpr;const o=this.originOf(this.sel);if(!o)return;const A=this.anchor,t=this.t;
+  const col=PCOL[this.sel];const x0=o[0]*d,y0=o[1]*d,x1=A[0]*d,y1=A[1]*d;
+  const bend=this.mobile?[x0,y0+(y1-y0)*.55,x1,y1-(y1-y0)*.25]:[x0+(x1-x0)*.35,y0-(y0-y1)*.05-40*d,x0+(x1-x0)*.6,y1];
+  const pt=u=>{const v=1-u;return[v*v*v*x0+3*v*v*u*bend[0]+3*v*u*u*bend[2]+u*u*u*x1,v*v*v*y0+3*v*v*u*bend[1]+3*v*u*u*bend[3]+u*u*u*y1];};
+  let len=0,prev=pt(0);for(let i=1;i<=40;i++){const q=pt(i/40);len+=Math.hypot(q[0]-prev[0],q[1]-prev[1]);prev=q;}
+  const step=5.2*d,m=Math.max(8,Math.floor(len/step));const pulse=(t*.22)%1;
+  g.globalCompositeOperation='lighter';const hot=mixc(col,INK,.55);
+  for(let i=0;i<=m;i++){const u=i/m,q=pt(u);const near=Math.exp(-Math.pow((u-pulse)/.05,2));
+   const a=.38+.25*Math.sin(u*Math.PI)+near*.6,s=(1.5+near*2.2)*d;
+   g.globalAlpha=Math.min(1,a);g.fillStyle=css(mixc(col,hot,near));g.fillRect(q[0]-s/2,q[1]-s/2,s,s);
+   if(i%2===0){const nx=Math.sin(i*12.9)*3*d,ny=Math.cos(i*7.1)*3*d;g.globalAlpha=.28;g.fillStyle=css(col);g.fillRect(q[0]+nx,q[1]+ny,1.3*d,1.3*d);}}
+  g.globalAlpha=.9;g.lineWidth=1.4*d;g.strokeStyle=css(hot);g.beginPath();g.arc(x0,y0,11*d,0,Math.PI*2);g.stroke();
+  g.globalAlpha=.35;g.strokeStyle=css(col);g.beginPath();g.arc(x0,y0,19*d,0,Math.PI*2);g.stroke();
+  g.globalAlpha=.9;g.strokeStyle=css(hot);g.beginPath();g.arc(x1,y1,5*d,0,Math.PI*2);g.stroke();g.globalAlpha=1;}}
+
+/* SYSTEM C, MOSAIC. The person is a field of square cells, the way the Body page's mask pixels already
+   read. Each mask is a rule applied to the cells, not a drawing laid on top: Child goes chunky and
+   small under a big block, Preteen shears and echoes sideways in a wave of copying, Teen fractures
+   into slabs that snap out of line, Ideological is quantised to a rigid ruled column. The leading
+   patterns bend the person underneath, and the cells carry the pattern colour of the place they sit. */
+const SYS_C={id:'c-mosaic',name:'Mosaic',noMaskPose:true,dimTo:.4,bg:'#0C0D12',N:{d:0,m:0,l:0},
+ blurb:'The person is a field of square cells. Each mask is a rule on the cells: chunky and small, sheared and echoed, fractured into slabs, or ruled into a column. At zero load it is a calm figure.',
+ init(sc){},
+ draw(sc){const g=sc.g,d=sc.dpr,k=sc.k,cx=sc.cx,cy=sc.cy,t=sc.t,m=sc.m,nm=sc.mask,F=sc.fig;
+  const s=Math.max(sc.lineup?6:9,Math.round(k/(sc.lineup?17:sc.mobile?17:25)));const X=sc.lineup?1.28:1.3,y0=-1.14,y1=1.1;
+  const cols=Math.floor(2*X*k/s),rows=Math.floor((y1-y0)*k/s);
+  const ox=cx-cols*s/2,oy=cy+y0*k;
+  const per=MASKS.find(q=>q.nm===nm).per,ph=(t/per)%1,lp=sc.lead,beat=.5+.5*Math.sin(Math.PI*2*t/per);
+  const sh=shares(sc);
+  const gap=Math.max(1.5,s*.13);
+  /* a cell's coverage and how deep inside the form it is */
+  let dep=0;const cov=(x,y)=>{const D=figD(F,x,y,.03);dep=sat(0,.09,-D);return sstep(.045,-.03,D);};
+  g.globalCompositeOperation='lighter';
+  const slab=Math.floor(t/per),sl=t/per-slab,snap=sstep(0,.12,sl);
+  const B=Math.max(2,Math.round(k/160));          /* the child's coarse cell is B fine cells across */
+  const blk=nm==='Child'&&m>.02;
+  const bobY=.05*Math.sin(Math.PI*2*ph);
+  for(let j=0;j<rows;j++){const yy=(oy+(j+.5)*s-cy)/k;
+   for(let i=0;i<cols;i++){const xx=(ox+(i+.5)*s-cx)/k;
+    const e=sstep(0,1.1,t+.25-hash(i*131+j,7)*.9);
+    const ccx=ox+(i+.5)*s,ccy=oy+(j+.5)*s;
+    let cp=0,cm=0,dp=0,dm_=0;
+    if(1-m>.02){cp=cov(xx,yy);dp=dep;}
+    if(m>.02){
+     if(nm==='Child'){const bi=Math.floor(i/B),bj=Math.floor(j/B);const bx=(ox+(bi*B+B/2)*s-cx)/k,by=(oy+(bj*B+B/2)*s-cy)/k;
+      const sF=.6,brt=1+.035*Math.sin(Math.PI*2*ph);
+      cm=cov(bx/sF/brt,.96+(by-.96)/sF/brt);dm_=dep;}
+     else if(nm==='Preteen'){const row=Math.round(1.4*Math.sin(Math.PI*2*(yy*1.2-ph)));const off=row*s/k;
+      const c0=cov(xx-off,yy),d0=dep,cl=.6*cov(xx-off*.7+.8,yy*.96+.03),dl=dep,cr=.6*cov(xx-off*1.3-.8,yy*1.04-.03),dr=dep;
+      cm=Math.max(c0,cl,cr);dm_=cm===c0?d0:cm===cl?dl:dr;}
+     else if(nm==='Teen'){const sid=Math.floor((xx*1.0+yy*.55+3)*4.2);const hv=hash(sid+slab*7,3),hp=hash(sid+(slab-1)*7,3);
+      const dx=((hp+(hv-hp)*snap)-.5)*.62*m,dy=((hash(sid+slab*5,9)-.5)*.12)*m;
+      cm=cov(xx-dx,yy-dy);dm_=dep;
+      /* every other slab is the negative of itself */
+      if((sid&1)&&m>.35&&cm>.1)cm=((i+j)&1)?cm:cm*.2;
+      /* a hairline crack where one slab meets the next */
+      const fr=(xx*1.0+yy*.55+3)*4.2-sid;if(fr<.06||fr>.95)cm*=.2;}
+     else{const box=sstep(.03,-.03,sdBox(xx,yy,0,-.015,.2,.97));
+      const stripe=(((i*2)%7)<5)?1:.2,rule=(j%6===5)?.2:1;
+      cm=box*stripe*rule;dm_=.6;}
+    }
+    let a=(1-m)*cp+m*cm,dd=(1-m)*dp+m*dm_;
+    if(blk){const ox0=-.4,ox1=.4,oy0=-.92+bobY,oy1=-.46+bobY;
+     if(xx>ox0&&xx<ox1&&yy>oy0&&yy<oy1){const bi=Math.floor(i/B),bj=Math.floor(j/B);a=Math.max(a,(.2+.06*(((bi+bj)&1)))*m);}}
+    if(a<.04){g.globalAlpha=.05*(.6+.4*e)*sc.fade;g.fillStyle='rgb(200,205,220)';g.fillRect((ccx-s/2+gap/2)*d,(ccy-s/2+gap/2)*d,(s-gap)*d,(s-gap)*d);continue;}
+    const pt=sc.patAt(xx,yy);let col=sc.rgbAt(xx,yy,0);
+    if(blk&&xx>-.4&&xx<.4&&yy<-.44&&cm<.1&&cp<.1)col=[196,192,186];
+    /* five levels, so it reads as a mosaic and not a blur. depth and the light from the left set the level. */
+    const lit=clamp(.55+.45*dd+.1*clamp(-xx*1.2,-1,1),0,1.1);
+    const lv=Math.min(4,Math.floor(clamp(a*lit,0,1)*4.99)),q=(lv+1)/5;
+    let al=(.2+.8*q)*sc.bright(pt)*sc.pa(pt)*sc.fade*e;
+    al*=1+.1*Math.sin(t*1.1+i*.37+j*.21);
+    if(pt===lp)al*=.84+.3*beat;
+    col=mixc(col,INK,.03+.36*q*q);
+    if(nm==='Ideological'&&m>.05){const sy=-1.14+((t/7.2)%1)*2.24;al*=1+1.5*Math.exp(-Math.pow((yy-sy)/.05,2))*m;}
+    g.globalAlpha=clamp(al,0,1);g.fillStyle='rgb('+(col[0]|0)+','+(col[1]|0)+','+(col[2]|0)+')';
+    g.fillRect((ccx-s/2+gap/2)*d,(ccy-s/2+gap/2)*d,(s-gap)*d,(s-gap)*d);
+    sc.reg(ccx,ccy,pt);}}
+  g.globalAlpha=1;
+  for(let p=0;p<9;p++){const c=sc.pc[p];if(c<.1)continue;const f=PFIELD[p];sc.glow(cx+f.x*k*.8,cy+(p===0?.45:f.y)*k,k*(.3+.2*c),PCOL[p],.06*c*sc.pa(p)*(p===lp?.7+.6*beat:1)*sc.fade);}},
+ glance:{Child:'The person resolves into fewer, bigger cells and settles low, under a block that rides above.',Preteen:'The rows slide sideways in a wave and two faint copies stand either side. Copying, row by row.',Teen:'The figure breaks into slabs that snap out of line on a fast beat, some inverted.',Ideological:'The figure is ruled into a stiff striped column. Only the scan line moves.'},
+ glyph:{
+  Child:'<rect x="9" y="4" width="14" height="8" rx="1" stroke-dasharray="1.6 2.4"/><rect x="11" y="19" width="4" height="4"/><rect x="17" y="19" width="4" height="4"/><rect x="14" y="24.5" width="4" height="4"/>',
+  Preteen:'<rect x="4" y="6" width="5" height="5"/><rect x="13.5" y="6" width="5" height="5"/><rect x="23" y="6" width="5" height="5"/><rect x="9" y="13.5" width="5" height="5"/><rect x="18.5" y="13.5" width="5" height="5"/><rect x="4" y="21" width="5" height="5"/><rect x="13.5" y="21" width="5" height="5"/>',
+  Teen:'<path d="M4 4h10v10H4zM18 18h10v10H18z"/><path d="M18 4h10v10H18zM4 18h10v10H4z" stroke-dasharray="1.6 2.4"/>',
+  Ideological:'<path d="M9 4v24M14 4v24M19 4v24M24 4v24"/><path d="M5 4h22M5 28h22" stroke-dasharray="1.6 2.4"/>'}};
+
+/* The state sheet: each mask at high, mid and low load, for both example profiles, drawn by the same
+   scene the page uses, so what is judged here is what the page does. */
+const GLANCE={ /* how each mask is meant to be read in one look, set per system by the system itself */ };
+const LOADROWS=[['High',1],['Mid',.55],['Low',.06]];
+function sheetCss(){return '.sheet{padding:20px 24px 40px;max-width:1500px;margin:0 auto}.sheet h2{font-size:17px;margin:28px 0 4px;font-weight:600}.sheet .sub2{color:var(--mid);font-size:13px;margin:0 0 14px}'
+ +'.grid{display:grid;grid-template-columns:64px repeat(4,minmax(0,1fr));gap:10px;align-items:stretch}.sheetpage .app{display:block;height:auto}.gh{display:flex;flex-direction:column;gap:6px;padding:4px 4px 8px}.gh .gt{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:600}'
+ +'.gh svg{width:30px;height:30px}.gh p{margin:0;color:var(--mid);font-size:12.5px;line-height:1.35}.rl2{display:flex;align-items:center;justify-content:flex-end;color:var(--mid);font-size:13px;padding-right:4px;text-align:right}'
+ +'.cellw{position:relative;height:330px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:radial-gradient(ellipse at 50% 44%,#13151C 0%,#0C0D12 70%)}.cellw.opq{background:#0C0D12}'
+ +'.cellw .cl{position:absolute;left:10px;bottom:8px;font-size:12px;color:var(--dim);z-index:2}.cellw .cm{position:absolute;right:10px;bottom:8px;font-size:12px;color:var(--mid);z-index:2}'
+ +'body.sheetpage{overflow:auto;height:auto}.hd.sh{position:sticky;top:0;background:var(--bg);z-index:5}'
+ +'@media (max-width:860px){.grid{grid-template-columns:44px repeat(2,minmax(0,1fr))}.gh p{display:none}.cellw{height:250px}.sheet{padding:12px 12px 40px}}';}
+function bootSheet(sys){
+ document.title='Character, '+sys.name+', three loads';document.body.classList.add('sheetpage');
+ const prof=Q.get('profile');const profs=prof?[prof]:['anger','apathy'];
+ const style=document.createElement('style');style.textContent=sheetCss();document.head.appendChild(style);
+ let h='<header class="hd sh"><div><div class="ey">Character, round OQ state sheet</div><h1>'+sys.name+', each mask at high, mid and low load</h1><p>The same scene as the page, frozen at three seconds. Low is a plain calm person. The leading pattern is changed between the two profiles, so the same mask bends differently.</p></div>'
+  +'<nav class="nav"><a href="index.html">Contact sheet</a>'+SYSTEMS.map(s=>'<a class="opt" href="states-'+s.id+'.html"'+(s.id===sys.id?' aria-current="page"':'')+'>'+s.name+'</a>').join('')+'</nav></header><div class="sheet">';
+ profs.forEach(pk=>{const P=PROFILES[pk],li=leadPat(P.w);
+  h+='<h2>'+P.label+'</h2><p class="sub2">'+AX[li].nm+' at '+P.w[AX[li].nm].toFixed(1)+', '+VERB[li]+'. Mask that leads: '+leadMask(P.w).nm+'.</p><div class="grid"><div></div>';
+  MASKS.forEach(m=>{const c=maskCols(m);h+='<div class="gh"><div class="gt"><svg viewBox="0 0 32 32" fill="none" stroke="'+c[1]+'" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">'+sys.glyph[m.nm]+'</svg>'+m.nm+'</div><p>'+sys.glance[m.nm]+'</p></div>';});
+  LOADROWS.forEach(r=>{h+='<div class="rl2">'+r[0]+'<br>'+Math.round(r[1]*100)+'%</div>';
+   MASKS.forEach(m=>{h+='<div class="cellw'+(sys.bg?' opq':'')+'" data-p="'+pk+'" data-m="'+m.nm+'" data-l="'+r[1]+'"><span class="cl">'+m.nm+', '+r[0].toLowerCase()+'</span><span class="cm"></span></div>';});});
+  h+='</div>';});
+ h+='</div>';$('app').innerHTML=h;
+ const scenes=[];
+ document.querySelectorAll('.cellw').forEach(el=>{const w=PROFILES[el.dataset.p].w,m=MASKS.find(x=>x.nm===el.dataset.m),k=+el.dataset.l;
+  const sc=new Scene(el,sys,{mask:m.nm,prof:el.dataset.p,load:k,snap:true,lineup:true,small:false,carry:true});sc.t=2.8;sc.resize();scenes.push(sc);
+  const ws=sc.weights();el.querySelector('.cm').textContent='shape '+Math.round(sc.tm*100)+'%';});
+ scenes.forEach(s=>{s.render();});
+ window.__sheetStep=sec=>{scenes.forEach(s=>{s.t=sec;s.render();});};
+ if(MANUAL)return;
+ let last=performance.now(),acc=0;
+ function frame(now){const dt=clamp((now-last)/1000,0,.1);last=now;acc+=dt;if(acc>=1/24){scenes.forEach(s=>{s.t+=acc;s.render();});acc=0;}requestAnimationFrame(frame);}
+ requestAnimationFrame(frame);}
+
+bootSheet(SYS_C);
+</script></body></html>

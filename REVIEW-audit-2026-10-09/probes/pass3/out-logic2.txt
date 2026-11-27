@@ -1,0 +1,15 @@
+1 boot: requests ["GET /v1/me","GET /v1/sync"] ; meta after the boot call = {"accountId":"acc_probe","version":0,"hash":"f5734f47995e85ded18f1fa4c52e04a856363e926c5d55209e944db270a33619","updated":"2026-10-09T07:09:31.460Z"}
+1 server holds after boot: []
+2 two pExport() calls, nothing changed in between, differ in: [".updated: \"2026-10-09T07:09:38.997Z\" -> \"2026-10-09T07:09:39.002Z\""]
+3 three calls, nothing changed: [{"state":"pushed","version":1},{"state":"pushed","version":2},{"state":"pushed","version":3}] ; requests ["GET /v1/sync","PUT /v1/sync (2286)","GET /v1/sync","PUT /v1/sync (2286)","GET /v1/sync","PUT /v1/sync (2286)"]
+4 record size by number of stories (each 456 characters, one snapshot each); the Worker refuses one body over 200000 characters (compact JSON):
+     1 stories: compact 3321 chars
+    10 stories: compact 13327 chars
+    50 stories: compact 57887 chars
+   100 stories: compact 113587 chars
+   150 stories: compact 169287 chars
+   200 stories: compact 224987 chars  OVER THE CAP
+   250 stories: compact 280687 chars  OVER THE CAP
+   300 stories: compact 336387 chars  OVER THE CAP
+   (the client treats any non-ok PUT as {state:"retry"} with no status line: auth.js profileSyncPush returns r when !r.ok, authProfileSync returns {state:"retry"})
+exit 0

@@ -1,0 +1,23 @@
+arc.js  commit 73702c4  losssim.js md5 7aa57f73ac69c5660998ab262a81fdda (clean)
+losssim.js --validate: 49 passed, 0 failed, exit 0.
+
+People of 1000 still active, mean of 5 seeds. MODEL, not observation.
+config	d1	d2	d7	d14	d30	d60	d90
+built today	767.8	602.2	322.8	191.8	99.4	45.4	16.6
+proposed Field (firstshow on)	805.0	680.8	360.8	213.6	109.8	49.0	18.0
+difference	37.2	78.6	38.0	21.8	10.4	3.6	1.4
+
+Per ICP, share of the row still active at day 7 and day 30, today > proposed.
+The grid level is the one losssim.js reads off the engine (BUYERS.md grid, on CQ), not a typed one.
+who	weight	grid level	CQ	d2 today	d2 proposed	d7 today	d7 proposed	d30 today	d30 proposed
+Angela	150	7	64.4	51.9	60.7	24.8	28.5	6.0	6.4
+Derek	170	5	48.5	58.0	68.0	23.4	27.8	5.2	6.4
+James	100	5	42.3	38.0	48.6	20.4	26.0	8.0	9.4
+Marcus	160	7	62.1	63.3	68.9	39.4	43.5	13.3	15.1
+Sofia	140	8	72.9	80.1	83.3	57.6	59.1	15.4	15.4
+Diane	180	6	59	69.2	78.2	29.8	33.0	10.7	11.7
+Ana	50	5	41.1	72.4	80.8	51.2	58.8	23.2	26.4
+Gordon	35	2	17.5	26.9	33.7	0.0	0.6	0.0	0.0
+Rosa	15	10	97	28.0	38.7	17.3	22.7	0.0	0.0
+
+The firstshow term, as losssim.js sources it: Nunes and Dreze 2006 endowed progress, 34 percent against 19 percent, applied to the CHURN HAZARD on days one and two rather than to a daily probability. That i ...

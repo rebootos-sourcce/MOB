@@ -1,0 +1,536 @@
+<title>First Run Storyboard</title>
+<meta name="description" content="Atuned first run, frame by frame: boot, check in, signal test, one turn of discover, play, flow, embody, landing. A prototype storyboard, not the shipped app.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* One look, deliberately: the product's own Dark theme tokens, from
+   atuned_src/shell/head.html. The storyboard is drawn in the product's world,
+   so it commits to one theme and paints every colour explicitly. */
+:root{
+ color-scheme:dark;
+ --bg:#0C0D12; --panel:#1A1D26; --panel2:#252833; --sunk:#090A0E;
+ --ink:#EFEDE8; --mid:#B4B0A8; --dim:#94908A; --line:#2C303C;
+ --sky:#7EB8D4; --warn:#DABF6A; --warnbg:#2A2412;
+ --root:#D6524C; --sacral:#D8924E; --solar:#DABF6A; --heart:#5FD5A6;
+ --throat:#5EBBDB; --eye:#7D93E0; --crown:#A77EDB;
+ --sans:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+ --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 var(--sans);
+ padding-inline:clamp(16px,4vw,48px);padding-block:0 72px}
+.wrap{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:56px}
+h1,h2,h3{font-weight:500;letter-spacing:-.01em;text-wrap:balance;margin:0}
+h1{font-size:clamp(28px,4vw,40px);font-weight:400}
+h2{font-size:22px}
+h3{font-size:16px}
+p{margin:0;max-width:68ch}
+a{color:var(--sky)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--sky);outline-offset:2px}
+.eye{font:500 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--sky)}
+.mid{color:var(--mid)}
+.dim{color:var(--dim)}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+/* the prototype band. On the page itself, first, and never scrolled out of
+   meaning: ruled after FK, a prototype says what it is where it is seen. */
+.proto{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;margin-inline:calc(-1 * clamp(16px,4vw,48px));
+ padding:10px clamp(16px,4vw,48px);background:var(--warnbg);border-bottom:1px solid var(--warn);
+ color:var(--warn);font:500 13.5px/1.4 var(--sans);display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.proto b{font:600 11.5px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--warn);
+ border-radius:3px;padding:3px 6px}
+header{display:flex;flex-direction:column;gap:14px;padding-top:36px}
+.protonote{border:1px solid var(--warn);background:var(--warnbg);color:var(--warn);border-radius:6px;padding:10px 14px;font-size:14.5px}
+
+.thread{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.thread div{padding:16px 14px;display:flex;flex-direction:column;gap:4px;border-left:1px solid var(--line)}
+.thread div:first-child{border-left:0}
+.thread b{font-weight:500}
+.thread span{font:400 13px/1.4 var(--mono);color:var(--dim)}
+.thread .turn{background:rgba(126,184,212,.06)}
+@media (max-width:720px){.thread{grid-template-columns:1fr}.thread div{border-left:0;border-top:1px solid var(--line)}
+ .thread div:first-child{border-top:0}}
+
+section{display:flex;flex-direction:column;gap:20px}
+.sec-h{display:flex;flex-direction:column;gap:8px}
+.changes{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px 28px}
+.changes div{display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--line);padding-top:12px}
+.changes b{font-weight:500}
+.changes span{font-size:14.5px;color:var(--mid)}
+.kept{font-size:15px;color:var(--mid)}
+.kept b{color:var(--ink);font-weight:500}
+
+/* frames */
+.frames{display:grid;grid-template-columns:repeat(auto-fill,minmax(236px,1fr));gap:36px 28px}
+.fr{display:flex;flex-direction:column;gap:12px}
+.phone{width:100%;max-width:236px;aspect-ratio:390/760;background:var(--sunk);border:1px solid var(--line);
+ border-radius:22px;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;
+ justify-content:center;gap:10px;padding:18px 16px;font-size:12px;line-height:1.4;text-align:center}
+.phone .leave{position:absolute;top:12px;right:14px;font-size:10.5px;color:var(--dim)}
+.phone .big{font-size:17px;font-weight:400}
+.phone .word{font-size:24px;font-weight:300;letter-spacing:.01em}
+.phone .small{font-size:10.5px;color:var(--mid)}
+.phone .tiny{font-size:9.5px;color:var(--dim)}
+.btn{display:inline-flex;align-items:center;justify-content:center;background:var(--sky);color:#0C0D12;
+ border-radius:5px;font-size:11.5px;font-weight:500;padding:7px 20px}
+.btn.ghost{background:transparent;color:var(--mid);border:1px solid var(--line)}
+.field{width:100%;text-align:left;display:flex;flex-direction:column;gap:3px}
+.field label{font-size:9.5px;color:var(--dim)}
+.field i{font-style:normal;display:block;border:1px solid var(--line);background:var(--panel);border-radius:4px;
+ padding:6px 8px;font-size:11.5px;color:var(--ink)}
+.ck{display:flex;align-items:center;gap:7px;font-size:10.5px;color:var(--mid);align-self:flex-start}
+.ck b{width:13px;height:13px;border:1px solid var(--dim);border-radius:3px;display:inline-block}
+.rows{display:flex;flex-direction:column;gap:6px;text-align:left;width:100%}
+.rows div{display:flex;gap:7px;align-items:flex-start;font-size:10.5px;color:var(--mid)}
+.rows div::before{content:"";flex:0 0 9px;height:9px;margin-top:3px;border:1px solid var(--sky);border-radius:50%}
+.cap{display:flex;flex-direction:column;gap:6px;max-width:236px}
+.cap .id{font:500 12px/1 var(--mono);color:var(--sky);letter-spacing:.04em}
+.cap h3{font-size:16px}
+.cap p{font-size:14px;color:var(--mid);line-height:1.5}
+.cap dl{display:grid;grid-template-columns:auto 1fr;gap:3px 10px;margin:4px 0 0;font-size:13px}
+.cap dt{color:var(--dim);font-family:var(--mono);font-size:12px;padding-top:1px}
+.cap dd{margin:0;color:var(--ink)}
+.tag{display:inline-block;font:500 11px/1 var(--mono);color:var(--dim);border:1px solid var(--line);
+ border-radius:3px;padding:3px 5px;margin-left:6px;vertical-align:1px}
+.tag.new{color:var(--sky);border-color:var(--sky)}
+
+/* a station, drawn inside the product: a neutral bar with no tab names (it is
+   not wired), the ring docked, the surface dimmed, one target lit */
+.st{position:absolute;inset:0;display:flex;flex-direction:column;gap:7px;padding:12px 12px 14px;text-align:left}
+.st .nb{display:flex;gap:5px;padding-bottom:7px;border-bottom:1px solid var(--line)}
+.st .nb i{height:8px;border-radius:4px;background:var(--panel2);flex:1}
+.st .dock{display:flex;gap:8px;align-items:center;padding:4px 2px}
+.st .dock .w{font:500 13px/1.2 var(--sans);color:var(--ink)}
+.st .dock .l{font-size:10px;color:var(--mid);line-height:1.35}
+.st .dimmed{opacity:.32}
+.st .blk{height:9px;border-radius:3px;background:var(--panel2)}
+.st .card{border:1px solid var(--line);border-radius:7px;background:var(--panel);padding:8px;display:flex;flex-direction:column;gap:6px}
+.st .lit{border-color:var(--sky);box-shadow:0 0 0 1px var(--sky) inset}
+.st .ta{font-size:10.5px;line-height:1.55;color:var(--ink)}
+.st .ta s{text-decoration:none;border-radius:2px;padding:0 1px}
+.st .note{font-size:10px;color:var(--mid);line-height:1.4}
+.st .prac{font:500 9.5px/1.3 var(--mono);color:var(--warn)}
+.st .chips{display:flex;flex-wrap:wrap;gap:5px}
+.st .chips span{border:1px solid var(--line);border-radius:12px;padding:4px 8px;font-size:9.5px;color:var(--mid)}
+.st .chips span.on{border-color:var(--sky);color:var(--ink)}
+.st .row{display:flex;justify-content:space-between;align-items:center;gap:6px}
+.st .leave{position:absolute;top:26px;right:12px;font-size:10px;color:var(--dim)}
+
+/* observed */
+.obs{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:28px}
+.obs figure{margin:0;display:flex;flex-direction:column;gap:10px}
+.obs .img{background:var(--sunk);border:1px solid var(--line);border-radius:10px;overflow:hidden;display:flex;justify-content:center}
+.obs img{display:block;max-width:100%;height:auto}
+.obs .img.tall img{max-height:420px;width:auto}
+.obs figcaption{display:flex;flex-direction:column;gap:5px;font-size:14px;color:var(--mid)}
+.obs figcaption b{color:var(--ink);font-weight:500}
+.obs .real{font:500 11px/1.3 var(--mono);color:var(--dim)}
+
+/* settings mock */
+.acct{background:var(--sunk);border:1px solid var(--line);border-radius:10px;padding:22px;display:grid;
+ grid-template-columns:160px 1fr;gap:22px;max-width:760px}
+.acct nav{display:flex;flex-direction:column;gap:4px;font-size:13.5px;color:var(--mid)}
+.acct nav span{padding:7px 10px;border-radius:5px}
+.acct nav .on{background:var(--panel);color:var(--ink)}
+.grp{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.grp .gh{font:500 12px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--dim);padding:12px 14px 8px}
+.acct .row{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:11px 14px;border-top:1px solid var(--line);font-size:14px}
+.acct .row em{display:block;font-style:normal;font-size:12.5px;color:var(--dim)}
+.sw{width:38px;height:22px;border-radius:11px;background:var(--sky);position:relative;flex:0 0 auto}
+.sw::after{content:"";position:absolute;right:3px;top:3px;width:16px;height:16px;border-radius:50%;background:#0C0D12}
+.gf{padding:10px 14px 13px;border-top:1px solid var(--line);font-size:13px;color:var(--mid)}
+.newt{color:var(--sky);font:500 11px/1 var(--mono);margin-left:8px}
+.pane{display:flex;flex-direction:column;gap:14px}
+.grp.quiet{opacity:.55}
+@media (max-width:640px){.acct{grid-template-columns:1fr;padding:16px}.acct nav{flex-direction:row;flex-wrap:wrap}}
+
+/* questions */
+.q{border-top:1px solid var(--line);padding-top:22px;display:flex;flex-direction:column;gap:16px}
+.q .qh{display:flex;gap:12px;align-items:baseline}
+.q .qh .num{color:var(--sky);font-size:14px}
+.quote{border-left:2px solid var(--sky);padding:2px 0 2px 14px;color:var(--mid);font-size:15px;max-width:68ch}
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px}
+.pair.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:720px){.pair,.pair.three{grid-template-columns:1fr}}
+.opt{display:flex;flex-direction:column;gap:12px}
+.opt h3 .num{color:var(--dim);margin-right:8px}
+.strip{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.strip .mini{width:108px;aspect-ratio:390/620;background:var(--sunk);border:1px solid var(--line);border-radius:12px;
+ display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;font-size:9px;text-align:center;padding:8px;color:var(--mid)}
+.strip .mini b{color:var(--ink);font-weight:500;font-size:10px}
+.strip .arr{color:var(--dim);font-family:var(--mono);font-size:12px}
+.cost{font-size:14px;color:var(--mid)}
+.cost b{color:var(--ink);font-weight:500}
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;vertical-align:top;padding:10px 12px;border-top:1px solid var(--line)}
+th{font:500 12px/1.2 var(--mono);color:var(--dim);letter-spacing:.04em;text-transform:uppercase;border-top:0}
+td:first-child{white-space:nowrap;color:var(--ink)}
+td{color:var(--mid)}
+.others{display:flex;flex-direction:column;gap:10px;font-size:15px;color:var(--mid)}
+.others b{color:var(--ink);font-weight:500}
+.src{display:flex;flex-direction:column;gap:12px;font-size:14.5px;color:var(--mid)}
+.src div{display:grid;grid-template-columns:minmax(0,1fr);gap:3px;border-top:1px solid var(--line);padding-top:10px}
+.src b{color:var(--ink);font-weight:500}
+.src a{font-size:13px;word-break:break-all}
+footer{font-size:13px;color:var(--dim);border-top:1px solid var(--line);padding-top:16px}
+@media (prefers-reduced-motion:no-preference){.pulse{animation:pl 2.4s ease-in-out infinite}
+ @keyframes pl{50%{box-shadow:0 0 0 1px var(--sky) inset,0 0 10px rgba(126,184,212,.35)}}}
+</style>
+
+<div class="wrap">
+<div class="proto" role="note"><b>Prototype</b><span>A storyboard, not the shipped app. Nothing here is wired.</span></div>
+
+<header>
+ <span class="eye">Atuned, first run. Revised 26 September, after FK</span>
+ <h1>From the boot to the Field, with one turn of the loop done on the way</h1>
+ <p class="protonote">This page is a prototype storyboard. It is not Atuned and nothing on it is wired to Atuned. The drawn screens carry no real tab names for that reason. The only real product on this page is the set of screenshots under "What running it showed", each labelled as the shipped build.</p>
+ <p class="mid">Every frame a brand new person meets, in order, drawn at phone width. The seven colour ring the boot ends on is still the only progress object. What changed: the four stations of the loop are no longer four cards to read. A person does each one once, in the real product, and arrives on the Field with a closed circle they made. The specification is <span class="num">DESIGN-firstrun.md</span> section 0, and the evidence is <span class="num">RESEARCH-firstrun.md</span>.</p>
+</header>
+
+<div class="thread" aria-label="The sequence">
+ <div><b>Boot</b><span>5.4 s, shipped</span></div>
+ <div><b>Hello</b><span>unchanged, as you drew it</span></div>
+ <div><b>Signal test</b><span>about 60 s, unchanged</span></div>
+ <div class="turn"><b>discover, play, flow, embody</b><span>one turn, 2 to 3 min</span></div>
+ <div><b>The Field</b><span>the circle closed</span></div>
+</div>
+
+<section>
+ <div class="sec-h"><span class="eye">What stayed, what moved</span><h2>Kept as you confirmed it, and six changes</h2></div>
+ <p class="kept"><b>Kept exactly:</b> the ring, the "Hello, Sofia." check in as drawn, the signal test, and the loop's four words, discover, play, flow, embody, used as the station names and never relabelled as a tool or a tab.</p>
+ <div class="changes">
+  <div><b>The loop is done, not read</b><span>Four cards of Next are a deck of cards tour, and NN/g's 70 person test found those do not help. Duolingo's first lesson is its onboarding.</span></div>
+  <div><b>It is the navigation tutorial</b><span>Each station happens in a real place, so a person has used four places by the end, with no card describing them.</span></div>
+  <div><b>The reward comes first</b><span>Measured: the moment a stranger feels seen is their own words lighting up as they type. discover is built around it.</span></div>
+  <div><b>The first story is not answered with a zero</b><span>Measured: today the first commit clears the panel and says nothing reaches the line. WHOOP and Oura show a calibrating state greyed instead of empty.</span></div>
+  <div><b>It ends on when</b><span>The Ritual's When row is already built. A when and where plan raised Headspace app opens 7.5 percent.</span></div>
+  <div><b>The circle they land with is real</b><span>A head start that is actually earned: 34 against 19 percent finished in the car wash study.</span></div>
+ </div>
+</section>
+
+<section>
+ <div class="sec-h"><span class="eye">The frames</span><h2>From the boot to the Field</h2>
+ <p class="mid">Example name: Sofia Alarcon, a reference profile in the product. The story text on the discover frame is the one written for Angela in the simulation. Every line of copy passed the voice gate and still owes the voice seat's ten passes.</p></div>
+ <div class="frames" id="frames"></div>
+</section>
+
+<section>
+ <div class="sec-h"><span class="eye">What running it showed</span><h2>The real build, walked as six of the reference profiles</h2>
+ <p class="mid">Commit <span class="num">acc8181</span>, built fresh, real Chromium, a new browser for every walk. These are screenshots of the shipped app, not drawings. What each person thinks is simulated; what the screen showed them is measured.</p></div>
+ <div class="obs">
+  <figure><div class="img tall"><img src="observed/03-landing-390.png" alt="The Field on a phone after the boot: the wheel, the tool buttons, no instruction" loading="lazy"></div>
+   <figcaption><span class="real">shipped build, 390 wide</span><b>The landing on a phone</b>22 controls in view and no instruction. The four ways in sit 3,216 px down the page.</figcaption></figure>
+  <figure><div class="img tall"><img src="observed/04-angela-typing-390.png" alt="Angela's story with tightness, shame, said yes when and angry lit in place" loading="lazy"></div>
+   <figcaption><span class="real">shipped build, 390 wide</span><b>Angela types. Her words light up.</b>The best moment in the product, and it is already built. Nothing leads a stranger to it.</figcaption></figure>
+  <figure><div class="img tall"><img src="observed/06-angela-after-commit-390.png" alt="After Commit the box is empty and the panel says nothing reaches the line yet" loading="lazy"></div>
+   <figcaption><span class="real">shipped build, 390 wide</span><b>She presses Commit</b>"You have committed 1 story and nothing reaches the line yet." The first visible change on the Field costs a second story.</figcaption></figure>
+  <figure><div class="img"><img src="observed/08-field-after-two-stories-1600.png" alt="The Field after two stories, with the story path drawn through the rings" loading="lazy"></div>
+   <figcaption><span class="real">shipped build, 1600 wide</span><b>After a second story</b>Three addresses held and the path drawn. This is the payoff the first turn brings forward, drawn faint after one story.</figcaption></figure>
+  <figure><div class="img"><img src="observed/10-james-summary-1600.png" alt="Summary says nothing has been entered while the right rail prints percentages" loading="lazy"></div>
+   <figcaption><span class="real">shipped build, 1600 wide</span><b>James opens Summary</b>The centre says nothing has been read. The rail beside it prints 26, 19 and 19 percent and what is "most shut". Must be fixed before any opening ships.</figcaption></figure>
+  <figure><div class="img tall"><img src="observed/12-diane-nine-sentences-390.png" alt="The nine sentences, each cut off, with Greed, Gluttony and Lust beside them" loading="lazy"></div>
+   <figcaption><span class="real">shipped build, 390 wide</span><b>Diane taps "Read nine sentences"</b>Nothing in view changes: they open about 1,200 px below her screen. Scrolled to, every sentence is cut off.</figcaption></figure>
+ </div>
+</section>
+
+<section>
+ <div class="sec-h"><span class="eye">Where the box and the switch live</span><h2>Profile button, Account, The Opening</h2>
+ <p class="mid">A drawing of the account area, not wired. The group already exists with one control. It gains a switch, the action is renamed, and the foot line is corrected, because the opening now keeps a name and a first story.</p></div>
+ <div class="acct">
+  <nav aria-label="Account sections, drawn"><span class="on">Account</span><span>Display</span><span>Security</span><span>Privacy</span><span>Billing</span><span>Help</span></nav>
+  <div class="pane">
+   <div class="grp quiet"><div class="gh">Identity</div>
+    <div class="row"><span>Name</span><span class="mid">Sofia Alarcon</span></div></div>
+   <div class="grp"><div class="gh">The Opening</div>
+    <div class="row"><span>Show the opening at launch<span class="newt">new</span><em>the check in, the signal test and one turn of the loop</em></span><span class="sw" role="img" aria-label="switch, on"></span></div>
+    <div class="row"><span>Run the opening now<span class="newt">renamed</span></span><span class="btn ghost">Open it</span></div>
+    <div class="gf">The signal test and the release in flow write nothing to your field. The opening keeps your name and your first story, and only if you gave them.</div></div>
+  </div>
+ </div>
+ <div class="tw"><table>
+  <thead><tr><th>Route</th><th>Where</th><th>What happens</th><th>Opening after</th></tr></thead>
+  <tbody>
+   <tr><td>Any press</td><td>Boot</td><td>Skips the boot only, as today</td><td>unchanged</td></tr>
+   <tr><td>Box ticked, Next</td><td>Hello</td><td>Name written, straight to the Field</td><td>off</td></tr>
+   <tr><td>Leave</td><td>Signal test, any station</td><td>Straight to the Field. Quarters already done stay closed on the ring. "The opening is in Account."</td><td>off</td></tr>
+   <tr><td>Save on the When row</td><td>embody</td><td>The ring closes onto the Field</td><td>off</td></tr>
+   <tr><td>Tab closed mid run</td><td>Anywhere</td><td>Next launch greets by name and resumes after the last closed quarter</td><td>still on</td></tr>
+  </tbody></table></div>
+</section>
+
+<section>
+ <div class="sec-h"><span class="eye">Yours to rule</span><h2>The questions, with both answers side by side</h2>
+ <p class="mid">Q6, which four surfaces the stations are, is retired: you answered it, "It's discover play flow embody." The new questions come first; Q1 and Q2 are unchanged and keep their drawings.</p></div>
+
+ <div class="q">
+  <div class="qh"><span class="num">Q9</span><h3>Is a dimmed product a pop up?</h3></div>
+  <p class="quote">20 September: "No pop ups. One screen, not a sheet over the product." The first turn happens in the real surfaces, with everything but one target dimmed.</p>
+  <div class="pair">
+   <div class="opt"><h3><span class="num">A</span>Dimmed, not covered</h3><div class="strip" id="q9a"></div>
+    <p class="cost"><b>As storyboarded.</b> No sheet and nothing drawn over the product; the product is the screen. The person touches the real places, which is the navigation tutorial. Costs a spotlight state on four surfaces.</p></div>
+   <div class="opt"><h3><span class="num">B</span>Full screen copies of each station</h3><div class="strip" id="q9b"></div>
+    <p class="cost"><b>Your 20 September rule to the letter.</b> Costs the tour of the software: the person never touches the real places until the opening ends.</p></div>
+  </div>
+ </div>
+
+ <div class="q">
+  <div class="qh"><span class="num">Q10</span><h3>What does flow do on a first story?</h3></div>
+  <p class="quote">Measured on the build: on a first story the release says "Nothing is held above the line yet, so there is nothing to release."</p>
+  <div class="pair">
+   <div class="opt"><h3><span class="num">A</span>A practice release, labelled</h3><div class="strip" id="q10a"></div>
+    <p class="cost"><b>As storyboarded.</b> The circle closes on day one. Writes nothing. Costs a practice mode on the release.</p></div>
+   <div class="opt"><h3><span class="num">B</span>flow waits for the line</h3><div class="strip" id="q10b"></div>
+    <p class="cost"><b>The third quarter stays open</b> until something crosses the line, usually the second story. Costs the closed circle on day one, and makes day two the day the loop first closes.</p></div>
+  </div>
+ </div>
+
+ <div class="q">
+  <div class="qh"><span class="num">Q11</span><h3>A few more questions after the signal test? Open, and yours</h3></div>
+  <p class="quote">"Maybe we can ask them a few more questions that kind of turn on, like not turn on, but activates the expression, activates certain aspects of the diagnostic. I don't know, maybe we don't do that."</p>
+  <p class="cost">Not recommended, not built. The research cuts both ways: Headspace roughly doubled course starts by asking a few questions even when the answer changed nothing, and active practice did not rise.</p>
+  <div class="pair three">
+   <div class="opt"><h3><span class="num">A</span>None</h3><p class="cost"><b>The name stays the only question,</b> and it already writes three real numbers.</p></div>
+   <div class="opt"><h3><span class="num">B</span>One law, asked three ways</h3><p class="cost"><b>Three questions,</b> the smallest set the engine can read a spread from, so one spoke is real on day one. Costs about 40 seconds and a questionnaire in the opening.</p></div>
+   <div class="opt"><h3><span class="num">C</span>A few that change nothing computed</h3><p class="cost"><b>Raises starts,</b> per Headspace. The one version the house voice cannot allow: a question that pretends to personalise is a claim the instrument cannot back.</p></div>
+  </div>
+ </div>
+
+ <div class="q">
+  <div class="qh"><span class="num">Q3</span><h3>Revised: does a station line say what to do, or what it is for?</h3></div>
+  <p class="quote">20 September: "At no point are we talking about results or purpose." 26 September: "Highest purpose of the product results."</p>
+  <div class="tw"><table>
+   <thead><tr><th>Station</th><th>A. What to do, as storyboarded</th><th>B. Plus what it is for, one more line</th></tr></thead>
+   <tbody>
+    <tr><td>discover</td><td>Write one thing from this week that is still on you.</td><td>It finds your story and the place in the body where it lives.</td></tr>
+    <tr><td>play</td><td>Your words landed here. Open one.</td><td>It finds what that story is wired to, and what it costs you over time.</td></tr>
+    <tr><td>flow</td><td>Run one release over it. Follow each line in thought.</td><td>Release takes the charge off, one address at a time.</td></tr>
+    <tr><td>embody</td><td>Pick when you will come back to it.</td><td>The ritual holds the change, one day at a time.</td></tr>
+   </tbody></table></div>
+  <p class="cost">Column A names an act and lets the screen show the result, which may settle this by showing instead of saying. Column B is your 26 September material, shaped once, and anything claiming healing goes through the refusal gate before it ships.</p>
+ </div>
+
+
+ <div class="q">
+  <div class="qh"><span class="num">Q1</span><h3>What does the box on Hello turn off?</h3></div>
+  <p class="quote">"Do you want to check this box so you don't have to see this again?"</p>
+  <div class="pair">
+   <div class="opt"><h3><span class="num">A</span>The whole opening, one switch</h3>
+    <div class="strip" id="q1a"></div>
+    <p class="cost"><b>As storyboarded.</b> Ticked, the person goes straight in now and on every later launch, until the switch in Account says otherwise. Costs the greeting by name on later launches.</p></div>
+   <div class="opt"><h3><span class="num">B</span>Only the greeting, shown every launch</h3>
+    <div class="strip" id="q1b"></div>
+    <p class="cost"><b>"Hello, Sofia." after every boot</b> until the box is ticked; the turn is one time on its own. Costs one press on every launch for everyone who never finds the box.</p></div>
+  </div>
+ </div>
+
+ <div class="q">
+  <div class="qh"><span class="num">Q2</span><h3>Is "the starting square" Frames?</h3></div>
+  <p class="quote">"If we can get that lined up with the start, the starting square, that'd be cool. It also needs to have a loading screen in between." FA confirmed "the square" is Frames.</p>
+  <div class="pair">
+   <div class="opt"><h3><span class="num">A</span>Land on Frames</h3><div id="q2a"></div>
+    <p class="cost"><b>The first run lands on the Field drawn as nested frames.</b> Later launches keep whatever view the person last chose. Costs porting the Frames arrival, which is not built yet, and its own checks.</p></div>
+   <div class="opt"><h3><span class="num">B</span>Land on the Wheel, as shipped</h3><div id="q2b"></div>
+    <p class="cost"><b>"Starting square" read as square one.</b> The Field opens as it does today. Costs nothing to build, and misses you if you meant the square.</p></div>
+  </div>
+ </div>
+ <div class="q">
+  <div class="qh"><span class="num">The rest</span><h3>One line each</h3></div>
+  <div class="others">
+   <p><b>Q4. Is the name required?</b> Optional loses the greeting and three numbers for whoever skips it. Required loses Diane and James at an ask placed before a payoff.</p>
+   <p><b>Q5, revised. The first story is real.</b> The opening now runs through the door: the story is the person's own and carries undo; only the release in flow is practice. The other answer keeps the story as practice too, and loses their own sentence becoming their own field.</p>
+   <p><b>Q7. May the opening keep the two marks from the signal test?</b> Kept, a replay can show whether the shape moved. Kept nothing, the signal test has no memory.</p>
+   <p><b>Q8. Does Root energetics open on the first landing?</b> Open once, the person lands on three numbers that are theirs; closed, as ruled.</p>
+   <p><b>Q12. Say that the fourteen people in the profile picker are worked examples?</b> Today it reads "Custom" above "Sofia, 41, somatic practitioner" and thirteen more, and a stranger reads them as other people's data. One word, "Examples", or leave it.</p>
+  </div>
+ </div>
+</section>
+
+<section>
+ <div class="sec-h"><span class="eye">Sources</span><h2>What the outside research rests on</h2>
+ <p class="mid">Read through search summaries on 26 September; the page fetcher was refused by the network proxy. Figures are each source's own.</p></div>
+ <div class="src">
+  <div><b>NN/g: deck of cards tutorials, 70 people, four apps.</b><span>Readers did no better on tasks than skippers.</span><a href="https://www.nngroup.com/articles/mobile-tutorials/">nngroup.com/articles/mobile-tutorials</a></div>
+  <div><b>Duolingo: the first lesson before the account ask.</b><span>Gradual engagement, and one path so nobody wonders what is next.</span><a href="https://www.appcues.com/blog/gradual-engagement-mobile-app-first-screen">appcues.com, gradual engagement</a><a href="https://blog.duolingo.com/new-duolingo-home-screen-design">blog.duolingo.com, new home screen</a></div>
+  <div><b>Headspace and Irrational Labs: perceived fit and a plan.</b><span>A few questions doubled starts; a when and where plan raised opens 7.5 percent; practice days did not rise.</span><a href="https://kristenberman.substack.com/p/lessons-on-habit-formation-from-an">kristenberman.substack.com, lessons on habit formation</a></div>
+  <div><b>WHOOP and Oura: say what is still calibrating.</b><span>Recovery greyed for four days; Oura's long term metrics marked as calibrating.</span><a href="https://support.whoop.com/hc/en-us/articles/360019622573-What-is-the-Recovery-calibration-period-">support.whoop.com, calibration period</a><a href="https://support.ouraring.com/hc/en-us/articles/360025589793-Readiness-Score">support.ouraring.com, Readiness Score</a></div>
+  <div><b>Nunes and Dreze 2006: the endowed progress effect.</b><span>34 against 19 percent completion with a real looking head start.</span><a href="https://www.coglode.com/nuggets/endowed-progress-effect">coglode.com, endowed progress effect</a></div>
+  <div><b>Eyal's Hook and Fogg's behaviour model.</b><span>Investment loads the next trigger; an anchor to something already done makes the habit.</span><a href="https://amplitude.com/blog/the-hook-model">amplitude.com, the hook model</a><a href="https://www.behaviormodel.org/">behaviormodel.org</a></div>
+  <div><b>Nintendo's four steps, and Valve's Portal.</b><span>Introduce, develop, twist, conclude; and teaching the mechanic is not enough without a reason to care.</span><a href="https://www.gamedeveloper.com/design/the-secret-to-i-mario-i-level-design">gamedeveloper.com, the secret to Mario level design</a><a href="https://www.gamedeveloper.com/design/thinking-with-portals-creating-valve-s-new-ip">gamedeveloper.com, thinking with portals</a></div>
+  <div><b>Time to value, and Superhuman's one to one start.</b><span>Under five minutes to first value for high performers; a guided first session as the concierge route, which is Sofia with a client.</span><a href="https://amplitude.com/blog/time-to-value-drives-user-retention">amplitude.com, time to value</a><a href="https://review.firstround.com/superhuman-onboarding-playbook/">review.firstround.com, Superhuman onboarding</a></div>
+ </div>
+</section>
+
+<footer>Prototype storyboard for DESIGN-firstrun.md section 0, revised 26 September 2026 after FK. Drawn in the product's Dark theme. Not the shipped app. Walk and screenshots: proto/firstrun/walk.js and proto/firstrun/observed/.</footer>
+</div>
+
+<script>
+(function(){
+ var SEATS=['#D6524C','#D8924E','#DABF6A','#5FD5A6','#5EBBDB','#7D93E0','#A77EDB'];
+ function arcPath(cx,cy,r,a0,a1){
+  var p=function(a){a=(a-90)*Math.PI/180;return [(cx+r*Math.cos(a)).toFixed(2),(cy+r*Math.sin(a)).toFixed(2)];};
+  var s=p(a0),e=p(a1),large=(a1-a0)>180?1:0;
+  return 'M'+s[0]+' '+s[1]+'A'+r+' '+r+' 0 '+large+' 1 '+e[0]+' '+e[1];}
+ /* the boot's seven colour ring: seven arcs with small gaps */
+ function sevenRing(size,sw){
+  var h='<svg width="'+size+'" height="'+size+'" viewBox="0 0 100 100" aria-hidden="true">';
+  for(var i=0;i<7;i++){var a0=i*360/7+4,a1=(i+1)*360/7-4;
+   h+='<path d="'+arcPath(50,50,40,a0,a1)+'" fill="none" stroke="'+SEATS[i]+'" stroke-width="'+sw+'" stroke-linecap="round"/>';}
+  return h+'<circle cx="50" cy="50" r="9" fill="none" stroke="#7EB8D4" stroke-width="1.2" opacity=".7"/></svg>';}
+ /* the progress ring, closed to a fraction */
+ function progRing(size,frac){
+  var h='<svg width="'+size+'" height="'+size+'" viewBox="0 0 100 100" aria-hidden="true">'
+   +'<circle cx="50" cy="50" r="40" fill="none" stroke="#2C303C" stroke-width="3"/>';
+  if(frac>0)h+=(frac>=1)?'<circle cx="50" cy="50" r="40" fill="none" stroke="#7EB8D4" stroke-width="3"/>'
+   :'<path d="'+arcPath(50,50,40,0,360*frac)+'" fill="none" stroke="#7EB8D4" stroke-width="3" stroke-linecap="round"/>';
+  return h+'</svg>';}
+ /* the marker pad, with a mark or two */
+ function pad(size,marks,arc){
+  var h='<svg width="'+size+'" height="'+size+'" viewBox="0 0 100 100" aria-hidden="true">'
+   +'<circle cx="50" cy="50" r="44" fill="#0A0B10" stroke="#2C303C" stroke-width="1"/>'
+   +'<path d="M50 6V94M6 50H94" stroke="#2C303C" stroke-width=".8"/>';
+  if(arc)h+='<path d="'+arcPath(50,50,44,0,360*arc)+'" fill="none" stroke="#7EB8D4" stroke-width="2" stroke-linecap="round"/>';
+  if(marks.length===2)h+='<line x1="'+marks[0][0]+'" y1="'+marks[0][1]+'" x2="'+marks[1][0]+'" y2="'+marks[1][1]+'" stroke="#94908A" stroke-width=".8" stroke-dasharray="2 2"/>';
+  marks.forEach(function(m){h+='<circle cx="'+m[0]+'" cy="'+m[1]+'" r="4.2" fill="'+(m[2]||'#7EB8D4')+'"/>';
+   if(m[3])h+='<text x="'+(m[0]+7)+'" y="'+(m[1]+3)+'" font-size="7" fill="#B4B0A8" font-family="Inter,sans-serif">'+m[3]+'</text>';});
+  return h+'</svg>';}
+ /* the loop: his four words, and only his four words. It closes. */
+ var ST=['discover','play','flow','embody'];
+ function loop(size,done,labels){
+  var h='<svg width="'+size+'" height="'+size+'" viewBox="'+(labels?'-16 -8 132 116':'4 4 92 92')+'" aria-hidden="true">'
+   +'<circle cx="50" cy="50" r="36" fill="none" stroke="#2C303C" stroke-width="'+(labels?2.4:5)+'"/>';
+  if(done>=4)h+='<circle cx="50" cy="50" r="36" fill="none" stroke="#7EB8D4" stroke-width="'+(labels?2.4:5)+'"/>';
+  else if(done>0)h+='<path d="'+arcPath(50,50,36,0,90*done)+'" fill="none" stroke="#7EB8D4" stroke-width="'+(labels?2.4:5)+'" stroke-linecap="round"/>';
+  for(var i=0;i<4;i++){var a=(i*90-90)*Math.PI/180,x=50+36*Math.cos(a),y=50+36*Math.sin(a),on=i<done,cur=i===done;
+   h+='<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="'+(labels?7:9)+'" fill="#0C0D12" stroke="'+(on||cur?'#7EB8D4':'#2C303C')+'" stroke-width="'+(labels?1.6:3)+'"/>';
+   if(on)h+='<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="'+(labels?3:4)+'" fill="#7EB8D4"/>';
+   if(labels){var tx=x+(i===1?11:i===3?-11:0),ty=y+(i===0?-11:i===2?15:3);
+    h+='<text x="'+tx.toFixed(1)+'" y="'+ty.toFixed(1)+'" font-size="7" text-anchor="'+(i===1?'start':i===3?'end':'middle')
+     +'" fill="'+(cur?'#EFEDE8':'#94908A')+'" font-family="Inter,sans-serif">'+ST[i]+'</text>';}}
+  return h+'</svg>';}
+ /* a small wheel, optionally with the addresses one story touched */
+ function wheel(size,marks,closed){
+  var st='<svg width="'+size+'" height="'+size+'" viewBox="0 0 100 100" aria-hidden="true">';
+  for(var j=0;j<7;j++){st+='<path d="'+arcPath(50,50,42,j*360/7+2,(j+1)*360/7-2)+'" fill="none" stroke="'+SEATS[j]+'" stroke-width="3.2" opacity="'+(marks?.35:.9)+'"/>';}
+  for(var k=0;k<3;k++)st+='<circle cx="50" cy="50" r="'+(32-k*9)+'" fill="none" stroke="#2C303C" stroke-width=".8"/>';
+  (marks||[]).forEach(function(m){st+='<circle cx="'+m[0]+'" cy="'+m[1]+'" r="'+(m[3]?4:2.6)+'" fill="'+m[2]+'" opacity="'+(m[3]?1:.45)+'"'
+   +(m[3]?' stroke="#EFEDE8" stroke-width=".8"':'')+'/>';});
+  if(closed)st+='<circle cx="50" cy="50" r="7" fill="none" stroke="#7EB8D4" stroke-width="1.6"/><circle cx="50" cy="50" r="2.4" fill="#7EB8D4"/>';
+  else st+='<circle cx="50" cy="50" r="5" fill="none" stroke="#7EB8D4"/>';
+  return st+'</svg>';}
+ var MK=[[46,22,'#D6524C',1],[53,20,'#D6524C'],[30,36,'#5EBBDB'],[26,48,'#5EBBDB'],[68,30,'#D8924E'],[74,40,'#D8924E'],[70,62,'#DABF6A'],[40,74,'#A77EDB']];
+ /* a station inside the product. The bar is drawn with no names: it is not wired. */
+ function station(done,word,line,body){
+  return '<div class="st"><div class="nb" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>'
+   +'<span class="leave">Leave</span>'
+   +'<div class="dock">'+loop(48,done,false)+'<div><div class="w">'+word+'</div><div class="l">'+line+'</div></div></div>'
+   +body+'</div>';}
+ var dimRows='<div class="dimmed" style="display:flex;flex-direction:column;gap:6px"><div class="blk" style="width:70%"></div><div class="blk" style="width:88%"></div><div class="blk" style="width:55%"></div></div>';
+
+ var T1body='<div class="card lit"><div class="ta">My sister called again and I felt the old <s style="background:rgba(94,187,219,.25);color:#9ED8EC">tightness</s> in my chest. The same guilt, the same <s style="background:rgba(216,146,78,.28);color:#F0B37A">shame</s>. I <s style="background:rgba(94,187,219,.25);color:#9ED8EC">said yes when</s> I meant no and then I was <s style="background:rgba(218,191,106,.25);color:#EBD58E">angry</s> at myself all night.</div>'
+   +'<div class="row"><span class="tiny dim">35 words</span><span class="btn pulse">Commit 12</span></div></div>'
+   +'<div class="dimmed" style="display:flex;flex-direction:column;gap:6px"><div class="blk" style="width:40%"></div><div class="row"><div class="blk" style="width:30%"></div><div class="blk" style="width:30%"></div><div class="blk" style="width:30%"></div></div></div>';
+ var T1bBody='<div class="card"><div class="ta dim" style="opacity:.6">What happened. Write it the way you would say it out loud.</div></div>'
+   +'<div class="card lit"><div class="note">12 found, all under the line for now. What you write next adds to them.</div>'
+   +'<div class="chips"><span>Self-Silencing</span><span>People Pleasing</span><span>Shame</span><span>Guilt</span></div></div>'+dimRows;
+ var T2body='<div style="display:flex;justify-content:center;padding:4px 0">'+wheel(150,MK,false)+'</div>'
+   +'<div class="card lit"><div class="note"><b style="color:#EFEDE8;font-weight:500">Self-Silencing</b>, at the throat. Under the line.</div></div>'+dimRows;
+ var T3body='<div class="card lit" style="gap:8px"><div class="prac">Practice. This one writes nothing to your field.</div>'
+   +'<div class="note">Self-Silencing, at the throat</div>'
+   +'<div class="blk" style="width:90%;opacity:.35"></div><div class="blk" style="width:96%;background:#7EB8D4;opacity:.8"></div><div class="blk" style="width:80%;opacity:.35"></div>'
+   +'<div class="tiny dim">one line at a time</div></div>'+dimRows;
+ var T4body='<div class="dimmed card"><div class="blk" style="width:50%"></div><div class="blk" style="width:80%"></div></div>'
+   +'<div class="card lit"><div class="note">When</div><div class="chips"><span class="on">after I put the kettle on</span><span>before the first run of the day</span><span>when I close the laptop</span><span>my own words</span></div>'
+   +'<div class="note">Where</div><div class="chips"><span>the chair by the window</span></div>'
+   +'<div class="row"><span></span><span class="btn pulse">Save</span></div></div>';
+ var T5body='<div style="display:flex;justify-content:center;padding:6px 0">'+wheel(150,MK.map(function(m,i){return [m[0],m[1],m[2],i===0];}),true)+'</div>'
+   +'<div class="note" style="text-align:center">The wheel is your field. Left is what you are made of. Right is what it reads.</div>'+dimRows;
+
+ var F=[
+  {id:'F0',nm:'Boot',tag:'shipped',
+   ph:'<div style="display:flex;flex-direction:column;align-items:center;gap:12px">'+sevenRing(120,4.4)
+     +'<div class="big" style="letter-spacing:.14em">Atuned</div><div class="tiny">Powered by Source OS</div></div>',
+   p:'Unchanged. Measured 5.4 s to lift at both widths. On a first run it lifts onto Hello and its ring lands there.',
+   can:'anything, which skips it',time:'5.4 s, measured',exit:'never auto skipped, by ruling'},
+  {id:'F1',nm:'Hello',tag:'unchanged',
+   ph:sevenRing(46,5)+'<div class="big">Hello, Sofia.</div>'
+     +'<div class="field"><label>First name</label><i>Sofia</i></div>'
+     +'<div class="field"><label>Last name</label><i>Alarcon</i></div>'
+     +'<div class="small">Your name sets three of your numbers. Held in this browser.</div>'
+     +'<div class="ck"><b></b>Go straight in from now on</div><span class="btn">Next</span>',
+   p:'Exactly as you confirmed it. The greeting fills as the name is typed.',
+   can:'4: two fields, the box, Next',time:'about 8 s',exit:'box ticked goes straight to the Field'},
+  {id:'F2',nm:'The settle',tag:'unchanged',
+   ph:'<span class="leave">Leave</span>'+progRing(92,0.35)
+     +'<div class="rows"><div>A word arrives ten times. Think it as it lands.</div><div>Keep some attention on your body.</div><div>Move the marker to show what moved.</div></div>',
+   p:'The only prose in the signal test, read while the ring closes.',
+   can:'1: Leave',time:'8 s',exit:'Leave, to the Field'},
+  {id:'F3',nm:'Yes',tag:'unchanged',
+   ph:'<span class="leave">Leave</span><div class="word">yes</div>'+pad(132,[[62,40]],0.6)+'<div class="small">Move the marker.</div>',
+   p:'Ten beats. The person makes the state; no list of words is offered.',
+   can:'2: the marker, Leave',time:'10 beats',exit:'Leave'},
+  {id:'F5',nm:'No',tag:'unchanged',
+   ph:'<span class="leave">Leave</span><div class="word">no</div>'+pad(132,[[36,66]],0.4)+'<div class="small">Move the marker.</div>',
+   p:'After the hold, the same with "no". The hold frame, F4, is unchanged and not redrawn here.',
+   can:'2: the marker, Leave',time:'10 beats',exit:'Leave'},
+  {id:'F6',nm:'The two marks',tag:'one line new',
+   ph:'<span class="leave">Leave</span><div class="big" style="font-size:14px">A thought moved your body.<br>Now write one down.</div>'
+     +pad(132,[[62,40,'#7EB8D4','yes'],[36,66,'#A77EDB','no']])+'<span class="btn">Next</span>',
+   p:'Both marks, no number. The added line hands the person straight into discover.',
+   can:'2: Next, Leave',time:'about 4 s',exit:'Leave'},
+  {id:'T1',nm:'discover',tag:'new',
+   ph:station(0,'discover','Write one thing from this week that is still on you.',T1body),
+   p:'The real story surface, everything but the box and Commit dimmed. The words light as they are typed, which is built. This is where a stranger first feels read.',
+   can:'2: write, Commit. And Leave',time:'45 to 90 s',exit:'Commit closes the first quarter'},
+  {id:'T1b',nm:'discover, committed',tag:'new line',
+   ph:station(1,'discover','Write one thing from this week that is still on you.',T1bBody),
+   p:'Today this says "nothing reaches the line yet" and shows a 0 percent. Instead: what was found, under the line, and what makes it rise. The engine does not change.',
+   can:'the ring turns on its own',time:'about 2 s',exit:'into play'},
+  {id:'T2',nm:'play',tag:'new',
+   ph:station(1,'play','Your words landed here. Open one.',T2body),
+   p:'The real Field, its entrance playing now. The addresses the story touched are drawn faint where under the line. Opening one is built.',
+   can:'the lit addresses. And Leave',time:'about 15 s',exit:'opening one closes the second quarter'},
+  {id:'T3',nm:'flow',tag:'new',
+   ph:station(2,'flow','Run one release over it. Follow each line in thought.',T3body),
+   p:'The real release over the address just opened. On a first story it refuses today, so here it runs as practice and says so. Q10.',
+   can:'follow the lines. And Leave',time:'about 30 s',exit:'the last line closes the third quarter'},
+  {id:'T4',nm:'embody',tag:'new',
+   ph:station(3,'embody','Pick when you will come back to it.',T4body),
+   p:'The Ritual\'s When and Where rows, which are built, with "after I put the kettle on" as their own example. The plan that brings day two.',
+   can:'a when, Save. And Leave',time:'about 15 s',exit:'Save closes the circle'},
+  {id:'T5',nm:'The Field',tag:'revised',
+   ph:station(4,'','',T5body),
+   p:'The ring sweeps round and lands as the Field\'s core, closed. The Field shows their own story. The Help sheet\'s sentence says once which side is which.',
+   can:'the Field',time:'',exit:'the landing load is still AN8\'s to fix'}
+ ];
+ document.getElementById('frames').innerHTML=F.map(function(f){
+  return '<div class="fr"><div class="phone">'+f.ph+'</div><div class="cap"><span class="id">'+f.id+'</span>'
+   +'<h3>'+f.nm+'<span class="tag'+(/new|revised/.test(f.tag)?' new':'')+'">'+f.tag+'</span></h3><p>'+f.p+'</p>'
+   +'<dl><dt>can do</dt><dd>'+f.can+'</dd>'+(f.time?'<dt>time</dt><dd>'+f.time+'</dd>':'')+'<dt>out</dt><dd>'+f.exit+'</dd></dl></div></div>';}).join('');
+
+
+ /* a small Field for Q2, as Wheel or Frames. The bar carries no tab names:
+    this drawing is not wired, and a prototype never wears the real labels. */
+ function field(view){
+  var st='';
+  if(view==='frames'){st='<svg width="118" height="96" viewBox="0 0 118 96" aria-hidden="true">';
+   for(var i=0;i<7;i++){var m=i*6.5;st+='<rect x="'+m+'" y="'+(m*0.8)+'" width="'+(118-2*m)+'" height="'+(96-1.6*m)+'" rx="'+(6-i*0.6)
+    +'" fill="none" stroke="'+SEATS[6-i]+'" stroke-width="1.1" opacity=".85"/>';}
+   st+='<circle cx="59" cy="48" r="4" fill="none" stroke="#7EB8D4"/></svg>';}
+  else st=wheel(104,MK,true);
+  return '<div class="st" style="position:relative;inset:auto;height:100%"><div class="nb" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>'
+   +'<div class="card"><div class="note"><b style="color:#EFEDE8;font-weight:500">Root energetics</b></div><div class="note">Expression 6 &middot; Soul urge 6 &middot; Personality 9</div></div>'
+   +'<div style="display:flex;justify-content:center;padding:6px 0">'+st+'</div>'+dimRows+'</div>';}
+ function mini(b,s){return '<div class="mini"><b>'+b+'</b>'+(s||'')+'</div>';}
+ var ar='<span class="arr">to</span>';
+ document.getElementById('q1a').innerHTML=mini('Boot')+ar+mini('Field','launch 2, 3, 4')+'<p class="cost" style="flex-basis:100%;margin-top:4px">Every later launch, after the box or after the turn.</p>';
+ document.getElementById('q1b').innerHTML=mini('Boot')+ar+mini('Hello, Sofia.','[ ] box, Next')+ar+mini('Field')+'<p class="cost" style="flex-basis:100%;margin-top:4px">Every later launch, until the box is ticked.</p>';
+ document.getElementById('q2a').innerHTML='<div class="phone" style="max-width:236px;padding:0">'+field('frames')+'</div>';
+ document.getElementById('q2b').innerHTML='<div class="phone" style="max-width:236px;padding:0">'+field('wheel')+'</div>';
+ document.getElementById('q9a').innerHTML=mini(loop(34,0,false),'the real surface, dimmed, one thing lit')+ar+mini('the next real place')+'<p class="cost" style="flex-basis:100%;margin-top:4px">The person is in the product the whole time.</p>';
+ document.getElementById('q9b').innerHTML=mini(loop(34,0,false),'a full screen of its own')+ar+mini(loop(34,1,false),'the next full screen')+ar+mini('the Field')+'<p class="cost" style="flex-basis:100%;margin-top:4px">The product appears only at the end.</p>';
+ document.getElementById('q10a').innerHTML=mini('flow','practice, writes nothing')+ar+mini(loop(34,3,false),'embody')+ar+mini(loop(34,4,false),'closed, day one');
+ document.getElementById('q10b').innerHTML=mini(loop(34,2,false),'flow waits')+ar+mini('embody')+ar+mini(loop(34,3,false),'closes on the second story');
+})();
+</script>

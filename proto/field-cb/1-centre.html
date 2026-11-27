@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=1600">
+<title>Coherence and shadow, at the centre</title>
+<link rel="stylesheet" href="inter.css"><link rel="stylesheet" href="cb.css">
+<script src="cap/cap.js"></script><script src="cb.js"></script>
+<style>body{width:1600px}</style>
+</head><body>
+<div class="sheet">
+ <h1>Coherence and shadow, at the centre</h1>
+ <p class="lede">His ruling: coherence and shadow move to the centre of the figure, SQ comes off the Field, and the
+ right side keeps only a marker. Three ways to hold two numbers in one core, drawn on the shipped Dial and Frames for
+ James (coherence 44, shadow 35). Everything outside the core is the product's own picture, captured, unchanged.</p>
+ <div class="band">The Dial, at 1600</div>
+ <div class="row" id="dial"></div>
+ <div class="band">Nested frames, at 1600</div>
+ <div class="row" id="frames"></div>
+ <p class="prov">Mockup. proto/field-cb/1-centre.html. James, example, with his five story lines. Gate shares in these
+ crops are the shipped dashes: the six are item 4.</p>
+</div>
+<script>
+(function(){
+const S=300;   /* each crop, square, centred on the core */
+const OPTS=[
+ {v:'ship',h:'As it ships',t:'One number. Coherence, its arc and its swing. Shadow is not here: it is in the strip above, with SQ beside it.'},
+ {v:'A',h:'A. One ring, two arcs',t:'Coherence runs clockwise from twelve and shadow anticlockwise, on the one ring. The push and pull, drawn literally.'},
+ {v:'B',h:'B. Two rings',t:'Coherence keeps the ring it has. Shadow gets a finer ring inside it. Two scales, drawn as two.'},
+ {v:'C',h:'C. One ring, shadow as a number',t:'Coherence keeps the only arc. Shadow is printed under a rule, with no arc of its own.'}];
+/* EVERY NUMBER IN A NOTE IS READ OFF THE DRAWING OR THE ROSTER, never typed.
+   A typed figure is the defect this repository has recorded twelve times. */
+const gp=CB.gaps(),gmin=Math.min(...gp.map(x=>x.gap)),gmax=Math.max(...gp.map(x=>x.gap)),gJ=Math.round(100-CB.R.CQ-CB.R.DQ);
+const MEAS={};
+const NOTE={
+ A:()=>'<b>Reads as one whole, and it is not one.</b> 44 and 35 leave '+gJ+' points of ring standing for nothing. Across the '+gp.length+' read reference profiles that gap runs from '+Math.round(gmin)+' to '+Math.round(gmax)+' points. Nothing stops the two summing past 100, and then the arcs overlap.',
+ B:()=>'<b>Honest, and it costs size.</b> The inner ring takes '+Math.round(MEAS.C.inner-MEAS.B.inner)+' pixels of the free radius, so on the Dial the coherence figure drops from '+Math.round(MEAS.ship)+' to '+Math.round(MEAS.B.f1)+' pixels. Growing the core buys it back, and pushes every gate out with it.',
+ C:()=>'<b>Calmest, and it drops the push and pull.</b> Coherence sets at '+Math.round(MEAS.C.f1)+' pixels. Shadow is a number only, so the drawing no longer shows one coming down as the other goes up. The figures say it and the drawing does not.'};
+function cell(parent,key,o){
+ const c=document.createElement('div');c.className='cell';c.style.setProperty('--w',S+'px');
+ const pic=document.createElement('div');pic.className='pic';pic.style.width=S+'px';pic.style.height=S+'px';
+ c.appendChild(pic);parent.appendChild(c);
+ const M=CB.mount(pic,key);
+ M.svg.style.position='absolute';M.svg.style.left=(S/2-M.cx)+'px';M.svg.style.top=(S/2-M.cy)+'px';
+ if(o.v==='ship')MEAS.ship=MEAS.ship||CB.shipFs(M);else{const r=CB.centre(M,o.v);if(key==='dial-1600')MEAS[o.v]=r;}
+ c.insertAdjacentHTML('beforeend','<h2>'+o.h+'</h2>'+(o.t?'<p>'+o.t+'</p>':''));
+ return c;}
+const cells=OPTS.map(o=>cell(document.getElementById('dial'),'dial-1600',o));
+cells.forEach((c,i)=>{const n=NOTE[OPTS[i].v];if(n)c.insertAdjacentHTML('beforeend','<p class="m">'+n()+'</p>');});
+OPTS.forEach(o=>cell(document.getElementById('frames'),'frames-1600',Object.assign({},o,{t:''})));
+window.__ready=true;
+})();
+</script>
+</body></html>

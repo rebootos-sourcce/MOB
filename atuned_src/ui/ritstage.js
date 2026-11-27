@@ -1,0 +1,696 @@
+/* ============================================================
+   THE RITUAL STAGE, SIX CARDS, AND WHAT IS SUGGESTED. Round QN, 2 October.
+
+   His words, verbatim: "on the left hand side for the ... rituals I not only
+   want the input there but I want all the suggested ones that have come from
+   the sniffer and then my centerpiece is all my analytics and my ability to
+   like keep or delete check if I was successful ideally this would be about
+   six stack tall my upper right would be my ongoing goal challenge the middle
+   would be my active challenge and then my top left would be Ritual to avatar.
+   Completion ... the input ritual uses tags. And sniffs the relationship
+   between the avatar the person's patterns and then gets the data organized.
+   And links it up with the achievements when that system comes online. This
+   is also a very visual system. When I come to this page, even though it looks
+   static, it's very alive. It feels meaningful."
+
+   THE SIX, in his slots, and what each one reads. Nothing below is a second
+   mechanism: every read is one some other surface already makes.
+
+     top left   Ritual to avatar   avCycles, the Avatar page's own read: each
+                                   day a ritual is kept turns the avatar one
+                                   seat. And avRows, the avatar's stories, each
+                                   at the seat the sniffer hears it at, with
+                                   the active ritual that feeds that seat.
+     top right  Ongoing goal       ritBecoming, the avatar's newest line and
+                                   the pattern held at its seat, and the
+                                   ladder's next mark (ladderRead.next).
+     middle     Active today       the Active list, unchanged. His "active
+                                   challenge" is the rituals running now, and
+                                   Active is his own word for them (NW1).
+     then       Did it work        the record's kept and missed days for each
+                                   ritual, and the held places the snapshot
+                                   history recorded before it started against
+                                   compute() now. A snapshot is taken on every
+                                   story commit and every finished release.
+                Keep or delete     a ritual in its last three days: keep it a
+                                   week more (ritStartPlan wakes it), or delete
+                                   it (ritDelPlan, with Put back in place).
+                Practice analytics the chain from story to goal, kept days by
+                                   seat and minutes by week, off CURP.rituals.
+
+   ROUND QX changed two of the six on his words, "my complete list of daily,
+   weekly, monthly goals, and my success win": the middle is Goals, the
+   Active list as its Today with a week and a month beside it, and the last
+   is Success over time, his ten spans from a year down to a day. Both are in
+   ui/ritcal.js, which also says what each suggestion is, what it is for, the
+   person's own record with it, and takes Save for later and Dismiss.
+
+   WHAT "SUGGESTED BY THE SNIFFER" TURNED OUT TO MEAN, checked rather than
+   invented. engine/sourceai.js suggests nothing: it asks questions about a
+   story. Three reads already turn the sniffer's seat reading into a practice,
+   and the left column lists all three, deduplicated:
+     the field    ritFor, the seat carrying the most and the practice it calls
+                  for. This was the chain's own Start; it moved here, because
+                  the left column is where a ritual is started now.
+     the avatar   avRituals, the Avatar page's own queue. Each avatar story's
+                  bad-day line goes through readSeat (parseStory, the sniffer),
+                  the seat it lands on carries a load, and ritFor names the
+                  practice that seat calls for. That is his "relationship
+                  between the avatar and the person's patterns", and it was
+                  already written, in ui/avatarui.js, round JP.
+     the bank     the heaviest held places, relQueueOf, one per seat, each as a
+                  release schedule tied to that place (rel), the same shape the
+                  becoming card's schedule has.
+   The becoming's own schedule is not repeated here: the Ongoing goal card
+   offers it, and one choice is offered once.
+
+   ACHIEVEMENTS, WHEN THAT SYSTEM COMES ONLINE. It does not exist yet
+   (POINTS-AUDIT.md; the points, achievements and unlocks TDD is audited and
+   unbuilt past its slice 0). The link point is the row ritSuggest returns:
+   when achievements exist, a row may carry the achievement it moves toward,
+   read from that system and never typed here. Nothing reads or writes one now,
+   because a promise on screen with nothing behind it is the status lie. The
+   ladder's marks (engine/ladder.js) are real: the next one is on the Ongoing
+   goal card, and since round QS the earned ones are pinned on the thirty day
+   cubes on the day each was earned (ui/accountability.js, FT28).
+
+   ALIVE AT REST. The stage carries a still layer behind the cards, one soft
+   pool per seat that holds charge, placed at the seat's own angle on the
+   Avatar ring and sized by how many places it holds, so the light behind the
+   page is the bank and not decoration. It breathes on --t-breath, the
+   product's own breath. The rings that carry a reading draw in when the page
+   is arrived at and not on every press, and the arc for today breathes until
+   it is kept. Under prefers-reduced-motion nothing moves.
+   ============================================================ */
+
+/* the page draws in once on arrival, and every press after that repaints
+   without replaying it. ritRender sets it back whenever Flow is left. */
+RIT.arrive=true;
+/* where the last delete was pressed, so Put back is offered where the person
+   is looking: 'keep' is the Keep or delete card, anything else the Record */
+RIT.goneAt='';
+/* the history list's length, the Record list's own posture */
+RIT.hh=6;
+
+/* ---------------- what is suggested ---------------- */
+/* a seat as a phrase inside a sentence, the Avatar page's own */
+function ritThe(b){return (typeof AV_THE!=='undefined'&&AV_THE[b])||('the '+ritSeatNm(b));}
+function ritSuggest(st){
+ var r=st.r, c=st.c, out=[], by={}, actKey={}, actRel={};
+ st.act.forEach(function(p){actKey[ritKey(p.steps)]=1; if(p.rel!=null)actRel[p.rel]=1;});
+ /* one card per practice, or per practice and place for a release schedule.
+    A second reason for the same card is added to it, never a second card. */
+ var add=function(k,seat,why,rel){
+  var key=k+'|'+(rel==null?'':rel), x=by[key], p=ritPr(k);
+  if(!p)return;
+  if(x){if(seat&&x.seats.indexOf(seat)<0)x.seats.push(seat);
+   if(x.why.indexOf(why)<0)x.why.push(why); return;}
+  out.push(by[key]={k:k, p:p, seats:seat?[seat]:[], why:[why], rel:(rel==null?null:rel)});};
+ /* the field. NOT WHILE NOTHING IS READ, SV16. This card used to say
+    "Nothing is read yet, so this is the lightest place to start." and sat
+    under the list's heading, which is Called for now, and on a blank profile
+    no seat has called for anything. The narrative director ruled that a card
+    the heading contradicts does not stay under it. The practice is not lost:
+    the builder is open by default now and its first tile is this same
+    practice, ritFor's lightest, so a blank person's one start is the first
+    thing in the column. */
+ if(c.called&&!actKey[c.called.k]&&!r.unread)
+  add(c.called.k,c.band,ritCap(ritThe(c.band))+' carries the most charge in your field.');
+ /* the avatar */
+ if(typeof avRituals==='function'&&typeof avRows==='function'&&typeof avSide==='function'){
+  var rows=avRows();
+  avRituals(r,rows,avSide().rule).forEach(function(x){
+   if(actKey[x.p.k])return;
+   x.areas.forEach(function(A){
+    add(x.p.k,A.b,'Your avatar\'s story about '+String(A.nm).toLowerCase()+' sits at '+ritThe(A.b)
+     +', which still carries charge.');});});}
+ /* the bank, one place per seat, the heaviest, and only a place held at the
+    line every surface counts held at (4) */
+ var bc=ritBecoming(), seen={}, n=0;
+ if(typeof relQueueOf==='function')relQueueOf(8).forEach(function(q){
+  /* the becoming's seat is the Ongoing goal card's, so the bank offers no
+     second schedule at that seat beside it */
+  if(n>=3||q.sq<4||seen[q.b]||(bc&&q.b===bc.seat)||actRel[q.i])return;
+  var called=ritFor({darkB:q.b, DQ:r.DQ}).called; if(!called)return;
+  seen[q.b]=1; n++;
+  var why='You hold '+String(q.k).toLowerCase()+' at '+ritThe(q.b)+'. This runs as a release schedule for it.';
+  /* THE SAME PRACTICE AT THE SAME SEAT IS ONE CARD, round QN, found walking
+     the page as James: the sacral carried the most charge and held envy, so
+     The Somatic Truth Check was offered twice at the sacral, one plain and one
+     for envy. The place is the more particular reason, so the card the field
+     or the avatar already made takes it, and its Start sets the schedule. */
+  var same=out.filter(function(x){return x.k===called.k&&x.rel==null&&x.seats.indexOf(q.b)>=0;})[0];
+  if(same){same.why.push(why); same.rel=q.i; by[called.k+'|'+q.i]=same; return;}
+  add(called.k,q.b,why,q.i);});
+ return out;}
+function ritCap(s){s=String(s||''); return s.charAt(0).toUpperCase()+s.slice(1);}
+function ritSugHtml(st){
+ /* a practice already picked in the builder above is that choice being made,
+    so it is not offered a second time underneath. A release schedule is tied
+    to a place and is a different choice, so it stays. */
+ /* ROUND QX: one saved for later or dismissed is not offered again here. A
+    saved one is under Saved for later; a dismissed one comes back with Put
+    back, or with Bring back dismissed at the foot of the list. */
+ var MO=(typeof ritMore==='function')?ritMore():{save:[],gone:[]}, held={};
+ MO.save.forEach(function(s){held[ritSugKey(s)]=1;}); MO.gone.forEach(function(k){held[k]=1;});
+ var all0=ritSuggest(st), all=all0.filter(function(x){return !held[ritSugKey(x)];});
+ var list=all.filter(function(x){return x.rel!=null||!RIT.sel[x.k];}); RIT.sug=list;
+ var saved=(typeof ritSavedHtml==='function')?ritSavedHtml():'';
+ var undo=RIT.sgGone?'<div class="rv-gone" role="status"><span>Dismissed '+esc(RIT.sgGone.nm)+'.</span>'
+  +'<button type="button" class="btn" data-act="sug-back">Put back</button></div>':'';
+ var foot=(MO.gone.length&&!RIT.sgGone)?'<div class="rv-sgfoot"><button type="button" class="btn rv-sgq" data-act="sug-all">Bring back dismissed</button></div>':'';
+ /* and when the builder holds every suggestion there is, the section says
+    nothing: "Nothing to suggest yet" under a builder holding the suggestion
+    would be untrue */
+ /* the affirmations lead the list, ritAffCardHtml (ui/ritweek.js) says why */
+ var aff=(typeof ritAffCardHtml==='function')?ritAffCardHtml(st):'';
+ /* and the law of the week closes the list, ui/ritlaw.js. Like the
+    affirmations' row it is not in RIT.sug, and like it, it keeps the section
+    up when nothing else is called for. With it on the list a blank profile's
+    line is "Nothing else", because "Nothing called for yet" under a card
+    would be the contradiction SV16 took off this list. */
+ var law=(typeof ritLawCardHtml==='function')?ritLawCardHtml(st):'';
+ if(!list.length&&all.length&&!undo&&!aff&&!law)return saved;
+ var body=!list.length?(aff||law?'<ul class="rv-sugl">'+aff+law+'</ul>':'')+'<p class="rv-empty">'+(all0.length?'Nothing else called for. Each one is added, saved or dismissed.'
+   :law?'Nothing else called for yet. Record a story to fill it.':'Nothing called for yet. Record a story to fill it.')+'</p>'
+  /* THE CARD IS ritBankCard NOW, 20 November (ui/ritbank.js), so a Path or
+     Avatar host draws this same card and not its own. This is its only
+     caller: measured at D-4, neither page draws one yet. The rulings that
+     shaped it went with it: round QX's description, the toward chip and the
+     person's own record in place of a success rate nothing measures; round
+     QV's one visible line, and no empty paragraph for a practice with none;
+     round QS's reasons one press away, on the name's pop-up since D-4; and
+     his three, add, save and dismiss, with an accessible name that keeps the
+     span a press sets. The line under the heading said "Its mark is the
+     point" until D-4 took the mark off the card, a sentence about nothing. */
+  /* the law card goes LAST, after the practice cards: they are dragged onto
+     the week and sit under it so the drag is a short reach, and it is never
+     dragged. Ahead of them it pushed the first card a row further from the
+     week, which tests/ritweek.js RW8 measured as a drop that never landed. */
+  :'<ul class="rv-sugl">'+aff+list.map(function(x,i){return ritBankCard(x,i,st);}).join('')+law+'</ul>';
+ /* CALLED FOR, NOT SUGGESTED, SV16. His words: "the suggested aren't
+    suggested, those are pulled from your ritual selectors. It's the stuff it
+    picks up based off your story." True of the code: every card is one of
+    the three reads above, and none is a guess. The narrative director ruled
+    the word: called for is already the house's word for a practice a seat
+    asks for (the builder's tile prints it, ritFor names it), and From your
+    story was not true of every card, since the field can carry charge from
+    the quiz. Where the cards come from is said in the line under it. */
+ return '<div class="rv-sec rv-sug rv-cfw"><div class="rv-hd"><span class="rv-h">Called for</span></div>'
+  /* the law card's source is named only while there is one, so the line is
+     never true of a card that is not on the list */
+  +'<p class="rv-mean">Read from your story, your avatar\'s stories'+(law?', the places you hold the most charge and the laws your intake has not measured. ':' and the places you hold the most charge. ')
+  +'Each is the practice that point calls for at the charge you carry now. Its colour is its kind. Drag one onto a day to set it once.</p>'+undo+body+foot+'</div>'+saved;}
+/* ---------------- ritual to avatar ----------------
+   ROUND QS made this card a picture first. His words: "everything like the
+   rest of the app has to be visually symbolic ... more show less tell if you
+   want tell you press on something to get information."
+
+   THE HERO is the avatar's own percent complete, avState().overall, the
+   figure the Avatar page draws round its core and the one he called good
+   there ("And the percent complete, that's good", round HG). It is drawn as
+   cr() at its hero size, the CQ circle's own object, with the avatar's own
+   mark (AV_IC.person) inside. Nothing new is measured: the ring is how much of
+   what the avatar's stories carried has gone since they were written.
+
+   THE CYCLES beside it are unchanged: avCycles, the days kept turning the
+   avatar a seat at a time.
+
+   THE SEATS are tiles, one per seat an avatar story sits at, each a crBadge
+   with the Avatar page's own mark for that area (AV_IC) in the seat's colour,
+   its ring the area's percent complete (avState().areas). The line the person
+   wrote and the ritual that feeds the seat moved off the card and onto the
+   press, so the card at rest is seven marks and not seven paragraphs. A dot
+   under the mark is filled when an active ritual feeds the seat. */
+function ritAvHtml(st){
+ var C=(typeof avCycles==='function')?avCycles(CURP):{days:0,cyc:[]};
+ var cur=-1; C.cyc.forEach(function(c,i){if(cur<0&&!c.done)cur=i;});
+ var names=['First','Second','Third'];
+ var rings=C.cyc.map(function(c,i){
+  var s='<svg viewBox="0 0 40 40" aria-hidden="true">';
+  c.turns.forEach(function(f,t){var a0=t*120+3;
+   s+='<path class="rv-cy-t" d="'+avCycArc(1,a0,114)+'"/>';
+   if(f>0)s+='<path class="rv-cy-a" pathLength="1" d="'+avCycArc(f,a0,114)+'" style="--i:'+(i*3+t)+'"/>';});
+  if(c.done)s+='<path class="rv-cy-ok" d="M14 20.5l4 4 8-9"/>';
+  var turns=c.turns.filter(function(f){return f>=1;}).length;
+  return '<div class="rv-cy'+(i===cur?' rv-cur':'')+'" role="img" aria-label="'+names[i]+' cycle, '
+   +(c.done?'done':(turns?turns+(turns===1?' turn':' turns')+' done':'not started'))+'">'+s+'</svg><span>'+names[i]+'</span></div>';}).join('');
+ var A0=(typeof avState==='function')?avState():null;
+ var all=A0&&A0.overall!=null?A0.overall:null, pc=all===null?0:Math.round(all*100);
+ /* NO FRACTIONS, 18 November: this row used to carry a literal denominator,
+    'Complete|XX%|100%', which ui/tip.js then printed as "Complete: XX% of
+    100%", a fraction made of a percent and its own scale repeated back. The
+    row is one part now, the percent alone; tip.js's own contract no longer
+    takes a third part at all (ui/tip.js build()). */
+ var hero='<span class="rv-avhero"'+rvTip('Your avatar',
+   'Percent whole: how much of what your avatar\'s stories carried has gone since you wrote them. The same figure the Avatar page draws round its core.',
+   all===null?'':'Whole|'+fmtPct('complete',all),'Avatar')+'>'
+  +cr('Heart',pc,{size:'hero', hot:false, color:'var(--k)', glyph:(typeof AV_IC!=='undefined'?AV_IC.person:SEATGLYPH._), raw:fmtPct('complete',all)})
+  /* THE PERCENT IS NAMED, SV24, his words: "I want to see a percent
+     complete." It was wired, avState().overall in the ring's pill, and
+     nothing on the card said what the pill was: the word lived in the
+     tooltip and the card's own line is folded into its heading. So the ring
+     now carries its one word under it, the V17 label, the way the cycles
+     beside it say kept. The figure stays in the pill and is not printed a
+     second time. On Ana it is the dash, and correctly: cr prints a zero as
+     the dash, his ruling ("the hardest carrying zero percent. I don't want
+     that."), and her two stories have moved nothing, because a worked
+     example keeps no starting weight to measure against (avClosure). A
+     person whose stories have released reads a percent there. */
+  +'<span class="rv-avlab">Whole</span>'
+  +'</span>';
+ /* NO FRACTIONS, 18 November (NO-FRACTIONS-AUDIT.md, finding P11): this row
+    said "Kept: N days of 63 days for three cycles". The figure below still
+    says the plain count of days kept (V17, the Avatar card's own word for
+    it), unchanged; the tooltip's own number is the percent of the 63 days
+    three cycles take, through the portion kind (engine/pct.js), already
+    named there for exactly this shape: a count against its own total. */
+ var cyc='<div class="rv-avc"'+rvTip('Cycles',
+   'Each day you keep a ritual turns your avatar one point, root to crown. Seven days make a turn, and three turns make a cycle.',
+   'Kept|'+fmtPct('portion',C.days/(AV_TURN*AV_TURNS*AV_CYCLES)),'Avatar')+'>'
+  +'<div class="rv-cys">'+rings+'</div>'
+  +'<div class="rv-avfig"><b>'+(C.days?C.days+'<small>'+(C.days===1?' day':' days')+'</small>':'–')+'</b><span>kept</span></div></div>';
+ var rows=(typeof avRows==='function')?avRows():[], seat={};
+ rows.forEach(function(x){if(x.gap&&x.gap.seat)seat[x.gap.seat]=x;});
+ /* ALL SEVEN AREAS, SV24, his words: "make sure it's hooked up to the 7th
+    growth areas". There is no seventh area anywhere in the product; there
+    are seven, AV_AREAS (ui/avatarui.js), one a seat, the seven rings the
+    Avatar page draws. This list drew only the seats a story sat at, so Ana
+    showed Drive and Clarity and five areas were missing with nothing to say
+    they exist. Every area is a tile now, in BANDS order, and one with no
+    story is an empty ring with the dash and says so in its tooltip. */
+ var seats=BANDS.filter(function(b){return typeof AV_OF!=='undefined'&&AV_OF[b];});
+ var list='';
+ /* "Your avatar has no stories yet." is cut, 4 November, struck in red on
+    the live page. The card's own line above already says it shows each seat
+    your avatar has a story at, so an empty list said it twice. The press
+    stays: it is the one route to writing the first story. */
+ if(!rows.length)list='<div class="rv-acts"><button type="button" class="btn" data-act="go-avatar">Open the avatar</button></div>';
+ else list='<ul class="rv-avl">'+seats.map(function(b,i){
+  var x=seat[b], A=(typeof AV_OF!=='undefined'&&AV_OF[b])||{nm:b,about:'',k:''};
+  var fed=st.act.filter(function(p){return p.band===b||p.tags.indexOf(b)>=0;});
+  var ar=A0&&A0.areas&&A0.areas[A.k], ap=ar&&ar.pct!=null?Math.round(ar.pct*100):null;
+  var said=!x?(fed.length?'Fed by '+fed.map(function(p){return ritName(p.steps);}).join(', ')+'.':'')
+   :x.gap.clear?'Clear at this point.'
+   :fed.length?'Fed by '+fed.map(function(p){return ritName(p.steps);}).join(', ')+'.':'No ritual at this point yet.';
+  return '<li class="rv-avs'+(fed.length?' rv-fed':'')+(x?'':' rv-avs0')+'" style="--c:'+seatCol(b)+';--i:'+i+'"'
+   +rvTip(A.nm+', at '+ritThe(b),(x?'"'+String(x.pair.be).replace(/^"+|"+$/g,'')+'" ':'No avatar story at this point yet. ')+said,
+    /* NO FRACTIONS, 18 November: same fix as the hero's Complete row above,
+       the row is the percent alone, never a percent over a literal 100%. */
+    ap===null?'':'Whole|'+fmtPct('complete',ar.pct),A.about)+'>'
+   +crBadge(b,ap||0,{size:'md', glyph:(typeof AV_IC!=='undefined'&&AV_IC[A.k])||SEATGLYPH[b], raw:ap===null?'–':fmtPct('complete',ar.pct)})
+   +'<span class="rv-avn">'+esc(A.nm)+'</span><i class="rv-avd" aria-hidden="true"></i></li>';}).join('')+'</ul>';
+ /* THE HEADING IS AVATAR, SV19, his words: "Get rid of the word ritual too,
+    just have avatar." The hero's own label under its ring read Avatar as
+    well, and with the heading saying it the label was the word twice on one
+    card, so it went; the ring keeps its name in the tooltip. */
+ return '<section class="rv-sec rv-c rv-c-av" data-slot="rail"><div class="rv-hd"><span class="rv-h">Avatar</span></div>'
+  +'<p class="rv-mean">Your avatar\'s percent whole, the cycles your kept days turn, and each point your avatar has a story at.</p>'
+  +'<div class="rv-avw">'+hero+cyc+'</div>'+list+'</section>';}
+function ritClip(s,n){return s.length>n?s.slice(0,n-1).replace(/\s+\S*$/,'')+'…':s;}
+
+/* ---------------- the ongoing goal ---------------- */
+/* THE HEADING IS GOAL NOW, 21 November, his words: "Change ongoing goal to
+   just goal." Only the word a person reads moves: the function, the class
+   rv-c-goal and every comment above that names the card by its old name are
+   identity and keep their spelling, the same posture Knowledge kept when the
+   bar renamed it Wisdom school. */
+function ritGoalHtml(st){
+ var bc=ritBecoming(), pairs=(CURP&&CURP.avatar&&CURP.avatar.pairs)||[], last=null;
+ for(var i=pairs.length-1;i>=0;i--)if(pairs[i]&&pairs[i].be&&String(pairs[i].be).trim()){last=pairs[i];break;}
+ var h='<section class="rv-sec rv-c rv-c-goal"><div class="rv-hd"><span class="rv-h">Goal</span></div>'
+  +'<p class="rv-mean">Who your avatar is becoming, what is held in the way, and the next mark your record can earn.</p>';
+ /* each branch opens and closes its own markup, because the build counts the
+    divs in the source text and a shared open closed in two branches reads as
+    two closes for one open */
+ if(bc){
+  var on=st.act.some(function(p){return p.rel===bc.n.i;}), col=seatCol(bc.seat);
+  var said=on?'<p class="rv-why-p">A release schedule for <b>'+esc(String(bc.n.k).toLowerCase())+'</b> at '+esc(ritThe(bc.seat))+' is active.</p>'
+   /* THE HELD PATTERN SENTENCE IS SOURCE AI'S, 20 November, the 15 November
+      ruling: the app read it off the bank, so it wears srcMark and the src-ai
+      treatment. The avatar line above it is the person's own and never does,
+      and the schedule line beside it is a fact of their plan. */
+   :'<p class="rv-why-p src-ai">'+(typeof srcMark==='function'?srcMark():'')+'You are holding on to <b>'+esc(String(bc.n.k).toLowerCase())+'</b> at '
+    +esc(ritThe(bc.seat))+'. Set up a release schedule for it?</p>';
+  var acts=on?'':'<span class="rv-acts rv-why-a">'
+   +'<button type="button" class="btn pri" data-act="why" data-d="7">A week</button>'
+   +'<button type="button" class="btn pri" data-act="why" data-d="14">Two weeks</button></span>';
+  h+='<div class="rv-why" style="--c:'+col+'"><div class="rv-why-t"><span class="rv-lb">Your avatar wants to be</span>'
+   +'<p class="rv-why-be">"'+esc(bc.be.replace(/^"+|"+$/g,''))+'"</p>'+said+'</div>'+acts+'</div>';}
+ else if(last)
+  h+='<div class="rv-why" style="--c:var(--accent)"><div class="rv-why-t"><span class="rv-lb">Your avatar wants to be</span>'
+   +'<p class="rv-why-be">"'+esc(String(last.be).trim().replace(/^"+|"+$/g,''))+'"</p>'
+   +'<p class="rv-why-p src-ai">'+(typeof srcMark==='function'?srcMark():'')+'Nothing held at four or more stands in the way of it yet.</p></div></div>';
+ /* with no goal written the card says nothing in its place, round RB, his
+    words on this page: "Get rid of all the sec[ond] third tier text." The
+    card's own line above already says what goes here, so the card is never
+    a bare box, and the next mark below fills it whenever there is one. The
+    line under the next mark, that a mark is earned and never bought, went
+    with it: the same ruling, and the mark itself says how it is earned.
+    AND HOW IT IS EARNED MOVED INTO THE PRESS, 4 November. The line under the
+    mark's name, "Open ten different addresses with a release. An address is
+    one exact place in your body." for Ten addresses, was struck in red on
+    the live page, and "Next mark" beside it was circled. So the visible line
+    is cut for every mark, and the same sentence, the ladder's own `to`, is
+    carried by the one tooltip (rvTip, a hover, a tap or keyboard focus), so
+    the mark keeps its meaning one press away and never stands unexplained,
+    which is the unpack rule. ui/cone.js prints the same `to` on its own
+    surface and is not touched. */
+ var m=st.L.next;
+ if(m)h+='<div class="rv-nxm" style="--c:'+seatCol(m.b)+'"'+(m.to?rvTip(m.nm,m.to,null,'Next mark'):'')+'><span class="rv-nxi" aria-hidden="true">'
+  +'<svg viewBox="0 0 24 24"><path d="'+m.ic+'"/></svg></span>'
+  +'<span class="rv-nxt"><span class="rv-lb">Next mark</span><b>'+esc(m.nm)+'</b></span></div>';
+ return h+'</section>';}
+
+/* ---------------- shared reads for a ritual's run ---------------- */
+/* the kept and missed days of one ritual from the day it started, read off the
+   same coverage the month draws. Today counts only once it is kept: a day
+   still open is not a miss. Feeds Keep or delete (ritKeepHtml, below) and the
+   sheet a sash opens (ritSashSheet, ui/ritcal.js). */
+function ritRunRead(p,today){
+ var s=ritStart0(p), kept=0, missed=0;
+ for(var d=s;d<=today;d++){
+  if(!ritCovers(p,d))continue;
+  var e=ritEntryFor(p,d), done=!!(e&&ritIsDone(e.x));
+  if(done)kept++; else if(d<today)missed++;}
+ return {kept:kept, missed:missed};}
+/* the last reading taken at or before a moment, off the snapshot history.
+   Feeds a suggestion's own record (ritSugRec, ui/ritcal.js). */
+function ritSnapBefore(iso){
+ var t=Date.parse(iso), best=null, bt=-Infinity;
+ ((CURP&&CURP.history)||[]).forEach(function(h){
+  var ms=h&&Date.parse(h.t); if(!(ms<=t)||ms<bt)return; bt=ms; best=h;});
+ return best;}
+/* DID IT WORK IS CUT, 21 November, his words: "The did it work, remove that
+   and the text underneath." The card printed a ritual's kept and missed days
+   and the held places read before it started and now, with a sentence
+   explaining both. The two reads it used stay above, because something else
+   still needs them; only the card and its sentence are gone. */
+
+/* ---------------- keep or delete ---------------- */
+var RIT_KEEP_AT=3;
+function ritKeepHtml(st){
+ /* and only one that has begun, 20 November: a plan set to start on a day
+    ahead (ui/ritbank.js) with a short span is not ending, it has not started */
+ var today=st.today, rows=st.act.filter(function(p){return p.days>0&&ritStart0(p)<=today&&ritStart0(p)+p.days-today<=RIT_KEEP_AT;});
+ var body=(RIT.gone&&RIT.goneAt==='keep')?'<div class="rv-gone" role="status"><span>Deleted.</span><button type="button" class="btn" data-act="putback">Put back</button></div>':'';
+ /* NOTHING ENDING IS NO CARD, SV19. It drew a half width card saying
+    Nothing ends in the next 3 days beside Did it work, an empty box holding
+    a whole column, and he asked for these stacked. The card arrives when a
+    ritual reaches its last three days, which is the one time it has a job,
+    and a Put back after a delete here keeps it on screen. */
+ if(!rows.length&&!body)return '';
+ if(!rows.length)body+='<p class="rv-empty">Nothing ends in the next '+RIT_KEEP_AT+' days.</p>';
+ else body+='<ul class="rv-kpl">'+rows.map(function(p){var run=ritRunRead(p,today);
+  return '<li class="rv-kp1" style="--c:'+ritCol(p)+'"><span class="rv-kpt"><span class="rv-okn">'+esc(ritName(p.steps))+'</span>'
+   +'<span class="rv-okk">'+esc(ritLeft(p,today))+'. Kept '+acctDays(run.kept)+'.</span></span>'
+   +'<span class="rv-kpa"><button type="button" class="btn" data-act="del-keep" data-id="'+p.id+'" aria-label="Delete '+esc(ritName(p.steps))+'">Delete</button>'
+   +'<button type="button" class="btn pri" data-act="keep" data-id="'+p.id+'" aria-label="Keep '+esc(ritName(p.steps))+' a week more">Keep</button></span></li>';}).join('')+'</ul>';
+ return '<section class="rv-sec rv-c rv-c-keep"><div class="rv-hd"><span class="rv-h">Keep or delete</span></div>'
+  +'<p class="rv-mean">A ritual comes here in its last '+RIT_KEEP_AT+' days. Keep runs it a week more from where it is. '
+  +'Delete takes it off and leaves the days you kept on the record. One with no end stays until you stop it.</p>'+body+'</section>';}
+function ritKeep(id){
+ var p=ritPlans().filter(function(x){return x.id===id;})[0]; if(!p)return false;
+ return ritStartPlan({steps:p.steps, band:p.band, track:p.track, days:7, when:p.when, where:p.where,
+  rel:p.rel, tc:p.tc, tags:p.tags, on:p.on, tm:p.tm},'Kept. '+ritName(p.steps)+' runs a week more.');}
+
+/* ---------------- practice analytics ----------------
+   GONE AS A CARD, round QX. Its two thirty day charts, kept by seat and
+   minutes by week, are Success over time now (ui/ritcal.js), for whichever of
+   his ten spans is picked, and the chain from story to goal moved with them.
+   A second drawing of the same days beside it would be one page saying a
+   thing twice. */
+
+/* ---------------- the still layer behind the stage ---------------- */
+function ritLiveHtml(){
+ var held=ritHeld(), by={};
+ held.forEach(function(x){by[x.b]=(by[x.b]||0)+1;});
+ var seats=BANDS.filter(function(b){return by[b];});
+ var pools=seats.map(function(b,i){
+  var A=(typeof AV_OF!=='undefined'&&AV_OF[b])||{a:i*51};
+  var t=A.a*Math.PI/180, x=50+38*Math.cos(t), y=46+34*Math.sin(t), s=200+Math.min(by[b],8)*34;
+  return '<i class="rv-pool" style="--c:'+seatCol(b)+';--x:'+x.toFixed(1)+'%;--y:'+y.toFixed(1)+'%;--s:'+s+'px;--i:'+i+'"></i>';}).join('');
+ /* nothing held is a quiet page and not an empty one: one pool of the
+    accent, centred, so the stage still breathes */
+ if(!pools)pools='<i class="rv-pool rv-pool0" style="--c:var(--accent);--x:50%;--y:40%;--s:360px;--i:0"></i>';
+ return '<div class="rv-live" aria-hidden="true">'+pools+'</div>';}
+
+/* the six, in his slots. Active today is the existing list and keeps its own
+   heading, so the middle slot is the one a person already knows. */
+/* ROUND QX: the middle slot is Goals, the Active list as its Today with the
+   week and the month beside it, and the last slot is Success over time, his
+   ten spans. Both are ui/ritcal.js. */
+/* SV16: THE WEEK FIRST, AND TWO CARDS GONE TO THE RIGHT MENU. His words:
+   "I'm at the center panel to look at, like a calendar ... Ongoing goals, and
+   ritual to avatar move that to the right menu." So the top of the stage is
+   the week, across both columns, Today under it where Goals was, and the
+   three that read and decide where they were. Ritual to avatar and Ongoing
+   goal keep their markup and are drawn into #flowside by ritRender, after
+   Accountability, which he ruled stays as it is. The grid keeps the name
+   rv-six it had when it held his six slots: the gates, the shot tool and the
+   phone order find the stage by it. */
+/* SV19: THE ONGOING GOAL COMES BACK TO THE CENTRE, his words: "Ongoing goals
+   should be in the center." That reverses his own SV16 ruling quoted above,
+   which is what shipped, and it is done because this is his current word; the
+   PR says so. It sits under Today: the week, what is due today, then what the
+   days are for. Avatar was not named this round and stays in the right menu. */
+/* THE CENTRE, 21 November, approved: the top row of the Goal and the
+   challenges, the week of blocks coloured by kind, Called for as short cards
+   right under the week so a drag onto a day is a short reach, then Keep or
+   delete while a ritual ends. The Today card is gone (ui/ritcal.js lists
+   where each of its controls went), the Goal card is the top row's first
+   tile and its pop-up, and Success over time moved under Accountability in
+   the right rail, merged with the thirty days (ui/accountability.js). The
+   grid keeps the name rv-six: the gates, the shot tool and the phone order
+   find the stage by it. */
+function ritStageHtml(st,P){
+ return '<div class="rv-six">'+ritTopHtml(st)+ritWeekCalHtml(st)+P.sug+ritKeepHtml(st)+'</div>';}
+
+function ritStageCss(){
+ if(document.getElementById('rit2-css'))return;
+ var st=document.createElement('style'); st.id='rit2-css';
+ st.textContent=[
+  /* the six. Two columns with the middle slot across both, and one column
+     under 640 of stage, in his order: top left, top right, middle, then the
+     three that read and decide. Named areas, so the order on a phone and the
+     slots on a desktop are one statement. */
+  /* Did it work and Keep or delete are stacked, SV19, his "I want these
+     stacked", and every card on the stage is one full row.
+     A COLUMN AND NOT A GRID, SV24. Once every card was one full row the named
+     areas only restated the source order, and they cost a gap: Keep or
+     delete is drawn only when there is something to keep, and its empty row
+     still took both of its gaps, so 27 pixels stood above Success over time
+     where every other card stood 14. A flex column in the order the cards are
+     written (ritStageHtml) draws the same page, on both widths, and an
+     absent card leaves nothing. */
+  '.rv-six{display:flex;flex-direction:column;gap:var(--rv-gap,14px)}',
+  '.rv-six>.rv-sec{margin:0;min-width:0}',
+  /* each card takes one hue from the tokens the page already themes */
+  '.rv-c-av{--k:var(--sec-embody)} .rv-c-goal{--k:var(--accent)}',
+  '.rv-c-keep{--k:var(--sec-flow)} .rv-c-ana{--k:var(--sec-discover)}',
+  '.rv-c{border-color:color-mix(in srgb,var(--k) 34%,transparent);background:color-mix(in srgb,var(--k) 5%,var(--panel))}',
+  /* the still layer. Behind the cards and never in front of them; the card
+     body sits on its own ground, so the light only shows in the gaps */
+  'body.tab-ritual #rit .rit-card.rv{position:relative;isolation:isolate}',
+  '.rv-live{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:-1}',
+  '.rv-pool{position:absolute;left:var(--x);top:var(--y);width:var(--s);height:var(--s);margin:calc(var(--s) / -2) 0 0 calc(var(--s) / -2);',
+  ' border-radius:50%;background:radial-gradient(closest-side,color-mix(in srgb,var(--c) 26%,transparent),transparent);',
+  ' animation:rvDrift calc(var(--t-breath) * 5) var(--ease-breath) infinite alternate,rvBreath var(--t-breath) var(--ease-breath) infinite alternate;',
+  ' animation-delay:calc(var(--i) * -2.3s),calc(var(--i) * -.6s)}',
+  '.rv-pool0{background:radial-gradient(closest-side,color-mix(in srgb,var(--c) 14%,transparent),transparent)}',
+  '@keyframes rvDrift{from{translate:-18px -12px}to{translate:20px 14px}}',
+  '@keyframes rvBreath{from{opacity:.5}to{opacity:1}}',
+  'body.snow .rv-pool,body.glasswhite .rv-pool{background:radial-gradient(closest-side,color-mix(in srgb,var(--c) 16%,transparent),transparent)}',
+  /* the left column's suggestions */
+  '.rv-sug{--k:var(--accent)}',
+  '.rv-sugl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}',
+  '.rv-sg1{padding:11px 12px;border-radius:12px;background:var(--panel-2);border:1px solid var(--edge);box-shadow:inset 3px 0 0 var(--c)}',
+  '.rv-sgn{font-size:15px;font-weight:600;color:var(--ink)}',
+  '.rv-sgm{font-size:13px;color:var(--mid);white-space:nowrap}',
+  '.rv-sgf{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}',
+  '.rv-sgt{display:flex;flex-wrap:wrap;gap:4px}',
+  /* ritual to avatar */
+  '.rv-cys{display:flex;gap:10px}',
+  '.rv-cy{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:12.5px;color:var(--mid)}',
+  '.rv-cy-t{fill:none;stroke:var(--edge-2);stroke-width:3;stroke-linecap:round;opacity:.7}',
+  '.rv-cy-a{fill:none;stroke:var(--k);stroke-width:3.4;stroke-linecap:round}',
+  '.rv-cy-ok{fill:none;stroke:var(--k);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}',
+  '.rv-cy.rv-cur .rv-cy-a{animation:rvGlow var(--t-breath) var(--ease-breath) infinite alternate}',
+  '.rv-cy.rv-cur span{color:var(--ink);font-weight:600}',
+  '@keyframes rvGlow{from{opacity:.62}to{opacity:1}}',
+  '.rv-avl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}',
+  /* the ongoing goal */
+  '.rv-c-goal .rv-why{margin:0 0 12px}',
+  '.rv-nxm{display:flex;gap:12px;align-items:flex-start;padding:10px 12px;border-radius:12px;background:var(--panel-2);border:1px solid var(--edge)}',
+  '.rv-nxi{display:inline-flex;align-items:center;justify-content:center;flex:0 0 40px;width:40px;height:40px;border-radius:50%;',
+  ' border:1.5px solid var(--c);color:var(--c);animation:rvGlow var(--t-breath) var(--ease-breath) infinite alternate}',
+  '.rv-nxi svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}',
+  '.rv-nxt{display:flex;flex-direction:column;gap:2px;min-width:0}',
+  '.rv-nxt b{font-size:15px;font-weight:600;color:var(--ink)}',
+  '.rv-nxt>span:last-child{font-size:13.5px;line-height:1.5;color:var(--mid)}',
+  /* keep or delete. .rv-okn, .rv-okk and .rv-okf are the Did it work card's
+     own classes, kept, 21 November: this row and Success over time's Held
+     places line still wear them (ritKeepHtml, below; ritSuccessHtml,
+     ui/ritcal.js) though the card that first drew them is gone. */
+  '.rv-kpl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}',
+  '.rv-kp1{display:flex;flex-direction:column;gap:3px;padding:10px 12px;border-radius:12px;background:var(--panel-2);',
+  ' border:1px solid var(--edge);box-shadow:inset 3px 0 0 var(--c)}',
+  '.rv-kp1{flex-direction:row;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}',
+  '.rv-kpt{display:flex;flex-direction:column;gap:3px;min-width:0}',
+  '.rv-kpa{display:flex;gap:8px}',
+  '.rv-okn{font-size:15px;font-weight:600;color:var(--ink)}',
+  '.rv-okk{font-size:13.5px;color:var(--mid)}',
+  '.rv-okf{font-size:13.5px;color:var(--ink)}',
+  /* practice analytics */
+  '.rv-c-ana .rv-chain{margin-bottom:14px}',
+  '.rv-anag{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:16px}',
+  '@container (max-width:560px){.rv .rv-anag{grid-template-columns:minmax(0,1fr)}}',
+  '.rv-ana1 .rv-lb{margin-bottom:8px}',
+  '.rv-sbars{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}',
+  '.rv-sbars li{display:grid;grid-template-columns:72px minmax(0,1fr) 62px;align-items:center;gap:8px;font-size:13px}',
+  '.rv-sbn{color:var(--mid)}',
+  '.rv-sbt{height:10px;border-radius:5px;background:color-mix(in srgb,var(--c) 12%,transparent);overflow:hidden}',
+  '.rv-sbt i{display:block;height:100%;border-radius:5px;background:var(--c)}',
+  '.rv-sbv{color:var(--ink);text-align:right;font-variant-numeric:tabular-nums}',
+  '.rv-wks{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;align-items:end}',
+  '.rv-wk1{display:flex;flex-direction:column;align-items:stretch;gap:4px;text-align:center}',
+  '.rv-wkv{font-size:13px;color:var(--ink);font-variant-numeric:tabular-nums}',
+  '.rv-wkv small{color:var(--dim)}',
+  '.rv-wkb{display:flex;align-items:flex-end;height:64px;border-radius:6px;background:color-mix(in srgb,var(--k) 8%,transparent)}',
+  '.rv-wkb i{display:block;width:100%;border-radius:6px;background:var(--k);min-height:2px}',
+  '.rv-wkn{font-size:12.5px;line-height:1.3;color:var(--dim)}',
+  /* the right column's loop and history */
+  '.rv-loopw{--k:var(--sec-embody)}',
+  '.rv-loopw,.rv-hist{border-color:color-mix(in srgb,var(--k) 38%,transparent);background:color-mix(in srgb,var(--k) 6%,var(--panel))}',
+  '.rv-hist{--k:var(--sec-flow)}',
+  '.rv-hl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}',
+  '.rv-hc{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:12px;background:var(--panel-2);border:1px solid var(--edge);',
+  ' box-shadow:inset 3px 0 0 var(--c)}',
+  '.rv-hc svg{width:34px;height:34px;flex:0 0 auto}',
+  '.rv-hct{display:flex;flex-direction:column;gap:2px;flex:1 1 auto;min-width:0}',
+  '.rv-hcn{font-size:14.5px;font-weight:600;color:var(--ink)}',
+  '.rv-hcs{font-size:13px;color:var(--mid)}',
+  '.rv-hc .rv-tag{margin:0;flex:0 0 auto}',
+  '.rv-hc .btn{flex:0 0 auto}',
+  /* arrival: the readings draw in once, when the page is arrived at. Only
+     strokes move, never text, so nothing a person reads is ever half there */
+  '.rv-arrive .rv-cy-a{animation:rvDraw .9s cubic-bezier(.22,1,.36,1) both;animation-delay:calc(.15s + var(--i,0) * 70ms)}',
+  '.rv-arrive .rv-cy.rv-cur .rv-cy-a{animation:rvDraw .9s cubic-bezier(.22,1,.36,1) both,rvGlow var(--t-breath) var(--ease-breath) 1.2s infinite alternate}',
+  '@keyframes rvDraw{from{stroke-dasharray:0 1}to{stroke-dasharray:1 0}}',
+  '.rv-arrive .rv-sbt i{animation:rvGrow .8s cubic-bezier(.22,1,.36,1) both}',
+  '.rv-arrive .rv-wkb i{animation:rvRise .8s cubic-bezier(.22,1,.36,1) both}',
+  '@keyframes rvGrow{from{transform:scaleX(0)}} @keyframes rvRise{from{transform:scaleY(0)}}',
+  '.rv-sbt i{transform-origin:left center} .rv-wkb i{transform-origin:bottom center}',
+  /* ---- ROUND QS: symbol first, the tell on the press ---- */
+  /* a ring drawn by cr() or crBadge() takes its colour as an attribute, which
+     cannot read a token; the page's own colour is a token (var(--k), the
+     accent), so the arc and the glyph read --c from the sheet instead. Same
+     value for a seat hex, and the right one for a token. */
+  '.rv .crb-a circle:last-child,.rv .cr .arc circle:last-child{stroke:var(--c)}',
+  /* the folded sentence, and the heading that carries it now */
+  '.rv-mean.rv-told{display:none}',
+  '.rv-h.rv-hq{cursor:help;text-decoration:underline dotted color-mix(in srgb,var(--k) 70%,var(--edge-2));text-underline-offset:4px;text-decoration-thickness:1px;border-radius:4px}',
+  '.rv-h.rv-hq:focus-visible,.rv-pc:focus-visible,.rv-avs:focus-visible,.rv-avhero:focus-visible,.rv-avc:focus-visible,.rv-cb:focus-visible{outline:2px solid var(--accent);outline-offset:2px}',
+  /* a ritual's days kept on its row, SV24: the figure and its one word, set
+     the way the Avatar card sets "14 days kept" (.rv-avfig), in place of the
+     seat mark, the empty ring and the pill. The seat marks in the line
+     (.rv-tgi) went with it, said in words now. */
+  '.rv-pc{display:inline-flex;align-items:baseline;justify-content:flex-end;gap:5px;flex:0 0 auto;min-width:44px;min-height:44px;margin-right:8px;padding:0 4px;cursor:help;border-radius:12px;line-height:44px;white-space:nowrap}',
+  '.rv-pc b{font-size:15px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}',
+  '.rv-pc b small{font-size:13px;font-weight:400;color:var(--mid)}',
+  '.rv-pc span{font-size:13px;color:var(--mid)}',
+  /* under 640 of stage, a phone, the figure and the timer take their own line
+     under the name: measured at 390, beside the name they left it about 70
+     pixels and Heart Point Focus broke one word a line. The figure lines up
+     with the name, past the 56 pixel ring, and the timer ends the line. */
+  '@container (max-width:639px){.rv .rv-row{flex-wrap:wrap} .rv .rv-open{flex:1 1 calc(100% - 64px)}',
+  ' .rv .rv-row>.rv-pc{margin-left:60px;margin-right:auto}}',
+  /* the builder\'s rituals wear their seat: a wash and an edge in its colour,
+     not only the stripe at the left */
+  '.rv-item{background:color-mix(in srgb,var(--c) 7%,var(--panel-2));border-color:color-mix(in srgb,var(--c) 30%,var(--edge))}',
+  /* ritual to avatar, the picture */
+  '.rv-c-av .rv-avw{display:flex;align-items:center;gap:16px;margin:2px 0 14px;flex-wrap:wrap}',
+  '.rv-avhero{display:flex;flex-direction:column;align-items:center;gap:6px;margin-right:26px;cursor:help;border-radius:14px;padding:2px}',
+  '.rv-avhero .cr.hero{--c:var(--k);margin:0 0 12px}',
+  '.rv-avhero .cr.hero .v{font-size:16px;height:24px;line-height:24px;padding:0 8px;min-width:0}',
+  '.rv-avhero .cr.hero .ring .gl svg{width:28px;height:28px;stroke-width:1.6}',
+  '.rv-avc{display:flex;flex-direction:column;gap:6px;cursor:help;border-radius:12px;padding:2px}',
+  '.rv-c-av .rv-cys{gap:8px}',
+  '.rv-c-av .rv-cy svg{width:46px;height:46px}',
+  '.rv-c-av .rv-avfig{display:flex;align-items:baseline;gap:6px;min-width:0}',
+  '.rv-c-av .rv-avfig b{font-size:20px;font-weight:600;color:var(--k);font-variant-numeric:tabular-nums}',
+  '.rv-c-av .rv-avfig small{font-size:13px;font-weight:400;color:var(--mid)}',
+  '.rv-c-av .rv-avfig span{font-size:13px;color:var(--mid)}',
+  /* SEVEN TILES, FOUR OVER THREE, SV24. Seven at 84 pixels did not fit the
+     rail's card in one row and broke three, three and one. A quarter of the
+     row each, the last three centred under the first four, so the seven read
+     as one symmetric block on both widths. */
+  '.rv-c-av .rv-avl{display:flex;flex-direction:row;flex-wrap:wrap;justify-content:center;gap:6px}',
+  '.rv-c-av .rv-avs{box-sizing:border-box;flex:0 0 calc((100% - 18px) / 4);min-width:0}',
+  '.rv-c-av .rv-avs.rv-avs0{background:none;box-shadow:inset 0 0 0 1px var(--edge)}',
+  '.rv-c-av .rv-avs.rv-avs0 .rv-avn{color:var(--mid);font-weight:500}',
+  '.rv-c-av .rv-avlab{margin-top:-6px;font-size:13px;color:var(--mid)}',
+  '.rv-c-av .rv-avs{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 6px 7px;border:0;border-radius:12px;cursor:help;',
+  ' background:color-mix(in srgb,var(--c) 8%,transparent);transition:background var(--t-micro) var(--ease-out)}',
+  '.rv-c-av .rv-avs:hover{background:color-mix(in srgb,var(--c) 15%,transparent)}',
+  '.rv-c-av .rv-avn{font-size:13px;font-weight:600;color:var(--ink)}',
+  '.rv-avd{width:7px;height:7px;border-radius:50%;border:1.5px solid var(--c);opacity:.7}',
+  '.rv-avs.rv-fed .rv-avd{background:var(--c);opacity:1}',
+  /* the suggestions, coloured by the seat or the pattern they are for */
+  /* FLAT AND SOLID, SV16. His words: "For the suggested, I want flat solid
+     color background." The card was a nine percent wash of its seat with a
+     forty percent outline, a tinted chip under it and buttons ringed in the
+     seat, so it read as layers of the same colour at four strengths. It is one
+     opaque fill of its seat now and nothing outlined: the Punch lighting's
+     own idiom (shell/head.html, body.punch .cr), a solid mix of the colour
+     into the panel, borders gone. Opaque on purpose: a mix into transparent
+     would let the still layer's pools show through and be a gradient again. */
+  '.rv-sg1{background:color-mix(in srgb,var(--c) 22%,var(--panel-2));border-color:transparent;box-shadow:none}',
+  '.rv-sg0{margin:4px 0 0;font-size:13px;line-height:1.4;color:var(--mid);overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}',
+  '.rv-sgf{margin-top:8px}',
+  '.rv-sg1 .rv-tg{gap:5px;padding:2px 9px 2px 6px;color:var(--ink);background:color-mix(in srgb,var(--t) 12%,transparent)}',
+  '.rv-tg svg{width:12px;height:12px;fill:none;stroke:var(--t);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}',
+  '.rv-sg1 .rv-sgc{border-color:transparent;background:color-mix(in srgb,var(--c) 16%,var(--panel))}',
+  '.rv-sg1 .rv-sgc.rv-sgc0{border-style:solid;color:var(--mid)}',
+  '.rv-sg1 .rv-tg{border-color:transparent;background:color-mix(in srgb,var(--t) 16%,var(--panel))}',
+  /* the thirty days as cubes */
+  '.rv-cubes{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px;max-width:340px;margin:0 auto 10px}',
+  '.rv-cb{position:relative;aspect-ratio:1/1;border-radius:7px;background:color-mix(in srgb,var(--edge-2) 30%,transparent);cursor:help}',
+  '.rv-cubes0 .rv-cb{cursor:default}',
+  /* a kept day is a cube: the top lit, the foot in shade, so it sits on the
+     panel rather than being printed on it */
+  '.rv-cb-done{box-shadow:inset 0 1.5px 0 rgba(255,255,255,.28),inset 0 -4px 0 rgba(0,0,0,.30),0 2px 6px -2px color-mix(in srgb,var(--c) 70%,transparent)}',
+  '.rv-cb-plan{background:color-mix(in srgb,var(--c) 12%,transparent);box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--c) 70%,transparent)}',
+  '.rv-cb-miss{background:none;box-shadow:inset 0 0 0 1.5px transparent;outline:1.5px dashed var(--dim);outline-offset:-1.5px}',
+  '.rv-cb-now::after{content:"";position:absolute;left:50%;bottom:-6px;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:var(--ink)}',
+  /* today, set and not yet kept, breathes until it is: the product's own
+     breath, on the opacity of a ring laid over the cube, so the compositor
+     carries it and nothing repaints */
+  '.rv-cb-now.rv-cb-plan::before{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:inset 0 0 0 2px var(--c);',
+  ' animation:rvNowCb var(--t-breath) var(--ease-breath) infinite alternate}',
+  '@keyframes rvNowCb{from{opacity:.2}to{opacity:1}}',
+  '.rv-cbm{position:absolute;top:-6px;right:-6px;display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;',
+  ' background:var(--panel);border:1.5px solid var(--c);color:var(--c);z-index:1}',
+  '.rv-cbm+.rv-cbm{right:auto;left:-6px}',
+  '.rv-cbm svg{width:11px;height:11px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}',
+  '.rv-key .rv-k-cube,.rv-key .rv-k-cplan,.rv-key .rv-k-cmiss{border-radius:3px;border:0;background:var(--sec-embody);box-shadow:inset 0 -2px 0 rgba(0,0,0,.3)}',
+  '.rv-key .rv-k-cplan{background:none;box-shadow:inset 0 0 0 1.5px var(--sec-embody);opacity:1}',
+  '.rv-key .rv-k-cmiss{background:none;box-shadow:none;outline:1.5px dashed var(--dim);outline-offset:-1.5px}',
+  /* motion. The cubes land as a wave that runs from the oldest corner to
+     today, row plus column at 32ms, so thirty cubes read as one event and not
+     thirty: a quick rise with a small overshoot, 240ms, on transform and
+     opacity only, which the compositor carries. The marks land after their
+     cube, a beat later and with more overshoot, because they are the news.
+     Under reduced motion shell/head.html stills every animation and the end
+     state is what is drawn. */
+  '.rv-arrive .rv-cb{animation:rvCube .24s cubic-bezier(.34,1.56,.64,1) both;animation-delay:calc(var(--i,0) * 32ms)}',
+  '@keyframes rvCube{from{opacity:0;transform:translateY(6px) scale(.72)}}',
+  '.rv-arrive .rv-cbm{animation:rvPin .32s cubic-bezier(.34,1.56,.64,1) both;animation-delay:calc(var(--i,0) * 32ms + 260ms + var(--k,0) * 80ms)}',
+  '@keyframes rvPin{from{opacity:0;transform:scale(.2)}}',
+  '.rv-arrive .rv-avs{animation:rvCube .26s cubic-bezier(.22,1,.36,1) both;animation-delay:calc(120ms + var(--i,0) * 70ms)}'
+  /* NO REDUCED MOTION RULE HERE, and that is on purpose: shell/head.html
+     already stills every animation in the product under
+     prefers-reduced-motion, '*{animation:none!important}'. A second rule
+     here would be a second place to keep in step. FT23 holds the page to it. */
+ ].join('\n');
+ document.head.appendChild(st);}

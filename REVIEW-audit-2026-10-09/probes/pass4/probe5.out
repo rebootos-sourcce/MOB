@@ -1,0 +1,5 @@
+(1a) onboarding door, crisis wording: reached mirror step 6 ; after Commit step 7 entries 1 imprints charged 4
+     page mentions 988: false  741741: false  "crisis": false
+(1b) Story page, crisis wording: committed entries 1 imprints 4 ; mentions 988: false  741741: false ; Source AI line while typing: ""
+(2) Story page draft after reload: box holds "" length 0 (typed 106 )
+(3) Skip: card says "Skipped. Nothing was recorded." ; evidence rows 0 meter lines 12 unique 12 | after reload evidence rows 0 lines 12 patterns (lines/answers) ["Self-Judgment (Solar):2/0","Self-Silencing:2/0","People Pleasing:2/0","Comparison:0/0","Delusion:0/0","Projection:0/0","Distortion:0/0","Lack Of Discernment:0/0"] RUN.ask false

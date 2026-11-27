@@ -1,0 +1,536 @@
+const {chromium}=require('playwright');const path=require('path');
+/* the target is overridable, so the delivery build can be put through the
+   same gates as the source build rather than being trusted. */
+/* ?dev=1: the same flag the boot sheet's own developer button sets, so this
+   gate meets the instrument at once rather than meeting the new login
+   screen ui/login.js puts in front of it on every boot. */
+const FILE='file://'+path.resolve(process.env.ATUNED_FILE||'source.html')+'?dev=1';
+/* THE BOOT IS A THREE SECOND SHEET, so every page these gates open has to be
+   allowed to finish booting before anything is measured or clicked. Without
+   it the gates race the boot: they wait under a second, the sheet is still
+   up, and a run fails intermittently on whichever surface it happened to
+   reach first. Measured once as four failures in one run of four that would
+   not reproduce, which is exactly the shape of this kind of race. */
+const booted=async p=>{try{await p.waitForFunction(
+  ()=>document.body.classList.contains('booted'),null,{timeout:12000});}
+ catch(e){/* reduced motion clears it synchronously; a miss is not a failure */}};
+let PASS=0,FAIL=0;const ok=(c,m)=>{if(c)PASS++;else{FAIL++;console.log('  FAIL '+m);}};
+(async()=>{
+const b=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+require('./net.js').guardBrowser(b);
+const p=await b.newPage({viewport:{width:1680,height:1020}});
+/* the wheel is measured with every layer on, tests/seed.js: the tier ruling
+   of 1 October takes the chain off the wheel below tier one */
+await p.addInitScript(require('./seed.js').FULL_SIGHT);
+await p.goto(FILE,{waitUntil:'load'}); await booted(p);await p.waitForTimeout(800);
+const people=await p.evaluate(()=>PEOPLE.map(x=>x.nm));
+console.log('=== wheel nameplate overlaps, every persona x every depth ===');
+for(const nm of people){
+ const i=people.indexOf(nm);
+ await p.evaluate(n=>{loadP(n);setTab(TAB.FIELD);},i);await p.waitForTimeout(80);
+ let line=[];
+ for(let v=0;v<4;v++){
+  const res=await p.evaluate(vv=>{S.view=vv;S.tab=TAB.FIELD;draw(compute());
+   const P=window.__PLATES||[];
+   let bad=0;
+   for(let a=0;a<P.length;a++)for(let c=a+1;c<P.length;c++)
+    if(window.plateHit(P[a],P[c]))bad++;
+   return {n:P.length,bad:bad};},v);
+  ok(res.bad===0,nm+'/depth'+v+': '+res.bad+' overlapping plates');
+  line.push(res.n+(res.bad?'!'+res.bad:''));}
+ console.log(' ',nm.padEnd(8),'plates by depth:',line.join(' '));}
+/* ============================================================
+   Nothing past the ring.
+
+   Ruled 26 September, CQ in TASKS.md: seat names never stick out past
+   the ring, on any view, so the Field keeps one unbroken circular
+   silhouette. Every name the Wheel drew ran outward from its anchor,
+   so at every depth past Charge the seat names sat outside the shell,
+   and at Blueprint nineteen domain names reached 1.2 of the unit. This
+   holds every label to R_EDGE, the shell or at Blueprint the domain ring,
+   for every persona at every depth, on a desktop and on a phone.
+
+   A curved word carries ro, its true outer radius, because the box
+   round a curve has corners off the arc: the first probe of this read
+   corners and failed five seat names that the pixels showed inside. A
+   straight run is read at its farthest corner, which only overstates.
+   ============================================================ */
+console.log('\n=== every label inside the ring, every persona x every depth ===');
+for(const w of [[1680,1020],[390,844]]){
+ await p.setViewportSize({width:w[0],height:w[1]});await p.waitForTimeout(160);
+ let worst=0,n=0;
+ for(let i=0;i<people.length;i++)for(let v=0;v<4;v++){
+  const res=await p.evaluate(a=>{loadP(a[0]);setTab(TAB.FIELD);S.view=a[1];layout();draw(compute());
+   /* the reach, then the edge taken off it. Unbracketed, the subtraction bound
+      to the straight branch alone and every curved word was measured as its
+      raw radius, which failed all seven seat names on its first run. */
+   const past=LBL.map(l=>({t:l.t,r:(l.ro!=null?l.ro:Math.max(...[[l.x,l.y],[l.x+l.w,l.y],[l.x,l.y+l.h],
+     [l.x+l.w,l.y+l.h]].map(q=>Math.hypot(q[0]-CX,q[1]-CY))))-R_EDGE})).filter(o=>o.r>1);
+   return {n:LBL.length,past:past.map(o=>o.t+' by '+o.r.toFixed(1)+'px')};},[i,v]);
+  n+=res.n;worst=Math.max(worst,res.past.length);
+  ok(res.past.length===0,w.join('x')+'/'+people[i]+'/depth'+v+': past the ring: '+res.past.join(', '));}
+ console.log('  '+w.join('x')+': '+n+' labels over '+people.length+' personas and 4 depths, '
+  +(worst?'some past the ring':'none past the ring'));}
+/* ============================================================
+   The six gates at the core clear of each other, and on top of the laws.
+
+   16 November. plateHit above holds the names; nothing held the marks.
+   The gate fan (verpArrows, ui/wheel.js) drew at fixed pixel sizes while
+   the core and the law ring scale with the wheel's unit, so at 390 every
+   persona at every depth put a pill under its neighbour's disc and the six
+   read as one knot over the core figure, and the law ticks, drawn after
+   them, ran straight across their glyphs. Nothing failed, because nothing
+   looked.
+
+   Held here with gateHit, the same predicate verpArrows spreads its fan
+   against, the way plateHit is shared with the plates: a disc and its pill
+   against every other disc and pill, four pixels clear, plateHit's own
+   margin. window.__GATES is what the fan settled to, and it is checked
+   against the gate hit targets actually pushed, so the gate cannot pass on
+   a list the wheel did not draw. Six is asserted, or a fan that drew
+   nothing would pass by having nothing to collide.
+
+   THE PREDICATE IS CHECKED AGAINST A KNOWN BAD CASE FIRST, in the run and
+   not only by hand: the fan as it was (a 13 disc, a 22 by 12 pill, a 0.72
+   step, 34 past the core) is rebuilt from the same core radius on every
+   frame at 390 and must clash on at least one. On 16 November it clashed
+   on 40 of the 68 frames; the run prints the figure of the day.
+
+   And the order: every law tick's hit target is pushed before the first
+   gate's. HIT is the draw order, so this is the gates painting after the
+   ticks, which is what keeps a tick off a glyph where the two still meet
+   at 390, the law ring starting inside the fan's reach.
+   ============================================================ */
+console.log('\n=== the six gates clear of each other and over the laws, every persona x every depth ===');
+for(const w of [[1600,1000],[390,844]]){
+ await p.setViewportSize({width:w[0],height:w[1]});await p.waitForTimeout(160);
+ let frames=0,worstGap=1e9,oldBad=0;
+ for(let i=0;i<people.length;i++)for(let v=0;v<4;v++){
+  const res=await p.evaluate(a=>{loadP(a[0]);setTab(TAB.FIELD);S.view=a[1];layout();
+   window.__GATES=[];draw(compute());
+   const G=window.__GATES||[], H=HIT.filter(h=>h.k==='gate');
+   const lawIx=HIT.map((h,j)=>h.k==='law'?j:-1).filter(j=>j>=0), gateIx=HIT.map((h,j)=>h.k==='gate'?j:-1).filter(j=>j>=0);
+   const hits=[];let gap=1e9;
+   for(let x=0;x<G.length;x++)for(let y=x+1;y<G.length;y++){
+    if(window.gateHit(G[x],G[y]))hits.push(x+'/'+y);
+    gap=Math.min(gap,Math.hypot(G[x].x-G[y].x,G[x].y-G[y].y));}
+   const drawn=G.length===H.length&&G.every((f,j)=>Math.abs(f.x-H[j].x)<0.5&&Math.abs(f.y-H[j].y)<0.5);
+   /* the old fan, rebuilt from this frame's own core */
+   const core=HIT.filter(h=>h.k==='core')[0], cr0=core?core.rad/1.5:0, rr=cr0*1.3+34;
+   const old=[];[[-1,3],[1,3]].forEach(s=>{for(let k=0;k<3;k++){const an=s[0]*Math.PI/2+(k-1)*0.72;
+    const x=CX+Math.cos(an)*rr,y=CY+Math.sin(an)*rr;old.push({x:x,y:y,R:13,px:x+10,py:y+8,pw:22,ph:12});}});
+   let oldHit=false;for(let x=0;x<old.length&&!oldHit;x++)for(let y=x+1;y<old.length;y++)if(window.gateHit(old[x],old[y])){oldHit=true;break;}
+   return {n:G.length,hits:hits,gap:gap,drawn:drawn,
+    order:!lawIx.length||!gateIx.length||Math.max(...lawIx)<Math.min(...gateIx),laws:lawIx.length,oldHit:oldHit};},[i,v]);
+  const tag=w.join('x')+'/'+people[i]+'/depth'+v;
+  frames++;worstGap=Math.min(worstGap,res.gap);if(res.oldHit)oldBad++;
+  ok(res.n===6,tag+': '+res.n+' gates on the wheel, want six');
+  ok(res.drawn,tag+': the published gate footprints are not the gates the wheel pushed');
+  ok(res.hits.length===0,tag+': gates touching, '+res.hits.join(', '));
+  ok(res.order,tag+': a law tick is drawn over a gate ('+res.laws+' ticks)');}
+ if(w[0]===390)ok(oldBad>0,'390: the old fixed fan clashed on '+oldBad+' of '+frames+' frames, so gateHit can see the defect it guards');
+ console.log('  '+w.join('x')+': '+frames+' frames, closest two gate centres '+worstGap.toFixed(1)+'px'
+  +(w[0]===390?', the old fixed fan clashed on '+oldBad+' of '+frames:''));}
+/* ============================================================
+   And nothing past the dial's ring either.
+
+   CR held the wheel to its edge and left the dial's callouts in its
+   corners, asking as its Q5 whether they should come in. Ruled 26
+   September, CT in TASKS.md, "for the field, I do not like the way
+   that the words stick out", so they came in, and this holds them there
+   on every profile at both widths. The dial is SVG and records nothing
+   in LBL, so the ring is measured off the drawing, the outside of the
+   domain band, and each callout line is read at its farthest corner.
+   Run first against the build before the move: it failed there on every
+   profile the dial names anything for.
+
+   A zero here would pass by naming nothing, so the count of lines
+   checked is printed and has to be more than nought at each width.
+   ============================================================ */
+console.log('\n=== every dial callout inside the ring, every persona ===');
+for(const w of [[1680,1020],[390,844]]){
+ await p.setViewportSize({width:w[0],height:w[1]});await p.waitForTimeout(160);
+ let n=0;
+ for(let i=0;i<people.length;i++){
+  const res=await p.evaluate(async a=>{loadP(a);setTab(TAB.FIELD);fviewSet('dial');
+   await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+   const fr=document.getElementById('frend');
+   const doms=[...fr.querySelectorAll('.L-domains > [data-h]')].map(e=>e.getBoundingClientRect());
+   const x0=Math.min(...doms.map(b=>b.left)),x1=Math.max(...doms.map(b=>b.right));
+   const y0=Math.min(...doms.map(b=>b.top)),y1=Math.max(...doms.map(b=>b.bottom));
+   const cx=(x0+x1)/2,cy=(y0+y1)/2,R=Math.max(x1-x0,y1-y0)/2;
+   const lines=[...fr.querySelectorAll('[data-call] text')].map(t=>({t:t.textContent,b:t.getBoundingClientRect()}));
+   const past=lines.map(o=>({t:o.t,r:Math.max(...[[o.b.left,o.b.top],[o.b.right,o.b.top],[o.b.left,o.b.bottom],
+     [o.b.right,o.b.bottom]].map(q=>Math.hypot(q[0]-cx,q[1]-cy)))-R})).filter(o=>o.r>1);
+   const box=[...fr.querySelectorAll('[data-call]')].map(g=>{const t=[...g.querySelectorAll('text')].map(e=>e.getBoundingClientRect());
+    return {l:Math.min(...t.map(b=>b.left)),r:Math.max(...t.map(b=>b.right)),t:Math.min(...t.map(b=>b.top)),b:Math.max(...t.map(b=>b.bottom))};});
+   let over=0;for(let j=0;j<box.length;j++)for(let k=j+1;k<box.length;k++){const A=box[j],B=box[k];
+    if(A.l<B.r&&B.l<A.r&&A.t<B.b&&B.t<A.b)over++;}
+   return {n:lines.length,past:past.map(o=>o.t+' by '+o.r.toFixed(1)+'px'),over:over};},i);
+  n+=res.n;
+  ok(res.past.length===0,w.join('x')+'/'+people[i]+'/dial: past the ring: '+res.past.join(', '));
+  ok(res.over===0,w.join('x')+'/'+people[i]+'/dial: '+res.over+' callouts overlapping');}
+ ok(n>0,w.join('x')+'/dial: the dial named nothing on any profile, so nothing was checked');
+ console.log('  '+w.join('x')+': '+n+' callout lines over '+people.length+' personas, checked against the ring');}
+/* ============================================================
+   The Compass header clear of the Compass names, and the hint clear
+   of the figure.
+
+   EP in TASKS.md, 26 September. At 390 on Abraham, Flat, Regulation
+   and Layers printed over Illumination and Desire and will on every
+   lighting, and the line under the figure printed over the word
+   Decoherent at both widths. Both were absolute blocks placed for a
+   desk layout: the controls at top 10 of .cone-fig, which is the
+   canvas top only while the rails are absolute too, and the hint at
+   bottom 10, which is where the canvas draws its lowest label. The
+   nameplate checks above never looked at this surface.
+
+   Every lighting is read off LIGHTINGS at run time rather than listed
+   here, and the counts checked have to be more than nought, so a
+   renamed class cannot pass by finding nothing. Run first against the
+   build before the fix: it failed there at 390 on every lighting.
+   ============================================================ */
+console.log('\n=== compass controls clear of the axis names, every lighting ===');
+{const ab=people.indexOf('Abraham');
+ const was=await p.evaluate(()=>S.theme);
+ for(const w of [[1680,1020],[390,844]]){
+  await p.setViewportSize({width:w[0],height:w[1]});await p.waitForTimeout(160);
+  const lights=await p.evaluate(()=>LIGHTINGS.map(t=>t[0]));
+  let nb=0,nr=0;const bad=[];
+  for(const L of lights){
+   await p.evaluate(a=>{loadP(a[0]);setTab(TAB.COMPASS);setLighting(a[1]);render();},[ab<0?0:ab,L]);
+   await p.waitForTimeout(120);
+   const res=await p.evaluate(()=>{
+    const bx=e=>e.getBoundingClientRect();
+    const hit=(a,c)=>a.left<c.right-0.5&&c.left<a.right-0.5&&a.top<c.bottom-0.5&&c.top<a.bottom-0.5;
+    const btn=[...document.querySelectorAll('#cone .cone-ctl .cn-b')];
+    const row=[...document.querySelectorAll('#cone .cn-nr')];
+    const over=[];
+    btn.forEach(x=>row.forEach(y=>{if(hit(bx(x),bx(y)))
+     over.push(x.textContent.trim()+' over '+(y.querySelector('.cn-nq')||y).textContent.trim());}));
+    const h=document.querySelector('#cone .cone-hint'),cv=document.getElementById('conecv');
+    if(h&&cv&&hit(bx(h),bx(cv)))over.push('the hint over the figure');
+    return {b:btn.length,r:row.length,over:over};});
+   nb+=res.b;nr+=res.r;
+   ok(res.over.length===0,w.join('x')+'/'+L+': '+res.over.join(', '));
+   if(res.over.length)bad.push(L);}
+  ok(nb>0&&nr>0,w.join('x')+'/compass: found '+nb+' controls and '+nr+' names, so nothing was checked');
+  console.log('  '+w.join('x')+': '+lights.length+' lightings, '+nb+' controls against '+nr+' names, '
+   +(bad.length?'overlapping on '+bad.join(' '):'none overlapping'));}
+ await p.evaluate(k=>setLighting(k),was);}
+/* ============================================================
+   No words painted on the Compass figure but its two pole words, and
+   the figure whole inside its own canvas.
+
+   FW in TASKS.md, 27 September: "The Compass is completely broken. The
+   hero graphic is being truncated by a bunch of small text." Regulation
+   and Layers painted thirty words and numbers across the figure at 9.5
+   to 10.5 pixels, and at 390 the halo sat on the canvas's top edge.
+   Nothing above could see either: a painted word has no box. So the
+   canvas's own fillText is wrapped and every string it is handed is
+   read, with all three switches on and the figure turned, which is the
+   state that painted the most. The pole glyphs are measured against the
+   canvas the same way, and the key that now carries the words is held
+   to the type floor, under the figure and not on it.
+
+   Run first against the build before the fix: it failed at both widths
+   on the painted words, and at 390 on the halo.
+   ============================================================ */
+console.log('\n=== compass figure carries no painted words, and fits its canvas ===');
+for(const w of [[1680,1020],[1280,800],[390,844]]){
+ await p.setViewportSize({width:w[0],height:w[1]});await p.waitForTimeout(160);
+ for(const turned of [false,true]){
+  const res=await p.evaluate(tn=>{
+   loadP(0);setTab(TAB.COMPASS);render();
+   /* the arrow figure is the side view since round IA; the view from above
+      is measured in its own block below */
+   /* the figure, not the climb the tab opens on since 21 November: this
+      block measures the figure's canvas and key, and the climb is measured
+      in its own block at the end */
+   CONE.side=true;CONE.climb=false;
+   CONE.reg=true;CONE.layers=true;CONE.flat=!tn;CONE.tilt=0.92;coneOpen(true);
+   const said=[];const g=CONE.g;const ft=g.fillText;
+   g.fillText=function(s){said.push(String(s));return ft.apply(this,arguments);};
+   /* the halo and the fork go through coneGlyph, which strokes a Path2D at a
+      translate; the pole words sit 22 inside each, so they bound the glyphs */
+   const at=[];const tx=g.translate;
+   g.translate=function(x,y){at.push(y);return tx.apply(this,arguments);};
+   coneDraw();g.fillText=ft;g.translate=tx;
+   const cv=CONE.cv,H=cv.height/CONE.dpr,bx=cv.getBoundingClientRect();
+   const key=document.querySelector('#cone .cone-key');
+   const kb=key&&key.getBoundingClientRect();
+   const small=[...document.querySelectorAll('#cone .cone-key *')].filter(e=>
+    e.childNodes.length&&[...e.childNodes].some(n=>n.nodeType===3&&n.textContent.trim())
+    &&parseFloat(getComputedStyle(e).fontSize)<11).map(e=>e.textContent.trim());
+   /* on a phone the names follow the figure; at desk they flank it */
+   const nm=document.querySelector('#cone .cn-nms');
+   const nmb=nm&&nm.getBoundingClientRect();
+   const res={said:said.filter(s=>s!=='Coherent'&&s!=='Decoherent'),
+    poles:said.length-said.filter(s=>s!=='Coherent'&&s!=='Decoherent').length,
+    glyphs:at.length,top:Math.min(...at),bot:Math.max(...at)+17,H:H,
+    key:!!key,keyOn:kb?kb.top>=bx.bottom-0.5:false,small:small,
+    rows:key?key.querySelectorAll('.ck-r').length:0,
+    /* a build without the key has none of these, and is reported, not thrown */
+    want:typeof coneKey==='function'?CONE_HI.length+CONE_LO.length
+     +coneRegLaws().up.length+coneRegLaws().dn.length:-1,
+    phoneNames:nmb&&innerWidth<900?nmb.top>=bx.bottom-0.5:null};
+   CONE.reg=false;CONE.layers=false;CONE.flat=true;CONE.tilt=0.60;CONE.side=false;CONE.climb=true;coneOpen(true);
+   return res;},turned);
+  const tag=w.join('x')+(turned?'/turned':'/flat');
+  ok(res.said.length===0,tag+': words painted on the figure: '+res.said.join(', '));
+  ok(res.poles===2&&res.glyphs===2,tag+': the pole words and glyphs were not found ('
+   +res.poles+' words, '+res.glyphs+' glyphs), so nothing was checked');
+  ok(res.top>=0&&res.bot<=res.H,tag+': a pole glyph runs off the canvas, '
+   +Math.round(res.top)+' to '+Math.round(res.bot)+' in '+Math.round(res.H));
+  ok(res.key&&res.rows===res.want,tag+': the key under the figure carries '+res.rows+' rows, want '+res.want);
+  ok(res.keyOn,tag+': the key sits on the figure rather than under it');
+  ok(res.small.length===0,tag+': key text under the 11px floor: '+res.small.join(', '));
+  if(res.phoneNames!==null)ok(res.phoneNames,tag+': the names print in front of the figure');
+  console.log('  '+tag+': '+(res.said.length?res.said.length+' painted words':'no painted words')
+   +', glyphs '+Math.round(res.top)+' to '+Math.round(res.bot)+' of '+Math.round(res.H)
+   +', key '+res.rows+' rows');}}
+/* ============================================================
+   The view from above, round IA, held to the same two rules: no word
+   painted on the figure at all, and every glyph inside the canvas. It
+   paints sixteen glyphs round a rim and a hub rather than two on an axis,
+   so each one is read off coneGlyph's own translate and scale, which is
+   where it is and how big. Regulation is switched on as well, because
+   from above it has no spine to draw on, and its caption printing under
+   a figure that shows no arrows would be a dead control's key.
+   ============================================================ */
+console.log('\n=== compass from above carries no painted words, and fits its canvas ===');
+for(const w of [[1680,1020],[1280,800],[390,844]]){
+ await p.setViewportSize({width:w[0],height:w[1]});await p.waitForTimeout(160);
+ const res=await p.evaluate(()=>{
+  loadP(0);setTab(TAB.COMPASS);render();
+  CONE.side=false;CONE.climb=false;CONE.reg=true;CONE.layers=true;coneOpen(true);
+  const said=[],box=[];const g=CONE.g,ft=g.fillText,tx=g.translate,sc=g.scale;let at=null;
+  g.fillText=function(s){said.push(String(s));return ft.apply(this,arguments);};
+  g.translate=function(x,y){at=[x,y];return tx.apply(this,arguments);};
+  g.scale=function(k){if(at){box.push([at[0],at[1],24*k]);at=null;}return sc.apply(this,arguments);};
+  coneDraw();g.fillText=ft;g.translate=tx;g.scale=sc;
+  const cv=CONE.cv,W=cv.width/CONE.dpr,H=cv.height/CONE.dpr;
+  const off=box.filter(b=>b[0]<0||b[1]<0||b[0]+b[2]>W||b[1]+b[2]>H).length;
+  const key=document.querySelector('#cone .cone-key');
+  const res={said:said,glyphs:box.length,off:off,W:W,H:H,
+   rows:key?key.querySelectorAll('.ck-r').length:0,want:CONE_HI.length+CONE_LO.length,
+   axes:MIRROR.length,regBtn:!!document.querySelector('#cone [data-cn="reg"]')};
+  CONE.reg=false;CONE.layers=false;CONE.climb=true;coneOpen(true);
+  return res;});
+ const tag=w.join('x')+'/above';
+ ok(res.said.length===0,tag+': words painted on the figure: '+res.said.join(', '));
+ ok(res.glyphs>=res.axes,tag+': found '+res.glyphs+' glyphs, want at least '+res.axes+', so nothing was checked');
+ ok(res.off===0,tag+': '+res.off+' glyphs run off the '+Math.round(res.W)+' by '+Math.round(res.H)+' canvas');
+ ok(res.rows===res.want,tag+': the key carries '+res.rows+' rows, want the '+res.want+' Layers rows only');
+ ok(!res.regBtn,tag+': the Regulation switch is offered where it draws nothing');
+ console.log('  '+tag+': '+(res.said.length?res.said.length+' painted words':'no painted words')
+  +', '+res.glyphs+' glyphs, '+res.off+' off the canvas, key '+res.rows+' rows');}
+/* the wheel again, which is what every check below is measured on, and a
+   stored view outlives the page */
+await p.evaluate(()=>fviewSet('wheel'));
+await p.setViewportSize({width:1680,height:1020});await p.waitForTimeout(160);
+/* ============================================================
+   A control laid over a label the wheel drew.
+
+   The balance strip sat centred at the bottom of the stage, which
+   is exactly where the wheel draws its lowest seat name, so the
+   word Heart ran vertically through the middle of the reading.
+   Nothing could catch it: the label is canvas pixels, the strip is
+   DOM, and a probe that samples pixels to find one under the other
+   lies. radialTxt now records the box of every label it draws, the
+   way HIT records targets, so this is measured rather than looked
+   at.
+   ============================================================ */
+console.log('\n=== stage controls clear of the labels the wheel draws ===');
+for(const w of [[1680,1020],[1440,960],[1280,900],[1180,820],[2560,1400]]){
+ for(const V of [0,1,2,3]){
+ await p.setViewportSize({width:w[0],height:w[1]});
+ await p.waitForTimeout(160);
+ const hits=await p.evaluate(v=>{
+  loadP(0);setTab(TAB.FIELD);S.view=v;layout();draw(compute());
+  const cv=document.getElementById('cv').getBoundingClientRect();
+  const sc=cv.width/CW;                       /* canvas units to CSS pixels */
+  const boxes=LBL.map(l=>({t:l.t,left:cv.left+l.x*sc,top:cv.top+l.y*sc,
+   right:cv.left+(l.x+l.w)*sc,bottom:cv.top+(l.y+l.h)*sc}));
+  /* the ink, not the container. #pol2 is a full height flex box holding a
+     104px drawing, so its bounding box covers half the stage and says nothing
+     about what is painted. a leaf with text, or a drawing, is the ink. */
+  const ink=[];
+  document.querySelectorAll('#stage > *').forEach(e=>{
+   if(e.id==='cv'||e.id==='probe')return;   /* probe is the hover readout at the core */
+   const st=getComputedStyle(e);
+   if(st.display==='none'||st.visibility==='hidden'||+st.opacity===0)return;
+   const nm=e.id||String(e.className).split(' ')[0];
+   const leaves=e.querySelectorAll('svg,img,canvas,*:not(:has(*))');
+   const set=leaves.length?leaves:[e];
+   set.forEach(l=>{
+    const ls=getComputedStyle(l);
+    if(ls.display==='none'||ls.visibility==='hidden'||+ls.opacity===0)return;
+    if(!l.querySelector('*')&&!(l.textContent||'').trim()
+       &&!/^(SVG|IMG|CANVAS)$/.test(l.tagName))return;
+    const r=l.getBoundingClientRect();
+    if(r.width&&r.height)ink.push({nm:nm,r:r});});});
+  const bad=[];
+  ink.forEach(o=>{const r=o.r;
+   boxes.forEach(bx=>{
+    if(r.left<bx.right&&r.right>bx.left&&r.top<bx.bottom&&r.bottom>bx.top)
+     bad.push(o.nm+' over '+bx.t);});});
+  return {n:boxes.length,bad:[...new Set(bad)]};},V);
+ const tag=w.join('x')+'/depth'+V;
+ ok(hits.bad.length===0,tag+': '+hits.bad.join(', '));
+ console.log('  '+tag+': '+hits.n+' labels, '
+  +(hits.bad.length?hits.bad.join(', '):'none covered'));
+ /* and the wheel draws inside its own canvas. 3rd Eye rendered as d Eye once
+    the stage became a grid, because the radius reserved a share of itself for
+    the labels rather than the width of a word. */
+ const off=await p.evaluate(()=>LBL.filter(l=>l.x<-0.5||l.y<-0.5||l.x+l.w>CW+0.5||l.y+l.h>CH+0.5)
+   .map(l=>l.t+' by '+Math.round(Math.max(-l.x,-l.y,l.x+l.w-CW,l.y+l.h-CH))+'px'));
+ ok(off.length===0,tag+': labels off the canvas: '+off.join(', '));
+ if(off.length)console.log('  '+tag+': clipped '+off.join(', '));}}
+
+/* ============================================================
+   THE STORY PAGE ON A SHORT WINDOW. Every visible control takes a press.
+
+   The Imprints panel in the Story page's middle column was given a fixed half
+   of the column (.st-ch, flex 0 0 50%). In a window shorter than about 645px
+   its own content was taller than that half, the three view icons at the foot
+   of it spilled out under the panel, and the list below (#stls) was drawn over
+   them, so a press landed on the list. A 1366 by 657 laptop is that window.
+   Found by tests/storage.js, which had to name it expected red until now.
+   Measured as a press at each control's centre, the way a hand lands, and not
+   as a rectangle compared with a rectangle.
+   ============================================================ */
+/* the journal page, named Discover since 23 October; the integer is still TAB.STORY */
+console.log('\n=== Discover: every visible control takes a press, short windows too ===');
+/* AND IN THE FULL VIEW, 2 November, his words: "use a left menu and the right
+   menu." Dashboard brings back the left column with the Journal's own rail in
+   it (ui/stdash.js), and the bank brings back the right one, so the same
+   press is measured three ways at every window: Simple, which is where a
+   person lands and is the row this check always measured, Full, and Full
+   with the bank open, which is the widest the row gets. */
+for(const w of [[1366,657],[1280,600],[1600,700],[1600,1000],[390,844]])for(const md of ['simple','full','full, bank open']){
+ await p.setViewportSize({width:w[0],height:w[1]});await p.waitForTimeout(200);
+ /* EACH WINDOW STARTS CLEAN, with no drill carried over from an earlier
+    section of this file. The bank shows the rail's Selection section, where a
+    drill opens, so a drill an earlier section left open turned up here: its
+    sticky Back bar sat over its own Close because the rail was scrolled, and
+    this check counted that as a covered control. Measured 2 November with a
+    drill opened on purpose in the bank, on main and on this branch, Simple
+    and Full: Close takes the press every time. A carried over drill is state
+    from another check, so it is shut here, the way loadP resets the person. */
+ await p.evaluate(md=>{if(typeof rdClose==='function')rdClose();loadP(0);STV.dash=md!=='simple';setTab(TAB.STORY);render();
+  if((md==='full, bank open')!==!!STV.bank)stBank();},md);await p.waitForTimeout(400);
+ /* THE JOURNAL IS VOICE ONLY NOW, round of 29 October: there is no reply box
+    or send to fill, only srcTurnCommit, the one door a turn lands through
+    whether it is typed or spoken (see the ruling at stMic in ui/storyui.js).
+    No real microphone in this check, so it calls the door directly. */
+ await p.evaluate(()=>{srcTurnCommit('I keep replaying what she said and I am furious and ashamed.');});
+ await p.waitForTimeout(500);
+ const r=await p.evaluate(()=>{
+  const vw=innerWidth,vh=innerHeight,out={n:0,bad:[]};
+  const clipped=(el,x,y)=>{for(let a=el.parentElement;a&&a!==document.documentElement;a=a.parentElement){
+   const cs=getComputedStyle(a);if(cs.overflowX==='visible'&&cs.overflowY==='visible')continue;
+   const q=a.getBoundingClientRect();if(x<q.left||x>q.right||y<q.top||y>q.bottom)return true;}return false;};
+  document.querySelectorAll('button,a[href],input,select,textarea').forEach(el=>{
+   const cs=getComputedStyle(el);if(cs.visibility==='hidden'||cs.pointerEvents==='none'||cs.display==='none')return;
+   const q=el.getBoundingClientRect();if(q.width<1||q.height<1)return;
+   const x=q.left+q.width/2,y=q.top+q.height/2;
+   if(x<0||y<0||x>=vw||y>=vh||clipped(el,x,y))return;
+   out.n++;
+   const h=document.elementFromPoint(x,y);
+   if(h!==el&&!el.contains(h))out.bad.push((el.id?'#'+el.id:el.tagName.toLowerCase()+'.'+String(el.className).split(' ')[0])
+    +' "'+(el.textContent||el.value||'').trim().slice(0,18)+'" at '+Math.round(y)+'px under '+(h?(h.id?'#'+h.id:h.tagName.toLowerCase()):'nothing'));});
+  return out;});
+ ok(r.n>0&&r.bad.length===0,'Discover'+(md==='simple'?'':', '+md+',')+' at '+w[0]+' by '+w[1]+': each of '+r.n+' visible controls takes a press at its centre'
+  +(r.bad.length?': '+r.bad.join('; '):''));}
+await p.evaluate(()=>{if(STV.bank)stBank(); STV.dash=false; stRender();});
+/* ============================================================
+   THE CLIMB, 21 November. The board the Compass tab opens on, its two poles
+   (first an up arrow and a down arrow, on his words "a distinct point on
+   the bottom and a distinct point on top... an arrow up, arrow down"; then,
+   the same day, a cloud named Coherence and a flame named Decoherence, on
+   his words "instead of saying source with a little arrow at the top, I'm
+   not sure what that is"), and the rail beside it, seats Crown to Root,
+   which holds the teachers the board no longer draws. Held
+   to the same rule as every surface here, nothing printed over anything,
+   and to the defect the first climb shipped with: a card's title behind the
+   sticky "Back to the compass" bar.
+   ============================================================ */
+console.log('\n=== the climb: two poles clear of everything, the rail in seat order, a card under its bar ===');
+for(const w of [[1600,1000],[390,844]]){
+ await p.setViewportSize({width:w[0],height:w[1]});await p.waitForTimeout(160);
+ for(const who of [0,1]){
+  const r=await p.evaluate(async who=>{
+   const wait=ms=>new Promise(r=>setTimeout(r,ms));
+   loadP(who);setTab(TAB.COMPASS);CONE.climb=true;CONE.clSel=null;coneOpen(true);render();await wait(300);
+   const bx=e=>e.getBoundingClientRect();
+   const hit=(a,c)=>a.left<c.right-0.5&&c.left<a.right-0.5&&a.top<c.bottom-0.5&&c.top<a.bottom-0.5;
+   const nm=e=>(e.textContent||e.getAttribute('class')||'').trim().slice(0,24);
+   const svg=document.querySelector('#cnclimb .cl-svg'), sb=svg&&bx(svg);
+   const poles=[...document.querySelectorAll('#cnclimb .cl-pole')];
+   const own=[...document.querySelectorAll('#cnclimb .cl-pole .cl-pr,#cnclimb .cl-pole text')];
+   const other=[...document.querySelectorAll('#cnclimb text,#cnclimb .cl-n,#cnclimb .cl-dstep circle,#cnclimb .cl-av .core')]
+    .filter(e=>!e.closest('.cl-pole'));
+   const over=[];own.forEach(a=>other.forEach(c=>{if(hit(bx(a),bx(c)))over.push(nm(a)+' over '+nm(c));}));
+   const st=[...document.querySelectorAll('#cnclimb .cl-st .cl-n,#cnclimb .cl-dstep circle')].map(e=>bx(e));
+   /* the descent's marks: the roster grew from eight to twenty seven on 21
+      November and their names printed over each other, so every mark is
+      held apart from every other */
+   const dm=[...document.querySelectorAll('#cnclimb .cl-dstep circle:not(.cl-hit)')].map(e=>bx(e));
+   let dover=0;for(let i=0;i<dm.length;i++)for(let j=i+1;j<dm.length;j++)if(hit(dm[i],dm[j]))dover++;
+   const dtext=document.querySelectorAll('#cnclimb .cl-dstep text').length;
+   const up=document.querySelector('#cnclimb .cl-pole-up .cl-pr'), dn=document.querySelector('#cnclimb .cl-pole-dn .cl-pr');
+   const ub=up&&bx(up), db=dn&&bx(dn);
+   const inside=q=>sb&&q.left>=sb.left-0.5&&q.right<=sb.right+0.5&&q.top>=sb.top-0.5&&q.bottom<=sb.bottom+0.5;
+   const rail=document.getElementById('clrail'), rb=rail&&bx(rail);
+   const seats=[...document.querySelectorAll('#clrail .clr-nm')].map(e=>e.textContent);
+   const parts=[...document.querySelectorAll('#clrail>.clr-pole,#clrail .clr-hd,#clrail .cn-nr')];
+   const rover=[];for(let i=0;i<parts.length;i++)for(let j=i+1;j<parts.length;j++)
+    if(!parts[i].contains(parts[j])&&hit(bx(parts[i]),bx(parts[j])))rover.push(nm(parts[i])+' / '+nm(parts[j]));
+   const lastB=parts.length?Math.max(...parts.map(e=>bx(e).bottom)):0;
+   const railEnds=[...rail.children].map(e=>e.getAttribute('data-cl')).filter(Boolean);
+   /* a press on the rail opens the station's card, and its title sits under the bar */
+   const row=document.querySelector('#clrail .clr-t');const k=row&&row.getAttribute('data-cl');
+   if(row)row.click();await wait(350);
+   const bar=document.querySelector('.rd-top'), ttl=document.querySelector('.cl-card .sh-h');
+   const card={k:k,sel:CONE.clSel,bar:bar?bx(bar).bottom:null,title:ttl?bx(ttl).top:null,
+    /* the teachers left the board for the rail (clPlace, 21 November), so
+       a press on a teacher's row marks the row, and its laws on the board */
+    marked:!!document.querySelector('#clrail .front[data-cl="'+k+'"]')
+     &&(LAW_TEACHER&&Object.keys(LAW_TEACHER).some(n=>LAW_TEACHER[n]===k)
+      ?!!document.querySelector('#cnclimb .cl-st.sel'):true),
+    recipes:document.querySelectorAll('.cl-card .cl-rc').length,
+    wantRecipes:(recipeOf(k)||{rituals:[]}).rituals.length};
+   try{rdClose();}catch(e){}
+   return {poles:poles.length,over:over,dn:dm.length,dover:dover,dtext:dtext,want:DESCENT.length,upIn:!!ub&&inside(ub),dnIn:!!db&&inside(db),
+    upTop:!!ub&&st.every(q=>ub.bottom<=q.top+0.5),dnBot:!!db&&st.every(q=>db.top>=q.bottom-0.5),
+    seats:seats,wantSeats:BANDS.slice().reverse(),rover:rover,clipped:rail&&innerWidth>=900?lastB>rb.bottom+0.5:false,
+    ends:railEnds,card:card,
+    /* his words, 21 November: the teachers out of the centre into the rail,
+       and the two poles named Coherence and Decoherence */
+    tchOnBoard:document.querySelectorAll('#cnclimb .cl-t').length,
+    poleNames:[...document.querySelectorAll('#cnclimb .cl-pole .cl-pn')].map(e=>e.textContent)};},who);
+  const tag=w.join('x')+'/profile '+who;
+  ok(r.poles===2,tag+': the climb draws its two poles, saw '+r.poles);
+  ok(r.over.length===0,tag+': a pole prints over the board: '+r.over.slice(0,4).join('; '));
+  ok(r.upIn&&r.dnIn,tag+': a pole runs off the board (up '+r.upIn+', down '+r.dnIn+')');
+  ok(r.upTop,tag+': the up arrow is not above every station');
+  ok(r.dnBot,tag+': the down arrow is not below every station and descent step');
+  ok(r.dn===r.want&&r.dover===0&&r.dtext===0,tag+': the descent draws '+r.dn+' of '+r.want+' marks, '+r.dover+' touching, '+r.dtext+' names printed');
+  ok(r.seats.join()===r.wantSeats.join(),tag+': the rail reads '+r.seats.join(', ')+', want Crown to Root');
+  ok(r.ends[0]==='src'&&r.ends[r.ends.length-1]==='descent',tag+': the rail does not open on Source and close on the descent: '+r.ends.join());
+  ok(r.rover.length===0,tag+': rail entries print over each other: '+r.rover.slice(0,3).join('; '));
+  ok(!r.clipped,tag+': the rail runs past its own bottom');
+  ok(r.card.sel===r.card.k&&r.card.marked,tag+': a press on the rail did not select its station on the board ('+r.card.k+')');
+  ok(r.tchOnBoard===0,tag+': '+r.tchOnBoard+' teachers still drawn on the board, they belong to the rail');
+  ok(r.poleNames.join()==='Coherence,Decoherence',tag+': the poles read '+r.poleNames.join(', ')+', want Coherence, Decoherence');
+  ok(r.card.recipes===r.card.wantRecipes&&r.card.recipes>0,tag+': the card lists '+r.card.recipes+' recipes of '+r.card.wantRecipes+' for '+r.card.k);
+  ok(r.card.bar!==null&&r.card.title!==null&&r.card.title>=r.card.bar-0.5,tag+': the card title sits behind the back bar, title '
+   +r.card.title+' bar '+r.card.bar);
+  console.log('  '+tag+': poles '+r.poles+', '+r.seats.length+' seats on the rail, card '+r.card.k+' title at '
+   +Math.round(r.card.title)+' under the bar at '+Math.round(r.card.bar));}}
+await p.setViewportSize({width:1680,height:1020});await p.waitForTimeout(160);
+
+await b.close();
+console.log('\n===== '+PASS+' passed, '+FAIL+' failed =====');
+process.exit(FAIL?1:0);})();

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Three integrities</title>
+<style>
+:root{--bg:#0d0e14;--pa:#14161f;--ink:#e7e5de;--dim:#8d8b84;--line:#272a36;--gold:#DFCC7E;--bad:#CF5953;--body:#c4c2bb;--mean:#65CFA5;--seat:#8296DB}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+ font:400 15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+ padding:0 16px 64px}
+.wrap{max-width:1080px;margin:0 auto}
+h1{font-size:23px;font-weight:600;letter-spacing:-.01em;margin:40px 0 6px}
+h2{font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+ color:var(--dim);margin:38px 0 12px}
+p{color:var(--body);max-width:62ch;margin:0 0 14px}
+.lede{color:var(--ink)}
+b{font-weight:600;color:var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(232px,1fr));gap:14px}
+.card{background:var(--pa);border:1px solid var(--line);border-radius:10px;padding:14px}
+.nm{font-size:13px;font-weight:600;letter-spacing:.02em}
+canvas{display:block;width:100%;height:auto;margin:6px 0 10px}
+.rowl{display:flex;justify-content:space-between;font-size:12.5px;padding:3px 0;
+ border-top:1px solid var(--line);color:var(--dim)}
+.rowl b{font-variant-numeric:tabular-nums}
+.pill{display:inline-block;font-size:11px;letter-spacing:.04em;padding:3px 9px;
+ border:1px solid var(--gold);border-radius:99px;color:var(--gold);margin:2px 0 8px}
+.gap{color:var(--bad)}
+table{border-collapse:collapse;width:100%;font-size:13px;margin:4px 0 18px}
+th{text-align:left;font-weight:600;font-size:11px;letter-spacing:.08em;
+ text-transform:uppercase;color:var(--dim);padding:6px 10px 6px 0;border-bottom:1px solid var(--line)}
+td{padding:6px 10px 6px 0;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+td:first-child{color:var(--ink);font-weight:500}
+.wide{overflow-x:auto}
+.key{display:flex;gap:20px;flex-wrap:wrap;font-size:12.5px;color:var(--dim);margin:0 0 18px}
+.key i{display:inline-block;width:22px;height:0;border-top:2px solid;vertical-align:middle;margin-right:6px}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]){
+ --bg:#faf9f5;--pa:#fff;--ink:#1a1b22;--dim:#6d6b64;--line:#e3e1d9;--gold:#8a7420;--bad:#a63f3a;--body:#42413c;--mean:#1d7a55;--seat:#41539b}}
+:root[data-theme="light"]{--bg:#faf9f5;--pa:#fff;--ink:#1a1b22;--dim:#6d6b64;--line:#e3e1d9;--gold:#8a7420;--bad:#a63f3a;--body:#42413c;--mean:#1d7a55;--seat:#41539b}
+</style></head><body><div class="wrap">
+
+<h1>Three numbers called integrity</h1>
+<p class="lede">All of it read off <b>source.html</b> at commit 0e63f4b in a real
+Chromium at 1600 by 1000. Nothing here is drawn from a model of the code. The
+twenty one values per profile, the seven seat values and the reading are the
+product's own, dumped out of the running page.</p>
+
+<h2>What the wheel does today</h2>
+<p><code>ui/wheel.js:735</code> draws the twenty one laws as spokes, each one
+<code>S.law[nm]/10</code> of its ring. <code>ui/wheel.js:744</code> prints a pill
+on the same ring reading <code>21 laws &middot; integrity </code> and then
+<code>r.Ig</code>. Those are two different numbers and the second is presented as
+the summary of the first.</p>
+<div class="key">
+ <span><i style="border-color:var(--gold)"></i>the pill, r.Ig</span>
+ <span><i style="border-color:var(--mean)"></i>the true mean of the twenty one spokes</span>
+ <span><i style="border-color:var(--seat);border-top-style:dashed"></i>the mean of the seven seat integrities</span>
+</div>
+<div class="grid" id="cards"></div>
+
+<h2>The four pairs the two paths rank in opposite order</h2>
+<p>Forty five pairs of profiles. On four of them, the profile whose twenty one
+spokes are longer on average carries the lower pill. A person comparing two
+readings gets the comparison backwards on those four.</p>
+<div class="wide"><table id="inv"></table></div>
+
+<h2>Every path, every profile</h2>
+<div class="wide"><table id="all"></table></div>
+
+<h2>The blank profile</h2>
+<p id="blank"></p>
+
+</div>
+<script>
+const D = {"si":[{"nm":"Truth","b":"Throat"},{"nm":"Transparency","b":"Throat"},{"nm":"Justice","b":"Throat"},{"nm":"Unity","b":"Crown"},{"nm":"Awareness","b":"Crown"},{"nm":"Nature","b":"Crown"},{"nm":"Presence","b":"3rd Eye"},{"nm":"Humility","b":"3rd Eye"},{"nm":"Equanimity","b":"3rd Eye"},{"nm":"Compassion","b":"Heart"},{"nm":"Forgiveness","b":"Heart"},{"nm":"Generosity","b":"Heart"},{"nm":"Aesthetic Beauty","b":"Heart"},{"nm":"Courage","b":"Solar"},{"nm":"Duty","b":"Solar"},{"nm":"Responsibility","b":"Solar"},{"nm":"Accountability","b":"Solar"},{"nm":"Temperance","b":"Sacral"},{"nm":"Detachment","b":"Sacral"},{"nm":"Non-Harm","b":"Root"},{"nm":"Patience","b":"Root"}],"pal":{"Root":"#CF5953","Sacral":"#D19255","Solar":"#D4BC70","Heart":"#65CFA5","Throat":"#65B8D4","3rd Eye":"#8296DB","Crown":"#A883D6"},"profiles":[{"nm":"blank","laws":[6.5,6.5,6.5,6.5,6.5,6.5,6.5,6.5,6.5,6.5,6.5,6.5,6.5,6.5,6.5,6.5,6.5,6.5,6.5,6.5,6.5],"seats":[6.5,6.5,6.5,6.5,6.5,6.5,6.5],"Ig":6.5,"It":6.5,"Rz":1,"CQ":42.25,"tier":"Oscillating","unread":true,"measured":0,"lawmean":6.5,"seatmean":6.5},{"nm":"Gordon","laws":[1.6,1.5,2,1.5,2,2,2,2,2,1.5,1.5,2,2,2,3,2,2,2,2,2,2],"seats":[2,2,2.25,1.75,1.7,2,1.833],"Ig":1.933,"It":1.933,"Rz":3.7372,"CQ":1,"tier":"Collapsed","unread":false,"measured":21,"lawmean":1.9333,"seatmean":1.9333},{"nm":"Tomas","laws":[2.5,3.1,3.1,3.1,3.1,3.1,3.1,3.1,3.1,3.1,3.1,3.1,3.1,2.3,3.8,3.1,3.1,3.1,3.1,4.1,2.4],"seats":[3.25,3.1,3.075,3.1,2.9,3.1,3.1],"Ig":3.081,"It":3.089,"Rz":3.2947,"CQ":2.89,"tier":"Collapsed","unread":false,"measured":21,"lawmean":3.081,"seatmean":3.0893},{"nm":"James","laws":[6.9,2.9,4.4,2.8,4.4,4.4,4.4,4.4,4.4,2.6,2.7,4.4,4.4,4.4,4.4,4.4,7.8,4.4,4.4,4.4,4.4],"seats":[4.4,4.4,5.25,3.525,4.733,4.4,3.867],"Ig":4.306,"It":4.328,"Rz":1.4566,"CQ":12.79,"tier":"Severe","unread":false,"measured":21,"lawmean":4.3667,"seatmean":4.3679},{"nm":"Diane","laws":[6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,8.4,8.1,7.6,2.8,3.4,6.1,3],"seats":[4.55,3.1,7.55,6.1,6.1,6.1,6.1],"Ig":5.945,"It":5.663,"Rz":1.1751,"CQ":28.65,"tier":"Corrupt","unread":false,"measured":21,"lawmean":5.9429,"seatmean":5.6571},{"nm":"Marcus","laws":[7.9,6.4,6.4,3.3,6.4,6.4,6.4,8.8,6.4,2.8,2.4,6.4,9.2,6.4,6.4,6.4,6.4,6.4,6.4,6.4,6.4],"seats":[6.4,6.4,6.4,5.2,6.9,7.2,5.367],"Ig":6.232,"It":6.285,"Rz":1,"CQ":39.17,"tier":"Incoherent","unread":false,"measured":21,"lawmean":6.2095,"seatmean":6.2667},{"nm":"Sofia","laws":[7.6,7.6,7.6,7.6,7.6,7.6,7.6,7.6,7.6,8.6,7.6,8.2,7.6,7.6,7.6,7.6,7.6,3.3,2.9,9.1,7.6],"seats":[8.35,3.1,7.6,8,7.6,7.6,7.6],"Ig":7.71,"It":7.417,"Rz":1,"CQ":57.18,"tier":"Even","unread":false,"measured":21,"lawmean":7.319,"seatmean":7.1214},{"nm":"Wren","laws":[9.2,9.2,9.2,9.2,9.2,9.2,9.2,9.2,9.2,9.2,6.8,9.2,9.6,9.2,9.2,9.2,9.2,9.2,9.2,9.2,9.4],"seats":[9.3,9.2,9.2,8.7,9.2,9.2,9.2],"Ig":9.85,"It":9.683,"Rz":1.0404,"CQ":91.68,"tier":"Mastery","unread":false,"measured":21,"lawmean":9.1143,"seatmean":9.1429},{"nm":"Abraham","laws":[8.7,8.7,9.8,8.7,8.7,8.7,9.6,9.5,9.7,8.7,8.7,8.7,8.7,8.7,8.7,8.7,8.7,9.4,8.7,8.7,8.7],"seats":[8.7,9.05,8.7,8.7,9.067,9.6,8.7],"Ig":10,"It":9.826,"Rz":1,"CQ":98.26,"tier":"Mastery","unread":false,"measured":21,"lawmean":8.9143,"seatmean":8.931},{"nm":"Lance","laws":[9.9,9.9,9.9,9.7,9.9,9.8,9.8,8.9,9.7,9.9,9.7,9.8,9.9,9.9,9.9,9.9,9.9,9.6,9.5,9.9,8.8],"seats":[9.35,9.55,9.9,9.825,9.9,9.467,9.8],"Ig":9.303,"It":9.432,"Rz":1,"CQ":87.75,"tier":"Embodied","unread":false,"measured":21,"lawmean":9.7238,"seatmean":9.6845},{"nm":"Rosa","laws":[9.6,9.6,9.6,9.8,9.6,9.6,10,9.6,10,10,9.6,9.6,9.6,9.6,9.6,9.6,9.6,9.6,9.6,10,9.9],"seats":[9.95,9.6,9.6,9.7,9.6,9.867,9.667],"Ig":10,"It":10,"Rz":1,"CQ":100,"tier":"Mastery","unread":false,"measured":21,"lawmean":9.7,"seatmean":9.7119}],"bands":["Root","Sacral","Solar","Heart","Throat","3rd Eye","Crown"]}
+;
+const SI=D.si, BANDS=D.bands, PAL=D.pal;
+const fmt=(v,n)=>v.toFixed(n===undefined?2:n);
+
+function ring(cv,p){
+ const g=cv.getContext('2d'), W=cv.width, H=cv.height, CX=W/2, CY=H/2;
+ const R=Math.min(W,H)*0.42, TAU=Math.PI*2;
+ g.clearRect(0,0,W,H);
+ /* the gridlines, so a length can be read. five of them, zero to ten. */
+ for(let f=0;f<=4;f++){
+  g.beginPath(); g.arc(CX,CY,R*(f/4),0,TAU);
+  g.strokeStyle='rgba(140,138,130,'+(f===4?0.34:0.13)+')'; g.lineWidth=1; g.stroke();}
+ /* the twenty one spokes, exactly as ui/wheel.js:735 lays them out:
+    angle is i/21 of the circle from straight up, length is the law over ten. */
+ SI.forEach((l,i)=>{
+  const a=i/21*TAU-Math.PI/2, v=p.laws[i]/10;
+  g.beginPath();
+  g.moveTo(CX,CY);
+  g.lineTo(CX+Math.cos(a)*R*v, CY+Math.sin(a)*R*v);
+  g.strokeStyle=PAL[l.b]; g.globalAlpha=0.30+v*0.70;
+  g.lineWidth=4.2; g.lineCap='round'; g.stroke();
+  g.globalAlpha=1; g.lineCap='butt';});
+ /* the three claims, as three radii on the one scale */
+ const cs=getComputedStyle(document.documentElement);
+ const tok=n=>cs.getPropertyValue(n).trim();
+ const mark=(v,col,dash,w)=>{
+  g.beginPath(); g.setLineDash(dash||[]);
+  g.arc(CX,CY,R*v/10,0,TAU);
+  g.strokeStyle=col; g.lineWidth=w||2.6; g.stroke(); g.setLineDash([]);};
+ mark(p.seatmean,tok('--seat'),[5,5],2);
+ mark(p.lawmean,tok('--mean'),[],2.6);
+ mark(p.Ig,tok('--gold'),[],3.2);
+}
+
+const cards=document.getElementById('cards');
+D.profiles.forEach(p=>{
+ const gap=p.Ig-p.lawmean;
+ const el=document.createElement('div'); el.className='card';
+ el.innerHTML='<div class="nm">'+p.nm+'</div>'
+  +'<div class="pill">21 laws · integrity '+fmt(p.Ig,1)+'</div>'
+  +'<canvas width="420" height="420"></canvas>'
+  +'<div class="rowl"><span>the pill, r.Ig</span><b>'+fmt(p.Ig)+' of 10</b></div>'
+  +'<div class="rowl"><span>mean of the 21 spokes</span><b>'+fmt(p.lawmean)+' of 10</b></div>'
+  +'<div class="rowl"><span>mean of the 7 seats</span><b>'+fmt(p.seatmean)+' of 10</b></div>'
+  +'<div class="rowl"><span>the pill minus the spokes</span><b'
+    +(Math.abs(gap)>=0.05?' class="gap"':'')+'>'+(gap>=0?'+':'')+fmt(gap)+' of 10</b></div>'
+  +'<div class="rowl"><span>CQ</span><b>'+fmt(p.CQ,1)+' of 100</b></div>'
+  +'<div class="rowl"><span>laws measured</span><b>'+p.measured+' of 21</b></div>';
+ cards.appendChild(el);
+ ring(el.querySelector('canvas'),p);});
+
+/* the ranking inversions, computed here rather than typed in */
+const P=D.profiles.filter(p=>p.nm!=='blank'), inv=[];
+for(let i=0;i<P.length;i++)for(let j=i+1;j<P.length;j++){
+ const a=P[i],b=P[j];
+ if((a.Ig-b.Ig)*(a.lawmean-b.lawmean)<0)inv.push([a,b]);}
+document.getElementById('inv').innerHTML=
+ '<tr><th>pair</th><th>pill says higher</th><th>spokes say higher</th>'
+ +'<th>the two pills</th><th>the two means</th></tr>'
+ +inv.map(([a,b])=>{
+  const pill=a.Ig>b.Ig?a:b, mean=a.lawmean>b.lawmean?a:b;
+  return '<tr><td>'+a.nm+' and '+b.nm+'</td><td>'+pill.nm+'</td><td>'+mean.nm+'</td>'
+   +'<td>'+fmt(a.Ig,1)+' and '+fmt(b.Ig,1)+'</td>'
+   +'<td>'+fmt(a.lawmean)+' and '+fmt(b.lawmean)+'</td></tr>';}).join('')
+ +'<tr><td colspan="5" style="color:var(--dim);border:0">'
+ +inv.length+' of '+(P.length*(P.length-1)/2)+' pairs, on the eleven profiles the product ships.</td></tr>';
+
+document.getElementById('all').innerHTML=
+ '<tr><th>profile</th><th>r.Ig</th><th>21 laws, mean</th><th>7 seats, mean</th>'
+ +'<th>r.It</th><th>r.Rz</th><th>CQ</th><th>It&times;Ig&divide;Rz</th><th>tier</th></tr>'
+ +D.profiles.map(p=>'<tr><td>'+p.nm+'</td><td>'+fmt(p.Ig,3)+'</td><td>'+fmt(p.lawmean,3)
+  +'</td><td>'+fmt(p.seatmean,3)+'</td><td>'+fmt(p.It,2)+'</td><td>'+fmt(p.Rz,3)
+  +'</td><td>'+fmt(p.CQ,2)+'</td><td>'+fmt(Math.min(100,p.It*p.Ig/p.Rz),2)+'</td><td>'
+  +(p.unread?'<span style="color:var(--dim)">not printed, unread</span>':p.tier)+'</tr>').join('');
+
+const bl=D.profiles.filter(p=>p.nm==='blank')[0];
+document.getElementById('blank').innerHTML=
+ 'Every law reads <b>'+bl.laws[0]+'</b>, which is <code>LAWSET.You._</code> at '
+ +'<code>ui/personas.js:269</code>, not <code>LAW_DEFAULT</code> at '
+ +'<code>engine/schema.js:76</code>, which is 6. Laws measured: <b>'+bl.measured
+ +' of 21</b>. The wheel draws twenty one full length spokes anyway and the pill '
+ +'prints <b>21 laws · integrity '+fmt(bl.Ig,1)+'</b>. '
+ +'DESIGN.md law 5 forbids a number printed off a default and names three sites. '
+ +'These are the fourth and the fifth.';
+</script></body></html>

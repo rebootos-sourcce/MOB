@@ -1,0 +1,530 @@
+<!doctype html>
+<html lang="en" data-build="round GV prototype v2-ladder over 93dc99c"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Archetype ladder prototype</title>
+<!-- ============================================================
+  ROUND GV, VARIATION 2 OF 4. LADDER. A PROTOTYPE, NOT THE APP.
+
+  The halo was the most interesting thing on the round GU wheel and the
+  hardest to read: a soft circle whose size was the field's reading. Here the
+  field's reading IS the order. The archetypes are a list, strongest first,
+  each with its reading drawn as a bar and never printed as a number. A row
+  opens in place, so what a pick says sits under the thing picked and not
+  in a panel across the screen. The avatar sits beside it, small, carrying
+  the pick in its core.
+  ============================================================ -->
+<style>/* THE AVATAR PAGE'S OWN LOOK, from proto/avatar/redesign-GG.html, for the four
+   variations that do not carry that whole page. Tokens, prototype chrome, the
+   ring. The merge page does not load this: it already is that page. */
+:root{
+ --bg:#0C0D12; --bg2:#12141B; --panel:#171922; --panel2:#1E212B; --line:#2A2E3A;
+ --ink:#EFEDE8; --dim:#94908A; --faint:#5E5B57;
+ --root:#D6524C; --sacral:#D8924E; --solar:#DABF6A; --heart:#5FD5A6;
+ --throat:#5EBBDB; --eye:#7D93E0; --crown:#A77EDB;
+ --acc:#5EBBDB; --proto:#E0A93B; --protobg:#231C0E; --r:14px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);
+ font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Inter,sans-serif;-webkit-text-size-adjust:100%}
+body{overflow-x:hidden}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+.pbar{position:relative;z-index:60;display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;
+ padding:8px 16px;background:var(--protobg);border-bottom:2px solid var(--proto);
+ background-image:repeating-linear-gradient(135deg,rgba(224,169,59,.10) 0 10px,transparent 10px 20px)}
+.pbar .tag{display:inline-flex;align-items:center;gap:8px;font-weight:700;color:#1A1405;background:var(--proto);padding:4px 10px;border-radius:6px}
+.pbar .say{color:#F2D9A6;font-size:14px;line-height:1.35;flex:1 1 260px}
+.pbar .say b{color:#FFE7B8}
+.pbar label{display:flex;align-items:center;gap:8px;font-size:14px;color:#F2D9A6}
+.pbar select,.pbar .pbtn{min-height:44px;background:#16120A;border:1px dashed var(--proto);border-radius:10px;padding:0 12px;color:#FFE7B8;font-size:14px}
+.pnav{display:flex;flex-wrap:wrap;gap:4px;font-size:14px}
+.pnav a,.pnav b{min-height:44px;display:inline-flex;align-items:center;padding:0 10px;border-radius:8px;color:#FFE7B8}
+.pnav b{background:#3A2C10}
+.ptag{position:fixed;left:12px;bottom:12px;z-index:70;padding:6px 12px;border-radius:999px;background:var(--proto);color:#1A1405;
+ font:700 13px/1.2 system-ui,sans-serif;box-shadow:0 4px 18px rgba(0,0,0,.5);pointer-events:none}
+
+.page{max-width:1320px;margin:0 auto;padding:20px 16px 72px}
+.head{text-align:center;max-width:720px;margin:6px auto 20px}
+.eyebrow{color:var(--dim);font-size:15px;margin:0}
+.head h1{font-size:clamp(22px,3.2vw,30px);line-height:1.25;font-weight:600;margin:4px 0 8px;text-wrap:balance}
+.head p.lede{color:var(--dim);margin:0;font-size:16px;text-wrap:balance}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:20px;position:relative}
+
+/* the ring */
+.figwrap{container-type:inline-size;width:100%;max-width:560px;margin:0 auto;position:relative}
+.fig{position:relative;width:100%;aspect-ratio:1/1}
+.fig svg.draw{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.sat{position:absolute;width:13cqw;height:13cqw;min-width:46px;min-height:46px;transform:translate(-50%,-50%);
+ border-radius:50%;border:0;background:var(--bg2);display:flex;flex-direction:column;align-items:center;justify-content:center;
+ gap:1px;padding:0;color:var(--ink);transition:background .2s,box-shadow .2s}
+.sat svg{width:clamp(16px,4.2cqw,26px);height:clamp(16px,4.2cqw,26px);stroke:var(--c);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.sat .pc{font-size:clamp(12px,2.9cqw,17px);font-weight:650;line-height:1;font-variant-numeric:tabular-nums}
+.sat .pc.none{color:var(--dim);font-weight:400}
+button.sat:hover{background:color-mix(in srgb,var(--c) 10%,var(--bg2))}
+.sat[aria-pressed="true"]{background:color-mix(in srgb,var(--c) 18%,var(--bg2));box-shadow:0 0 0 2px var(--c),0 0 26px color-mix(in srgb,var(--c) 45%,transparent)}
+.slab{position:absolute;transform:translate(-50%,-50%);font-size:clamp(12px,2.35cqw,14px);color:var(--dim);pointer-events:none;white-space:nowrap;background:var(--bg);padding:0 4px;border-radius:4px;line-height:1.3}
+.slab.on{color:var(--ink)}
+.core{position:absolute;left:50%;top:50%;width:34cqw;height:34cqw;transform:translate(-50%,-50%);border-radius:50%;
+ background:radial-gradient(circle at 50% 40%,#1B1E28,#101218 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.core .cic{width:11cqw;height:11cqw;stroke:var(--ink);opacity:.85;fill:none;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
+.core.has .cic{stroke:var(--c);opacity:1}
+.core .big{font-size:clamp(20px,5.2cqw,32px);font-weight:650;line-height:1;font-variant-numeric:tabular-nums}
+.core .lb{font-size:clamp(12px,2.3cqw,14px);color:var(--dim)}
+.core .anm{font-size:clamp(12px,2.4cqw,14px);color:var(--c);font-weight:600;margin-top:2px}
+
+/* the prototype's notes */
+.notes{border:1.5px dashed var(--proto);border-radius:var(--r);padding:16px 18px;background:#110F0A;margin-top:28px;max-width:980px;margin-left:auto;margin-right:auto}
+.notes h2{color:var(--proto);font-size:17px;margin:0 0 4px}
+.notes .meas{font-size:14px;color:#F2D9A6;margin:6px 0 12px;padding:8px 10px;border-radius:8px;background:var(--protobg)}
+.notes dl{margin:0;display:grid;grid-template-columns:minmax(0,150px) minmax(0,1fr);gap:8px 16px;font-size:15px;color:#DCD6CB}
+.notes dt{color:#FFE7B8;font-weight:600}
+.notes dd{margin:0;max-width:75ch}
+@media (max-width:640px){.notes dl{grid-template-columns:1fr}.notes dd{margin-bottom:6px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+<style>/* THE PICKER'S OWN PARTS, namespaced ar- so the merge page's classes are never
+   touched. What a pick says, the one press, and its ring. */
+.ar-dh{display:flex;gap:14px;align-items:center}
+.ar-dic{flex:none;width:52px;height:52px;border-radius:50%;display:grid;place-items:center;background:color-mix(in srgb,var(--c) 16%,var(--bg2))}
+.ar-dic svg{width:56%;height:56%;fill:none;stroke:var(--c);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.ar-eyb{margin:0;color:var(--dim);font-size:14px}
+.ar-eyb b{color:var(--c);font-weight:600}
+.ar-dh h3{margin:0;font-size:24px;line-height:1.15;font-weight:620}
+.ar-def{margin:14px 0 0;font-size:17px;line-height:1.5;max-width:60ch}
+.ar-imp{margin-top:16px;padding:12px 14px;border-radius:12px;background:var(--bg2);border-left:3px solid var(--s)}
+.ar-lbl{margin:0;font-size:14px;color:var(--dim)}
+.ar-impv{margin:2px 0 0;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}
+.ar-impv b{font-size:17px;font-weight:620}
+.ar-impv span{font-size:14px;color:var(--dim)}
+.ar-impc{margin:4px 0 0;font-size:15px;color:#CFCAC2;max-width:60ch}
+.ar-dr{font-size:14px;color:var(--dim);border-left:2px dashed var(--line);padding-left:10px;margin:12px 0 0}
+.ar-act{margin-top:18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.ar-hint{margin:8px 0 0;font-size:14px;color:var(--dim)}
+.ar-st{min-height:22px;margin:6px 0 0;font-size:15px}
+.ar-st.warn{color:#E8B27A}
+.ar-cmp{margin:10px 0 0;color:#CFCAC2;font-size:15px;max-width:60ch}
+
+/* THE ONE PRESS. The label never changes; the button carries the state, which
+   is the house rule that a slot keeps its label. Pressed, it fills with the
+   seat's colour and its ring closes on a check. A press rings once: one
+   circle goes out from the button like a struck bell, which is what the word
+   says and the only animation it has. */
+.ar-rt{position:relative;min-height:48px;display:inline-flex;align-items:center;gap:10px;padding:0 22px 0 14px;border-radius:999px;
+ border:1.5px solid var(--c);background:transparent;color:var(--ink);font-weight:620;font-size:16px;cursor:pointer;
+ transition:background .18s,box-shadow .18s}
+.ar-rt svg{width:22px;height:22px;fill:none;stroke:var(--c);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.ar-rt .ck{opacity:0;transition:opacity .15s}
+.ar-rt:hover{background:color-mix(in srgb,var(--c) 10%,transparent)}
+.ar-rt[aria-pressed="true"]{background:color-mix(in srgb,var(--c) 28%,var(--panel,#171922));box-shadow:0 0 0 1px var(--c),0 0 22px color-mix(in srgb,var(--c) 32%,transparent)}
+.ar-rt[aria-pressed="true"] .ck{opacity:1}
+.ar-rt::after{content:"";position:absolute;inset:-2px;border-radius:inherit;border:2px solid var(--c);opacity:0;pointer-events:none}
+.ar-rt.ar-hit::after{animation:arRing .7s ease-out}
+@keyframes arRing{from{opacity:.8;transform:scale(1)}to{opacity:0;transform:scale(1.35,1.7)}}
+
+/* an archetype's mark, as a button */
+.ar-mk{position:absolute;transform:translate(-50%,-50%);width:9.5cqw;height:9.5cqw;min-width:44px;min-height:44px;border-radius:50%;
+ border:1px solid rgba(255,255,255,.14);background:#0B0C11;display:grid;place-items:center;padding:0;color:var(--ink);transition:box-shadow .2s,border-color .2s}
+.ar-mk svg{width:52%;height:52%;fill:none;stroke:var(--c);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.ar-mk.dr{border-style:dashed}
+.ar-mk:hover{border-color:var(--c)}
+.ar-mk[aria-pressed="true"]{border:2px solid var(--c);box-shadow:0 0 0 3px color-mix(in srgb,var(--c) 25%,transparent)}
+.ar-mk.pk::after{content:"";position:absolute;right:-2px;top:-2px;width:12px;height:12px;border-radius:50%;background:var(--c);border:2px solid var(--bg)}
+@media (prefers-reduced-motion:reduce){.ar-rt.ar-hit::after{animation:none}}
+</style>
+<style>
+.lay{display:grid;gap:24px 36px;grid-template-columns:minmax(0,1fr);align-items:start;max-width:1100px;margin:0 auto}
+@media (min-width:900px){.lay{grid-template-columns:300px minmax(0,1fr)}.mini{position:sticky;top:20px}}
+.mini .figwrap{max-width:300px}
+.mini .sat{width:14cqw;height:14cqw}
+@media (max-width:899px){.mini .figwrap{max-width:240px}}
+.mini .cap{text-align:center;color:var(--dim);font-size:15px;margin:8px 0 0}
+.mini .cap b{color:var(--c,var(--ink));font-weight:620}
+.lad{padding:8px 0}
+.lhd{display:grid;grid-template-columns:minmax(0,1fr) minmax(90px,30%);gap:12px;padding:8px 20px 6px;font-size:14px;color:var(--dim)}
+.lhd span:last-child{text-align:left}
+.grp{padding:14px 20px 4px;font-size:14px;color:var(--dim);border-top:1px solid var(--line)}
+.grp b{color:var(--c);font-weight:600}
+.row{border-top:1px solid var(--line)}
+.row:first-of-type{border-top:0}
+.lrow{width:100%;min-height:60px;display:grid;grid-template-columns:40px minmax(0,1fr) minmax(90px,30%) 26px;gap:12px;align-items:center;
+ padding:8px 20px;background:transparent;border:0;text-align:left;color:var(--ink)}
+.lrow:hover{background:color-mix(in srgb,var(--c) 6%,transparent)}
+.lrow[aria-expanded="true"]{background:color-mix(in srgb,var(--c) 9%,transparent)}
+.lrow .li{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:color-mix(in srgb,var(--c) 14%,var(--bg2))}
+.lrow .li svg{width:22px;height:22px;fill:none;stroke:var(--c);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.lrow .nm{display:block;font-weight:620;font-size:17px;line-height:1.2}
+.lrow .vb{display:block;font-size:14px;color:var(--dim)}
+.lrow .vb.first{color:var(--c)}
+.trk{height:8px;border-radius:4px;background:var(--bg2);overflow:hidden}
+.trk i{display:block;height:100%;border-radius:4px;background:var(--c);opacity:.75}
+.trk.none{background:transparent;border-top:1px dashed var(--line);height:0;border-radius:0}
+.st svg{width:24px;height:24px;fill:none;stroke:var(--c);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.lx{padding:4px 20px 20px 72px}
+@media (max-width:560px){.lrow{grid-template-columns:36px minmax(0,1fr) 64px 22px;gap:10px;padding:8px 14px}.lx{padding:4px 14px 18px}.lhd{padding:8px 14px 6px;grid-template-columns:minmax(0,1fr) 108px}}
+.more{margin:10px 20px 14px;min-height:48px;padding:0 18px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--ink)}
+.fr{margin:0;padding:10px 20px 4px;font-size:15px;color:var(--dim)}
+</style></head><body>
+<main class="page">
+ <header class="head"><p class="eyebrow">Your avatar</p><h1 id="q"></h1><p class="lede" id="lede"></p></header>
+ <div class="lay">
+  <aside class="mini" aria-label="Your avatar"><div class="figwrap"><div class="fig" id="fig"></div></div><p class="cap" id="cap"></p></aside>
+  <section class="card lad" id="lad" aria-label="Archetypes"></section>
+ </div>
+ <section class="notes" data-proto aria-label="Design notes"><h2>Design notes. Ladder, variation 2</h2><p class="meas" id="meas"></p><dl>
+  <dt>The job</dt><dd>In Derek's words: <i>"what does the instrument say I am, and do I agree."</i> The wheel answered with a glow whose size had to be judged against seventeen other glows. Here the answer is the order of the list.</dd>
+  <dt>The count</dt><dd>On a loaded profile, five rows, one open row's button, and one control for the rest: seven. On a first run nothing can be ranked, so all eighteen show in body order, grouped by area, and the count is eighteen before one is opened. That is the cost of this layout, and it lands on the person with the least to go on. Measured live above.</dd>
+  <dt>Where they stop</dt><dd><b>Angela</b> is told, in order, which is what she wants, and may press the top row because it is the top row. <b>James</b> reads "reads first" as a verdict on him; the compare line under a pick ("both are kept") is what keeps it a reading. <b>A first run</b> meets a list of eighteen with nothing to sort it.</dd>
+  <dt>The move</dt><dd>The halo becomes the sort order, and the detail opens in place. A bar is drawn and never numbered, because a reading is not a score.</dd>
+  <dt>Instrument</dt><dd>Share of first presses on the top row. Share who open "the rest". How often the pick differs from the top row, which is the gap the compare line names.</dd>
+  <dt>Grade</dt><dd>B minus for a loaded profile, the lowest load and the most legible reading of the five. C for a first run. It also drops the system view: nothing here says an archetype sits at a seat until a row is opened.</dd>
+ </dl></section>
+</main>
+<script>var ARCH=[{"nm":"Warrior","v":"moves on the threat","b":"Root","ic":"M12 2l3 7h7l-6 4 2 8-6-5-6 5 2-8-6-4h7z"},{"nm":"Sage","v":"reads the situation","b":"Crown","ic":"M4 6h7v13H4zM20 6h-7v13h7"},{"nm":"Rebel","v":"refuses the frame","b":"Throat","ic":"M3 12h18M7 7l-4 5 4 5M17 7l4 5-4 5"},{"nm":"Caregiver","v":"attends to the other","b":"Heart","ic":"M12 21s-8-5-8-11a4 4 0 018-2 4 4 0 018 2c0 6-8 11-8 11z"},{"nm":"Creator","v":"makes the thing","b":"Sacral","ic":"M3 20l9-16 9 16z"},{"nm":"Magician","v":"changes the conditions","b":"3rd Eye","ic":"M4 20L18 6M15 3l1 3 3 1-3 1-1 3-1-3-3-1 3-1z"},{"nm":"Ruler","v":"orders the field","b":"Solar","ic":"M3 19l3-12 6 6 6-6 3 12z"},{"nm":"Explorer","v":"goes to the edge","b":"Sacral","ic":"M12 12m-9 0a9 9 0 1018 0 9 9 0 10-18 0M15 9l-2 6-4 2 2-6z"},{"nm":"Lover","v":"closes the distance","b":"Heart","ic":"M12 21s-8-5-8-11a4 4 0 018-2 4 4 0 018 2c0 6-8 11-8 11zM12 8v13"},{"nm":"Jester","v":"breaks the tension","b":"Throat","ic":"M12 12m-9 0a9 9 0 1018 0 9 9 0 10-18 0M8 10h.01M16 10h.01M8 15c2 2 6 2 8 0"},{"nm":"Everyman","v":"stays with the room","b":"Root","ic":"M12 8m-4 0a4 4 0 108 0 4 4 0 10-8 0M4 21c0-5 4-7 8-7s8 2 8 7"},{"nm":"Innocent","v":"takes it at face value","b":"Crown","ic":"M12 12m-5 0a5 5 0 1010 0 5 5 0 10-10 0M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"}];var ARCH18=[["Warrior","Controller","Solar"],["Caregiver","Pleaser","Heart"],["Creator","Stickler","Throat"],["Sage","Hyper-Rational","3rd Eye"],["Jester","Avoider","Sacral"],["Lover","Hyper-Vigilant","Heart"],["Magician","Victim","Crown"],["Innocent","Restless","Root"],["Outlaw","Judge","Solar"],["Ruler","Hyper-Achiever","Crown"],["Explorer","Avoider","Sacral"],["Orphan","Worrywart","Root"],["Hero","Hyper-Achiever","Solar"],["Everyman","Pleaser","Heart"],["Mentor","Stickler","3rd Eye"],["Shadow","Judge","Solar"],["Shapeshifter","Restless","Sacral"],["Healer","Hyper-Vigilant","Heart"]];var AFF={"James":[0.679,1,0.6785,0.2246,0.1031,0.3,0.7859,0.6099,0.1773,0.0883,0.0959,0.2104],"Angela":[0.6124,0.1822,0.0898,0.0978,0.2216,0.6164,0.492,0.1401,0.1228,0.3492,0.8979,1],"Derek":[0.8181,0.6541,0.6575,1,0.6365,0.1878,0.2188,0.6084,0.4704,0.145,0.101,0.2585]};var STAMP="round GV prototype over 93dc99c";
+/* ============================================================
+   THE ARCHETYPE PICKER, ON THE AVATAR PAGE. Round GV in TASKS.md.
+   A PROTOTYPE. Shared by the merge page and the four variations.
+
+   Three rulings from the owner, 27 September, carried here once so that all
+   five pages say them the same way:
+
+   1. The commit word is warmer than "This is me". The default is "Rings
+      true". The prototype bar switches it, so the word is judged on the page
+      and not in a report.
+   2. Every archetype is described in two parts, never one. First what the
+      pattern does, said neutrally. Then, underneath and separately, Impact:
+      the primary saboteur, named plainly, with one line of what taking that
+      role on costs. A person reads what they do before what it is called.
+   3. One press saves. The same press takes it off. There is no Save button.
+
+   Data. ARCH (twelve, with icon, verb and seat) is read out of
+   proto/fw/data.json, which proto/fw/extract.js read off the committed build.
+   ARCH18 (eighteen, each with its primary saboteur and that saboteur's seat)
+   is read out of atuned_src/engine/data/canon.js. AFF is each reference
+   person's archetype affinity, computed by the committed engine.js at build
+   time. None of it is typed in here. The six drafts' icons and verbs are
+   carried over from proto/intake/lib.js and stay marked as drafts.
+   ============================================================ */
+var AR=(function(){
+'use strict';
+
+/* ---------------- the seven seats and the avatar's seven areas ----------------
+   The areas and their angles are proto/avatar/redesign-GG.html's own, so a
+   satellite sits where it sits on that page. */
+var SEATS=['crown','eye','throat','heart','solar','sacral','root'];
+var B2S={'Crown':'crown','3rd Eye':'eye','Throat':'throat','Heart':'heart','Solar':'solar','Sacral':'sacral','Root':'root'};
+var THE={root:'the root',sacral:'the sacral',solar:'the solar plexus',heart:'the heart',throat:'the throat',eye:'the third eye',crown:'the crown'};
+var AREAS=[
+ {k:'meaning', seat:'crown',  nm:'Meaning',  about:'purpose, faith, what it is for', a:-90},
+ {k:'clarity', seat:'eye',    nm:'Clarity',  about:'seeing straight, deciding',      a:-38.57},
+ {k:'voice',   seat:'throat', nm:'Voice',    about:'saying it, being heard',         a:-141.43},
+ {k:'love',    seat:'heart',  nm:'Love',     about:'partner, family, closeness',     a:12.86},
+ {k:'drive',   seat:'solar',  nm:'Drive',    about:'work, will, pressure',           a:167.14},
+ {k:'pleasure',seat:'sacral', nm:'Pleasure', about:'desire, play, making things',    a:64.29},
+ {k:'ground',  seat:'root',   nm:'Ground',   about:'body, money, home, rest',        a:115.71}];
+var AK={}, SA={}; AREAS.forEach(function(x){AK[x.k]=x; SA[x.seat]=x;});
+
+var IC={
+ ground:'<path d="M4 11.5L12 5l8 6.5"/><path d="M6.5 10v9h11v-9"/><path d="M10.5 19v-4.5h3V19"/>',
+ pleasure:'<path d="M3 9.5c2-2.6 4-2.6 6 0s4 2.6 6 0 4-2.6 6 0"/><path d="M3 15c2-2.6 4-2.6 6 0s4 2.6 6 0 4-2.6 6 0"/>',
+ drive:'<circle cx="12" cy="12" r="4"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/>',
+ love:'<path d="M12 19.5s-7.5-4.4-7.5-9.7A4.1 4.1 0 0 1 12 7.6a4.1 4.1 0 0 1 7.5 2.2c0 5.3-7.5 9.7-7.5 9.7z"/>',
+ voice:'<path d="M4.5 5.5h15v10h-9l-4.5 3.5v-3.5h-1.5z"/><path d="M8.5 10.5h7"/>',
+ clarity:'<path d="M2.5 12s3.6-6.5 9.5-6.5 9.5 6.5 9.5 6.5-3.6 6.5-9.5 6.5S2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/>',
+ meaning:'<path d="M12 3l2.4 6.6L21 12l-6.6 2.4L12 21l-2.4-6.6L3 12l6.6-2.4z"/>',
+ person:'<circle cx="12" cy="7" r="3.4"/><path d="M4.5 21c0-4.6 3.4-7.8 7.5-7.8s7.5 3.2 7.5 7.8"/>',
+ mark:'<circle cx="12" cy="12" r="8.5"/><path d="M12 5.5v13M5.5 12h13"/>',
+ ring:'<circle cx="12" cy="12" r="8.5"/><path class="ck" d="M8 12.3l2.7 2.7L16.2 9.5"/>'};
+function svg(k,cls){return '<svg viewBox="0 0 24 24" aria-hidden="true"'+(cls?' class="'+cls+'"':'')+'>'+IC[k]+'</svg>';}
+
+/* ---------------- the roster of eighteen ----------------
+   The same join proto/intake/lib.js makes: the twelve keep ARCH's seat, the
+   six take ARCH18's third column. ARCH18 calls the Rebel the Outlaw; one row,
+   two names, and the owner has not ruled which. */
+var DRAFT6={
+ Orphan:{v:'counts on nobody',ic:'M9 7m-3 0a3 3 0 106 0 3 3 0 10-6 0M3 21c0-4 3-6 6-6s6 2 6 6M18 10m-2 0a2 2 0 104 0 2 2 0 10-4 0'},
+ Hero:{v:'steps in front',ic:'M12 3l8 3v6c0 5-4 8-8 9-4-1-8-4-8-9V6zM12 8v7'},
+ Mentor:{v:'hands on the method',ic:'M8 6m-3 0a3 3 0 106 0 3 3 0 10-6 0M2 21c0-4 3-7 6-7s6 3 6 7M17 12m-2 0a2 2 0 104 0 2 2 0 10-4 0M14 21c0-3 1.5-5 3-5s3 2 3 5'},
+ Shadow:{v:'acts out what gets hidden',ic:'M12 4a8 8 0 100 16 6 6 0 010-16zM12 4a8 8 0 010 16'},
+ Shapeshifter:{v:'becomes what the room wants',ic:'M3 4h7v7H3zM17 17m-4 0a4 4 0 108 0 4 4 0 10-8 0M10 7.5h3.5a3.5 3.5 0 013.5 3.5v2'},
+ Healer:{v:'mends what is broken',ic:'M4 20L20 4M7 10l3 3M11 6l3 3M10 14l3 3M14 10l3 3'}};
+var VFIX={Ruler:'keeps things in order'};
+
+/* WHAT IT DOES. The Definition bucket: the same for everybody, said
+   neutrally, two sentences. The first reuses the archetype's own verb from
+   ARCH. The second is what the pattern does for the person, which is why it
+   is worth having. Warrior, Sage, Ruler and Everyman reuse COPY.md's mask
+   table where it already says this, because reuse beats invention. */
+var DEF={
+ Warrior:'The Warrior moves on the threat and counts the damage after. It gets the thing done on a day when feeling it would stop you.',
+ Sage:'The Sage reads the situation before it moves. It gives you ground to stand on when the moment is unclear.',
+ Rebel:'The Rebel refuses the frame it is handed. It marks where you end and other people begin.',
+ Caregiver:'The Caregiver attends to the other person first. It sees who needs something before they ask.',
+ Creator:'The Creator makes the thing. It turns what is in your head into something other people can hold.',
+ Magician:'The Magician changes the conditions around a problem. It finds the one lever that moves the rest.',
+ Ruler:'The Ruler keeps things in order. It keeps you trusted with people, money and decisions.',
+ Explorer:'The Explorer goes to the edge of what it knows. It brings back what nobody at home has seen yet.',
+ Lover:'The Lover closes the distance to the people it wants near. It stays close when things get hard.',
+ Jester:'The Jester breaks the tension. It gets a tight room laughing, and breathing, again.',
+ Everyman:'The Everyman stays with the room, so it reads the room first. It keeps you in the group.',
+ Innocent:'The Innocent takes things at face value. It lets you trust people and start again after a bad day.',
+ Orphan:'The Orphan counts on nobody. It gets you through on the days nobody else turns up.',
+ Hero:'The Hero steps in front when something has to be done. It takes the hit so the people behind it are spared.',
+ Mentor:'The Mentor hands on the method. It makes other people able to do what you can do.',
+ Shadow:'The Shadow acts out what gets hidden. It holds what you learned to keep out of sight, and brings it out under pressure.',
+ Shapeshifter:'The Shapeshifter becomes what the room wants. It lets you fit in anywhere, fast.',
+ Healer:'The Healer mends what is broken. It sees where other people hurt and knows where to put a hand.'};
+
+/* IMPACT. What taking the role on costs, one line, written as a thing that
+   happens in a day. It names the saboteur and never calls the person by it.
+   Drawn from SABDEF's own "what it is" and "when it fires" at
+   engine/data/kb.js, said in plain words. Eleven, because ARCH18 names eleven
+   saboteurs across its eighteen rows. */
+var IMPACT={
+ 'Controller':'Handing a thing over feels like dropping it, so the grip stays on.',
+ 'Pleaser':'Yes comes out before your own answer has been checked.',
+ 'Stickler':'Time goes into holding everything to the one right way.',
+ 'Hyper-Rational':'What cannot be explained gets set aside, feelings first.',
+ 'Avoider':'What needs dealing with waits, for as long as waiting costs nothing today.',
+ 'Hyper-Vigilant':'Part of your attention stays on the door, even in a safe room.',
+ 'Victim':'What happened to you takes up the room the next step needs.',
+ 'Restless':'Once a thing turns familiar, the next one starts to pull.',
+ 'Judge':'Every shortfall gets a verdict, your own included.',
+ 'Hyper-Achiever':'Rest feels like falling behind, so the output keeps running.',
+ 'Worrywart':'The worst case runs on a loop, and it feels like planning.'};
+
+var ROSTER=(function(){
+ var by={};
+ ARCH.forEach(function(a,i){by[a.nm]={nm:a.nm,v:VFIX[a.nm]||a.v,seat:B2S[a.b],ic:a.ic,read:i,draft:false};});
+ ARCH18.forEach(function(r){var nm=r[0]==='Outlaw'?'Rebel':r[0];
+  if(by[nm]){by[nm].sab=r[1];by[nm].sabSeat=B2S[r[2]];return;}
+  var d=DRAFT6[nm]||{v:'',ic:'M12 12m-8 0a8 8 0 1016 0 8 8 0 10-16 0'};
+  by[nm]={nm:nm,v:d.v,seat:B2S[r[2]],ic:d.ic,read:-1,draft:true,sab:r[1],sabSeat:B2S[r[2]]};});
+ var out=[]; SEATS.forEach(function(s){Object.keys(by).forEach(function(k){if(by[k].seat===s)out.push(by[k]);});});
+ return out;})();
+function A(nm){for(var i=0;i<ROSTER.length;i++)if(ROSTER[i].nm===nm)return ROSTER[i];return null;}
+function inSeat(s){return ROSTER.filter(function(a){return a.seat===s;});}
+
+/* ---------------- the reference people ----------------
+   The avatar pairs are redesign-GG.html's, reduced to what the ring needs:
+   the load when the pair was written, the load now, and whether the resolver
+   reads the sentence at all. Angela's Ground and Derek's Drive land nowhere,
+   because "tired" and "shoulders" are not read (round FB). */
+var PEOPLE={
+ James:{label:'James, 57, level 3',ideal:'voice',areas:{voice:[6,4.1,1],ground:[5.5,5.5,1],drive:[4.2,1.8,1],love:[3.9,3.4,1],clarity:[3.2,3.2,1]}},
+ Angela:{label:'Angela, 36, level 5',ideal:'ground',areas:{ground:[0,0,0],love:[4.6,3.6,1],clarity:[3.8,3.8,1],meaning:[5.1,3,1]}},
+ Derek:{label:'Derek, 39, level 7',ideal:'drive',areas:{drive:[0,0,0],love:[5.8,4.9,1],ground:[4.4,2.4,1],pleasure:[5,5,1]}},
+ blank:{label:'Nobody yet, first run',ideal:null,areas:{}}};
+
+/* ---------------- state ---------------- */
+var WORDS=['Rings true','Resonates','Resonate','Feels like me','This is me'];
+var KEY='atuned-proto-GV-archetype';
+var ST={who:'James',word:WORDS[0],picks:{},sel:null,hooks:[]};
+function readStore(){try{var o=JSON.parse(localStorage.getItem(KEY)||'{}');return o&&typeof o==='object'?o:{};}catch(e){return {};}}
+(function(){var o=readStore(); if(o.picks&&typeof o.picks==='object')ST.picks=o.picks;
+ if(WORDS.indexOf(o.word)>=0)ST.word=o.word;})();
+function writeStore(){try{localStorage.setItem(KEY,JSON.stringify({picks:ST.picks,word:ST.word}));return true;}catch(e){return false;}}
+
+function stranger(){return ST.who==='blank';}
+function aff(a){if(stranger()||!a||a.read<0)return null;var v=(AFF[ST.who]||[])[a.read];return typeof v==='number'?v:null;}
+function readOrder(){if(stranger())return [];
+ return ROSTER.filter(function(a){return aff(a)!=null;}).sort(function(x,y){return aff(y)-aff(x);});}
+function pick(){var p=ST.picks[ST.who];return p&&A(p)?p:null;}
+
+/* ONE PRESS. The press is the save. Pressing the picked one again takes it
+   off. Pressing a different one moves the pick and says what it replaced,
+   because a press that silently undoes another choice is a press that lies.
+   A status is only written after the write has succeeded. */
+function toggle(nm){
+ var was=pick(), msg, warn=false;
+ if(was===nm){delete ST.picks[ST.who]; msg='Taken off. No archetype is picked.';}
+ else{ST.picks[ST.who]=nm; msg=was?'Saved. '+nm+' replaces '+was+'.':'Saved.';}
+ if(!writeStore()){warn=true; msg='Not saved. This browser refused the write, so the pick lasts until the page closes.';}
+ fire(); say(msg,warn,nm);}
+var sayT=null;
+/* the status goes under the button that was pressed, and nowhere else */
+function say(msg,warn,nm){requestAnimationFrame(function(){
+ var b=nm&&document.querySelector('[data-rt="'+nm+'"]'), own=b&&b.closest('.ar-det')&&b.closest('.ar-det').querySelector('.ar-st');
+ [].forEach.call(document.querySelectorAll('.ar-st'),function(s){s.textContent='';});
+ [].forEach.call(own?[own]:document.querySelectorAll('.ar-st'),function(s){s.textContent=msg;s.classList.toggle('warn',!!warn);});
+ clearTimeout(sayT); if(!warn)sayT=setTimeout(function(){[].forEach.call(document.querySelectorAll('.ar-st'),function(s){s.textContent='';});},2400);});}
+function on(fn){ST.hooks.push(fn);}
+function fire(){ST.hooks.forEach(function(f){f();});}
+
+/* ---------------- helpers ---------------- */
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function col(seat){return 'var(--'+seat+')';}
+function pos(a,r){var t=a*Math.PI/180;return [50+r*Math.cos(t),50+r*Math.sin(t)];}
+function aicon(a,cls){return '<svg viewBox="0 0 24 24" aria-hidden="true"'+(cls?' class="'+cls+'"':'')+'><path d="'+a.ic+'"'+(a.draft?' stroke-dasharray="3 2"':'')+'/></svg>';}
+function areaOf(a){return SA[a.seat];}
+function cap(s){return s.charAt(0).toUpperCase()+s.slice(1);}
+
+/* ---------------- what a pick says, the same on all five pages ---------------- */
+function head(a,sz){var ar=areaOf(a);
+ return '<div class="ar-dh"><span class="ar-dic"'+(sz?' style="width:'+sz+'px;height:'+sz+'px"':'')+'>'+aicon(a)+'</span><div>'
+  +'<p class="ar-eyb"><b>'+esc(ar.nm)+'</b>, '+esc(THE[a.seat])+'</p><h3>'+esc(a.nm)+'</h3></div></div>';}
+function body(a){
+ return '<p class="ar-def">'+esc(DEF[a.nm]||'')+'</p>'
+  +(a.sab?'<div class="ar-imp" style="--s:'+col(a.sabSeat)+'"><p class="ar-lbl">Impact</p>'
+   +'<p class="ar-impv"><b>'+esc(a.sab)+'</b><span>primary saboteur, at '+esc(THE[a.sabSeat])+'</span></p>'
+   +'<p class="ar-impc">'+esc(IMPACT[a.sab]||'')+'</p></div>':'')
+  +(a.draft?'<p class="ar-dr">Draft. '+esc(a.nm)+' is in the table of eighteen and not yet in the instrument, so its mark and its lines are proposals and nothing reads it.</p>':'');}
+function button(a){var p=pick()===a.nm;
+ return '<button type="button" class="ar-rt'+(p?' ar-on':'')+'" data-rt="'+esc(a.nm)+'" aria-pressed="'+p+'" style="--c:'+col(a.seat)+'">'
+  +svg('ring')+'<span>'+esc(ST.word)+'</span></button>';}
+/* the page's question follows the button word, so the two always agree */
+function question(){return {'Rings true':'Which of these rings true?','Resonates':'Which of these resonates?',
+ 'Resonate':'Which of these resonates?','Feels like me':'Which of these feels like you?','This is me':'Which of these is most like you?'}[ST.word];}
+function hint(){return '<p class="ar-hint">One press saves it. Press again to take it off.</p>';}
+function status(){return '<p class="ar-st" role="status" aria-live="polite"></p>';}
+function compare(){
+ var p=pick(); if(!p)return '';
+ var first=A(p);
+ if(stranger())return '<p class="ar-cmp">Nothing is on record yet. What you write from here will show whether your field agrees.</p>';
+ var ro=readOrder(), top=ro[0];
+ if(first.draft)return '<p class="ar-cmp">Your field reads <b>'+esc(top.nm)+'</b> first. The instrument does not read '+esc(first.nm)+' yet, so the two cannot be compared.</p>';
+ if(top.nm===first.nm)return '<p class="ar-cmp">Your field reads <b>'+esc(top.nm)+'</b> first too. What you say and what it reads agree.</p>';
+ var at=ro.indexOf(first);
+ return '<p class="ar-cmp">Your field reads <b>'+esc(top.nm)+'</b> first and '+esc(first.nm)+' '
+  +(at===1?'second':at===2?'third':'further down')+'. Both are kept. The gap between what you say and what it reads is part of the reading.</p>';}
+function detail(a,o){o=o||{};
+ return '<div class="ar-det" style="--c:'+col(a.seat)+'">'+(o.nohead?'':head(a))+body(a)
+  +'<div class="ar-act">'+button(a)+'</div>'+hint()+status()+(o.nocmp||pick()!==a.nm?'':compare())+'</div>';}
+
+/* ---------------- the ring, shared by the variations ----------------
+   The avatar figure from redesign-GG.html, drawn the same way: a core, seven
+   satellites at the same angles, percent complete on each. The core carries
+   the picked archetype. */
+function pct(k){var a=PEOPLE[ST.who].areas[k]; if(!a||!a[2]||!(a[0]>0))return null;
+ return Math.round(100*Math.max(0,Math.min(1,1-a[1]/a[0])));}
+function overall(){var v=AREAS.map(function(x){return pct(x.k);}).filter(function(x){return x!=null;});
+ return v.length?Math.round(v.reduce(function(s,x){return s+x;},0)/v.length):null;}
+function arcP(cx,cy,r,f){if(f<=0)return ''; if(f>=1)f=0.9999;
+ var a0=-Math.PI/2,a1=a0+f*Math.PI*2;
+ return 'M'+(cx+r*Math.cos(a0)).toFixed(2)+' '+(cy+r*Math.sin(a0)).toFixed(2)+' A'+r+' '+r+' 0 '+(f>0.5?1:0)+' 1 '+(cx+r*Math.cos(a1)).toFixed(2)+' '+(cy+r*Math.sin(a1)).toFixed(2);}
+/* o: {orb, sr, satBtn, sel (area key), glow (seat to 0..1), extra (svg), over (html), core (html)} */
+function ring(o){o=o||{};
+ var ORB=o.orb||37.5, SR=o.sr||6.5, P=PEOPLE[ST.who], p=pick(), pa=p?A(p):null;
+ var s='<svg class="draw" viewBox="0 0 100 100" aria-hidden="true">';
+ for(var i=0;i<72;i++){var a=i*5,p0=pos(a,19.2),p1=pos(a,i%6===0?21.4:20.4);
+  s+='<line x1="'+p0[0].toFixed(2)+'" y1="'+p0[1].toFixed(2)+'" x2="'+p1[0].toFixed(2)+'" y2="'+p1[1].toFixed(2)+'" stroke="#3A3E4A" stroke-width=".25"/>';}
+ s+='<circle cx="50" cy="50" r="17.6" fill="none" stroke="#2A2E3A" stroke-width=".5"/>';
+ var ov=overall(); if(ov!=null)s+='<path d="'+arcP(50,50,17.6,ov/100)+'" fill="none" stroke="var(--ink)" stroke-width=".9" stroke-linecap="round" opacity=".8"/>';
+ AREAS.forEach(function(x){
+  var c=pos(x.a,ORB), p0=pos(x.a,22.2), p1=pos(x.a,ORB-SR-0.6), has=!!P.areas[x.k], hot=pa&&pa.seat===x.seat, g=o.glow&&o.glow[x.seat];
+  if(g)s+='<circle cx="'+c[0].toFixed(2)+'" cy="'+c[1].toFixed(2)+'" r="'+(SR+0.8+g*3).toFixed(2)+'" fill="'+col(x.seat)+'" fill-opacity=".14"/>';
+  s+='<line x1="'+p0[0].toFixed(2)+'" y1="'+p0[1].toFixed(2)+'" x2="'+p1[0].toFixed(2)+'" y2="'+p1[1].toFixed(2)+'" stroke="'+(has||hot?col(x.seat):'#2A2E3A')+'" stroke-opacity="'+(hot?.95:has?.35:.6)+'" stroke-width="'+(hot?.8:.3)+'"'+(has||hot?'':' stroke-dasharray="1 1.2"')+'/>';
+  s+='<circle cx="'+c[0].toFixed(2)+'" cy="'+c[1].toFixed(2)+'" r="'+SR+'" fill="none" stroke="'+(has||hot?col(x.seat):'#3A3E4A')+'" stroke-opacity="'+(hot?.9:has?.3:1)+'" stroke-width="'+(hot?.8:.55)+'"/>';
+  var pc=pct(x.k); if(pc!=null&&pc>0)s+='<path d="'+arcP(c[0],c[1],SR,pc/100)+'" fill="none" stroke="'+col(x.seat)+'" stroke-width="1" stroke-linecap="round"/>';});
+ s+=(o.extra||'')+'</svg>';
+ var core=o.core!=null?o.core:coreHTML(pa,ov);
+ var sats=AREAS.map(function(x){var c=pos(x.a,ORB), pc=pct(x.k), tag=o.satBtn?'button type="button"':'span';
+  return '<'+tag+' class="sat" data-sat="'+x.k+'" style="left:'+c[0].toFixed(2)+'%;top:'+c[1].toFixed(2)+'%;--c:'+col(x.seat)+'"'
+   +(o.satBtn?' aria-pressed="'+(o.sel===x.k)+'" aria-label="'+x.nm+'"':'')+'>'
+   +svg(x.k)+'<span class="pc'+(pc==null?' none':'')+'">'+(pc==null?'–':pc+'%')+'</span></'+(o.satBtn?'button':'span')+'>';}).join('');
+ var labs=o.nolabs?'':AREAS.map(function(x){var l=pos(x.a,ORB-SR-4.6);
+  return '<span class="slab'+(o.sel===x.k?' on':'')+'" style="left:'+l[0].toFixed(2)+'%;top:'+l[1].toFixed(2)+'%">'+x.nm+'</span>';}).join('');
+ return s+labs+core+sats+(o.over||'');}
+function coreHTML(pa,ov){
+ return '<div class="core'+(pa?' has':'')+'"'+(pa?' style="--c:'+col(pa.seat)+'"':'')+'>'
+  +(pa?aicon(pa,'cic'):svg('person','cic'))
+  +'<span class="big">'+(ov==null?'–':ov+'%')+'</span><span class="lb">Complete</span>'
+  +(pa?'<span class="anm">'+esc(pa.nm)+'</span>':'')+'</div>';}
+
+/* ---------------- the prototype's own chrome ---------------- */
+var PAGES=[['avatar-merge','Merge'],['v1-orbit','Orbit'],['v2-ladder','Ladder'],['v3-three','Three'],['v4-spine','Spine']];
+function bar(name,say){
+ var h='<div class="pbar" data-proto role="region" aria-label="Prototype controls"><span class="tag">Prototype</span>'
+  +'<span class="say"><b>Not the app.</b> '+say+'</span>'
+  +'<label>Person <select id="arWho">'+Object.keys(PEOPLE).map(function(k){return '<option value="'+k+'"'+(k===ST.who?' selected':'')+'>'+PEOPLE[k].label+'</option>';}).join('')+'</select></label>'
+  +'<label>Button word <select id="arWord">'+WORDS.map(function(w){return '<option'+(w===ST.word?' selected':'')+'>'+w+'</option>';}).join('')+'</select></label>'
+  +'<button type="button" class="pbtn" id="arClear">Clear picks</button>'
+  +'<nav class="pnav" aria-label="Prototype pages">'+PAGES.map(function(p){return p[0]===name?'<b>'+p[1]+'</b>':'<a href="'+p[0]+'-packed.html">'+p[1]+'</a>';}).join('')+'</nav></div>'
+  +'<div class="ptag" data-proto aria-hidden="true">Prototype, not the app</div>';
+ document.body.insertAdjacentHTML('afterbegin',h);
+ wireBar();}
+function wireBar(){
+ var w=document.getElementById('arWho'), d=document.getElementById('arWord'), c=document.getElementById('arClear');
+ if(w)w.addEventListener('change',function(){setWho(w.value);});
+ if(d)d.addEventListener('change',function(){ST.word=d.value; writeStore(); fire();});
+ if(c)c.addEventListener('click',function(){ST.picks={}; writeStore(); fire(); say('Picks cleared for every person.');});}
+/* #who=Derek&sel=Sage, so a screenshot or a link can open on a state */
+function fromHash(){var h=location.hash, w=(h.match(/who=(\w+)/)||[])[1], s=(h.match(/sel=(\w+)/)||[])[1];
+ if(w&&PEOPLE[w])ST.who=w; if(s&&A(s))ST.sel=s;
+ var sw=document.getElementById('arWho'); if(sw)sw.value=ST.who;}
+function setWho(w){if(!PEOPLE[w])return; ST.who=w; ST.sel=null; var s=document.getElementById('arWho'); if(s)s.value=w; fire();}
+
+/* a press on any "Rings true" button anywhere on the page */
+document.addEventListener('click',function(e){var t=e.target.closest&&e.target.closest('[data-rt]'); if(!t)return;
+ t.classList.remove('ar-hit'); void t.offsetWidth; toggle(t.dataset.rt);
+ var n=document.querySelector('[data-rt="'+t.dataset.rt+'"]'); if(n){n.classList.add('ar-hit'); n.focus({preventScroll:true});}});
+
+/* THE COUNT, live. Every visible control that is not the prototype's own. */
+function measure(el,root){
+ root=root||document.querySelector('main')||document.body;
+ var els=[].slice.call(root.querySelectorAll('button,input,textarea,select,a[href],summary'));
+ var vis=els.filter(function(e){return e.offsetParent!==null&&!e.closest('[data-proto]')&&!e.disabled;});
+ var first=vis.filter(function(e){var r=e.getBoundingClientRect();return r.top<innerHeight&&r.bottom>0;});
+ if(el)el.textContent='Choices in view now: '+first.length+'. On the whole page: '+vis.length+'. Target: under 12.';
+ return {view:first.length,all:vis.length};}
+
+return {SEATS:SEATS,THE:THE,AREAS:AREAS,AK:AK,SA:SA,ROSTER:ROSTER,A:A,inSeat:inSeat,DEF:DEF,IMPACT:IMPACT,PEOPLE:PEOPLE,ST:ST,
+ svg:svg,aicon:aicon,areaOf:areaOf,esc:esc,col:col,pos:pos,cap:cap,aff:aff,readOrder:readOrder,pick:pick,toggle:toggle,say:say,
+ on:on,fire:fire,stranger:stranger,question:question,head:head,body:body,button:button,hint:hint,status:status,compare:compare,detail:detail,
+ ring:ring,coreHTML:coreHTML,pct:pct,overall:overall,bar:bar,wireBar:wireBar,setWho:setWho,fromHash:fromHash,measure:measure,WORDS:WORDS,STAMP:STAMP};
+})();
+</script>
+<script>
+(function(){
+'use strict';
+var open=null, all=false, SHOW=5;
+var CHECK='<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M8 12.3l2.7 2.7L16.2 9.5"/></svg>';
+function row(a,top){
+ var v=AR.aff(a), on=open===a.nm, pk=AR.pick()===a.nm;
+ var h='<div class="row" style="--c:'+AR.col(a.seat)+'"><button type="button" class="lrow" data-row="'+AR.esc(a.nm)+'" aria-expanded="'+on+'">'
+  +'<span class="li">'+AR.aicon(a)+'</span><span><span class="nm">'+AR.esc(a.nm)+'</span>'
+  +'<span class="vb'+(top?' first':'')+'">'+(top?'Your field reads this first':AR.esc(a.v))+'</span></span>'
+  +(v!=null?'<span class="trk" aria-hidden="true"><i style="width:'+Math.max(4,Math.round(v*100))+'%"></i></span>':'<span class="trk none" aria-hidden="true"></span>')
+  +'<span class="st">'+(pk?CHECK:'')+'</span><span class="vh">'+(pk?', picked':'')+(a.draft?', draft':'')+'</span></button>';
+ if(on)h+='<div class="lx"><p class="ar-eyb"><b>'+AR.esc(AR.SA[a.seat].nm)+'</b>, '+AR.esc(AR.THE[a.seat])+'</p>'+AR.detail(a,{nohead:true})+'</div>';
+ return h+'</div>';}
+function paint(){
+ document.getElementById('q').textContent=AR.question();
+ var ro=AR.readOrder(), p=AR.pick(), h='';
+ if(ro.length){
+  document.getElementById('lede').textContent='Strongest first, as your field reads them. Open one to read it.';
+  var drafts=AR.ROSTER.filter(function(a){return a.read<0;});
+  var pi=ro.map(function(a){return a.nm;}).indexOf(p); if(p&&(pi>=SHOW||AR.A(p).draft))all=true;
+  h+='<div class="lhd" aria-hidden="true"><span>Archetype</span><span>How strongly your field reads it</span></div>';
+  ro.forEach(function(a,i){if(i<SHOW||all)h+=row(a,i===0);});
+  if(all){h+='<p class="grp">Drafts, not read yet. The instrument has no reading for these six.</p>';
+   drafts.forEach(function(a){h+=row(a,false);});}
+  else h+='<button type="button" class="more" id="more">Show the other '+(ro.length-SHOW+drafts.length===13?'thirteen':String(ro.length-SHOW+drafts.length))+'</button>';}
+ else{
+  document.getElementById('lede').textContent='Grouped by the part of your life each one acts from. Open one to read it.';
+  h+='<p class="fr">Nothing read yet, so there is no order to put these in. They run top to bottom through the body.</p>';
+  AR.SEATS.forEach(function(s){var ar=AR.SA[s]; h+='<p class="grp" style="--c:'+AR.col(s)+'"><b>'+ar.nm+'</b>, '+AR.THE[s]+'</p>';
+   AR.inSeat(s).forEach(function(a){h+=row(a,false);});});}
+ document.getElementById('lad').innerHTML=h;
+ var pa=p?AR.A(p):null;
+ document.getElementById('fig').innerHTML=AR.ring({nolabs:true});
+ var cap=document.getElementById('cap'); cap.style.setProperty('--c',pa?AR.col(pa.seat):'');
+ cap.innerHTML=pa?'Archetype <b>'+AR.esc(pa.nm)+'</b>, at '+AR.esc(AR.SA[pa.seat].nm):'Archetype –';
+ AR.measure(document.getElementById('meas'));}
+document.addEventListener('click',function(e){
+ var t=e.target.closest('[data-row],#more'); if(!t)return;
+ if(t.id==='more'){all=true; paint(); return;}
+ open=open===t.dataset.row?null:t.dataset.row; paint();
+ var f=document.querySelector('[data-row="'+t.dataset.row+'"]'); if(f){f.focus({preventScroll:true});
+  var r=f.getBoundingClientRect(); if(r.top<0||r.top>innerHeight*0.6)f.scrollIntoView({behavior:'smooth',block:'start'});}});
+function start(){all=false; open=AR.pick()||AR.ST.sel||((AR.readOrder()[0]||{}).nm)||null; paint();}
+AR.bar('v2-ladder','Archetype picker on the avatar, round GV, variation 2: Ladder. Mock data. A pick is kept in this browser only.');
+AR.fromHash();
+var who=AR.ST.who;
+AR.on(function(){if(AR.ST.who!==who){who=AR.ST.who; AR.ST.sel=null; start();} else paint();});
+addEventListener('resize',function(){AR.measure(document.getElementById('meas'));});
+start();
+})();
+</script></body></html>

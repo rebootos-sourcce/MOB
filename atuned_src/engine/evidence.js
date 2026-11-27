@@ -1,0 +1,793 @@
+/* ============================================================
+   THE EVIDENCE LEDGER, P0 of the Journal Mode blueprint. Round SK, 30
+   October, TASKS.md. The document is atuned_source_ai_journal_mode_TDDB.md,
+   his own Drive, 4 October, and its rule is "the system proposes, the person
+   verifies". Its section 15 names eight states and this is them, as data.
+
+   WHAT A CLAIM IS, AND WHAT EVIDENCE IS. They are two things and a mark used
+   to be both. A mark from marksOf (engine/sniff.js) holds the person's own
+   letters, s to e, and the seat the lexicon put them at. The letters are
+   what was said. The seat is what the engine made of them. So here the
+   letters are EVIDENCE, and the seat is a CLAIM that cites them. Source AI
+   may only ever say a claim when the evidence under it is good enough, and
+   the person is the only one who can say a claim is theirs.
+
+   THE EIGHT STATES, AND WHO MAY SET EACH ONE.
+
+     observed   evidence only. The words were written. Every evidence row
+                is observed; a claim is never observed, because a claim is
+                always the engine's reading of something observed.
+     inferred   a claim with nothing said for it in this entry: an earlier
+                entry's stored seat key, or the field's own driven pattern.
+                Held, never asked about, never said.
+     candidate  heard once in this entry and nothing else behind it.
+     supported  more than one piece of evidence points the same way: heard
+                twice or more in this entry, or once here and in an earlier
+                entry, or once here at a seat a driven hyper complex sits on
+                (his ruling of 27 October, srcRung in engine/sourceai.js:
+                the field's pattern is built from his own committed charge,
+                so it is his evidence, not the engine's guess).
+     confirmed  the person said yes.
+     rejected   the person said not me.
+     corrected  the person said what it is instead, in their own words.
+     unknown    the person said they are not sure. And the root, always,
+                at this stage: see evRoot.
+
+   THE ONE INVARIANT EVERYTHING ELSE SERVES. The engine moves a claim only
+   between inferred, candidate and supported. confirmed, rejected, corrected
+   and unknown are reachable ONLY through a verdict the person gave, evVerdict
+   below, and a verdict outranks any amount of new evidence: a seat the person
+   said not me to stays rejected however often the story comes back to it,
+   until the person says otherwise. That is the document's "no silent
+   promotion" and "correction dominance" (section 53, 2 and 5).
+
+   ONE READER, NOT TWO. The counts a claim's state is read from are srcHear's
+   own (mentions, earlier, structural), so the state and the rung can never
+   disagree about how often a seat was heard. The spans come off marksOf, the
+   same list the person's own bubble is drawn from. tests/evidence.js holds
+   the two to the same count on every line of the story bank.
+
+   HOW THIS MAPS ONTO THE TRACE GRAPH, SO IT IS NOT A SECOND MODEL. trace.js
+   already carries five provenance words, TRACE_SRC, and its own warning is
+   that a second model beside the real engine is how two truths appear. The
+   eight states are finer than the five, and EV_TRACE says exactly where each
+   one lands: every engine state is the graph's inferred, a yes and a
+   correction are its user_confirmed, and a no and an unknown have no
+   provenance there at all, which is trace.js's own standing gap (a refusal
+   is F16, the owner's). Nothing here writes the graph yet.
+
+   PRIVACY, CHECKED FIRST, and it decides the shape. The ledger is DERIVED,
+   never stored. It reads the entry being written, and from earlier entries
+   only the seat keys a commit already stored (srcPrior), never their text:
+   that is the narrow reading of DESIGN-sniffer.md question 12, which is
+   still the owner's. An evidence row holds offsets into the text the person
+   is writing; the letters are sliced for a caller and never kept a second
+   time. A verdict is page memory in P0, passed in by the caller, and the
+   ledger itself never reaches the record. Since 16 November (SK1) the
+   entry keeps a seat key and an answer for each verdict, through evKept
+   below and the boundary's vEntryVerdicts, and still never a correction's
+   own words: EV_KEEP_FIX says why. Nothing reads them back into a later
+   entry's ledger yet; srcPrior still carries seat keys and counts only.
+
+   THE ENGINE MAY NOT TOUCH THE HOST, and this file does not.
+   ============================================================ */
+var EV_STATES=['observed','inferred','candidate','supported','confirmed','rejected','corrected','unknown'];
+/* the states only a person can put a claim into */
+var EV_PERSON=['confirmed','rejected','corrected','unknown'];
+/* the states the engine itself may set, from counts */
+var EV_ENGINE=['inferred','candidate','supported'];
+/* a claim Source AI may name to the person: there is more than one piece of
+   evidence under it, or the person already said it is theirs */
+var EV_NAMEABLE=['supported','confirmed','corrected'];
+/* the person's four answers, and the state each one sets */
+var EV_VERDICT={yes:'confirmed', no:'rejected', fix:'corrected', unsure:'unknown'};
+/* section 15's arrows. The engine's run is observed to inferred to candidate
+   to supported. Section 15 draws the person's reject and correct off
+   candidate and supported only, and this widens it on purpose: section 52's
+   second test is that a person can reject an interpretation "without
+   fighting the system", so a no is honoured from every state a claim can be
+   in, a confirmed one included, because a person may change their mind. */
+var EV_MOVES={
+ observed:['inferred','unknown'],
+ inferred:['candidate','supported','confirmed','rejected','corrected','unknown'],
+ candidate:['supported','confirmed','rejected','corrected','unknown'],
+ supported:['confirmed','rejected','corrected','unknown'],
+ confirmed:['rejected','corrected','unknown'],
+ rejected:['confirmed','corrected','unknown'],
+ corrected:['confirmed','rejected','corrected','unknown'],
+ unknown:['confirmed','rejected','corrected']};
+/* where each state lands in trace.js's own vocabulary, TRACE_SRC */
+var EV_TRACE={observed:null, inferred:'inferred', candidate:'inferred', supported:'inferred',
+ confirmed:'user_confirmed', corrected:'user_confirmed', rejected:null, unknown:null};
+function evTraceSrc(state){ return EV_TRACE.hasOwnProperty(state)?EV_TRACE[state]:null; }
+function evCan(from,to){ return !!(EV_MOVES[from]&&EV_MOVES[from].indexOf(to)>=0); }
+
+/* THE STATE THE ENGINE READS OFF THE COUNTS, before any verdict. c carries
+   srcHear's own three numbers. Returns null when there is nothing at all. */
+function evEngineState(c){
+ var m=+c.mentions||0, e=+c.earlier||0, st=!!c.structural;
+ if(!m)return (e>0||st)?'inferred':null;
+ if(m>=2||e>=1||st)return 'supported';
+ return 'candidate';}
+/* the plain because for each engine state, which is the explainability duty:
+   Source AI can always say why it holds what it holds. */
+function evWhy(c,state){
+ var m=+c.mentions||0, e=+c.earlier||0;
+ if(state==='confirmed')return 'you said yes to this';
+ if(state==='rejected')return 'you said this is not you';
+ if(state==='corrected')return 'you said what it is instead';
+ if(state==='unknown')return 'you said you are not sure';
+ if(state==='inferred')return e?'an earlier entry landed here, and nothing in this one has':'the field holds a pattern here, and nothing in this entry has said it';
+ if(state==='supported'){
+  if(m>=2)return 'heard '+m+' times in this entry';
+  if(e>=1)return 'heard in this entry and in an earlier one';
+  return 'heard in this entry, at a point the field already holds a pattern on';}
+ return 'heard once in this entry';}
+
+/* THE CUES srcDims ALREADY READS, AS EVIDENCE WITH AN ADDRESS. srcDims says
+   which of the document's dimensions an entry answers and with which cue,
+   and gives no place. A behaviour the person wrote, "I keep", is observed
+   language exactly as much as a feeling word is, and the document's whole
+   claim is that behaviour comes before labels, so it is kept as evidence
+   too, with no seat: a cue is never a claim about where anything lands. */
+function evCueRows(t,dims,nm){
+ var out=[], seen={};
+ Object.keys((dims&&dims.answered)||{}).forEach(function(k){
+  dims.answered[k].forEach(function(c){
+   var needle=' '+String(c)+' ', from=0, i;
+   while((i=nm.s.indexOf(needle,from))>=0){from=i+1;
+    var a=i+1, b=i+String(c).length;
+    if(a>=nm.map.length||b>=nm.map.length)continue;
+    var s=nm.map[a], e=nm.map[b]+1, key=k+'|'+s+'|'+e;
+    if(seen[key])continue; seen[key]=1;
+    out.push({kind:k, s:s, e:e, cue:String(c)});}});});
+ return out;}
+
+/* BUILD THE LEDGER. text is the entry being written. entries is the person's
+   committed entries, of which only the stored seat keys are read. o is
+   {active, verdicts, asked}: active is srcHyperSeats of a real reading,
+   verdicts the person's answers this session, [{seat, v, fix}], in the order
+   given, and asked the seat keys Source AI has asked about in this entry.
+   Pure: reads nothing else and writes nothing, the field included. */
+function evLedger(text,entries,o){
+ o=o||{};
+ var t=String(text||''), out={ev:[], claims:{}, order:[], thread:null, root:null, verdicts:[], behave:{}};
+ var prior=srcPrior(entries||[]);
+ var heard=srcHear(t,prior,o.active||null);
+ var p=t.trim()?parseStory(t):null, nm=normMap(t);
+ /* EVIDENCE, the marks. Every one, said or not: a word said with a no is
+    evidence the person said no, and a word about someone else is evidence
+    about someone else. Neither is ever counted for a claim. */
+ var marks=p?marksOf(t,p):[];
+ marks.forEach(function(m,i){
+  out.ev.push({id:'w'+i, src:'mark', s:m.s, e:m.e, text:t.slice(m.s,m.e),
+   seat:m.seat||null, kind:m.seat?'seat':(m.coh?'coherent':'word'),
+   said:m.neg?'denied':(m.other?'other':'said'), state:'observed'});});
+ /* EVIDENCE, the behaviours, SK3. srcBehave's rows, each with the kind of
+    behaviour it is and whether the writer said it, said it with a no, or
+    said it about someone else, read by the sniffer's own three readers.
+    seat is null on every one and none is ever a claim: that is the whole
+    of "evidence, never a seat". out.behave lists, by kind, the ids of the
+    rows the writer said as their own, which is what a caller asks first. */
+ var beh=t.trim()?srcBehave(t,nm):[], bspan={};
+ out.behave={};
+ beh.forEach(function(r,i){
+  bspan[r.s+'|'+r.e+'|'+r.dim]=1;
+  var x={id:'b'+i, src:'behave', s:r.s, e:r.e, text:t.slice(r.s,r.e), seat:null,
+   kind:'behaviour', behave:r.behave, dim:r.dim, cue:r.cue, said:r.said, state:'observed'};
+  if(r.who)x.who=r.who;
+  out.ev.push(x);
+  if(r.said==='said')(out.behave[r.behave]=out.behave[r.behave]||[]).push(x.id);});
+ /* EVIDENCE, the cues. srcDims now answers from the behaviour rows too, so
+    a cue on exactly a behaviour row's span, for the dimension that row
+    answers, is that row said a second time, and stands aside for it. The
+    same span for another dimension is kept: "want to disappear" is a
+    feeling the lexicon reads at the heart AND a withdrawal, and the first
+    cut of this filter dropped the feeling cue with the duplicate. A cue on
+    any other span is kept, "I keep" beside "avoiding" included. */
+ var dims=t.trim()?srcDims(t):null;
+ evCueRows(t,dims,nm).filter(function(r){return !bspan[r.s+'|'+r.e+'|'+r.kind];}).forEach(function(r,i){
+  out.ev.push({id:'c'+i, src:'cue', s:r.s, e:r.e, text:t.slice(r.s,r.e), seat:null,
+   kind:r.kind, cue:r.cue, said:'said', state:'observed'});});
+ /* EVIDENCE, earlier entries, as the seat keys their commits stored and
+    nothing more. No span and no text, by the privacy rule above. */
+ Object.keys(prior).forEach(function(k){
+  out.ev.push({id:'e:'+k, src:'earlier', s:null, e:null, text:null, seat:k,
+   kind:'seat', said:'said', count:prior[k], state:'observed'});});
+ /* WHICH SPANS A SEAT'S CLAIM CITES, walked the way srcHear walks them,
+    pathOf's own steps, and joined to the marks by where they start. Not by
+    the mark's own seat: the two readers can disagree. Measured round SK on
+    the story bank, "I sat in the car outside work": the hit for "outside"
+    carries no band, so marksOf leaves it uncoloured in the person's bubble,
+    while pathOf resolves it to the crown and srcHear counts it there. A
+    claim that cited by the mark's seat would cite nothing for a mention it
+    counts, which is the traceability the document's section 53 rules out.
+    So it cites the span srcHear counted, and the row says the mark read it
+    elsewhere (seatSaid), which is the disagreement kept as data rather than
+    hidden. Which reader is right is the sniffer's to settle, not this file's. */
+ var cite={}, den={}, oth={};
+ if(p){
+  (p.denied||[]).forEach(function(h){den[h.at]=1;});
+  (p.others||[]).forEach(function(h){oth[h.at]=1;});
+  pathOf(storyHits(p)).steps.forEach(function(st){
+   if(!st.seat||st.coherent||oth[st.at]||den[st.at])return;
+   var a=nm.map[st.at+1]; if(a==null)return;
+   var x=null; out.ev.forEach(function(r){if(r.src==='mark'&&r.s===a&&!x)x=r;});
+   if(!x)return;
+   if(x.seat!==st.seat)x.seatSaid=st.seat;
+   var l=cite[st.seat]=cite[st.seat]||[]; if(l.indexOf(x.id)<0)l.push(x.id);});}
+ /* CLAIMS, one a seat, off srcHear's own counts */
+ var mk=function(k,h){
+  var c={key:'seat:'+k, seat:k, band:K2BAND[k], mentions:h?h.mentions:0,
+   earlier:prior[k]||0, structural:!!(h?h.structural:(o.active&&o.active[k])),
+   rung:h?h.rung:0, words:h?h.words.slice():[], ev:[], last:-1, verdict:null,
+   asked:(o.asked||[]).indexOf(k)>=0};
+  (cite[k]||[]).forEach(function(id){var x=null; out.ev.forEach(function(r){if(r.id===id)x=r;});
+   c.ev.push(id); if(x&&x.s>c.last)c.last=x.s;});
+  if(prior[k])c.ev.push('e:'+k);
+  c.state=evEngineState(c); return c;};
+ (heard.seats||[]).forEach(function(h){out.claims[h.seat]=mk(h.seat,h);});
+ Object.keys(prior).forEach(function(k){if(!out.claims[k]&&K2BAND[k])out.claims[k]=mk(k,null);});
+ Object.keys(o.active||{}).forEach(function(k){if(!out.claims[k]&&K2BAND[k])out.claims[k]=mk(k,null);});
+ Object.keys(out.claims).forEach(function(k){if(!out.claims[k].state)delete out.claims[k];});
+ /* VERDICTS, the person's, last one wins. A verdict about a seat nothing was
+    heard at is still the person's word and is held: it is not the engine's
+    to drop. A verdict that is not one of the four answers is refused here by
+    name and never applied. */
+ (o.verdicts||[]).forEach(function(v){
+  var r=evVerdictOk(v);
+  if(!r.ok){out.verdicts.push({seat:v&&v.seat, refused:r.why}); return;}
+  var c=out.claims[v.seat]||(out.claims[v.seat]=mk(v.seat,null));
+  var to=EV_VERDICT[v.v], from=c.state||'unknown';
+  /* the same answer twice is the same state, and anything else must be an
+     arrow EV_MOVES draws, so the table is the rule and not a comment */
+  if(from!==to&&!evCan(from,to)){out.verdicts.push({seat:v.seat, v:v.v, refused:'no move from '+from+' to '+to}); return;}
+  c.verdict={v:v.v, fix:v.v==='fix'?String(v.fix).trim():null};
+  c.state=to;
+  out.verdicts.push({seat:v.seat, v:v.v});});
+ Object.keys(out.claims).forEach(function(k){var c=out.claims[k];
+  c.why=evWhy(c,c.state); c.trace=evTraceSrc(c.state); c.seam=evSeamState(c);});
+ out.order=evOrder(out.claims);
+ out.thread=evThread(out.claims,heard.seats);
+ out.root=evRoot(out.claims);
+ out.dims=dims;
+ return out;}
+/* ============================================================
+   SK11 AND SK12, together, read only. The seam package's third JSON
+   Schema (examples/source_output_example.json, contract_version
+   "source.output.v1") names one candidate shape: id, concept, state,
+   supporting_evidence, alternatives, confidence, coherent_evidence,
+   shadow_evidence, chakra_candidates, law_candidate_ids. TASKS.md
+   named two gaps in it, SK11 (confidence has no calibration source)
+   and SK12 (coherent and shadow evidence are not kept independently);
+   both are fields of the one candidate shape below, so one function
+   closes both rather than two half answers.
+
+   SCOPED TO THE CANDIDATE ALONE, NOT THE ENVELOPE. The full contract
+   also carries response, uncertainties, proposals and write_policy,
+   and round SK's own scope line is explicit: "no Bank, Graph, Release
+   or CQ adapter" this round (09_NEXT_AI_IMPLEMENTATION_RUNBOOK.md,
+   step 7: "Develop adapters in narrow separately reviewed change
+   sets"). Those four fields decide what Source AI says and whether
+   anything is written, which is the next, separately authorized pass,
+   not this one. srcOutputV1Candidate maps one claim only, writes
+   nothing, and is never called by anything yet: wiring it into a real
+   envelope is that later pass's first job.
+
+   CONFIDENCE, SK11. "A fixed number would be a magic number dressed
+   as a probability" (TASKS.md). Nothing in this engine is calibrated
+   against the package's 0 to 1 scale, so this is null, honestly,
+   never a number that looks measured and is not. The acceptance plan
+   itself expects this field optional (07_ACCEPTANCE_AND_TEST_PLAN.md:
+   "out-of-range optional confidence... fail"), so null is the
+   contract's own honest answer, not a workaround.
+
+   COHERENT AND SHADOW EVIDENCE, SK12. marksOf already tells the two
+   apart: a mark with a seat is charge, the shadow side, kind 'seat';
+   a mark with no seat and its own coh flag is the coherent side, kind
+   'coherent' (evLedger above). shadow_evidence is this claim's own
+   cited marks (c.ev, the w-prefixed rows only: 'e:'+seat has no text
+   to cite). coherent_evidence has no seat to key it to a claim by, so
+   it is the entry's own coherent marks, the same list on every
+   candidate from this entry: the honest answer given what the engine
+   actually computes, not a per-claim correlation nothing here measures.
+
+   CHAKRA_CANDIDATES gates on EV_PLACEABLE, the same gate srcWhy and
+   the bubble's own seat colour answer to elsewhere (confirmed or
+   corrected only): the package's own words, "Do not map to a chakra
+   as fact without user evidence." LAW_CANDIDATE_IDS and ALTERNATIVES
+   are both empty: nothing in this engine maps a claim to a specific
+   law id, and nothing reads a second seat for the same words. This
+   said the alternative-reading extractor was SK3, and that was wrong
+   once SK3 was built, 16 November: SK3 reads behaviour, which has no
+   seat, so a behaviour row is never an alternative reading of a seat.
+   It lives on the ledger, out.behave, and not in this shape. Empty here
+   is the honest state of what is not built yet, not a placeholder
+   standing in for a guess. */
+function srcOutputV1Candidate(c,out){
+ if(!c||!c.seam)return null;
+ var ev=(out&&out.ev)||[];
+ var byId={}; ev.forEach(function(r){byId[r.id]=r;});
+ var shadow=(c.ev||[]).filter(function(id){return byId[id]&&byId[id].text;});
+ var coherent=ev.filter(function(r){return r.kind==='coherent';}).map(function(r){return r.id;});
+ var cite=function(ids){return ids.map(function(id){var r=byId[id];
+  return r&&r.text?id+':'+r.text:id;});};
+ return {
+  id:'candidate-'+c.key,
+  concept:(c.words&&c.words.length?c.words[0]:c.seat.toLowerCase())+' at the '+c.seat.toLowerCase(),
+  state:c.seam,
+  supporting_evidence:cite(shadow),
+  alternatives:[],
+  confidence:null,
+  coherent_evidence:cite(coherent),
+  shadow_evidence:cite(shadow),
+  chakra_candidates:EV_PLACEABLE.indexOf(c.state)>=0?[c.band]:[],
+  law_candidate_ids:[]};}
+/* a verdict the ledger will take, or the reason it will not */
+function evVerdictOk(v){
+ if(!v||typeof v!=='object')return {ok:false, why:'a verdict is an object'};
+ if(!K2BAND[v.seat])return {ok:false, why:'no point called '+JSON.stringify(v.seat)};
+ if(!EV_VERDICT.hasOwnProperty(v.v))return {ok:false, why:'the answers are yes, no, fix and unsure, not '+JSON.stringify(v.v)};
+ if(v.v==='fix'&&!String(v.fix||'').trim())return {ok:false, why:'a correction needs the person\'s own words'};
+ return {ok:true};}
+/* ADD A VERDICT, returning the new list and never touching the one given.
+   The one door into a person state. */
+function evVerdict(verdicts,seat,v,fix){
+ var x={seat:seat, v:v}; if(v==='fix')x.fix=fix;
+ var r=evVerdictOk(x);
+ if(!r.ok)return {ok:false, why:r.why, verdicts:(verdicts||[]).slice()};
+ return {ok:true, verdicts:(verdicts||[]).concat([x])};}
+/* WHAT AN ENTRY KEEPS OF THE PERSON'S ANSWERS, TASKS.md SK1, 16 November.
+   Until this a verdict was page memory and srcFresh threw it away at
+   Commit, so a no given in the Journal was gone by the next entry and the
+   record could never say a reading had been turned down. obCommit has kept
+   the mirror's yes and no on the entry since round QB (ob.yes, ob.no in
+   engine/schema.js); this is the Journal's twin, a seat key and an answer.
+
+   NOT INSIDE ob. vEntryOb says why in its own words: ob is what the
+   onboarding sheet was told, and an ob on an entry the Journal committed
+   would claim the person was shown a mirror they never saw. So it is its
+   own key, verdicts, beside ob, held to the same rules.
+
+   ONE ROW A SEAT, THE LAST ANSWER, because the ledger reads them that way
+   (last one wins, evLedger above): a person who said no and then yes to the
+   same seat said yes. Kept in the order each seat was first answered, so it
+   is a property of what they did and not of object key order.
+
+   ONLY A SEAT THIS ENTRY READ. ledger is the one the page drew the control
+   from (srcLedgerNow, ui/storyui.js), and a verdict about a seat with no
+   words in it is about some other text: SRC_VERDICTS is cleared by srcFresh
+   and not by anything that swaps ST_TEXT under it, so a stale answer must
+   never land on an entry it was not given about. A refused verdict was
+   never applied and is not kept either.
+
+   THE CORRECTION'S OWN WORDS ARE NOT KEPT, AND THAT IS ON PURPOSE. SK1's
+   own line: "a correction is the person's words stored a second time,
+   which needs saying in the privacy words first." Those words do not exist
+   yet, so EV_KEEP_FIX is false, a fix row keeps its seat and its answer and
+   nothing of what was typed, and the boundary refuses a fix field on read
+   by the same flag (vEntryVerdicts). The words still do their work for the
+   rest of the entry, in page memory, where every verdict lived before
+   this. Turning it on is one flag here, after the words are written, never
+   before. */
+var EV_KEEP_FIX=false;
+function evKept(verdicts,ledger){
+ var claims=(ledger&&ledger.claims)||{}, out=[], at={};
+ (verdicts||[]).forEach(function(v){
+  if(!evVerdictOk(v).ok)return;
+  var c=claims[v.seat]; if(!c||!(c.mentions>0))return;
+  var row={seat:v.seat, v:v.v};
+  if(v.v==='fix'&&EV_KEEP_FIX)row.fix=String(v.fix).trim();
+  if(at.hasOwnProperty(v.seat))out[at[v.seat]]=row;
+  else{at[v.seat]=out.length; out.push(row);}});
+ return out;}
+/* the most an entry can carry: one answer at every seat */
+function evKeptMax(){return Object.keys(K2BAND).length;}
+
+/* THE ORDER, strongest state first, then the most recent evidence in this
+   entry, then the seat key, so it is a property of the text and never of
+   object key order. */
+var EV_RANK={confirmed:6, corrected:5, supported:4, candidate:3, unknown:2, inferred:1, rejected:0};
+function evOrder(claims){
+ return Object.keys(claims).sort(function(a,b){var x=claims[a], y=claims[b];
+  return (EV_RANK[y.state]-EV_RANK[x.state])||(y.last-x.last)||(a<b?-1:1);});}
+/* THE ACTIVE THREAD, the document's "select active thread". The claim the
+   person is talking about now: one with words in this entry, never one they
+   said not me to or corrected.
+
+   WHEN SOURCE AI MAY NAME ONE, it is the one srcHear ranks first among the
+   nameable, so the thread and the ask (srcTurn, rung first, his ruling at
+   round GO) are read by one reader and can never point at two seats.
+
+   WHEN IT MAY NAME NONE, it is the one with the newest evidence. Measured on
+   the document's own section 40 session: srcHear's order, rung then reading
+   then seat key, held "want to disappear" at the heart three turns running
+   after "guilty" had arrived at the solar plexus, because both read rung six
+   and heart sorts before solar, so the chat said the same line back three
+   times. The thread is what the person is writing about now.
+
+   heard is srcHear's own seat list, in its order. Null when no claim has
+   words here. */
+function evThread(claims,heard){
+ var live=Object.keys(claims).filter(function(k){var c=claims[k];
+  return c.mentions>0&&c.state!=='rejected'&&c.state!=='corrected';});
+ if(!live.length)return null;
+ var nm=(heard||[]).map(function(h){return h.seat;}).filter(function(k){
+  return live.indexOf(k)>=0&&EV_NAMEABLE.indexOf(claims[k].state)>=0;});
+ if(nm.length)return nm[0];
+ return live.sort(function(a,b){return (claims[b].last-claims[a].last)||(a<b?-1:1);})[0];}
+/* THE ROOT IS UNKNOWN, and at P0 it always is. The document, section 18 and
+   51.10: a root is the earliest supported origin the person's own evidence
+   reaches, through history, an event, an impression and a rule, and "if it
+   cannot be established, UNKNOWN is the correct result". Nothing in this
+   engine traces history yet, so no chain can close. What a seat coming back
+   across entries does earn is permission to ask about history, which is
+   the document's own precondition (section 18, "begins only with enough
+   evidence of repetition"), and that is what history names. srcHear's
+   rung ten is still called the root candidate in sourceai.js; under the
+   document it is this, the door to history, and not a root. */
+function evRoot(claims){
+ var h=Object.keys(claims).filter(function(k){var c=claims[k];
+  return c.mentions>0&&c.earlier>0&&EV_NAMEABLE.indexOf(c.state)>=0;});
+ return {state:'unknown', why:'no history has been traced, so no origin is supported', history:h.sort()};}
+
+/* ============================================================
+   THE SEAM PACKAGE'S LIFECYCLE, AND WHERE THESE STATES LAND IN IT. Round SK,
+   30 October. His later document, ATUNED_SOURCE_AI_SEAM_READY_HANDOFF,
+   02_SOURCE_AI_ENGINEERING_TDD.md section 4, the same day as this file, is
+   narrower than the 4 October one and wins where the two disagree:
+
+     CANDIDATE -> ASKED -> CONFIRMED | REFINED | REJECTED | UNRESOLVED, and
+     with further evidence REPEATED, WEAKENED, DISPUTED, INTEGRATED.
+
+   Its rule that changes the reading: "Repeated expressions in one event do
+   not count as independent episodes." So a seat heard twice inside one
+   entry is still one episode, and stays CANDIDATE, however supported this
+   file calls it; only a seat heard here AND in an earlier entry is
+   REPEATED. The eight states are kept, because the 4 October document's
+   questions still read them, and each is mapped, not swapped:
+
+     observed   evidence only, no candidate state
+     inferred   nothing said in this event, so no candidate in it
+     candidate  CANDIDATE, or ASKED once Source AI asked about it
+     supported  REPEATED when an earlier entry is behind it, otherwise
+                CANDIDATE (or ASKED), by the one-event rule above
+     confirmed  CONFIRMED      corrected  REFINED
+     rejected   REJECTED       unknown    UNRESOLVED
+
+   WEAKENED, DISPUTED and INTEGRATED are never produced, and that is said
+   rather than faked: weakened needs evidence that moves against a claim
+   over time, disputed needs the person's answer and new evidence to
+   conflict, and integrated needs "explicit comparable behavioral evidence"
+   after a release. Nothing in this engine measures any of the three.
+
+   Its rejection rule is kept, more strictly: "Rejection must not be
+   silently resurrected from a synonym hit; new separate evidence is needed
+   to reopen." Here only the person reopens a claim they turned down.
+   ============================================================ */
+var EV_SEAM_STATES=['CANDIDATE','ASKED','CONFIRMED','REFINED','REJECTED','UNRESOLVED',
+ 'REPEATED','WEAKENED','DISPUTED','INTEGRATED'];
+var EV_SEAM_NEVER=['WEAKENED','DISPUTED','INTEGRATED'];
+var EV_SEAM_PERSON={confirmed:'CONFIRMED', corrected:'REFINED', rejected:'REJECTED', unknown:'UNRESOLVED'};
+function evSeamState(c){
+ if(!c||!c.state)return null;
+ if(EV_SEAM_PERSON[c.state])return EV_SEAM_PERSON[c.state];
+ if(c.state==='observed'||c.state==='inferred'||!c.mentions)return null;
+ if(c.asked)return 'ASKED';
+ if(c.earlier>0)return 'REPEATED';
+ return 'CANDIDATE';}
+/* A PLACE IS SAID ONLY ONCE THE PERSON HAS SAID THE CLAIM IS THEIRS. The
+   package, 06_DIALOGUE_TDD.md: "Do not map to a chakra as fact without
+   user evidence", and "the spoken language should not reveal an
+   unconfirmed ontology label"; 02 section 3: "No reported somatic location
+   -> null, never invented anatomy." Where a story lands is this product's
+   own mapping, a hypothesis in its words, so naming it needs the person's
+   yes or their correction, not only more evidence. A place word the person
+   wrote themselves is their language and is always theirs to hear back. */
+var EV_PLACEABLE=['confirmed','corrected'];
+/* A PLACE SAID AS A GUESS NEEDS LESS, AND SAYS SO IN ITS OWN WORDS. 17
+   November, the owner's words: "let's loosen it so it feels a bit more
+   conversational... I don't want it to feel stiff." EV_PLACEABLE above is
+   unchanged and still the only gate for a place said as fact. This is the
+   second door: Source AI may voice where it thinks a story sits from the
+   first mention (candidate), as long as the same sentence carries a guess
+   marker (QC_GUESS, engine/qcheck.js) and so never reads as settled. Not
+   after a no (rejected) and not after "I am not sure" (unknown): a guess
+   said again over the person's own answer is pressing, not conversation. */
+var EV_GUESSABLE=['candidate','supported','confirmed','corrected'];
+
+/* ============================================================
+   WHAT THE PERSON SAYS ABOUT THE CONVERSATION ITSELF. Round SK. The package's
+   dialogue states VENT, MOVE_ON and the CORRECT branch, 02 section 5:
+   "If caller says 'just vent,' stay in LISTEN", "MOVE_ON ends excavation for
+   this episode", and 06: "User rejecting a candidate -> mark rejected and
+   stop pressing it." Its own vectors are "I just want to vent", "I don't
+   want to talk about it anymore" and "No, that interpretation doesn't fit
+   me". Measured before this, on all three: nothing read them, so a person
+   who said any of them straight after a question was asked the next one.
+
+   READ OFF A SHORT LIST ON PURPOSE. A phrase list is inspectable and a
+   person can see why it fired. Each phrase is about the conversation and not
+   about life: "move on" alone is left out because "I can't move on from
+   him" is grief, not a request, and asking nothing after it would be the
+   miss. A phrase said with a no before it ("I don't want to vent") does not
+   count, by srcNegated, the same two word window the sniffer uses. A reject
+   phrase counts only in a short turn, because "that's not me" inside a long
+   story is far more often about something in the story.
+
+   Returns {intent, cue} or null. move_on outranks reject outranks vent: a
+   turn that both turns down a reading and asks to stop is a request to
+   stop. Pure, reads only the turn.
+
+   A CHANGE OF SUBJECT IS NOT A STOP, 31 October. "change the subject" and
+   "talk about something else" sat in the move_on list, so a person who
+   asked to talk about something else was told "Cool." and then met with
+   silence for the rest of the entry, about the new subject too: reproduced
+   in reviews/source-ai-conversation-diagnosis-2026-10-31.md, transcript 3.
+   They are shift now, which sets the old subject down and keeps asking
+   about the new one (the page's SRC_FROM, ui/storyui.js). shift outranks
+   move_on, because "I don't want to talk about this, can we talk about
+   something else" asks to go on, about something else. And the shape he
+   actually used, "I want to talk about my brother instead", names the new
+   subject inside the request, so a turn holding both "talk about" and
+   "instead" is a shift too: SRC_SHIFT_PAIR, each pair a phrase and the word
+   that has to follow it.
+
+   "WHAT DO YOU MEAN" IS A QUESTION ABOUT SOURCE AI'S LAST LINE, 13 November,
+   TASKS.md SK2. The package, 02 section 5: "If caller says 'what do you
+   mean,' restate softly", and its G3 gate: "when user asks 'what do you
+   mean' paraphrase softly". Reproduced on the page before this: after
+   "You wrote “afraid” twice. What did you do?", the turn "What do you
+   mean?" heard no intent and no act, the family question was marked asked,
+   and the next turn was a different question, "What happens next?", which
+   is the question funnel the package's dialogue rules out. clarify reads
+   it, last in the order, so a turn that also says no or asks to stop is
+   that first. Short turns only, the way reject is read, because "she said
+   what do you mean and walked out" is a story. And no negation guard, the
+   way srcAct has none: "No, what do you mean?" still asks what was meant,
+   and "dont understand the question" carries its own no. Every phrase is
+   about Source AI's own line, so a bare "I don't understand" is left out:
+   "I don't understand why he left" is grief, not a request to restate. */
+var SRC_INTENT={
+ shift:['change the subject','change of subject','talk about something else','talk about something different',
+  'something else to talk about','different subject','different topic','new subject','new topic',
+  'rather talk about'],
+ move_on:['dont want to talk about it','do not want to talk about it','dont want to talk about this',
+  'dont want to talk anymore','dont want to talk any more','stop asking','no more questions',
+  'enough questions','stop talking','can we stop','lets stop',
+  'lets move on','let us move on','can we move on','never mind','nevermind','drop it',
+  'thats enough','that is enough'],
+ reject:['doesnt fit me','that doesnt fit','does not fit me','thats not me','that is not me',
+  'thats not it','that is not it','thats not right','thats wrong','not what i meant','youre wrong',
+  'you are wrong'],
+ vent:['just want to vent','want to vent','need to vent','just venting','let me vent',
+  'just want to get it out','just need to get it out','just listen'],
+ clarify:['what do you mean','what does that mean','what does this mean','what are you asking',
+  'what was the question','not sure what you mean','dont know what you mean','dont understand the question',
+  'dont understand what you mean','dont get the question','dont get what you mean','say that again']};
+var SRC_INTENT_ORDER=['shift','move_on','reject','vent','clarify'];
+var SRC_INTENT_SHORT=12;
+/* A PHRASE THAT IS ALSO ORDINARY SPEECH GETS A SHORTER LEASH, 18 November.
+   "I wish my mother would just listen to me" holds "just listen" and is
+   about the mother. A phrase named here counts only in a turn of this many
+   words or fewer, so a request to be heard is a short turn and a wish about
+   someone else is not. The exits added the same day are on it for the same
+   reason and a worse one: Move on is final for the entry, and "never mind
+   the cost, I just felt sick" is a story that opens on the phrase. */
+var SRC_INTENT_MAXW={'just listen':5, 'never mind':4, 'nevermind':4, 'drop it':4, 'lets move on':5, 'let us move on':5,
+ 'can we move on':5, 'thats enough':5, 'that is enough':5};
+/* and a phrase that follows a word that reports what someone said is that
+   person's, not the speaker's: "my dad told me to stop talking at dinner" is
+   about the dad and nine words long. Read in the six words before the
+   phrase, for vent and move on only. */
+var SRC_REPORT=['told','tells','asked','asks','said','says','yelled','shouted','screamed','begged','ordered'];
+var SRC_SHIFT_PAIR=[['talk about','instead']];
+function srcIntent(turn){
+ var nm=normMap(String(turn||'')), s=nm.s, words=s.trim()?s.trim().split(' ').length:0;
+ if(!words)return null;
+ for(var i=0;i<SRC_INTENT_ORDER.length;i++){var k=SRC_INTENT_ORDER[i], list=SRC_INTENT[k];
+  /* VENT AND MOVE ON ARE SHORT TURNS TOO, 18 November. They were the two
+     kinds read in a turn of any length, and each one, once read, lasts for
+     the rest of the entry (SRC_VENT, SRC_PASSED in ui/storyui.js): "I told
+     her I need to vent about work, my boss yelled at me for an hour" is a
+     story, read as vent for twenty four words, and every question after it
+     was lost. A request to be heard or to stop is short, the way a no to a
+     reading is, and a long turn that holds the phrase is about the story. */
+  if((k==='reject'||k==='clarify'||k==='vent'||k==='move_on')&&words>SRC_INTENT_SHORT)continue;
+  for(var j=0;j<list.length;j++){var c=' '+list[j]+' ', at=s.indexOf(c);
+   if(at<0)continue;
+   if(SRC_INTENT_MAXW[list[j]]&&words>SRC_INTENT_MAXW[list[j]])continue;
+   if((k==='vent'||k==='move_on')&&s.slice(0,at).trim().split(' ').slice(-6).some(function(w){return SRC_REPORT.indexOf(w)>=0;}))continue;
+   /* the phrases that carry their own no are read as said; the others are
+      set aside when a no stands before them, except clarify's, above */
+   if(k!=='clarify'&&!/^(dont|do not)/.test(list[j])&&srcNegated(s,at+1))continue;
+   return {intent:k, cue:list[j]};}
+  if(k==='shift')for(var q=0;q<SRC_SHIFT_PAIR.length;q++){var a=s.indexOf(' '+SRC_SHIFT_PAIR[q][0]+' ');
+   if(a>=0&&!srcNegated(s,a+1)&&s.indexOf(' '+SRC_SHIFT_PAIR[q][1]+' ',a)>a)
+    return {intent:'shift', cue:SRC_SHIFT_PAIR[q].join(' ')};}}
+ return null;}
+
+/* ============================================================
+   A TURN THAT IS ONLY TALK, 31 October. His session opened on "can you hear
+   me", twice, and Source AI's only reply to a turn with no feeling word in
+   it was the panel's own status line, "Nothing placed yet, so nothing is
+   asked", which reads as an instrument talking about itself, and then, by
+   the bug in srcChatNote, nothing at all. Measured in the diagnosis
+   (reviews/source-ai-conversation-diagnosis-2026-10-31.md): a greeting, a
+   check that it can hear, a question to Source AI and a bare "yeah" all
+   fell through to the same line or to silence.
+
+   Four acts, read the way srcIntent reads vent: a short stated list a
+   person can read and see why it fired, never a guess.
+
+     check  can you hear me, are you there, is this working
+     ask    a question about Source AI itself: what is this, who are you
+     greet  a turn that opens on hello, hi or hey, or asks how it is
+     brief  a turn made only of yes, yeah, okay, no and their kind
+
+   AND THREE MORE, 18 November, the owner: "it keeps repeating, what are we
+   talking about today? So it's acting more like an algorithm". The first
+   thing a person says to a thing that repeats itself is that it repeats
+   itself, and nothing heard it. Measured: "you keep repeating yourself",
+   "you already asked me that", "thank you" and "bye" were each answered
+   from the same four listening lines as noise is.
+
+     complain  you keep repeating, you already asked, you asked the same
+     thanks    thanks, thank you, cheers, opening the turn
+     bye       bye, goodbye, good night, thats all, opening a short turn
+
+   Each is read only in a short turn, and the page answers it only when the
+   turn carries no seat of its own (srcActNow, ui/storyui.js): "hello, I am
+   so anxious" is about being anxious, and the feeling is answered. A brief
+   turn has to be brief all the way through, every word on the list, so
+   "okay so then she left" is a story and not an okay. Pure, reads only the
+   turn, and nothing it returns reaches the record.
+
+   Returns {act, cue} or null, in SRC_ACT_ORDER: a check outranks a
+   question outranks a greeting outranks a yes, so "hello, can you hear me"
+   is answered as a check. */
+var SRC_ACT={
+ check:['can you hear me','do you hear me','can you hear','are you there','are you listening',
+  'is this working','is it working','is this on','is this thing on','anyone there','anybody there',
+  'can you understand me','hello hello','testing'],
+ ask:['what is this','whats this','what is source','who are you','what are you','how does this work',
+  'how does it work','how do i use this','how do i do this','what do you do','what can you do',
+  'what do i do','what should i say','what do i say','what should i talk about','what do i talk about',
+  'are you real','are you a person','are you human','are you a robot','are you a bot','are you ai',
+  'are you an ai','is this ai','is this a person','what am i supposed to do'],
+ greet:['hi','hello','hey','hiya','good morning','good afternoon','good evening','how are you'],
+ brief:['yeah','yes','yep','yup','yea','ya','ok','okay','sure','mm','mhm','hmm','uh','huh','um',
+  'right','true','maybe','no','nope','nah','not','really','i','guess','suppose','think','so',
+  'kind','sort','of','dont','know','dunno','fine','alright','cool'],
+ complain:['you keep repeating','you keep saying','you keep asking','you already asked','you already said',
+  'you said that already','you asked that already','you asked me that','you just said that',
+  'you just asked','you said the same','you asked the same',
+  'repeating yourself','repeat yourself','stop repeating'],
+ thanks:['thanks','thank you','thankyou','thx','cheers','much appreciated'],
+ bye:['bye','goodbye','good bye','goodnight','good night','see you','see ya','talk later',
+  'talk to you later','thats all','that is all','gotta go','got to go']};
+var SRC_ACT_ORDER=['check','complain','ask','thanks','bye','greet','brief'];
+var SRC_ACT_MAXW={'you keep saying':6,'you keep asking':6};
+var SRC_ACT_SHORT={check:8, complain:SRC_INTENT_SHORT, ask:SRC_INTENT_SHORT, thanks:5, bye:4, greet:6, brief:5};
+function srcAct(turn){
+ var s=normMap(String(turn||'')).s, ws=s.trim()?s.trim().split(' '):[];
+ if(!ws.length)return null;
+ for(var i=0;i<SRC_ACT_ORDER.length;i++){var k=SRC_ACT_ORDER[i], list=SRC_ACT[k];
+  if(ws.length>SRC_ACT_SHORT[k])continue;
+  if(k==='brief'){
+   if(ws.every(function(w){return list.indexOf(w)>=0;}))return {act:k, cue:ws.join(' ')};
+   continue;}
+  for(var j=0;j<list.length;j++){var at=s.indexOf(' '+list[j]+' ');
+   if(at<0)continue;
+   /* a greeting opens the turn, "hi" anywhere else is a word in a story;
+      "how are you" is the one asked anywhere in it. NO NEGATION GUARD,
+      unlike srcIntent: every act but brief is a question to Source AI, and
+      a no before one, "No, can you hear me?", answers something else and
+      leaves the question standing. Found by coverage, 31 October, where
+      the guard never ran and would have filed that turn as nothing. */
+   if(k==='greet'&&at!==0&&list[j]!=='how are you')continue;
+   /* a thanks and a goodbye open the turn, the way a greeting does: "I said
+      thanks and then she left" and "she said bye" are stories. A no before
+      a thanks declines something, and a no, thanks is not one. */
+   if((k==='thanks'||k==='bye')&&at!==0)continue;
+   /* "Thanks for nothing, he said." is a sentence from a story, and so is
+      "bye, she said": a word that reports what someone said, anywhere in
+      the turn, makes the thanks or the goodbye that person's. */
+   if((k==='thanks'||k==='bye')&&ws.some(function(w){return SRC_REPORT.indexOf(w)>=0;}))continue;
+   /* and two of the complaint's phrases are also what is said about someone
+      else, "you keep saying that I should relax" to the person in the story:
+      read only in a short turn, which is how a complaint to Source AI runs */
+   if(SRC_ACT_MAXW[list[j]]&&ws.length>SRC_ACT_MAXW[list[j]])continue;
+   return {act:k, cue:list[j]};}}
+ return null;}
+
+/* ============================================================
+   WHAT THE MICROPHONE MAY HAND IN AS A TURN, 18 November. The owner: "it
+   keeps repeating, what are we talking about today? So it's acting more like
+   an algorithm and not something intelligent I could have a conversation
+   with." Every finalised result the speech service returned was filed as a
+   turn, whatever it was, and answered aloud: measured on the page, a lone
+   "uh", "the", "um" and "hmm" were each a turn, each read by the circle for
+   fourteen seconds, each answered from the same four lines, and each saved
+   into the draft, so a reload showed the face over a profile nobody had
+   written in. A room, a cough and Source AI's own voice coming back through
+   the speakers all arrive as results too.
+
+   TWO QUESTIONS, BOTH ABOUT THE WORDS AND NEITHER ABOUT A SCORE.
+
+     srcNoise  is this only a sound a person makes while thinking, or a
+               function word the recogniser caught on its own: "um", "uh",
+               "the", "you", "oh so". True only when EVERY word is on the
+               stated list and there are two or fewer, so one word that
+               means something, "yes", "no", "afraid", "boss", keeps the
+               turn, and so does "what is it", three words of anything,
+               and a question to Source AI, which is made of the same
+               words.
+               "mhm" and "uh huh" are a yes and stay.
+     srcEcho   is this Source AI's own line, said back: a run of two or more
+               of its words in a row, or three words or more of which four
+               in five are its. The page asks it only of what arrives while
+               a line plays and for a few seconds after (ui/storyui.js), so
+               a person who repeats a word of it later is never refused.
+
+   NEVER THE DOOR TO HELP. srcSafe is read first and a turn it stops is not
+   noise and not an echo, whatever else it is: the page admits it before it
+   asks either. Both read only the words and neither reaches the record.
+   ============================================================ */
+var SRC_NOISE=['uh','um','umm','uhh','er','erm','ah','aah','eh','ehh','oh','ooh',
+ 'the','a','an','and','or','but','so','to','of','in','on','at','it','its','is','you','i','he','she','we','they',
+ 'that','this','like','just','well'];
+/* NOT what, who or how: a person who did not catch a line says "what?", and a lone question word is a
+   question and not a sound. The turn is answered by what the page says to any turn with no seat in it. */
+var SRC_NOISE_MAX=2;
+/* A BARE "HMM" FELL THROUGH THIS REGEX INTO THE NOISE LIST BELOW, 19
+   November, run 1861's own gates-report (talksilence) failure: mm-hmm, uh
+   huh and mhm matched here and stayed a turn, but hmm matched none of
+   these and reached the SRC_NOISE check, where hm/hmm/hmmm/mm/mmm were
+   still listed as pure filler, so it was dropped and never answered.
+   ui/storyui.js's own ST_FILLER already made the opposite call for the same
+   word, on the same owner complaint, and says so in its own comment: mhm,
+   hmm, mm and huh are a spoken yes, not a hesitation, and stay a turn.
+   This regex now carries hm+ and mm+ as their own accepted forms, the same
+   call storyui.js already made, and the two filler lists agree again.
+   hm/hmm/hmmm/mm/mmm come off the list below for the same reason: once
+   this regex accepts them standalone, leaving them in the fallback list
+   only invites the same drop through a second path. */
+var SRC_NOISE_YES=/^(mm\s*hm+|uh huh|mhm+|mmhm+|uh uh|hm+|mm+)$/;
+function srcNoise(text){
+ var t=String(text||'');
+ if(typeof srcSafe==='function'&&srcSafe(t))return false;
+ /* A MASKED WORD WAS DROPPED SILENTLY, 19 November, run 1861's own
+    gates-report (talksilence) failure, cascading into two more: a final of
+    only stars never reached ST_TEXT at all, so the page's own "hid a word
+    behind stars" line never showed and the turn was lost with nothing on
+    screen to say why, the exact silent failure CLAUDE.md rules out.
+    normMap strips punctuation, so "****" normalises to an empty string and
+    fell into the "nothing said" branch below. ui/storyui.js's own stMicNoise
+    already carries this same check (its own comment names the reason:
+    "any text with a star in it... is a word the person said and the page
+    cannot read"); this file's parallel implementation never had it. Read
+    before normMap, the same order stMicNoise uses, so a real word that
+    happens to use an asterisk never reaches the strip at all. */
+ if(t.indexOf('*')>=0)return false;
+ var s=normMap(t).s.trim();
+ if(!s)return true;
+ if(SRC_NOISE_YES.test(s))return false;
+ /* a question to Source AI is made of these same words: "what is this" and
+    "is this on" are three words that are all on the list, and are exactly
+    what a person says to a thing they are testing. Anything srcAct or
+    srcIntent reads is a turn, except brief, which is um, uh and hmm among
+    its words. */
+ var ac=srcAct(t); if(ac&&ac.act!=='brief')return false;
+ if(srcIntent(t))return false;
+ var ws=s.split(' ');
+ if(ws.length>SRC_NOISE_MAX)return false;
+ return ws.every(function(w){return SRC_NOISE.indexOf(w)>=0;});}
+function srcEcho(text,line){
+ var a=normMap(String(text||'')).s.trim(), b=normMap(String(line||'')).s.trim();
+ if(!a||!b)return false;
+ var aw=a.split(' '), bw=b.split(' ');
+ if(aw.length>=2&&(' '+b+' ').indexOf(' '+a+' ')>=0)return true;
+ if(aw.length<3)return false;
+ var n=0; aw.forEach(function(w){if(bw.indexOf(w)>=0)n++;});
+ return n/aw.length>=0.8;}

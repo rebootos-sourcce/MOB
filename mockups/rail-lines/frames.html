@@ -1,0 +1,36 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rail lines, frame strip</title>
+<link rel="stylesheet" href="tokens.css"><link rel="stylesheet" href="rail-lines.css">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:12px/1.4 Inter,system-ui,sans-serif;padding:18px 20px}
+h1{font-size:13px;font-weight:600;margin:0 0 4px}
+.sub{color:var(--dim);margin:0 0 14px}
+.row{display:grid;grid-template-columns:78px repeat(8,262px);gap:10px;align-items:start;margin-bottom:12px}
+.row .lab{color:var(--dim);font-size:11px;padding-top:6px}
+.row .lab b{display:block;color:var(--ink);font-weight:600;font-size:12px}
+.hd{display:grid;grid-template-columns:78px repeat(8,262px);gap:10px;margin-bottom:6px}
+.hd div{color:var(--dim);font-size:11px;font-variant-numeric:tabular-nums}
+.hd b{color:var(--ink);font-weight:600}
+.row img{display:block;width:262px;height:auto;border-radius:8px}
+.lr-paironly>:not(.lr-pair){display:none}
+</style></head><body>
+<h1 id="ttl"></h1><p class="sub" id="sub"></p>
+<div class="hd" id="hd"></div>
+<div id="rows"></div>
+<script src="data.js"></script><script src="rail-lines.js"></script>
+<script>
+var q=new URLSearchParams(location.search), who=q.get('who')||'marcus', d=RS_DATA[who];
+var rg=RL.cqRange(d.cq), TS=[]; for(var i=0;i<8;i++)TS.push(1.0+i*1.4);
+document.getElementById('ttl').textContent=d.nm+': the termination point, eight frames, 1.4 seconds apart';
+document.getElementById('sub').textContent='CQ '+Math.round(d.cq)+'. The edge stands at CQ per cent of the bar and swings by the oscillation range: '+rg.band.toFixed(1)+' points wide, '+rg.lo.toFixed(1)+' to '+rg.hi.toFixed(1)+'. Today the edge is a fill that does not move.';
+var hd=document.getElementById('hd'); hd.innerHTML='<div></div>'+TS.map(function(t){return '<div><b>'+t.toFixed(1)+' s</b> &nbsp; edge '+RL.edgeAt(rg.cq,rg.band,t).toFixed(1)+'</div>';}).join('');
+var rows=document.getElementById('rows');
+function mk(label,sub){var r=document.createElement('div');r.className='row';r.innerHTML='<div class="lab"><b>'+label+'</b>'+sub+'</div>';rows.appendChild(r);return r;}
+var r0=mk('Today','static fill');
+for(var i=0;i<8;i++){var im=document.createElement('img');im.src='shots/today-key-'+who+'-'+i+'.png';r0.appendChild(im);}
+['hard','soft'].forEach(function(v){
+ var r=mk(v==='hard'?'Hard edge':'Soft edge',v==='hard'?'with a trail':'blend = range');
+ TS.forEach(function(t){var c=document.createElement('div');r.appendChild(c);
+  RL.clock=t; var m=RL.mount(c,v,d,{manual:true}); c.firstChild.classList.add('lr-paironly'); m.draw();});});
+</script></body></html>

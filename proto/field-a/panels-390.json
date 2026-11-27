@@ -1,0 +1,335 @@
+{
+ "today": {
+  "mode": "today",
+  "carrying": 41,
+  "total": 108,
+  "shell": 77.91666666666667,
+  "free": 167.5,
+  "CW": 356,
+  "CH": 335,
+  "reach": 1.7150270721925134,
+  "lane": 0,
+  "slab": 0,
+  "spineW": 0,
+  "outside": 55.71252604166666,
+  "reserved": 42.035709531064185,
+  "worstContrast": null,
+  "plates": [
+   {
+    "seat": "Root",
+    "deg": 6.005101361580597,
+    "px": 31.46484375
+   },
+   {
+    "seat": "Sacral",
+    "deg": 6.005101361580597,
+    "px": 41.982421875
+   },
+   {
+    "seat": "Solar",
+    "deg": 6.005101361580597,
+    "px": 35.015625
+   },
+   {
+    "seat": "Heart",
+    "deg": 6.005101361580597,
+    "px": 37.93359375
+   },
+   {
+    "seat": "Throat",
+    "deg": 6.005101361580597,
+    "px": 44.724609375
+   },
+   {
+    "seat": "3rd Eye",
+    "deg": 6.005101361580597,
+    "px": 51.193359375
+   },
+   {
+    "seat": "Crown",
+    "deg": 6.005101361580597,
+    "px": 42.59765625
+   }
+  ],
+  "named": 7,
+  "perSeat": [
+   {
+    "seat": "Root",
+    "deg": 6.005101361580597,
+    "px": 31.46484375
+   },
+   {
+    "seat": "Sacral",
+    "deg": 6.005101361580597,
+    "px": 41.982421875
+   },
+   {
+    "seat": "Solar",
+    "deg": 6.005101361580597,
+    "px": 35.015625
+   },
+   {
+    "seat": "Heart",
+    "deg": 6.005101361580597,
+    "px": 37.93359375
+   },
+   {
+    "seat": "Throat",
+    "deg": 6.005101361580597,
+    "px": 44.724609375
+   },
+   {
+    "seat": "3rd Eye",
+    "deg": 6.005101361580597,
+    "px": 51.193359375
+   },
+   {
+    "seat": "Crown",
+    "deg": 6.005101361580597,
+    "px": 42.59765625
+   }
+  ],
+  "litAnnShare": 44.75062074921732,
+  "areaAnn": 37052,
+  "litAll": 64098,
+  "px": 119260,
+  "bandLit": 44.75062074921732,
+  "bandArea": 37052
+ },
+ "band": {
+  "mode": "band",
+  "carrying": 41,
+  "total": 108,
+  "shell": 141.5,
+  "free": 167.5,
+  "CW": 356,
+  "CH": 335,
+  "reach": 1,
+  "lane": 0,
+  "slab": 42.449999999999996,
+  "spineW": 0,
+  "outside": 0,
+  "reserved": 0,
+  "worstContrast": 7.046359176323601,
+  "plates": [],
+  "named": 7,
+  "perSeat": [
+   {
+    "seat": "Root",
+    "r": 7.175953254671965,
+    "ink": [
+     225,
+     150,
+     144
+    ],
+    "ground": [
+     51,
+     20,
+     18
+    ]
+   },
+   {
+    "seat": "Sacral",
+    "r": 7.191408555750204,
+    "ink": [
+     222,
+     169,
+     117
+    ],
+    "ground": [
+     52,
+     35,
+     19
+    ]
+   },
+   {
+    "seat": "Solar",
+    "r": 7.50655444996592,
+    "ink": [
+     218,
+     191,
+     106
+    ],
+    "ground": [
+     52,
+     46,
+     25
+    ]
+   },
+   {
+    "seat": "Heart",
+    "r": 7.5002564701751675,
+    "ink": [
+     95,
+     213,
+     166
+    ],
+    "ground": [
+     23,
+     51,
+     40
+    ]
+   },
+   {
+    "seat": "Throat",
+    "r": 7.081100191646338,
+    "ink": [
+     112,
+     193,
+     221
+    ],
+    "ground": [
+     23,
+     45,
+     53
+    ]
+   },
+   {
+    "seat": "3rd Eye",
+    "r": 7.233094809752671,
+    "ink": [
+     161,
+     175,
+     227
+    ],
+    "ground": [
+     30,
+     35,
+     54
+    ]
+   },
+   {
+    "seat": "Crown",
+    "r": 7.046359176323601,
+    "ink": [
+     190,
+     161,
+     223
+    ],
+    "ground": [
+     40,
+     30,
+     53
+    ]
+   }
+  ],
+  "litAnnShare": 98.29393050963758,
+  "areaAnn": 32062,
+  "litAll": 77273,
+  "px": 119260,
+  "bandLit": 98.19717819195262,
+  "bandArea": 11482
+ },
+ "mark": {
+  "mode": "mark",
+  "carrying": 41,
+  "total": 108,
+  "shell": 141.5,
+  "free": 167.5,
+  "CW": 356,
+  "CH": 335,
+  "reach": 1,
+  "lane": 0,
+  "slab": 0,
+  "spineW": 0,
+  "outside": 0,
+  "reserved": 0,
+  "worstContrast": null,
+  "plates": [],
+  "named": 7,
+  "markR0": 118.5,
+  "markR1": 136.5,
+  "litAnnShare": null,
+  "areaAnn": 0,
+  "litAll": 68760,
+  "px": 119260,
+  "bandLit": 79.35144124168514,
+  "bandArea": 14432
+ },
+ "axis": {
+  "mode": "axis",
+  "carrying": 41,
+  "total": 108,
+  "shell": 124.5,
+  "free": 167.5,
+  "CW": 356,
+  "CH": 335,
+  "reach": 1.1365461847389557,
+  "lane": 17,
+  "slab": 0,
+  "spineW": 0,
+  "outside": 17,
+  "reserved": 0,
+  "worstContrast": null,
+  "plates": [],
+  "named": 7,
+  "perSeat": [
+   {
+    "seat": "Root",
+    "run": 30.15380859375,
+    "arc": 116.83815789267372
+   },
+   {
+    "seat": "Sacral",
+    "run": 40.233154296875,
+    "arc": 116.83815789267375
+   },
+   {
+    "seat": "Solar",
+    "run": 33.556640625,
+    "arc": 116.8381578926737
+   },
+   {
+    "seat": "Heart",
+    "run": 36.35302734375,
+    "arc": 109.10053154216556
+   },
+   {
+    "seat": "Throat",
+    "run": 42.861083984375,
+    "arc": 85.88765249064097
+   },
+   {
+    "seat": "3rd Eye",
+    "run": 49.060302734375,
+    "arc": 85.88765249064109
+   },
+   {
+    "seat": "Crown",
+    "run": 40.82275390625,
+    "arc": 155.52628964521458
+   }
+  ],
+  "overflow": 0,
+  "litAnnShare": 96.87808315715293,
+  "areaAnn": 14190,
+  "litAll": 70822,
+  "px": 119260,
+  "bandLit": 96.87808315715293,
+  "bandArea": 14190
+ },
+ "spine": {
+  "mode": "spine",
+  "carrying": 41,
+  "total": 108,
+  "shell": 124,
+  "free": 150,
+  "CW": 356,
+  "CH": 335,
+  "reach": 1,
+  "lane": 0,
+  "slab": 0,
+  "spineW": 56,
+  "outside": 0,
+  "reserved": 0,
+  "worstContrast": null,
+  "plates": [],
+  "named": 7,
+  "litAnnShare": null,
+  "areaAnn": 0,
+  "litAll": 65187,
+  "px": 119260,
+  "bandLit": null,
+  "bandArea": 0
+ }
+}

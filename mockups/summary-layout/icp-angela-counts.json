@@ -1,0 +1,50 @@
+{
+ "loaded-1600": {
+  "controls": 1,
+  "controlsWholeScreen": 31,
+  "groups": 9,
+  "textBlocks": 19,
+  "words": 278,
+  "rings": 1,
+  "balance": {
+   "rows": 3,
+   "worst": {
+    "cls": "s-outrow",
+    "n": 3,
+    "min": 200,
+    "max": 200,
+    "level": 0.43
+   },
+   "mean": 0.82
+  },
+  "where": {
+   "storyTop": 388,
+   "toldTop": 232,
+   "actionTop": 1930,
+   "nineTop": 1179,
+   "slotTop": null
+  },
+  "fullHeight": 2169
+ },
+ "loaded-390": {
+  "controls": 0,
+  "controlsWholeScreen": 5,
+  "groups": 2,
+  "textBlocks": 6,
+  "words": 97,
+  "rings": 1,
+  "balance": {
+   "rows": 0,
+   "worst": null,
+   "mean": null
+  },
+  "where": {
+   "storyTop": 473,
+   "toldTop": 292,
+   "actionTop": 4068,
+   "nineTop": 3237,
+   "slotTop": null
+  },
+  "fullHeight": 8211
+ }
+}

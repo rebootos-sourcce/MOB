@@ -1,0 +1,208 @@
+<title>Root glyphs and icon colour</title>
+<meta name="description" content="Four new root domain icons and three measured colour options for the rail's icon grids, laid over the committed build.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+<style>
+/* One look, on purpose: the instrument's own dark ground, so every crop on
+   this page sits on the colour it was photographed against. */
+:root{color-scheme:dark;
+ --bg:#0E1015;--panel:#151821;--edge:#262B36;--ink:#D8DDE6;--dim:#8E97A6;--faint:#5E6675;
+ --accent:#7EB8D4;--pass:#6FC5A3;--fail:#E0877F;
+ --arch:#7D93E0;--eng:#D8924E;--weav:#5FD5A6;--wit:#A77EDB}
+body{background:var(--bg);color:var(--ink);font:15px/1.6 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+ padding-inline:max(16px,4vw);padding-block:40px 64px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:56px}
+h1{font-size:28px;font-weight:600;letter-spacing:-.01em;margin:0 0 8px;text-wrap:balance}
+h2{font-size:19px;font-weight:600;margin:0 0 6px;text-wrap:balance}
+h3{font-size:14px;font-weight:600;margin:0 0 4px}
+p{margin:0;max-width:68ch}
+.lede{color:var(--dim)}
+.meta{font-size:12.5px;color:var(--faint);margin-top:10px;font-variant-numeric:tabular-nums}
+section{display:grid;gap:20px}
+.quote{border-left:2px solid var(--edge);padding-left:14px;color:var(--dim);font-size:14px}
+.quote b{color:var(--ink);font-weight:500}
+
+/* the four glyphs */
+.glyphs{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+.g{background:var(--panel);border:1px solid var(--edge);border-radius:10px;padding:18px;display:grid;gap:10px;align-content:start}
+.g .draw{display:flex;align-items:flex-end;gap:18px}
+.g svg{fill:none;stroke:var(--c);stroke-linecap:round;stroke-linejoin:round}
+.g .big{width:84px;height:84px;stroke-width:1.5}
+.g .small{width:22px;height:22px;stroke-width:1.7}
+.g .alt{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--faint);border-top:1px solid var(--edge);padding-top:10px}
+.g .alt svg{width:22px;height:22px;stroke-width:1.7;opacity:.85}
+.g .nm{font-weight:600;color:var(--c)}
+.g .says{font-size:13px;color:var(--dim)}
+.g .says i{font-style:normal;color:var(--ink)}
+
+/* photographed crops. 528 device pixels shot at 2x, shown at 264 */
+.strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,264px));gap:18px 14px;justify-content:start}
+.strip.wide{grid-template-columns:repeat(auto-fit,minmax(264px,max-content))}
+figure{margin:0;display:grid;gap:8px;align-content:start}
+figure img{display:block;width:100%;max-width:264px;height:auto;border-radius:6px;border:1px solid var(--edge)}
+
+figcaption{font-size:12.5px;color:var(--dim);line-height:1.45}
+figcaption b{color:var(--ink);font-weight:600;display:block;font-size:13px}
+.pick{outline:2px solid var(--accent);outline-offset:4px;border-radius:6px}
+
+/* numbers */
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;font-size:13.5px;font-variant-numeric:tabular-nums;min-width:620px}
+th,td{text-align:left;padding:8px 14px 8px 0;border-bottom:1px solid var(--edge);vertical-align:top}
+th{font-weight:500;color:var(--dim);font-size:12.5px}
+td.n{text-align:right;padding-right:22px}
+th.n{text-align:right;padding-right:22px}
+.ok{color:var(--pass)}.bad{color:var(--fail)}
+.chip{display:inline-block;font-size:11.5px;padding:1px 7px;border-radius:99px;border:1px solid currentColor;margin-left:6px;vertical-align:1px}
+
+/* questions */
+ol.q{margin:0;padding-left:22px;display:grid;gap:18px;max-width:78ch}
+ol.q li{padding-left:4px}
+ol.q .ways{color:var(--dim);font-size:14px;margin-top:4px}
+details{background:var(--panel);border:1px solid var(--edge);border-radius:10px;padding:14px 18px}
+summary{cursor:pointer;font-weight:500}
+summary:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+details[open] summary{margin-bottom:16px}
+code{font:12.5px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--ink);background:#1B1F2A;padding:1px 5px;border-radius:4px}
+@media (max-width:560px){body{font-size:14.5px}h1{font-size:23px}.strip{grid-template-columns:1fr 1fr}.strip.wide{grid-template-columns:minmax(0,1fr)}}
+</style>
+
+<div class="wrap">
+
+<header>
+ <h1>Root glyphs and icon colour</h1>
+ <p class="lede">Two asks from the owner, 26 September, round DR. Every picture here is the committed build with the proposal laid over it, on James with his five story lines, so his blueprint domain (Imperium) is selected and the Architect root is washed.</p>
+ <p class="meta">Prototype at proto/rooticons, built over HEAD 5e6b7d4, build 2f60b02. Contrast is WCAG ratio against each icon's own tile; chroma is OKLCH, the colour model where a change in saturation holds hue and lightness still.</p>
+</header>
+
+<section>
+ <div>
+  <h2>1. Four roots with no icon</h2>
+  <p class="quote"><b>"I need icons for Architect, Engine, Weaver, Witness, I don't know why those don't have icons."</b></p>
+ </div>
+ <p>Each glyph is drawn from the root's own sentence in the product and from the domains it holds, not from what the word sounds like. Same grammar as every family already in the build: 24 unit box, open stroke, round ends, no fill. Each was checked beside all 86 named glyphs the build already draws, so no new mark is a second name for an old one.</p>
+ <div class="glyphs">
+  <div class="g" style="--c:var(--arch)">
+   <div class="draw"><svg class="big" viewBox="0 0 24 24"><path d="M4 20V4l16 16z M8 16v-5.4l5.4 5.4z"/></svg><svg class="small" viewBox="0 0 24 24"><path d="M4 20V4l16 16z M8 16v-5.4l5.4 5.4z"/></svg></div>
+   <div><span class="nm">Architect</span>, a set square</div>
+   <p class="says">Product says <i>"Earth, fixed. Builds and holds."</i> Holds Knowledge, Justice, Imperium, Duty, Fate. The instrument order is drawn with, before anything is built.</p>
+   <div class="alt"><svg viewBox="0 0 24 24"><path d="M3 4.5h18V8H3z M7 8v12 M17 8v12 M4 20h16"/></svg>Alternate: post and lintel. Second because the Duty law already wears nearly this shape.</div>
+  </div>
+  <div class="g" style="--c:var(--eng)">
+   <div class="draw"><svg class="big" viewBox="0 0 24 24"><path d="M12 21c-3.8 0-6.4-2.6-6.4-6.1 0-3.9 3-5.9 4-9.9 1.9 1.3 3.3 3.3 3.5 5.7 1-.8 1.7-2 1.8-3.4 2.3 1.9 3.5 4.6 3.5 7.6 0 3.5-2.6 6.1-6.4 6.1z M12 21c-1.5 0-2.5-1-2.5-2.5 0-1.6 1.2-2.6 2.5-4.1 1.3 1.5 2.5 2.5 2.5 4.1 0 1.5-1 2.5-2.5 2.5"/></svg><svg class="small" viewBox="0 0 24 24"><path d="M12 21c-3.8 0-6.4-2.6-6.4-6.1 0-3.9 3-5.9 4-9.9 1.9 1.3 3.3 3.3 3.5 5.7 1-.8 1.7-2 1.8-3.4 2.3 1.9 3.5 4.6 3.5 7.6 0 3.5-2.6 6.1-6.4 6.1z M12 21c-1.5 0-2.5-1-2.5-2.5 0-1.6 1.2-2.6 2.5-4.1 1.3 1.5 2.5 2.5 2.5 4.1 0 1.5-1 2.5-2.5 2.5"/></svg></div>
+   <div><span class="nm">Engine</span>, a flame with its tongue</div>
+   <p class="says">Product says <i>"Fire, cardinal. Initiates and burns."</i> Holds Power, Creation, Dissolution, Descent, Death. A flame is the one thing that both starts and consumes.</p>
+   <div class="alt">No alternate. The one drawn, a flywheel and crank, read as a banjo at rail size and was cut.</div>
+  </div>
+  <div class="g" style="--c:var(--weav)">
+   <div class="draw"><svg class="big" viewBox="0 0 24 24"><path d="M3 4.5c5.5 0 6 7.5 11 7.5h7 M3 19.5c5.5 0 6-7.5 11-7.5"/></svg><svg class="small" viewBox="0 0 24 24"><path d="M3 4.5c5.5 0 6 7.5 11 7.5h7 M3 19.5c5.5 0 6-7.5 11-7.5"/></svg></div>
+   <div><span class="nm">Weaver</span>, a confluence</div>
+   <p class="says">Product says <i>"Water, mutable. Joins and dissolves."</i> Holds Connection, Exchange, Restoration, Provision, Play. Two streams meet and run on as one.</p>
+   <div class="alt"><svg viewBox="0 0 24 24"><path d="M8 3c0 3 8 3 8 6s-8 3-8 6 8 3 8 6 M16 3c0 1.5-2 2.3-4 3 M8 9c0 1.5 2 2.3 4 3 M16 15c0 1.5-2 2.3-4 3"/></svg>Alternate: a three strand plait. Second because it also reads as a helix.</div>
+  </div>
+  <div class="g" style="--c:var(--wit)">
+   <div class="draw"><svg class="big" viewBox="0 0 24 24"><path d="M4 9V4h5 M15 4h5v5 M20 15v5h-5 M9 20H4v-5 M12 12m-1.7 0a1.7 1.7 0 1 0 3.4 0a1.7 1.7 0 1 0-3.4 0"/></svg><svg class="small" viewBox="0 0 24 24"><path d="M4 9V4h5 M15 4h5v5 M20 15v5h-5 M9 20H4v-5 M12 12m-1.7 0a1.7 1.7 0 1 0 3.4 0a1.7 1.7 0 1 0-3.4 0"/></svg></div>
+   <div><span class="nm">Witness</span>, a viewfinder</div>
+   <p class="says">Product says <i>"Air. Observes and names."</i> Holds Nature, Trickster, Mystery, Guardian. The frame holds the thing and never touches it. The eye was taken twice already.</p>
+   <div class="alt"><svg viewBox="0 0 24 24"><path d="M3.5 13l11-4.6 1.6 3.8-11 4.6z M14.5 8.4l4.2-1.8 1.6 3.8-4.2 1.8 M10.3 14.6L7.5 21 M10.3 14.6L13 21"/></svg>Alternate: a glass on a tripod. Reads, but it is the busiest of the eight.</div>
+  </div>
+ </div>
+ <p>In the rail the mark sits above the name. Four across leaves each chip about 62 pixels, and "Architect" already takes about 50 of them, so a mark beside the name does not fit, and a mark instead of the name loses the only place the roots are named. It costs 8 pixels of rail height.</p>
+ <div class="strip wide">
+  <figure><img src="img/roots-shipped.png" width="264" alt="Root row as shipped: four text chips, no icons"><figcaption><b>Shipped</b>Text only.</figcaption></figure>
+  <figure class="pick"><img src="img/roots-rec.png" width="264" alt="Root row with the recommended glyphs above each name"><figcaption><b>Recommended glyphs</b>Architect washed, because Imperium sits under it.</figcaption></figure>
+  <figure><img src="img/roots-alt.png" width="264" alt="Root row with the alternate glyphs"><figcaption><b>Alternate glyphs</b>Engine keeps its flame.</figcaption></figure>
+  <figure><img src="img/roots-rec-390.png" width="346" style="max-width:346px" alt="Root row with recommended glyphs at phone width"><figcaption><b>Recommended, at 390</b>The phone width. Fits without a wrap.</figcaption></figure>
+ </div>
+</section>
+
+<section>
+ <div>
+  <h2>2. The icon grids read dull</h2>
+  <p class="quote"><b>"All our normal icons under Blueprint Domains, Primary, I think we want those punched up a little more, more saturated, they're just a little dull."</b></p>
+ </div>
+ <p>He is right, and it measures. The main cause is not the palette. Every icon in these grids rests at 78 percent opacity and only reaches full strength under a pointer, so each stroke is mixed 22 percent into its dark tile. That lowers saturation and contrast together. On Dark the nineteen domain colours carry 0.125 chroma in the palette and 0.103 on screen.</p>
+ <p>So the options separate the dimming from the colour. A only removes the dimming. B and C also raise saturation by 15 and 30 percent, with hue and lightness held.</p>
+ <div class="strip">
+  <figure><img src="img/dark-ship.png" alt="Blueprint and Primary grids as shipped on Dark"><figcaption><b>Shipped</b>Resting dim on, palette as is.</figcaption></figure>
+  <figure><img src="img/dark-a.png" alt="Grids with the resting dim removed"><figcaption><b>A, dim off</b>No colour changed. Plus 22 percent on screen.</figcaption></figure>
+  <figure class="pick"><img src="img/dark-b.png" alt="Grids with dim off and saturation plus 15 percent"><figcaption><b>B, plus 15</b>Plus 40 percent on screen. Recommended.</figcaption></figure>
+  <figure><img src="img/dark-c.png" alt="Grids with dim off and saturation plus 30 percent"><figcaption><b>C, plus 30</b>Plus 59 percent on screen. The ceiling.</figcaption></figure>
+ </div>
+
+ <h3>Why Primary still looks flat in all four</h3>
+ <p>All twelve archetypes are drawn in the one accent blue, the least saturated colour in the rail at 0.072. On 19 September he ruled that each archetype wears its seat ("the warrior's root, the sage is crown, the mage is third eye"). That was applied to the reading rows but never reached these tiles. With it applied, Primary gains more saturation than any multiplier gives it.</p>
+ <div class="strip">
+  <figure><img src="img/dark-b.png" alt="B with archetypes in one accent"><figcaption><b>B, one accent</b>As his grids are today, lifted.</figcaption></figure>
+  <figure class="pick"><img src="img/dark-b-seat.png" alt="B with archetypes in their seat colours"><figcaption><b>B, wearing their seat</b>Recommended. Root held, see below.</figcaption></figure>
+  <figure><img src="img/dark-c-seat.png" alt="C with archetypes in their seat colours"><figcaption><b>C, wearing their seat</b>The ceiling.</figcaption></figure>
+ </div>
+
+ <div class="tbl"><table>
+  <thead><tr><th>Dark lighting</th><th class="n">Shipped</th><th class="n">A</th><th class="n">B</th><th class="n">C</th></tr></thead>
+  <tbody>
+   <tr><td>Blueprint domains, average chroma on screen</td><td class="n">0.103</td><td class="n">0.126</td><td class="n">0.144</td><td class="n">0.163</td></tr>
+   <tr><td>Blueprint domains, weakest contrast (Nature)</td><td class="n">4.18</td><td class="n">6.27</td><td class="n">6.20</td><td class="n">6.14</td></tr>
+   <tr><td>Primary in one accent, average chroma</td><td class="n">0.060</td><td class="n">0.072</td><td class="n">0.083</td><td class="n">0.094</td></tr>
+   <tr><td>Primary wearing seats, average chroma</td><td class="n">n/a</td><td class="n">0.126</td><td class="n">0.142</td><td class="n">0.158</td></tr>
+   <tr><td>Primary wearing seats, weakest contrast (Everyman)</td><td class="n">n/a</td><td class="n">4.87</td><td class="n">4.87</td><td class="n">4.87</td></tr>
+   <tr><td>Root names, text, weakest contrast (floor 4.5)</td><td class="n">4.68</td><td class="n">4.68</td><td class="n">4.68</td><td class="n">4.66</td></tr>
+  </tbody>
+ </table></div>
+ <p><b>Root is held at its shipped value on every option.</b> Red is the alarm colour, kept for something going wrong, and raising saturation walks the Root seat toward it. Measured as colour distance from the alarm (<code>#FF2E1F</code>, in the OKLab colour model): 0.082 as shipped, 0.060 at plus 15, 0.043 at plus 30. Root is already the most saturated seat. In this rail it only touches Warrior and Everyman.</p>
+</section>
+
+<section>
+ <div>
+  <h2>3. On the paper lightings it is worse than dull</h2>
+ </div>
+ <p>The blueprint domain colours are written once, as the Dark palette, and drawn unchanged on every lighting. On paper that is pale on pale. Snow draws Connection at 1.34 to 1, where the floor for an icon a person needs to read is 3 to 1. The root names on Snow are text at 1.70 to 1, against a text floor of 4.5. Glass white has the same fault, plus a second one. The function that picks a colour per lighting treats Glass white as dark.</p>
+ <p>Every option routes the domains through the lighting's own palette. On Dark nothing changes. On paper it is the fix.</p>
+ <div class="strip">
+  <figure><img src="img/snow-ship.png" alt="Snow, shipped: pale domain icons on paper"><figcaption><b>Snow, shipped</b><span class="bad">1.34</span> worst icon</figcaption></figure>
+  <figure class="pick"><img src="img/snow-b-seat.png" alt="Snow with B and archetype seats"><figcaption><b>Snow, B and seats</b><span class="ok">4.07</span> worst icon</figcaption></figure>
+  <figure><img src="img/glasswhite-ship.png" alt="Glass white, shipped"><figcaption><b>Glass white, shipped</b><span class="bad">1.59</span> worst icon</figcaption></figure>
+  <figure class="pick"><img src="img/glasswhite-b-seat.png" alt="Glass white with B and archetype seats"><figcaption><b>Glass white, B and seats</b><span class="ok">5.14</span> worst icon</figcaption></figure>
+  <figure><img src="img/lumen-ship.png" alt="Lumen, shipped"><figcaption><b>Lumen, shipped</b><span class="bad">1.54</span> worst icon</figcaption></figure>
+  <figure><img src="img/lumen-b-seat.png" alt="Lumen with B and archetype seats"><figcaption><b>Lumen, B and seats</b><span class="bad">2.22</span> still under 3. Question 4.</figcaption></figure>
+ </div>
+ <div class="tbl"><table>
+  <thead><tr><th>Weakest icon contrast, option B</th><th class="n">Shipped</th><th class="n">B</th><th class="n">B, seats</th><th>Floor 3.0</th></tr></thead>
+  <tbody>
+   <tr><td>Dark</td><td class="n">4.18</td><td class="n">6.20</td><td class="n">4.87</td><td class="ok">holds</td></tr>
+   <tr><td>Snow</td><td class="n bad">1.34</td><td class="n">4.07</td><td class="n">4.07</td><td class="ok">fixed</td></tr>
+   <tr><td>Punch</td><td class="n">4.87</td><td class="n">5.46</td><td class="n">4.29</td><td class="ok">holds</td></tr>
+   <tr><td>Glass, approximate over the moving ground</td><td class="n">3.36</td><td class="n">4.52</td><td class="n">3.56</td><td class="ok">holds</td></tr>
+   <tr><td>Glass white</td><td class="n bad">1.59</td><td class="n">5.14</td><td class="n">5.14</td><td class="ok">fixed</td></tr>
+   <tr><td>Flat</td><td class="n">4.17</td><td class="n">6.16</td><td class="n">4.85</td><td class="ok">holds</td></tr>
+   <tr><td>Lumen</td><td class="n bad">1.54</td><td class="n bad">2.22</td><td class="n bad">2.22</td><td class="bad">his palette, question 4</td></tr>
+  </tbody>
+ </table></div>
+ <details>
+  <summary>Punch, Glass and Flat, shipped against B with seats</summary>
+  <div class="strip">
+   <figure><img src="img/punch-ship.png" alt="Punch shipped"><figcaption><b>Punch, shipped</b></figcaption></figure>
+   <figure><img src="img/punch-b-seat.png" alt="Punch B seats"><figcaption><b>Punch, B and seats</b></figcaption></figure>
+   <figure><img src="img/glass-ship.png" alt="Glass shipped"><figcaption><b>Glass, shipped</b></figcaption></figure>
+   <figure><img src="img/glass-b-seat.png" alt="Glass B seats"><figcaption><b>Glass, B and seats</b></figcaption></figure>
+   <figure><img src="img/flat-ship.png" alt="Flat shipped"><figcaption><b>Flat, shipped</b></figcaption></figure>
+   <figure><img src="img/flat-b-seat.png" alt="Flat B seats"><figcaption><b>Flat, B and seats</b></figcaption></figure>
+  </div>
+ </details>
+</section>
+
+<section>
+ <h2>Questions for him</h2>
+ <ol class="q">
+  <li><b>Which four marks?</b> The recommended set is set square, flame, confluence, viewfinder. Section 1 has both sets, drawn large and at rail size.
+   <div class="ways">Recommended: every mark is distinct from the 86 already in the product. Alternate: post and lintel echoes the Duty law, and the plait reads as a helix. Any mix of the two also works.</div></li>
+  <li><b>How much punch: A, B or C?</b> The grids in section 2, left to right.
+   <div class="ways">A changes no colour and only stops dimming the icons, plus 22 percent. B adds 15 percent saturation, plus 40 percent on screen, and keeps the autonomic argument the palette was built on. C, plus 59 percent, puts the warm seats back near where they were before the palette was deliberately calmed. The team recommends B.</div></li>
+  <li><b>Should Primary and Secondary wear their seats in the rail, as the 19 September ruling already says?</b> Section 2, second row.
+   <div class="ways">Yes: Primary gains the most colour of any option, and a Warrior reads as root everywhere it appears. The cost is seven colours across twelve tiles in an order set by the archetype list, not the seat. The domains are grouped by colour on purpose, because one colour per block is found fastest, and these would not be. The display order could be regrouped by seat without renumbering anything stored.</div></li>
+  <li><b>Lumen is yours. Its vivid palette fails on the rail's light tiles.</b> Sacral draws at 2.2 and Heart at 2.6 against a floor of 3. Its Root, <code>#F02E3C</code>, is already the closest colour in the product to the alarm, at 0.037. On Lumen a selected Warrior fills solid in that red.
+   <div class="ways">Deepen Lumen's warm seats for the light tiles only, which costs some of the vivid brief. Or keep Lumen's palette and give its rail a dark tile, which changes how Lumen looks. Or leave it, and Lumen stays under the floor.</div></li>
+ </ol>
+</section>
+
+</div>

@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Matrix and gears</title>
+<style>
+:root{--bg:#0C0D12;--panel:#14161D;--ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;--line:rgba(239,237,232,.09);--acc:#7EB8D4}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+main{max-width:1280px;margin:0 auto;padding:36px 24px 64px}
+.ey{font-size:12px;color:var(--dim)}h1{margin:4px 0 8px;font-size:28px;font-weight:600;letter-spacing:-.01em}
+h2{font-size:20px;font-weight:600;margin:52px 0 6px}h3{font-size:16px;font-weight:600;margin:0 0 4px}
+.lede{color:var(--mid);max-width:860px;margin:0 0 8px}.note{color:var(--dim);font-size:13px;max-width:860px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;margin:18px 0}
+.row{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:18px;align-items:start}
+img{display:block;max-width:100%;border:1px solid var(--line);border-radius:10px;background:#090A0E}
+.strip{margin-top:10px}.cap{font-size:12px;color:var(--dim);margin:4px 0 12px}
+p{margin:0 0 10px;color:var(--mid)}p b{color:var(--ink);font-weight:500}
+a{color:var(--acc)}
+table{width:100%;border-collapse:collapse;font-size:13.5px}th,td{text-align:left;vertical-align:top;padding:9px 10px;border-top:1px solid var(--line);color:var(--mid)}th{color:var(--ink);font-weight:500}
+.tw{overflow-x:auto}
+.who{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.ph{display:grid;grid-template-columns:repeat(2,minmax(0,300px));gap:14px}
+@media(max-width:900px){.row{grid-template-columns:1fr}.who{grid-template-columns:repeat(2,minmax(0,1fr))}main{padding:20px 16px 48px}}
+</style></head><body><main>
+<div class="ey">Mockups only, round OT. Nothing here touches the app, the engine or source.html.</div>
+<h1>The matrix, redesigned, and the fetters and the sky as gears</h1>
+<p class="lede">Two jobs. Part A gives the Matrix the flow treatment the Field, the rail bars, the Flow band and the Shadow wave have been getting, in three directions. Part B answers "is there a way to visually show that" for the child fetters and the celestial layer, in three pictures that run. Every page is live: open it, press a person, hover, drag. All numbers come from the engine, dumped from source.html into <code>data.js</code> (13 reference people).</p>
+
+<h2>Part A. The Matrix</h2>
+<div class="card">
+<h3>Today</h3>
+<p>The Matrix is the left rail section <code>data-sec="matrix"</code>: 171 square buttons, 19 domains across and 9 child fetters down (<code>ui/personas.js</code>, <code>mx</code> and <code>syncMx</code>). Brightness is the mean SQ of the addresses in that cell, a gold outline marks the AFFIN pairs, a click runs the cell drill. Nothing in it moves. It is 264 px wide, cells about 12 px.</p>
+<div class="ph"><div><img src="baseline/matrix-1600.png" alt="Today's Matrix section open in the left rail at 1600 wide"><p class="cap">Today, 1600 by 1000, rail open</p></div><div><img src="baseline/matrix-section-390.png" alt="Today's Matrix section at 390 wide"><p class="cap">Today, 390 wide</p></div></div>
+</div>
+
+<div class="card"><div class="row"><div>
+<h3>A1. Ridgeline <a href="m1.html">open live</a></h3>
+<img src="shots/m1-1600.png" alt="Ridgeline at 1600">
+<div class="strip"><img src="shots/m1-1600-strip.png" alt="Ridgeline frames at 0, 0.5, 1 and 2 seconds"><p class="cap">Frames at 0, 0.5, 1 and 2 s (stepped, not recorded). Frame 0 is the standing lines, already rippling.</p></div>
+<div class="ph"><div><img src="shots/m1-390.png" alt="Ridgeline at 390"></div><div><img src="shots/m1-390-strip.png" alt="Ridgeline phone frames"></div></div>
+</div><div>
+<p><b>At a glance.</b> Which fetters are loud, and in which domains. Nine bands, height is charge held at that domain, colour is the root, gold ring is a 1.3x pair.</p>
+<p><b>Treatment borrowed.</b> The Flow band: a sine carrier whose height is the data, a bead riding it, the Field's 4.2 s breath, four root colour registers.</p>
+<p><b>Reads.</b> Mean SQ per domain by fetter cell (from W), cell counts, S.charge, DOMAIN, S.doms, AFFIN.</p>
+<p><b>Frame cost.</b> 1.8 ms of script a frame at desk size, 1.1 ms at phone size, worst frame 10 ms. Main thread canvas, not compositor only.</p>
+<p><b>Reduced motion.</b> One draw at the settled state, no loop, zero frames drawn while idle (measured). Hover still redraws.</p>
+</div></div></div>
+
+<div class="card"><div class="row"><div>
+<h3>A2. Polar <a href="m2.html">open live</a></h3>
+<img src="shots/m2-1600.png" alt="Polar at 1600">
+<div class="strip"><img src="shots/m2-1600-strip.png" alt="Polar frames"><p class="cap">Frames at 0, 0.5, 1 and 2 s. Rings enter inside out, 70 ms apart.</p></div>
+<div class="ph"><div><img src="shots/m2-390.png" alt="Polar at 390"></div><div><img src="shots/m2-390-strip.png" alt="Polar phone frames"></div></div>
+</div><div>
+<p><b>At a glance.</b> Where on the wheel each fetter lives. A cell is the arc the Field already uses: domain c is exactly the sector of 2 pi over 19 starting at the top. The beads are the 108 real addresses at their real slot angles.</p>
+<p><b>Treatment borrowed.</b> The Field's concentric geometry, the Shadow wave as a radial ripple on every arc, a light sweeping once in 14 s, the root colour registers as the outer band.</p>
+<p><b>Reads.</b> W (slot, cf, sq), the cell table, DOMAIN, S.doms, AFFIN, CQ and DQ.</p>
+<p><b>Frame cost.</b> 1.3 ms a frame desk, 1.1 phone, worst 6.5 ms. Canvas, main thread.</p>
+<p><b>Reduced motion.</b> Same rule: settled, one draw, nothing running.</p>
+<p><b>Honest note.</b> One address in the data has no child fetter (cf is null) and is not drawn. Addresses per fetter are uneven (Anger 27, Surprise 3 on Marcus), which is itself the reading.</p>
+</div></div></div>
+
+<div class="card"><div class="row"><div>
+<h3>A3. Loom <a href="m3.html">open live</a></h3>
+<img src="shots/m3-1600.png" alt="Loom at 1600">
+<div class="strip"><img src="shots/m3-1600-strip.png" alt="Loom frames"><p class="cap">Frames at 0, 0.5, 1 and 2 s. The unstrung grid is there at 0, then threads draw in.</p></div>
+<div class="ph"><div><img src="shots/m3-390.png" alt="Loom at 390"></div><div><img src="shots/m3-390-strip.png" alt="Loom phone frames"></div></div>
+</div><div>
+<p><b>At a glance.</b> Where the grid is pulled. It keeps the matrix's own shape (the grid) and adds tension: a ring grows with charge and plucks both threads through it.</p>
+<p><b>Treatment borrowed.</b> The rail wire's pulses and the circles with a ring carrying the number; light runs faster on a heavier row.</p>
+<p><b>Reads.</b> Cell table, S.charge, DOMAIN, S.doms, AFFIN.</p>
+<p><b>Frame cost.</b> The heaviest of the six: about 4 ms desk, 2.5 phone, worst frame 10 to 48 ms across runs, the 48 a single outlier I did not diagnose (about 5,000 thread vertices and 171 rings). Still under a quarter of a frame budget.</p>
+<p><b>Reduced motion.</b> Settled, one draw. A static loom with the displacement at one phase.</p>
+</div></div></div>
+
+<h3 style="margin-top:28px">Four people, one design (Ridgeline, Polar, Loom)</h3>
+<div class="who"><img src="shots/m1-who-Marcus.png" alt=""><img src="shots/m1-who-Tomas.png" alt=""><img src="shots/m1-who-Wren.png" alt=""><img src="shots/m1-who-Rosa.png" alt=""></div><p class="cap">Ridgeline: Marcus, Tomas (heavy), Wren (sparse), Rosa (empty field, alive at rest).</p>
+<div class="who"><img src="shots/m2-who-Marcus.png" alt=""><img src="shots/m2-who-Tomas.png" alt=""><img src="shots/m2-who-Wren.png" alt=""><img src="shots/m2-who-Rosa.png" alt=""></div><p class="cap">Polar, same four.</p>
+<div class="who"><img src="shots/m3-who-Marcus.png" alt=""><img src="shots/m3-who-Tomas.png" alt=""><img src="shots/m3-who-Wren.png" alt=""><img src="shots/m3-who-Rosa.png" alt=""></div><p class="cap">Loom, same four.</p>
+
+<div class="card"><h3>Motion inventory for Part A (what moves, how long, what curve)</h3><div class="tw"><table>
+<tr><th>Element</th><th>Duration</th><th>Curve</th><th>Job</th></tr>
+<tr><td>Band, ring or thread entering</td><td>460 ms each, 70 ms apart (Loom threads 60 ms apart)</td><td>overshoot cubic-bezier(.34,1.56,.64,1)</td><td>Says which fetter is which by the order it arrives</td></tr>
+<tr><td>Root register bars</td><td>300 ms, 70 ms apart</td><td>ease out (.22,1,.36,1)</td><td>Names the four registers before the data</td></tr>
+<tr><td>Carrier, pluck, radial ripple</td><td>4.2 s loop</td><td>sine</td><td>The Field's breath; rest is never flat</td></tr>
+<tr><td>Bead along a band or thread</td><td>4.2 s times (1.9 minus 1.1 times charge)</td><td>linear is right here: it is a rate, not a move</td><td>Rate carries the fetter's charge</td></tr>
+<tr><td>Polar sweep</td><td>14 s a turn</td><td>linear, same reason</td><td>Lights each sector once</td></tr>
+<tr><td>Person change</td><td>about 500 ms</td><td>n.disp ease, 0.14 a frame, as every address</td><td>The numbers move rather than jump</td></tr>
+<tr><td>Hover</td><td>immediate redraw</td><td>none</td><td>A readout, not an effect</td></tr>
+</table></div>
+<p class="note">Today's Matrix: 0 animated elements. Fatigue at the fortieth view: only the 4.2 s breath, a 14 s sweep and the beads run after the first second, all low amplitude; the entrance plays on page load only.</p></div>
+
+<h2>Part B. The fetters and the sky as gears</h2>
+<div class="card">
+<h3>What the engine actually has, and what that allows the pictures to say</h3>
+<p><b>The celestial layer is small.</b> <code>engine/astro.js</code> and <code>birth.js</code> compute four points: the Sun, the Moon, the Ascendant (needs a time and a place) and the design Sun, as longitudes, plus the I Ching gate and line of the two Suns (64 gates of 5.625 degrees). There are no other planets in the engine, so there are no Venus or Mars gears to draw.</p>
+<p><b>There is no angle between the sky and a fetter.</b> A fetter has no longitude. The only real link in the product is a lookup: the Sun's element reads as a root (<code>ELEM2ROOT</code>: fire Engine, earth Architect, air Witness, water Weaver), and a root is 1.3 times more susceptible at its affine fetters (<code>AFFIN</code>). <code>converge()</code> compares the birth root with the root the person runs and prints agree or differ. So all three pictures draw that link as the claim, and draw aspects (real angles) only among the sky points. Where the person runs a different root from the one their Sun reads, the thread is dashed and the page says so.</p>
+<p><b>Moon and Rising.</b> The product maps only the Sun's element. These pictures apply the same table to the Moon, the Rising and the design Sun so the sky has four threads. That is a mockup extension and needs a ruling before it is built.</p>
+<p><b>The causal question.</b> A meshing gear says "this turns that". The product says supports, not causes. So none of the pictures lets rotation do the work: the rotation is a slow clock and a hand-turn, and the lit threads, which come from the data, are the whole claim. Each page says so in its small print. If the owner wants the gear metaphor kept, the line to hold is: the gears show a shared register, the threads show the lookup.</p>
+</div>
+
+<div class="card"><div class="row"><div>
+<h3>B1. Meshing gears <a href="g1.html">open live</a></h3>
+<img src="shots/g1-1600.png" alt="Meshing gears at 1600">
+<div class="strip"><img src="shots/g1-1600-strip.png" alt="Gears frames"><p class="cap">Frames at 0, 0.5, 1 and 2 s. The gears start from rest with a 4 degree back swing, then spin up over 350 ms.</p></div>
+<div class="ph"><div><img src="shots/g1-390.png" alt="Gears at 390"></div><div><img src="shots/g1-390-strip.png" alt="Gears phone frames"></div></div>
+</div><div>
+<p><b>At a glance.</b> The sky and the fetters sit on one register. The sky gear has 12 teeth (signs are the gaps), the root gear 4, the fetter gear 9. The 12 to 4 mesh is exact and tested: four signs turn the root gear once, and the zodiac repeats its element every fourth sign, so the same root tooth is always in a fire sign. (Tested over 60,000 phases; the root teeth run Engine, Weaver, Witness, Architect because the pinion turns against the sky.) The 4 to 9 mesh is only a picture; the thin lines from each root tooth to its affine fetters are the claim.</p>
+<p><b>Teeth counts and ratios from the data.</b> 12 signs, 4 roots (ELEM2ROOT), 9 child fetters. Inner rings: 64 gate ticks (gates of the Sun and design Sun lit gold) and 108 address ticks at their real slot angles, coloured by fetter, lit by SQ. Each fetter tooth carries a bar as long as its charge.</p>
+<p><b>Interaction.</b> Drag the sky: the others follow with inertia that decays over about 0.9 s.</p>
+<p><b>Frame cost.</b> 1.1 ms a frame desk, 1.2 phone. Canvas paths for 25 teeth, 108 ticks, 9 threads.</p>
+<p><b>Reduced motion.</b> No turning at all: gears sit at the person's Sun at the mesh. Drag still works.</p>
+</div></div></div>
+
+<div class="card"><div class="row"><div>
+<h3>B2. Nested rings <a href="g2.html">open live</a></h3>
+<img src="shots/g2-1600.png" alt="Nested rings at 1600">
+<div class="strip"><img src="shots/g2-1600-strip.png" alt="Rings frames"><p class="cap">Frames at 0, 0.5, 1 and 2 s. Rings open from the outside in, 90 ms apart, with one overshoot.</p></div>
+<div class="ph"><div><img src="shots/g2-390.png" alt="Rings at 390"></div><div><img src="shots/g2-390-strip.png" alt="Rings phone frames"></div></div>
+</div><div>
+<p><b>At a glance.</b> Which sky points lean on which fetters. From outside in: the sky (12 signs, 64 gates, Sun, Moon, Rising, design Sun at their longitudes); the roots riding the fetters as one rigid piece, so a root arc always sits directly over its own fetters; the 19 domains; the 108 addresses; CQ in the centre.</p>
+<p><b>Rates from counts.</b> 2.4 degrees a second times 12 over the ring's count, alternating direction: sky 2.40, fetters minus 3.20, domains 1.52, addresses minus 0.27. A rule from the data, written on the page.</p>
+<p><b>Couplings.</b> A thread from each sky point to its root, solid when the person runs that root, dashed when not. The thread hugs the gap between rings so it never cuts across the fetters. Chosen domains tie to their root with a dotted line. Chords inside the sky ring are real aspects (none for Marcus).</p>
+<p><b>The owner's "when they align".</b> A soft ring lights on a root while a sky point sits over it. That is geometry, not data, so it is kept faint. The owner decides whether to keep it.</p>
+<p><b>Interaction.</b> Drag the outer ring; each inner ring follows on a spring (friction, as animation).</p>
+<p><b>Frame cost.</b> 1.0 ms desk, 0.7 phone, the lightest.</p>
+<p><b>Reduced motion.</b> No turning, no alignment glow; all rings at rest. Drag works.</p>
+</div></div></div>
+
+<div class="card"><div class="row"><div>
+<h3>B3. Layered tower <a href="g3.html">open live</a></h3>
+<img src="shots/g3-1600.png" alt="Tower at 1600">
+<div class="strip"><img src="shots/g3-1600-strip.png" alt="Tower frames"><p class="cap">Frames at 0, 0.5, 1 and 2 s. Frame 0 shows the empty tower standing; the discs fill from the top down.</p></div>
+<div class="ph"><div><img src="shots/g3-390.png" alt="Tower at 390"></div><div><img src="shots/g3-390-strip.png" alt="Tower phone frames"></div></div>
+</div><div>
+<p><b>At a glance.</b> What sits above what. Five discs, top to bottom: sky, roots, fetters (a pillar each as tall as its charge), domains (a pillar each as tall as the blueprint's reach), and the 108 addresses (a pillar each as tall as SQ). Light drops from each sky point to its root, from the root to its fetters, and from each charged fetter to the addresses that carry it (W[i].cf).</p>
+<p><b>Honest read.</b> Strata, not a mechanism. This is the picture with no causal flavour at all, and the one that best matches "supports, not causes".</p>
+<p><b>Frame cost.</b> 1.3 ms desk, 1.3 phone. Ellipses and lines in 2D canvas, no 3D engine. The fan to the addresses is about 100 hairlines.</p>
+<p><b>Reduced motion.</b> Settled, no rotation.</p>
+</div></div></div>
+
+<div class="card"><h3>Which fields each page reads</h3><div class="tw"><table>
+<tr><th>Field (engine)</th><th>Used for</th></tr>
+<tr><td>S.charge (nine values 0 to 10), S.CH eased</td><td>Band, thread and bar sizes; ring numbers</td></tr>
+<tr><td>W[108]: slot, cf, sq, susc</td><td>Cell table, address ticks and beads, fetter to address fans</td></tr>
+<tr><td>DOMAIN[19], S.doms, S.roots</td><td>Domain thickness, chosen domain, which roots the person runs</td></tr>
+<tr><td>AFFIN, ELEM2ROOT, CHILD seats, DOMAINS roots</td><td>The 1.3x pairs, element to root, colours</td></tr>
+<tr><td>sunLon, moonLon, ascendant, designJD (astro.js), GATE_WHEEL, ZSIGN</td><td>Sky longitudes, gates, signs, aspects</td></tr>
+<tr><td>CQ, DQ from compute()</td><td>Centre readings</td></tr>
+</table></div><p class="note">Dumped once from source.html by loadP(i) for each reference person into <code>data.js</code>; the pages never touch the network (the harness fails on any request).</p></div>
+
+<div class="card"><h3>Cost, in plain words</h3>
+<p>All six are canvas 2D on the main thread, none are compositor only. Measured in real time in headless Chromium with software drawing: the page's own drawing code takes between 0.6 and 4.4 ms a frame (4 to 26 percent of a 16.7 ms frame), worst single frame 6 to 11 ms except one 48 ms outlier in Loom, and the browser held 60 frames a second throughout (17 ms between frames). Loom is the heaviest at about 4 ms, Nested rings the lightest at 1.0. A real GPU raster will be cheaper than this software one. If a surface needs to be cheaper still, the sweep and bead layers can be split to a second canvas and the static rings cached; not needed at these figures.</p></div>
+
+<div class="card"><h3>Files</h3>
+<p><code>mockups/matrix-gears/</code>: <code>m1.html m2.html m3.html g1.html g2.html g3.html</code> (live pages), <code>mg.js mg.css</code> (shared floor), <code>m1.js</code> to <code>g3.js</code> (one per page), <code>data.js</code> (engine dump), <code>build.js pages.js</code> (page text), <code>shots.js strips.py</code> (the harness), <code>baseline/</code> (today's Matrix), <code>shots/</code> (every image here).</p></div>
+</main></body></html>

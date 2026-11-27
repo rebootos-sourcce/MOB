@@ -1,0 +1,4 @@
+THE REQUEST LOG for the round CB comps. Written by shoot.js.
+Any line marked OFF MACHINE is a request that left the computer, and there must be none.
+
+4-gates-1600  ok  {"dial-1600:ship":{"past":52,"touch":0,"figures":6,"over":0,"overPx":0},"dial-1600:hex":{"past":57,"touch":0,"figures":6,"over":0,"overPx":0},"dial-1600:beams":{"past":101,"touch":0,"figures":6,"over":0,"overPx":0},"dial-1600:collar":{"past":54,"touch":0,"figures":6,"over":0,"overPx":0},"frames-1600:ship":{"past":57,"touch":0,"figures":6,"over":0,"overPx":0},"frames-1600:hex":{"past":56,"touch":0,"figures":6,"over":0,"overPx":0},"frames-1600:beams":{"past":99,"touch":0,"figures":6,"over":0,"overPx":0},"frames-1600:collar":{"past":53,"touch":0,"figures":6,"over":0,"overPx":0},"dial-390:ship":{"past":40,"touch":0,"figures":6,"over":2,"overPx":8.5},"dial-390:hex":{"past":50,"touch":0,"figures":6,"over":0,"overPx":0},"dial-390:collar":{"past":50,"touch":0,"figures":6,"over":0,"overPx":0}}

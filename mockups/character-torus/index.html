@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Character, Orbit with a torus field</title>
+<style>
+:root{--bg:#0C0D12;--panel:#14161D;--ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;--line:rgba(239,237,232,.09);--line2:rgba(239,237,232,.2);--acc:#7EB8D4}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 Inter,'Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.wrap{max-width:1560px;margin:0 auto;padding:28px 24px 80px}
+.ey{font-size:12px;color:var(--dim)}
+h1{font-size:28px;margin:4px 0 8px;font-weight:600;letter-spacing:-.01em}
+h2{font-size:19px;margin:44px 0 6px;font-weight:600;letter-spacing:-.005em}
+h3{font-size:15px;margin:0 0 4px;font-weight:600}
+p{margin:0 0 10px;color:var(--mid);max-width:900px}
+.lead{font-size:16px;color:var(--ink);max-width:880px}
+.row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.row1{display:grid;grid-template-columns:1fr;gap:16px}
+.row2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+.card a.im{display:block;background:#090A0E;line-height:0}
+.card img{width:100%;height:auto;display:block}
+.card .tx{padding:12px 14px 14px}
+.card .tx p{font-size:13.5px;margin:4px 0 0}
+.pl{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 14px;border:1px solid var(--line2);border-radius:22px;color:var(--mid);text-decoration:none;font-size:13px;margin:4px 8px 4px 0}
+.pl:hover{color:var(--ink);border-color:rgba(239,237,232,.4)}
+.pl:focus-visible,.card a:focus-visible{outline:2px solid var(--acc);outline-offset:3px}
+.tbl{width:100%;border-collapse:collapse;font-size:13.5px;margin:6px 0 0}
+.tbl th,.tbl td{text-align:left;vertical-align:top;padding:10px 12px;border-top:1px solid var(--line);color:var(--mid)}
+.tbl th{color:var(--ink);font-weight:600}
+.tbl td b{color:var(--ink);font-weight:600}
+.phones{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}
+.phones a{display:block;background:#090A0E;border:1px solid var(--line);border-radius:12px;overflow:hidden;line-height:0}
+.phones img{width:100%;height:auto}
+.cap{font-size:12px;color:var(--dim);margin:6px 2px 0}
+.axes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:16px 0 0}
+.axes div{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.axes b{display:block;font-size:15px;margin-bottom:2px}
+code{font:12.5px ui-monospace,Menlo,monospace;color:var(--ink)}
+@media (max-width:980px){.row,.row2,.axes{grid-template-columns:1fr}.phones{grid-template-columns:repeat(2,minmax(0,1fr))}.tbl{display:block;overflow-x:auto}}
+</style></head><body><div class="wrap">
+<div class="ey">Character, rounds OV and OW, mockups only. Nothing here is built into the product.</div>
+<h1>Orbit, with a torus field round the figure</h1>
+<p class="lead">You picked Orbit and asked for a torus round it that is the health of the body. These are three ways of drawing it. In all three the field is made of cubic Bezier paths in three dimensions, projected with perspective, turning slowly about the body's axis. It enters under the feet, climbs the outside of the body, goes over the head and comes back down through the axis. Every point of it takes its colour from the air it sits in.</p>
+<div class="axes">
+ <div><b>CQ sets the whole field</b><p style="margin:0">How wide it is, how fast it runs, how bright it is, how complete it is and how straight and in step. At 100 percent it is a full, even apple of light in the seven seat colours. At 55 percent it is partial and broken. At 10 percent it is thin, collapsed, leaking and slow, a few sparks. At 0 percent the figure is a very dim silhouette and nothing else, near black and not black.</p></div>
+ <div><b>DQ and each seat's load say where it fails</b><p style="margin:0">Each of the seven seats owns a height on the torus. A seat carrying a lot of shadow pinches the field in toward the body there, runs it slow, makes it stutter, breaks it into gaps and gives it short dim rays. A seat that is open and whole swells it. A half loaded seat drags it sideways.</p></div>
+</div>
+
+<h2>The three, side by side</h2>
+<p>The same state in each: Anger leading, Preteen mask, high load, coherence 100 percent, Tomas's rail beside it. The left menu is a screenshot of the built app, not redrawn, and nothing is drawn between it and the page.</p>
+<div class="row">
+ <div class="card"><a class="im" href="torus-1.html?profile=anger&mask=Preteen&coh=100"><img loading="lazy" src="shots/torus-1-beside-full-1600.png" alt="Torus 1, Flow, coherence 100 percent, beside the left menu"></a><div class="tx"><h3>Torus 1, Flow</h3><p>Two nested tori of Bezier loops, a lattice of meridians and rings. The cleanest and the one that reads as a torus first.</p></div></div>
+ <div class="card"><a class="im" href="torus-2.html?profile=anger&mask=Preteen&coh=100"><img loading="lazy" src="shots/torus-2-beside-full-1600.png" alt="Torus 2, Slices, coherence 100 percent, beside the left menu"></a><div class="tx"><h3>Torus 2, Slices</h3><p>One tube, and the seven seat rings are slices cut through it, each in its seat colour. The one where a seat is most easy to point at.</p></div></div>
+ <div class="card"><a class="im" href="torus-3.html?profile=anger&mask=Preteen&coh=100"><img loading="lazy" src="shots/torus-3-beside-full-1600.png" alt="Torus 3, Shell, coherence 100 percent, beside the left menu"></a><div class="tx"><h3>Torus 3, Shell</h3><p>Three tubes of points, one inside another, with bright streaks running up the outside. A closed seat is a hole in a surface.</p></div></div>
+</div>
+<table class="tbl">
+<tr><th></th><th>Torus 1, Flow</th><th>Torus 2, Slices</th><th>Torus 3, Shell</th></tr>
+<tr><th>What it is made of</th><td>Sixteen meridian loops and twelve on the inner torus, rings at the seat heights, short rays off the outer wall.</td><td>Fourteen thin meridian loops, and seven bold rings, one per seat, each a closed cubic Bezier circle, with a bead going round.</td><td>Thirty two, twenty six and twenty meridians drawn as points with a hairline under them, and nine streaks on the outer shell.</td></tr>
+<tr><th>How a seat shows</th><td>A waist or a swell in the lattice at its height, dim and broken where it is closed.</td><td>The seat is a ring. A closed ring is narrow, broken and stuttering. An open one is wide and bright.</td><td>A thinning and a hole in the grain at its height.</td></tr>
+<tr><th>Where the colour comes from</th><td>The air, entirely.</td><td>Half the air and half the seat colour, because each ring is a seat. Everything else is the air.</td><td>The air, entirely.</td></tr>
+<tr><th>Read at a glance</th><td>A wire apple. The most geometric.</td><td>Seven coloured halos in a cage. The most symbolic, and the closest to the Orbit you picked.</td><td>A glowing jellyfish bell. The softest and the most like light.</td></tr>
+</table>
+
+<h2>The flow runs bottom to top</h2>
+<p>Six frames, a third of a second apart, a clean field at coherence 100 and low load so the climb is the thing you see. A ring of lamps leaves under the feet, climbs the outside through the root, sacral, solar, heart, throat and third eye seats, goes over the crown, and the next one is already behind it. At full coherence all the meridians are in step, so the lamps arrive as a ring and not as scattered points. Lower coherence puts them out of step.</p>
+<div class="row1">
+ <div class="card"><a class="im" href="torus-1.html?profile=anger&mask=Preteen&coh=100&load=0.3"><img loading="lazy" src="shots/torus-1-flow-1600.png" alt="Torus 1, six frames of the flow climbing"></a><div class="tx"><h3>Torus 1, Flow</h3></div></div>
+ <div class="card"><a class="im" href="torus-2.html?profile=anger&mask=Preteen&coh=100&load=0.3"><img loading="lazy" src="shots/torus-2-flow-1600.png" alt="Torus 2, six frames of the flow climbing"></a><div class="tx"><h3>Torus 2, Slices</h3></div></div>
+ <div class="card"><a class="im" href="torus-3.html?profile=anger&mask=Preteen&coh=100&load=0.3"><img loading="lazy" src="shots/torus-3-flow-1600.png" alt="Torus 3, six frames of the flow climbing"></a><div class="tx"><h3>Torus 3, Shell</h3></div></div>
+</div>
+<p><b style="color:var(--ink)">Which way round, and why.</b> Chosen: the flow climbs the outside of the body, goes over the head and returns down the axis, through the body. The reason is that the outside is what you see, and the axis is mostly hidden behind the cloud, so the motion you see is the motion you asked for, upward. The axis carries the quiet return, drawn at about a quarter of the strength. The reverse, rising through the axis and falling on the outside, is one switch in the right rail and one word in the address, <code>?flow=axis</code>. In that direction the visible motion is downward, which reads as the field draining, so it is not the default. The same strip with the reverse flow, Torus 1:</p>
+<div class="row1"><div class="card"><a class="im" href="torus-1.html?profile=anger&mask=Preteen&coh=100&load=0.3&flow=axis"><img loading="lazy" src="shots/torus-1-flow-axis-1600.png" alt="Torus 1, six frames with the flow reversed"></a></div></div>
+
+<h2>The seats distort it</h2>
+<p>Each seat owns a height and a reach on the torus. At that height every loop's anchor points are moved by what the seat is, and the Bezier handles, which are made from the moved anchors, carry the bend smoothly through. The mapping, and where each number comes from:</p>
+<table class="tbl">
+<tr><th>What the seat is</th><th>How it is measured</th><th>What it does to the torus</th></tr>
+<tr><td><b>Charge</b></td><td>The mean charge of the seat's addresses over ten (<code>sq</code> in the engine), taken as open at 0.08 and closed at 0.42, smoothly between.</td><td><b>Pinch</b>: radius times 1 minus 0.30 charge. The torus narrows toward the body into a waist. <b>Pull</b>: 0.12 times four charge times one minus charge. A half loaded seat drags the loop sideways in its own fixed direction. <b>Slow</b>: the flow runs at 1 minus 0.72 charge there, a real bottleneck that lengthens the whole loop. <b>Stutter</b>: pulses flicker in held steps. <b>Desync</b>: the clock at that height is jittered, so meridians fall out of step. <b>Gaps</b>: the loop breaks, in runs and not at random. <b>Short rays</b>: the rays off the wall are 0.03 plus 0.14 of the seat's openness.</td></tr>
+<tr><td><b>Integrity</b></td><td>The seat's own coherence, root up. In the engine this is <code>bandIg(seat)</code>, the mean of that seat's laws, and in the mock it is CQ filling the seats from the root.</td><td><b>Bulge</b>: 0.13 times one minus charge to the 1.4, times integrity. An open, whole seat swells. <b>Brightness and width</b>: lit seats are bright and wide. An unlit seat is grey and short.</td></tr>
+<tr><td><b>CQ, overall</b></td><td>The one number in the left menu.</td><td>Size (radius from 55 to 100 percent of full), flow speed (0.035 to 0.235 loops a second), brightness, completeness (6 percent present at nothing, all present at 90 percent) and roughness (a wobble that is 0.1 of a unit at nothing and gone at full).</td></tr>
+</table>
+<p>Charge and CQ are not independent: as in the engine, coherence relieves load, so each address holds 42 percent less at full coherence than at none.</p>
+
+<h2>Beside the left menu, and the ladder</h2>
+<p>Tomas reads 31 percent coherence in the rail, so the first picture of each version is lit to 31 percent, which is the honest pairing. Then the ladder: one mask (Preteen), coherence 10, 55 and 100 percent across, load high then low down. Read across a row and only the light and the field change. Read down a column and only the shadow changes.</p>
+<div class="row">
+ <div class="card"><a class="im" href="torus-1.html?profile=anger&mask=Preteen&coh=31"><img loading="lazy" src="shots/torus-1-beside-1600.png" alt="Torus 1 at 31 percent beside the left menu"></a><div class="tx"><h3>Torus 1, 31 percent</h3></div></div>
+ <div class="card"><a class="im" href="torus-2.html?profile=anger&mask=Preteen&coh=31"><img loading="lazy" src="shots/torus-2-beside-1600.png" alt="Torus 2 at 31 percent beside the left menu"></a><div class="tx"><h3>Torus 2, 31 percent</h3></div></div>
+ <div class="card"><a class="im" href="torus-3.html?profile=anger&mask=Preteen&coh=31"><img loading="lazy" src="shots/torus-3-beside-1600.png" alt="Torus 3 at 31 percent beside the left menu"></a><div class="tx"><h3>Torus 3, 31 percent</h3></div></div>
+</div>
+<div class="row" style="margin-top:16px">
+ <div class="card"><a class="im" href="states-torus-1.html?view=ladder&mask=Preteen"><img loading="lazy" src="shots/torus-1-ladder.png" alt="Torus 1, coherence 10, 55, 100 at high and low load"></a><div class="tx"><h3>Torus 1, Flow</h3></div></div>
+ <div class="card"><a class="im" href="states-torus-2.html?view=ladder&mask=Preteen"><img loading="lazy" src="shots/torus-2-ladder.png" alt="Torus 2, coherence 10, 55, 100 at high and low load"></a><div class="tx"><h3>Torus 2, Slices</h3></div></div>
+ <div class="card"><a class="im" href="states-torus-3.html?view=ladder&mask=Preteen"><img loading="lazy" src="shots/torus-3-ladder.png" alt="Torus 3, coherence 10, 55, 100 at high and low load"></a><div class="tx"><h3>Torus 3, Shell</h3></div></div>
+</div>
+<p class="cap">Coherence 0 is near black and not black: the figure is a very dim silhouette, about thirteen percent of full light, and nothing else. Coherence 10 is below. The pictures at 10 percent are meant to be nearly dark.</p>
+<div class="row">
+ <div class="card"><a class="im" href="torus-1.html?profile=anger&mask=Preteen&coh=10"><img loading="lazy" src="shots/torus-1-coh10-1600.png" alt="Torus 1 at 10 percent"></a><div class="tx"><h3>Torus 1 at 10 percent, high load</h3></div></div>
+ <div class="card"><a class="im" href="torus-2.html?profile=anger&mask=Preteen&coh=10"><img loading="lazy" src="shots/torus-2-coh10-1600.png" alt="Torus 2 at 10 percent"></a><div class="tx"><h3>Torus 2 at 10 percent, high load</h3></div></div>
+ <div class="card"><a class="im" href="torus-3.html?profile=anger&mask=Preteen&coh=10"><img loading="lazy" src="shots/torus-3-coh10-1600.png" alt="Torus 3 at 10 percent"></a><div class="tx"><h3>Torus 3 at 10 percent, high load</h3></div></div>
+</div>
+
+<h2>The page opens dim and grows lit</h2>
+<p>Frames at 0, 0.5, 1 and 2 seconds from the moment the page opens, stage only. At zero it is the dim silhouette. The cloud gathers into the person while it bends into the mask, and the light climbs from the floor to the person's real level over about two seconds, the torus last.</p>
+<div class="row1">
+ <div class="card"><a class="im" href="torus-1.html"><img loading="lazy" src="shots/torus-1-strip-1600.png" alt="Torus 1, frames at 0, 0.5, 1 and 2 seconds"></a><div class="tx"><h3>Torus 1, Flow</h3></div></div>
+ <div class="card"><a class="im" href="torus-2.html"><img loading="lazy" src="shots/torus-2-strip-1600.png" alt="Torus 2, frames at 0, 0.5, 1 and 2 seconds"></a><div class="tx"><h3>Torus 2, Slices</h3></div></div>
+ <div class="card"><a class="im" href="torus-3.html"><img loading="lazy" src="shots/torus-3-strip-1600.png" alt="Torus 3, frames at 0, 0.5, 1 and 2 seconds"></a><div class="tx"><h3>Torus 3, Shell</h3></div></div>
+</div>
+<p class="cap">The same on a phone layout: <a href="shots/torus-1-strip-390.png">Torus 1</a>, <a href="shots/torus-2-strip-390.png">Torus 2</a>, <a href="shots/torus-3-strip-390.png">Torus 3</a>.</p>
+
+<h2>Trace: where the energy leaks</h2>
+<p>Press Trace, or press a seat. The torus stops turning so the markers stay put. A ring marks each place the flow leaves, up to three, in their seat colours, with a spray of points leaving through the wall and dropping. A dotted thread runs from the chosen leak to the card. The card is the same Trace card as before: the story, supports, then the address behind it (new, replacing the pattern step), worn under, the mask. Every other seat dims, in the cloud and in the points round it. A leak is a closed seat, so the ones marked are the seats with the most shadow.</p>
+<div class="row">
+ <div class="card"><a class="im" href="torus-1.html?profile=anger&mask=Preteen&coh=100&trace=1"><img loading="lazy" src="shots/torus-1-trace-1600.png" alt="Torus 1 with a trace open"></a><div class="tx"><h3>Torus 1, Flow</h3></div></div>
+ <div class="card"><a class="im" href="torus-2.html?profile=anger&mask=Preteen&coh=100&trace=1"><img loading="lazy" src="shots/torus-2-trace-1600.png" alt="Torus 2 with a trace open"></a><div class="tx"><h3>Torus 2, Slices</h3></div></div>
+ <div class="card"><a class="im" href="torus-3.html?profile=anger&mask=Preteen&coh=100&trace=1"><img loading="lazy" src="shots/torus-3-trace-1600.png" alt="Torus 3 with a trace open"></a><div class="tx"><h3>Torus 3, Shell</h3></div></div>
+</div>
+
+<h2>What the points round the body are</h2>
+<p>In Orbit the drifting points were atmosphere and meant nothing. Here each one is a real thing: <b style="color:var(--ink)">one of the 112 addresses</b>. A hundred and eight are somatic, each seated at a plexus or nerve in one of the seven seats. Four are field anchors, two above the head (Sol Star, Stellar Gateway) and two below the feet (Earth Star, Gaia Gateway), drawn as rings on the axis where the flow enters and leaves. Each address sits round the body at the height of its seat, going slowly round the spine, and its size and brightness are its charge. A ring round a point is a charge above seven tenths. Hover one to read which address it is. The legend is also in the right rail of every page.</p>
+<div class="row2">
+ <div class="card"><a class="im" href="torus-1.html?profile=anger&mask=Preteen&coh=100&addr=Pride"><img loading="lazy" src="shots/torus-1-hover-1600.png" alt="Torus 1 with an address hovered"></a><div class="tx"><h3>Hovering an address</h3><p>Pride, the celiac plexus, Solar seat. Charge as of the person's anger.</p></div></div>
+ <div class="card"><a class="im" href="torus-2.html?profile=anger&mask=Preteen&coh=100&addr=Pride"><img loading="lazy" src="shots/torus-2-hover-1600.png" alt="Torus 2 with an address hovered"></a><div class="tx"><h3>The same, in Slices</h3></div></div>
+</div>
+<p><b style="color:var(--ink)">What it would take to build it from the engine.</b> Almost nothing is new. <code>NODES</code> already carries the 112 with their seat, plexus and channel, and <code>compute()</code> already writes <code>n.sq</code>, the charge, onto each, with the four anchors taking the mean of the Crown and the Root. The build needs one read only accessor, say <code>addrField()</code>, returning an array of {number, name, seat, plexus, channel, sq}, and a stable placement for each (a hash of the address number for its angle and its offset, as the mock does). It needs no new data and nothing in <code>engine/</code> may touch a document, so the accessor returns numbers and the renderer in <code>ui/</code> does the placing. The seat shadow that drives the torus is a second accessor, the mean of <code>sq</code> over each seat. The seat's integrity is <code>bandIg(seat)</code>, which already exists. Hover needs the renderer to keep the screen position of each point, which the mock does in about ten lines.</p>
+
+<h2>The mask answers to the stories</h2>
+<p>The cloud is no longer dense by pattern. Each frame a map of the body is made from the 112 charges, and every point of the cloud looks up how much charge is near it: a region with heavy addresses is dense and bright, one with none thins. Write a story that lands on the Solar seat and the Solar region fills in, the points round it grow, and the torus at that height pinches. In the page the three chips in the right rail write three example stories. The engine data that feeds it is the per address charge, <code>sq</code>, which <code>compute()</code> derives from the channel charges (<code>S.charge</code>) that the sniffer writes out of the entries (<code>sniffStory</code>, then <code>applyStory</code>), less the relief of the seat's integrity.</p>
+<div class="row1">
+ <div class="card"><a class="im" href="torus-1.html?profile=anger&mask=Preteen&coh=100&load=0.25&stories=a"><img loading="lazy" src="shots/torus-1-story-1600.png" alt="Torus 1, before and after writing a story"></a><div class="tx"><h3>Before, and after writing one story</h3><p>Low load, coherence 100. The story is a person's anger at a colleague. The Solar region thickens and brightens and the field pinches there.</p></div></div>
+</div>
+
+<h2>Colour of the air, and how it is sampled</h2>
+<p>Every glow, torus point, address, leak spark and the soft light round the masks' worlds takes its colour from a low resolution colour field, computed from the cloud, called the air. Once a frame (every second frame on the live page): a grid of 48 by 51 cells covers the figure and the torus. A quarter of the body points are splatted into the cell they sit in, each carrying its own colour, the pattern hue or the seat hue where a seat band is lit, weighted by how bright that point is that frame. The grid is blurred, a box of radius three, twice each way, so the colour of a region leaks into the air about a fifth of a figure unit round it. Under it goes the ambient: at each height the seat spectrum for that height, red at the feet to violet at the crown, drawn toward the cool grey ember where that height is not lit yet at this coherence. The cloud wins near the body and the spectrum wins far from it. Each cell is normalised to a bright version of itself and snapped to one of 343 colours so a frame can draw in batches. A point then asks the grid for the cell it sits in. Nothing about its colour is fixed. At low coherence the air is ember grey and so is the field, which is why it goes quiet without being told to.</p>
+
+<h2>All five masks</h2>
+<p>The five masks bend the figure exactly as in Orbit. Each sheet has two blocks: coherence 10, 55 and 100 percent for every mask at high load, then load high, mid and low at full coherence.</p>
+<div class="row">
+ <div class="card"><a class="im" href="states-torus-1.html?view=masks"><img loading="lazy" src="shots/torus-1-states.png" alt="Torus 1, all five masks"></a><div class="tx"><h3>Torus 1, Flow</h3></div></div>
+ <div class="card"><a class="im" href="states-torus-2.html?view=masks"><img loading="lazy" src="shots/torus-2-states.png" alt="Torus 2, all five masks"></a><div class="tx"><h3>Torus 2, Slices</h3></div></div>
+ <div class="card"><a class="im" href="states-torus-3.html?view=masks"><img loading="lazy" src="shots/torus-3-states.png" alt="Torus 3, all five masks"></a><div class="tx"><h3>Torus 3, Shell</h3></div></div>
+</div>
+<div class="row" style="margin-top:16px">
+ <div class="card"><a class="im" href="torus-1.html?profile=anger&mask=Adult&rail=0"><img loading="lazy" src="shots/torus-1-adult-1600.png" alt="Torus 1, Adult mask"></a><div class="tx"><h3>Adult, Flow</h3></div></div>
+ <div class="card"><a class="im" href="torus-2.html?profile=anger&mask=Adult&rail=0"><img loading="lazy" src="shots/torus-2-adult-1600.png" alt="Torus 2, Adult mask"></a><div class="tx"><h3>Adult, Slices</h3></div></div>
+ <div class="card"><a class="im" href="torus-3.html?profile=anger&mask=Adult&rail=0"><img loading="lazy" src="shots/torus-3-adult-1600.png" alt="Torus 3, Adult mask"></a><div class="tx"><h3>Adult, Shell</h3></div></div>
+</div>
+
+<h2>The icon row, upper left</h2>
+<p>Reused as it was: five real buttons, full colour, each one sign in the cloud's own language, with Orbit's tilted orbit through each. The colours are the mask's own seat colours.</p>
+<div class="row">
+ <div class="card"><a class="im" href="torus-1.html?profile=apathy&mask=Child&tip=Child"><img loading="lazy" src="shots/torus-1-icons-1600.png" alt="Torus 1 icon row"></a></div>
+ <div class="card"><a class="im" href="torus-2.html?profile=apathy&mask=Child&tip=Child"><img loading="lazy" src="shots/torus-2-icons-1600.png" alt="Torus 2 icon row"></a></div>
+ <div class="card"><a class="im" href="torus-3.html?profile=apathy&mask=Child&tip=Child"><img loading="lazy" src="shots/torus-3-icons-1600.png" alt="Torus 3 icon row"></a></div>
+</div>
+
+<h2>On a phone, 390 wide</h2>
+<div class="phones">
+ <a href="torus-1.html?profile=anger&mask=Preteen"><img loading="lazy" src="shots/torus-1-390.png" alt="Torus 1, phone"></a>
+ <a href="torus-1.html?profile=apathy&mask=Teen&coh=100&trace=1"><img loading="lazy" src="shots/torus-1-trace-390.png" alt="Torus 1, phone, trace open"></a>
+ <a href="torus-2.html?profile=anger&mask=Preteen"><img loading="lazy" src="shots/torus-2-390.png" alt="Torus 2, phone"></a>
+ <a href="torus-2.html?profile=apathy&mask=Teen&coh=100&trace=1"><img loading="lazy" src="shots/torus-2-trace-390.png" alt="Torus 2, phone, trace open"></a>
+ <a href="torus-3.html?profile=anger&mask=Preteen"><img loading="lazy" src="shots/torus-3-390.png" alt="Torus 3, phone"></a>
+ <a href="torus-3.html?profile=apathy&mask=Teen&coh=100&trace=1"><img loading="lazy" src="shots/torus-3-trace-390.png" alt="Torus 3, phone, trace open"></a>
+</div>
+<p class="cap">More phone pictures at 55 percent coherence: <a href="shots/torus-1-390-teen.png">Torus 1</a>, <a href="shots/torus-2-390-teen.png">Torus 2</a>, <a href="shots/torus-3-390-teen.png">Torus 3</a>.</p>
+
+<h2>What it costs per frame, in plain words</h2>
+<p>Every frame the page works out where each point of the cloud is, builds the colour field (the air), builds each torus as strokes and points, draws them, and then blurs the picture twice and lays it back over itself for the glow. Measured here on a Chromium that draws on the processor with no graphics card, which is a harsh test: a laptop or a phone with a graphics card will do far better. <b style="color:var(--ink)">None of the three held 60 frames a second in this test, and I cannot prove 60 here.</b> Two numbers are given because the browser leaves most of the drawing for later: the first is the time the page spends in its own frame code, the second is the time for the whole frame once the browser has been made to finish the drawing (read one pixel back), median of 40 frames.</p>
+<table class="tbl">
+<tr><th></th><th>What is drawn each frame</th><th>Page code, desktop</th><th>Whole frame, desktop, coherence 100</th><th>Same without the glow</th><th>Whole frame, phone</th></tr>
+<tr><th>Torus 1, Flow</th><td>9,000 cloud points, about 2,700 line segments in about 200 strokes, about 700 points, 112 addresses.</td><td>about 28 ms</td><td>84 ms</td><td>29 ms</td><td>87 ms</td></tr>
+<tr><th>Torus 2, Slices</th><td>The same cloud, about 1,800 segments, seven bold rings of 48 beads, 112 addresses.</td><td>about 22 ms</td><td>74 ms</td><td>26 ms</td><td>82 ms</td></tr>
+<tr><th>Torus 3, Shell</th><td>The same cloud, about 6,500 points on three shells with hairlines, 27 streaks, 112 addresses.</td><td>about 37 ms</td><td>94 ms</td><td>56 ms</td><td>166 ms</td></tr>
+</table>
+<p class="cap" style="margin-top:10px">At coherence 10 percent all three cost about 57 to 63 ms for the whole frame, because there is almost no torus to draw. The numbers move a lot from run to run on this machine, so read them as ranges. About two thirds of a whole frame is the glow, which is a full screen blur and is the first thing to turn down. <b style="color:var(--ink)">The cheapest version is Torus 2, Slices</b>: fewest primitives, 26 ms without the glow. Torus 1 is close. Torus 3 is the heaviest, on a phone especially, because of the six thousand points. To hold 60 on weak hardware: halve the glow resolution or refresh it every third frame (it is every second frame live now), halve the meridians, and draw the cloud at 4,600 points on a phone, which the page already does. The glow and the air are refreshed every other frame on the live page, because a one frame lag cannot be seen. A person who has asked their system for less motion gets the settled picture, held still.</p>
+
+<p style="margin-top:28px"><a class="pl" href="torus-1.html">Open Torus 1</a><a class="pl" href="torus-2.html">Open Torus 2</a><a class="pl" href="torus-3.html">Open Torus 3</a><a class="pl" href="states-torus-1.html">Sheet, Torus 1</a><a class="pl" href="states-torus-2.html">Sheet, Torus 2</a><a class="pl" href="states-torus-3.html">Sheet, Torus 3</a><a class="pl" href="../character-aura/index.html">The Aura round that this starts from</a></p>
+</div></body></html>

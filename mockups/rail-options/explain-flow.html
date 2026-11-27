@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Flow band, how it is measured</title><link rel="stylesheet" href="explain.css">
+<style>.fl{background:var(--panel);border:1px solid var(--edge);border-radius:var(--r);padding:16px 20px 12px;margin-bottom:16px}.fl h3{font-size:15px;margin:0 0 2px;font-weight:600}.fl p{font-size:13px;color:var(--dim);margin:0 0 10px}
+.fl svg{border-radius:var(--r-xs);box-shadow:inset 0 0 0 1px var(--edge)}.nm{display:flex;font-size:11.5px;color:var(--dim);padding-top:4px}.nm span{flex:1;text-align:center}</style></head>
+<body>
+<h1>The Flow band: CQ sets the lane, SQ sets the level</h1>
+<p class="sub">The wave runs root to crown, left to right. Three people, drawn the same way. The two dashed rules are the lane: as tall as the person's CQ. The wave inside it is what each seat lets through.</p>
+<div id="app"></div>
+<div class="plain" id="plain"></div>
+<p class="stamp">Mockup only. Marcus, Diane and Tomas, figures read out of the built page on 1 October.</p>
+<script src="rail-data.js"></script><script src="rail-lib.js"></script>
+<script>
+(function(){
+ var RL=window.RL; document.body.insertAdjacentHTML('afterbegin',RL.defs());
+ var h='';
+ [['marcus','Every seat passes everything, so the wave fills his whole lane. His lane is 62 percent as tall as the full range because his CQ is 62.'],
+  ['diane','The solar seat holds charge back, so the wave is cut down and roughened from there on. Her lane is 59 percent of full.'],
+  ['tomas','His lane is narrow, 31 percent, and almost every seat holds charge, so the wave is small and choppy from the root. Flow reads close to nothing.']].forEach(function(x){
+  var P=RL.person(x[0]);
+  h+='<div class="fl"><h3>'+P.nm+': CQ '+Math.round(P.CQ)+', Flow '+P.flow.toFixed(2)+'</h3><p>'+x[1]+'</p>'+RL.band(P,1000,110,{lw:3,pad:6}).html.replace('width="1000"','width="100%"')+'<div class="nm">'+RL.BANDS.map(function(b){return '<span>'+b+'</span>';}).join('')+'</div></div>';});
+ document.getElementById('app').innerHTML=h;
+ document.getElementById('plain').innerHTML=
+  '<p><b>Reading a band.</b> Left is the root, right is the crown, and the colours are the seven seats. How far the wave swings up and down is how much gets through. How jagged it is shows where a seat is holding charge back. A short vertical bar at the start of a seat is a dam: the more it is held, the taller the bar.</p>'
+  +'<p><b>What each part comes from.</b> Level and roughness come from SQ, the charge held at each seat: the engine multiplies what every seat passes, root to crown, and that product is the Flow figure. Speed comes from DQ, through the same pulse rate the Field uses: more shadow, faster water. The lane is new. It is CQ, the 21 laws, which are seated at the same seven seats, and I have used it as the height the wave is allowed. CQ does not enter the engine\'s Flow figure today. If you want the lane to be real, Flow would need to be multiplied by it, which changes a number people see.</p>'
+  +'<p><b>Where I was unsure.</b> You said the wave is measured against SQ along the length of CQ. I read length as the body, root to crown, which is also the order the 21 laws are seated in, and span as how tall the wave may be. The other reading is that CQ sets how far along the band the wave reaches. That would shrink Tomas\'s wave to a third of the band. Which did you mean?</p>';
+})();
+</script></body></html>

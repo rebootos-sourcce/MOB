@@ -1,0 +1,5137 @@
+# Decisions
+
+Rulings by the owner, recorded verbatim in substance so the team builds the
+thing he asked for and not the thing we inferred. A decision here is settled.
+An open item under a decision is named as open.
+
+## Tiers and the meter
+
+**The gift.** A new person gets 100 patterns, free, with everything visible.
+They explore the whole app until the gift is spent. Then it reverts.
+
+**Tier zero, free.** 10 patterns a week. Sharing earns 10 more per person who
+joins.
+
+**The paid ladder**, per month:
+
+| Tier | Patterns per month | A week | Sees | Price |
+|---|---|---|---|---|
+| One | 400 | 100 | saboteurs | open |
+| Two | 800 | 200 | saboteurs and complexes | open |
+| Three | 1200 | 300 | hyper complexes and up | open |
+| Four | 1200 | 300 | the same as three, and the cohort lead suite | **99** |
+
+(The Sees column said "everything" until 1 October. It is rewritten to the
+ruling at the end of this file, "Sight by tier, round OK". Prices are in
+`engine/plan.js` and are not repeated here.)
+
+**A release run is at most 25 patterns**, so the gift of a hundred is exactly
+four runs. Ten a week on the free tier is less than one run, so the free grant
+banks until a run is affordable rather than expiring.
+
+(Recorded 24 October: the second sentence above is superseded, and has been
+since 1 October. A run costs the minimum for what was picked, at least four
+patterns, one address down its four channels (`RUN_MIN`, `engine/plan.js`),
+and 25 is the most a run opens, not its size. So ten a week is two releases a
+week at one address, the free grant is never too small for a run, and it still
+banks. The buy page carried the old pace, one release every two and a half
+weeks, until 24 October; `tests/funnel.js` now reads that sentence against
+`RUN_MIN` and the free grant.)
+
+**Tier four is not more of the same.** It carries the same twelve hundred as
+tier three, so patterns do not separate them at all. What it buys is the cohort
+lead suite: manage profiles, build rituals and build accountability for the
+people you lead. It is the one rung with a price attached.
+
+**What a cohort lead sees is narrower than what they own.** The outputs, not
+the tools. Fetters, saboteurs, complexes, hyper complexes, and their analytics.
+Not the spiritual material and **not the story cloud**. A snapshot. This
+supersedes the earlier line that had a practitioner seeing the stories, and it
+tightens rather than loosens: the story is the person's own words and the
+standing promise is that the record and the story are never held joined.
+
+**One pattern is valued at one dollar.** An internal unit for the value story
+and never a published price: four hundred patterns at a twelve dollar rung is
+three cents a pattern, and printing the dollar figure makes that division
+trivial. Use it for the gift, where a hundred dollars of work before deciding
+anything is a real sentence, and never for a tier.
+
+The pain map is on all four. The tools are on all four.
+
+What the higher tiers buy is more unique ground, not more speaking.
+
+**One pattern is one sentence.** One release line delivered, over one address,
+through one channel. Built and counted.
+
+**Unique ground is what a tier buys.** A person may rerun anything as often as
+they like and it costs nothing. Only ground opened for the first time spends
+the gift or the tier. The meter keys every line by its address and its
+channel: lines counts everything spoken, unique counts what was opened. Built.
+
+**The bank is the imprints.** A person fills it. It wants a piggy bank icon.
+
+**Density decides what is kept.** Felt density, keep it. No density, let it go.
+Swipe right to keep, left to drop. Not built.
+
+**The six channels.** Believing, perceiving, thinking, behaving, acting,
+feeling. Each can be run on its own: letting go of believing I am unhappy,
+letting go of thinking I am unhappy. The sweep exists so all six are hit in
+one shot. A sweep over one address is six patterns, one per channel.
+
+Then left side, then right side.
+
+**Open, and it now looks larger than twelve.** The book prints a full card at
+lines 8119 to 8332 and describes it at line 1483: one card is one address, and
+a full card is two hundred statements. A hundred to release, fifty down the
+left channel and fifty down the right. Then a hundred to install the coherent
+opposite, fifty and fifty again. Left is parasympathetic, right is sympathetic.
+
+Line 1484 gives the anatomy of one statement: the gate, the prompt, the
+intensity and the target. "I am letting go of believing that I am scared of
+money." Believing is the gate. That I am is the prompt. Scared is the
+intensity. Of money is the target.
+
+So a statement can carry one channel, which matches the ruling that one
+sentence is one pattern. But the printed card does it the other way: one
+header names every channel at once and then fifty intensity and target lines
+run under it.
+
+Three things need a ruling, and the meter follows all three.
+
+1. **Is a pattern a statement or a card.** Two hundred statements per address
+   against one card per address is a factor of two hundred on the price.
+2. **Six channels or nine. RULED SIX, 26 September** (`TASKS.md` CB): "believe,
+   I'm letting go of believing, perceiving, thinking, behaving, acting,
+   feeling. Those are the channels we're using." Built at CI as `C3_VERB` in
+   `engine/data/cards.js`, all six in one statement. The question as first
+   put: the verb chain at line 1023 gives six: believing, perceiving,
+   thinking, behaving, acting, feeling. The printed card at line 8123 gives
+   nine: those six plus speaking, saying and doing. A third list in chapter 33
+   gives a different six. `BOOK-ERRATA.md` item 27 is corrected to match.
+3. **Which side first.** The printed card runs right channel before left, at
+   lines 8122, 8174, 8227 and 8279. The ruling recorded here says left then
+   right.
+
+Nothing in the code has been changed on this. The meter counts whatever the
+channel table holds, so it follows the ruling the moment it is made.
+
+## The horizon and the markers
+
+Roughly two thousand patterns accumulate per decade lived, so a person's own
+total is their age times two hundred. The estimate carries a ten percent swing,
+because how hard somebody identifies with a thing is not knowable from a birth
+date. No birth date gives no estimate rather than a wrong one. Built.
+
+Two fixed markers of ground opened, which do not move with age:
+
+| Marker | Patterns opened |
+|---|---|
+| Buddha nature | 2500 |
+| Christ consciousness | 3500 |
+
+**Open:** the owner said there are more markers than these two.
+
+**What other modalities release**, for scale, as the owner gave them:
+
+| Modality | Patterns |
+|---|---|
+| A therapy session, 50 to 150 dollars | 1 to 6 |
+| Thirty minutes of mindful meditation | 5 to 8 |
+| Plant medicine, one day | 50 to 100 |
+| Plant medicine, five days | 300 to 500 |
+
+The owner's own pricing runs about a dollar a pattern, capped. Recorded as
+context, not as a decision about this product.
+
+## Privacy and the snippet
+
+The thing that leaves the device is the story itself, from the journal or the
+imprints. The name never leaves.
+
+A name is replaced by a key. Records are never looked up by name. The key is
+what unlocks a record in an emergency, a police matter, and the key is not
+held beside the name.
+
+**Open:** a story is free text, so a name can be inside the story. Stripping
+named entities on device is the only way that holds, and it will miss some.
+
+## The practitioner
+
+A practitioner is also a coach. They get a panel listing their clients down
+the right side.
+
+Either side can start it: the client submits to add, or the practitioner
+submits to add. The person whose data it is gives consent.
+
+A practitioner adding someone as a friend sees partial information: first
+name, last name, date of birth, what has been released, what has not, the
+structure, and the stories. **SUPERSEDED, already, by the tier-ladder ruling
+near the top of this file (round OK): not the story cloud, a snapshot.** This
+paragraph is the earlier line that one names and overrides; it is kept here
+dated rather than deleted, and a team pass on 26 November read it as live by
+mistake, which is the reason it is marked now instead of only pointed at.
+
+Access is by the person's key, scoped to their tier data.
+
+**RULED, 26 November, round PS.** Asked directly whether a practitioner sees
+the stories, his words: "let's not show the stories. We want to show the
+summary. That should give enough data for the person to work with, and we'll
+figure out what to do after that." Confirms the round OK snapshot ruling
+above by name, in today's voice: a practitioner's view is Summary only, never
+the story cloud, never the name (a key stands in for it, same boundary this
+product already holds for a story's own named entities above). "What to do
+after that" names Body and Field as a real, separate, later question, not
+settled by this sentence: see the practitioner module's own open items.
+
+**RULED, 26 November, round PS, the sync question.** Publishing a computed
+Summary snapshot for a granted practitioner to read needs a seam off the
+device, which the 9 October profile-sync ruling (`PROFILE_SYNC_ENABLED`,
+`ui/auth.js`) otherwise holds closed. Asked directly, his words: "Turn sync
+back on." This is a narrow, named exception, not a reversal of the 9 October
+ruling: it authorizes one new seam, a computed Summary-only snapshot (no
+story text, no name) published only once a client has granted a specific
+practitioner sight, never the general story-pulling sync the 9 October entry
+still gates behind `PROFILE_SYNC_ENABLED=false`. That flag is untouched by
+this ruling.
+
+**RULED, 26 November, round PS, the rise question.** Asked directly whether
+a practitioner's view should include the rise reading, his words: "Rise
+sounds like it would describe the chakra system. The body's already doing
+that." No separate rise surface for practitioners. `engine/rise.js` stays
+real, tested, and unrendered to anyone, exactly as the design pass found it;
+the Body view (the seven seats, the real nervous-system figure) is the
+screen that already carries this ground and a practitioner's Body grant
+reaches it, not a second diagnostic beside it.
+
+**Open:** whether a practitioner sees all of it instead of the tier scope.
+Also open, carried from the 26 November design pass and not yet his call:
+the real infrastructure gap it surfaced -- the grant, the invite token and the
+published snapshot all need a server-side relationship store this product
+does not have yet, so the real (not mockup) build is gated on that being
+built first, not on a product decision.
+
+**BUILT, 26 November, round PS: "this practitioner mode is good, let's go
+ahead and wire it in."** The server is reboot-os `atuned/server/src/prac.js`
+and migration 0014; the app side is `engine/pracshare.js` (what may leave the
+device, and the boundary for what comes back) and `ui/praclive.js` (P1 to P5,
+C1 to C4). Six calls the build had to make that no ruling above settles, each
+a team pick, named so a later pass can overrule one by name:
+
+- **A link is one person, one use, fourteen days.** The mockup drew one
+  standing code per practitioner; the design pass's schema made a code
+  one-time. One-time won, because a standing code that leaks connects
+  strangers. "Make a link" makes a new one each press; "New link" and "Turn
+  off" act on one still open.
+- **The rituals a client is running ride with Field, not Summary.** Summary
+  stays the tier word and the seven seats ring, as ruled. A ritual's own when
+  and where are never sent at all: the person types them and they can say
+  anything.
+- **Body shows the addresses, not the body figure.** The figure (`bmRender`,
+  `ui/map.js`) draws the loaded profile's own field from live state, and
+  drawing a second person's from a list of numbers is its own piece of work.
+  The Body tab is the same data as rows by seat. Not yet the canvas.
+- **A practitioner's name for a client is kept on the practitioner's device
+  only.** The server knows a client as the grant's key. The practitioner's own
+  name, as a client reads it, is the practitioner's to give and is sent.
+- **No plan gate on these routes yet.** Practitioner mode is a device switch
+  anyone can turn on today, and tying it to the practitioner tier is a billing
+  call this build does not make.
+- **Not the profile sync.** This seam never reads `PROFILE_SYNC_ENABLED`, which
+  stays false, exactly as the sync ruling above says.
+
+## The quiz result page
+
+It shows the coherence score. Then what CQ, DQ and SQ mean in relation to it.
+Then how that lands mentally, physically, spiritually and on the soul. Then
+that the app carries enough data to heal what troubles a person most at the
+time they need it, or to sharpen athletic or professional performance.
+
+This is a coaching and growth instrument. The result page says so.
+
+## The instrument
+
+**Records save themselves and come back on load.** Built.
+
+**The wheel zooms.** Scroll to move in, F to reframe. Built. Zooming is how a
+person atomises: the further in, the more separable the addresses.
+
+**Analytics atomises the same way.** Click for information. F to move into what
+drives the thing under the pointer. B to come back out. Not built.
+
+## The ritual builder, when it is reached
+
+The journal already counts voice per sentence. Two techniques fall out of that
+count, and both train communication awareness.
+
+**Fifty percent.** For the next twenty minutes, two hours or week, use half the
+communication. Half is context only.
+
+**Twenty five percent.** Use a quarter. A quarter is meaning only.
+
+The question it trains: if a person fears saying no, what is the shortest way
+to say no, other than no. It also surfaces local slang mixed into plain
+communication, which the sentence counts already make visible.
+
+## Tools not yet in the app
+
+Named by the owner as still to be integrated. Corrected 21 September: two of
+the four had stopped being true and are moved below with what ships.
+
+- Boundary and purpose.
+- Knowledge base search.
+
+**Two of these were false and were listed here as missing.** Both were checked
+against `atuned_src/` on 21 September by the ritual reconciliation.
+
+- **The ritual builder does read the log back.** The line here said "the
+  overlay logs a practice and nothing reads the log back." `ritToday()` and
+  `ritSteps()` in `ui/ritual.js` read the saved ritual back and render today's
+  with its when, its where and a control that marks it done, and the
+  `rit-saved` block is in the committed `source.html`. That is `RL1f`, closed.
+  What is still missing is the builder he described, which is a surface and not
+  a reader, and it is `RB1v` to `RB8v`.
+- **The accountability tracker has its arithmetic and not its surface.**
+  `ladderHtml()` at `ui/cone.js:902` draws the run, the ledger and the marks,
+  and since `RL2f` landed it renders on the Ritual surface through the
+  `rit-rec` block rather than only inside the Compass. What is missing is the
+  surface he asked for, which is `RB7v`, the tracker as a surface of its own.
+
+Both corrections are the same defect: a document asserting something about the
+code that the code stopped doing. The rule is to check the code, not another
+document.
+
+## Still open, and named as open
+
+- Whether the release runs six channels by two sides, twelve lines per
+  address, or the six sit inside the four passes that exist. Moves the meter.
+  Built the second way at `TASKS.md` CI (one line carries all six, nothing on
+  the meter moved); CI's Q1 asks him which was meant, still open.
+- Save conflict between two devices. Blocks the record store.
+- Whether the tools panel lock after intake is retroactive.
+- Whether push may add a second file, against the one file rule.
+- Laws, domains, masks and seats have no coded opposite.
+- Tier one, 400 a month or 100 a week. Both were said.
+
+## The pattern catalog, reached 18 September
+
+The TULA folder is on Google Drive, not on this machine, and the Drive
+connector reaches it. Three artefacts matter and all three are now ported into
+`atuned_src/engine/data/cards.js`. Every sentence in that file is the owner's.
+Nothing in it is generated and nothing is paraphrased.
+
+**Settled by the catalog, not by me.**
+
+- A pattern is one sentence. Confirmed.
+- The release statement is nine verbs in one line: believing, perceiving,
+  thinking, behaving, acting, feeling, speaking, saying, doing. The spec calls
+  it non negotiable. The earlier ruling on file said six, and the six is short.
+- The embodied truth is `I now embody the truth that I am ...`.
+- A card is two hundred statements: fifty per pole per phase, two poles, two
+  phases. Five intensity bands of ten, subtle activation through existential
+  exposure.
+- Left or right first is not a question. Both run at once, fifty and fifty, and
+  both must clear. The printed card puts right in the first column, which is
+  layout.
+- The poles are masculine and feminine, and the printed cards label the same
+  split right channel sympathetic and left channel parasympathetic. So the
+  balance slider, the autonomic split and the card polarity are one axis under
+  three names. The spec is explicit that feminine is not women.
+- The intensity ladder is twenty two rungs and does not contain the threshold
+  word the book gives sadness.
+
+**His, and open.**
+
+- **Two nine gate rosters exist, both his.** The 3C spec gives one, the nine
+  axes cards give another mapped to a chakra region each. The engine speaks
+  whichever roster the sentence it is saying was written for, and a gate fails
+  if they are ever merged. Which is canonical is his call.
+- **Two axes cards name no axis the engine carries.** The cards give Receiving
+  blocked at the inferior anterior heart and Grief at the centre chest, where
+  the engine carries Surprise and Anticipation. Nothing has been renamed. Both
+  are kept under their own names and marked unmatched.
+- **The printed cards cover three axes of nine.** Anxiety, Grief, Anger. The
+  other six have no printed card, so the run speaks the axes card or the strict
+  syntax at the address and says which.
+- **The coherent opposites differ between the engine and the cards** on several
+  axes: Fear toward Trust in the engine and toward Safety on the card, Apathy
+  toward Vitality and toward Joy, Sad toward Joy and toward Happy. The engine's
+  are load bearing for the install arithmetic and were left alone.
+
+## Data, ruled 18 September. The strongest ruling in this file.
+
+**We never sell anybody's data. Ever.** The owner has worked in the field and
+knows what a person's data is worth to someone else. This is not a policy line
+to be softened later, it is the promise the product is built on.
+
+What that means mechanically, and it is already how the pieces are shaped:
+
+- A person gets a **key** for their information.
+- **We do not keep the record joined to the story.** The record identifies, the
+  story does not, and the two are not held together.
+- The **story without the record** is what refines the models. A story with no
+  person attached is training material. A story with a person attached is
+  somatic and psychological self report about a named human, and we do not
+  hold that.
+- The funnel record exists **only to hand back to the person**. It is not an
+  asset, not a list, not a segment.
+
+**What this creates that does not exist yet.** Refining models off stories
+means someone has to be able to see them, so a developer side analytics engine
+is now in scope: account management, the whole picture, a view no ordinary
+person gets. The owner's instinct while thinking aloud was that it has to be
+separate, and that is right. The staging idea, build it as its own tab first
+and break it out later, is workable on one condition: it never ships to a
+person's build. Same repo, excluded from `source.html` by MANIFEST, or it
+leaks by accident the first time someone forgets.
+
+**Open:** whether the developer view is a separate build from day one or a tab
+that is stripped at build time.
+
+## The register, ruled. This answers the copy team's questions 1 and 4.
+
+**We are not judging anybody.** The owner's words. The product says what is
+running, not what a person is.
+
+The shape of every reading, in his order:
+
+1. This is what is running.
+2. This is how these patterns work. The mechanism, stated plainly.
+3. Given your story, this is how it is operating in you. Their material, not a
+   generic description.
+4. This is the behaviour you actually want. The direction, named.
+5. Your mind is holding these patterns. Let us release them.
+6. You can go to your imprints and select them from here. A route, not an
+   instruction to feel something.
+
+**What that settles.**
+
+*Question 1, what a person feels when the reading lands.* Recognition, not
+revelation. Described rather than judged. A mechanic's estimate, not a verdict.
+The proposed default stands because the owner has now stated it in his own
+words from a different direction.
+
+*Question 4, whether a label may ever be a moral word.* No, when the label is
+about the person. A label that describes a PATTERN may be blunt, because a
+pattern is a mechanism and blunt is accurate. A label that describes the WHOLE
+PERSON may not. That splits the work the writers costed: the 33 saboteur names
+describe patterns and stay, the four low band names describe a person and are
+the ones under review.
+
+*Question 3, the floor, is still open* and is the one place a destination
+cannot be invented.
+
+**Selection is a route, not a funnel.** A person reaches the same set of
+patterns from an imprint, a fetter, a saboteur or a hyper complex. Every one of
+those is a door onto the same list. That is already how the drills work and the
+copy should say so rather than describing four separate features.
+
+## Case, ruled
+
+Headers and subheaders take a capital on every word. Body text is sentence
+case and stays that way. No all caps anywhere, which is unchanged.
+
+## The felt sense, ruled
+
+This answers copy question 1 properly, and it is the mechanism rather than a
+tone. The owner's words, in sequence:
+
+1. The word lands and hits the resistance in the nervous system.
+2. The person feels a barrier.
+3. Then a release. The tension at that location lets go.
+4. Every subsequent read continues to release tension from the same location.
+5. They feel relief. The mind calms. They feel at peace.
+
+**What that settles for the copy.** A line is not a description of a state, it
+is an instrument that acts on one. So:
+
+- The barrier is the point. A line that slides past with no friction has missed
+  the address. Resistance on the first read is the line working, not the line
+  failing, and the copy may say so.
+- Release is on the same read, not later. Nothing is deferred to a practice, a
+  course or a week of repetition.
+- Repetition is cumulative at one location. A reread is not a rehearsal of the
+  same effect, it drains further from the same place. This is why a rerun of
+  ground already opened costs nothing.
+- The end state is calm and peace, arrived at through tension leaving a named
+  location. It is never promised ahead of the barrier, and it is never the
+  opening claim.
+- The order is fixed and the copy may not reorder it: resistance, barrier,
+  release, relief, calm, peace.
+
+## The scale, ruled. Ten bands, ten points each
+
+Seven tiers of uneven width did not read as a nought to a hundred scale.
+Practicing was nineteen points wide, Collapsed was one, and no word told a
+person how much of the line it covered. The ruling is a new word every ten
+points.
+
+    91 to 100   Mastery       builds far more than it costs
+    81 to  90   Embodied      builds more than it costs, real load still in it
+    71 to  80   Compounding   each cleared address makes the next cheaper
+    61 to  70   Gaining       net build, thin margin
+    51 to  60   Even          breaks even, just above the line
+    41 to  50   Oscillating   the median. crosses the line both ways
+    31 to  40   Incoherent    costs more than it builds
+    21 to  30   Corrupt       the charge is shaping decisions, not only mood
+    11 to  20   Severe        most of the field is carrying
+     0 to  10   Collapsed     fully loaded, nothing clearing
+
+Fifty is the median and sits at the top of Oscillating. Forty to sixty is the
+median range, which is where the reading swings across the line rather than
+sitting on one side of it. A reading of forty is Incoherent and still inside the
+median range. That is not a contradiction: it says one good week from the
+centre, which is true and is more useful than a threshold.
+
+Every band carries a definition, the behaviour it produces and the direction out
+of it, which is the earlier ruling and is enforced by a gate. The ladder now
+prints a range rather than a threshold, because a threshold does not tell a
+person how wide the word is.
+
+**Still the owner's, and now sharper.** Collapsed is also a node name, a hyper
+complex name and the word for an axis that has shut. Four meanings for one word,
+and the band is the one that renders in the largest type on screen. The summary
+card that read Collapsed four now reads Shut four, which removes the worst of
+the ambiguity, but the band word itself is his to keep or change. Seized is the
+candidate: mechanical, physical, and used nowhere else in the product.
+
+## The ladder, ruled. A percent of the person, not a count
+
+> remember, it's a percent of a person's total age. I had to release 15,000 by
+> the time I was 50.
+
+> a person who's 30 may not have to release 2,500 patterns. They're going to
+> release a percent smaller.
+
+Fifteen thousand by fifty is three hundred a year and three thousand a decade.
+The estimate given out loud was a little over two thousand a decade; the anchor
+says three, and the anchor governs because every marker derives from it.
+
+Three thresholds were named with distances: breaking duality about five hundred,
+the beginning of nirvana about ten thousand, ascension about fifteen thousand.
+Against a total of fifteen thousand those are exact thirtieths, and the three
+already in the book fall on thirtieths too.
+
+    entry                    the first address opened, absolute at any age
+    breaking duality          1/30 of your own load
+    the still mind            5/30
+    the open heart            7/30
+    clear perception          9/30
+    beginning of nirvana     20/30
+    ascension                30/30, all of it
+
+Ascension is the whole of what a person carries, for everyone. That is the only
+definition that survives the owner's own framing, that ascension is no longer
+being stimulated by the external environment: nothing is left to be stimulated
+by. It is a complete clearing and cannot be a fixed number in a table.
+
+A record with no birth date reads against the reference scale, which is the
+owner's own fifty years, and the read says `scaled:false` so a surface can say
+whose numbers it is showing. A distance computed from somebody else's age is a
+different claim.
+
+Open and his: the cohort rate. Younger people are more identified, so later
+cohorts carry more per year rather than fewer. `PAT_COHORT` multiplies the rate
+and is one until he sets it.
+
+Supersedes the book. The codex prints `Ascension (11,664)`, the square of the
+node count. His fifteen thousand governs and the disagreement is in
+`BOOK-ERRATA.md`.
+
+## Purpose, ruled. Derived, never entered
+
+Meaning is the end point of expression. At the end of expression, meaning
+creates purpose. The direction runs one way and purpose is what is left standing
+at the end of it.
+
+Upward triangle, the higher purpose, the soul's. Three corners, three values the
+person enters, and the soul's values are universal: freedom, free will,
+knowledge, wisdom. Downward triangle, the earthly purpose, the ego's. Three more
+values with a body attached: health, fitness, financial stability, wealth,
+family. Each triangle's centre is the sum of its three corners.
+
+The upward centre is what motivates you in the spirit. The downward centre is
+what drives you on the earth. And between the two:
+
+> the purpose between those two tells you how you make money and then how you
+> find fulfilment doing it.
+
+Six values in, three readings out, and a person may type none of the three.
+
+The overlap of the two triangles is a hexagon and the hexagon is the boundary of
+your behaviour, the containment. A mirror you hold up to yourself. Its six sides
+are partner, family, friends, community, coworkers and alone, five commitments
+each, thirty in total. Inside is yours to protect. Outside is choice.
+
+**Thirty is not a lot to ask and the objection is withdrawn.** It was costed as
+onboarding friction, and the instinct that applies to onboarding is to reduce
+what is asked. This is not onboarding. It is the instrument, and the instrument
+is a mirror a person lives with until what they are carrying is clear. A mirror
+half described shows half a person. The count stands.
+
+## The compass, ruled
+
+**The figures get numbers, and the number is a position on an axis.** Ruled:
+give them all numbers and let a person move against them. Not a rank, because
+the book is explicit that the masters are not a summit but coordinates on the
+cone. So nought at the inverted pole, a hundred at the coherent one, eight
+axes, and the position is read from the seat rather than asked.
+
+**Both ends render as behaviours, never as entities.** A person runs pride as
+false light. Lucifer is what people called that behaviour when they saw it. The
+names carry the historical footprint and the echo is in the room today, which
+is the only reason they earn their place. Gated.
+
+**The dark read needs both conditions.** Malignant shape and decoherent field
+at once. Neither alone is it. Said once, as a reading of what is running rather
+than a label on a person, and below the floor the product stops working the
+problem and refers to a licensed clinician, which is the book's own
+instruction carried onto the surface.
+
+**Cohort is the classroom, not the birth band.** A cohort is a set of groups a
+practitioner moves through the same material. The generational rate in the
+horizon model was briefly called PAT_COHORT and is now PAT_GEN.
+
+**A practitioner panel sorted by coherence is a leaderboard with a licence.**
+Group views sort by what needs attention, never by who is ahead.
+
+**No Discord from here.** There is no Discord tool in this session. beehiiv is
+connected and its community side carries channels with tier gating, members,
+roles, invites, moderation and direct messages. Open: whether the community is
+Discord, beehiiv, or beehiiv for accounts and Discord for the room. It matters
+before the invite mechanic is built, because the twenty five patterns attach to
+whichever one holds the accounts.
+
+## Organised or chaotic, benign or malignant. Ruled
+
+> Demon just means chaos. Devil means organised, but malignant. Angel simply
+> means organised and benign, or universal expressions, they tend to take one
+> to the max.
+
+Two axes, and they must be able to disagree. Shape is where what is running
+points, at other people or at the person carrying it. Control is whether the
+will is directing or the drag is.
+
+    outward + organised   The Devil
+    outward + chaotic     The Demon
+    inward  + organised   The Penitent
+    inward  + chaotic     The Storm
+
+Angel is not a corner of the stack. It is what is left when nothing decoherent
+is running and coherence is high, which is the coherent pole of a mirror axis,
+reached by clearing and never by having a tidy stack. The first build had Angel
+in the inward and organised corner and named a field at CQ 39 an angel.
+
+**The storm is the corner the distinction exists to protect.** A person whose
+system is discharging with nothing aimed at anybody is not a demon. Calling
+them one is the oldest mistake in this material and the product does not repeat
+it. Gated.
+
+**None of the four is a kind of person.** They describe the shape of what is
+running, and the copy says so.
+
+Open: the name Penitent, which is mine and is the weakest thing here. And a
+reference case for the Devil, since nobody in the roster is organised and
+outward, and that is the configuration a practitioner most needs to recognise.
+Writing a convincing manipulator as a persona is a decision rather than a task.
+
+## The Inferno is the way in. Ruled by example
+
+> When I first started getting into my limiting beliefs I didn't have a
+> framework, because I didn't think of myself as bad. So I started looking at
+> the seven deadly sins, Dante's Inferno, and the psychological behaviour
+> description of the Inferno as a layer.
+
+Nobody ticks a box that says narcissist. Everybody recognises a sentence about
+themselves. So the nine circles each carry a first person sentence, no
+diagnosis word appears on the list, and each routes to the seat and then to the
+addresses actually loaded there. The deadly sin sits on the right as the name
+people used before anybody measured it.
+
+This is the strongest candidate the product has for the opening of the quiz. It
+talks to pain, it carries stakes, and it never calls anybody bad.
+
+**The pit is a downward triangle**, the same downward triangle as the Purpose
+Map's earthly one, and the frozen figure at its point expresses every depth
+above it outward at once. The two cones and the two triangles are the same
+figure at two scales, which is what the volumetric compass should draw.
+
+## The devil is ordinary. Corrected
+
+> The devil, if this were the twelfth century, would be described as exactly
+> this. A person who does something adversarial to morality. It is a stress
+> response in the person's survival mechanism that is dominating. It is the
+> resistance itself that causes you to do adversarial behaviour. It starts
+> small, gets conditioned, and becomes who we are. A frozen nervous system
+> acting adversarially against our intentions.
+
+Not a rare strategic manipulator. The common case. That correction changed the
+measurement, because the first build read organised as the will beating the
+drag, and at low coherence the will always loses, so every adversarial field
+came out chaotic and nobody was ever the devil.
+
+**Organised means compounded.** The engine already walks the chain: loose
+saboteurs, then complexes, then hyper complexes, then character. How far a
+pattern has climbed that chain is how conditioned it is, which is what "starts
+small, gets conditioned, becomes who we are" describes. Measured as the deepest
+rung reached, not as a share of the mass: a field carries many saboteurs and
+one hyper complex, so a weighted mean read everybody as loose. A hyper complex
+existing at all is the conditioning, whatever else is firing.
+
+All four corners are now reachable and the roster spreads across them.
+
+**The inward corner has no figure and that is the finding.** Every culture
+named outward harm and gave it a face. Inward harm never got one. So the corner
+is called **Turned inward**, plainly, which is the owner's own answer: inward,
+it is just the behaviour.
+
+## The age ladder. The second way in
+
+> Another way I found my limiting beliefs is by age, because I couldn't think
+> of anything that I identified with. That didn't make any sense to me.
+
+The Inferno is the way in for somebody who cannot see themselves as bad. This
+is the way in for somebody who cannot see themselves as identified, which is
+most people, because an identification that is working does not feel like one.
+
+Sixteen years, three to eighteen, one question each, and every question asks
+for the thing and for what it was against, because an identification is only
+visible against what it excluded.
+
+**The mechanic, and it is one sentence.** The mind sticks to anything that it
+defends. Once it is stuck, the bias is set.
+
+**The worked example is the one that found the method.** At fourteen, Superman
+against the Hulk, and the Hulk got picked because the other person was a DC
+person. Five years later, a different person, the same argument, the Hulk again
+because the arguments were already loaded. Again in the twenties. Again in the
+thirties. Then: I do not care about either of these, I never have, and I keep
+taking the same position. Let go, and never raised since.
+
+**The test, and its order is load bearing.** Would you still argue its corner.
+Has it ever cost you anything. Do you actually care, or do you just always take
+this position. Defence first and care last, because asking care first lets a
+person answer for who they would like to be. The middle one is to sit with
+rather than to answer.
+
+**Defended and not meant is the only finding there is.** Defended and meant is
+a preference. Not defended is nothing. A position you hold and do not mean is a
+groove worn by arguing for it, and a groove sits at an address.
+
+## What the practice is for. The owner's framing, verbatim
+
+> This is the practice of finding the biases that have conditioned our
+> behaviour in ways that are against our better nature, our intentions, and the
+> lives that we truly seek to live. This is a path of liberation. A mirror held
+> up to you with the practice that aids the spiritual journey. Turning decades
+> into months, and showing your true nature, revealed. Without judgment. With
+> the purpose of becoming better people. Regardless of our score.
+
+Three rulings are inside that and the copy team does not get to soften any of
+them. **Turning decades into months** is the claim and it is a time claim, not
+an outcome claim. **Without judgment** is why no label in this product is ever
+about a person. **Regardless of our score** settles the argument about whether
+coherence is a rank: it is not, and no surface may imply that a person at a low
+reading is further from becoming a better person than anybody else.
+
+## Frequency by Atüned. Recorded, not designed
+
+Matching people by coherence. Paired rather than swiped, kept in a queue you
+can leave them in, chat, and then decide whether to connect. Act like adults.
+
+Recorded as the owner's idea and not built. Three things have to be settled
+before it is, and none of them is a feature:
+
+- **Sorting people by a psychological reading is the leaderboard problem with
+  the stakes raised.** The research already rejected a ranked list of people
+  inside the product. A dating surface is that list with a stronger incentive
+  attached to the number, and the incentive runs the wrong way: it rewards
+  reporting a field you do not have.
+- **It moves the record off the device and joins it to an identity.** The
+  standing promise is that the name never leaves the device and a key replaces
+  it. A matching surface needs two people to be identifiable to each other,
+  which is a different product and a different controller obligation.
+- **A low reading must not become an exclusion.** If coherence gates who a
+  person may meet, the product has made a reading into a social outcome, which
+  is the one thing "regardless of our score" forbids.
+
+None of that is a no. It is what has to be answered first.
+
+## Billing. Stripe, and where it is not
+
+The brief: frictionless, clean, in and out with no fuss, controlled from the
+desktop. That decides the integration before anything else does.
+
+**Stripe never appears in the app.** No key, no script, no customer id, no card
+field. `source.html` is one file with no network and it does not gain one for
+billing. It reads a plan off the record and calls one host function. A gate
+sweeps the whole build for `sk_`, `pk_`, `cus_`, `sub_` and card fields.
+
+    the app          reads plan, answers what may be opened and seen
+    the record store reads Stripe, writes the plan onto the record
+    Stripe           holds the customer, the card, the subscription
+
+**Checkout in subscription mode for the purchase, Customer Portal for
+everything after.** Hosted both times. The portal is what "controlled from the
+desktop" means in practice: one button, card or plan or cancel, and no billing
+UI for us to build wrong.
+
+**What is in force, not what is written.** A record saying tier three with a
+cancelled subscription is free. An unknown status grants nothing, because a
+processor will add one and an old build must read it as no. `past_due` keeps
+access: cutting somebody off over a bank's timing is a punishment.
+
+**Spend is per period and never stored.** It is the unique count against a
+baseline written when the period rolls. Without the baseline the allowance
+subtracts a lifetime of opened ground from one month's grant.
+
+**A cancellation destroys nothing.** The record is the person's and the plan is
+one field on it.
+
+**The store writes five fields and nothing else.** tier, status, granted, base,
+until. The promise is that the record and the story are never held joined, and
+a billing system is exactly where that gets broken by accident.
+
+**Still open and his.** Tier one at 400 a month or 100 a week, which is the
+oldest open item and now blocks the price list. The actual prices, which the
+panel research says to anchor against therapy, coaching and app pricing rather
+than against pattern counts. Whether there is an annual. Whether tier four's
+practitioner seat is per practitioner or per client, which is the clearest
+thing in the product to charge for and is not designed.
+
+Full detail in `DESIGN-billing.md`.
+
+## The business strategy pass, and what it found
+
+Full working in `DESIGN-economics.md`. Every figure is either the owner's, the
+codex's, or model output over the panel and labelled.
+
+**The free tier could not complete a single release.** Ten a week against a run
+of twenty five is one run every two and a half weeks. An allowance below the
+smallest unit of the product is a countdown, not an allowance. The grant banks
+now and the surface says so. **Open: whether free should be twenty five a week
+instead**, which is exactly one run and turns a countdown into a weekly ritual.
+It costs nothing marginal.
+
+**The price per pattern currently rises with the tier.** At twelve, twenty nine
+and fifty nine for four hundred, eight hundred and twelve hundred, a person
+pays three, three point six and four point nine cents a pattern. Buying more
+costs more per unit. Either re-space the grants to 400, 1,000, 2,000, which
+flattens the rate, or stop selling patterns and sell sight, which the panel
+already recommended.
+
+**The therapy claim is understated by the book.** The codex says therapy
+releases one to six patterns a session. So twenty five patterns is four to
+twenty five sessions, not three, and a hundred patterns is seventeen to a
+hundred. "Two years of therapy" is defensible as throughput at the conservative
+end. It is **not** defensible as an outcome claim. Safe form: as many patterns
+as a year of fortnightly sessions would release, on our own most conservative
+figure.
+
+**The referral should be fifty.** At a hundred, four invites a month replaces a
+tier one subscription and the bottom rung is cannibalised. At twenty five it
+takes sixteen and nobody feels a gift. Fifty is two full runs and eight invites
+a month, which protects the ladder. Cap at four a month against fraud.
+
+**The price list, recommended: 12, 29, 59, 99.** The panel reached the first
+three independently from the anchors people price against, and the owner
+reached ninety nine independently for the professional rung. They compose
+without either moving. A single price is worth thirty to forty percent less,
+because two thirds of the revenue and two thirds of the people sit on different
+anchors.
+
+**Ninety nine is the one number the model cannot advise on.** Against the
+panel's practitioner segment, forty nine earns half as much again. But that
+segment's fifty eight is a *personal* willingness to pay taken as a consumer,
+and tier four carries somebody's client book. A coach billing a hundred and
+fifty an hour across twelve clients turns over seven thousand two hundred a
+month and ninety nine is one and a half percent of it. Hold ninety nine,
+instrument it from the first paying practitioner, and change it if the take
+rate says so.
+
+**And the keying ruling still blocks the price list.** Keyed by address and
+channel there are 428 lifetime keys and tier one exhausts the entire product in
+five weeks. Keyed by statement there are 21,400 and it runs for fifty three
+months. Nothing else in the economics matters until it is ruled.
+
+## Free stays at ten a week. Ruled
+
+> It is the free layer, so I do not want people just cashing in. So let us try
+> ten.
+
+Ten a week, banking toward a run of twenty five, which means a free person
+reaches one release every two and a half weeks. That is the intended friction
+and it is now a decision rather than an accident: the grant banks, the surface
+says it is banking, and nobody is shown a number that reads like a permission
+to do something they cannot afford.
+
+## The equivalence, and the two rules on saying it
+
+Every rate is the codex's own, quoted: therapy one to six patterns a session,
+meditation six to twelve per twenty minute practice, breathwork the same.
+**Plant medicine is deliberately absent.** The book gives no rate for it and a
+number invented to make a comparison look good is the first thing a person who
+has done it will check.
+
+    therapy          1 to 6 a session
+    thirty minutes   9 to 18
+    a month of it    270 to 540, at half an hour every day
+
+    one run, 25      4 to 25 therapy sessions
+    the gift, 100    17 to 100 sessions
+    tier one, 400    a month of half an hour every day
+    tier two, 800    a month and a half of it
+    tier three, 1200 two and a bit months
+
+**Tier one is a month of daily practice.** Four hundred sits inside two hundred
+and seventy to five hundred and forty, which is that month exactly. That is the
+sentence the whole table exists to support.
+
+**Rule one: throughput, never outcome.** How many patterns a thing releases is
+checkable against the book. What a life does afterwards is not, and the
+evidence tier does not carry it. So the copy says "as many patterns as", never
+"the same as" and never "instead of".
+
+**Rule two: the low end gets said.** A range of one to six quoted at six is the
+most flattering reading of your own number, which is exactly the reading a
+hostile reader checks first.
+
+Rapid rewiring is the mechanism claim and it is fine. Two years of therapy is
+an outcome claim and it is not.
+
+## The key, ruled. One thought line, at an address, by way of a channel
+
+> It is not spoken line, it is one thought line. And as one thought line, it
+> targets the address by way of the channel.
+
+So the key is three parts and their order is that sentence read backwards:
+which thought, down which channel, at which address. The address is what is
+hit, the channel is how it is reached, and the line is the thought that does
+it.
+
+**A thought line, not a spoken one.** Reading it in thought spends it. Nothing
+in this product requires a person to say anything out loud and no count may
+imply that it does.
+
+**What it was.** Two parts, address and channel, which made every one of the
+fifty thoughts on a channel the same key. All two hundred statements on a card
+collapsed into four, the whole product held four hundred and twenty eight units
+of new ground, and tier one at four hundred a month finished it in five weeks.
+The ruling had already been written down and the code had taken half of it.
+
+**What it is now.**
+
+    107 releasable addresses
+      x 4 channels
+      x 50 lines a channel      the printed card, a hundred each way, split
+    = 21,400 units of new ground in the product
+
+Tier one at four hundred a month runs for fifty four months. The price list is
+unblocked.
+
+**The cursor is read and never stored.** The next unopened line at an address
+down a channel is counted off the keys already held. A stored cursor and a
+stored key list are two answers to one question and they drift.
+
+**A run is a plan, built when the run is picked.** A person is entitled to see
+what a run costs before they begin it, and a plan that changes between being
+shown and being charged is a bill they did not agree to. It walks new ground
+only, caps at twenty five, and never re-offers a line already opened, so a
+rerun is a deliberate act rather than something that happens while somebody
+thinks they are opening something. Rerunning opened ground still costs nothing.
+
+**A defect found while building it.** `toYou` repoints the record at the
+person's own, and it was called at the end of the cooldown, after the meter had
+written. So a release run started while a reference case was loaded charged the
+reference case and then moved the pointer away: the patterns were spent, the
+person's allowance never moved, and the keys went into a record nobody reads.
+The repoint comes first now.
+
+## Four rulings, and the last outbound request
+
+**The referral is fifty.** Two full runs, half of what a person was given
+themselves, and eight invites a month to break the ladder. Capped at four a
+month against fraud.
+
+**Monthly or annual.** Two months free is out. It was ruled in here as the
+convention and the owner has ruled it back out, so this entry records the
+reversal rather than being edited to hide that it was ever decided. Whether an
+annual plan carries any discount at all is open and is his.
+
+The allowance still arrives monthly rather than as a year in one lump,
+whatever the price, because the allowance is a pace and a year of patterns
+handed over at once is not a practice. That part was never about the
+discount.
+
+**Sight is not for sale.** REVERSED 1 October, round OK. The ruling is kept
+below as it was made, and the reversal is the last section of this file.
+
+> Tier one can see the Jungian archetypes. Actually, they can see all that
+> shit. It is really about the patterns and what the patterns are doing. And
+> then how many they can release.
+
+Every tier sees the whole reading, free included: saboteurs, complexes, hyper
+complexes, character, the archetypes, the pain map, every tool, the journal.
+What a tier buys is one thing, how much new ground may be opened. Simpler to
+explain, simpler to price, and it removes the one mechanic in the product that
+withheld a person's own reading from them in order to sell it back.
+
+That also settles the open item about tier three needing something of its own.
+It does not need one. The ladder is 400, 800, 1200, and then 1200 plus the
+cohort suite, and the only thing that moves is volume.
+
+**Google Fonts is gone.** The file linked `fonts.googleapis.com` and
+`fonts.gstatic.com`, so every load sent the person's IP to Google before they
+had typed a word, in a product that holds somatic and psychological self report
+and promises nothing leaves the device.
+
+Inter as a variable font, latin subset, three hundred to seven hundred in one
+file, embedded as base64. Forty eight kilobytes raw, sixty four as base64,
+about a tenth of the build for the last network dependency it had. A new gate
+watches the network on load and across four tabs and fails on any request that
+is not one of the two local rasters, and a second assertion checks the typeface
+actually resolved, because a silent fallback would have looked like a success.
+
+`tests/design.js` is green for the first time. The expected environmental
+failure in CLAUDE.md is gone because its cause is.
+
+
+## The user journey pass
+
+Ruled in a single review of the opening experience. Everything here is the
+owner's call, recorded as given.
+
+**The app opens on Summary.** Field was the opening for as long as the wheel
+was the product. It is not. The wheel is one instrument; the summary is the
+reading. Summary also moves to the far right of the bar, so the row reads left
+to right as the instruments and then the thing they add up to.
+
+This exposed a defect the moment it landed. Summary printed coherence 42
+percent off nothing but the default six on the laws, to a person who had
+entered nothing. The functional gate caught it within a minute. The opening
+screen is now the way in: a dash in the ring, no band word, and the four doors.
+Analytics had the same defect and the same fix.
+
+**Analytics folds into Summary. Games folds into Knowledge.** Neither has a
+top level door any more. Both keep their integers and their renderers; what
+changed is that the host element moved inside its parent. The bar goes from
+eight items to seven.
+
+**The compass gets a tab.** It was three clicks deep behind a marker on the
+Field stage, inside a drill. The owner went looking for it and could not find
+it, which is the entire finding. TAB.COMPASS is integer 8, appended, because
+the integers are identity and are never renumbered.
+
+**The wordmark is sky blue with two white dots and more letter spacing**, and
+it goes home, which is the summary. The sky is `#7EB8D4`, which is the original
+app's own `--law-accent`, used in thirteen places there. That is the blue the
+owner remembered.
+
+**"Whose field" is now "Profile."** It was a question the product asked itself
+out loud.
+
+**The lighting moves into a glass menu**, upper right, with help to its left
+and the person to its right, in that order. Three lighting buttons sitting
+permanently in the bar was a setting taking the width of a navigation item.
+
+**Every percentage is an icon, a ring showing the percentage as an arc, and a
+pill carrying the number.** The component already carried the first two and
+printed the number as bare text. One rule, one component, every ring in the
+product.
+
+**The balance strip carries the masculine glyph on the left and the feminine
+on the right**, with the hairline down the centre. This mirrors the body: the
+codex puts masculine on the right channel. That is what a mirror is, and this
+product is a mirror a person holds up to themselves. Logged in BOOK-ERRATA.
+
+**Held and opposite, in both rails.** The right rail said installed and the
+left said opposite, for the same two ends of the same axis. The definition is
+now said once, in place, rather than left in a tooltip no thumb can reach.
+
+Still open, and deliberately not built yet because the owner asked for them to
+go through the ICPs and art direction first: the Summary redesign, the
+iconography of the spiritual block, and whether the product's accent moves from
+gold to the sky blue.
+
+## The accent is blue, and the summary is built
+
+**Gold is out. The accent is `#7EB8D4`.** Ruled, and it was not a preference
+about a swatch: the owner picked the blue and never picked gold. That value is
+the original app's own `--law-accent`, used there in thirteen places. It
+deepens to `#2F6E92` on paper so the accent works in both lightings rather
+than only the dark one. `--accent` is the one source of truth and `--gold`
+stays as its alias, because sixty places in the sheet already read that name
+and none of them read a literal.
+
+**Punch stops promoting the seat to the accent.** That is where the orange came
+from: a field leaning Sacral made `#E77016` the fill on every pressed control,
+every primary button and every ring in the product, and nobody chose it. The
+seat still tints the ground, which is the part of Punch that was doing real
+work. The pressed tab also reads again in Punch, which it had stopped doing:
+`body.punch .vt` outranks `.vt[aria-pressed]`, so the surface a person was on
+was not marked at all.
+
+**Lean is not Balance.** Two controls four inches apart both said Balance and
+they are not the same reading. The rail says Lean, which is benign against
+malignant. The strip under the wheel says Balance, which is masculine against
+feminine, and that is which way the field discharges.
+
+**The summary is built.** Analytics across the top as a strip of rings. The
+story on the left, in prose, three paragraphs: the spiritual into the
+psychological, the psychological into the body, and momentum against the
+avatar. The structures on the right, every measured thing carrying an icon, a
+ring and a pill. The spiritual layer beneath as glyphs with the boxes gone,
+and the birth date gone with them, because a birth date is an input and this
+is a reading. Three tracks on a desktop and one sequence on a phone, out of
+one build, because the document order is already the phone order.
+
+A blueprint domain is drawn as a selection and never given a ring. A ring is a
+measurement and a domain is a choice.
+
+**Numerology, in full.** The product was reducing a first name to one digit and
+calling it the name lens. That is the Expression, it is one of six, and it was
+being read off a nickname. Six numbers now, each answering a different
+question: life path, expression, soul urge, personality, birthday, maturity.
+Every name part on its own with its own number, the cornerstone and the
+capstone, and karmic debt read off the unreduced total rather than inferred.
+
+Masters survive reduction at every step, including inside a single name, and
+the two routes to Expression are both kept because digit summing preserves
+value mod nine, so only the master rule can separate them. When it does, the
+parts are the reading.
+
+No etymology table. A root meaning for an arbitrary name cannot be looked up on
+a device that makes no outbound request, and inventing one is the kind of claim
+this instrument does not make. What a name part carries is computed, not
+remembered.
+
+The reference roster carries full names now, middle names included, because a
+middle name is the part numerology reads as carried rather than shown and
+leaving them out would have moved every Expression in the roster.
+
+## The core atomizes, and the frame moves
+
+**Zoom resolves the core.** CQ is not a primitive. It is intention times
+integrity over resistance, and every one of those is a sum over things the
+instrument already measures, so a solid disc with a number on it was the one
+place in this product where a figure was drawn as though it had no parts.
+
+Three layers, each a real decomposition, each fading in over its own threshold
+rather than snapping:
+
+    1.45  the triad. vitality, awareness and will, which the energy read is
+          the mean of.
+    2.30  the seven seats, each feather as long as that seat's share of
+          integrity, which is bandIg over ten.
+    3.40  the twenty one laws, one filament each at its own value. These are
+          literally the numerator of CQ.
+
+Feathers because that is what it looks like from the inside: a spine with
+barbs, thinning to the tip, and the tip is how far that quantity actually
+reaches. A short feather is a quantity that is not carrying. Four quarter-step
+rings behind them turn the interior from a texture into a chart, so a person
+can answer "how much" by looking rather than by hovering.
+
+**The core grows as it opens**, by a factor that reaches about two at full
+resolution. That is the one dimension inside the wheel that is not a reading,
+and it is not pretending to be: an exploded view needs somewhere to explode
+into, and every length inside it scales with it.
+
+**Left drag was dead at every zoom.** It wrote `S.panx` and called `render()`,
+and `render()` draws from `CX` and `CY`, which only `reframe()` ever sets.
+Measured: a 72 pixel drag took `panx` from 0 to 72 and left `CX` at 332. The
+move handler reframes now. `reframe()` also used to throw the pan away
+entirely at zoom 1, which is the zoom everybody is at, so even a correct
+handler would have done nothing there.
+
+The travel budget is two terms and each is a reason: half the box, so the
+wheel can always be repositioned whatever the zoom, plus however much of the
+magnified wheel is currently outside the box, so a person who zoomed in can
+reach the far edge of what they zoomed into and no further.
+
+**A press on the core is a grab, and only a press that never moves opens the
+reading.** It was opening the drill on pointerdown, so a drag starting on the
+core could not happen at all.
+
+**A non finite value can no longer brick the frame.** `CX` is read by every
+draw and every hit test, so one NaN reaching it stopped the wheel for the
+session with no error and no way back but a reload. Found by a probe that
+forgot to pass its own argument, which is the second time this session a tool
+lied before the code did.
+
+---
+
+## Ruled 19 September, the operational round
+
+**The microphone stays.** The owner wants speech capture and promises the data
+is never sold. Both hold, and a third fact holds with them: browser speech
+recognition is a network service, so the audio reaches the browser vendor. We
+do not sell it and we also do not control it. The control therefore says so in
+one line before the microphone opens, because a promise about data is only
+worth what the person can check. Typing remains the equal path.
+
+**A run costs the minimum, and a rerun is free.** `meterPlan` treated the cap
+as a fill target, so every run cost twenty five whatever was picked. Ruled: run
+the fewest patterns the selection needs, and re-running ground already opened
+costs nothing. The cap stays a ceiling.
+
+**The ladder is 12, 24, 36, 99.** The sales seat's flat three cents a pattern
+at every rung, taken over 12/29/59/99, because the printable rate is worth more
+than the four percent revenue difference and the lower middle rungs widen the
+pool.
+
+**Free is ten unique patterns.** Not twenty five a week and not a hundred a
+month: a hundred a month clears an axis for nothing, which prices the product
+at zero for the people who need one axis.
+
+Ten UNIQUE patterns. Anything already opened may be rerun without limit and
+without cost, forever. New unique ground swaps against the set already held
+rather than adding to it, and the swap is decided by weight: what a person
+marks heavy stays, what sits light drops off first. A person telling us which
+pattern moved them is telling us what to keep.
+
+**Headers take title case.** The stylesheet was right and `CLAUDE.md` was
+wrong, so the sentence case rule applies to body copy and not to headers.
+A person's own name is exempt, because a surname is not a header and a
+transform that renders somebody as De Vries is wrong about them.
+
+**The instruction for this round, in the owner's own frame:** make the system
+highly operational before making any of it complete. Fix the stoppers, wire in
+what is missing even where it is rough, get the whole loop closed so other
+people can be put in front of it, then refine. A full loop that is crude beats
+a polished half.
+
+## The bar. Ruled 25 September.
+
+**This is not a demo and not a prototype. The plan is an MVP, and the bar for
+an MVP here is production quality, enterprise grade, with Apple as the floor,
+not the ceiling.** His words: "our plan is not for a demo, our plan is not for
+a prototype, our plan is for an MVP... our checklist needs to be production
+quality, enterprise grade, Apple is our bar, minimum."
+
+His reason, stated plainly and not to be softened in restating it: "this is a
+purpose based product, it's an impact based product, our ethical and moral
+standards are exceptional, which is why we are being as thorough as we are."
+The thoroughness this session has been running on, the defect logs, the
+measured numbers instead of typed ones, the seats reading actual source rather
+than describing an intention, is not process for its own sake. It is what the
+bar above requires.
+
+**This sits beside the ruling directly above it, not against it.** Operational
+before complete is sequence: close the loop first, crude where it must be,
+polish after. Apple as the floor is the destination that sequence is walking
+toward, not a licence to stop at crude. A stopper gets wired in rough today
+and brought up to this bar before it ships to a real person outside the team.
+
+## The team asks. Ruled 25 September.
+
+**He is the executive producer who holds the vision, and the team is his eyes
+and ears technically. So the team is always in question asking mode.** His
+words: "since I'm ignorant on this and you are my eyes and ears technically, I
+need the team to pose questions. So always pose questions. I always want the
+team to be in a question asking mode so that we can continue to refine the
+product. I may not have all the answers, but I want them to treat me like the
+executive producer who has the vision."
+
+What that changes, concretely:
+- Every round ends with questions, not only when something is blocked. A
+  seat that has nothing to ask has not looked hard enough.
+- A question is framed for the person who holds the vision, not for an
+  engineer: what the product should be and feel like, never which library.
+  The technical translation is the team's job after he answers.
+- He may not have the answer. That is fine. A question he cannot answer yet
+  is written down as open with the two or three ways it could go and what
+  each would cost, so he can answer it when he can. It is never answered for
+  him by default.
+- The four headings ruling stands, and the fourth heading is where the
+  questions live, listed in full.
+
+## One CQ. Ruled 25 September, on being shown two formulas.
+
+Recorded in his words first, then as the team read it, so the reading can be
+corrected.
+
+His words: "Review both coherence formulas. They both should be pretty solid
+if they're variations. There should only be one CQ number. CQ equals 100. The
+laws of integrity are measured on the zero through ten. Four to six is
+oscillating, five is average. The total 21 laws should equal up one hundred
+percent CQ. Any deviation of that CQ is DQ, it's the decoherence quotient.
+If CQ is a volume, DQ is the corrupted aspect of that volume. What corrupts
+that aspect of the volume: SQ. SQ is the shadow quotient, it's the weights on
+the nerves and assemblage points, the chakras. So there's 54 on both sides,
+there's four outside the body. Not only is that geometric, but it's also
+harmonic. From the feet to the crown, there are hertz, at least with sound
+bowls, that correspond to the length of the nervous system at different
+addresses. So how do we measure this? First off, let's start there. Because
+we have intention, and expression. Expression is the output. Intention is the
+desire. The six axis determine the output. The SQ determines which output
+you're going to do. When there's no stress in the body, intention is 100
+percent. Energy flows from the external environment through your sensory
+input, through the body, perceived in the mind, back out to action without
+any distortion. That's what we want. Any signal that causes distortion
+anywhere within that unified field, from nature to human nature. Nature is
+like our koshas, it's the field. Human nature is the architecture and the
+psyche. So we have a structure from subtle to material where action
+distortion can be detected and the story that's powering that can also be
+detected."
+
+As the team read it:
+
+- **CQ is the 21 laws of integrity and nothing else.** Each law 0 to 10, and
+  the 21 together sum to 100 percent. Five is average; four to six is the
+  oscillating band. Neither engine's current formula is this: MOB squares the
+  law mean and divides by resistance, the desktop takes the law mean and
+  divides by a story count. Both fold the shadow into CQ. He has ruled the
+  shadow out of it.
+- **DQ is the deviation from 100.** `DQ = 100 - CQ`. The corrupted part of
+  the volume.
+- **SQ is the shadow quotient: the weight sitting on the 112 addresses.** 54
+  on each side of the body and four outside it. It is a magnitude of charge,
+  not a count. It is what corrupts the volume: SQ is the cause, DQ is the
+  measure of the damage, CQ is what is left.
+- **Intention and expression.** Intention is the desire; expression is the
+  output. Intention reads 100 when there is no stress in the body, so
+  intention falls with SQ. The six axes determine the output; SQ determines
+  which output a person will take. Distortion anywhere between the field
+  (nature, the koshas) and the architecture (human nature, the psyche) is
+  detectable, and so is the story powering it.
+- **The addresses are harmonic as well as geometric.** He asks for research:
+  frequencies, from the feet to the crown, that correspond to the length of
+  the nervous system at each address, as at least the sound bowl tradition
+  holds. "How do we measure this, first off, let's start there."
+
+Open under this ruling, to be asked and not assumed:
+- Whether the 21 laws are summed or averaged to reach 100 (they agree only if
+  every law carries equal weight, which is the simplest reading).
+- The exact function from address weights to SQ, and from SQ to intention.
+- Whether expression is a number or a category (the six outputs).
+- What "oscillating" does to the reading: a band label, or a dampening.
+- Whether the harmonic mapping is a reading or a metaphor, which decides
+  whether it may print a number.
+
+## The CQ ruling, corrected. 25 September, same day.
+
+Shown the reading above, he corrected it. His words first.
+
+"To keep it really simple, we can have the sum equal to 10, and that 210
+equals one hundred percent, and then you'd have to do the formula around
+that to make sure that it works. DQ is the total weight, that's a total sum
+of decoheres. SQ is an individual fetter, there are 112 that we track,
+period. The four addresses outside the body do count as SQ because they're
+related to nerves within the body, but the assemblage point field at which
+they create is outside of the body. Think of it like a torus field: there's
+the point at the top of your head, and then there's the kind of range at
+which the torus field extends beyond your head before it circles back.
+Those are the two assemblage points outside of the body. Intention is
+powered by the laws of emotion. When emotional control is being spurred on
+by SQ, then we get lower awareness, lower intention, lower integrity, lower
+expression. Duty is do what you say, that maintains your upregulation, and
+the more aware you are of it, the more of the laws of expression you want
+to flow through. The laws of expression are the high points, because at the
+end of the laws of expression is meaning and potential. Oscillating does not
+print as a word, but four to six should always show a slightly different
+band, same thing with five, so people can see there's a range at which we
+travel, and five is the average. I think the harmonic layer is information.
+All hundred and twelve should have a tone, and we can measure the tones
+based off the tones the sound bowls are measured to, in hertz. We may not
+keep that, who knows, maybe we'll use it later on. If people want to do
+sound healing, say your blocked in this area, use this tone to help unblock.
+I don't want to bombard people with options, we have to simplify and clean
+up the data, but we want to make sure there's something there for people to
+work with. For the length of the nervous system: no, it's not a claim about
+physical length. It's just from foot to crown, regardless of whether you're
+five feet or ten feet tall, the way the body registers hertz is exactly the
+same. If they work on the heart chakra at a sound bath it works for everyone
+universally. That means there's consistency along the nerve system and it
+acts like a current, regardless of whether the technology is big or small.
+Go search all the laws of integrity, they'll be in the mechanics folder, but
+you should also have them here. Hertz numbers should be the same colour as
+the chakra itself."
+
+**What this corrects in the reading above.** SQ is not one aggregate number.
+It is 112 individual values, one per address, already the shape of the
+charge the engine tracks per address today. DQ is the aggregate: the total
+sum of decoherence across those 112 values. This is being reconciled against
+his separate statement that "any deviation of CQ is DQ" (DQ = 100 minus CQ),
+since both were said and a seat is working out whether they are two readings
+of the same number or two numbers sharing a name, with a worked example
+rather than another open question.
+
+**What is now found, not open.** The canonical 21 laws are `SI` in
+`atuned_src/engine/data/canon.js:400`, live in the engine, not a document:
+Truth, Transparency, Justice, Unity, Awareness, Nature, Presence, Humility,
+Equanimity, Compassion, Forgiveness, Generosity, Aesthetic Beauty, Courage,
+Duty, Responsibility, Accountability, Temperance, Detachment, Non-Harm,
+Patience. This is the roster the sum of 21 sums over.
+
+**What is now a design instruction, not a question.** Four to six gets a
+visibly different band from the rest of the ten point scale; five is marked
+as the average. The harmonic layer is built as an optional sound healing
+tool, information rather than a reading, sourced from real bowl
+measurements where they can be found, one tone per address, each printed in
+its chakra's own colour. The length claim is not an acoustic resonance
+claim; it is a claim that the nervous system's response is independent of
+body size, closer to a current than a wave, and the research already done
+is corrected against this rather than discarded, since the finding that a
+standing wave model does not hold is still true, it tested the wrong model
+of what he meant.
+
+**Still open, and it is the causal chain, not the arithmetic.** Intention is
+powered by "the laws of emotion" and suppressed by SQ through emotional
+control; no formula was given for this. A candidate is being proposed for
+him to react to rather than left as narrative.
+
+## The CQ ruling, third pass. Same day, shown the unified model.
+
+His words, on being shown that MOB and the desktop each implement one of his
+two DQ statements and asked to pick. "DQ is a total shadow. I don't know why
+you keep asking me that, I keep saying it, it's like the eighth time I've
+said it." **Settled, and it is not to be asked again: DQ is the total
+shadow.** Not the gap. Not both.
+
+His words on how SQ relates to CQ, unprompted: "Here's a deal, putting SQ
+within CQ: you can always put SQ within CQ and say CQ 100 SQ 0, DQ 0, SQ 100,
+any deviation, one pulls down and the other, it's a lever. And then the
+expression and emotion, the other laws or variables, like the intensity
+curve is a multiplier. I'm a little tense is different than I'm paralyzed,
+it's orders of magnitude different, so there's your multiplier right there.
+So our bell curve becomes our multiplier."
+
+As the team reads it: SQ and CQ act on each other as a lever, not as terms
+summed into one number. CQ stays the pure measure of the 21 laws. SQ, the
+total shadow, pulls against it, and how hard it pulls is not linear: the gap
+between "a little tense" and "paralyzed" is orders of magnitude, not a
+straight line, so the shadow's pull is shaped like a bell curve rather than
+a flat multiplier. This is a curve to be fitted, not assumed, which is why
+he has asked for a simulation rather than a guess (below).
+
+On intention: "I don't think intention ultimately is will, and awareness,
+it's a modifier. You either did the thing you said you were gonna do or you
+didn't, and the reason why is going to be, there's a story in there from the
+SQ somewhere in the body. So there's a story driving why you didn't do what
+you did, or why you did what you did and you shouldn't have." And, on
+whether intention counts once per emotion: "Yes. Well, no, because you can
+have an emotion without an intention. Intention is the output of what you're
+trying to get done. You can be traumatized by your childhood memories and
+there's no action behind that. No intention." **So intention is not read off
+charge directly.** It is the gap between what a person said they would do
+and what they did, and only charge that is tied to an actual output counts
+toward it. Felt charge with no action attached is not intention.
+
+On how CQ should read before all 21 laws are answered, correcting the
+recommendation that nothing print: "You're basically saying I have an input,
+my integrity yet, and once I do, this is where it is now. I don't want to do
+it the opposite, where it goes from 100 down, because that's demoralizing."
+**CQ builds up from nothing as laws are answered.** It never starts full and
+falls; that reads as loss rather than as a person coming into view.
+
+**The simulation, ordered rather than guessed.** "I think the team needs to
+simulate this a hundred times to figure out what's the most effective and
+efficient way, come up with a formula that works, given the system that
+we've created, but it also needs to be accurate. So they need to simulate it
+ten thousand times in our ICPs and find the configuration for CQ, DQ and SQ
+that makes sense within our system." Running now.
+
+## Sight, tiers and the private record. Same day.
+
+He was confused by "sight by tier", correctly: two different things share
+the word tier and had not been told apart. **The tier ladder already in this
+file, section "Tiers and the meter", prices how many patterns a person may
+run a month.** That is decided and he confirmed its shape from memory (tier
+zero free, one, two, three, four, the top tier carrying the practitioner and
+coaching suite, at prices he recalls roughly as 12, 24, unnamed, 99, to be
+checked against the simulation that set them). **The desktop's `tierCanSee`
+is a second, separate mechanism that gates how much of a person's own
+reading they can see at all**, independent of how many patterns they have
+run. That is the one this file's tier and meter section never licensed and
+the one he has not ruled on, because until this round he did not know it
+existed on the desktop side.
+
+On the private record, reasoning to a policy live: "Your private journal and
+your limiting beliefs, your private journal should stay on your phone,
+that's yours. Although, now that I'm thinking about it, since we're
+capturing it, what if you want to recover it, then you'd have to start all
+over again, so we should actually get that information. We should just say
+we have a policy to never share your data, we use the data for modelling
+purposes only. That way if they need to recover it, they can, and we don't
+have to do any finagling with the text. It seems like that's the right
+solution. What does the team think?"
+
+**Ruled: the story is stored, for recovery, never shared, and used only for
+modelling.** This replaces the earlier line in this file that the record and
+the story are never held joined; that line is superseded, not this one. What
+the team adds, since he asked: storing it for recovery is ordinary and
+right. "Used for modelling" on a person's own disclosed psychological
+material needs to be said to the person plainly, as consent asked rather
+than a policy assumed, because a person telling this instrument what
+happened to them is not the same as a person agreeing their words train a
+model. It should be encrypted at rest regardless, which the desktop today is
+not (`TASKS.md` `AW6`), de-identified before anything touches a model, and
+never leave the one path he has already ruled, sign in, so the one seam
+stays one seam.
+
+## The stack. Same day.
+
+**Cloudflare, for now, kept.** "I don't mind things being on Cloudflare for
+now since it's the easiest to work with, unless you think GitHub works." Git
+hosting and a live per person database are different jobs; GitHub holds the
+code, Cloudflare holds the record. Kept as already built.
+
+**A domain exists** ("attuned, I think it's .app or something") **and he has
+asked whether a direct path from this session to that site is possible, and
+whether it is the right approach, and has granted the access it takes.**
+Confirmed technically possible and already the natural next step once the
+D1 database is real: Cloudflare Pages, same platform as the database, same
+account, deploys straight from the branch on a push, and a domain points at
+it with one DNS record. His exact domain string is still needed to do it.
+
+**Push access, granted and confirmed working.** Verified with a real
+push test against `reboot-os` this same round. Every row in `PRIORITY.md`
+section 16 that was waiting on this no longer is.
+
+## New, logged the same round
+
+**A ritual reminder, outside the push channel.** "We also need to design a
+system for pop ups related to the ritual, as a reminder. The ritual, I think,
+is the only thing I want so far talking directly to the customer outside of
+the push notification." Logged to `TASKS.md`.
+
+**One Bible.** "I want to lock the CQ formula into the brief, and make sure
+all the stuff is combined in our brief, so that we have one Bible that has
+our entire product in it, engineering, design, art, everything we've done,
+schemas, architecture, all of our technical and creative design docs being
+updated constantly. That's the job of the project manager, to make sure
+things are just updated." On what CQ itself is, asked directly: it is a
+function, a formula that reads the schema, not a schema itself; the schema
+is the shape of the profile and the 21 laws and the 112 addresses it reads.
+The consolidation is assigned to the project manager as a standing job, not
+a one time document.
+
+## Sight by tier, ruled, and the journal use corrected. Same day, next round.
+
+**Sight by tier is real, and it gates depth of composition, not laws or
+addresses themselves.** His words: "the tier controls how much you can see.
+While you can't see the hypercomplexes, you can see the fetters that create
+the hypercomplexes. As an example, it's an answer to your question." So the
+gate sits on the ladder from a raw fetter up through saboteur, complex and
+hypercomplex: the base layer is always visible, and how far up that ladder a
+person can see rises with tier. `AZ3` is no longer blocked; it is now a build
+task, and the exact rung each tier stops at is still to be set (proposed
+alongside the tier prices, which the team is checking against the
+simulation that set them).
+
+**Tier gates two different things, confirmed as intentional.** "We're also
+gating velocity." Velocity is the existing patterns-per-month ladder,
+already decided; sight depth is the new one above. Two axes of the same tier
+system, not a conflict between them.
+
+**The journal's modelling use, corrected and narrowed.** "With the journal,
+what we're doing is we're aggregating people's limiting beliefs, not trauma,
+ignore the word trauma, limiting beliefs. We're aggregating it to find the
+word combinations to refine our model, so that the sniffer itself is more
+effective at identifying how people communicate, and then adjusting it so
+it's more dynamic to clue into the things that we should be looking for."
+This replaces the earlier, broader "used for modelling purposes" line: the
+actual use is narrow and specific, aggregated word and phrase combinations
+across people's own stated limiting beliefs, used to refine the sniffer's
+lexicon so its matching gets better at how people actually talk. It is not
+training a general model on a person's story. `AZ4`'s consent line should
+say this precisely rather than the broader phrase, since the narrower,
+true purpose is also the easier one to get honest consent for.
+
+## The CQ model, fitted. The ten thousand run simulation, `AZ5`, complete.
+
+Run twice, on two seeds, against the real engine and its nine ICPs, not a
+toy. Every reading below is labelled real or judgement in the source file.
+
+**The arithmetic, final unless the last five questions below move it.**
+- CQ: the 21 laws in `SI`, summed over 210, times 100. Fills from zero.
+- SQ: 112 values, one per address. The four outside take the mean of the
+  seat they extend, measured 0.06 of a point from the alternative on
+  retest, so the simpler rule stands.
+- DQ: the 112 over 1120, times 100. The total shadow, nothing else.
+- The lever: expression equals CQ times one minus a pull. The pull is a
+  bell curve over each address's weight, averaged over the 112: centre 5,
+  width 1.25. Paralyzed pulls 122 times as hard as a little tense, inside
+  the bound his own words set.
+- Intention: what a person said against what they did, no charge in the
+  number. Each commitment carries its address, so a broken one shows the
+  story behind it. Awareness sits on top as a modifier, still open below.
+
+**What the run proved, not assumed.** CQ built from zero never once read a
+false drop across 630,000 answers. The desktop's old rule, a running mean,
+fell by up to 28 points and started above a person's final score more than
+half the time, which is the exact demoralizing drop he ruled against. A
+release changed CQ, raised DQ, or raised any address zero times across
+about 17,800 releases. Three other curve shapes were tried and rejected on
+the evidence, not on preference; the reasoning is in the file.
+
+**A defect the run surfaced, not ruled on, logged to `TASKS.md`:** neither
+engine's sniffer can currently tell "a little tense" from "paralyzed."
+MOB reads three different intensity words identically and does not read
+"paralyzed" at all. The orders of magnitude his ruling requires have to
+come entirely from the curve until that is fixed.
+
+**Five questions left, none of them arithmetic, all cosmetic or a label:**
+1. Does a tier word (Severe, Mastery) describe CQ or expression? Recommended:
+   expression, since the ladder's own copy is about load against build.
+2. Does "Oscillating" print for the 41 to 50 band, or does nothing print?
+   Recommended: nothing, matching the standing rule that the word never
+   prints.
+3. Do the eight expression laws sit beside expression as their own figure,
+   or cap it? Recommended: beside it, since nobody has scores for them yet
+   to simulate a cap against.
+4. Does awareness sit beside intention in words, or scale the number?
+   Recommended: beside it, in words. Not run either way.
+5. Do the four outside addresses take the colour of the seat they extend
+   (crown above, root below), or one shared colour? Recommended: crown and
+   root.
+
+Full arithmetic, the rejected curves, and worked people are in the CQ
+bundle. `AZ5` closes once this is logged; the rebuild in both engines is
+now real work, not waiting on anything further from him.
+
+## Correction. A release does move CQ. Ruled 25 September, after ship.
+
+**The team built and shipped the wrong invariant.** The reading above,
+carried into `BIBLE.md` as "a release cannot move CQ" and proven as a hard
+rule in both engines' tests, was the team's own inference from "DQ is the
+total shadow" and "CQ is the 21 laws," not his words. He corrected it
+directly:
+
+"I didn't say CQ doesn't move on a release. That wouldn't make sense. If a
+fetter is released, you may not see CQ move, but it may move 0.1 or 0.05. I
+had about 15,000 patterns for my CQ. My CQ is about between 88 and 92, plus
+or minus 3 points of accuracy. Those 15k releases raised my CQ."
+
+**As the team now reads it.** A single release moves CQ by a small amount,
+not by folding SQ into the number, but because doing the work is itself
+part of what the 21 laws measure: releasing a pattern is real change, and
+it registers as a small, real nudge, not a visible jump. Over enough
+releases the small nudges compound into the kind of movement he describes,
+roughly fifteen thousand releases to a CQ in the high eighties to low
+nineties. **The shape of that nudge, per release, per law, with or without
+decay as CQ rises, is not yet known and has to be fit against this one real
+data point rather than guessed.** The three sessions his own history spans
+count as a real dataset of one, not a suggestion.
+
+**What this does not undo.** SQ is still 112 individual values, DQ is still
+their total, and a release still does not fold SQ or DQ into CQ directly.
+What was wrong was narrower: the team read "CQ is only the laws" as "so a
+release can never touch it," when a release can touch the laws themselves,
+slowly. The expression lever stands as designed; it now sits beside a CQ
+that can also move, not a CQ that is frozen.
+
+**On "matches to within 1e-9."** That sentence was reporting that the two
+engines' arithmetic agree with each other to a tiny rounding tolerance, a
+statement about the two codebases matching each other, not a claim about
+how much his own CQ can move or a precision floor on his data. It landed as
+confusing jargon in a report meant for him and should not have been sent
+that way.
+
+**Fitted and built the same day. Not a ruling; his to confirm.** Each
+release closes a small share of the distance between each law at its seat
+and 10, fitted to his fifteen thousand on an assumed start of 50, and built
+the same in both engines. The shape was chosen because it lands his fifteen
+thousand inside 88 to 92 from any start between 30 and 70; a flat step only
+does from exactly 50. Against the lock bar (the next section, "The formula
+is locked once it passes this bar"): every reference person
+starting between 25 and 75 lands inside 85 to 95, and the lift leaves every
+one's saboteurs, complexes and weights exactly as they were. Detail in
+`BIBLE.md` 2.1. Four things only he can answer are in `TASKS.md` BE2 to BE4
+and BE8: where his CQ was when he started, which unit his fifteen thousand
+is in, whether "0.1 or 0.05" meant one pattern or one session, and whether
+the Lance reference case, which reads 97.2, is his current law scores.
+
+## The formula is locked once it passes this bar. Ruled 25 September.
+
+His words: "On our formula, CQ DQ SQ, it keeps moving around. I want you to
+lock this in as sacrosanct. Once you're within plus or minus three, we
+don't need another formula. So as long as your simulations are working,
+revealing the saboteurs, revealing the combinations, revealing the weights,
+and you're simulating across our ICPs and you're within three, then we got
+it."
+
+**The acceptance bar, plainly, so it can be checked rather than argued
+about:**
+1. Simulated across the ICPs (Angela, Derek, James, Gordon, Rosa, and the
+   rest the harness already carries), the formula reads within plus or
+   minus three of a real anchor. His own history is the first anchor: about
+   15,000 releases, CQ in the high eighties to low nineties.
+2. The same simulation has to actually work as a diagnostic, not only land
+   on a number: it reveals the saboteurs, the combinations, and the weights
+   correctly, meaning the pattern a heavily loaded profile is shown matches
+   what is actually loaded in it, not just a CQ figure that happens to be
+   in range.
+
+**Once both hold, the formula is locked.** Not reopened, not re-derived,
+not swapped for a new shape because a later conversation makes a different
+one sound cleaner. This is the standing bar for closing `AZ5` and everything
+under it for good; the fix now running against his real data point is
+measured against exactly this, and if it clears both, the formula stops
+moving here.
+
+## Don't wait on him. Sequence what needs him to the end. Ruled 25 September.
+
+His words: "I don't want you to wait for shit. Whoever's managing that
+should be asking me questions. Cloudflare is going to come at the end.
+Anything that requires me, like searching and dropping shit in, that's at
+the end."
+
+Two standing rules from this, not a one-off:
+- **A blocked item gets worked as far as it can go without him, and the
+  seat owning it puts concrete questions to him rather than sitting idle.**
+  "Blocked on him" is not a stopping point, it is the point where design and
+  proposal work starts, so the only thing actually waiting is a decision, not
+  a whole item.
+- **Anything that needs him to go outside this conversation** (an API
+  token, an account setting, a search, dropping a credential in) **moves to
+  the end of the sequence.** It does not block anything that does not
+  itself depend on it. The Cloudflare database is the standing example:
+  everything downstream of a live database keeps being designed and built
+  up to the point that database is the only missing piece, and the token
+  itself is the last thing asked for, not the first thing waited on.
+
+---
+
+# Ruled 26 September, one long night. Graduated from `TASKS.md` DG to FO.
+
+Moved here on his order of 27 September, `TASKS.md` FO: "make sure the teams
+go through all the documents in this thread and migrate everything that's been
+approved." Every ruling below was made in one continuous session and each is
+recorded in full, with its context, in the lettered round it cites. The
+letter is the way back to the fuller record; `TASKS.md` itself is unchanged.
+
+Only what he actually ruled is here. What he floated, hedged, graded without
+choosing, or has not yet answered is in the last section of this block, named
+as open, and stays open until he rules. What was measured when a ruling was
+built is in `STABILITY.md`; how the approved designs look is in `DESIGN.md`,
+`DESIGN-nav.md` and `DESIGN-avatar.md`.
+
+## The birth instant. A time zone, not a city list
+
+**A birth is placed by a named time zone, and the code works out daylight
+saving.** Per `TASKS.md` DI. Shown what a bigger city list, an asked UTC
+offset and a zone name each cost, his words: "Option three, that gives us the
+most robust answer. That's good, do that." Never the person's own historical
+offset, which almost nobody knows.
+
+**Rising gets one representative point per zone, not a city per person.** Per
+`TASKS.md` DN, refining the first open question in DL rather than reopening
+DI. His words: "maybe we can optimize the city list where it's not every city,
+but they're grouped by time zone, because really what's important is the time
+zone. I need Los Angeles, I don't need San Diego and San Francisco. I need
+Portland, I don't need Newport. I don't want to build something that weighs
+more than the software we're building."
+
+Both are built: DL, commit `45f7203`, and DS, commit `2f60b02`. The points are
+the published IANA `zone.tab` table, not picked by hand. The cost of the
+ruling was measured rather than assumed, and it is real: one point per zone
+gives the same rising sign as the real city 99.9 percent of the time for
+Chicago and 48.4 percent for Mumbai, and Portland shares its point with San
+Diego and San Francisco. What that leaves open is in the last section.
+
+## Heavy load, on his own scale
+
+**Zero to ten, five named states.** Per `TASKS.md` DY, closing BO7, which had
+waited on him since DG. His words: "if everything can be measured zero to ten,
+and we go from flowing, impaired, moderately impaired, heavily impaired,
+collapsed, then heavy would be seven eight nine, four five six would be
+median, one two three would be impaired, zero is flowing, ten is blocked or
+collapsed."
+
+    0          flowing
+    1 to 3     impaired
+    4 to 6     median
+    7 to 9     heavy
+    10         blocked, collapsed
+
+The shadow score now runs zero to a hundred, so heavy starts at DQ 70 and
+median at DQ 40. Built in `ui/ritual.js` and `tools/loopsim.js` (EF, commit
+`3824c63`) and in `proto/ritual/losssim.js` (FL, commit `3004f4d`).
+
+## The Field's controls. The secondary nav goes, a glass overlay comes
+
+**The depth words go. A floating glass bar of icon toggles replaces them, and
+it is one pattern across every tool.** Per `TASKS.md` DK, marked on a
+reference screenshot of a weather app's floating pill of icons. His words:
+"it's glass, like Apple glass, it floats over the design and it has all of the
+iconography for the field and it can turn everything on and off, and this
+would be consistent across all the tools, saboteurs, complexes, hyper
+complexes, turn them all on and off." And, on the old row: "I don't want that
+secondary navigation, I already fucking told you that." The depth ladder
+still decides what is computed; the toggles decide only what is drawn (DK).
+
+**A measured value is a circle with its icon inside, a ring round the rim,
+and a small pill at the lower right carrying the number.** Per `TASKS.md` DR:
+"I'm not a fan of the pills as much as I used to be, they take up a lot of
+real estate. I want the UI UX team to redesign it with a circle and the icon
+inside of it, and the percent complete ring around it are the primary
+features, and then there's a pill to the lower right hand side with the
+percent or whatever the value is." It refines the earlier ruling in "The user
+journey pass" above, that every percentage is an icon, a ring and a pill; it
+does not replace it. Per DY the reading chips take the same shape and move to
+the left: "now that we've got the circular one up here, all the buttons on the
+bottom don't make sense, you should go on the left hand side."
+
+**Wheel, Frames and Dial stay three, as icons, in a secondary nav upper right,
+opposite the overlay.** Per DR: "I don't need the text, just make it the
+icon." Per DY: "Move that to the secondary nav on the right hand side, and
+let's just keep those three options there and let people play around with
+it," which also answers the DJ question of keeping three or narrowing to one.
+Per FA: "Those should have been in the right-hand side. Opposite like
+secondary navigation opposite the overlay."
+
+**Frames is flush.** Per DY: "I don't like the beveled edges, I want the
+entire thing flush to the rectangle of the area." Reconfirmed at EQ.
+
+**Zoom and reframe on all three pictures.** Per DY ("zoom in and out, and then
+hit the F key and have it reframe") and ER: "With Dial and Frame, I want to be
+able to use mouse wheel zoom in, and then when I frame it, it just snaps
+back." On the built version, FJ: "zoom in, zoom out, reframe, that's cool."
+
+**CQ is the biggest number on the dock, and CQ and DQ line up.** Per DY: "line
+those up so they don't look like a design element that's not quite designed
+right... and I do want the CQ number bigger, so it's in your face." The small
+element mimicking the halo and pitchfork beside it is cut, same round: "that's
+unnecessary."
+
+**The rail, item by item.** Per `TASKS.md` EZ unless another letter is named.
+- Everything starts on: "the addresses and everything should already be on.
+  Yeah, everything should start on." Reconfirmed at FH: "it's going to start
+  with everything loaded."
+- SQ leaves the upper left reading row. His reason: "SQ is a total sum of the
+  DQ anyway."
+- Accuracy stays in that menu, and the block reads as two rows.
+- The left column closes. Per DU both rails do: "I want to be able to
+  minimize them, so they fold in left and fold in right."
+- "Spirit" is renamed "Energy".
+- The reading circles animate.
+- A collapsible section named "Root energetics", closed by default, above the
+  CQ and DQ row, carrying the numerology and the birth readings.
+- The Jungian archetype icons shrink so the grid loses a row. Per EA the same
+  holds for the domain and primary glyphs: "Since they're hover over anyway to
+  get information, I don't know if they need to eat up that much real estate."
+
+Built: the glass bar, the right hand Wheel, Frames and Dial, flush Frames and
+zoom (EY, commit `8b2c3c0`); the rail list above, with the left column's
+collapse (FE, commit `248e5d2`); the glyph shrink to the 44 pixel tap floor
+(EF, commit `3824c63`). Not yet built: the right rail folding.
+
+**Ruled in direction, not yet built.** Per `TASKS.md` FJ, each dispatched:
+- "I shouldn't see text when I'm zoomed all the way out; text only fades in
+  when I'm zooming in." On Wheel, Frames and Dial.
+- Layer toggles animate rather than snap.
+- "Lines animating to show me which is the tension," which is also FH's
+  "where are my tension animations."
+- Orientation and balance "need to be designed the same way, it's the same
+  mechanic... give me two different designs." Two options are owed to him;
+  the pick is his.
+- Movement on arrival, per EQ: "When I land on this page the first thing I
+  want to see is movement, Dial looks dead." This reopens the convention that
+  Frames and Dial never animate. How they move is still with design.
+- The Field loading the person's own charge in as it opens, per FH: "When I
+  land on the field page, I want to see me load it up." Logged, and held
+  until the boot and rail passes had landed; both have.
+
+**A press on a tile gives its information.** Per `TASKS.md` DP: "I want to
+click on it and have it give me information, I want to hover over it and have
+it give me information." Built for the Field's domains, masks and archetypes
+(EE, commit `0d5fb9c`). A Blueprint domain tile still has no route to its
+knowledge base page (DU).
+
+## Icons and colour
+
+**The four roots get marks, the icons get punch, and archetypes wear their
+seat.** Per `TASKS.md` DR ("I need icons for Architect, Engine, Weaver,
+Witness, I don't know why those don't have icons"; "I think we want those
+punched up a little more, more saturated, they're just a little dull") and
+DY, choosing off the DX board: "Those icons for Architect, Engine, Weaver, I
+like, option recommended, it's cool... let's go with your recommended, let's
+go with B." That is the recommended four marks (Architect a set square, Engine
+a flame with its inner tongue, Weaver two streams meeting as one, Witness a
+viewfinder's corners), option B's saturation, and every archetype tile in its
+own seat's colour, which the 19 September ruling had asked for and never
+reached. Built (EF, commit `3824c63`) and routed through every lighting (EM,
+commit `2f563ab`; EW, commit `a21e7c2`). Lumen stays as shipped until he
+rules on it.
+
+## The celestial readings, as he reads them
+
+Per `TASKS.md` DK, his own model, recorded as the meaning the product works
+from: "your sun is how you express yourself physically, your moon is your
+internal monologue, your rising is the driving energy, the driving kind of
+motivators, and your Eastern symbol is how you navigate the world." Icons in
+place of rows, a press opening a card on the right, and the four read as one
+behavioural synthesis rather than four facts: "we want to take the behavioral
+energy behind that and the symbolic energy and translate that into behavioral
+energy, because that plays across the entire structure." The prototype built
+on it (`proto/states/`, DO) is not approved, and its nine questions are open.
+
+## The knowledge layer
+
+Per `TASKS.md` DU, ruled in direction and not yet designed:
+- **Knowledge base pages for archetypes, domains, masks and saboteurs read as
+  character sheets.** "Very detailed character sheets so people can
+  understand very clearly how the patterns run through them, but I want some
+  visual iconography, like you've unlocked something special and deep
+  understanding about yourself."
+- **Two tiers, never one long tooltip.** A tooltip carries two sentences and a
+  "click for more" that goes to the knowledge base page; pressing the thing
+  itself opens a summary of how it runs through this person, with its own
+  link out to the full page.
+- **The ritual builder and the release protocol are both named for overhaul.**
+  "The ritual builder needs a complete overhaul, and then the release
+  protocol, that needs an overhaul." The team forms the questions before
+  anything is built.
+
+## The avatar is the seven seats
+
+Per `TASKS.md` EI, closing the open question in EG: "Let's do the seven seats,
+I like that, we can even call it that." The avatar is the seven seats, not the
+body. "Seven Seats" as its name is his to finalise.
+
+The mechanic he gave with it, in his words: "I don't think the avatar's CQ
+matters here, this is about becoming, the stories we tell ourselves about what
+we're not and what we want to become, using the software to sniff that out and
+elevate the patterns keeping them from doing that." And: "The rituals is
+ultimately the tool that delivers that, and the accountability tracker is the
+progression." A persistent top three shows whenever the avatar is on. Most of
+the mechanic already exists in `engine/avatar.js`, checked in EI. It is built
+as a prototype (EL) and redone as six layouts after he graded the first "D
+minus" (EQ, FB). No layout is approved. The design record is
+`DESIGN-avatar.md`, part three.
+
+## The boot
+
+**The original arrival is the base, carrying Breath's outside rings and
+Ember's address ticks, with thicker bands landing one at a time.** Per
+`TASKS.md` EV: "I think the animation's very cool... I want the laws of
+animation obeyed. Twelfth principles. I want the center point. That's the soul
+itself to go from like collapse to expressed." Per EZ: "ease in and out to
+perfection that you can feel. The solid bars come in solid and when they can
+actually come in one at a time as well. The animation timing is good." Per FA:
+"Breath, the outside rings I like. Ori, not so much. Bloom, not so much.
+Ember, the secondary lines. Those are pretty cool... The one I like, needs the
+kind of like thicker bands. To come in with better timing and animation."
+EQ set the source: pull from "all these cool elements in our Field now"
+rather than invent a new look. Built (FC, commits `4c0e533` and `0736da2`).
+The design record is `DESIGN.md`, law 7.
+
+## The loop's words, and the opening
+
+**The four stations are named in his words.** Per `TASKS.md` FK: "It's
+discover play flow embody." On every station, directly, never translated into
+feature names such as journal, imprints, release and ritual. The ruling of 20
+September in `CLAUDE.md` stands; FK rules out the translation. He likes "the
+ring with the tune" and the check in, "that center ball, Hello Sofia's good"
+(FK). Both are kept as drawn, `DESIGN-firstrun.md` section 0.1.
+
+**The opening is one time, switchable back on from the profile, and
+storyboarded before it is built.** Per FH: a loading screen between the boot
+and the app, a one time first and last name on it, and a box so it is not
+shown again. "Our one time screen tutorial is a check on and off within the
+profile. Tutorial screens need to all be mapped out. That means they need to
+be storyboarded." Storyboarded in `DESIGN-firstrun.md`; its questions are his.
+
+**Two factor sign in is his systems engineer's to design.** Per EZ: "we need
+log in screen with two factor authentication. Oh, uh, well, my systems
+engineer to design and develop that schema. Make sure it works with our
+database." Called out here, not designed by this team.
+
+## Character, the masks, Release, and the opening screen. Ruled 27 September
+
+Round GS in `TASKS.md`, one message. Four things settled, each in his words.
+
+**Character is the whole of it.** "The character is a total sum of the all of
+it. Fetters to the mass combinations, right? It's you. It's the ego. It's the
+whole enchilada. You're actually rendering a visualization of what all the
+masks look like, and what's running it." Character is the sum over every mask
+and everything running under them. It is not a fourth name for the Masks
+layer and it is not renamed. It keeps its word and sits above Masks, which
+keeps its own. `ui/fieldbar.js` already carries the shape, "The innermost
+layer. What the whole chain compounds into." A description of Character is
+written to his definition from here on: what all the masks add up to, and
+what is running them.
+
+**Masks are never given a name of their own.** He floated a naming system for
+a person's individual masks "once the shapes of the masks start to come in,"
+and reversed it in the same breath: "maybe this is better not to have a name
+for it, because that's identification. Yep, take that out." A mask carries its
+age name from `MASKS` and the archetype that powers it (`COPY.md`, "Every mask
+names the archetype that powers it"), and never a custom or person specific
+name. It is the register ruling, "We are not judging anybody," applied to
+naming: a name for a pattern is a reading, a name a person wears is an
+identification.
+
+**The mechanic is called Release, and what it releases is a story.** He tested
+Release against Integrate, settled on Release for the charge, then corrected
+his own reason: "No, the release is any story, dude, it's got nothing to do
+with the charge. The purpose of this entire program is to empty the body of
+charges, empty a body of, of all stories. It's find the stories, empty the
+body of stories, period." Settled: Release is the one word, and Integrate
+Protocol does not name the mechanic or any string in it. The definition widens
+with the name. A release empties a story from the body, and the charge at an
+address is how the instrument reads that the story is still there. This closes
+"The words" item under "Still open from the night" below, except for the
+finished card's own word, which is still open there.
+
+What the widened definition reaches, and is not yet changed: the release
+surface explains itself at the address, "Release empties the address"
+(`ui/release.js`), and its eyebrow reads "Release and reframe". Both are
+written to the narrower definition. They are rewritten by the copy seat
+against this ruling, not renamed by default.
+
+**The opening screen says what this does and why a person is here.** "I think
+the opening screen should say what this does, or maybe say why they're here,
+or maybe a little of both." He dictated it:
+
+> This is a mirror. We hold up every story that you share, show it where you
+> live, and give you a protocol to release the bias, release the conditioning,
+> release the charge that causes you pain, so that you can live your highest
+> experience of life, pain and disease free.
+
+Settled: the opening carries his words, both what it does and why. "This is a
+mirror" is the product's own founding line and the three releases name the
+mechanism, which is the method "The word heals" in `BRAND.md` section 5 asks
+for.
+
+**Open, and his: the last four words.** "Pain and disease free" promises a
+medical outcome. `BRAND.md` section 5 recorded the last time disease entered
+the copy ("heals disease in the mind and body") and priced it: a therapeutic
+claim, regulated in every market this sells in, and one the instrument refuses
+to make about itself. He settled that one by replacing the claim with the
+mechanism. `marketing/refuse.js` rule `medical` would not catch this sentence
+as worded, because it matches heals against a named condition, but the harm
+guard under "The funnel and the guard" below exists for exactly this promise.
+Two ways, neither decided by the team:
+
+- **Ship it word for word.** It is his voice and it speaks to the pain, which
+  is what he said he was doing. Cost: the product's first sentence promises an
+  outcome it cannot measure, against its own ruling on heals, and a person who
+  still has pain or disease reads the mirror as having failed them.
+- **End it one clause earlier:** "...release the charge that causes you pain,
+  so that you can live your highest experience of life." Cost: four of his
+  words. Pain stays in the sentence, named as the thing the charge causes,
+  which the instrument does read. Only the promise of being free of it goes.
+
+The team does not edit dictated words. It ships as spoken once he answers, in
+whichever form he picks. Until then it is written nowhere in `atuned_src/`.
+
+## Founding offers, the shape
+
+Per `TASKS.md` FH: the first hundred to sign up for a tier "get that tier for
+a year, get that tier for life. These are my committed guinea pigs, my
+angels." The people they send it to get their first year at half. The next
+ring out gets 25 percent off their first year only. "They don't need to know
+all that, we can do all that in the background. Wherever these people land in
+those numbers, that offer would pop up. So we need a way to offer them offers.
+That needs a system." The shape is his. The design is
+`DESIGN-founding-offers.md`, and its eight questions are open, the first being
+whether "get that tier" means the tier free or its price held.
+
+## Working rules from the night
+
+**Stop asking whether to fix it.** Per `TASKS.md` FJ: "If it's in the blocks,
+fix it. If we haven't opened tasks, queue it up. Put it in the fashion in
+which you need it, and get it done." A blocking defect is fixed; a real non
+blocking request is queued; neither is put to him as a choice first. The
+fourth heading carries genuine open rulings, never confirmation of a default
+the team should simply have taken. It sharpens "Don't wait on him" above.
+
+**A comparison is one file with an in-page switch.** Per EA, after a board
+that linked out to a second file left him with no way back: "There's no
+close, there's no back, I can't get back to where I was. So make the mockups
+interactive HTML pages."
+
+**Every file handed to him is packed, prototypes included.** Per EB, EJ and
+EU, where the build arrived cut three times: "fix this so we don't see it
+again." Everything goes through `tools/pack.js` before it is sent. The second
+route is the raw address of `atuned-packed.html`, never `source.html`, and the
+file is saved to disk before it is opened. This extends "Handing the build
+over" in `CLAUDE.md`.
+
+**A prototype never wears the real app's navigation.** The team's fix to his
+complaint in FK, after the Seven Seats file's tab bar twice made the real
+Field look broken ("It looks like you broke my program," FJ). No prototype
+carries the product's tab labels unless the tab works, and every prototype
+says on the page itself that it is a prototype. The rule is ours; the
+complaint it answers is his.
+
+## Source AI, how it listens and how it asks. Ruled 27 September
+
+Round GO in `TASKS.md`. The whole behaviour, with the measurements behind it,
+is `reviews/SPEC-source-ai.md`, which is the one Source AI document and now
+carries both rulings, 20 September's and this one. What he settled, in short:
+
+- **It discerns and does not define.** It listens for where a story lands in
+  the body, how often it comes back, and the person's own words. It never
+  says an address, fetter, saboteur or archetype name to a person.
+- **It asks only at seven to ten, looking for the root, which is usually a
+  ten.** The scale is Source AI's own and counts return: one mention is heard
+  and never asked about, a return inside the entry is seven, an earlier entry
+  at the same place is nine, both is ten. The sniffer's own zero to ten was
+  measured and cannot carry this: its median single word already reads 7.33.
+- **Why questions are its questions,** and it never answers one. That
+  completes the 20 September line, "it may not say why", rather than
+  reversing it: the instrument does not measure cause, the person can find it.
+  **Superseded in part, 30 October, round SK in `TASKS.md`.** His words about
+  the live Journal chat: "This is the behavior I want source AI to take on
+  during chat. It's currently not doing that. It's currently acting like a
+  chatbot." He pointed at his own blueprint, "Atüned Source AI, Journal Mode",
+  Drive, 4 October, which lists the questions to prefer (section 24) with no
+  why among them and checks every question for "observable experience"
+  (section 35). So Source AI still never answers a why, and it no longer asks
+  one either: the ask keeps its lead in the person's own words and its last
+  sentence is the first of the blueprint's own questions that passes the ten
+  checks (`engine/qcheck.js`). And since his seam package of the same day
+  (`ATUNED_SOURCE_AI_SEAM_READY_HANDOFF_2026-10-30`, "the spoken language
+  should not reveal an unconfirmed ontology label") the lead no longer says
+  where it lands until the person has confirmed it. Kept here rather than
+  deleted, in case he wants the why back.
+- **A peer and a companion, not a clinician and not a friend,** who sees a
+  person for their authentic nature and not for the conditions that created
+  them. Core programming: a pattern is a condition that runs through a person,
+  never a description of who they are, which is the register ruling above
+  ("we are not judging anybody") applied to a voice.
+- **It opens with "What are we writing about today?"** His sentence.
+  **Superseded by his own words at round JS, 27 September:** "What are we
+  writing about today? That's not quite what I want you to use... We first
+  need to welcome them with their name. Hello, Lance. What would you like to
+  write about today? Or would you like me to offer some suggestions?" See
+  "Ruled 27 September, late" below. At `18238fe` the shipped string is still
+  the old one (`SRC_OPEN` in `ui/storyui.js`).
+- **The person leads.** One question at a time. Move on is final for the
+  entry, and Source AI answers it with "Cool." and asks nothing more.
+- **The Story page swap.** The column beside the journal is Source AI; the
+  imprints and the release moved into the right rail, the pane he calls
+  information, so journal, Source AI and imprints read as one system.
+
+Built the same round, scripted and labelled so: `engine/sourceai.js` hears,
+`ui/storyui.js` speaks, `tests/engine.js` group SA holds the contract.
+
+**Open, and his:** whether Source AI may read a person's earlier entries at
+all (`DESIGN-sniffer.md` question 12; built to the narrowest version, the seat
+keys already stored on the device, never the text), and the pattern signal
+per archetype and domain, which is a design with a prototype and not a build
+(`DESIGN-pattern-signal.md`).
+
+## Ruled 27 September, the rest of the day. Rounds GQ to IA
+
+Carried from `TASKS.md` on his round IA order, "Update all of our documents so
+we've got the latest in case we run out of tokens." Each ruling is quoted from
+the round it cites, and each built item names its commit. What he asked to
+see before deciding, or has not answered, is not here; it is in
+`BACKLOG-AUDIT.md` section 2, which is the current open list.
+
+**Fringe goes into the real Field.** GQ: "Fringes is fucking incredible. And
+the running hot, add that to analytics... Please add that as part of the
+normal field." Built at `325e923` (HH). **Running hot is named in the nerve
+state words, not as a bare number.** HI: "zero through five, those are the
+nerve states, so we can always say running hot is mildly impaired to heavily
+impaired, or heavily impaired would be, I guess, hot." Where the list starts
+on that scale, 4, 5 or 7, is open (HN draws all three on real profiles), and
+the copy change waits on that pick.
+
+**The nervous system figure, front and back, is the body's starting figure,
+and the body map is wired in.** GQ: "the nervous system, uh, front, back,
+that's fantastic, can you lock that in as our kind of starting." HG: "I really
+dig the body map system, I think it's much more fine than what we had, let's
+wire it in and we'll get feedback directly there." Built at `4c03123` (HR):
+the Body tab opens on the Map layer. GV, on the three drawn questions in
+`questions.png`: "C, definitely," read at GV as C3, a deep structure shown on
+both surfaces, ghosted on the far one. Question A, "with the icon of the
+fetter", did not resolve and is open.
+
+**The archetype picker goes onto the Avatar page, on a scale of one to five.**
+HG: "instead of ringing true, change it to a line, but we want to give a scale
+from one to five. People may not see their full potential, they're a magician
+as an example, they may not understand it." Built at `1850525` (HQ), "Hardly"
+to "Fully". Twelve or eighteen, and Rebel or Outlaw, are open.
+
+**The Avatar page is about building the avatar, and the centre is its hero.**
+HG: "the centre panel is our hero element, and the avatar page is really about
+building the avatar, so it's me telling the story of who I want to become, and
+then that populating within these fields, maybe the tags, and it's using the
+sniffer to sniff those fields for my stories, and then it gives me the release
+protocols so I can become that person. And the percent complete, that's good."
+And a ritual queue on the same page. Built at `1850525` (HQ); the bar reads
+Avatar at `engine/core.js:91`. This supersedes "Which layout" under "The
+avatar" in the open block below. His verdict on the built hero, HV: "You've
+taken the central design element and you've turned it into a bunch of text
+boxes. That's not the design that I want." The redesign is open and is his
+to see.
+
+**The column law, and the icon rule.** HS, both in his words in `BIBLE.md`:
+"The center column is sacrosanct for art. Not for text. The right column is
+for text. The bottom underneath the art is for text. Or design. The left is
+for a tools" (section 5.2a); and "No text by itself if it describes something
+without an icon. Or a symbol... you can't have a fetter without a symbol.
+unless it's in body text" (section 1.4). **A section never describes itself**,
+HS, after two such paragraphs were quoted back to him: "Why is that text never
+being written out ever again after I keep asking for it to never be written
+out?" Both quoted paragraphs were cut at `a0d90b3` (HU). **Third tier text goes
+site wide.** HS: "get rid of all this small noodly nuanced shit across the
+entire site." The sweep is in flight, not committed at `e0b14a2`. **Landed
+since:** `8da2afb` (IF), and a second sweep to the ten year old rule at
+`287dd3e` and `16ad60f` (JK, JO).
+
+**The column law is set aside on the Story page, by his own hand.** HY: "I
+think I've painted you in a corner with this layout. I think we know what the
+tools are, we know what we're asking, but I want everything above the fold, so
+feel free to break that right navigation." And: "I want story, imprints and
+release to all be above the fold." IA: "I don't like that the release goes
+below the fold, that's terrible UI UX when we've got so much real estate. I
+don't like that the design elements look like they're completely separate."
+The page's parts, HT: a prompt area above the journal, a Source AI summary
+under it, a panel that shows what it is sniffing, then the imprints and the
+release, "The release area needs to look dramatically different." The
+imprints start from "the combination between Trace and Route" with a sort by
+type (HY). Mockups at `proto/story-redesign/` (`09c5149`); round two in
+flight (HZ). **Settled since:** Trace picked at IG ("For the story page I like
+Trace"), round two approved at IJ ("This looks good for the story. Wired
+in."), wired as layout H at `ecbc0a8`. The page is being split into its own
+zones by his JX words, below.
+
+**The Compass is a circle, and radiating.** HS: "the CQ is showing where
+things are weighted and it's showing where you're either overexpressed or
+underexpressed... You want that to be a circle, right? You want your CQ to be
+100. And this whole thing should be a circle. And radiating. So let's apply it
+to the wheel." And "Update the compass using the same art direction of the
+field. Give me four examples of the compass." Four are at
+`proto/compass-redesign/` (`5172d1e`), every colour checked against the
+build's own tokens after his "Double check your colors." Which one is his
+pick. In the same breath: "I want to hide the square version and we're going
+to keep the dial. So we're going to start phasing out the square." Which
+surface "the square" names is not written down in `TASKS.md`; read it back to
+him with a picture before anything is hidden.
+**Overtaken twice since.** He picked "a combination of C and B" at IB, wired
+at `abcdc12` (IP). Then at JQ he rejected the result: "The compass is
+currently taking up a quarter of the real estate, I don't know why, and it
+doesn't look like a compass. I didn't agree to this." The circle is no longer
+the direction; the current Compass ruling is under "Ruled 27 September, late"
+below (two pyramids with a gap, the gap carrying data, coherence at the top).
+
+**Sign in is wired in now, without questions.** IA: "I need the login page, I
+need it wired in, without questions. It needs to be effective and clean,
+because the software needs to work, front to back, before we run out of
+tokens." This moves sign in ahead of "Don't wait on him" above, which
+sequenced anything needing him, Cloudflare first, to the end. What it does not
+settle is the server a sign in talks to: Cloudflare or Supabase, and which
+product goes online first, `BACKLOG-AUDIT.md` section 2.1 items 2 and 3. The
+same message puts the Compass, a clean build and the funnel first: "It's
+important that we end up cleaning up the compass before we run out of tokens
+for the build. We need to end up with a clean build. I need the funnel."
+**The funnel half of that was reversed the next round,** IB: "Actually, you
+know what? Don't touch the funnel. That's a waste of credits." The funnel
+build stays parked; `marketing/FUNNEL.md` (JR) is strategy only and its own
+section 9 asks whether that changes. The sign in shell was built at `3dd1fe0`
+(IP). At JJ he asked for more: "Make sure there's a login page, the login page
+is tied to the database," which waits on the same server question.
+
+**The domain is spelled A-T-U-N-E-D.** HD: "I think it's called a tune dot
+app, A-T-U-N-E-D." That is `atuned.app`, the spelling `reboot-os`'s server
+already carries.
+
+**Working rules, his.**
+- **The backlog is where he reviews.** HY: "the backlog if there's ever stuff
+  in here that needs my eyes, has a link to it with the most recent so I can
+  review... when you link up the HTML files also link up the questions and we
+  can use this instead of like a backlog." Every item that needs his eyes
+  carries a live link to its latest version and its questions.
+- **The UX seat simulates with the ICPs and the focus group as standard.** HY:
+  "for my UX guy, this is going to be part of your normal simulations all the
+  time, so I need to stop asking it, I need to start making it part of your
+  normal set."
+- **A file he cannot open is published as a page instead.** Ours, from HZ,
+  after a packed file and then a raw one both failed to open for him: the
+  Story mockups were published as a live page, which opened. The rule is
+  ours; the failure it answers is his, three times (HT, HV, HY).
+
+## Ruled 27 September, late. Rounds IB to KA
+
+Carried from `TASKS.md` on his round JX order: "make sure we're adding all
+this stuff to our documentation... make sure that everything that's been added
+recently that is of like actions or designs or whatever is in documentation."
+Each item quotes the round that holds it. State is read against git at
+`18238fe`: a commit where one exists, "in the shared tree" where the file is
+modified and uncommitted, "not built" otherwise. Where this block and an older
+paragraph above disagree, this block is the later ruling and the older
+paragraph carries a note pointing here.
+
+**The goal is to empty the bank and fill the vault.** IW: "The goal is for a
+person to empty their bank and to fill their vault." The Story page's Bank and
+Vault icons shipped with the Story wire in (`ecbc0a8`).
+
+**CQ, DQ and SQ move in real time, and the direction is fixed.** IW: "CQ
+should raise, DQ should lower, SQ should lower. You should see SQ lowering in
+real time since those are the patterns releasing." JA: "CQ, DQ, and SQ are
+calculated in real time. So when a person adds to the story, it adjusts the
+numbers. When they release, it adjusts the numbers." No arithmetic changed;
+the live DQ readout during a run is `82e7bb7`. The nine day settle belongs only
+to the masks mockup's own fade, never the product's numbers (JA).
+
+**The mask outline is suggestive, and colour carries it.** JA: "we want the
+outline suggestive. It's really about the color." **Masks are a mosaic.** JP:
+"the masks should look like a mosaic of the hypercomplexes, complexes,
+saboteurs. And the more intense, the more the pixel." Drawn at `7be7c9e`,
+design only. **Masks live on the body map.** JZ: "our masks should be on the
+body masks. So put all six masks here." This bears on `PRIORITY.md` section
+17 ruling 4, where the masks page lives, and is not yet read back to him as
+answering it.
+
+**The imprint views all stay.** JJ: "have three icons... So I can cycle through
+A, B, or C... Start off with version A." Lanes, Ring and Strip at `ff76edc`,
+default Lanes. **An analytics preview sits closed at the foot of the column.**
+JJ, built at `d406906`.
+
+**The release protocol, as he specified it.** JF: "do you want to release 25
+left and right, 50 left and right, or 100 left and right. And then the reframe
+is the opposite... The default should be four seconds between... a countdown...
+The install should tick up... Wait for two minutes, and there should be a two
+minute countdown." The opening is his own recorded voice and AI reads only
+after it: "That's my voice, it's human. After that, it's AI." That settles the
+IM collision: the voice gate's ban on "sit back and relax" in synthetic copy
+stands. Built at `1a7083c`: `REL_DOSES=[25,50,100]`, `REL_SETTLE_S=120`, the
+welcome phase structurally barred from the speech function. **Pace is user
+driven** (JA). **The list is a carousel, not a flash.** JQ: "You need to be
+able to see the list right in front of you and read it, and you need to see
+the next word coming up... cycle forward and backward and... flag the ones I
+felt were the most heavy." In the shared tree (`ui/release.js`). **The
+completion words, his draft.** JX: "Note the patterns that felt heaviest.
+That's the work. The patterns you didn't feel removed from your pool. To
+optimize your experience." Not built. **Badges for every saboteur, complex and
+hyper complex** (JF). Not designed; the gamification timeline marks it open.
+
+**The Compass is two pyramids with a gap, coherence at the top.** JQ: "this
+needs to look more like two arrows, one pointing up, one pointing down, or two
+pyramids... with a little gap of limbo in between, that's the oscillating."
+JT: "The oscillating space, I don't want it blank... There's still data in
+there," and the ascendant teachers "closer towards the source of the centre,
+maybe with Jesus and Krishna being closest to the point, and then their
+opposing behaviors on the opposite scale outside of the ring." JX: "at the top
+of the compass is the coherence, and the bottom is decoherence. As symbolized
+by the halo and pitchfork," with animation where a person's gravity sits. KA:
+it must render full screen. The Boundary overlay on it is held to the backlog
+by his own words (JQ). In the shared tree (`ui/cone.js`). Not in conflict with
+the Field dock ruling above that cut a small halo and pitchfork element beside
+CQ: that was the dock, this is the Compass.
+
+**The Field's text becomes buttons.** JQ: "turn those to buttons, maybe on the
+bottom panel of the screen. So if I press it, it just lights up that area. And
+then if I press the areas in which I'm feeling pain, it could offer a summary
+of suggestions... and give me a release protocol." In the shared tree
+(`ui/map.js`).
+
+**The Avatar is built root to crown, in three subtabs.** JP: "go from root to
+crown. So the symbol will be on the left. The symbol will have the story
+behind the symbol... a prompt that you can cycle through... submit that to
+your avatar... The sniffer then snips that out... set up rules for
+affirmations or releases," with "a tick per cycle... three cycles, three
+revolutions per cycle." JQ: a larger hero, the box around the text in the
+seat's colour, "on the left side, it's the patterns to release. And on the
+right side, it's the patterns to embody," archetypes pinned in with the
+sniffer's percent, and "the becoming on its own subtab... the archetypes...
+on its own subtab... the intake questions... on its own subtab." In the
+shared tree (`ui/avatarui.js`, `engine/schema.js`). **Law questions include
+moral dilemmas.** JQ: "You see a beggar on the street, do you walk over them or
+give them money?... We kind of want to mix it up." This is the format the
+Ultima dilemma line in `CLAUDE.md` was waiting on. Not built.
+
+**Energetics takes the art pass.** JP, quoted in "Energetics" under "Still
+open" below. In the shared tree (`ui/intakeui.js`).
+
+**The ritual page is visual first.** JQ: "I need to be able to see it as a
+calendar, see which ones are running, edit, remove, log, delete, rearrange,
+see a list, have history," with the accountability tracker attached. JX, the
+prompt it should make: "you're avatar wants to be a public speaker you're
+holding on to fear of judgments of others would you like to set up a release
+schedule for that." In the shared tree (`ui/ritual.js`, `proto/ritual-redesign/`
+untracked).
+
+**Source AI, redesigned.** JS: welcome by name ("Hello, Lance. What would you
+like to write about today? Or would you like me to offer some suggestions?"),
+"get rid of the source AI word scripted," a round red record button, the
+Story release renamed "rapid release," a button upper right to the full
+screen release protocol, sample stories preloaded on the worked examples, a
+readout look for data areas, and "give me those four different looks" under
+Story in the subnav. JP: Source AI adds a why, grounded in where the story
+landed. JX: a voice mode, "I can record voice, I can type in text, or I can
+have source ask me questions." Not built at `18238fe`; `ui/storyui.js` is in
+the shared tree. **The Story page is separate zones.** JX: "The imprint
+section, the journal section, right now they read as one, but they need to
+look at this one screen, but... three elements. Or even the source elements
+is its own element. So like four, plus the information, I guess, five," with
+the release "under the imprints... its own little zone... its own aesthetic."
+
+**The sniffer keeps the person's words.** JX: "I think we want to keep the
+record for the sniffer. To hear if a person's repeating the same patterns and
+the pattern's not clear. Plus it's their vault. So their words." This bears on
+JM's question (re-read old entries with today's sniffer, or keep what they
+read) and on `DESIGN-sniffer.md` question 12 (may Source AI read earlier
+entries). It is not yet read back to him as answering either.
+
+**Major patterns are classed by node weight in nerve state words.** JX:
+"classify the pattern or the weight of the cluster by the weight of the node.
+Is it flowing? Is it blocked? And then what are the states in between?... it's
+zero to five, but you can scale that up to zero to 10." Not built.
+
+**The ten year old rule, refined.** JK set it (voice rule V21, `CO-29`, sweep
+at `287dd3e` and `16ad60f`). JX sharpened it: "it has to be articulate and
+contextual... practitioner needs to be able to understand it. and the layman
+needs to be able to understand it... we can't say six point three weight...
+We need to say something like heavily impaired, heavily blocked... the
+iconography within the summaries." The refinement is being written as V22,
+objection `CO-30`, in `.claude/skills/atuned-voice/SKILL.md`, uncommitted in
+the shared tree at `18238fe`.
+
+**The first run: loading, sign in, then the storyboards if switched on.** JX:
+"it goes an animation to a tune, login page, login page has a developer
+option of the storyboard onboarding and storyboard tutorial, I can turn those
+both on and off... if I have them both off, it takes me to my field." The
+tutorial becomes narrated story animations of named people using the tools,
+ending "Take the quiz. Find out your coherence." This places the on and off
+switch at sign in as a developer option, where "The opening" above put it in
+the profile. Storyboards redrawn toward far less text at `0365177` (JW). **The
+signal test is his script.** JY, in full in `TASKS.md`: ten breaths, "grounded"
+without "safe", awareness at the heart then the throat, "see if they can feel
+the quality difference." Not yet in the storyboard.
+
+**Chrome and the Body page. His Mayday, round JZ.** The new lowercase logo
+with umlauts; "Powered by source OS" in `#323232`, fifteen pixels apart; an
+icon on every tab with collapse and expand; undo and redo hidden; "how to read
+this" moved under the user profile; a profile page that saves under a name and
+can be deleted or retrieved; the opposing behaviours drawn with both words,
+both icons, both weights and a tension bar. **The Body page becomes one map
+with one overlay switch,** "consistent across Fetter, Saboteurs, Complex,
+Hypercomplex, Mass, Pain," the strongest running always floating to the top,
+the six masks on it, and a Kundalini flow layer: "the snake going around the
+seven chakras rising. And your charge at each Ida and Pingala." Shell pieces
+routed to the shell seat, in the shared tree; the Body rebuild and the profile
+page have no owner at `18238fe`.
+
+**Two he answered about process.** IE: OAuth and APIs join after the
+repository is private, the server is chosen and the first product online is
+named. JX: "You, you did add the repo, yeah?" Answered no in `TASKS.md` JX:
+`reboot-os` is not in this session.
+
+## Still open from the night, and named as open
+
+Nothing below is ruled. Each is written with the letter that holds its
+options and costs.
+
+**The birth instant.**
+- Mark a zone derived Rising as approximate on the rail, given Mumbai's 48
+  percent against Chicago's 99.9 (DS).
+- Grow the zone table toward the cities he named, Portland apart from its
+  zone, at one row each (DS).
+- For an untimed birth, show the gate number without its line on the 82.5
+  percent of days it is known, or keep refusing the whole reading (DS).
+- The saved record carries `who.born.zone`, additive, with no schema version
+  move; his contract with SOURCE (DL).
+
+**The Field.**
+- Zooming Wheel still pulls in layers beyond those chosen; the prototype's
+  default was that zoom only brings the picture closer (EY, and the glass bar
+  questions in DO).
+- The glass carries no blur, because `DESIGN.md` law 7 forbids a backdrop
+  filter over the Field, measured at 12 frames a second with it. His own
+  words on the tooltip, "I can't see through it and it's not blurred, that's
+  a fail" (DU), sit against the same law. Real blur means moving that floor.
+- On a phone the Wheel, Frames and Dial switch sits below the picture; at desk
+  width Frames fills the empty left lane (ED, EY).
+- The larger CQ inside the Frames core, and the capsule beside the compass
+  marker, were not ported (EY).
+- Stacked saboteurs on one point fan out or open a list on a press; the line
+  tracing and pinning prototype ports or not, and to which picture (EE, DD).
+- Snow's Field keeps its ruled black stage, where domain and archetype names
+  now read close to invisible on the default open, or moves to paper (EM,
+  FE).
+- The Dial's "SQ" wording, and whether its "most shut law" shows the answer or
+  the lifted value (DG, DH).
+- "Why do they have information over the" profiles (FH) did not land and is
+  held for a picture.
+
+**Icons and colour.** Lumen, his own palette, still fails its contrast floor
+even after the fix that cleared Snow and Glass white (DX); he asked for more
+versions, "Lumen B and C is really talking to
+me" (DY).
+
+**The words.** Release against Integrate Protocol is ruled: Release, on 27
+September (GS), in "Character, the masks, Release, and the opening screen"
+above. His words: "the release is any story... empty the body of stories,
+period." EC's simulation had release winning 42 of 72 pairs against 14; EK's
+"Integrate Protocol" does not name the mechanic. Still open, and only this:
+"Released" against "Run complete" on a finished run's card (EC), which sits
+with `BRAND.md` section 9. **His JF words bear on it and are not yet read back
+to him as an answer:** "When you complete, it needs to say, you've released X
+number of patterns." Built that way at `1a7083c`. What stays open is JO's
+question, whether that X counts statements or named patterns.
+
+**The avatar.**
+- Which layout. **Overtaken on 27 September:** he approved wiring the page at
+  HG and the real tab was built at `1850525` (HQ), in "Ruled 27 September, the
+  rest of the day" above. What is open now is the hero itself, which he called
+  "a bunch of text boxes" (HV). Kept for the record: FB measured Told first,
+  9.4 of 10 against the D minus layout's 5.4.
+- Lead with the ideal he stated or the heaviest thing in the way (FB).
+- What counts as a pair cleared, with three ways measured (EL).
+- CQ, expression, or both, as the number the avatar leads with (EG).
+- What happens to the Field's own wheel beside a seven seat ring (EG).
+- Balance and orientation inside the avatar page (EQ).
+- The binaural tone and the mixed AI and human voice for a release, a later
+  production and licensing question (EI).
+
+**The boot.** Length, 5.24 seconds as built or the 7.2 once ruled (ET, FC).
+Squash and stretch, ruled out of this animation on 5 September (BT1) and
+asked back in with all twelve principles (EV, EX). Whether Breath's soft glow
+and Ember's loose sparks were meant too (FC). What replaces the old gold halo
+(ET). The Frames and Dial arrivals, not ported (FC). "It's got a globe, a time
+we get into the center" did not land (EV, EX).
+
+**Energetics.** Which layout meets a stranger, Staged or the Tiles rail he
+described (DZ). **Overtaken:** IT asked for a fresh art pass instead
+(`proto/energetics-art/`, `d4a2c35`), and at JP he approved it: "Energetic art
+pass. I like that for the questions. That design is really cool. Run with it,
+wire it in." Which of its three treatments is not named; the wire in keeps all
+three as a toggle, on the imprint views precedent, and is uncommitted in the
+shared tree at `18238fe`. Name roots, asked for in DM ("Lance means to pierce, O'Neill
+means champion, Powell means exalted"), sit against the standing ruling in
+"The accent is blue, and the summary is built" above, "No etymology table",
+and DZ found the references do not support his three examples as given.
+Source AI's question did not land and is held for a re-ask with an example
+(DY).
+
+**The rail's cards.** The Reading card's job and which door is primary (DT).
+The Flow element, with Pinch recommended (DZ). "Signs" or "Birth" as the
+heading for the birth readings, and where the section sits (DG); Root
+energetics in EZ may have answered this, not confirmed with him.
+
+**The funnel and the guard.**
+- Level 1, the band the marketing guard protects, now reads on expression,
+  and Ana, the crisis persona, is served a hook she was refused before (FG).
+  CQ or expression for the harm model (FI, FL, and BB3 and BB5).
+- OB15, 20 September, "at no point are we talking about results or purpose,"
+  against FH, "highest purpose of the product results" (FI). The opening
+  screen half is ruled on 27 September (GS): it says what the product does
+  and why a person is here, in the copy he dictated, quoted in "Character,
+  the masks, Release, and the opening screen" above. Not ruled by GS: whether
+  OB15 still binds the onboarding tour it was first said about (OB14, "here is
+  what the Field does, here is what Energy does").
+- "Pain and disease free," the last four words of that dictated opening, word
+  for word or cut one clause earlier. A medical outcome promised on the first
+  screen, against the harm guard in this section and `BRAND.md` section 5.
+  Both options and what each costs are written in that same section above.
+- The referral cascade needs to know who sent whom, against the funnel's
+  shipped promise of "not an asset, not a list, not a segment" (FI).
+- The name and email capture screen his welcome copy assumes does not exist
+  in `funnel/` (FI).
+
+**Floated, and not ruled by his own words.** The mask facet grid, with the
+sniffer telling childhood from later eras (DP). The journal gamified toward
+filling in the masks, with "you get a bonus of five hundred points" said as
+"I don't know" (DQ). The Story page without its left rail, said as "maybe"
+throughout (DU). More signal test questions to prime the diagnostic, "I don't
+know, maybe we don't do that" (FK). "Always Crown to Root, top to main to
+fetter" (EA), held for a clearer re-ask.
+
+**Carried from DJ, still his.** The body map's Crown height rule, waiting on
+his muscle reference image. The funnel guarantee's wording, which three
+shipped lines contradict. The four facts about his own history the locked
+formula is anchored to (BE2 to BE4, BE8).
+
+## Round OG, 1 October. Prices, referral, body places, the rerun, and the nav
+
+**The ladder is 12, 29, 59, 99. This supersedes the "12, 24, 36, 99" ruling
+above.** His own statement, after checking the documentation: "Free: $0 /
+Tier 1: $12/month / Tier 2: $29/month / Tier 3: $59/month / Tier 4: $99/month
+/ Tier 4 includes the same 1,200 pattern allowance as Tier 3, plus cohort lead
+capability." Four products in Stripe, not three. The earlier ruling stands as
+history and is not edited out.
+
+**The referral grant is twenty five patterns, not fifty.** His words: "let's
+do 25 free patterns. Change that in the documentation." This supersedes "The
+referral is fifty" and "The referral should be fifty" above. The cap of four
+referrals a month was not discussed and is left as written until he says.
+
+**Body places.** "The belly button is the sacral. The diaphragm is a solar
+plexus." Added to the body place words the engine reads. On adding detail for
+neck, shoulders and gut: "if you mean like detail, then yeah." So yes, more
+places, taken from the codex's own location column and never invented.
+
+**A rerun adds the heavy lines, and keeps the release's structure.** His
+words: "A rerun should always, it adds the ones that are heavy, but remember,
+there's a structural flow to the release. We start with the least tense
+words, the most tense words, and then the decompression words, from the least
+intense to the most intense." The rerun replays the lines the person marked
+heavy, in the release's own order: least tense, then most tense, then the
+decompression lines. The wording about the decompression order was unclear and
+is asked again, with the order drawn, before it is built.
+
+**Rerun v2, built the day after, on his clarification.** His words: "rerunning
+is a line you marked heavy. And it would go back into that kind of where it
+would sit in that bell curve. The bell curve, by the way, is the harmonic
+register of that address." What shipped: a line marked heavy while it was said
+is kept on the record as `meter.heavy`, a sorted list of line keys that must
+all be keys already in `meter.unique`, refused by name at the import boundary
+and exported with the record. A rerun (`meterRerunOrder`) is the opened line
+rule plus those lines, put back at their number on the fifty, least tense
+first, inside the run's own order: address by address, release channels then
+reframe channels, left then right. It is capped at the run ceiling, opens
+nothing, and the allowance does not read the marks. What is not built, because
+the code has nothing honest to build it on: the curve as a shape. The only rank
+of tension a line carries is its number on the fifty (`C3_BAND`, five bands of
+ten), and the sentences do not follow it, since the printed cards repeat their
+five lines and every address with no card says one sentence for every number.
+The hertz per seat is a tone and the lever's bell is over an address's weight;
+neither is an intensity per line. Open, and asked in the round OG report: what
+"the bell curve is the harmonic register of that address" means as a rule, the
+direction of the reframe lines, and how a heavy mark is taken off.
+
+**The body map is Body, in Play, between Field and Compass.** Round OD moved
+it to Discover and called it Intake on a misreading. His words: "Body is
+missing from this current build. So play, field, compass, character. Body
+should be between field and compass... the intake that you call intake is
+body... The actual intake should be all of the questions." Reversed. The
+questions are the diagnostic that lives under the Avatar. Whether they get a
+door of their own in Discover is open, asked in round OG.
+
+**Mockup pick: Ink for the Field's trace style.** "Let's do ink trace for
+style."
+
+**The Intake page is restored, and its questions come last.** His words: "we'll
+do the intake questions at the very end for now, just restore the intake page."
+A Discover door of its own after Summary, integer 13, showing the diagnostic as
+it was. Redesigning the questions is the last item in the queue, not the next.
+
+## Round OI, 1 October. Rulings
+
+**Language on the Summary is universal and a soft rule.** His words: "keep it
+as the language as universal as possible. In the knowledge base we can do all
+the correlations: awareness and soul and the operating system are one unified
+field, source, Shiva, Brahman, or one. I don't want it to be a super hard rule.
+Part of this is educating the person and cross pollinating the language so that
+people understand we're talking about one thing." The Daily Summary document's
+list of words to avoid is guidance, not a gate. The Knowledge base carries the
+correlations. Those entries do not exist yet.
+
+**A daily intention is added.** A new daily act, written by the person.
+
+**The Summary is written once a day, on open, and frozen for that day.** "It's
+like astrology": each day goes in, the previous day goes into a bank, his word
+"a vault". Rules and templates for now, no model.
+
+**A rerun puts a heavy line back where it sits on the bell curve, which is the
+harmonic register of that address.** His words: "rerunning is a line you marked
+heavy. And it would go back into that kind of where it would sit in that bell
+curve. The bell curve, by the way, is the harmonic register of that address."
+
+**Body places.** "Sacral is just below the belly button and the plexus at the
+back of the spine. The solar is the diaphragm and the plexus at the back of the
+spine." Heart goes at the Heart seat. Upper and lower abdomen are Solar and
+Sacral. Spine is not a seat: it belongs to the Kundalini health reading and to
+the pain map. Shoulders, head, stomach and gut are not ruled.
+
+**Points never go down.** "You just don't get points for the day, or for that
+particular thing that you didn't do."
+
+**The referral is 25 patterns.** He asked for it to stop being asked about
+fifty and to be changed in the documentation. Everything above that says fifty
+is superseded.
+
+**Stripe dashboard steps go in the markdown document.** `STRIPE-SETUP.md`.
+
+**Practitioner mode.** Turned on in the profile, it unhides the practitioner
+section after Embody. The user story, the review of it and its build order are
+in `PRACTITIONER-STORY.md`. The gap to MVP is in `MVP-GAP.md`.
+
+**The profile button opens a menu** of the account sections, with Settings
+(the single page) and Sign out.
+
+## Round OJ, 1 October. Rulings
+
+**Sound is on by default.** "Yes, sound on by default. With the sound on off in
+the profile." The stored fact is now the off (`ui.sfxoff`), so the old stored
+`sfx:false`, which was the blank's own default and not a choice, cannot keep a
+person silent. The switch is in the profile menu and in Settings, Display.
+
+**Points never go down, and they exist.** "Copy that on no points. Run with
+it." Points only rise. Whether they can ever buy patterns waits for accounts.
+
+**Sight by tier is real. This reverses "Sight is not for sale" and "every tier
+sees the whole reading".** His words: "you see your own reading. However the
+tiers, the differences are: tier one can see saboteurs, tier two can see
+saboteurs and complexes, tier three and four can see hyper complexes on. That
+means they can't see what's running them in the field or the body or how the
+point cloud is expressed or the child masks. Those buttons would be grayed out
+to them with a little lock over it. If they hover over it, it gives them a
+little description of what's locked, and where to go to unlock it, with a
+button that takes them to an upgrade. The upgrades page is part of the paywall.
+It shows them which tier they currently have, and then shows you the benefits
+of going to the other tiers." Free sees the 112 addresses, domains,
+archetypes, laws, gates and shadow. This is a product boundary on the person's
+own device and is not security.
+
+**The avatar work pivots to the new document** (`ATUNED-becoming-system-TDD.md`,
+audited in `BECOMING-AUDIT.md`).
+
+**The Summary carries the root meanings of the person's name,** in a right-hand
+panel, because the information does not change. His example: Lance, to pierce;
+O'Neill, champion; Powell, exalted. "People tend to behave in accordance to the
+energies of their name... after you are severed from your mother's umbilical
+cord, the very next thing is your name... a cascade of drivers." No table of
+name meanings exists yet.
+
+**Body place words are the head, the upper torso and the lower torso.** "We
+don't need the heart or spine, because those are inside the upper and lower
+torso." Shoulders are not needed. Which seats each torso covers is not yet
+ruled.
+
+**Practitioner.** A practitioner may recommend (make suggestions on) a person's
+ritual and protocol. "Active" means clients who are online. A practitioner may
+edit their own additions and may not touch the person's side data: "We never
+want to give control to privacy violation." Notes are of two kinds, private and
+shared. He asked to see both versions of the right panel (structure only, and
+story-derived with the person's yes) before ruling. The role's word is
+Practitioner, which includes coaches.
+
+## Round OK, 1 October. Rulings
+
+**Tier two unlocks the Kundalini. Tier three unlocks the point cloud.** The
+Compass registers view is the point cloud. The Character masks stay at tier three
+until he says otherwise. The Kundalini has no surface in the shipped app yet.
+
+**Name meanings: a vetted table first, then a lookup.** He asked whether to
+look names up live through the Claude API or to start from a database of common
+names with the internet as the fallback. The recommendation, which he can
+overrule: the table first, so the common names are already checked and cost
+nothing to show; a lookup only for a name not in the table. The lookup runs on
+our server and the app never holds the API key and never calls Anthropic. It
+sends the person's name off the device, so it needs the person's yes in plain
+words and it is a second network seam, which `CLAUDE.md` allows only by his
+ruling. A result is kept on the device, marked as looked up and not vetted, and
+can be promoted into the table after a check.
+
+**The torso seats.** Lower torso is Root, Sacral and Solar. Upper torso is Heart
+and Throat. The head is 3rd Eye and Crown. "You nailed it."
+
+**The role is called Practitioner,** and it includes coaches.
+
+**The reframe half of a release runs back down.** The release lines run 1 to 50,
+least tense to most tense, and the reframe lines run 50 back to 1: "I never
+thought about cycling it back down to one. Let's try it." A rerun puts a heavy
+line in its place in that order.
+## Sight by tier, round OK, 1 October. It reverses "Sight is not for sale."
+
+**The ruling, his words.** "Yeah, you see your own reading. However, the tiers,
+the differences are: tier one can see saboteurs, tier two can see saboteurs and
+complexes, tier three and four can see hyper complexes on. That means that they
+can't see what's running them in the field or the body or how the point cloud is
+expressed or the child masks. Those buttons would be grayed out to them, with a
+little lock over it. If they hover over it, it gives them a little description
+of what's locked, and where to go to unlock it, with a button that takes them
+to an upgrade. The upgrades page is part of the paywall. It shows them which
+tier they currently have, and then shows you the benefits of going to the other
+tiers."
+
+**Read as.** Everybody sees their own reading at the level of the 112 addresses,
+the domains, the archetypes, the laws, the gates (said as action in the product)
+and the shadow. Free sees no saboteurs. Tier one adds saboteurs, tier two adds
+complexes, tiers three and four add hyper complexes and character. This
+supersedes the earlier "every tier sees the whole reading", and it sits beside
+"Sight by tier is real" above, which said the exact rung was still to be set:
+this is the rung.
+
+**The table is one place.** `engine/plan.js`, `SIGHT`. Which tier a thing needs
+is a word in that table and nowhere else: not in the ladder rows, not in the
+renderers, not in the tests, which read the table. The buy page is static, so
+`tests/funnel.js` reads it against the table instead.
+
+**The two rulings that followed, same round.** "Tier two unlocks the Kundalini.
+Tier three unlocks the point cloud." The point cloud is the Compass's Registers
+view, tier three. The Kundalini is in the table at tier two with no surface:
+the shipped app has a glossary entry for it and nothing that draws it (the rise
+bar is in `proto/avatar/rise.js`, which is not in the build), so nothing sells
+it until it is built, and `built:false` in the table is the one word that
+changes when it is.
+
+**Still open, and his.** The tier for the Character page's masks. He listed
+"the child masks" with what is locked and named no tier. They are proposed at
+tier three, with the character layer that lights them. Whether the gift, a
+hundred patterns with "everything visible" (above), still shows the chain for
+the length of the hundred, or whether free is free from the first minute: the
+gift line has not been touched by this ruling and the product now follows the
+plan alone, so a new person sees no saboteurs until they pay. And the
+conflict with `ATUNED-experience-icp-model.md` sections 7 and 8, which argue
+the reading stays visible across tiers and that payment is never mastery: his
+ruling stands over it, the lock copy says the view is part of a tier and never
+that a locked tier is a lower level of the person, and whether that document is
+rewritten to the ruling is his.
+
+**This is a product boundary and not security.** The record is on the person's
+own device. Anybody who edits their own record sees their own data. The lock
+stops the product drawing a layer for a tier that has not bought it, and the
+engine still computes everything: the lock is on what is drawn and listed,
+never on what is read.
+
+
+## Round PD, 1 October. The seats decide; questions only when blocked
+
+His words: "Honestly, dude, I've got super brain fatigue from all your questions.
+Let's get the tech and the features stood up." This overrides the 25 September
+ruling that every round ends with questions. From this round a report says what
+the seat decided and why, in the four headings, and "What I need from you" is
+empty unless something is genuinely blocked, in which case it carries one
+question with its context. A choice that has a sensible default is taken and
+recorded as taken, so he can overrule it later.
+
+## Defaults taken for the legal documents, round PD (he can overrule any)
+
+Taken by the seat so the documents are consistent. Each is the recommendation in
+the legal agent's report; the lawyer reviews all of them.
+- The account copy includes the story text, and later entries keep syncing to
+  the account while it is signed in (a recovered account has its sources).
+- Dormant accounts: the server copy is deleted after 24 months with no sign in,
+  with a warning to the recovery email 30 days before; the device record stays.
+- The key to stored records: one named holder (the owner), the key in the
+  host's secret store, a sealed offline second copy with one trusted person.
+- Open to the EU and UK from launch, as he ruled ("it's the internet"); launch
+  waits on the section 9.1 checklist in LEGAL-IA.md being done, a lawyer being
+  the first item.
+- Refund: seven days, as he ruled; the EU and UK 14 day cancellation right is a
+  lawyer item and may become a second box on the paid step.
+- Restore proof: a Stripe receipt in the account's name plus the account's
+  date; a free account with no recovery email cannot be restored. A restore
+  takes up to five working days. The account event log is kept 12 months. A
+  breach notice goes to a person without delay and within 30 days.
+- Research sharing: off, not offered at launch.
+- Age floor 18, with a ticked confirmation at sign up.
+- Disputes venue: Los Angeles County, California (PROPOSED for the lawyer). The
+  public address is as he gave it.
+- Integrity: the eleven laws not in his ten are asked later in the product,
+  after the first session, never in it. Starting points are twelve with Pain in
+  and Fatigue out (Burnout already names the long tired kind).
+
+
+## Round PH, 1 October. Reply style, and the three-pass design review
+
+**Reply style.** Owner: "you don't need to say the order as if I was 10, just give me the output as if I was 10. and add that to memory." Ruled: no fixed four headings any more. Plain short words, as if he is ten, in bullets. A term of art gets its meaning in the same sentence. Questions only when blocked (round PD). Where a walkthrough outside this codebase is needed, the steps rule of 30 September still holds. Reading, stated so he can correct it: "the order" is taken to mean the four-heading template.
+
+**Review.** He asked the whole team to review the product three times as visionaries: visual systems and friction, psychographics, interface, visual language, type, brand, copy, design systems, measured coherence, and the soul of the product. The aim is a skin: a reskin first, a redesign only where the gain in consistency and uniformity is dramatic. Everything has symbolic meaning (colour, symbol, shape, information, how it links, what is upstream and downstream, and what data drives it). Each discipline grades individually, a tally is kept, and recommendations cover art direction, UI and UX, animation, innovation, mechanics, stickiness and the user journey. Ideas are pitched to the ICPs (ideal customer profiles, the kinds of person we build for) and measured against the highest unified quality. Results live in `REVIEW-skin/`.
+
+
+## Round PK, 2 October. The six-area architecture, rulings by the lead after three reviews
+Recorded in full in `REVIEW-arch/TALLY.md`. In short: the proposal is built as derived views
+over what exists (the reading rules, the trace, where the loop is), not as a new service or
+store; no days, stages or confidence numbers on screen; care holds for the page session in
+memory only and is never stored; the four doors stay while a profile is unread; the loop ring
+never changes with time; the gift stays as ruled; tier four is closed until built; the
+distress reader ships to the private build first and clinician and counsel review gate any
+public launch. Open for him, not blocking: Stripe price ids and secrets, and booking the review.
+
+
+## Round PO, 2 October: unpack every symbol; Onest; flow and intake moves
+
+- **Unpack every symbol (general rule).** Any label, symbol, sign or term of art is shown with its plain meaning in the same place. Recorded in `CLAUDE.md`. A gate follows.
+- **The font is Onest** (his word, round PO), overriding the Geist pick. Latin variable subset, embedded. The product swap is a slice after the mockup.
+- **Flow:** New ritual goes to the right menu; accountability becomes its own tool set beside Ritual.
+- **Intake adds** the Jungian archetypes, the nine emotional axes and the six action axes, all stacked on the current design.
+- **Analytics:** the glance answer sits above the fold.
+- **Built as a first draft, 2 October (branch po-intake).** Three blocks stacked under the laws, in the page's own design: the archetypes, the nine emotional axes and the six action axes. Evidence only: they feed no law, no charge and no CQ. Two readings of his words are mine and open for him, in full in `DESIGN-intake-axes.md`. First, the twelve archetypes asked are the product's own twelve (`ARCH`), which has Warrior and Everyman where his list has Hero and Orphan. Second, the "six action axes" are read as the six gates (awareness, detachment, intention, ignorance, attachment, aversion), because `DECISIONS.md` says the gates are "said as action in the product" and the engine calls them "the six axes". The other candidate is the six release channels. The page is now several screens longer; the length is read off `tools/intake-stacked.js`, and the folding proposals are in the design file, unbuilt.
+
+
+## Round PQ, 2 October: no percent on the headline reading; stored in the body
+
+- **No percent on the headline coherence number.** His words: "No, it doesn't need to be a percent. Just a number." Applies to the rings, the glass bar, the Summary tile and the Compass centre, wherever CQ or DQ is the headline reading.
+- **Patterns are stored in the body, at the nerve register of the seat they land on.** His words: "They store them in body. At the register at a register of the nerve." `engine/data/kb.js` Archetype entry corrected; it had said the opposite. The archetype itself still has no address and nothing to release; that structural point is unchanged.
+- **Archetype questions triangulate.** A combination of situational questions, not one either/or, read the pattern of answers to place the archetype. Round PQ.
+
+## Round PW, 2 October: referral, tiers, Discord, the practitioner's number
+
+- **Referral grant is 25 patterns.** Settled, replacing the open 25-or-50 question.
+- **There are no tiers five through nine.** The ladder stops at four. The drafted 149/249/399/699/999 numbers are dead, not a pending decision.
+- **The Practitioner page shows the person's coherence number.** Settled, answering round PR's open question (the no-percent rule still applies, it is a number, never a percent).
+- **"Eastern" is the date system (Chinese), not the yoga seat names.** His word: "Eastern means Chinese." The yoga seat names still need a different word; that part is still open.
+- **A Discord feedback and community connection, asked for round PW.** A feedback form posting to a Discord channel, and a Discord invite/connection surfaced to users so they can reach the community. Not yet built; see the reply to round PW in `TASKS.md` for what it needs from him to set up.
+- **Google OAuth is wanted**, round PW, becomes a build item.
+- **Clinician and counsel review of the safety copy: explicitly not now.** Round PW, "not getting... not yet." Stays open, just not active.
+
+## Cleanup round, 8 to 9 October: main is the line, and the defaults taken
+
+Ruled by the owner, 8 October: main is the one line of the product, the foundation is made stable first, cosmetics come last. His words: "we need a organization and cleanup. On the main line and to pull everything in that is the most recent and up to date." The other line (`claude/laughing-feynman-xhfyj3`, tagged `fork-archive` in the notes at `999476c`) is carried onto main by hand, one piece at a time, each piece gated. Round PD still holds: the team decides and asks one question at most, only when blocked. Each default below was taken by the team in that round, is written here so it can be overruled, and is not a ruling.
+
+- **Main is the line.** The plan is `GAME-PLAN-main-cleanup.md`; the open work is `MVP-OPEN-ITEMS-2026-10-08.md`; the review behind both is `HANDOFF-GAPS-2026-10-08.md`.
+- **The name never leaves the device.** Not a new default: it is the standing ruling above ("The name never leaves"). Applied to the sync design and to every sentence a person reads.
+- **The modelling switch is removed and the policies stand.** The policies say no model is trained on stories and research sharing is off and not offered at launch. The "Improve the Models" switch read by nothing, so it is gone from the source. Overruled only by the owner.
+- **Schema version 2 keeps being written.** Version 1 still loads. Taken as the default so the sync design is not blocked; the owner's schema v2 ruling stays open.
+- **The crisis check is recall first, and a one way pause.** It shows 988 and 741741 where a question would be, never locks the person out, and always lets them keep writing. A false positive costs one question not asked. The phrase list awaits clinician review, which the owner has ruled "explicitly not now" (round PW).
+- **Retention after delete is 24 months**, as the owner already accepted. Enforced, not re-asked.
+- **"Diagnostic" leaves everything a person reads.** The word stays only in internal identifiers. The FDA wellness line is the reason; the product is a self report instrument, not a medical device.
+- **The first visit sends a random code, the topic picked, and finish marks.** Never a story, never a name. The privacy words say so in plain sentences (round of 9 October, `tests/copy.js` holds them).
+- **A rollback is a stopgap.** The fast route is a `workflow_dispatch` with `rollback_ref`, which publishes a commit Cloudflare already ran in production, with the gates skipped, until the next push to main publishes main's tip. A revert pull request makes it stay. Tested 8 October by re-running the last good deploy.
+- **Merging is the lead's, with gates green.** Merge only when every gate is green on the merged commit. The one exception is design gate 13's frame rate check and the fade timing check, each passing when re-run alone, both lines pasted in the pull request. Never a whole gate, never a check the diff touches.
+- **Open, and the owner's:** the MOB repository is public and GitHub Pages is on (`has_pages: true`); the default taken is to make the repository private and switch Pages off, which only the owner can do. Branch protection on `main` (a GitHub setting) is also the owner's.
+
+## 9 October: the crisis check waits for the MVP beta
+
+- **The 988 and 741741 crisis check is deferred to the MVP beta.** The owner, 9 October: "I don't give two shits about the emergency hotline stuff... We'll save it for the MVP beta." Built and parked, not deleted: branches `claude/b2a-crisis` and `claude/b2a-crisis2` hold the engine function, the Story page, nine more boxes and `tests/crisis.js`. Nothing of it is on main. The ten `xf` cases in `tests/engine.js` stay expected red, and the floors file caps expected red at 10, so they cannot be forgotten. This supersedes the default "crisis check is recall first" in the entry above until the beta; the phrase list still awaits clinician review (round PW).
+- **Consequence the team recorded once, for the owner's information:** until the beta, the live app shows no crisis line to a person who writes about hurting themselves. **Overtaken in part, 3 November:** that stopped being true when PR 108 merged. What shipped is the phrase stop, not this entry's automatic detector: a closed, clinician-reviewable list of exact phrases about ending a life or danger now, matched by the sniffer's existing rules (a "no" cancels it, someone else's words don't count). On a match the Story page now shows one line and a Reach someone now door; see "Words about ending a life or danger now get no release, 17 October" below for the fix itself. The automatic, behavior-based detector this entry describes is still deferred to the beta exactly as ruled 9 October.
+
+## Profile sync, 9 October
+
+A seat finding (P1-E), not a ruling. The profile sync on main is dead code: `profileSyncEligible` in `ui/auth.js:189` asks `typeof profiles==='function'`, which is never true, so `authProfileSync` always skips and would throw at `:222` if it ran. It must not be switched on as is, because it uploads the whole profile, stories included, which contradicts the privacy words; it needs a sync and consent design first. The returning account bypass of the opening that depends on it is parked at `claude/p1e-bypass-parked` (`743df63`), `TASKS.md` PB1.
+
+**Priority order, ruled 18 November.** His words: "Focus on the cosmetic bugs and visual enhancements. Prioritize all of those first. And then let's get that release engine as Source AI, in behind that." Cosmetic bugs and visual work (the dashboard bottom row and left rail redraws already in progress, card redesigns, stray-visual defects like the unmeasured text and scrollbar between the Path/Boundary/Body cards) come first. Wiring Source AI into the release engine (the sniffer's findings driving real release offers, the evidence bus and the 96-pattern library already built but not wired, the Avatar page's own Source AI corner and sniffer-to-bank line) is next, queued right behind it, not started ahead of it. Read as a sequencing ruling, not a scope cut: nothing already named in either area is dropped.
+
+**Device sync, scheduled post alpha. Ruled 18 November.** His words: "Add the device sync post alpha." This is a timing ruling, not a design change: the code to pull a person's story onto a device that does not already hold it exists and is wired (`authProfileSync`, `profileSyncImport`, `ui/auth.js`), gated behind one constant, `PROFILE_SYNC_ENABLED=false`, with the reason already written beside it: "profile sync is not part of alpha... keep this false until privacy copy, consent and retention are approved together." That reason still holds and is now dated: not before alpha closes. The flag stays false through alpha; flipping it, and writing the consent/privacy copy it needs first, is the first real piece of post-alpha accounts work, alongside the paywall flip in the same area (`TASKS.md`, accounts-auth and accounts-paywall). Found this round because signing in on a device with no local record read as a bug ("my account's not being set up") rather than the device's own first run; the fix shipped the same night is only the honest message (`authSyncNote`, commit `4ef5c88c`), not the switch.
+
+## Sniffer, 9 October: the audit checked, and the defaults the seats took
+
+The owner supplied a sniffer design and gap audit (8 October) and asked for a review, a strategy, handshake notes and an entry in the sniffer documents. All of it is in `REVIEW-sniffer-audit-2026-10-09.md` and `HANDSHAKE-sniffer.md`. These are seat rulings, taken because the owner's order is that the seats decide and ask only when blocked. The owner may overturn any of them.
+
+- **A denial is kept and shown, and never scored.** "I was not angry" stays in the entry as a named and denied mark and adds nothing to any reading. This ends a disagreement that was already on the Story page, where the word is drawn struck and the score still counts it.
+- **Another person's action is held out of the writer's field.** A clear third person subject holds the charge word out, lists it as about someone else, and never scores it on the writer. No subject, or a first person subject, is the writer. This is guard 2 of the sniffer spec, "never score another person", which was broken.
+- **An axis the person named is not an address the person named.** No screen says the person said they carry an address they did not name.
+- **Tense, intensity words and the frame layer wait.** Not in alpha. Tense and intensity are specified; the frame layer needs a held set that does not exist yet.
+- **The route of the aggregate result into the Mirror, the Release Engine, verification and the Trace graph is after alpha.** The Story page works today from the parser; the aggregate is used by the Day One tutorial only.
+- **Still the owner's, and reported as conflict or unread until ruled:** the law divisor (E43), where Joy sits, where Surprise sits, Avoider versus Innocent, how a stance entry that names no feeling is read, and the four canon files that are missing from the repository.
+
+## Audit Dev 1 to 6, 9 October: what the five reviews settled
+
+- **The audit's profile sync findings (P0-03, P0-04, B11.1 to B11.3) rest on a premise main contradicts.** Sync does not run. They become real on the day sync is switched on, so they are filed under the sync design block, not under alpha.
+- **"Skipped" is not stored as a verification state.** `engine/practice.js:150-160` refuses it on purpose; the audit's ask is recorded as a default taken, with its cost, until the owner says otherwise.
+- **P0-06 (the golden journey) gates alpha only as G0, G1 and G5.** The rest of the chain is public-launch work. Default taken.
+- **The cheaper Mirror default:** one question per run, with a shared run key on its evidence rows so three rows are not read as three confirmations. Per-address answers wait for the owner.
+- **Points exist only as a ruling** (they only rise); nothing is built until accounts. "Sight is not for sale" stays reversed (1 October).
+- **Open and the owner's:** D1 to D7 in `REVIEW-audit-2026-10-09/pass3.md`, each with a default and a cost; the law divisor (E43); Joy, Surprise, Avoider versus Innocent.
+
+## The voice is ElevenLabs and there is no fallback, 9 October (P0)
+
+His words: "fix the 11 Labs voice. The audio is still defaulting to the Claude default voice, and I want that removed so that it, there's no fallback to it. Add that to your P0. It's a blocker." This repeats round NS ("swap out the voice, the Claude voice, with the 11 labs voice"). The "Claude default voice" is the browser's own built in speech, which the release used whenever the studio voice was off (its default), nobody was signed in, or the studio voice failed.
+
+- **The browser voice is deleted, not hidden.** No call into the browser's speech remains anywhere in the app or the funnel pages. `tests/voice.js` scans the source for it and plants a spy where it was; it fails if anything touches it.
+- **One switch, on by default, and the person's.** `Voice` in the release panel. The second switch ("Studio voice", off by default) is retired; `ui.studio` stays in the record only so older records load. The note beside the switch says who speaks and what they are given, before a word is spoken, as the privacy page already promises ("the voice that reads a release ... says what it sends where you use it").
+- **A line is spoken by ElevenLabs or it is not spoken, and the screen says why.** Signed out: the switch says "Sign in to hear it. Until then the run reads on the screen." Server refusing: the status line says the run reads on the screen, the server is asked once and not once per line, and the walker keeps the reading clock. Nothing else ever speaks.
+- **No sign in. Ruled by him the same day: "the 11 Labs voice should be automatic. I don't want it to have to sign in or anything special."** The first cut made the voice need an account, to protect his ElevenLabs bill. It now works for everyone, and the bill is protected another way: the browser makes a random device code once and keeps it; the server holds each device to 20000 characters of new synthesis a day, each network address to 60000 (hashed with the day, so it cannot be followed), and the whole server to 300000 (his ceiling). A signed in person is held to the account's 20000 instead. A line already rendered is served from the cache and costs nothing. All five numbers are plain settings on the Worker he can change without a code change.
+- **Defaults taken, each his to overturn:** (1) his own recorded welcome stays his, unchanged. (2) The three ceilings above. (3) A person with the voice on and no sign in sends each line to ElevenLabs through our server; the switch beside the voice says so before a word is spoken, as the privacy page promises.
+- **What only the owner can do for it to speak:** the ElevenLabs API key and the Voice ID, as two GitHub secrets on the Reboot-OS repository. Steps are in Reboot-OS pull request 13.
+
+## Where a first visitor lands, and where they left off, 9 October
+
+His words: "when a first time user goes from the funnel to the questions to the app, I want them to start on the summary screen. For the first time after that, it'll just be persistent to wherever they left off. But we want to give them right away information on their summary reading."
+
+**Changed 23 October in one place:** a device with no memory opens on Discover now, not the Field. The first arrival still lands on Summary once, as below. See "Discover is the journal, imprints and release", 23 October.
+
+- **First arrival lands on Summary, once per device.** Two doors send it: the record arriving in a link from the funnel, and the first run closing. Summary shows the reading at once.
+- **Every open after that is where the person left off.** The last surface is kept in the browser's own store, not the record. Settings and the practitioner page are never remembered. A device with no memory still opens on the Field (the 19 September ruling stands for it).
+- **Held by `tests/landing.js`**, which fails on the build from before this change.
+- **Also on 9 October, his ruling: the cosmetic mockup picks are dropped.** The left menu A to D, story layouts E to H, onboarding round 2, the teachers panel, masks by tier, Summary readout and Compass layout B are not being built. The next round starts by cleaning up the interface and menus: removing what is exposed and does nothing that matters. His feedback drives it.
+
+## 16 October: crisis button, energy words, percent, the legal pages
+
+Ruled by the owner on 16 October, in his words, and recorded the same day.
+
+- **A crisis button in the welcome, chosen by the person.** "Maybe it belongs in the pop-up, the welcome. Maybe it's an option. Is this a crisis? Hit that button. Tell me about it. Do you need immediate emergency contact, or would you like to talk it through? It's always a story." This is a plain button the person presses, with two ways out: reach someone now (988 call or text, text HOME to 741741, 911 in danger) or talk it through (it goes to the Story box). It supersedes the 9 October deferral for the button only. The automatic detection that reads what a person writes (the branches `claude/b2a-crisis` and `claude/b2a-crisis2`) is still deferred, and the ten expected red cases stay.
+- **"Collapsed" goes.** The lowest band is renamed Contracted. His reason: "the energy wants to expand, not collapse".
+- **"Your energy", not "the field", in a reading about the person.** "Your energy leans malignant", because "energy is more natural. Field is just too abstract." The tab called Field keeps its name. **The words benign and malignant were ruled OVERRIDDEN 30 October**, his words: "Yeah, change it to positive and negative. We need to start changing the kind of religious tones." "Your energy leans" still stands; the word after it is positive or negative now, everywhere it shipped, including the glossary meaning printed beside it. Kept here for the record, since this line was the one place that written ruling never got updated to match, caught 31 October when he found an old build still showing the old words and asked whether the rename had actually landed anywhere.
+- **Every score, weight and measure prints as a percent.** "Instead of 0.0, site wide, we need to convert those numbers into percent. I think it's a more natural language for people to understand. So we need to create a framework and a formula and to make sure that all of our elements are percent-based. If it says 6.2, then we should change that to percent. If it's 112 patterns, just leave it alone. Or, sorry, chakras, leave it alone." Counts of things stay as counts. The percent printed is the fill of the ring or bar drawn for that quantity. A change is said as before and after. This supersedes round PQ's "just a number" for CQ and DQ, the 9 October no percent ruling, the 15 October P0 item that took the percent signs off, and the 16 October whole number weights (MOB PR 83). The 14 October ruling of no raw scores stands: a percent of a defined maximum is not a raw score.
+- **A privacy policy and terms are required, and served.** "It's very important to us. Transparency is important to us. We also need our terms. We're not a clinician. What we are is a practice based off of direct experience that has been tested out in the field." The pages were drafts in `funnel/legal/` that the deploy never copied to atuned.world. They are served, linked and made true. Efficacy words ("highly effective, rapid") are left out of the legal text on purpose, because a terms page that promises results contradicts "not a clinician"; they stay his for marketing pages.
+- **Open, not ruled:** sign in with Google or Apple is not built (email and password only); whether to add it is open. Password reset by email needs a mail key on the server that is not set; until it is, reset answers 503.
+## The percent framework, 16 October (the ruling is recorded in the entry above)
+
+Built as phase 1 on `claude/percent-framework`, MOB PR 88. No screen changes in phase 1.
+
+- **One formula and one table.** `pct(kind, value) = clamp(round(100 * (value - lo) / (hi - lo)), 0, 100)`, with lo and hi per kind in `PCT_KIND`, `atuned_src/engine/pct.js`, each citing the engine line that bounds it. `fmtPct` prints `62%`, and a figure that rounds to nothing, or an unread profile, prints the en dash and never `0%`. The rule, the registry and the one cap are in `HANDOFF-2026-10-15/PERCENT-FRAMEWORK-2026-10-16.md`; every place a number is printed is in `PERCENT-INVENTORY-2026-10-16.md`.
+- **The percent printed is the fill of the ring or bar drawn for that quantity.** What is read and what is drawn agree.
+- **A change is said as before and after:** "CQ moved from 58% to 61% since last session", never "up 3".
+- **Counts stay counts:** addresses, patterns, stories, days, items, answers, laws, the nine axes, the seats and their names, tier numbers, prices, versions, dates, ids, coordinates and geometry.
+- **The "points" unit goes.** The headroom (`exHeadroom`) is on expression's 0 to 100, so "3.0 points of your coherence" is 3%, and under 1% no sentence is printed.
+- **CQ and DQ print as N% everywhere.**
+- **What it supersedes** is listed in the entry above: round PQ for CQ and DQ, the 9 October no percent ruling, the 15 October P0 item, and MOB PR 83's whole number weights. The 14 October no raw scores ruling stands.
+- **Phase 1 changes no screen.** It adds the engine file, its gate and the two documents. Phase 2 moves the renderers and flips the tests that hold the old forms.
+- **Open, the lead's or his:** the one cap (several entries summed at one address, capped at 10); which of two archetype figures the person reads; whether the Summary plate returns to a percent on a quiz only record; inputs answered on 0 to 10 stay as they are (default taken).
+
+## What an archetype's percent means, 16 October
+
+His words: "we want to see how much of a person, the archetypes themselves should be 100%. The limiting beliefs are going to drag it down. So the archetype is just the archetype. The percent should show where they are based off their story. So you may start off at 100%. And over time, watch it diminish. And as you go through your recipes, watch it rise. It is least as things never lying to you."
+
+- **An archetype's percent is how fully it is expressed.** 100% with nothing held. It falls as the person's story puts charge (limiting beliefs) where that archetype acts, and rises as they release (recipes, practices).
+- **It is not a share of the twelve and not a measure against the strongest.** This retires the 16 October framework recommendation to print `affinity` everywhere: `affinity()` (`engine/core.js:403`) is the soul map's lean, set by the blueprint, and it does not move with story or release. It still decides which archetype is first and second; it is no longer printed as a percent.
+- **Where an archetype acts is its seat**, `ARCH[i].b` (`engine/data/canon.js:418`), the owner's ruling "the warrior's root, the sage is crown, the mage is third eye". The engine has no honest archetype to domain to seat chain: the wheel draws archetypes in list order over addresses laid out by seat, so the sector each covers disagrees with its ruled seat for ten of the twelve. No table ties an archetype to a mask.
+- **Archetypes that share a seat read the same percent** (Warrior and Everyman at the root, Creator and Explorer at the sacral, Caregiver and Lover at the heart, Rebel and Jester at the throat, Sage and Innocent at the crown). That follows from the seat ruling; a finer split needs a ruling on what separates them.
+- Built as phase 1b, engine only: `archExpr(i)` in `atuned_src/engine/archexpr.js`, registry kind `archetype`. No screen changes until phase 2.
+
+## Worked examples are show only, at every tier, 16 October
+
+His words: "something we need to do with those user profiles where the customer who selects any of the tiers cannot run a profile's inference. And for show only. Otherwise, that's cheating." And, the same day: "what I like about that is it allows people to see the patterns. But not run them. If you're a tier one, it allows you to see what you're missing as a product."
+
+- **A worked example is show only, for everybody, at every tier.** A worked example is one of the roster profiles in `PEOPLE` that is not the person's own (`p.you` false). A person may open every reading on it: the Field, Summary, Analytics, Compass, the body map, the bank and the vault, its rituals. Nothing may be run on it: no story commit, no release, no intake or avatar answer, no ritual or accountability write, no import into it. Otherwise a free person could borrow an example's tier four sight to read their own words, which is the cheating he named.
+- **This keeps the 2 October ruling and narrows it.** "All of the personas profiles that we have are all tier four, they're all unlocked" still holds for what an example SHOWS. What changed is that it no longer RUNS anything.
+- **The example is the product's own preview.** A person on any tier sees, on an example, everything tier four reads, and cannot run it. So a refused control says what it would do on the person's own profile, in one plain sentence, and, only where the person's own plan does not already show every layer, which plan opens the next one, read off the sight table (`SIGHT` and `planNextSight`, `engine/plan.js`). Running a story or a release is never tier gated (every plan runs them, inside its allowance), so the line never claims a plan is needed to run one. No urgency, no countdown, no guilt.
+- **The person's own profile keeps its own tier exactly as before.** Visiting an example never moves it.
+- **One guard, in the engine.** `showOnly` and `showRefuse` (`engine/showonly.js`) refuse every engine writer while an example is loaded, so a control added later is refused too. Held by `tests/examples-showonly.js`.
+- **Default taken, recorded as his to overrule:** the practitioner page is not affected. It reads examples and writes only its own notes to the device, never to the example.
+
+## Words about ending a life or danger now get no release, 17 October
+
+A seat decision, taken by the team on the round 3 plan's decision 1 default (a), with Emmy's wording. Not the owner's ruling. He reacts to a preview build and may revert it. The automatic crisis check he deferred on 9 October stays deferred.
+
+- **A closed phrase list, not a detector.** `SAFE_WORDS` (`engine/data/safe.js`): words about ending one's own life or hurting oneself, and danger now ("I never feel safe at home", "he threatened to kill me"). `srcSafe` (`engine/safe.js`) reads them with the sniffer's own rules: a no denies it, someone else's words do not count, a quoted line with someone else or a book or film as its speaker does not count, a short list of idioms ("I want to die laughing", "killing myself at work") does not count. It scores nothing about the person.
+- **On a match the reader reads nothing.** `parseStory` returns an empty reading, so no release is offered off that entry anywhere, Source AI asks nothing, and the laws and leans do not move. The entry is still saved exactly as written when the person presses Commit.
+- **The Story page shows one line and one door in its place.** "It is saved. If you want a person now, 988 answers by call or text, any hour." beside Reach someone now, which opens the crisis panel on the numbers. No modal, no sound, no red, no "we noticed". It shows once and nothing escalates. The release column stays reachable and is not offered.
+- **Nothing about a match is stored.** Not on the record, the draft, the export, the outbox or the server. `tests/safepage.js` holds that the export and the whole browser store are the same with and without it.
+- **How to turn it off:** set `on:false` on a family's row in `SAFE_WORDS`. One table, one line each.
+- **Taken up by the owner, 3 November.** After typing a harsh test phrase into the Journal on main and getting no safety response, his words: "let's go ahead and complete 108 and get it wired in." So whether this stays is answered. It was brought current with main that night (the Journal is a spoken conversation since 28 and 29 October, and the line now stands in the conversation in place of Source AI's reply, with the person's own turns still on the page). The automatic detector of a person's state is still deferred and still P3 (30 October); this is the phrase stop only.
+- **Still open, his:** whether the first run should draw the line too (today it only reads nothing there, and its top bar already carries the crisis button); whether the phrase list goes to a clinician (round PW ruled that "explicitly not now").
+
+## The personas decide, the owner reacts, 17 October
+
+His words: "I'm a reaction person. Emmy's running these designs, and she's got Jimmy Ivy [Jony Ive] and a bunch of other people. If you're asking me stupid-ass questions that these personas should already be able to answer, then we've got a problem."
+
+- **Design, copy, layout and product-judgment questions are answered by the personas** (Emmy and her lenses, and the directors), not put to him. The seat picks the persona's answer, builds it, and shows him a picture or a playable file to react to.
+- **He is asked only for four things:** money (prices, spend), legal wording, safety consent, and facts only he can know (his own history, who he knows, what he intends).
+- **A reaction is the unit of input.** He reacts to pictures and files. A mockup round ships with a recommendation the personas made, so his reaction is to something chosen, not to a menu.
+- **This sits on top of round PD (ask at most one question, only when blocked) and round PL (deliver, do not point).** It narrows what counts as blocked.
+- **Same day, the tier names:** "There are four tiers. Free, tier one, tier two, tier three, practitioner." The top rung formerly called tier four is named Practitioner for display. See the entry that renames it.
+
+## The top tier is named Practitioner, 17 October
+
+His words: "There are four tiers. Free, tier one, tier two, tier three, practitioner."
+
+- **The rung that was called Tier four is called Practitioner wherever a person can read it**: the tiers page, the plan sheet, the status line that refuses its checkout, the funnel's tier page (`funnel/buy.html`) and the name the Stripe setup tool gives the product (`tools/stripe-setup.js`). Free, Tier one, Tier two and Tier three keep their names. Practitioner means the rung for somebody who leads other people: manage profiles, build rituals and build accountability for the people you lead.
+- **The display name moved and nothing else did.** The key is still `four` in `PLANS` (`engine/plan.js`), because a key is identity: a record's `plan.tier` holds it, the worked examples carry it, and Stripe finds the price by the lookup key `atuned_tier_four` and the server's setting `STRIPE_PRICE_FOUR`. Renaming it would read every record already on the rung as a tier this build does not know.
+- **The price stays 99 dollars a month and the rung stays closed until built** (`built:false`, round PK, "tier four is closed until built"). `planBuyable('four')` still answers no, and a press still refuses with "Practitioner is not open yet. It opens when the lead suite is built. Nothing was charged."
+- **Stripe is outside this repository and was not touched.** No live Practitioner price exists yet. Whoever creates it names the product Practitioner (the tool now does). If a test mode product was already made as "Atüned tier four", it keeps that name until someone renames it on the Stripe website, because the tool finds an existing price by its key and never edits a product it has made.
+- **This supersedes the "tier four" wording in earlier entries without rewriting them.** Rounds PK, PW, the 1 October sight and price rulings and the 16 October show only entry above say tier four and still hold for the rung keyed `four`. Code comments that quote those rulings keep his words as he said them.
+- **Held by gates.** `tests/engine.js` checks the rung keyed four is named Practitioner and that no plan row says tier four. `tests/copy.js` fails any surface of the app or the funnel that prints "tier four" or "tier 4".
+
+## The allowance, five seats, 17 October
+
+His words, the question this answers: "what patterns does a person have access to per month? ... once they run those patterns, they get a maximum of 400 unique patterns per month. So they can rerun the patterns that they've already generated, but new ones, they will not be able to. It's one of the reasons why you want to clear the ones that don't work to make space for the ones that do work. ... And if a person wants to run, then shame, but they only have 50 patterns left, then what happens? To say you're out of patterns for the month. ... What if I don't want the user to have to engage? ... Now let's tease out a few mechanics here that will help reduce friction and help me resolve this."
+
+Five seats read what the code does (the game director, UI and UX, sales, the AI director, and Emmy) and agreed. A pattern here is one unit of the allowance: one line at one address down one channel, counted the first time it is opened. An address is one of the 112 spots in the body; a channel is one of its four tracks, left and right release, left and right reframe.
+
+**Built, branch `claude/allowance-fixes`, held by `tests/allowance.js`:**
+
+- **A run opens whole addresses only.** One address is four patterns, both sides and both tracks. When the allowance cannot cover everything picked, the run takes as many whole addresses as fit, heaviest first, and never one channel of an address without the rest (`meterPlanWhole`, `engine/schema.js`). It used to cut key by key: three left opened three of one address's four channels and dropped its right reframe.
+- **No address is released that was not charged.** A new run kept every picked address in its queue and released the charge at all of them when it ended, so eight picked against three left released eight for the three patterns one address was charged. The queue is now what the plan reaches, for a new run as it already was for a rerun, and the end of the run cuts it again for any route that skips that (`relReached` and `relCoolDown`, `ui/release.js`).
+- **A shorter run says so before Run.** One line: "This run opens 2 new addresses. This week has room for 2, and you picked 3." It names addresses and room and never a price.
+- **The empty card hands over a rerun first.** "Rerun these" is the first press, filled, one tap from the empty card to a running rerun, and it spends nothing. When nothing picked has been opened it reads "Rerun your heaviest" and reruns the heaviest addresses already opened, so the first press is never dead. Then Close, then "See the tiers", last and small. The words: "This week's new patterns are all opened. Everything you have opened still runs, free, as often as you like. New ones arrive on 24 Oct 2026." The day is the plan record's own (the paid period's end, or free's next week); with no day on the record the sentence is left out. The crisis door is on the card, and Talk it through closes the card on the way to the Story box. The story was saved when it was committed, before any release.
+- **A paid tier at nought is never told it is banking.** The plan sheet said "0 left this month, banking toward a run of 4", and paid tiers carry nothing over. It says "0 left this month. New ones arrive on" and the renewal day.
+- **Pattern means the allowance's unit on the release card.** The card printed "200 patterns" for a run that spent four, because it counted release lines said, every pass. It says lines now: each group, the summary, Remaining, the closing and the results. The dose field says "Times said". Engine keys are untouched.
+
+**Default taken, his to overrule: free restarts from the day a paid plan stops.** Dropping from paid to free charged everything opened while paying against the free weeks: 1,500 opened read nought left for about 140 weeks, which is a penalty for leaving. Now ground opened before the stop is the person's and reruns free, and the free ten a week count only from the stop (`planFromServer` and `planFreeFrom`, `engine/plan.js`). This is the sales and UX seats' recommendation.
+
+**Picked, and holding:**
+
+- **Clearing never refunds allowance.** A refund makes 400 unlimited: clear 400, open 400, again. Clearing, when it is built, only trims what a rerun replays.
+- **A rerun of anything opened is always free.** Ruled 18 and 19 September, and the empty card now leads with it.
+- **Stories and the crisis door are never gated by the allowance.**
+- **No refill packs and no borrowing.** A refill sold at the empty moment sells to somebody mid charge; borrowing is a debt next month opens on.
+
+**Not built, after alpha:**
+
+- Carry over for paid tiers, capped at one month's grant.
+- Make room: trimming the rerun hand by weight, per the 19 September ruling ("what a person marks heavy stays, what sits light drops off first"), optional and never in front of a run.
+- A chosen rerun: picking which opened lines a rerun says.
+- Grouped runs by cluster, only over links the person's words named or they said yes to.
+- A cap of 25 on free banking (one full run). Today it has none: a year unused banks 530.
+- A prorated upgrade mid month. Built the same day, in the entry below.
+
+**Not built, because he ruled the other way: the cost line under Run.** The seats asked for "Opens 12 new. 388 left this month." under Run in the normal case. He took that line off this card at round IG, 27 September: "Cost runs left, that goes away. And this, just, run release button." `tests/functional.js` holds his cut, so it stays off. It is not put to him as a question (the personas ruling above). A reversal of his own cut is not the seats' to make silently either, so it waits for him to react to the two cards side by side: the card as he cut it, and the card with the line.
+
+**The risk all five named.** Only 65 different sentences sit behind the 21,400 slots one person can open, so a "pattern you have never opened" is often words already heard. Selling never opened patterns is not honest until slots carry distinct sentences. Checkout stays closed.
+
+**Still open in the words:** the glossary defines a pattern as "a reaction you keep having, and the instrument places it at one exact spot in your body", and "Your patterns" is a surface of its own. Making pattern mean the allowance's unit everywhere would reword those, which is his to rule; this round moved only the release card's counts.
+
+## Patterns follow the money, 17 October
+
+The pay cycle run in Stripe test mode (Reboot-OS workflow "e2e paycycle", run 39054584771, 26 steps; Stripe test mode is fake money and a fake calendar) fed the server's own answers into this app's plan arithmetic and found three steps red in it. The server now says, on every account, what was paid this month and when the tier last changed (Reboot-OS PR 67). Each field is optional, and an older server that sends none of them is read exactly as before. Held by `tests/money.js`, which read 24 passed and 27 failed on main before the change.
+
+- **A refused card opens no new patterns (step e1).** Stripe moves the billing month forward on the renewal day even when the card is refused. The app opened a fresh month on it: 100 left became 400 of 400 with nothing paid. Now everything already opened still runs and what was left stays left, and new patterns wait until the bill is paid; the read after it is paid opens the month. Billing's State row says, for as long as it is so: "the card did not go through. Everything you have opened still runs. New patterns wait until the card does, and Manage billing replaces the card." (`planFromServer`, `engine/plan.js`; `planSection`, `ui/panels.js`.)
+- **Default taken, his to overrule: a tier change adds only the share the money covers (step f2).** The month's grant moves by the difference between the two tiers' grants, times the share of the month still to run at the change, which is the same arithmetic Stripe bills the change by. What was opened stays opened. On the run's day 75, tier one to two with 200 left and 0.5484 of the month to go: 200 plus 219, so 419, where the app showed 800. The sales seat's example, day 20 of 30, one to two: 133 more. The next renewal is the new tier's whole grant. A downgrade takes the same share off, never takes back what was opened, and never leaves more than the lower tier's whole grant to open; so tier three spent, down to one and back up on one day, which Stripe nets to about nothing, opens nothing, where it opened 400 and then 1,200.
+- **An ended plan reads free with free's own allowance (step h).** Free restarting from the stop day was built in the entry above. What remained: a plan was only as ended as the last read of the server, so a device signed out or offline kept a stopped plan paid for ever. The end date is read now. A stopped plan ends on its end day exactly. **Default taken, his to overrule: a plan that renews gets three days past its period end before an unread device treats it as ended**, the same three days the server gives an App Store or Google Play plan, because a renewal this device has not read yet is not an ending. Ended either way, free counts from the end day and is never charged for what was opened while paying (`planPast`, `PLAN_GRACE_MS`, `planAllowance`).
+- **Every new field is checked where it comes in.** A wrong type or a value out of range is refused by name and nothing on the record changes, never rounded into range. The record itself gains no field, so the saved format does not move.
+
+
+## Percent phase 2, 17 October: defaults taken, each his to overrule
+
+His words, 17 October: "knock out that percent framework... the percent is how we want people to read the different aspects of the software." Phase 2 moves every screen that prints a score onto the registry (`engine/pct.js`), one pull request per group of screens. The plan is `HANDOFF-2026-10-15/PERCENT-PHASE-2-2026-10-17.md`. These are the team's defaults, taken so the work is not blocked; none is a ruling.
+
+- **No red on a percent.** A ring that prints a percent draws its own colour at every fill, never the alarm red. A high percent in red reads as a failed mark, and the product does not grade people (round OB6's reason: denying a grade plants the idea, and so does a red score). The alarm law stays for a ring that prints anything else, and the rule that a good end reading is never red stays. Held by `tests/pct.js`, part A. If he wants a heavy weight to warn, the next step is a word beside the percent, not a colour on it.
+- **Band names stay as they are.** Severe, Corrupt and the other tier names on the coherence ladder (`TIERDEF`, `engine/data/canon.js`) are unchanged. Flagged because a band name beside a percent reads more like a grade than it did beside a bare number. His to rename.
+- **The Summary plate prints CQ as a percent once every law is answered, and the word (early, partial) before that.** Before every law is answered most of the figure is the default answer, so printing it would claim a reading not taken. The 14 October no raw scores ruling stands: a percent of a defined maximum is not a raw score. Built in slice 2.
+- **The line at 4 reads 40%.** A charge "reaches 4 and starts to cost your body" becomes "reaches 40%".
+- **The one cap stays at 10** (several entries added up at one address print as a percent of 10). Unchanged from phase 1, still open for him.
+- **The release screen waits for its own rebuild.** Its results page and carousel are being rebuilt by another seat, so `ui/release.js` is not touched by phase 2; the percent items it needs are listed in the phase 2 plan for that seat.
+
+## The full stack, nerve to Character, ruled 23 October
+
+His words, close to verbatim, called canon and ordered locked in: "Our
+stack goes psychophysical, that's nerve, to super complex, deep
+psychological, it's our archetypes to domains, and then we have our
+energetic... From fetter to super complex. After the super complex are
+the masks. The mask layer is the hybrid. Then one up from that is the
+archetype to the spiritual. And then at the very top is the character.
+So the whole thing goes from nerve to character."
+
+This settles the one point every earlier reconciliation this session left
+open. Super complex and Character are not the same rung. The ordered
+stack, bottom to top:
+
+1. Nerve (node, fetter), the psychophysical floor.
+2. Saboteur, complex, hyper complex.
+3. **Super complex.** Two or more hyper complexes combined. This is the
+   rung the running engine currently builds and calls Character; it is
+   being renamed, not newly invented, since the arithmetic (two hyper
+   complexes pairing) already exists and already matches his
+   description.
+4. Masks, "the hybrid" layer.
+5. Archetype through domain, "deep psychological," running up to what he
+   calls the spiritual.
+6. **Character, at the very top.** Above masks and above archetype
+   through the spiritual, not a direct pairing of two hyper complexes.
+   His own 27 September words already on record, "the character is a
+   total sum of the all of it," read correctly under this ruling as the
+   whole person, everything below it taken together, not a fourth
+   rung's arithmetic.
+
+Open, not decided here, his to rule on when asked rather than guessed at:
+exactly where the "energetic" band he named sits against this ordered
+list, since the explicit sequence he gave does not mention it by name a
+second time; and what Character computes, if it needs to compute
+anything beyond naming the whole reading, now that it is no longer the
+super complex arithmetic. Both logged as open rather than assumed.
+
+### Built the same day, and what each open point landed on
+
+- **The rename.** The rung `compute()` builds by pairing two hyper complexes (`r.sups`, kind `sup`) is called the super complex everywhere it is printed or named: the Field bar's innermost switch (Super complexes), the right rail's stack tab (Super, beside Hyper), the run cards and the pattern drill (Super-complex), Summary's chain, Analytics' ring, its card and its session rows, the record card, the Dial's callout, the depth menu's Chains line, the tiers page and every lock sentence (`SIGHT` in `engine/plan.js`), the meaning table (`engine/data/gloss.js`, a sentence of its own), and the trace graph's type (`super_complex`, in `engine/trace.js` and in the trace TDD's section 16 and 17 blocks, which `tests/trace.js` reads). The arithmetic and the wiring under it did not move: the same pairs, the same weight line, the same parts.
+- **The keys did not move, on the identity rule.** The kind `sup`, the Field layer key `character`, the history row's `ch` and the codes layer's `family-pair` kind are identity: compared by the gates and the code, and `ch` is stored on every history row a record holds. A key is never renamed for a word, the rule `TAB.INTAKE` and the `seats` key already follow. Each one carries a comment saying it is the super complex. The trace graph's algorithm number stays 4: a rename is not a new derivation, and no graph the product builds or stores holds a rung.
+- **What Character computes: nothing new.** Character is the whole reading, everything `read()` returns for a record, taken together. It is not a fifth rung, not a stored value and not a node type in the trace graph; a record carrying a `character` node is refused by name. His 27 September words ("the character is a total sum of the all of it... You're actually rendering a visualization of what all the masks look like, and what's running it") and the placement above agree on that. No arithmetic was added, because none was ruled, and a stored sum of everything would be a second copy of the reading. Its meaning sentence now says the whole: "Character is the whole of you, added up: your charge, the patterns running on it, your masks and what you were born with."
+- **The Character page keeps its name. Decided, not asked.** Round LP named it ("all of those form the character. So that's the character page. Let's rename masks there to character"), the 27 September ruling describes what it draws, and the placement above puts Character at the top as the whole person, which is what the page draws: the 112 addresses, the saboteurs dimming the body, the masks, coherence and vitality. The collision was the rung printing the same word, so the rung gave it up. Renaming the page to Masks would have reversed round LP and left the top of his stack with no place on screen. `tests/stackname.js` holds it: on every tab, with a person whose reading reaches the rung, the word Character stands only on that page, its door, its rail section and the Play section's title.
+- **Two more things called character, found and fixed.** The Compass's two name panels told a screen reader "Characters" for the teachers; they say Teachers, the word the rows themselves use. And the age ladder's seventh year, "Who did you pretend to be, and who did you refuse to be?", was labelled "the first character"; it is "the first role". The everyday word stays where it means a person's nature and not a thing on screen: an archetype is one of the kinds of character, and the ego is the mask your character wears.
+- **Still open, and his.** Where the energetic band sits in the order, logged above. Whether Character should ever print a figure of its own, one number for the whole person, which would be new arithmetic and his to define. And the mark the super complex wears is the ring in a ring it wore as Character; whether the rung keeps it is a design question nobody has put to him.
+
+## Discover is the journal, imprints and release, and the app opens on it, 23 October
+
+His words, across two messages: "I want to get rid of the Story or move the Story link. Sorry, attach the Story link to Discover. So we're removing the word Story. We're keeping the word Discover... the app opens on Discover. So when you click Discover, you only get the journal and the imprints and the release. If I click on play, then I get all the other tools." And: "Yeah, I've changed that rule. The most important portions of the app are core loop. The core loop is discover, play, flow, and embody. That really is the journal to the release. Plus the ritual."
+
+- **Discover is one page, and pressing Discover opens it.** The journal, the imprints and the release are the three columns of the page that was called Story, and they have carried exactly those names since round QB ("I want journal, the word journal and prints and release"). The imprints are the middle column, what the journal reads, with the bank of every imprint held behind its bank button. The release is the third column, and its Run opens the release card. Nothing new was built for either word. Summary and Analytics are readings of the whole field and are not the imprints.
+- **The word Story is off the bar and off every line that named the page.** The page's door is called Discover. Above phone width there is no second door under the Discover button, because it would print the word twice; on a phone, where the section buttons leave the bar, the door is the first line of the menu. A story is still what a person writes, so the word stays where it names the writing: the first run's writing step, the release card's grouping by story, the Trace chain's story step, the bank's grouping.
+- **Play carries every other tool:** Field, Body, Compass and Character in his Play order, then Avatar, Summary, Intake and Analytics in the order they stood in Discover. The Avatar builds who a person is becoming and the Intake page is the questions, so neither is the journal, the imprints or the release. No identity integer moved.
+- **The app opens on Discover** on a device with no memory, and the wordmark's home and the landing when the practitioner door shuts go there too. The opening is named once in the code, `TABHOME` in `engine/core.js`, because four places each named their own and the boot's own note records what that cost.
+- **Default taken, his to overrule: the first arrival keeps its one landing on Summary.** The funnel's link and the first run closing, once per device, then wherever the person left off, exactly as ruled on 9 October. Why: that ruling is his and is about exactly this moment, a first time user arriving from the funnel, where the 23 October ruling is about where the app opens and names nothing of the funnel; and the gift's line ("Your gift: 100 patterns, no card. Everything is open.") is drawn on Summary as the page a new person lands on, held there by `tests/gift.js`, so moving the landing would take it off a new person's first screen or need it rebuilt on the journal page, which nobody asked for. Landing them on Discover was the first cut of this change and was measured working (the release column offered three of the record's held addresses with Run lit) before it was reversed for those two reasons. The cost: "the app opens on Discover" is true on every open but the first arrival, which meets Discover as the first section on the bar. Sending it to Discover too is one line, at `tabLandFirst` in `ui/panels.js`, once the gift's line has a place on the journal page.
+- **Above phone width the row under Discover is empty and folds to its hairline,** so the journal page takes the line. His model of the bar, round KT, is that a section "opens up a secondary navigation underneath", and this one has none. The section buttons, where a press lands, do not move.
+- **CLAUDE.md still says the app opens on the Field** (the 19 September paragraph and the 9 October addition to it). It was left alone in this change, and this entry supersedes it until that paragraph is updated.
+- **Held by** `tests/landing.js`, which fails by name on the build from before this change, and `tests/functional.js`, which holds every placement by name.
+
+## The Day One tutorial is deleted, not hidden, 23 October
+
+His words: "Check to see if there's a second onboarding. Right now, there's been two onboardings. There's the one that we see, and there's a hidden one. I want that hidden one completely removed. We're not doing that anymore. We're going to be working on the funnel and we're going to be working on the flow into the site."
+
+- **The hidden one was the Day One tutorial** (`ui/tutorial.js`, round NF): five cards, Journal, Discover, Understand, Release and Flow, on the onboarding's own full screen stage, with its own story entry, its own hand off to a first release and its own door on the journey record. No arrival opened it. Its switch, `DEV_PLAY_TUTORIAL` in `ui/login.js`, defaulted off, and the developer panel that could turn it on was deactivated at round RI on 3 October. Its one door was "Replay the Day One tutorial" in Account, under The opening.
+- **The one that is seen is the onboarding** (`ui/onboard.js`): Arrive, Ask, Settle, Feel, Body, Story, Mirror, Next, the first release, then the end card. It opens once behind the login door on a profile that has not been through it. A record arriving from the quiz's link skips it, because `pImport` marks every record it takes as onboarded (`engine/schema.js`). Both unchanged.
+- **Removed:** the module, its switch, its Account row, its five poses and its way of hiding the app (`shell/head.html`), the gate sections that walked its screens, and `tools/tutorial-motion.js`. The question left open at round NF, whether the tutorial should replace the onboarding, follow it, or stay a developer path, is answered: none of the three.
+- **Kept, on purpose:** the sheet host the welcome after paying borrowed, renamed `#paidwelcome` and now its own; the chain the onboarding's end card draws its rows in; `ui.tutorialSeen` on the record; and `'tutorial'` among the doors a journey walk may name (`JOURNEY_DOORS`), because a record carrying an older value is read and never refused. The journey record landed on 9 October, after the switch panel was gone, so no person could have written that door; only gates did. `tests/journey2.js` still holds that such a walk resumes on the onboarding's own card and ends on its end card.
+- **What else changes:** `sniffStory`, the full story reader, has no screen that calls it now. The tutorial was its only one. It stays in the engine, exported and held by `tests/engine.js`, and its route into screens was already ruled for after alpha (the 9 October entry above).
+- **Held by** `tests/onboarding2.js`, section 2, which reads the running page: no name of the tutorial on it, no rule of its poses, no host of its own, and no row for it in Account. Those four fail by name on `45fe5649`, the build from before this change. The checks that rode the tutorial's screens and still describe the product moved: the stage checks (no card chrome, a ghost with no live control, nothing running under reduced motion) onto the onboarding's own stage, and the release question gate onto the same two calls the tutorial made, `stCommit` and `obMini` handed to `relPick`.
+
+## The fetter's two poles are a nerve's freeze or flight, neutral at the centre, 27 October
+
+His words, reviewing the Field with the dual-pole rows on screen: "I realized
+that the fetter state having both poles is showing two things, the freeze or
+flight state of a nerve and then the center point is neutral. So the express
+collapsed is really showing the state of the nerve. It's very good."
+
+"Nerve" is his own word for the floor of the stack ruled 23 October, "our
+stack goes psychophysical, that's nerve, to super complex": the fetter and its
+address is the nerve. A fetter already carries two values, the charge it
+holds (`n.sq`, read as the held pole) and the coherent opposite installed
+against it (`n.pole`, see `ui/imprints.js` and `ui/map.js`). The reading above
+says what the two together have always been showing, read correctly for the
+first time: not a split scorecard of shadow against virtue, but which way
+that one nerve has tipped away from a centre where neither pole is pulling.
+Held high and installed low is the nerve pulled to one side. Installed high
+and held low is the nerve pulled to the other. Centre, where the two draw
+close, is the nerve regulated.
+
+Expression (`EX` in `engine/compute.js`, `CQ*(1-PULL)`, where `PULL` is the
+average drag every held address exerts against the person's will) is the
+figure that already moves with this. A collapsed Expression is not a separate
+fact about the person: it is this same tipped state, read off every nerve at
+once rather than one address at a time. CQ itself stays fixed (it is read
+from the law answers alone, ruled 25 September and reaffirmed since), so a
+low Expression is always the nerves pulling against a steady CQ, never CQ
+itself moving.
+
+Nothing in the arithmetic changed. This is a naming of what `n.sq`, `n.pole`
+and `EX` already compute, so the next reader of this code, or of a fetter
+drill on screen, has the right word for it.
+
+His words, settled in conversation: "Narcissism is a subset of psychopathy and Machiavellianism... sociopath would be a hypercomplex and psychopath would be a supercomplex. But a very particular archetype." This resolves his 20 October strike (`0e53d037`, "Remove disputed Psychopathy supercomplex classification"), which changed only `docs/ATUNED_LAYER_COUNT_DASHBOARD_2026-10-20.md` and never reached the code.
+
+- **Sociopathy is the Predatory family's own hyper complex.** `compute()` already built it (`kind:'hy'`, `nm:'Predatory'`). It is now a DESCENT entry of its own in `engine/data/compass.js`, `kind:'hyper complex'`, `fam:'Predatory'`. The name is the structure's (Sociopathy, not sociopath), the way the descent names a pattern and never a person, and it is the name `CODE_STRUCT` already codes, X25.
+- **Psychopathy is a super complex, and only one particular one:** the Grandiosity hyper complex and the Predatory one together. Its entry keeps `kind:'super complex'` and gains `pair:['Grandiosity','Predatory']`. `compute()` reads that pair into `r.psychopathy`, a separate field that is never pushed into `sups`. It is set wherever the two rank by weight, under the same weight gate as every super complex (a mean of 5.6). `inSups` says whether the generic pairing by rank also paired them.
+- **The dark read now lights a tied step only when the chain holds it.** It used to light Psychopathy for anybody dark under expression 11. The referral to a licensed clinician is unchanged and still follows depth alone, because it is a safety rule and not a label.
+- **What it changed on the roster:** one reading out of sixteen. Tomas is dark, carries Grandiosity and no Predatory, and was shown Psychopathy; he is now shown Machiavellianism. Every number on every profile is unchanged.
+- **Open, and his:** whether a heavy hyper complex may carry a marginal one past the gate. The mean lets a Grandiosity of 8.7 carry a Predatory of 5.5. The generic super complex does the same today, so a floor for each part would move both rules, and that call is his. Sociopathy's behaviour, practice and counterpart are unwritten on purpose: they are `null` in the record rather than invented.
+
+## Execute, do not stop and wait. Ruled 22 October.
+
+His words: "when I give you a command, you exercise it. If there's a prior command that's blocking it, you can talk to me about it, but don't ever stop doing it." A standing instruction for how work gets carried out, not limited to one task.
+
+A prior ruling (the locked CQ formula, a content decision only he can make, anything that needs his word before it is right rather than before it is built) is a real reason to talk to him about a command before carrying it out. It is never a reason to stop and only report. Where a command meets no such ruling, the work gets done, not written up as a plan for him to approve. Reporting instead of building, when nothing actually blocks the building, is the failure this entry exists to name.
+
+The occasion: asked on 22 October to find out where all the latest code for the nerve to super complex structure actually is, after a report that morning had described the real detection chain (nerve, address, fetter, saboteur, complex, hyper-complex) as already wired, without having looked at `proto/knowledge/`, a separate prototype area where the same campaign had written a full second layer of behavior, trigger, lived example, impact and practice content for all six real hyper-complex families, plus four competing page designs for showing it, none of it connected to the shipped app. The miss was not looking hard enough before reporting complete, not a blocking ruling anywhere in the way.
+
+## Away from the mythological names, toward the behavioural ones. Ruled 30 October.
+
+His words: "We need to start changing the kind of religious tones. To something more practical. Right, so instead of referring to a person as Lucifer or Moloch, we want to describe the behavior in a single word. Or two."
+
+Checked before scoping it: the product already states the intent this ruling now makes explicit. `ui/drills.js`, the Compass section header: "Rendered as behaviours and never as figures. Nobody meets Lucifer. A person runs pride as false light, and the name is what four thousand years of people called that behaviour when they saw it. That is the only reason the names earn their place: they carry the historical footprint, and the echo is in the room today." So the names were already meant to ride alongside a behavioural description, never stand in for the person. What his ruling adds: even riding alongside is now too much, in his own example ("instead of referring to a person as Lucifer or Moloch"). The behavioural word leads and is what a person is shown; the mythological name, if it survives anywhere, is footnote, not label.
+
+Where the names actually live, checked by grep rather than assumed: `atuned_src/engine/data/compass.js` (797 lines, the Compass/Inferno data itself) and `atuned_src/engine/data/teachers_recipes.js` (426 lines, the teacher/inverse pairs), both real, both shipped. Not yet read in full or catalogued figure by figure; that is the next step, not done tonight. **Not executed this round.** This is a content and naming pass across a real data table, not a copy tweak, and it needs its own scoped round: read every figure name actually in `compass.js` and `teachers_recipes.js`, confirm which ones are user-facing today versus already behind the "rendered as behaviours" principle above, propose the one or two word behavioural replacement for each, and bring the list to him rather than guess forty names in one pass.
+
+**Names ruled so far, 30 October, as he works through the list.** Druj is Deception (or Deceiver, if a person-word is needed), opposite Honesty: his words, thinking it through out loud, "truth is the opposite of deceive... deception is just a lie, but you could also say transparency, or honesty. Honesty is probably more real, probably the one." Geryon is Fraud: his words, "Geryon is fraud," which also matches the one already in the research file's own table, Dante's eighth circle. Full detail and the still open structural question (Geryon shares the engine's one real two-piece pattern with Psychopathy, naming him does not by itself tell the two apart) is `TASKS.md` round SM, SM14 to SM16.
+
+**Built, 17 November.** He read the drafted table and accepted it, his words: "I already accepted the drafted name, so just give them those names, please, so I can move on to the next stage." It is wired in `engine/data/compass.js` and `engine/data/teachers_recipes.js`, with `tests/engine.js` holding each word by key. Both ends of the six pairs that have a ruled word are behaviour words now, and no teacher's name is printed at a pole that has one.
+
+- **Negative and positive, as accepted.** Fraud and Discernment, Deception and Honesty, Sacrificial Extraction and Discipline, Gatekeeping and Communion, Reactivity and Grounded Fire, Vengeance and Transmutation.
+- **Negatives only.** Extractive Control (was Malak), Poisoning, Coercive Abduction, Forced Alteration, Sabotage, Forced Growth, and the circle governors Judgment, Insatiability, Possessiveness and Violence.
+- **Positive poles only.** Grace at the Heart, Devotion at the Sacral and Liberation at the Throat. Their negatives are not renamed.
+- **Not renamed, because he rejected the draft by name and has not given his own word.** Lucifer (not simply Separation), Asmodeus (disputed), Set (chaos comes first, not sabotage) and Baal (manipulation is essential to it, and it has no axis and no derivable positive pole). Each prints as it did.
+- **No entry exists, so nothing was written.** The Harpies, Nimrod and Ephialtes are in no table in the engine. The ninth circle's governor, Satan frozen, is not on the table and was left.
+- **Still teacher names, because no word was given.** The positive poles of Flow (Krishna), Alignment (Rama), the horizontal (Lao Tzu), Light on no axis (Akhenaten) and Nature (Confucius), and the master list in `MASTERS`, which are people on the cone and not poles.
+- **The last nine went on 17 November, his words, on the Compass still showing teachers: "the names are still present. So we need to change those names."** The four held back and the five with no word now print behaviour words, each from his own quotes and the pole's own text in the file: False Light (Lucifer), Compulsive Craving (Asmodeus), Engineered Chaos (Set), Manipulation (Baal), Free Flow (Krishna), Duty (Rama), Non Resistance (Lao Tzu), Clear Conduction (Akhenaten), Natural Growth (Confucius). The master list prints the word of the pole each master stands on, and the person stays as the row's key. The two bullets above that say "not renamed" and "still teacher names" are this entry's `OVERRIDDEN`. Each word is his to overrule by one word. Open, and his: whether Baal's mark, a flame with a mouth, should become a puppeteer, since the word is now Manipulation and the codex line under it still describes appetite.
+- **Jesus is two words.** The one name at two poles that `tests/engine.js` pinned as his canon is Grace at the Heart and Transmutation at the Crown, so the canon is kept in the axis keys and the lines and no longer in a repeated name.
+
+## The book's own levels, read in order on the Field's left rail, 28 October
+
+**OVERRIDDEN, 18 November: the section is gone, and so is this entry's
+reason for existing.** His words that day: "I never asked you to put in the
+book levels. I don't even know what that is." The only words of his on record
+for it are the 28 October ones quoted below, "the full cascade wiring of the
+Psyche stack for the field in the left menu", and a seat read the word "book"
+and the row for each level out of them. The section is out of the rail, and
+what is written under this heading is kept for the record of what was
+weighed. The ruling that replaces it is "The Psyche panel holds Matrix,
+Superego and Action", at the foot of this file.
+
+His round, after the superego section landed: "the full cascade wiring of the
+Psyche stack for the field in the left menu." The Mechanics of Being numbers
+the layers a signal passes through, 4 to 10 above the body (1 to 3 sit below
+it, 9 already has its own section, Superego). This entry is the record of
+which layers this engine can honestly claim and which it cannot; the rail's
+own "The book's levels" section (`shell/body.html`, `data-sec="levels"`) is
+the same list, read by the owner rather than only by a seat. It was first
+titled "The stack", which the Knowledge page already uses for the seven seats
+(`ui/knowledge.js` `KB_SECS`), and "Layers" is already the Field's own control
+for its overlays (`ui/fieldbar.js` `FB_FOLD`), so the section and its copy say
+level, under the one word per concept rule.
+
+- **4, imagination, and 5, frequency intensity: not computed.** The book
+  places both before a feeling or a charge exists ("the mind simulating
+  possible realities from incoming data", "the energetic charge applied to
+  the signal... before the signal is labeled"). Nothing in this engine
+  measures a layer before that point; the charge shown everywhere on the app
+  already is layer 5's own result, not the layer itself. No row was built
+  rather than guess at one.
+- **6, fight or flight, and 7, action response: real, already shipped,
+  under different names.** 6 is the 27 October ruling above, read in full:
+  the fetter's own dual pole is the nerve's tilt toward freeze or flight. 7
+  is the Laws of Action section the Field's rail already carries ("the
+  awareness ignorant detach attach intentional aware", round 28 October):
+  the book's own words for it, "negative: attached to outcome, ignorant of
+  what needs doing, avoiding. positive: aware of what needs doing, detached
+  from outcome, moving with intention", are the same four words in the same
+  two pairs. Nothing new was built; the levels section names what already
+  exists.
+- **8, ego, nine words: real, and a real discrepancy, not merged silently.**
+  The book's nine: fear, anger, shame, disgust, grief, receiving blocked,
+  apathy, shock, sad. The engine's nine poled axes, `CHILD` in
+  `engine/data/canon.js`: Fear, Anger, Shame, Disgust, Apathy, Shock, Sad,
+  Surprise, Anticipation. Seven of the nine agree by name. The book's grief
+  and receiving blocked are not among the engine's nine; the engine's
+  Surprise and Anticipation are not among the book's nine, and carry their
+  own poling ruling (14 September, for Anticipation, Surprise and Shock).
+  Which seven is not an open question; which other two the full nine should
+  be is. Not resolved here, the same discipline this file already holds for
+  the superego's four against canon's six.
+- **10, the koshas: not computed, and not a pick between rosters.**
+  `BOOK-ERRATA.md` finding 8, "Two koshas rosters", already has it: the
+  book's own chapter 10 names eight, its own glossary names six, and the
+  glossary's six are not six of chapter 10's eight. A ninth term appears in
+  neither list. Building a koshas row would mean choosing between the two
+  rosters the book gives for itself, and deciding where the orphan term
+  belongs, which is a finding for that file, not a build for this one.
+
+## Glass is shelved for look development, 1 November
+
+His words: "I think we'll keep the designs that we currently have in Engine. I
+think as far as our look development, pushing our look development further, I
+think we're going to abandon the glass style. It may come back in some other
+skin, but for now, I don't want to think about it. It's contaminating our
+execution."
+
+- **Shelved, not deleted.** No glass/frosted material (blur, translucency,
+  the material named in `atuned/docs/bibles/OWNER_RULINGS.md`'s art-direction
+  palette, "light, vector, glass") in any new look-development pass from this
+  date forward, across Field, Journal, or any other surface. It may return as
+  its own named skin later, by his word alone, not by a designer's default.
+- **What stands:** the designs already approved and in Engine keep their
+  current look; this ruling does not retroactively redesign anything already
+  shipped. It governs what comes next, not what already exists.
+- **Named trigger:** Journal's round-4 mock-up (the black panel, frosted
+  header treatment) is the specific instance he reacted to; the ruling is
+  broader than that one mock-up, covering the material itself, not one screen.
+
+## The Journal's Full view gets a left menu and a right menu, 2 November
+
+His words: "use a left menu and the right menu." For the Journal's Full view only. Simple is unchanged.
+
+- **It is not a new screen.** The Journal already has a Full and a Simple view: the Dashboard button (`#stdash`, `ui/storyui.js`) sets `STV.dash`, and Simple is where a person lands, his 29 October words "when I land on this page it starts off in simple mode." This ruling fills the Full view's two sides. Pressing Dashboard now also brings back the left column, carrying the Journal's own left rail (`#stleft`, drawn by `ui/stdash.js`) and nothing of the Field's.
+- **Simple keeps no left column,** exactly as ruled 28 October ("we're going to get rid of the left-hand menu"). That ruling's real fault was whose column it was: the Field's rail, under the Field's fold key. In Full the column is the Journal's, under its own fold key (`lcols`, `colKey` in `ui/ui.js`), so a fold made on the Journal never moves the Field's and the reverse.
+- **The right menu is the one the Journal already has.** The bank still opens Imprints and Selection in the right rail (`.st-rail`, `#imp`). Nothing was rebuilt for it.
+- **The left rail's first section is Energy:** all seven seats, Root to Crown, read off this story's own words (`parseStory` bands, the same per-seat scale the Journal's chart already springs to). It says "Nothing read yet" and draws no ring until a story is written.
+
+Seat defaults taken with it, recorded as decided and not asked:
+
+- **Six channels, with Say dropped.** The 26 September ruling above (item 2, "Six channels or nine. RULED SIX"): believing, perceiving, thinking, behaving, acting, feeling. Speaking, saying and doing are not channels, so no Say channel appears anywhere in the Full view.
+- **The Story's commit button keeps its name, Commit.** It is not renamed Release. Release is already taken: it is the third column's name and the release card it opens (23 October entry above), and one word per concept holds.
+- **Energy reads this story, not the whole record.** The record's Energy is the Field's, on the Field's own left rail. The Journal's says so under its heading ("What this story puts at each of the seven seats"), so one word never names two readings on one screen.
+- **The left rail is Full only.** It is hidden in Simple and on every other tab, and emptied when it is hidden, so a hidden rail never holds a stale reading.
+
+Not built yet, because each needs new engine work or a ruling first: Action, Compass, a laws grid, Channels, Patterns, Boundary, and Feelings as a cycling widget. The laws panel the Story page already has is left as it is. A kept and broken laws grid was proposed and is not taken: it needs his ruling.
+
+Held by `tests/stfull.js`, called from `tests/functional.js`. Its first job is the safety precondition: in Full, with chat on, the crisis door is still reached by real presses (profile button, "Is this a crisis?", "Reach someone now") and the three numbers (988, 741741, 911) are on screen and pressable. That was already true before this change and is now held. This is the voluntary door only; there is still no automatic reading of what a person writes.
+
+## Ruler's domain is Imperium. Ruled 21 November, closing the 4 November item below
+
+His own words, 21 November: "Ruler is Imperium." That closes the one open
+item PR #177 carried. The archetype to domain port (`engine/archdom.js`,
+`engine/data/archdom.js`, `tools/regen-archetype-domain.cjs`) lands on main
+with Ruler resolved to Imperium under the Architect root, `how:'ruling'`,
+`ruling:true`, nothing open. The two readings recorded below are kept for the
+record of why it was open, not as an argument against the ruling. What did
+not move: the lookup still feeds nothing (not `affinity()`, not `buildSoul()`,
+not `compute()`), and the soul map's ring position still disagrees with the
+table for every archetype, recorded below under the 4 November entry and held
+by `tests/engine.js`.
+
+## OVERRIDDEN 21 November. Ruler's domain: Imperium or Power, still his to close, 4 November
+
+PR #177 ported Reboot-OS's `canon_ARCHDOM` table and left Ruler open, because that
+table's own row reads "Ruler: Architect", and Architect is a root, not one of the
+19 domains, so the generator refused to guess which domain under that root. He
+first ruled Imperium, on the sense that Imperium and rulership read as the same
+word twice. He then reopened it himself, live, in his own words: "So it was
+Imperium and Power are they exactly the same, or what's the biggest difference?
+Because Imperium seems to suggest rulership, while Power suggests the seeking of
+power. They look alike, but they're not the same." That is a question, and his
+own reading of the plain English words, not a second ruling. A team member wrote
+"Ruled: Power" here on the strength of research alone, with no closing word from
+him, and that was wrong to write; corrected the same day. The two readings, so he
+can close it with his own word rather than an inference on his behalf:
+
+- **His own plain-English reading, in the quote above: Imperium tracks with
+  rulership, Power with "the seeking of power."** On that reading Imperium is
+  the better fit for an archetype named Ruler.
+- **The book's own technical definitions point the other way, found twice
+  independently.** Its own merge note: "Power consolidated from prior Directed
+  Force + Royal (one can be a king or a warrior, they are both Power)." Its own
+  worked trace example: "Power -> Sovereignty." Royal Consciousness, the book's
+  words, is "Sovereignty. Courage, leadership, and responsibility for one's own
+  reality... power that does not need to dominate," grouped with Power, not
+  Imperium. The book's Imperium is "the executive layer. The capacity that
+  selects action across time, sequences decisions, and overrides impulse,"
+  grouped with Pattern and Story: self-command, not rulership. The engine's own
+  seat data already seats Ruler at Solar (`ARCH[i].b`, `engine/data/canon.js`),
+  the same seat as Power and Royal Consciousness; Imperium has no seat overlap
+  with Ruler at all.
+
+Not resolved here. Both readings are real; they disagree because the book's own
+technical sense of these two words runs against their plain English sense. His
+call, with both readings in front of him.
+
+## Archetype to root: no mechanism exists anywhere, 4 November
+
+Asked to simulate the stack from archetype to root with the domains taken out,
+per his correction that the domains are a separate "conscious domains" layer
+("the knowledge we accumulate") and not a rung between archetype and root. The
+simulation (full report held by the team) found no table, in this app, in
+Reboot-OS, or in any edition of the book read, that says which of the four roots
+(Architect, Engine, Weaver, Witness) each of the twelve archetypes belongs to.
+
+What exists instead: a partial archetype-to-seat-to-root chain (`ARCH[i].b`
+through `ROOTSEAT`) that only resolves 7 of 12 archetypes and ties on none; the
+born-on blueprint (Summary page) that hands a person a root and an archetype
+from the same birthdate but by unrelated formulas, so knowing one tells you
+nothing about the other (measured at 0.0007 against a scale where 2.0 would mean
+they agree); and an old, 6-of-30-filled Reboot-OS table of blueprint "god forms"
+(`V25_BLUEPRINTS`) that names archetypes under a blueprint but never a root.
+
+Not resolved here. Two ways it could go, each needing his ruling: he writes the
+twelve archetype-to-root rows himself, or the seat route (`ROOTSEAT`) is
+adopted as the answer for the 7 it already resolves, with the other 5 (Warrior,
+Rebel, Ruler, Jester, Everyman) ruled by hand. A third option floated earlier,
+finishing the old 30-blueprint god-form list, is withdrawn: his own words, "I'm
+not finishing the 30 blueprint. Stop asking me. When you say finish the 30
+blueprint, it's because I made a comment," not a thing he ever asked built.
+Not raised again.
+
+**A naming collision that caused a real wrong answer, corrected 4 November.**
+Asked "how many blueprints are there now," the answer given was 6, read off
+`V25_BLUEPRINTS`, an old, abandoned April god-form list in a dead Reboot-OS
+build (`reboot_os_v29.html`). That was the wrong dataset. The shipped app's
+own left rail already carries a heading that reads "Blueprint Domains," over
+the 19-entry `DOMAINS` table (`engine/data/canon.js`), built and screenshotted
+by him directly. "Blueprint," in his own working vocabulary and in the app's
+own copy, already names that 19-entry table, fully filled, not the dead
+30-slot list. The two were never the same thing; citing the dead one answered
+a question nobody asked. The real count of blueprints in the app, by the
+app's own label, is 19, all filled.
+
+## Archetype to root, the definitional method: 6 held, 4 changed, 2 open, 4 November
+
+He gave a fourth way to close this: "look at the definitions and the mechanics
+of being... the words, what defines them when you combine them, makes up the
+archetypes." Pulled the book's own words for each of the four roots and each
+archetype, matched them by what they actually say, then ran a second,
+adversarial pass that tried to prove every match wrong by rereading the same
+text from scratch.
+
+- **6 held under the adversarial check:** Warrior to Engine, Sage to
+  Architect, Caregiver to Weaver, Creator to Engine, Explorer to Engine, Lover
+  to Weaver.
+- **4 changed when checked harder, best current answer, not settled:** the
+  book's own Outlaw (asked about as Rebel) to Architect, Magician to Weaver,
+  Ruler to Engine, Innocent to Witness. Each of the first guesses for these
+  four leaned on `Imperium`, a term the book names once, in a different
+  taxonomy (Consciousness types, not Blueprint Domains), and never states
+  belongs to Architect. Removing that unconfirmed link changed the answer.
+- **2 are a real tie in the book's own words, not a reading problem:** Jester
+  (Weaver's Play fits, but the book's own trickster figure sits in Witness)
+  and the book's own Orphan (asked about as Everyman, whose fear points at
+  Architect and whose want points at Weaver, with neither root covering both).
+
+Cross-check: the seat route above (`ROOTSEAT`) independently flagged the
+Outlaw, Ruler, Jester and the Orphan as needing a human call, with no sight of
+this derivation. It did not flag Magician or Innocent, so those two carry the
+least independent support of the four "changed" rows.
+
+Two archetypes carry two names: what this project asks about as Rebel is the
+book's own Outlaw, and what it asks about as Everyman is the book's own Orphan.
+
+Not resolved here either. Good enough to build on, not good enough to ship by
+itself. His ruling wanted on the 4 changed rows and the 2 open ties; the 6 held
+rows can be treated as answered.
+
+## Double bind detection and a hold button for felt versus computed, 4 November
+
+Two new items, both his words, both scoped to the release flow and not yet
+built.
+
+- **Double bind detection.** A pattern where what a person says they feel and
+  what the engine computes from their story disagree (felt versus computed) is
+  its own detectable thing, distinct from the patterns already named
+  (minimizing, humor-deflection, numbing). His words: "it will show up unique.
+  In a person's bank and vault. It'll have an icon next to it showing that's a
+  double bind." Needs a seat (where "bank" and "vault" mean here, which this
+  product's own glossary should confirm before building) and an icon, not yet
+  designed.
+- **A hold button for felt versus computed, at release.** When that disagreement
+  is found during a release, a button keeps (holds) the pattern instead of
+  letting the release clear it, then runs the detection again. His words: "the
+  more we can find, the dense ones, those are the real ones," meaning a pattern
+  that keeps surfacing across repeated runs is the one worth trusting over a
+  single hit.
+
+Both logged to the backlog (`TASKS.md`) rather than built blind. Neither has a
+seat, a visual spec, or engine support yet.
+
+## The Discord feedback relay stays, 4 November
+
+Lance: "We should still have the Discord feedback. That should not have gone
+away." Reboot-OS PR #2 (the relay) is not to be dropped; its current broken
+state in production is a defect to fix, not a feature to retire. Status of the
+fix is tracked in `TASKS.md`, not here.
+
+## The right rail's Reading panel, ruled from his own screenshot, 4 November
+
+His annotated screenshot of the Field's right rail, the same panel SW7
+already targets. Specific, direct rulings, replacing the earlier, thinner
+read of "convert to bars":
+
+- **"Reading" becomes "Insight."** The panel's own heading.
+- **No person's name on the panel.** His words: "the person already knows
+  who they are." Whatever currently prints the record's own name (shown as
+  "Marcus" on a sample record) comes off.
+- **The summary box stays, and names what it is.** His words: "this is our
+  summary field... it's giving you a summary from the records, where Source
+  AI is interpreting the parent child stack of anything selected, and it's
+  giving our record structure." This is `traceSummary()`/its UI wiring
+  (`engine/tracesummary.js`, `ui/tracesummaryui.js`, pulled from `stackbuild`
+  this same round), not a separate thing: the summary box is where that
+  narration belongs, not only the drill screens it is currently wired into.
+- **The dead Field block comes off, confirmed again, in his own words this
+  round:** "we don't do anything like gaining by weight, by assemblage
+  point, field, carrying, filled in, heaviest, most shut." Matches the
+  `stackbuild` deletion already being pulled this round (`d5db0e55`); this
+  is his own confirmation of that exact cut, from a second, independent
+  direction.
+- **"Held" and "opposite" come off as column headers.** Matches SW7.
+- **The five tabs (Child emotions, Saboteurs, Complexes, Hyper, Super) are
+  not five flat, separate screens. They are one nested cascade, parent
+  through children.** His words: "if I select a super complex... I'm
+  getting the full cascade of how all those patterns are working through
+  me, as a construct. Further down, I can open up hyper complex, and
+  further down from that, I can open up complex. Or I can close them all."
+  Selecting a tab opens that layer, and each layer nests the one below it,
+  open or closed, rather than five separate tab panes a person switches
+  between. This is a bigger structural change than SW7 scoped; SW7's bar
+  conversion still holds for the bottom layer's own rows (the fetter/Child
+  emotion pairs), but the tab structure itself now needs the nested
+  cascade, not five flat panes.
+- **New bars replace the Fear/Trust-style rows at the very bottom.** Same
+  ruling as SW7, restated directly against the screenshot.
+
+Note for the record: the abandoned `stackbuild` branch (mined this round for
+salvage, see TASKS.md) has a rejected, entangled commit chain (`ff83e746`,
+`d39c3beb`, `92058145`, `c4bf8edc`, and others) building exactly this kind of
+nested-tier disclosure rail. It was rejected for pulling wholesale because
+each commit only makes sense on top of the previous one's new structures,
+not because the idea is wrong; it is now confirmed as the right direction,
+independently, by this screenshot. Worth reading as reference for the
+mechanics, not pulling as-is.
+
+## Five hard rules for the nested cascade, from his live reaction to a mock-up, 4 November
+
+He reacted live to a screen showing this same kind of parent/child cascade
+(from a parallel effort, not confirmed to be this session's own build).
+Binding on this feature wherever it is built, named plainly so it is not
+repeated:
+
+- **The selection summary reads from the real records, never from engine
+  internals.** His words, rejecting a line that read "Built from 5 held
+  addresses across Heart, Sacral, 3rd Eye, Crown. It fires when those carry
+  at once, and the output bends on the way out.": "That's a big no. We
+  don't do that." A summary names the pattern's own written content (the
+  saboteur card, the hyper-complex family record, the super-complex entry),
+  never a count of addresses or a mechanical description of how the engine
+  assembled it.
+- **No duplicate reading on one screen.** If a figure (Integrity, Intention,
+  law reach, distortion) already shows somewhere else on the same screen,
+  it does not get a second block showing it again.
+- **One visual language.** A cascade card styled differently from the rest
+  of the panel it sits in reads as "an old legacy design," his words, and
+  is wrong on sight, whatever the data inside it says.
+- **The parent-to-child nesting has to actually work**, confirmed end to
+  end, not assumed from the data being correct.
+
+Three more, same screen, his own further mark-up: **no separate flat
+"Running Now" list.** His words: "I'm assuming this is also legacy. Because
+this should show parent to children as a stack. Underneath the summary."
+The nested cascade itself, directly under the summary box, is how "what's
+running" is shown; it does not also get a flat list duplicating the same
+patterns below it. **"Laws of Moral Integrity" comes off this panel.**
+**"Run a release" comes off this panel.** Neither belongs here.
+
+**The backlog and "Atüned, what's running" are updated every round, not on
+request. Ruled 9 November.** His words: "your job is to keep the backlog
+and what's running updated. Every round." TASKS.md and the dashboard
+artifact both move at the end of a round that changed anything, the same
+way a gate result does, not only when he asks to see them.
+
+**A merge-readiness signal is source-agnostic. Ruled the same round.** His
+words, on whether a ready branch or PR should show a signal to merge: "it
+doesn't matter where it comes from. If it's from another AI thread or
+whatever." The dashboard's signal is computed from the real, public state
+of each PR (open, not draft, green CI, a clean mergeable_state) regardless
+of which session or AI opened it, never only from this session's own work.
+
+## No two-way chat, anywhere, including the voice. Ruled 10 November, built whole 11 November
+
+**OVERRIDDEN, 18 November, on the Avatar page and in the Source AI corner:** he
+answered the board's question "Does 'I talk to Source AI' replace your 10
+November rule of no two way chat?" with "Yes. Yes, it does. That replaces it.
+The sniffer is now sniffing specifically for words in my conversation." See
+"Answers to the need you list. Ruled 18 November." at the end of this file.
+What follows is the ruling this replaces, kept for the record.
+
+His words, given over and over and most recently pointed straight at the
+Dashboard: "we don't need 2-way talk anymore... it's just the user's input.
+Or the user can put text." This was never written down in this file before,
+only in a comment in `ui/storyui.js`, and the comment overstated how far it
+had actually landed.
+
+**What 10 November's own build did.** Source AI's templated reply stopped
+printing on screen: `srcPaint` paints only the person's own words (`.src-mine`)
+now, never a Source AI line, in the Journal's Full view and the Dashboard
+alike. The engine underneath (`engine/sourceai.js`, `engine/evidence.js`,
+`engine/qcheck.js`) kept running exactly as before: the same turn, the same
+`srcLog` row, the same `SRC_CHAT` writes, so what an entry keeps at Commit
+never changed.
+
+**What it did not do, found 11 November, a real regression and not a design
+choice.** The per-turn reply kept being spoken by voice (`stSrcSpeak(cur.q)`
+in `srcPaint`) every time Talk was on, and a second press of Talk mid
+conversation re-spoke the last templated question too (`srcSayNow`'s own
+fallback). So a person who could no longer see a reply could still hear
+one: the screen went one way and the speaker stayed two way, and what
+Source AI said out loud was unchanged from before the ruling. Both calls
+are removed. The only lines Source AI speaks now are the greeting (the
+Talk press, unruled, unchanged) and the crisis safety line (3 November's
+own ruling, unchanged, scoped to that line alone and still spoken).
+
+**Why this was found now and not sooner.** PR #163, "Source AI voice
+prototype," was shown to him on 8 November with real screenshots and
+rejected outright: "Source AI is nothing like what I asked for, at all."
+No reason was given beyond that, and none is invented here; `TASKS.md`'s
+own Directive 8 entry already says so. A nine-person team strategize
+(5 independent directors reproducing the real conversation, 3 cross
+checking their work, one locking a plan) was run before any further Source
+AI build, specifically to find what a rebuild should actually fix rather
+than guess. What it found was this gap: the 10 November ruling had been
+only half carried out, so a person still heard an interviewer even after
+the screen stopped looking like one. Whether this alone explains "nothing
+like what I asked for" cannot be said; the team could not get PR #163's
+own build back to compare against, and no reason beyond his quoted words
+exists anywhere in the repo. It is the one concrete, verified gap found,
+and closing it is this round's whole scope.
+
+**Also built the same round, the content chain, his own words at round SL,
+30 October: "capture their story and show what the sniffer is finding
+within the story."** A line now prints under the person's own words after
+a turn, naming only product words (imprint, release) with their meaning
+read once from `engine/data/gloss.js` through `unpackOf`, never a body
+place, an address, a fetter, a saboteur or an archetype: the naming ruling
+above is unchanged and unreversed by any of this.
+
+**Reversible.** Putting the per-turn voice back, if he ever rules for it,
+is one line in `srcPaint`. Nothing in `engine/sourceai.js`, `evidence.js`
+or `qcheck.js` was touched or retired.
+
+## Responsibility and Accountability, what each word owns. Ruled 11 November.
+
+His words, verbatim: "Responsible for means it is yours to own. Accountable
+for means it is yours to watch. And tend to. You're responsible for the
+words you speak, and accountable for the actions that follow."
+
+**What this fixes, found the same night.** `engine/data/kb.js`'s own HARM
+table, 76 entries, the only one of the three content tables this product
+uses for "what does this mean" (the other two are GLOSS, the general term
+table, and `unpackOf`'s own per-law line built from the intake question
+stem). A direct script check of all 76 found exactly one blank: E43,
+Responsibility, had no `d` field at all, the literal thing a card showed as
+"No meaning on file yet." `TASKS.md` already named this exact gap. E40,
+Accountability, already carried the real split, sourced before tonight:
+"Responsibility is ownership of your own field, the patterns and the
+charge. Accountability is ownership of cause and consequence in the shared
+world." His words tonight say the same thing in his own voice and settle
+which law owns which half. E43 now reads: "Ownership of your own field,
+the patterns and the charge, claimed before anyone else is touched by it.
+Paired with Accountability (E40): responsibility is what you own,
+accountability is what you watch and answer for once it reaches the shared
+world. You are responsible for the words you speak, accountable for the
+actions that follow them." Sourced from E40's own existing line and his
+words above, nothing invented.
+
+**The book's own defect this resolves, for product purposes only.**
+`.claude/skills/mob-canon/SKILL.md` section 3.3: the manuscript's Chapter
+10, Laws 34 (Responsibility) and 35 (Accountability), print the identical
+upward-pole sentence word for word. The book is not being corrected in
+place; this ruling settles what the product says, the same way the
+Spiritual/Moral Integrity naming split was settled rather than merged.
+
+**What is now verified, not assumed.** All 76 HARM entries carry a real
+`d` field, checked by a script that parses the table and lists any entry
+missing one, not by reading it. That covers all 21 Laws of Moral Integrity
+(SI) and the full 48-law "universal laws" roster from the book (nature,
+human nature, spiritual integrity, expression) plus the emotion, measure
+and meta rows HARM also carries. Zero missing. The status board carries
+this count so it stays visible rather than typed once and left to go
+stale, the same discipline CLAUDE.md already holds the gate counts to.
+
+**What is still open, and is not this.** The HARM `d` field is one
+sentence, the same depth every other entry gets. His ask to "go four
+layers deep to get to the meaning and the mechanic" on each of the 21 and
+the universal laws, surface meaning, the distinction from its neighbors,
+the real engine mechanic that reads it (the sniffer cue table, the intake
+question, the formula it feeds), and its physical/embodied cost, is a real
+new content tier, not built tonight past this one law as the worked
+example. Scoped as a backlog item rather than claimed done; see TASKS.md.
+
+## The 12 archetypes, self-reported then adjusted by the story. Ruled 11 November.
+
+His words, verbatim: "The 12 archetypes do feed the existing system. It
+helps identify where a person is leaning and the strength that they align
+to that. It's self-reporting of their archetypes, and then as they input
+their story over time, the reality of those numbers adjust."
+
+This answers TASKS.md's own open fork, SV26/TA9: the quiz's twelve
+archetype answers are not a one-time narrative label and not a second,
+parallel scoring system. They set the starting per-archetype percentage
+by self-report, the same shape `affinity()` (`engine/core.js:560-564`,
+`compute.js:688-690`) already computes and already feeds live into the
+left rail, Analytics, the drills, the rings and the wheel through `pi`/`si`.
+What moves after that is the person's own story: as they write, the
+percentages move away from the self-reported starting point toward what
+their own words actually show. Not built tonight; the wiring (feed the
+quiz into `affinity()` as its starting value rather than a second table,
+then let story input re-weight it the same way the engine already re-weighs
+charge from a story) is scoped as a task rather than guessed at further.
+
+## The 20 self-reported saboteurs feed the real SAB33 detection, same shape as the archetypes. Ruled 11 November.
+
+His words, verbatim, when asked directly whether the new quiz's 20 saboteur
+self-report questions should write into the existing 33-saboteur table the
+rest of the app already reads from, or something else: "Let's lay the
+saboteurs in for now. What they do is they give us anchors. All of it gives
+us anchors. It just depends on which way we choose to come at it from. The
+saboteurs are more recognizable by people. I think that's the point of it.
+People can admit when they're people-pleasing but they just need to be
+shown it." Asked to confirm this holds even though it may need revisiting:
+"I don't disagree with you. I may have to change that after the alpha. So
+just for now, this is for the [alpha]."
+
+Read as: self-report and the engine's own story-driven detection
+(`sab33Detect()`, `atuned_src/engine/core.js:615`, matching a story's charge
+against `SAB33`'s own ranges, `engine/core.js:592`/`atuned_src/engine/data/
+canon.js`) are two directions into the same anchor, not two systems. This is
+the same shape as the archetype ruling directly above: self-report seeds the
+real value for a named saboteur, re-weighted by story input over time the
+same way `sab33Detect()` already re-weighs from a story. It stands only
+because the match is a real one, not assumed: every one of the new quiz's 20
+self-report saboteur names (Judge, Avoider, Micromanager, Hyper-Achiever,
+Hyper-Rational, Hyper-Vigilant, Pleaser, Restless, Stickler, Victim,
+Negotiator, Control Freak, Imposter, Overthinker, Perfectionist, Aggressor,
+Worrywart, Martyr, Cynic, Deflector) is an exact, verbatim name match to one
+of the 33 rows in `SAB33` (`atuned_src/engine/data/canon.js`, lines 42-75) --
+no invented label, no reconciliation needed, confirmed directly against the
+real table rather than assumed. The other 13 of the 33 stay story-inferred
+only, same as today, since the quiz asks about these 20 and not the rest.
+Ruled alpha-scoped on his own word, not locked in: a decision to change this
+after the alpha is his to make, not a reason to withhold it now. Not built
+in this entry; the real wiring (where the self-reported value is stored
+alongside or inside whatever `sab33Detect()`'s own per-saboteur state is, and
+how the two blend as a story arrives) is scoped as a task for whoever builds
+the funnel/quiz replacement, the same way the archetype wiring above was
+scoped rather than guessed at further.
+
+## The funnel/quiz replacement's exact scope, and where login lands. Ruled 11-12 November.
+
+His words, verbatim, repeated twice the same night, final: "When the user
+creates a login, it lands on the simple dashboard." And separately, direct
+and final: "Get my funnel up, get my quiz up, make sure it gives a summary
+page, make sure there's a login page, make sure the login page goes to the
+dashboard. There's some other secondary stage tutorial type thing in there.
+Rip that out. If I didn't mention it, it doesn't belong."
+
+Read as four real rulings:
+1. **The funnel and the quiz ship**, the approved content (the uploaded
+   `ATUNED_Experience_V19.html` and the two rulings directly above this one)
+   is what gets built, not re-opened for further scope debate.
+2. **The quiz ends on a real summary/results page** -- already in V19's own
+   structure (CQ score, archetype/saboteur reading, celestial+numerology
+   tile, CTA) -- confirm it is actually wired to the real engine output
+   (`archSeedApply`/`sabSeedApply`/the real tables), not a static mock.
+3. **A login page is part of this flow**, and its real destination on
+   success is the Journal/Discover tab (`TAB.STORY`) **in its dashboard
+   view** (`STV.dash`/the hero "Dashboard" state this session built and
+   fixed earlier tonight), not `TAB.SUMMARY`. This is a real, explicit
+   override of the 9 October first-arrival ruling (`tabLandFirst()`,
+   `atuned_src/ui/panels.js:172`, which lands a first-time arrival on
+   `TAB.SUMMARY`): for a person who arrives through THIS flow specifically
+   (funnel -> quiz -> login), the dashboard is the first thing they see
+   instead. The general first-arrival rule is otherwise untouched for
+   every other door into the app (a returning device, a direct link,
+   onboarding closing with no funnel involved).
+4. **V19's "how it works" stage is cut entirely.** He never asked for an
+   explanatory/tutorial stage; its own 26-beat educational content does
+   not belong in what ships. Build the funnel, the quiz, the summary page
+   and the login page it was asked for -- nothing it was not.
+
+## The funnel's score passes into the account, as starting information. Ruled 11 November.
+
+His words, verbatim: "It gets saved to the account. It's a starting
+information for the account. So the funnel gets the information that user
+creates the account, their score summary gets passed into the data of
+their account."
+
+Read as: when a person who took the funnel quiz creates an account, the
+quiz's score summary (their starting law/archetype/coherence numbers) is
+not thrown away and is not re-asked; it is written into the new account's
+own record as its starting state. This is the second network seam the fork
+to accounts already named (`CLAUDE.md`, "the app gains network at exactly
+one seam, fetching a record at sign in"), the funnel-to-account handoff
+half of it, not yet built. Scoped as a task.
+
+## Knowledge base becomes wisdom school, and the tab takes the name. Ruled 18 November.
+
+His words, verbatim, at the close of the foundation audit request: "Change the
+words knowledge base to wisdom school."
+
+Read as: every place a person reads or hears "knowledge base" says wisdom
+school, and the Knowledge tab takes the same name, because that tab is the
+surface the copy called the knowledge base and one word per concept gives one
+surface one name. Sentence case: Wisdom school opening a label, wisdom school
+in the middle of a sentence.
+
+What moved: the tab's name in `TABDEF` (`engine/core.js`) and on its button
+in `shell/body.html`, the Embody section's tooltip that lists its tabs, the
+search box's spoken name and the deck title fallback in `ui/knowledge.js`,
+the review question in `ui/account.js`, and the two refusals in
+`engine/daily.js` that name the surface. The drill's back button reads "Back
+to the wisdom school": the exception that printed "Back to Knowledge" existed
+because Knowledge was not a place, and Wisdom school is one, so the exception
+went with the old name.
+
+One layout moved with it. The phone menu set three tabs to a row, and at 390
+pixels wide the longer name and its mark measured 111 pixels in a 115 pixel
+cell, two pixels from each edge where its neighbours keep 18 and 28. That is
+the pressed-together look the 16 November symmetry ruling forbids, so the
+open menu at phone width now sets two to a row (`shell/head.html`). Play and
+Embody each hold four tabs, so both read as two even rows of two instead of
+three and an orphan, in the same number of rows as before. The desktop bar
+did not change.
+
+What did not move, on purpose:
+- **Identity.** `TAB.KNOW`, integer 6, the id `know`, the class `tab-know`,
+  `#know`, `#knowbody`, `ui/knowledge.js`, the `kb` prefix and `KB_Q` keep
+  their spelling. TAB integers and keys are persisted and compared, and
+  CLAUDE.md rules they never move. A comment that says Knowledge means this
+  tab.
+- **The Knowledge domain**, under the Architect root (`engine/data/canon.js`,
+  `DOMDEF` in `engine/data/kb.js`), is a different concept and keeps its name.
+  The rename ends a collision where one word named both.
+- **His own words.** Every quotation of his that says knowledge base stays
+  word for word where it is quoted.
+- **The ordinary word.** Knowledge in its plain sense ("Freedom, free will,
+  knowledge, wisdom") is not the surface and stays.
+- **`proto/`.** The prototypes are not the product and were not swept.
+
+## Point, charge, whole, clarity and shadow. Ruled 18 November.
+
+His words, verbatim, answering the need-you list on the status board: "Change
+seat and chakra to just point. It's an assemblage point. You can call it AP,
+or assemblage point for short, or point. We're going to use charge instead of
+tension. And neither becoming or complete, we're going to use the word whole.
+Instead of clear conduction against sabotage, just use clarity. Grace against
+false light, just change that to grace. Oh, I see. Grace against shadow. So
+use the word shadow."
+
+Read as five changes, made everywhere a person reads or hears them, by the
+standing precedent of the 112 ruling ("Make that change everywhere so it's
+just done") and the wisdom school rename of the same day:
+
+- **Seat and chakra are a point.** The seven places along the body's centre
+  line (Root, Sacral, Solar, Heart, Throat, 3rd Eye, Crown) are assemblage
+  points. The sentence a hover or a tap opens says it in full, "An
+  assemblage point, or point, is one of seven places along your body, from
+  the base of the spine to the top of the head, where the instrument reads
+  what is held", a heading that introduces all seven says "the seven
+  assemblage points", and every other use says point.
+- **Tension is charge** where it names the stuck survival energy at a place
+  in the body. Where tension is a sensation a person says or picks (a tension
+  headache, jaw tension, the Jester breaking the tension in a room) it stays.
+- **Whole** is the word for the Avatar's percent that reads how far a person
+  has come: the label under the Avatar card's percent, the Ritual page's
+  Avatar ring and its tooltip row, and the sentence that reads the percent.
+  The verb become and the Becoming subtab's name stay, because neither names
+  the percent.
+- **Clarity against Sabotage.** The coherent end of the pole that sits at no
+  one point (`HOME_POLES`, key SA) is Clarity. Sabotage keeps its name.
+- **Grace against Shadow.** The inverted end of the Light axis (`MIRROR`, key
+  IL) is Shadow, and so is the same figure in the decoherent blueprint and in
+  its recipe row, one word per concept.
+
+How it is held: `tools/vocab-sweep.py` carries every classified replacement
+as a rule in `tools/vocab-rules.py` and applies them only inside strings a
+person reads, so the same sweep can be re-run on a merged tree when other
+branches land new screens with the old words in them. It exits non zero on
+a retired word it has no rule or exception for. `tests/vocab.js` scans the
+built app, every surface at both widths, the drills, the release, the first
+run, the canvases and the data tables, and fails on a retired word or an old
+pair name outside its allow list.
+
+What did not move, on purpose:
+- **Identity.** Every identifier, saved key, id, css class and file name
+  that says seat (`S.seat`, `data-seat`, `seatCol`, the meaning table's
+  `seat:` keys, `SEATGLYPH`, the `seat` field on saved records) keeps its
+  spelling, so a profile saved before this loads unchanged.
+- **The codex line for the Shadow pole**, "Pride as false light", is the
+  book's own line and is held phrase by phrase to its meaning; the pole's
+  name is Shadow.
+- **The Wisdom school glossary's Chakra entry**, ported from the codex, is
+  the entry that says a chakra is an assemblage point. The book and canon
+  sources are not swept.
+- **His own words**, wherever they are quoted.
+- **Fractions.** "We're not doing fractions" is a separate ruling with its
+  own audit, and no x of y form was touched here.
+
+Two collisions are named once, and the change was made: shadow already reads
+how closed a point is (`pct.js`, "the shadow at that seat"), and points is the
+word the points ladder uses. Both are his to separate if he wants them apart.
+
+## Seven words that printed with no meaning or with two. Team call, 18 November.
+
+He read "Pull, Overshoot, Installed and Self-read shadow have no definition
+yet" on the status board and said he had no idea what it meant. This is what
+the team decided, under his 2 October rule that every symbol is unpacked and
+his rule of one word per concept. None of it changes a figure.
+
+- **Pull, Overshoot, Installed, Self-read shadow** now have one sentence each
+  in `engine/data/gloss.js`, the one meaning table, and every place that
+  prints the word carries it on hover and tap: the Analytics tiles and cards,
+  the session card, the axis card, the pole drill, the Compass and the
+  record's ledger. Pull and Installed keep the wording the Analytics tile
+  already had. Overshoot lost "at 60% and above", because the table refuses a
+  percent, and says what it does to the fetter instead. Self-read shadow is
+  said in one sentence where the tile had two.
+- **Mask and Saboteur.** The Wisdom school glossary (`GLOSS`, `engine/data/kb.js`)
+  opened on a different sentence from every tooltip. The canon (`mob-canon`
+  4.3) makes a mask a developmental way of showing up and a saboteur a set of
+  child fetters at magnitude, which is what the tooltip and `compute()` say,
+  so the glossary row now opens on the tooltip's sentence and keeps the
+  codex's own lines after it. Saboteur's "each one a fetter" became "a set of
+  fetters". Mask's sentence gained "that you grow into" and says point for
+  seat, to meet the point rename.
+- **Integrity.** The word means how well you keep the laws, which is CQ, as
+  the table, the glossary and "your integrity is your CQ" already say. The
+  Compass and the energy drill printed a second figure under the same word,
+  `r.Ig`, which is the law mean lifted by the poles and pulled down by
+  overshoot. The canon does not name that figure, so the team took the
+  wording the product already had for it, the percent registry's own "the
+  laws lifted by the poles and pulled down by overshoot" (`engine/pct.js`),
+  said as "your laws, lifted by what is installed and pulled down by
+  overshoot". The rail's Will sentence, "how much of your integrity gets
+  through the charge you are carrying", was left as it is: it prints no
+  figure, and integrity there reads in its one meaning.
+
+`tests/unpack.js` holds all seven: each of the four fails printed bare, each
+of the three fails with a second sentence anywhere it is carried, and no
+figure may be called integrity.
+## The voice prototype's read only layer, revived, 17 November
+
+His words, verbatim: "Revive it and put a note next to it for when we review
+it. I don't quite know what it's doing anymore, the 96 pattern, but let's add
+it."
+
+**What was revived.** The engine half of the voice prototype, the branch behind
+PR #163, which he rejected on 8 November ("Source AI is nothing like what I
+asked for, at all") and which was closed unmerged. It is the board's #88
+(`srcVoiceCanon`, the lookup that reads the 96 patterns) and #89
+(`srcVoiceEvidenceBus`, the evidence bus), and the three small readers they
+cannot run without. It was ported by file from `aa449a80`, the prototype's last
+commit, onto `main` at `c2bf52a2`, on the branch `revive/source-voice-layer`.
+Never by cherry pick: most of the prototype's commits rewrite the generated
+products, which have moved on. The prototype stays retrievable at
+`origin/source-voice-prototype`, and its own build, which the 10 and 11 November
+entry above says the team could not get back, is `git show
+origin/source-voice-prototype:source.html`.
+
+**What it changes for a person: nothing they can see or hear.** Checked in the
+code and not taken from the branch's name. The prototype changed no line under
+`atuned_src/ui` or `atuned_src/shell`, and nothing in `ui/`, `shell/`, `funnel/`
+or `tools/` calls `srcVoiceSniff`, `srcVoiceNarrative`, `srcVoiceChargeCycle`,
+`srcVoiceGraph`, `srcVoiceIntelligence`, `srcVoiceCanon`, `srcVoicePattern` or
+`srcVoiceEvidenceBus`. Only the tests call them. It is read only in the strict
+sense: a loaded record and the engine's state were byte identical before and
+after a call, and the graph step refuses unless the caller passes consent. So
+none of his recent rulings is touched: Source AI's text prints only on the text
+display, a sentence Source AI composes carries its mark, the structure stays 108
+somatic addresses and 4 field anchors, and nothing here is a score (every report
+says coherence is not measured). If anything in the layer's reports is ever
+shown, it is text Source AI composed and takes the mark, and its catalog index,
+which lists the addresses as one count, must say 108 somatic and 4 field
+anchors and never a flat total.
+
+**What the 96 are, in plain words.** A reference shelf. Each row is a named loop
+a family can repeat, with the steps in order, what you could watch for, what
+else could explain it, a protective move, a question, and links to the research
+it leans on. They are in three layers: ancestral, generational and parental.
+Every row says it is a design category informed by research and not a validated
+diagnosis. Nothing matches a story to a pattern: run against realistic stories,
+none of the 96 came out. A pattern comes out only when a caller types a name or
+an id. The evidence bus is an empty envelope with nine labelled slots (source,
+body map, avatar, compass, story bank, graph editor, laws, ritual builder,
+release protocol), and every slot says action none and write authority none. It
+carries status words and a count, with no text, no seat and no pattern id, so
+even a consumer would have nothing to draw.
+
+**What the 96 are not.** Not his canon from the manuscript: they came in a
+package he uploaded on 1 November, which this repository does not hold, so who
+wrote the rows is not recorded here. Not the list he described on 3 October for
+the superego ("perfectionism, justification, entitlement, obsession"): no row is
+named that, and the layer does not look for it. Not wired to Source AI's voice,
+replies, mark or text display.
+
+**What was changed in the port, and why.** Four things, each named.
+
+- An entry the safety stop holds (`srcSafe`, `engine/safe.js`) is read as
+  nothing by `srcVoiceIntelligence`, so it reaches no packet. The prototype read
+  it: an entry that said the person wanted to die and was angry at their mother
+  came out as a readable report and then as nine packets, ritual and release
+  targets among them. Nothing consumed them, so no person was affected, but a
+  seam must not turn a stopped entry into packets. `tests/source-voice-intelligence.js`
+  holds it, and fails by name without the guard.
+- One comment said "112 canonical nodes". It says 108 somatic nodes and 4 field
+  anchors now.
+- The test for the registry list typed a hand count. It names the registries.
+- The voice gate's `check.py` gained the prototype's `NOT_COPY_ROUTES`, so the
+  published paper titles in the research list stay data. A title reworded to pass
+  a plain words gate is a false citation. The gate reads the same findings as
+  before the port and none that stops a build. The set aside lapses the day any
+  file under `ui/` names `PATTERN96` or `RESEARCHANCHOR`, and the stops come back
+  with it.
+
+**Cost, read off the build on 17 November.** The engine and every product that
+embeds it grew by about 200 kilobytes, almost all of it the pattern rows: the
+engine from 2,088,519 to 2,298,141 bytes, `source.html` from 6,801,579 to
+7,011,711, and the packed file from 1,460,109 to 1,531,621. The funnel's quiz
+page embeds the whole engine, so the public quiz carries the 96 rows and the
+research links too (2,267,967 to 2,477,589 bytes), though no visitor can reach
+them. That is the price of the revival as asked.
+
+**Known defects in the revived code, found by running it and not fixed here,**
+because this was a port and he has not seen any of it. The emotion cycle reader
+marks a whole clause imagined when the clause holds the word "would", so "I was
+terrified when the plane shook, and my hands would not stop shaking" reads as
+hypothetical. The sniffer files "upset" under sadness at the heart while the
+emotion cycle reader files it under anger. The family reader keeps only a fixed
+list of descriptor words, so "my mother hid her feelings" is not kept at all.
+All three are invisible today.
+
+**Not wired into the build gates.** The five tests, `tests/source-evidence-bus.js`,
+`source-voice-charge-cycle.js`, `source-voice-intelligence.js`,
+`source-voice-narrative.js` and `voice-sniffer.js`, each pass with node alone
+against the built engine and each fails against a deliberately broken copy.
+They are not in a workflow, so `tools/orphans.js` fails them by name until the
+integrator adds one step to the fast gates job that runs them. They print a PASS
+line and no "N passed, M failed" summary, so they do not take a line in
+`tests/floors.json`, which needs a tee'd log with a count. `.github/workflows/deploy.yml`
+was left alone on purpose.
+
+**The questions for the review, each with the ways it could go.** None is
+answered for him.
+
+1. **What are the 96 for?** (a) The superego content he asked for on 3 October.
+   They do not contain his named list, so this means writing that list, and
+   either replacing the 96 or adding to them. (b) A reference shelf Source AI
+   reads from when it already knows a name. Costs nothing more, and nothing
+   shows. (c) Retire them: delete about 200 kilobytes and the port of the
+   package, and keep `aa449a80` as the record.
+2. **Ancestral and generational.** On 8 November, round TD, he ruled "Let's
+   combine ancestral and generational. They're the same thing." The library keeps
+   them as two layers of the same size. (a) Keep three layers inside and show two
+   on any screen, which costs a mapping. (b) Fold the two layers into one, which
+   means editing every row of both and finding the rows that say the same thing.
+   (c) Leave the layer names off every screen and decide later.
+3. **If a pattern ever appears on a screen, under what word?** "Pattern" already
+   means an imprint at one of the 108 somatic addresses or 4 field anchors, in
+   the trace graph and across the product. One word per concept means these need
+   a different name, and the name is his. It would also need every symbol in the
+   rows unpacked: all of them carry shorthand with no legend (letter codes at the
+   start of a definition, arrows and generation labels in the transformation
+   line).
+4. **Should Source AI ever ask the questions in the rows?** Most rows carry one.
+   (a) Never, which matches the no two-way chat ruling of 10 and 11 November, but
+   Source AI's reply ends in a question again since 17 November ("let's bring
+   back replies"), so the layer's own "never auto prompt" line would contradict
+   the product if a consumer passed it on. (b) As the one question a turn, which has to pass the question checks and
+   the mark. (c) Held until he reads the questions.
+5. **Do the evidence bus and the three readers stay?** The bus has no consumer and
+   nothing to carry. The emotion cycle reader is a second emotion vocabulary
+   beside the engine's own lexicon. (a) Keep all of it as a dormant seam. (b)
+   Keep the pattern lookup and its two data files and drop the rest, which means
+   moving `srcVoiceCanon` and `srcVoicePattern` out of `voice_intelligence.js`
+   and cutting the prototype's other tests with it. (c) Decide when a first
+   consumer is designed.
+6. **Should the public quiz page carry this at all?** It embeds the whole engine,
+   so a visitor downloads the 96 rows and the research links and cannot reach
+   them. (a) Leave it, since it costs one shared file. (b) Build the quiz from an
+   engine without the layer, which costs a second build target.
+
+**What cannot be said.** Why he rejected PR #163. His words give no reason and
+none is invented here. The layer was not on any screen of the build he judged,
+as far as the code shows, so it cannot be named as the cause.
+## The Avatar's Purpose view loses both rails, and Archetypes is hidden. Ruled 18 November.
+
+His words, verbatim: "Okay, Amy, for the avatar purpose, let's remove the left
+and right rail. And let's hide the archetype tab under avatar. Archetype. I
+don't know what it's for. I don't know where it came from. I don't know what
+it does. Okay, review this back. And then let's add this to the plate."
+
+Read back to him as four things, and built as the first two:
+
+1. **Purpose has no rails.** On the Avatar page's Purpose view the left rail
+   (Root Energetics, Energy, Psyche, Matrix) and the right rail (Selection)
+   are not drawn, and the centre takes the whole row. One rule in
+   `atuned_src/shell/head.html`, beside the fold rules, keyed on the Purpose
+   view actually being drawn in `#avbody`. Becoming keeps both rails until
+   the Avatar page redesign, already in flight, takes them off everywhere;
+   that was the default taken where he left it open.
+2. **Archetypes is hidden, not deleted.** His word is hide. The pill is gone
+   from the Avatar page, the Discover page's Avatar card now opens Becoming
+   and says so, and the Character page's twelve archetypes are marks with
+   their meaning on hover and tap rather than doors into a page that is not
+   drawn. A view left set to Archetypes paints Becoming. The wheel, the card,
+   the 1 to 5 rating and every rating already saved stay: the record still
+   validates and exports `avatar.arch`. One line turns it all back on,
+   `AV_ARCH_SHOWN` in `atuned_src/ui/avatarui.js`.
+3. **What it was, in plain words** (below), because he asked.
+4. **It is on the plate**: `TASKS.md`, round WI.
+
+### What the hidden view was, for the next reader
+
+- A ring of twelve character patterns (an archetype is a role a person tends
+  to play: the Warrior moves toward a threat and counts the cost later, the
+  Sage stops to work out what is true first). Press one and a card opens: a
+  one line meaning, an Impact box naming the habit that gets in that
+  archetype's way (its saboteur) and where in the body that habit sits, three
+  yes or no rows on how it runs through you, and five buttons, 1 Hardly to 5
+  Fully, for "How much of this is you".
+- Where it came from: his own book's twelve (30 May), then his words on 27
+  September, round HG, "we want to give a scale from one to five. People may
+  not see their full potential, they're a magician as an example, they may
+  not understand it", and 28 September, round JP, "I want the archetypes to
+  be on its own subtab". Round KH took the percentages off. Round RB moved
+  the ratings onto the record. MS22, 17 November, pointed the Character
+  page's twelve at it.
+- What it did: the 1 to 5 rating is saved on the record and nothing else in
+  the app reads it. Measured on the live build c2bf52a2 by the historian seat:
+  all twelve rated 5 and the same story run through gives a reading byte for
+  byte identical to no rating. So hiding it changes no reading, score or
+  ritual.
+- What does move the app, and stays: the web quiz's twelve statements
+  (`archSeedApply`, engine/archseed.js) and the Primary and Secondary picks in
+  the left rail on the Field (`S.arcs`). That is the 11 November ruling, "It's
+  self-reporting of their archetypes, and then as they input their story over
+  time, the reality of those numbers adjust", built 16 November (TA9) on those
+  two inputs and never on this view, which is why the view felt like it had
+  no job.
+- What a person loses while it is hidden: the only screen that sets or shows
+  a 1 to 5 rating, and the only place the Impact box and the "How it runs
+  through you" rows are shown. Nothing replaces them; that is his call.
+## The Insight rail: one reading, one stack, nothing under Selection. Ruled 18 November.
+
+His words, to the team, with a screenshot of the right rail: "This is for the
+insight panel. It's not working as I designed it. The insight panel at the
+very top should say insight. Whatever I select, it should give me source AI's
+reading of the cascade of that information, how it flows through me, and what
+the appropriate actions are. And then underneath that, it lists the stack from
+superego down, which I can run protocols against. When I click on the icons
+for saboteur, complex, hypercomplex, supercomplex, there's too much text in
+there. This should just be the bars. And then that text field that says
+something like back to the field, which says child emotion apathy. That's the
+information that seems like it belongs in the insight panel, not there. So the
+information that's within that selection panel looks like it's borrowing some
+information from the insight panel. So the insight panel needs to be, the
+text needs to be insightful. It needs to be much longer. The insight panel
+will always show 3 paragraphs with dots for more information that you can
+select and click through that panel. I don't think the nested complex or super
+complex, hyper complex, etc. on that right rail is the way to go. Let's
+unnest them and let's see what they look like unnested. Have your team read
+back to me what I said, and let's clean up that right rail."
+
+And a few minutes later, on the same rail: "Got another bug. So the insight
+panel gives us information on our selected whatever. I can turn on source AI
+and we could talk about it, or I can read about it. I can see the different
+layers of it, and I can run a release from it. Everything beneath selection,
+including flow, including seats, including grandiosity and predatory and
+unbending and collapse and grandiosity and predatory, like it's all repeat.
+Running now, grandiosity, that's all repeat, get rid of that. Laws of
+integrity. Yeah, they're all on diagnostics. Get rid of that."
+
+Read as, and sent back to him before it was built:
+- the top of the rail says Insight;
+- whatever is selected, Insight gives Source AI's reading of the cascade, how
+  it flows through him, and the appropriate actions: much longer, always three
+  paragraphs, dots under it to click through more;
+- under it, the stack from Superego down, listed so he can run protocols
+  against any level;
+- the saboteur, complex, hyper complex and super complex icons show only bars;
+- the "back to the field, child emotion Apathy" text belongs in the reading;
+- the nested levels are unnested, and he is shown what they look like;
+- everything beneath Selection leaves the rail: Flow, Seats, Running now and
+  the Laws of Moral Integrity, because each is already on a diagnostics
+  surface.
+
+### What was built, and where
+
+- **The reading** is composed in `engine/insight.js` (`insightRead`), host
+  free, deterministic and offline, from fixed templates and named record
+  fields. There is no language model. A paragraph is a list of segments
+  (`text`, `src`, `kind`, `speak`, `fig`, `q`), and the screen and any voice
+  render from that one list, one paragraph a request. Every segment names the
+  field it came from and `insightResolve` walks that name back to the field; a
+  percent is `fmtPct` of that field, never a decimal; a quotation is a
+  substring of its source; an offer says is available, you can or if you want;
+  a body place is the map's and never claimed as the person's; a graph edge is
+  a registration and never a cause. The three headers are fixed labels: Where
+  it sits, How it runs, What to do. Where the data is thin the paragraph is
+  short and says what is missing, once, in one gap sentence. It is never
+  padded and never borrows a neighbour's card.
+- **The marks.** One Source AI mark heads the reading (`srcMark`, the 15
+  November ruling), the paragraphs wear the Source AI colour, none is set in
+  italic (the embedded Inter has no italic face), and a book line is quoted in
+  the person's ink with where it came from on hover. `SRC_MARK_TIP` was widened
+  once for every surface: "Source AI wrote this from your words and your
+  reading."
+- **One selection.** Every door that opens a card in Selection says what it
+  opened (`insDoor`), and `rdShell` takes it. A card that never said anything
+  leaves the selection empty, so Insight never says nothing is selected while
+  Selection shows a card, which is what it did for 11 of 15 kinds before.
+- **The dots** page through the cascade, one rung a page: the selection, then
+  its parts heaviest first (up to three), then its parent. A child emotion
+  pages through the saboteurs that run on it. A page with no data is not drawn.
+  Tap, arrow keys and swipe; the block holds the height of its tallest page;
+  every dot is an 8px ring in a 44px target and says its page, "Page 2 of 4,
+  Victim + Pleaser"; a new selection starts at the first.
+- **The stack** is six levels from Superego down, flat, each a header (its
+  symbol, its word, its count) and bars. A level shows its six heaviest bars
+  and any bar on the selection's lineage, then one "N more" chip. The child
+  emotions are a fixed set of nine and show as nine. Off the lineage a fill
+  turns neutral and is never darkened, because a dimmed seat colour turns Solar
+  and Sacral brown.
+- **A bar has two targets.** The body selects. A 44px ring at its right end
+  opens that item's release already loaded (`relPick`) and starts nothing: only
+  the card's own Release press does, and only that press spends the allowance.
+  `insightRelease` is the one answer for the pill under the reading, the run
+  glyph and the third paragraph. No release on an overshot item, on
+  Entitlement (no feeling is mapped to it), on an address that holds nothing,
+  or while the safety check holds. When the check holds the third paragraph is
+  the one safety line. The safety door is never hidden or gated.
+- **The selection card is identity only**: name, kind, percent and the
+  addresses as rows. Where it sits, Both halves, Which way it leans, The
+  opposite, What happens, The sentence it runs, What becomes available, Next
+  move, Runs under and Made of are Source AI's reading or cut. The Wisdom
+  school opens the same doors to say what a thing is, and there (`kbAnsOn`) the
+  full card stays, because nothing else on that page says it.
+- **Removed from the rail on every tab**: the Blueprint domain card at the top
+  (`#person`), Flow and Seats (`#eshelf`, `#run`), Running now (`#fire`) and
+  the Laws (`#laws`, `#allLaw`), and the old foot button. `renderShelf` and its
+  two callers are deleted. The Laws are the one input that did not exist
+  elsewhere, so the 21 boxes and the all slider moved whole, ids unchanged,
+  into a fold on the Intake page (`#iqhand`, appended by `iqHand`).
+
+### Where each removed block already lives on a diagnostics surface
+
+- The Flow sentence: Summary, the Reading's second paragraph ("Flow stops at
+  the root"), `ui/summary.js`.
+- Seats and their held counts: Analytics, The Seven Seats. The four heaviest
+  seats: Summary, In the body, Heaviest seats (a fold).
+- What is running: the stack itself, and Analytics, What is running.
+- The laws, as a reading: Analytics, Laws of Moral Integrity. The laws, set by
+  hand: the Intake fold.
+
+### What exists nowhere else, said to him and kept off the rail
+
+Four small things from Flow and Seats were on the rail and on no diagnostics
+surface: the Flow ring's own percent, each seat's pass percent, the plexus names
+(Cardiac, Celiac and the rest), and the word "clear" for an empty seat. The seat
+card (`runSeatFlowDrill`) already prints the plexus name. Default taken: they
+stay off the rail, and the ring and the pass percents are for Analytics' Seven
+Seats once the Psyche team's rework lands. His to overrule.
+
+### The earlier rulings this replaces, each named once, on his 18 November words
+
+- 4 November, the five tiers are one nested cascade with chevrons and "Or I can
+  close them all": REPLACED by "Let's unnest them." STK_OPEN, the chevrons, Open
+  all and Close all, and the one-tier-at-a-time body are gone.
+- 14 November, "I just want icons, not full words, on one horizontal row": its
+  object was the five tabs, which are gone. What survives is the order on a
+  level header: symbol first, then the word, then the count.
+- 16 November, the square button tabs, and 14 November, pressing an icon makes
+  the selection: retired with the tabs. The selection drives the rail, never the
+  other way round.
+- 4 November, "Run a release comes off this panel": REPLACED by 17 and 18
+  November. A release is run from the selection, and from a bar. The foot
+  button that queued the heaviest eight of the whole field is gone.
+- 4 November, Flow, Running now and the Laws come off the Field alone (the CSS
+  said "he ruled this panel and no other"): REPLACED. The rail is one panel,
+  and they are gone from every tab, not hidden.
+- 14 and 15 November, the Selection card carries the reading and a Blueprint
+  domain card stands at the top: REPLACED. The reading is Insight's; the card
+  is identity.
+- 15 November, nothing selected shows Source AI's general reading: already
+  replaced by 16 November (empty, "nothing selected at most"), kept.
+- 10 November, no two-way chat anywhere: replaced for one button by 17
+  November. This build keeps the slot (`insightAudioSlot`, `#insaudio`) the
+  unmerged Insight audio button attaches to and builds none of it.
+
+Kept: no name in the reading (4 November), no "built from 5 held addresses"
+(4 November), percents only, one mark for Source AI, the scroll with the rest
+of the rail (17 November), symbol first and header second (16 November),
+nothing highlighted when nothing is selected (16 November).
+
+### Open, with the default taken
+
+- **The Selection heading**: kept as a slim section under the stack, last in
+  the rail. Folding it into Insight's first line is one move. His to call.
+- **Superego**: the four addresses the left rail already reads (Justification,
+  Entitlement, Perfectionism, Obsession), from the same table and weights. The
+  Psyche team is reworking the left-rail icons; this row does not touch their
+  code and should take their marks when both land.
+- **An overshot item**: no release anywhere in the rail. No protocol is written
+  for it. The Summary panel's two doors that queue a pattern's addresses (Release
+  all and the one on each rung, `summaryPanelWire`) refuse an overshot pattern by
+  name now, with the same sentence, because they spent release lines on addresses
+  holding nothing (12 of a hundred gift lines on Sofia's Manipulator). What stays
+  queued on its own, not built here: that panel's Release all still counts every
+  leaf, so its N says more than one run reaches.
+- **A long reading read aloud**: one paragraph a request, because the voice
+  server refuses more than 600 characters in one go.
+## Answers to the need you list. Ruled 18 November.
+
+He read the status board's need you list (fourteen items) and answered it in
+one dictation. His words, verbatim: "Okay, I'm looking at the what's running.
+There's like 14 that says need you. The first one is a content gap. Um, I
+have no clues what you're talking about. Pull, overshoot, installed, and
+self-read. I have no context. Yeah, for the second one, I think I picked the
+palette. If you miss a challenge 3 days in a row, I don't know. I think I
+need suggestions from the team. Like, you can't force someone to do a
+punishment, and then you have to assume they're going to self-report, even
+if they do the punishment. If they don't, or do the punishment. I think the
+punishment needs to be something that the user can learn. Why don't you go
+ahead and create the frame for this ritual stuff, and we'll figure out what
+content needs to go in it. So build the shell, and then we'll worry about
+the content afterwards. I don't know what you mean by bottom row field %.
+Show the weight on all the chakras as a %. Oh, right. This may be because we
+had some like fractions. We're not doing fractions. Do we still have the
+logic for the masks? Is that section still in code? I may want to revise
+that. For the bottom row words, 3 words on the cards, seat or chakra, change
+or tension, charge or tension. Oh, I see. Change seat and chakra to just
+point. It's an assemblage point. You can call it AP, or assemblage point for
+short, or point. We're going to use charge instead of tension. And neither
+becoming or complete, we're going to use the word whole. Instead of clear
+conduction against sabotage, just use clarity. Grace against false light,
+just change that to grace. Oh, I see. Grace against shadow. So use the word
+shadow. For the path links, I'm not quite certain what you mean, but you
+should have all of the nerve to saboteur connections, or saboteur to super
+complexes, to reverse engineer for the path links. For clear connection,
+honesty, and natural growth, we need to go get their original names. I don't
+know if that's like Lucifer or Asmodeus or whatever. Go out to the internet,
+do our research. We have rules for our research. Find the rules on GitHub,
+and then do your deep dive 4 times, create your records for your 3-path
+stories. Do your research on those 3-path stories 4 times, so you get to the
+mechanic and the behavior. Does I talk to source AI replace your 10 November
+rule of no two-way chat? Yes. Yes, it does. That replaces it. The sniffer is
+now sniffing specifically for words in my conversation. Avatar slider
+meaning I don't know what you mean. The avatar tiers is for the avatars for
+tier. Two, three, and four. One, two, three, and four. We're all
+data-driven, so for the avatar ritual slider, when a ritual is marked done,
+it should move the slider. I don't think we have math in our calculations
+for positive, for reframes. All right, Emmy, review my input 3 times, sort
+it against the 14 that need me and what's running. Organize it so that it
+makes sense to your agents. And then get all this into plan and then
+execute."
+
+Read three times, item by item, against the board. Where a reading is the
+team's and not his own words it says so, and one word flips it.
+
+**Rulings.**
+- **Words, everywhere.** "Seat" and "chakra" become **point**, an assemblage
+  point (AP for short): the first use on a screen says assemblage point with
+  its meaning, later uses say point. **Charge** replaces **tension** where the
+  word names the stuck energy at a place in the body. **Whole** replaces
+  Becoming and Complete as the name of the Avatar's percent. The pair named
+  Clear Conduction against Sabotage is named **Clarity**; the pair named Grace
+  against False Light is named **Grace**, and its opposite end is **Shadow**.
+  Identifiers, saved keys and his own quoted words do not move (the same rule
+  as the Wisdom school rename).
+- **No fractions.** Any measure of a person is a whole percent, never "3 of 6"
+  or "3/6". This restates the percents only ruling of 16 October and 18
+  November and extends it to the "x of y" form.
+- **Talking to Source AI.** Yes, a person talks to Source AI, and that
+  replaces the 10 November ruling of no two way chat on the Avatar page and in
+  the Source AI corner. The sniffer reads the words of that conversation.
+  Source AI stays deterministic and offline: a conversation is not a language
+  model, and the open decision about a model behind one server seam is still
+  his, with the default of no.
+- **Rituals move the Whole.** A ritual marked done moves the Avatar's slider.
+  He observed that the engine has no math for the positive side (reframes,
+  rituals): that math is to be built, data driven, with no points and no
+  penalty for a miss.
+- **The Avatar tiers.** Read as: the Avatar's layers follow the tier ladder the
+  way the Field's saboteur, complex and hyper complex circles do. The team's
+  reading, one word flips it: the body with its points and weights is the base
+  every person sees, the torus is tier two, the auric field tier three, the
+  energy body tier four (Practitioner). The tier names and prices stay as ruled
+  in the tier ladder entries above.
+- **If I miss.** Not decided by him. He asked the team for suggestions and
+  gave the constraints: nothing can be forced, the app can only take the
+  person's word whether or not they did it, and what happens must be
+  something the person can learn, not a punishment. He ruled the order:
+  build the frame (the shell) now, content later. The earlier default (a cost
+  the person picks ahead of time) is replaced by those words.
+- **The palette.** He picked the palette (B); it ships as the Glass blue
+  lighting.
+- **Path links.** Derived, not hand drafted: reverse engineer which patterns
+  belong to each pair from the nerve to saboteur and saboteur to complex to
+  hyper complex to super complex connections the product already holds.
+- **Path stories.** For Clear Conduction (Clarity), Honesty and Natural Growth:
+  research the original names on the internet under the project's research
+  rules (found on GitHub), four deep dives each, down to the mechanic and the
+  behaviour, and write the records.
+- **Field percent.** Each point's weight is shown as a whole percent; his
+  confusion about the question came from fractions, which are now ruled out.
+  The team's default (each point's own fullness) stands.
+- **Masks.** He asked whether the masks logic is still in the code: it is, all
+  of it. He may revise that section, so nothing about it is removed. The
+  bottom row card draws the five Character signs large unless he says
+  otherwise.
+- **Context owed, shipped.** The words Pull, Overshoot, Installed and
+  Self-read shadow were put to him with no context. Already closed by
+  80916962, before this ruling was recorded here: the four readings carry
+  their meanings from GLOSS (engine/data/gloss.js), every place that
+  printed them bare now carries the sentence, and r.Ig stopped borrowing
+  the word integrity. He still reacts to the result in the app; nothing
+  further is owed on the context itself.
+## The worked examples carry a birth, the four Lances included. Ruled 18 November.
+
+His words, verbatim, over the Field with "Lance 15, example" chosen and Root
+Energetics reading "No birth data": "Got a bug, Emmy. Have one of your agents
+wire in root energetics for these profiles, and make sure that these profiles
+are just up to date with all the changes that we made."
+
+OVERRIDDEN, the same day: the four Lance profiles had no birth, by the earlier
+ruling that a made up birth would be read back to him as his own
+(`engine/data/people.js`).
+
+Read as: every worked example shows sun, moon, rising, the year animal, life
+path and the gene key on the Field's left rail and on the Avatar. The four
+Lances are one person at four depths, so they share one birth. It is invented:
+1972-08-27, 13:15, Johannesburg, time zone Africa/Johannesburg, chosen by a
+search for a reading whose signs each sit well inside their sign, and for the
+age of 54 the rows already said. It is nobody's birth, and if it happens to be
+his, he says so and it moves. They still carry no full name, because any
+surname is either his real one or a made up one that the name numbers would
+read back as his; the six readings he named come off the birth alone.
+
+What moved with it, because the readings were wrong for everyone and an
+example cannot be up to date on top of a wrong reading:
+- **The gene key wheel started 1.75 degrees late.** Gate 41 opens at 2 degrees
+  Aquarius and the wheel had gate 25 at 0 Aries, so every line was one or two
+  out, the gate itself wrong on about 31 births in 100, and nearly every
+  profile wrong. Steve Jobs, a published 6/3, read 5/1. Every example's gene
+  key and profile moved once (`engine/astro.js`, `GATE_START`).
+  **This moves every person's reading, not only the examples'.** Anyone who
+  has entered a birth sees their gene key line change once, about 31 in 100
+  see the gate itself change, and most see their profile change. The old
+  reading was the wrong one.
+  **And SOURCE (reboot-os) has not moved.** `source_os_v151.html` reads the
+  same wheel from 0 Aries (`_lonToGate`, no start offset), so after this lands
+  the two codebases, which this file names as cross compatible, disagree on
+  the gene key for about 31 births in 100 and on most lines. Routed to the
+  SOURCE seat, the same anchor (gate 41 opens at 302 degrees) checked against
+  Jobs reading 6/3. Until it lands there, a gene key read in SOURCE and one
+  read here can differ for the same birth.
+- **The nine cities read their clock offset off their time zone** and not off
+  two hand written rules that put Wren and Abraham an hour out.
+- **The year animal goes through the same check as every other reading**, so
+  an untimed birth on the Li Chun day, where the hour decides the animal, says
+  it needs a birth time instead of guessing.
+- **An example's age is read off its birth.** Wren and Abraham's typed ages
+  were already a year behind, and Tomas's was four days from it.
+- **An example's record carries its birth and name**, so the Avatar's birth
+  fields show what the rail shows. Whichever door builds the record first,
+  the picker or the Clients page, builds it the same way (`exampleRecord`,
+  `engine/birth.js`): the Clients page used to build a bare one first, and
+  every client's birth then read empty on the Avatar.
+
+Still open, and his: whether the examples also carry an avatar name and title,
+tags, a stated four letter type, archetype self report and journal verdicts.
+Those are words in his voice for sixteen people and were not invented here.
+## The Psyche panel holds Matrix, Superego and Action, and nothing else. Ruled 18 November.
+
+His words, first, on two screenshots of the Field's left rail under the
+heading Psyche (it was six sections: The book's levels, Child emotions, Matrix,
+The chain, Superego, Laws of Action):
+
+> Review this with your team. I asked you to get rid of everything in these two
+> images. I asked you that a long time ago. Review it with your team. Maybe keep
+> the matrix for now, but get rid of everything else. It doesn't belong there.
+
+And then, when the first reading of that was "strip the panel down to a
+matrix", his correction of it, whole:
+
+> I didn't say strip the psyche panel down to just a matrix. I'm saying
+> everything that's from the word psyche. Like, I never asked you to put in the
+> book levels. I don't even know what that is. I also asked you to remove the
+> child emotions because we're going to have the person do self-reporting in
+> the diagnostic. I also asked you to get rid of the chain. I don't even know
+> what this is doing here. That got put in there by you automatically or
+> automagically. Super ego. It needs to be more iconographic. You can keep
+> super ego, but get rid of the laws of action. Or just make that action and
+> give me them as 6 icons, so symbolic icons. Actually make it a bar. Make them
+> all bars, like the ones for like CQ, vitality, energy, flow, etc. Make it a
+> bar. And then super ego, make those icons. 4 icons horizontal. And make them
+> symbolic. And give it a %. We don't do points anymore.
+
+Read as, and built as: the panel keeps its Psyche heading and holds three
+sections in this order, with no paragraph, no sub heading and no empty state
+sentence in any of them.
+
+- **Matrix.** Unchanged, "for now".
+- **Superego.** Four symbols in one horizontal row: Justification,
+  Entitlement, Perfectionism, Obsession. Each is a ring filled to its figure,
+  with a mark inside it that stands for the defence (a balance tipped to one
+  side, a crown, a rule with its ticks, a spiral wound inward), and a percent
+  under it. The name and one sentence of meaning are on hover and tap and in
+  the spoken name, never printed beside the symbol, because "Perfectionism"
+  does not fit a column that is 60 pixels wide.
+- **Action.** The six gates as six bars, drawn by the same function the CQ,
+  vitality, energy and flow bars are drawn by (`rbRow`, `ui/component.js`),
+  right action first (Awareness, Detachment, Intention) and wrong action under
+  it (Ignorance, Attachment, Aversion), in the book's order. The word is
+  Action, the word he gave the Journal's rail on 10 November.
+- **Gone.** The book's levels. Child emotions, with its eighteen sliders and
+  its two bulk sliders. The chain, with Outside the chain, Archetype and Field
+  anchors. The Superego sub heading and paragraph. The Laws of Action sub
+  headings, paragraphs, empty state paragraphs and the Avoidance block.
+
+**What the two percents are.** Said once here, and said again on hover.
+- **A Superego figure** is `fmtPct('weight', BY[i].sq)`: the charge held at the
+  address the book seats that defence at, out of the most one address can hold,
+  whole number and percent sign, the dash for nothing held or nothing read. It
+  is not a reading of the defence. A story written in the language of
+  justification can read 0, and one line of anger can read 16, because what the
+  engine measures there is anger or fear held at a place in the body
+  (`AMPLIFIER`, `engine/data/registers.js`; `n.sq`, `engine/compute.js`). The
+  hover says "its figure is the charge held at its place in the body" and
+  never says it is how much of the defence a person shows. A real reading of
+  the defences from a person's own words is a separate piece of work and is
+  open, below. The figure used to print as `10.0` beside a ring filled in
+  percent: points, in the one place the 16 October percent ruling had already
+  ended them.
+- **An Action figure** is `fmtPct('gate', verpRead().pct)`: this gate's share
+  of every action read across the person's stories, so the six add up to one
+  whole and a person shows on both sides at once. It is the figure the gate
+  drill and the Journal print for the same gate, so the bar and the drill never
+  say two things. A gate with none of its own prints the dash, never 0%. With
+  nothing read at all the six bars draw unlit.
+
+**The formatter is the one that was already there.** `pct` and `fmtPct`
+(`engine/pct.js`), kinds `weight` and `gate`. Nothing new was added, so
+another team's percent only formatter reuses the same two calls.
+
+**What each removed block said, and where it lives now.** The meaning table
+(`engine/data/gloss.js`) carries one sentence for each, so no term lost its
+explanation:
+- the Superego paragraph is the hover on the Superego header (the table's
+  existing `superego` entry, so the word has one definition and not two);
+- the four defences each get `superego:<name>`, and the one whose address no
+  child emotion reaches (Entitlement) says so while that is true, read off the
+  address and never typed. A press on a symbol opens the address card headed
+  with the defence's own name and that same sentence, straight under the
+  address (`nodeDrillHtml`, `o.amp`), because the figure is the charge left at
+  the address and not a reading of the defence, and a card headed only
+  "Solar, Arrogance" let a person read it as one (skeptic's finding, 18
+  November). The address with no name yet is titled "Unnamed, Root 08", never
+  the key it is stored under, and its card says why no story reaches it and
+  stops there, without the team's own words "open ruling". The eyebrow names the
+  seat as the product does everywhere else, "Justification, at the solar seat";
+- the Laws of Action paragraphs are `rail:action` and six `gate:<name>`
+  sentences, each saying what the move is and what its figure is;
+- `child emotions` and `field anchor` are new, and each has a caller now: the
+  Matrix caption's own "9 child emotions" carries the sentence on hover, tap and
+  to a screen reader (`mxKey`, `ui/personas.js`), and the card a field anchor
+  opens is headed "Field anchor, above the body" with the sentence on hover and
+  tap, where it used to print its storage key, Field-Above. The first cut also
+  wrote an entry for `chain`. Nothing on any screen asked for it, so it was cut
+  and not left as a sentence no one can reach; each tier of the chain keeps its
+  own entry. `tests/psychepanel.js` (F) wraps the lookup, draws the panel and
+  opens the cards, and fails on any entry the round added that nothing asked
+  for;
+The gate drill keeps its longer text. The Avoidance reading stays where it is
+never shown alone, the Journal's Laws accordion, with the two readings it is
+built from.
+
+**Why his earlier asks never stuck, and he was right that he made them.** Read
+off the record on 18 November, not from memory:
+- **28 October.** He asked for the superego, the six gates and "the full
+  cascade wiring of the Psyche stack" on the left menu. A seat built each, and
+  widened two of them: the chain colour legend was its answer to "nothing has
+  been wired", and The book's levels was its reading of "Psyche stack". He did
+  not ask for those two in those forms.
+- **2 November.** "Move child emotions to diagnostic." It was built as a
+  button that opened the diagnostic and left the sliders where they were.
+- **5 November.** He marked a screenshot of this panel for removal: five rows
+  out, Matrix kept (SV22, PR #188). It was built and tested, and held as a
+  draft because it was read as clashing with the 3 October ruling. That ruling
+  only asked to add the superego to the left menu, so the clash was a
+  misreading, and the removal was bundled into a four screenshot job about
+  another panel, so it had nothing of its own to stand on.
+- **14 November.** "Delete those for good." It was written to the status board
+  as ruled and ticked done, and nothing was queued to build it. The Insight half
+  of the draft was rebuilt on main that night and the Psyche half left behind
+  on purpose, on the same misreading.
+- **15 November.** The question came back to him in jargon, he said he did not
+  follow it, and his answer about "the Psyche stack" was read as an order for a
+  different surface (the Journal's Psyche stack tile).
+Plain reason: the word "Psyche stack" names three different things in this
+product, the ask lived in one backlog line and not in this file, and a ticked
+line on a board read as finished while the page stayed the same. This entry is
+the durable place. A board line that says ruled is not done until the page has
+changed.
+
+**Superseded by this.** TASKS.md SW5 (14 and 15 November, "a visual on the left
+rail showing the chain connected"): he says get rid of the chain, so it is
+dropped. TASKS.md SW2 (child emotions become questions in the diagnostic) is
+not superseded and is not done: the funnel quiz asks none of the nine and the
+Intake's "Emotional axes" block feeds nothing, so after this round nothing a
+person types moves their nine charges except the four letter seed and their
+stories. Removing the sliders did not wait for it.
+
+**Left alone on purpose, each his call.**
+- The Field's glass bar still has a circle called Laws of Action
+  (`ui/fieldbar.js`, held by `tests/functional.js`), and the right rail's
+  Insight stack still has a Child emotions tab. The first is a layer of the
+  Field and the second is a reading, not a place to type; neither is in the
+  Psyche panel.
+- The Journal's left rail keeps its Emotions, Psyche stack and Action
+  sections.
+
+**Open, written down with the ways it could go.**
+- **Entitlement reads the dash for everybody. This is the first question to
+  him.** Measured on all sixteen people the engine carries (18 November): the
+  charge at Entitlement's address is 0 for sixteen of sixteen, because that
+  address, the unnamed Root address (`Root_08_Unnamed`, address 8), has no child
+  emotion and a story's charge lands on an address through its child emotion. So
+  the crown is permanently unlit and its hover says no story reaches it yet.
+  Ways it could go, and what each costs:
+  - keep four, the crown always unlit (built, the default). Costs nothing and
+    shows him the gap, and costs a symbol that can never light for anyone;
+  - show three. Costs one line and a test, and the four he asked for become
+    three until the address is ruled;
+  - wire it. Either he names a child emotion for address 8 (the engine then
+    reads it with no other change), or he moves the amplifier to address 38,
+    where the book's node list already has a Solar address named Entitlement
+    with anger under it. The second changes a table he ruled (`AMPLIFIER`, AM01,
+    tag R, `engine/data/registers.js`) and the codes and errata that compare it
+    to the book (`engine/data/codes.js`, `BOOK-ERRATA.md`). Either way it needs
+    his ruling on that address (CLAUDE.md, "His, not mine").
+- **A real reading of the four defences.** Question two to him. The figure is
+  charge at a place in the body: on Derek it reads 54%, a dash, 30% and 54%
+  under a balance, a crown, a rule and a spiral, and a person can read a ring
+  with a percent as "how much of this defence I carry". The hover, the spoken
+  name and the card a press opens all say it is the charge held at its place,
+  and none says it is a reading of the defence. Whether it should stay that way
+  or become a real reading of the defences from a person's words is his call.
+  Reading the defences themselves from a person's words (blame and "anyone
+  would have" for Justification, "they owe me" for Entitlement) has a word list
+  in the engine's lean reader already, and nothing counts Perfectionism or
+  Obsession. New arithmetic, not built.
+- **One phrase reads as a full bar.** One line that says "I avoided him" is
+  Aversion at 100%, true as a share and thin as evidence. The bar and the drill
+  print the same share today. A floor of about six phrases before a figure shows
+  would have to move the drill and the Journal with it, so it is not built here.
+- **Two things called Awareness on one rail.** The reading (how strong what you
+  mean is) and the gate (noticing the feeling) are both on the Field's left
+  rail. Each bar's hover says its own meaning. Renaming either is his call.
+- **The wheel's dot colours.** The chain legend was the one place that said
+  yellow is a complex, orange a hyper complex, red a super complex. Hovering a
+  dot still names its tier. Whether the colours need one line of their own on
+  the wheel is open.
+
+## Talk with nothing said: the circle rests, no Source AI word on the screen, no hover card on the circle, and Commit holds still. Ruled 18 November.
+
+His words, verbatim, on a screenshot of the Dashboard with Talk open, five
+things circled in red: "This is feedback for the dashboard. When I click on
+talk and I haven't said anything, source is already activating and animating.
+That's a bug. This text in the lower left that says listening, there should be
+no text on that screen. That's a bug. At the very bottom, it says listening,
+press again to stop. There should be no text there. That's a bug. And then
+this tooltip isn't working. Let's turn that off for now. And one thing to look
+into, the commit button keeps jumping to the upper left-hand corner every
+like 10 seconds, briefly. So there's something going on with this animation.
+Read this back to me, and then let's get this fixed."
+
+Read as, which is the read back he asked for, five changes:
+- **Talk with nothing said leaves the circle exactly as it is at rest.** No
+  beat, no purple trace along the bottom, no newly lit rings, for as long as
+  nothing is said. The cause was not the microphone. Talk speaks the greeting,
+  the circle was handed that audio as if it were a reply, and the circle sets
+  one latch when it hears a voice (`engaged`, `ui/srcface.js`) that nothing
+  releases, so it ran its beat and its trace from the greeting on. The
+  greeting is still asked for, still spoken and still holds the recording
+  while it plays (the 13 November ruling, every reply spoken, stands); the
+  circle just is not told about it (`stSrcSpeak`, option `rest`). And a
+  recogniser result with no word in it, an empty final, spaces, a lone
+  hesitation sound (uh, um, er, ah and their spellings, and the article the
+  recogniser invents out of hiss), is not a turn any more: it is not written
+  into the entry, not read by the circle and not answered out loud
+  (`stMicNoise`, `ui/storyui.js`). It names hesitations and never words: yes,
+  no, "I don't know", sad, and the spoken yes (mm-hmm, uh huh, mhm, hmm) are
+  real answers and pass, anything the safety door reads passes first, a final
+  with a star in it passes so the existing "Dictation hid a word behind stars"
+  line still speaks, and letters and digits are read as Unicode so speech in
+  another script is never mistaken for silence. The spoken yes is on the
+  engine's own list of brief answers (`SRC_ACT.brief`, `engine/evidence.js`),
+  and a first cut of the guard dropped it, so a person who said mm-hmm to a
+  yes or no question heard nothing back; a second look put it back.
+- **No word of Source AI's own under the circle.** The italic Listening at the
+  lower left was the live caption's placeholder. The caption prints the
+  person's own interim words while they speak, as the 29 October ruling asked
+  ("I should see my input as I'm talking"), and nothing else. It keeps one
+  line of height when empty, because taking it out of the flow moved the
+  circle by 13 pixels on every sentence.
+- **No bar for the open microphone.** `status('Listening. Press again to
+  stop.', 'ok')` is gone. The state is now said to a screen reader and never to
+  the page: a hidden polite region, `#micsay` in `shell/body.html`, written
+  from the foot of `stRender` when the microphone opens or closes
+  ("Microphone open.", "Microphone closed."), and not again on a silent
+  restart. `status()` itself is untouched, so every failure still shows in the
+  dock, as a failure, and is logged.
+- **The circle's hover card is off, for now.** It was the seven line key
+  (17 November, "This tooltip, it's insane. That text in the tooltip needs to
+  be direct."), carried as the canvas's `title`, which the tooltip engine hangs
+  off the whole canvas box: 900 by 420 in the Journal where the circle is 416,
+  so the card opened 250 pixels from the thing it described. The text is kept
+  as data, `SrcFace.key()`, and the canvas keeps its aria-label; nothing may set
+  a title or a data-tip on that canvas while this stands. Turning it back on is
+  one line.
+- **Commit does not move.** It was not jumping, it was sliding in from the
+  upper left corner of the Journal pane: `stHeroPlace` places each control by
+  writing left 0 and top 0, reading it back, then writing the real place, and
+  `.btn` carries `transition: all`, so every placement was a 120 millisecond
+  glide from the corner. It repeated about every eight seconds because a
+  recogniser that hears nothing ends itself, `ST_REC.onend` restarts it and
+  renders the page, and every render builds a new button and places it again.
+  Talk, the keyboard and Dashboard do not slide only because their transition
+  lists do not name left or top. The transition is now off for the length of
+  the placement and put back after a read has flushed the final position
+  (`put` in `stHeroPlace`); a CSS rule that pinned the button would have
+  hidden the cause.
+
+What this overrides, in one clause each, per the 15 November rule: the
+17 November hover on the circle (off, for now, text kept); the
+"Listening" placeholder of the 29 October live caption (the person's words
+stay); and the `status('Listening...')` line of `stMic`. What it does not touch:
+Talk's own hover, which is the one hover left on that screen and explains
+itself; the crisis safety line and its door; every error line; and the words
+the circle draws on its own canvas during a reading.
+
+Held by `tests/talksilence.js`, which was run on the build from before the fix
+and on a copy of the fixed build with each fix undone, one at a time.
+Measured on 18 November in headless Chromium on a real own record, Talk
+pressed and nothing said, a three second greeting, against the circle's own
+rest (the lit pixels of the real canvas, a channel above 110):
+- the build from before, `c2bf52a2`: the circle's lit pixels averaged 4650
+  against a rest of 1077, 4.3 times, in all 33 samples over nine seconds, and
+  its state read engaged with the centre word Answering; "Listening" under the
+  circle; the dock open with "Listening. Press again to stop." and one logged
+  line; the seven line card on a hover anywhere in the 900 by 420 canvas box;
+  Commit 29 samples out of 800 away from its place at 1600 and 26 at 390,
+  with 54 and 50 browser glides on left or top in forty seconds, painted at
+  the pane's upper left corner (11, 78) before sweeping home; and uh, Hmm.,
+  the, "Um, uh" and bare punctuation filed as turns, each answered out loud
+  ("Say more about that.", "I'm listening.").
+- this build: the lit pixels averaged 1235 against a rest of 1091 with no
+  sample above one and a half times the rest maximum, engaged never true, no
+  word, no bar, nothing logged, no card, 0 samples away and 0 glides at both
+  widths through seven silent restarts, filler and empty results dropped with
+  no render, and a real sentence still wakes the circle to 6180 and is still
+  answered out loud.
+
+Open, and his call, written so he does not have to go and find them:
+- **A room noise the recogniser mishears as a lone "hmm" or "mm" now counts as
+  a short answer.** To keep the spoken yes (mm-hmm, uh huh, mhm, hmm), the
+  guard no longer drops those four sounds, so a quiet room that the
+  recogniser hears as a lone hmm lands as one short turn, which Source AI
+  answers and which wakes the circle once. The other way round, dropping them,
+  silently ignored a person who said yes. Which mistake does he want? The
+  build now takes the first, because a dropped yes leaves nothing on the
+  screen to say why. Not his call yet.
+- **The words the circle draws on itself while it is reading** (the centre
+  word, which runs Listening, Found, Weighing, Holding, Answering, and the
+  seat labels such as "Root, Fear" on the rings). They are drawn on a canvas,
+  so no text probe sees them. Do they count as "no text on that screen"? If
+  yes they go; if no they stay. Not changed.
+- **After his first real sentence the circle stays awake** (beat and trace) for
+  the rest of the session, because `engaged` is never released. Should it go
+  back to rest a few seconds after Source AI finishes answering, or stay awake
+  once a story has begun? That is the 17 November design and was not changed.
+- **Talk's own hover card** ("Talk by speaking instead of typing...") is the one
+  hover left on that screen. Keep it, or shorten it, or take it off too?
+- **When the circle's hover comes back, and saying what?** It is off "for now".
+  The key is kept word for word, so it can return with the same text or a
+  shorter one, hung off the circle and not off the box.
+## Source AI is a conversation and not an algorithm. Reported 17 November, built 18 November.
+
+His words, verbatim, on a screenshot of the Discover tab with three things struck in red: "Source AI animation appears broken when I load up the dashboard without saying anything or profile. Animations are automatically playing. There's a tooltip that looks like it's a paragraph long that needs to go. There's text still that says I'm listening that needs to go. There's text that says 0 words hidden. I don't understand why this is here. This should not be there. But the software needs to be validated. Source AI, it needs its logic reviewed. Right now, there's a lot of bugs with it. And right now, there's something with Source AI where it's not having a natural conversation with me. It keeps repeating, what are we talking about today? So it's acting more like an algorithm and not something intelligent I could have a conversation with. And I may put a limitation on it somewhere that is creating this experience. That's undesirable."
+
+Read as, and measured on the build before (c2bf52a2) with a stand-in microphone and voice:
+
+- It repeated because the page filed every result the speech service handed back as a turn. A lone "uh", "the", "um" or "hmm", and Source AI's own voice coming back through the speakers, were each a turn, each answered aloud, each read by the circle and each saved into the draft. And the opener was said on every press of Talk and inside the answers to "hello" and "can you hear me": four presses of Talk spoke it four times, and answering hello and can you hear me spoke it two more.
+- The circle moved with nothing said because the voice playing a line, and any reading, switched the circle's motion on and nothing ever switched it off.
+- "I'm listening." was the status line, the placeholder under the circle and the word the canvas drew at the centre. "0 words hidden" was the stars chip drawn with its count. The hover was seven lines and over eighty words.
+
+What changed, each held by `tests/srcconvo.js` and, for the engine half, `tests/evidence.js` group SK13:
+
+- A result that is no words, or is Source AI's own line said back, is not a turn. A short answer is (yes, no, I don't know, sad, what), and the door to help is read first and never refused. The recording starts half a second after a line ends, and a person who is mid sentence when a line arrives is not talked over.
+- The opener is said once a conversation. Three new acts are answered as what they are: a complaint that it repeats, a thanks and a goodbye. A turn with no seat in it is answered from seven lines and, when the engine holds one, one thing the person said back in their own words ("You said "my boss"."), never the same line twice.
+- The circle is at rest until a sentence with a seat in it is read, and goes back to rest after it. No "Listening" is printed on the screen or drawn on the circle; a screen reader is still told the microphone is on. The hover is one line. The chip is the star alone on every view and absent at zero.
+
+Overridden, named once: the 11 November decision that a press of Talk always falls through to the greeting (it said the opener on every press), and the 17 November hover key (it was still a paragraph). Kept: one bubble a turn, no two way chat, every reply spoken (13 November), the safety door never gated, a reading is not a score.
+
+Open, his call: Source AI is deterministic and offline, so "a natural conversation" here means it does not repeat, answers what was said with a word of the person's own, and knows when to be quiet. A conversation that follows any subject would need a language model behind one server connection, which is the first thing in this product that sends a person's words off the device. Not built, not defaulted.
+## The Insight well talks, one button only. Ruled 17 November
+
+His words: "the insight panel is source ai's translation of whats selected.
+i want this to be an audio button too. if i press it, i can talk to source ai
+about the parent and children and how it works through me and run a protocol
+to release it."
+
+**What it overrides, and how far.** "No two-way chat, anywhere, including the
+voice" (10 November, above) is overridden for this one button, on the Reading
+row of the Insight well (`stkWellHtml`, `ui/ui.js`), and nowhere else. The
+Journal's own conversation is unchanged by this entry. A later seat that finds
+two-way talk in the well is reading this ruling, not a regression; a seat that
+wants two-way talk anywhere else needs a new ruling.
+
+**What the button does** (`ui/stksay.js`):
+
+- A press speaks the well's three facts, Built from, Feeds and the Reading,
+  through `stSrcSpeak`, the one voice, then listens on its own recogniser.
+- What the person says is matched against a closed set: a part's or the
+  parent's name, what it is built from, what it feeds, how it works through
+  them, stop, and release. Anything else gets one fixed line naming what can
+  be asked. Every word is read off a record (`railStkKids`, `railStkParent`,
+  `insightSpeak`) or is a fixed line. No body place, no percent, no name.
+- Talk here never becomes the person's story: nothing reaches `ST_TEXT` or
+  `SRC_CHAT`, so nothing is parsed, charged or kept at Commit.
+- Saying release opens the release card through `relPick`, the door Summary's
+  Release all already uses, so the allowance applies and the card says the
+  cost. The card's own Release press starts the run. A word never starts one.
+- A worked example refuses the press before anything is spoken
+  (`showRefuse('talk')`).
+
+**Amended the same day, after an independent audit of the first build.** What
+changed and why, so a later seat reads it as the ruling and not a regression:
+
+- **The safety door comes first.** While `stSafe()` stands, a press speaks the
+  one line the Journal's voice speaks (`srcSayNow`, which reads `CRISIS_SAY`)
+  and nothing else: no pattern reading, no release offered, no microphone
+  after it, and the button is never greyed or hidden for it. The first build
+  went on reading the pattern in full under the door, so Source AI's two
+  voices acted differently under the same door. Built this way on the audit's
+  finding; if he wants the well to read the pattern under the door, that is a
+  new ruling. Nothing escalates: no modal, no new colour.
+- **Escape stops the button on the first press.** The tip the button carries
+  used to take the first Escape; the key is read ahead of it now, so one press
+  stops the button and closes the tip.
+- **A command is the whole utterance.** "Release" opens the card only in a
+  short sentence that is not a question and holds no negation, so "I don't
+  want to release it yet" opens nothing. "Stop" ends the conversation only as
+  the opening word, so a question that contains it does not. What nothing
+  matches still gets the one fixed line.
+- **A copy opened from a file is told so.** The voice server refuses an origin
+  of null on purpose, so from disk the button draws itself off, its tip says
+  Source AI speaks only from the hosted copy at atuned.world or from
+  http://localhost, and the Journal's voice says the same sentence before any
+  request goes out. One function decides it (`srcVoiceWhyNot`,
+  `ui/storyui.js`); tests set `SRC_VOICE_STANDIN` (tests/net.js) because their
+  stand-in server answers for the hosted one.
+- **One sentence, shown and heard.** The kind is spelled as the Reading row
+  spells it (`INSIGHT_KW`, `ui/ui.js`), and a name with a + or a / in it is
+  said with "with" in the line and in the row, which are one line.
+- **A line that talked over the well's is not cut by it.**
+
+`tests/stksay.js` holds it. Not measured: how long the longest opening line
+takes on the real voice against the thirty second cut (`SRC_VOICE_MAX`); the
+longest is a few hundred characters, and the real voice's pace has not been
+timed.
+## Glass blue, an eighth lighting, from the palette board's variant B. Ruled 18 November.
+
+His words, verbatim, choosing between two pictures of the same screen on the
+palette board: "Let's go with B. For the palette. And let's add that as a new
+light mode." B was captioned "Real app, palette variant B (more blue)": Glass
+white with its neutral greys moved from warm cream toward blue. The other
+picture, A (quiet), is not built.
+
+Read as three rulings:
+1. **It is a new lighting, beside Glass white, and Glass white does not move.**
+   The app calls a light mode a lighting. It is named Glass blue, id
+   `glassblue`, and sits straight after Glass white in `LIGHTINGS`
+   (`ui/panels.js`). Glass white's tokens, its stage and every pixel it painted
+   are held exactly by `tests/glassblue.js`, and with a baseline build every
+   element's painted colours on every tab.
+2. **The palette is B, as measured.** The settings behind the B picture were
+   lost (the variant was never committed), so they were read back out of the
+   picture, surface against the same surface in a real Glass white render. The
+   numbers, red, green, blue from 0 to 255:
+
+        surface                 Glass white      Glass blue       read from B
+        top bar                 246,246,244      238,243,249      238,243,249
+        middle panel            234,232,226      224,229,235      224,229,235
+        Release panel           234,232,226      224,229,235      224,229,235
+        bottom cards (three)    234,232,226      224,229,235      224,229,235
+        sort row                231,229,223      221,226,232      221,226,232
+        stage between cards     242,241,236      233,238,243      233,238,243
+        page, top left          230,229,224      225,230,235      225,230,235
+        page, left edge         219,218,213      214,219,225      214,219,224
+        status dock             247,246,244      237,242,247      238,242,247
+
+   and the tokens that produce them, Glass white then Glass blue: `--bg`
+   #E8E7E2 then #E3E8ED; `--panel` rgba(255,255,255,.62) then
+   rgba(245,250,255,.62); `--sunk` rgba(228,226,220,.60) then
+   rgba(218,223,230,.60); the stage #F2F1EC then #E9EEF3; `--ink` #14161C then
+   #13181F; `--mid` #4A4843 then #454B52; `--dim` #6E6B65 then #656B72, the last
+   three read off the darkest pixel of a label in the picture. `--panel-2`,
+   the edges, the shadow, the tooltip ground and the Field's denser panes
+   follow in the same direction, since the picture shows none of them. The
+   accent, the gold, the green Release button, the black Source AI box and
+   every seat colour are Glass white's own. Two things in the picture are not
+   matched and are left out on purpose: the left rail's cards and the stage's
+   vignette, because the 14 November layout stacked different panes there, so
+   the same pixel is a different surface.
+3. **Every lighting says what it is, in one sentence, on hover and on a held
+   press.** The picker's entries are marks with no words. The name is the
+   tooltip's header and a short sentence is its body, through the one tooltip
+   (`ui/tip.js`), for all eight and not only the new one. Glass blue's reads
+   "Pale frosted panels with a cool blue tint." On a phone a tap still chooses
+   and a hold of about a second and a half explains, as it does for every
+   control. His 17 November ruling that no paragraph sits under the lighting
+   row stands: nothing is added to the screen, the meaning is behind the mark.
+
+How it is built, and why this way. The body carries BOTH classes, `glasswhite`
+and `glassblue`, so every Glass white rule, every light ground check and every
+canvas that reads the stage keeps working unchanged, and `body.glassblue` in
+`shell/head.html` states colour only. Three places compared the lighting's name
+to the string `glasswhite` and now read `GLASSWHITE_KIN` (`ui/component.js`):
+`LIGHT()`, `seatCol()` and the class toggle in `setLighting`. The canvases
+carry five light colours of their own, warm on Glass white because its stage is
+cream, and each asks `COOL()` for its blue twin (the pale a quiet node washes
+toward, the plate behind a label, the halo a word is stroked on, the Compass
+well's fallback). The Field's redraw cache under reduced motion was keyed on
+`LIGHT()` alone and so would have kept Glass white's cream through a switch to
+Glass blue; it is keyed on the lighting's name now. `punch` was the precedent
+for a lighting added after the first four (`git log -S punch`); the difference
+is that Glass blue reuses Glass white's whole rule set rather than carrying its
+own.
+
+Found and not fixed here, his to rule on:
+- **The lighting is not stored, for any of the eight.** `S.theme` starts as
+  `dark` and `setLighting` writes nothing, so a reload opens on Dark. It was
+  this way before Glass blue. Storing it changes what every first open looks
+  like, so it was left. The gate says so on an `info` line and holds that a
+  reload never leaves a half state.
+- **The bar's lighting menu opens underneath the Dashboard panels in Glass
+  white and Glass blue.** `.glass.top` is a stacking context at z-index auto
+  under a backdrop filter, so the panels that follow it paint over its menu. In
+  Dark and in Glass it works. It is present on c2bf52a2 and was first handed on
+  as its own task. It is fixed in this change, after review, see the review
+  round below.
+- **Accent text on the middle panel reads 4.40 to 1 on Glass blue and 4.55 on
+  Glass white**, because B's panel is a little darker. The text floor is 4.5.
+  The accent is B's own, so it was left; deepening it by about three levels in
+  Glass blue alone would restore 4.5 and not be visible.
+
+Proved on mutants, 18 November. Each assertion in `tests/glassblue.js` was run
+against a scratch copy of the real build carrying the one defect it exists for,
+and fails there and passes on the real build. The ids, in the order they ran:
+
+    picker       M06 no sentence, M06b two sentences, M07 the eighth entry
+                 removed, M12 a mark shared with Glass white, M12b marks painted
+                 as fills, M13 phone entries 30 tall, M14 a held press chooses,
+                 M14b a tap does nothing, M37 no tooltip attributes, M38 a
+                 repeated id, M39 a shared sentence, M40 a label without its
+                 word, M41 no mark, M42 the menus skip it, M43 entries
+                 overlapping, M44 entries running off the edge
+    state        M02 no glasswhite class, M15 nothing marked pressed, M15b a
+                 stale bar name, M16 a tab change drops the class, M17 Settings
+                 lists seven, M18 the class never taken off, M19 a half state at
+                 boot, M20 a second choice painting differently
+    colour       M01 the sunk pane warm, M03 the stage warm, M04 the glass pane
+                 white, M21 the page ground warm, M22 the status dock white,
+                 M23 mid and M24 ink back to Glass white's, M25 the accent
+                 changed, M26 LIGHT() forgetting it, M45 the Release panel
+                 alone, M46 one bottom card alone, M47 the sort row alone
+    Glass white  M05 its page ground moved a level, M27 its stage moved a
+                 level, M28 its shadow moved (a change no token or pixel in the
+                 table holds, caught by the element by element walk with a
+                 baseline build), M29 Glass white also putting glassblue on
+    text         M08 dim lightened, M25b the accent lightened, M30 ink and
+                 M30b mid too pale to read
+    canvases     M09 the redraw cache not keyed on the lighting, M10b the label
+                 plate left cream, M31 the Compass ground left warm, M32 a
+                 console error on boot
+    nothing warm M10 the halo left cream, M11 a cream rule with no blue twin,
+                 M34 the helper renamed
+
+### The review round on Glass blue, 18 November
+
+Two reviewers read the first build and found real defects, all reproduced
+before they were touched and all fixed at the cause. Nothing about the palette
+moved, and Glass white is still held to the pixel.
+
+- **The home screen read as a patch of the old light mode.** Discover is where
+  the app opens, and its wash painted a dusty mauve (212,205,206 at one pixel)
+  inside a cool bar and a cool page. Every check in the first build clicked the
+  Dashboard open before it measured, so the hero was never looked at. The cause
+  is in `shell/head.html`, the wash behind the avatar: it mixes the warm
+  ambient core into the page ground in oklch, and an oklch mix carries the hue
+  as well as the lightness. A warm near black into a cool pale blue is about
+  half a turn of hue apart, the short way round lands on pink, and whatever
+  chroma is left paints as pink. Glass blue now states the same two gradients
+  in srgb in a rule of its own, which has no hue to carry, and the pale blue
+  stays blue (205,210,214 at the same pixel). Glass white's wash is not edited.
+  Section 8 of `tests/glassblue.js` reads the whole stage, blank and loaded, at
+  1600 and at 390, by what is in the pixels, and first proves it can see the
+  cream by reading Glass white's own home screen.
+- **At phone width the Settings lighting row cut the new lighting in half.**
+  One flex row of eight names runs 510px in a tray that is the screen less 52,
+  so at 390 the selected Glass blue was sliced to "Gla" and Flat and Lumen sat
+  off the screen where nothing could reach them. At 600 and under it is the
+  phone menu's own shape now, two even columns, four even rows. Section 9 reads
+  every button against its tray and the screen at nine widths from 320 up.
+- **The bar's lighting menu opened behind the stage on Discover and on the
+  Dashboard, in Glass white and in Glass blue,** so a person could pick Glass
+  blue from Dark on the home screen and then not pick anything else from the
+  bar. It was already so in Glass white before this work (Glass and Dark were
+  never affected, and the Field escapes it). Those two lightings put a backdrop
+  filter on the bar without positioning it, so the bar is a stacking context at
+  z-index auto and the menu's own z-index is spent inside it, under the stage.
+  The bar is lifted above the stage while the menu is open and not otherwise,
+  because lifting it always would move the bar's shadow from under the stage's
+  blurred backdrop to over its face and change the pixels below the bar in
+  Glass white, which must not move. Shut, the page is painted exactly as it
+  was. Section 10 asks the browser what is at the centre of every entry, for
+  every lighting, on three screens at two widths, and that a shut bar is not
+  lifted.
+- **Two things that were not in the product.** The two usage lines that named
+  the sandbox chromium (`tests/glassblue.js`, `tests/README.md`) failed
+  `tests/chrome-path.js`, a blocking step; they say `<path to a chromium>`
+  now. And the gate was in no workflow: it is registered in the gates report
+  matrix of `.github/workflows/deploy.yml` and in the registry of
+  `tools/workflow-lint.py`, so `tools/orphans.js` is clean and the commit can
+  be pushed on its own.
+- **Rebased onto 72a28def**, which landed while the review ran. The two build
+  products conflicted and were rebuilt from the sources, never merged by hand.
+
+### Source AI may read a person's own prior entries. Ruled 19 November.
+
+Answers `DESIGN-sniffer.md` question 12, open since 27 September: "May Source
+AI see a person's own previous entries in order to read the current one?"
+His words, direct: "Yes, source can read prior entries." Only that person's
+own record, on their own device, never a corpus and never another person's
+record; the existing privacy rulings (name never leaves the device, a key
+replaces it, the record never held joined to the story) are structural and
+do not move. Until this ruling Source AI's ladder was built to a narrower
+version on purpose, carrying only the seat keys an earlier commit stores,
+never the text itself, and stopped at rung 8 of 10 because of it. Building
+the wider read is tracked on the board as `t19-sourceai-data-gap`.
+
+
+## The Let Go list is in the app, bundled. Asked for 21 November, bundling is the team's default
+
+His words: "the 96 patterns, the 17,000 lines, let's get that in too... go knock
+out these 96 patterns and close this thing up." The open question on the board
+was bundled in the app always or fetched on demand. "Let's get that in too"
+settles that it goes in. Bundled, not fetched, is the team's pick and not his
+word: the build is one file with no network beyond the sign in seam (CLAUDE.md),
+and a second fetch seam for a reading library is a larger change than the list
+itself. Open to correction; moving to fetched is one generator flag and one
+loader, the data does not change.
+
+What went in, generated by `tools/regen-letgo.cjs` from Reboot-OS
+`atuned/data/letgo` and `canon_tables/LETGO.json`, read as git blobs at a named
+commit, never typed by hand:
+
+- **Cues** (`engine/data/letgo.js`, read by `engine/letgo.js`). Short phrases
+  from the list: the dictation cut at each "I'm letting go of" into the thing
+  let go of, and the list index's own titles of two words or more, each filed
+  under the seat Reboot-OS filed it under. `letgoCues(text)` finds them in what
+  a person writes, and `sniffStory()` carries the matches as `letgo`, beside
+  the evidence. A match adds no charge and places no imprint: weighting a seat
+  for a phrase would change every reading that carries one, which is a ruling
+  on the reading and not part of a port. It is not negation aware.
+- **Packs** (`ui/letgopacks.js`, shown in the Wisdom school under the Letting
+  Go Deck). Every distinct written line of the list's 233 cards, filed by the
+  feeling word it opens on: Anxiety, Worry, Fear and thirteen more, with More
+  for a line no family takes. A pack opens to its first lines and saves whole
+  as a text file. Nothing is stored and nothing is sent.
+
+What did not go in, and why: the raw dictation (speech to text with its errors
+in it) and the cards' chat headings. Left out by name on every run: one line
+carrying an em dash, five the safety words trip (one real, "no reason to live",
+four the idiom "cutting myself off"), and nine the house voice gate stops
+("dynamics", "construct", "cognitive"...), because rewriting his lines to pass
+would put words in his mouth.
+
+"17,000 lines", measured: no file in Reboot-OS says 17,704. The cards hold
+11,700 lines (10,660 distinct) and the three dictated lists hold 5,831 "I'm
+letting go of" statements, 17,531 together.
+
+## No blockers: position ships on any real, cited landmark now; naming can stay open. Ruled 21 November.
+
+The status board showed 5 Body map addresses marked blocked, waiting on his
+decision about which nerve or plexus name to show. The real problem was
+something else: POSITION, placing a point against a real, cited anatomical
+landmark, had been bundled together with NAMING, choosing which word or label
+to print at that point, as if both needed his sign-off. They do not. Position
+has real material to work from (the cited anatomy) even where naming is
+still a live question or a two-way choice between defensible real options.
+
+His words, verbatim, in order: "For the blocked part, place the plexus and
+the nerves where they're supposed to be, and we'll figure out what words go
+there. The fact that you haven't done this is kind of pissing me off, and the
+fact that it's not written in red is pissing me off. Great, get that body map
+updated. Like I said, Emmy, put this in your memory. We need to get the
+software stood up as quickly as possible. We have no blockers. You should have
+no blockers. Blockers are reviewed in software where I can't progress
+anymore. You need to keep building the software, make sure everything is
+stood up. Things that don't make sense at the end will resolve then. But the
+fact that you're waiting, you're failing me. So far, if I were to give you a
+grade, you get a D. Improve that. Listen to my words. Make sure you're keeping
+it in memory. Make sure you're keeping notes of my input where it belongs. And
+that you're building to my vision with your team. Now do it now."
+
+**Rulings.**
+- **Position and naming are not one decision.** Position (where a point sits,
+  against a real cited landmark) ships now, for all 5 addresses, using the
+  best real anatomical option on record. Naming (which word is printed at
+  that point) can stay open longer: it is lower stakes and, named correctly
+  this time, does not block anything downstream. A future module is built the
+  same way: ask whether the open question is really about where or what
+  something sits against real material, or only about which word describes
+  it, before marking anything blocked.
+- **Picking between two real, defensible options is not a blocker.** Where
+  the cited anatomy supports two real, defensible landmarks for the same
+  address, the team picks one, ships it flagged as the team's pick (not as
+  his ruling), and moves on. It is never left unplaced pending his sign-off.
+- **The escalation, general, no exceptions left.** This replaces every
+  carve-out this session's own working practice had been running on its own
+  initiative for an open question with partial real material behind it
+  (treating a choice as "too costly to redo later" or as "a genuinely open
+  creative choice" and parking it on that basis alone). DECISIONS.md itself
+  names no such carve-out anywhere above this entry; it existed only as this
+  session's working habit, and it is gone. The only thing that may still sit
+  open is a genuine, confirmed-by-real-search absence of any material
+  anywhere, the way this file's own genuinely open items already are marked:
+  searched for and not found, not merely undecided. "I don't have a strong
+  preference yet, pick one of these two real options" is not that; it ships.
+- **Blocked means blocked in software, nothing else.** His own definition,
+  restated so it is never read loosely again: "blockers are reviewed in
+  software where I can't progress anymore." A board item waiting on his word
+  choice, his taste call between two real options, or a seat's own hesitation
+  is not a blocker under this definition. The seats keep building; whatever
+  still does not make sense once it is standing up resolves then, not before.
+- **A stuck module reads as a problem, not a gap.** His words on the board
+  specifically: "the fact that it's not written in red is pissing me off."
+  A module that is stale or stuck (not moving, or carrying an open item with
+  no plan under it) must render as visibly flagged, not sit in the same
+  neutral state as a module that is simply in progress. This is a rendering
+  requirement on whatever board shows module status, named here because he
+  named it in the same breath as the no-blockers ruling, not a separate note.
+- **Escalates the "seats decide and ask only when blocked" ruling.**
+  (`CLAUDE.md`, round PD, 1 October, and the Reporting section's "the team is
+  always asking", 25 September.) Those rulings already say the seats decide
+  and ask at most one question, only when genuinely blocked; this entry
+  narrows what "blocked" is allowed to mean for an open item with any real
+  material behind it, to close the exact gap the Body map board item used to
+  sit in.
+- **Graded.** His words: "if I were to give you a grade, you get a D." Named
+  here for the record, against this exact failure, so a later seat reads why
+  the bar moved and not only that it did.

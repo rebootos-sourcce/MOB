@@ -1,0 +1,95 @@
+<title>Field hands-on</title>
+<!-- THE PAGE HE OPENS. DF in TASKS.md: "take that mockup and make it
+     interactive, let's get that puppy in motion... let's get the mobile
+     version interactive."
+
+     This file is the root page of a published artifact, and every path in it
+     is written from the REPOSITORY ROOT, because the artifact is published
+     with the repository's own layout: proto/field-overlay/..., proto/field-cb/
+     ..., sim/stories.js and source.html sit at the same relative places they
+     do here, so pin.html, release.html and 3-mobile-live.html run unedited and
+     their own ../../ paths land. Opened from proto/live/ on disk the links
+     will not resolve; serve a folder that mirrors the published tree.
+
+     Three tabs, one frame each, loaded the first time a tab is opened and
+     kept after, so a release in progress survives a look at another tab.
+     A plain #pin, #release or #frames on the link opens that tab. -->
+<link rel="stylesheet" href="proto/field-cb/inter.css">
+<style>
+:root{--ground:#0b0b0d;--panel:#141419;--edge:rgba(255,255,255,.09);--edge-2:rgba(255,255,255,.16);
+ --ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;--accent:#7EB8D4;
+ --ease-out:cubic-bezier(.22,1,.36,1);--t-micro:.12s;
+ --sans:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color-scheme:dark}
+*{box-sizing:border-box}
+html,body{height:100%;background:var(--ground)}
+body{margin:0;color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.45;display:flex;flex-direction:column}
+.top{flex:0 0 auto;padding:10px 16px 0;border-bottom:1px solid var(--edge)}
+.row{display:flex;align-items:baseline;gap:6px 14px;flex-wrap:wrap}
+.top h1{font-size:15px;font-weight:600;margin:0;text-wrap:balance}
+.top .who{font-size:12.5px;color:var(--dim)}
+.tabs{display:flex;gap:2px;margin-top:8px;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{font:inherit;font-size:14px;background:transparent;border:0;border-bottom:2px solid transparent;color:var(--mid);
+ padding:8px 12px 10px;min-height:44px;cursor:pointer;white-space:nowrap;
+ transition:color var(--t-micro) var(--ease-out),border-color var(--t-micro) var(--ease-out)}
+.tabs button:hover{color:var(--ink)}
+.tabs button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px;border-radius:6px}
+.tabs button[aria-selected=true]{color:var(--ink);border-bottom-color:var(--accent)}
+.realbox{padding:2px 0 8px}
+.realbox summary{font-size:12.5px;color:var(--mid);cursor:pointer;min-height:32px;display:flex;align-items:center;gap:6px;list-style:none}
+.realbox summary::-webkit-details-marker{display:none}
+.realbox summary::before{content:"";width:6px;height:6px;border-right:1.5px solid var(--dim);border-bottom:1.5px solid var(--dim);transform:rotate(-45deg);transition:transform var(--t-micro) var(--ease-out)}
+.realbox[open] summary::before{transform:rotate(45deg)}
+.realbox summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+.real{font-size:12.5px;color:var(--dim);margin:0;padding:0 0 4px;max-width:72ch}
+@media (prefers-reduced-motion:reduce){.realbox summary::before{transition:none}}
+.real b{color:var(--mid);font-weight:500}
+.panes{position:relative;flex:1 1 auto;min-height:0}
+.panes iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:var(--ground)}
+</style>
+<div class="top">
+ <div class="row"><h1>Field, hands on</h1><span class="who">James, the worked example, on the current build</span></div>
+ <div class="tabs" role="tablist" aria-label="Three pieces to try">
+  <button type="button" role="tab" id="t-pin" data-k="pin" aria-controls="p-pin">Pin</button>
+  <button type="button" role="tab" id="t-release" data-k="release" aria-controls="p-release">Trace and release</button>
+  <button type="button" role="tab" id="t-frames" data-k="frames" aria-controls="p-frames">Frames</button>
+ </div>
+ <details class="realbox" id="realbox"><summary>What is live here</summary><p class="real" id="real"></p></details>
+</div>
+<div class="panes" id="panes"></div>
+<script>
+(function(){
+'use strict';
+var TABS={
+ pin:{src:'proto/field-overlay/pin.html',
+  real:'<b>Live:</b> rest on or tap a line to trace its chain, press it to pin, press again to let go, up to three. Pinch or scroll to zoom. <b>A still:</b> the Field under the lines is a capture of the build. Every line is a connection the build draws, at its real charge.'},
+ release:{src:'proto/field-overlay/release.html',
+  real:'<b>Live:</b> pin a chain, name it, and run a release from it. The release card, the run and the Released card are the shipped build itself, running in this page. <b>Changed:</b> the build refuses to release a worked example, and a tickbox on the card lifts that for this page.'},
+ frames:{src:'proto/field-cb/3-mobile-live.html',
+  real:'<b>Live:</b> the whole screen is the shipped build at a phone’s width. Press anything in it. <b>Proposal:</b> options a and b lay the comp’s readout over the live picture. The six gate shares in them are example values.'}};
+var cur=null,$=function(id){return document.getElementById(id);};
+/* a link inside one piece that points at another piece switches the tab
+   rather than navigating the frame away from its own tab */
+function wire(f){try{var d=f.contentDocument;[].forEach.call(d.querySelectorAll('a[href]'),function(a){
+ var h=a.getAttribute('href');Object.keys(TABS).forEach(function(k){var tail=TABS[k].src.split('/').pop();
+  if(h===tail||h.split('/').pop()===tail)a.addEventListener('click',function(ev){ev.preventDefault();show(k);});});});}catch(e){}}
+function show(k){
+ if(!TABS[k])k='pin';cur=k;
+ Object.keys(TABS).forEach(function(n){var on=n===k,b=$('t-'+n);b.setAttribute('aria-selected',String(on));b.tabIndex=on?0:-1;
+  var f=$('p-'+n);
+  if(on&&!f){f=document.createElement('iframe');f.id='p-'+n;f.title=b.textContent;f.setAttribute('role','tabpanel');
+   f.addEventListener('load',function(){wire(f);});f.src=TABS[n].src;$('panes').appendChild(f);}
+  if(f)f.hidden=!on;});
+ $('real').innerHTML=TABS[k].real;
+ try{history.replaceState(null,'','#'+k);}catch(e){}}
+[].forEach.call(document.querySelectorAll('.tabs button'),function(b){
+ b.addEventListener('click',function(){show(b.dataset.k);});
+ b.addEventListener('keydown',function(ev){var ks=Object.keys(TABS),i=ks.indexOf(b.dataset.k);
+  if(ev.key==='ArrowRight'||ev.key==='ArrowLeft'){ev.preventDefault();var n=ks[(i+(ev.key==='ArrowRight'?1:ks.length-1))%ks.length];show(n);$('t-'+n).focus();}});});
+/* open on a desk, folded on a phone, where the header would otherwise take
+    a quarter of the screen away from the thing he came to press */
+if(innerWidth>520)$('realbox').open=true;
+var h='';try{h=location.hash.slice(1);}catch(e){}
+show(TABS[h]?h:'pin');
+})();
+</script>

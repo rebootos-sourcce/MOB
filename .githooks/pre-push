@@ -1,0 +1,86 @@
+#!/usr/bin/env bash
+# PRE-PUSH. A stale build product never leaves this machine.
+#
+# source.html, engine.js, atuned-packed.html, funnel/tokens.css and the pages
+# under funnel/dist are committed build products. tools/products.js fails when
+# a commit's products are not what its own source builds, and gates-fast runs
+# it on every pull request, so drift is red there. That is minutes after the
+# push and on a runner. This is the same check, before the push.
+#
+# For each branch tip being pushed, the hook checks that exact commit out into
+# a throwaway sparse worktree (never your own tree, which it does not touch),
+# runs the three builds there in CI's order, then node tools/products.js, and
+# refuses the push if it reports drift. A build or a check that cannot run is
+# a refusal too, with the reason: a check that could not run has not passed.
+# A tip whose tree has no tools/products.js is older than the check, and is
+# let through with a line saying so. A deleted branch pushes nothing to check.
+#
+# Turn it on once per clone, from the repository root:
+#     git config core.hooksPath .githooks
+# Turn it off:
+#     git config --unset core.hooksPath
+#
+# It needs what the build needs: bash, node, python3 and a tsc that
+# `npx --no-install tsc` can find. It takes about as long as one build per
+# branch pushed, a minute or so. git's own --no-verify skips every pre-push
+# hook; CI still runs the same check, so a push made that way is checked
+# there, just later.
+set -uo pipefail
+
+z40=0000000000000000000000000000000000000000
+top="$(git rev-parse --show-toplevel)" || exit 1
+cd "$top" || exit 1
+
+shas=()
+while read -r _lref lsha _rref _rsha; do
+  [ -n "${lsha:-}" ] || continue
+  [ "$lsha" = "$z40" ] && continue
+  case " ${shas[*]-} " in *" $lsha "*) ;; *) shas+=("$lsha") ;; esac
+done
+[ "${#shas[@]}" -gt 0 ] || exit 0
+
+tmp=""
+cleanup() {
+  if [ -n "$tmp" ] && [ -d "$tmp" ]; then
+    git -C "$top" worktree remove --force "$tmp/wt" >/dev/null 2>&1
+    rm -rf "$tmp"
+    git -C "$top" worktree prune >/dev/null 2>&1
+  fi
+  tmp=""
+}
+trap cleanup EXIT
+trap 'cleanup; exit 130' INT TERM
+
+refuse() {
+  echo "pre-push: REFUSED. $1" >&2
+  [ -n "${2:-}" ] && [ -f "$2" ] && tail -n 25 "$2" | sed 's/^/pre-push:   | /' >&2
+  echo "pre-push: nothing was pushed. Fix it and push again; the check is .githooks/pre-push." >&2
+  exit 1
+}
+
+for sha in "${shas[@]}"; do
+  short="${sha:0:8}"
+  if ! git cat-file -e "$sha:tools/products.js" 2>/dev/null; then
+    echo "pre-push: $short has no tools/products.js, so it is older than the check and is not checked."
+    continue
+  fi
+  tmp="$(mktemp -d "${TMPDIR:-/tmp}/atuned-prepush-XXXXXX")" || refuse "no temporary directory for the check of $short."
+  echo "pre-push: building $short in a scratch worktree to check its committed build products..."
+  git worktree add --quiet --no-checkout --detach "$tmp/wt" "$sha" >"$tmp/setup.log" 2>&1 \
+    || refuse "a scratch worktree for $short could not be made (disk full?)." "$tmp/setup.log"
+  # what the three builds and the check read, read off this repository on
+  # 3 November. A build that needs more fails below and says so, which is a
+  # refusal, never a pass.
+  { git -C "$tmp/wt" sparse-checkout set --cone atuned_src tests tools funnel vendor marketing \
+      && git -C "$tmp/wt" checkout --quiet --detach "$sha"; } >>"$tmp/setup.log" 2>&1 \
+    || refuse "the scratch worktree for $short could not be checked out." "$tmp/setup.log"
+  ( cd "$tmp/wt" && ./atuned_src/BUILD-engine.sh && ./atuned_src/BUILD.sh && ./funnel/BUILD-single.sh ) >"$tmp/build.log" 2>&1 \
+    || refuse "$short does not build, so its products cannot be checked. The build's last lines:" "$tmp/build.log"
+  if ! ( cd "$tmp/wt" && node tools/products.js ) >"$tmp/products.log" 2>&1; then
+    grep '^FAIL' "$tmp/products.log" | sed 's/^/pre-push:   /' >&2
+    refuse "$short carries build products its own source does not build. Run ./atuned_src/BUILD-engine.sh && ./atuned_src/BUILD.sh && ./funnel/BUILD-single.sh, commit what they write, and push again."
+  fi
+  echo "pre-push: $short build products match their source: $(grep -v '^[[:space:]]*$' "$tmp/products.log" | tail -n 1)"
+  cleanup
+done
+exit 0

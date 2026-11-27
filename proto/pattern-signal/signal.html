@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pattern signal, two ways</title>
+<!-- A MOCKUP, NOT THE APP. GO in TASKS.md, his words: "on the left hand side,
+     the tool side, the percent of which patterns are running through a person
+     ... maybe the sniffer is looking for those patterns too, it's like oh we
+     heard a little architect, oh we heard a little nature, oh we heard a
+     little sage ... a person can really see the signal strength at which they
+     run through ... add that as a system design, run it through, figure out
+     where it needs to go."
+
+     The design is DESIGN-pattern-signal.md. This page shows the two places it
+     could go, side by side, on the same person, so the question is asked with
+     the drawing.
+
+     Real: the pattern tables and their icons (ARCH, DOMAINS, ROOTD, ROOTCOL,
+     read from ../../engine.js), the seven figures and their own chosen
+     archetypes and domain (PEOPLE), and their journal lines (sim/stories.js,
+     written before the lexicon was consulted).
+
+     NOT real, and said on the page: the cue table below. The sniffer has no
+     vocabulary for a pattern today. Measured: 0 of 41 story bank lines and 0
+     of 14 persona lines name one, against 382 sentences of the book. The
+     table here was written for this mockup, against these lines, so the
+     drawing has something to draw. It is not a proposal and it is not tuned.
+     No network request of any kind. -->
+<script src="../../engine.js"></script>
+<script src="../../sim/stories.js"></script>
+<style>
+:root{--bg:#0d1016;--panel:#161b24;--panel-2:#1d2330;--sunk:#0a0d12;--edge:#262d3a;--edge-2:#343c4c;
+ --ink:#e6e9ef;--mid:#b3bac7;--dim:#8a93a3;--accent:#7fb6d9;--gold:#dabf6a;--tap:44px;
+ --sans:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#f4f2ee;--panel:#fff;--panel-2:#f0ede7;--sunk:#e9e5dd;
+ --edge:#e0dbd1;--edge-2:#cfc8bb;--ink:#1d2129;--mid:#444b58;--dim:#6b7280;--accent:#2f6f99;--gold:#9a7b22}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.5}
+.strip{background:repeating-linear-gradient(135deg,var(--panel-2) 0 12px,var(--panel) 12px 24px);
+ border-bottom:1px solid var(--edge);padding:10px 16px;font-size:13px;color:var(--mid)}
+.strip b{color:var(--ink)}
+main{max-width:1560px;margin:0 auto;padding:18px 16px 60px}
+h1{font-size:22px;font-weight:600;margin:4px 0 4px}
+.lede{color:var(--mid);max-width:900px;margin:0 0 16px}
+.ctl{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 16px}
+.ctl label{font-size:12.5px;color:var(--dim);font-weight:600;margin-right:4px}
+.b{min-height:var(--tap);min-width:var(--tap);padding:6px 12px;border-radius:8px;border:1px solid var(--edge);
+ background:transparent;color:var(--mid);font:inherit;font-size:13.5px;cursor:pointer}
+.b.on{border-color:var(--accent);color:var(--accent);font-weight:500}
+.grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr) minmax(0,1fr);gap:16px}
+@media (max-width:1100px){.grid{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--edge);border-radius:14px;padding:16px;min-width:0}
+.eye{font-size:12px;font-weight:600;color:var(--dim);letter-spacing:.02em;margin:0 0 8px}
+.card h2{font-size:17px;margin:0 0 4px}
+.card p.sub{font-size:13px;color:var(--dim);margin:0 0 12px}
+.ent{padding:9px 0;border-bottom:1px solid var(--edge);font-size:14px;color:var(--mid)}
+.ent.off{opacity:.35}
+.ent mark{background:transparent;color:var(--ink);border-bottom:2px solid var(--c,var(--gold));padding:0 1px}
+.ent .n{font-size:11.5px;color:var(--dim);display:block}
+.sec{margin:14px 0 6px;font-size:12.5px;font-weight:600;color:var(--dim)}
+.tiles{display:flex;flex-wrap:wrap;gap:6px}
+.tile{position:relative;width:48px;height:48px;border-radius:9px;background:var(--sunk);border:1px solid var(--edge);
+ display:flex;align-items:center;justify-content:center;color:var(--c)}
+.tile.chosen{border-color:var(--c);box-shadow:inset 0 0 0 1px var(--c)}
+.tile svg.ic{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.tile.quiet svg.ic{opacity:.4}
+.tile .sig{position:absolute;right:3px;bottom:3px}
+.tile.big .sig{position:static}
+.tile.big{width:auto;min-width:96px;padding:0 10px;gap:8px;justify-content:flex-start;font-size:12.5px}
+.sig{display:inline-flex;align-items:flex-end;gap:1.5px;height:12px}
+.sig i{width:3px;border:1px solid var(--edge-2);border-radius:1px;display:block}
+.sig i:nth-child(1){height:4px}.sig i:nth-child(2){height:6.5px}.sig i:nth-child(3){height:9px}.sig i:nth-child(4){height:12px}
+.sig i.on{background:var(--c);border-color:var(--c)}
+.row{display:grid;grid-template-columns:28px minmax(0,1fr) auto auto;gap:10px;align-items:center;
+ padding:8px 0;border-bottom:1px solid var(--edge)}
+.row svg.ic{width:20px;height:20px;fill:none;stroke:var(--c);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.row .nm{font-size:14px}
+.row .nm em{font-style:normal;font-size:11.5px;color:var(--dim);margin-left:6px}
+.row .ct{font-size:12px;color:var(--dim);white-space:nowrap}
+.tag{font-size:11px;color:var(--c);border:1px solid var(--c);border-radius:6px;padding:0 5px;margin-left:6px}
+.none{font-size:13.5px;color:var(--dim);padding:10px 0}
+.foot{font-size:12.5px;color:var(--dim);margin-top:12px;border-top:1px solid var(--edge);padding-top:10px}
+</style>
+</head>
+<body>
+<div class="strip"><b>Prototype.</b> Not the shipped app. Round GO, the pattern signal, drawn two ways.
+ The cue table is a placeholder written for this mockup and is not a proposal. Nothing here is saved.</div>
+<main>
+<h1>Patterns heard in the journal</h1>
+<p class="lede">The same person, the same entries, two places to show it. Step the entries forward and
+ watch what comes back. A pattern is marked by how many entries it was heard in, never by how hot one word was,
+ which is the same rule Source AI asks by.</p>
+<div class="ctl" id="who"></div>
+<div class="ctl" id="step"></div>
+<div class="grid">
+ <section class="card">
+  <p class="eye">The journal</p>
+  <h2 id="whoh"></h2>
+  <p class="sub">Committed entries, oldest first. What the placeholder cues matched is underlined.</p>
+  <div id="ents"></div>
+ </section>
+ <section class="card">
+  <p class="eye">Option A</p>
+  <h2>On the grids the tool rail already has</h2>
+  <p class="sub">Every icon keeps its place. A small signal mark rides on each one. The ring is what the person chose.</p>
+  <div id="a"></div>
+ </section>
+ <section class="card">
+  <p class="eye">Option B</p>
+  <h2>A Heard list at the head of the tool rail</h2>
+  <p class="sub">Only what was heard, strongest first, across all three kinds of pattern.</p>
+  <div id="b"></div>
+ </section>
+</div>
+</main>
+<script>
+/* THE PLACEHOLDER CUES. Written for this page, against these lines, so the
+   drawing has something to draw. Not a proposal, not tuned, not the book. */
+var CUE={
+ Warrior:['raced','training','snapped','stress fracture','would do it again'],
+ Sage:['data','explains','know exactly','see what is wrong','want to know why','read my clients'],
+ Rebel:['killed a good idea','not mine'],
+ Caregiver:['hold the room','for everyone','client','understands everybody'],
+ Creator:['made','studios','good idea'],
+ Magician:['modalities','turnaround'],
+ Ruler:['board','payroll','team','make the call','business','hired','let forty people go'],
+ Explorer:['still looking','far side'],
+ Lover:['same kind of person'],
+ Jester:['easier than the conversation'],
+ Everyman:['everyone has moved on','people find'],
+ Innocent:['happens for a reason','believed it'],
+ Knowledge:['data','explains','know exactly','want to know why','read my clients','see what is wrong'],
+ Justice:['moral','lied','apologised'],
+ Imperium:['board','team','make the call','business','company'],
+ Duty:['worked until','cannot stop','do it anyway','hired'],
+ Fate:['happens for a reason','same kind of person'],
+ Power:['raced','training','snapped','stress fracture'],
+ Creation:['made','good idea','studios'],
+ Dissolution:['killed a good idea','let forty people go'],
+ Descent:['middle of something','far side','worse now'],
+ Death:['died','funerals'],
+ Connection:['same kind of person','the conversation'],
+ Exchange:['payroll','what it costs','cost me'],
+ Restoration:['modalities','client'],
+ Provision:['payroll','nothing to show'],
+ Play:[],
+ Nature:['slept','sleep','two in the morning'],
+ Trickster:['lied','easier than'],
+ Mystery:['do not know what of','does not attach'],
+ Guardian:['hold the room','for everyone','only one who knows']};
+var FIG=['Diane','Derek','Marcus','Angela','Sofia','James','Ana'];
+var ST={who:'Sofia',n:3};
+function lc(s){return String(s).toLowerCase();}
+function hits(line,nm){var t=' '+lc(line).replace(/[^a-z' ]+/g,' ')+' ';
+ return (CUE[nm]||[]).filter(function(c){return t.indexOf(' '+c+' ')>=0;});}
+function person(){return PEOPLE.filter(function(p){return p.nm===ST.who;})[0]||{};}
+function lines(){return (STORYBANK[ST.who]||[]).map(function(r){return r[1];});}
+/* how many of the first n entries a pattern was heard in. Return, not heat. */
+function heard(nm){var L=lines().slice(0,ST.n);return L.filter(function(l){return hits(l,nm).length;}).length;}
+function heardRoot(r){var L=lines().slice(0,ST.n);
+ var ds=DOMAINS.filter(function(d){return d.r===r;}).map(function(d){return d.nm;});
+ return L.filter(function(l){return ds.some(function(d){return hits(l,d).length;});}).length;}
+function bars(k){var s='<span class="sig" aria-hidden="true">';
+ for(var i=1;i<=4;i++)s+='<i class="'+(i<=k?'on':'')+'"></i>';return s+'</span>';}
+function lvl(c){return Math.min(4,c);}
+function ic(path){return '<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="'+path+'"/></svg>';}
+function say(nm,c){return nm+'. '+(c?'Heard in '+c+' of '+ST.n+(ST.n===1?' entry.':' entries.'):'Not heard yet.');}
+function chosenArch(){var p=person();return [ARCH[p.a1]&&ARCH[p.a1].nm,ARCH[p.a2]&&ARCH[p.a2].nm];}
+function chosenDom(){var p=person();return DOMAINS[p.dom]&&DOMAINS[p.dom].nm;}
+function paintCtl(){
+ document.getElementById('who').innerHTML='<label>Person</label>'+FIG.map(function(f){
+  return '<button class="b'+(ST.who===f?' on':'')+'" data-who="'+f+'">'+f+'</button>';}).join('');
+ var N=lines().length;
+ document.getElementById('step').innerHTML='<label>Entries</label>'+Array.from({length:N},function(_,i){
+  return '<button class="b'+(ST.n===i+1?' on':'')+'" data-n="'+(i+1)+'">'+(i+1)+'</button>';}).join('');
+ document.querySelectorAll('[data-who]').forEach(function(b){b.onclick=function(){ST.who=b.dataset.who;ST.n=Math.min(ST.n,lines().length);paint();};});
+ document.querySelectorAll('[data-n]').forEach(function(b){b.onclick=function(){ST.n=+b.dataset.n;paint();};});}
+function paintEnts(){
+ var p=person();
+ document.getElementById('whoh').textContent=p.nm+', '+p.role.replace(' \u00b7 ICP','');
+ var all=Object.keys(CUE);
+ document.getElementById('ents').innerHTML=lines().map(function(l,i){
+  var cues=[];all.forEach(function(nm){hits(l,nm).forEach(function(c){if(cues.indexOf(c)<0)cues.push(c);});});
+  var out=l;cues.sort(function(a,b){return b.length-a.length;}).forEach(function(c){
+   out=out.replace(new RegExp('\\b('+c.replace(/ /g,'\\s+')+')\\b','i'),'\u0001$1\u0002');});
+  out=out.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/\u0001/g,'<mark>').replace(/\u0002/g,'</mark>');
+  return '<div class="ent'+(i<ST.n?'':' off')+'"><span class="n">Entry '+(i+1)+(i<ST.n?'':', not committed yet')+'</span>'+out+'</div>';}).join('');}
+function paintA(){
+ var ca=chosenArch(), cd=chosenDom(), h='';
+ h+='<div class="sec">Root domains</div><div class="tiles">'+ROOTD.map(function(r){var c=heardRoot(r);
+  return '<div class="tile big'+(c?'':' quiet')+'" style="--c:'+ROOTCOL[r]+'" title="'+say(r,c)+'">'+r+bars(lvl(c))+'</div>';}).join('')+'</div>';
+ h+='<div class="sec">Archetypes</div><div class="tiles">'+ARCH.map(function(a){var c=heard(a.nm);
+  return '<div class="tile'+(c?'':' quiet')+(ca.indexOf(a.nm)>=0?' chosen':'')+'" style="--c:'+PAL[a.b]+'" title="'+say(a.nm,c)+'">'
+   +ic(a.ic)+bars(lvl(c))+'</div>';}).join('')+'</div>';
+ h+='<div class="sec">Blueprint domains</div><div class="tiles">'+DOMAINS.map(function(d){var c=heard(d.nm);
+  return '<div class="tile'+(c?'':' quiet')+(cd===d.nm?' chosen':'')+'" style="--c:'+ROOTCOL[d.r]+'" title="'+say(d.nm,c)+'">'
+   +ic(d.ic)+bars(lvl(c))+'</div>';}).join('')+'</div>';
+ h+='<p class="foot">Hover a tile for its count. Four marks is heard in four or more entries.</p>';
+ document.getElementById('a').innerHTML=h;}
+function paintB(){
+ var ca=chosenArch(), cd=chosenDom(), rows=[];
+ ROOTD.forEach(function(r){rows.push({nm:r,k:'root domain',c:heardRoot(r),col:ROOTCOL[r],ic:null});});
+ ARCH.forEach(function(a){rows.push({nm:a.nm,k:'archetype',c:heard(a.nm),col:PAL[a.b],ic:a.ic,ch:ca.indexOf(a.nm)>=0});});
+ DOMAINS.forEach(function(d){rows.push({nm:d.nm,k:'domain',c:heard(d.nm),col:ROOTCOL[d.r],ic:d.ic,ch:cd===d.nm});});
+ var on=rows.filter(function(r){return r.c;}).sort(function(a,b){return b.c-a.c||(a.nm<b.nm?-1:1);});
+ var chosenQuiet=rows.filter(function(r){return r.ch&&!r.c;});
+ var h=on.length?on.map(function(r){
+  return '<div class="row" style="--c:'+r.col+'">'+(r.ic?ic(r.ic):'<span class="sig" style="visibility:hidden"></span>')
+   +'<span class="nm">'+r.nm+'<em>'+r.k+'</em>'+(r.ch?'<span class="tag">chosen</span>':'')+'</span>'
+   +bars(lvl(r.c))+'<span class="ct">'+r.c+' of '+ST.n+'</span></div>';}).join('')
+  :'<p class="none">Nothing heard yet.</p>';
+ if(chosenQuiet.length)h+='<p class="foot">Chosen and not heard yet: '+chosenQuiet.map(function(r){return r.nm;}).join(', ')+'.</p>';
+ document.getElementById('b').innerHTML=h;}
+function paint(){paintCtl();paintEnts();paintA();paintB();}
+paint();
+</script>
+</body>
+</html>

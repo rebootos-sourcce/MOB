@@ -1,0 +1,661 @@
+/* ============================================================
+   CHARACTER. The five masks as one person made of points, inside a torus of
+   light that is the health of their body.
+
+   THIS IS THE FIFTH BUILD OF THIS PAGE AND IT REPLACES THE FOURTH IN FULL. The
+   fourth (round LP, 7220610 to NK) drew each mask as a pixel grid, a face cut
+   out of a grid with the chain lighting pixels. On 1 October, rounds ON to OW,
+   the owner took it apart: "the face designs are terrible, they look like stick
+   figures", "each mask is symbolic on its own", "the point cloud is the mask
+   and the aura is the radiance", and then the pick: Orbit with a torus. The
+   grids, the Dark and Light switch, the weave and the pixel hover are gone with
+   it, and so is chRead, which only they used. What the old page held that is
+   still true is kept: the lock, the integer 11 and the host #masksview, the
+   last mask a person opened, and the one-line summary of a mask in Selection.
+
+   WHAT IS WHERE, ruled in round PE: "all information is on the right hand side:
+   nothing but the figure, the field and the overlay row in the centre panel".
+   The stage carries the canvas, the five mask icons at the upper left and four
+   toggles at the upper right, and no text at all; a control says what it is on
+   hover through the product's own tooltip, and says so to a screen reader. The
+   leading pattern, the mask and what it does, the coherence and vitality
+   readings, the seven seats, what the points are, the address under the
+   pointer and the trace card are all in the right rail, in the section
+   data-sec="chr", which is the only section the rail shows on this page besides
+   Selection, the way it is on the Story. On a phone the rail is under the
+   stage, so the text reads under the picture and never over it.
+
+   THE FOUR TOGGLES, round PE: Point cloud, Torus, Heat map and Trace. The
+   first three are overlays and each is a real button, 44 pixels, a ring icon,
+   lit when on and dim when off, kept in the browser's store with the other view
+   preferences ('chov'). The cloud and the torus are on by default and the heat
+   map is off. Trace is a mode and is not remembered.
+
+   WHAT DRIVES IT, from the engine and from nothing typed here:
+     the shape   the nine pattern weights, S.charge, and the mask picked
+     the density the 112 charges, NODES[i].sq, through addrField. The sniffer
+                 writes the charges out of the stories, compute() makes them
+                 sq, so the cloud changes as stories are written
+     the light   coherence, r.CQ over a hundred, the number the left menu shows
+     the breath  Vitality, r.X, the number the left menu shows. The mapping is
+                 engine/charfield.js charOscillation and is stated there
+     the seats   seatField and charSeatState: the mean charge of each seat's
+                 addresses and its integrity, bandIg, bend the torus there
+   and the page OPENS DIM AND GROWS LIT over about two seconds to the real
+   level, every time it is entered (charGrow), so a person watches their own
+   coherence arrive.
+
+   THE LOCK IS UNCHANGED. The masks are the tier's (SIGHT, engine/plan.js, key
+   mask), ruled 1 October: "they can't see ... the child masks". Below the tier
+   that carries them the host holds the lock's own panel and nothing drawn, the
+   door is greyed (lockTabs) and the rail's section is empty.
+   ============================================================ */
+
+/* the page's own state. CHV and not CH: CH is the Field canvas's height, a let
+   in ui/component.js, and a second declaration threw at parse once and took
+   every module after it with it. pick is the mask on screen and is never null
+   once the page has rendered; it is also what ui/drills.js sets when a Runs
+   under row names a mask. sel is the seat being traced and selAddr the address
+   a person pressed, -1 for neither. */
+var CHV={pick:null, sel:-1, selAddr:-1, sc:null, ov:null, r:null, raf:0, last:0, live:false, dirty:true,
+ rail:'', hov:-1, perf:{n:0,ms:0,max:0}, tg:null, built:false};
+/* the three overlays and the key they are kept under in the store */
+var CH_OVERLAYS=[
+ {k:'cloud', nm:'Point cloud', on:true,
+  d:'The person and the 108 addresses round them, plus the 4 field anchors above and below, as points.'},
+ {k:'torus', nm:'Torus', on:true,
+  d:'The field round the body. The points bend it and vitality makes it breathe.'},
+ {k:'heat', nm:'Heat map', on:false,
+  d:'The body coloured by the charge it carries, cool to hot.'}];
+/* ring icons, 24 by 24, stroked and never filled. A ring of dots, an apple
+   torus with its axis, a heat ring that is dense at the middle, and the trace
+   mark the rest of the product already wears. */
+var CH_IC={
+ cloud:'<circle cx="12" cy="12" r="2.4"/><circle cx="12" cy="12" r="6.6" stroke-dasharray="0.1 3" stroke-width="2.2"/><circle cx="12" cy="12" r="10" stroke-dasharray="0.1 3.6" stroke-width="2"/>',
+ torus:'<ellipse cx="12" cy="12" rx="9.4" ry="5.2"/><ellipse cx="12" cy="12" rx="4" ry="9.4"/><path d="M12 2.6v18.8" stroke-dasharray="1 3"/>',
+ heat:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5.6"/><circle cx="12" cy="12" r="2.2"/>',
+ trace:'M7 7.5m-2.4 0a2.4 2.4 0 104.8 0a2.4 2.4 0 10-4.8 0M17 16.5m-2.4 0a2.4 2.4 0 104.8 0a2.4 2.4 0 10-4.8 0M8.9 9l6.2 6M17 7h3M4 17h3'};
+
+/* a count and a noun, and a list in words. drills.js reads both. */
+function chPl(n,one,many){return n+' '+(n===1?one:many);}
+function chAnd(a){return a.length<2?a.join(''):a.slice(0,-1).join(', ')+' and '+a[a.length-1];}
+function chSentence(v){v=String(v||'');return v.charAt(0).toUpperCase()+v.slice(1)+'.';}
+function chSeatWord(b){return b==='3rd Eye'?'3rd eye':String(b).toLowerCase();}
+function chSeats(m){return m.b.map(chSeatWord).join(' and ');}
+function chMon(t){var d=new Date(t);if(isNaN(d.getTime()))return '';
+ return d.getDate()+' '+['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][d.getMonth()];}
+
+/* WHICH MASK OPENS. "It always starts off on the user's last open. First time
+   users start off on child" (MX). CHV.pick only lives for this session's
+   module, so a second visit with CHV.pick still null reads the one small
+   preference this page keeps on the profile, CURP.ui.chmask, written by uiSet
+   like every other UI preference (ui/account.js). A name the profile does not
+   recognise, an older save or a hand edited one, falls back to the first of the
+   roster rather than throwing, and the first is Child today because canon.js
+   lists it there and not because this reads a position that happens to be
+   zero. */
+function chLast(){
+ var v=(typeof CURP!=='undefined'&&CURP&&CURP.ui&&CURP.ui.chmask)||'';
+ return MASKS_READ.some(function(m){return m.nm===v;})?v:MASKS_READ[0].nm;}
+/* WHO THE PICK WAS MADE FOR. "The user's last open" is that user's: CHV.pick
+   was read once a session, so switching profile carried the last person's
+   mask onto the next one and never read their own CURP.ui.chmask. It is read
+   again whenever the profile on screen is not the one it was read for. */
+function chWho(){return (typeof CURP!=='undefined'&&CURP)?(CURP.id||CURP.name||''):'';}
+/* a seat's name standing on its own as a label, which takes a capital. The
+   lower case form above is for the middle of a sentence. */
+function chSeatName(b){var s=chSeatWord(b);return s.charAt(0).toUpperCase()+s.slice(1);}
+
+/* THE OVERLAYS, kept in the browser's store like the other view preferences
+   (STORE, 'fview', 'bmov'). Nothing stored means the defaults above. A store
+   that cannot be read or written leaves the defaults and the page still
+   draws: a preference is a convenience and never a reason for the page to
+   fail. 'none' is written when all three are off, because an empty string
+   cannot be told from a store that never held the key. */
+function chOvGet(){
+ var s=null; try{s=STORE.get('chov');}catch(e){}
+ var o={}; CH_OVERLAYS.forEach(function(x){o[x.k]=x.on;});
+ if(s===null||s===undefined||s==='')return o;
+ var on={}; String(s).split(',').forEach(function(k){on[k]=1;});
+ CH_OVERLAYS.forEach(function(x){o[x.k]=!!on[x.k];});
+ return o;}
+function chOvSave(o){
+ var l=CH_OVERLAYS.filter(function(x){return o[x.k];}).map(function(x){return x.k;});
+ try{STORE.set('chov',l.length?l.join(','):'none');}catch(e){}}
+
+/* THE NUMBERS THE SCENE IS FED, read off the engine on every render and off
+   nothing else. r is the reading render() just took. */
+/* WHAT RUNS AT EACH ADDRESS, round RB. The saboteurs and complexes are the
+   reading's own, r.sabs and r.cxs, which render() has already put through the
+   plan (sightR): a plan that cannot see saboteurs hands this two empty lists
+   and the page dims nothing and rings nothing. Each saboteur already names the
+   addresses it runs on (parts) and its weight, 0 to 10, which is the mean
+   charge of those addresses; nothing here re-derives it. The weight becomes
+   0 to 1 between CH_SAB_LO and CH_SAB_FULL: the weakest saboteur compute()
+   lets exist, 3.7, reads about a tenth, and 9.5 reads full. An address in two
+   saboteurs takes the heavier. A complex is two saboteurs, so its weight lands
+   on every address of both. lead is the addresses of the three heaviest
+   saboteurs, which are the ones drawn joined to the place they dim. who is the
+   heaviest saboteur and complex at each address, for the line under the
+   pointer. */
+var CH_SAB_LO=3, CH_SAB_FULL=9.5, CH_SAB_LINES=3;
+function chSabW(w){return clamp(((+w||0)-CH_SAB_LO)/(CH_SAB_FULL-CH_SAB_LO),0,1);}
+function chSabs(r,AF){
+ var sab=new Float32Array(112), cx=new Float32Array(112), who=[], lead=[], at={};
+ AF.forEach(function(a,j){at[a.i]=j;});
+ var unread=!r||!!r.unread, sabs=(!unread&&r.sabs)||[], cxs=(!unread&&r.cxs)||[];
+ sabs.forEach(function(s,rank){var v=chSabW(s.w);
+  (s.parts||[]).forEach(function(n){var j=at[n.i];if(j===undefined)return;
+   if(v>sab[j]){sab[j]=v;who[j]=who[j]||{};who[j].sab=s;}
+   if(rank<CH_SAB_LINES&&lead.indexOf(j)<0)lead.push(j);});});
+ cxs.forEach(function(c){var v=chSabW(c.w);
+  (c.parts||[]).forEach(function(s){(s.parts||[]).forEach(function(n){var j=at[n.i];if(j===undefined)return;
+   if(v>cx[j]){cx[j]=v;who[j]=who[j]||{};who[j].cx=c;}});});});
+ return {sab:sab, cx:cx, who:who, lead:lead};}
+function chData(r){
+ var w={}; CHILD.forEach(function(c){w[c.nm]=+S.charge[c.nm]||0;});
+ var AF=addrField(), ach=new Float32Array(112), SF=seatField();
+ AF.forEach(function(a,j){ach[j]=a.sq/10;});
+ var unread=!r||!!r.unread, SB=chSabs(r,AF);
+ CHV.who=SB.who;
+ return {w:w, ach:ach, ig:SF.map(function(s){return s.ig;}), unread:unread, mask:CHV.pick,
+  sab:SB.sab, cx:SB.cx, lead:SB.lead,
+  coh:unread?0:clamp((+r.CQ||0)/100,0,1),
+  /* VITALITY IS r.X, the figure the left menu prints beside the leaf. A reading
+     nobody has made yet is unread, the menu prints a dash for it, and the torus
+     holds flat: a breath with nothing to be the breath of. */
+  vit:unread?0:clamp(+r.X||0,0,1)};}
+
+/* ============================================================
+   THE STAGE, built once. The scene's canvas goes in first, then the mask icons
+   upper left and the toggles upper right, each a real button and none of them
+   with text in it.
+   ============================================================ */
+/* one mask icon. The ring is a gradient from the mask's first seat to its last,
+   the wash behind the sign is the same two colours, the arc is how loaded the
+   mask is, and the sign inside is that mask's own symbol with Orbit's tilted
+   orbit through it. Nothing about a mask is tied to a row of the left menu:
+   round OR, "don't link the masks to Vitality and Awareness and stuff like
+   that". The description is on hover through the one tooltip. */
+function chMaskBtn(m){
+ var c=CHC.maskCols(m);
+ return '<button type="button" class="chp-mk" data-chmask="'+esc(m.nm)+'" aria-pressed="false" aria-label="'+esc(m.nm)+' mask. '+esc(m.v)+'"'
+  +' data-tip-t="'+esc(m.nm)+'" data-tip="'+esc(chSeats(m).charAt(0).toUpperCase()+chSeats(m).slice(1)+'. '+chSentence(m.v))+'" style="--mc1:'+c[0]+';--mc2:'+c[1]+';--c:'+c[0]+'">'
+  +chMaskSvg(m,'ch',0)+'</button>';}
+/* THE MASK'S SIGN, ON ITS OWN, 21 November (avatar-boundary-masks-revived).
+   His words: "we're going to revive the masks, but we're going to move them to
+   the avatar page." The Avatar page draws the same five signs, so the sign is
+   said once here and both pages call it: a second copy of the gradient, the
+   wash and the glyph is a second mask that can drift from the first. pre keeps
+   the two pages' gradient ids apart, because both hosts can be in the document
+   at once and a url(#id) resolves to whichever id came first. ld is the share
+   of the arc lit, 0 to 1; the Character page writes its arc after the paint,
+   so it hands 0 and leaves the dasharray to renderCharacter as before. */
+function chMaskSvg(m,pre,ld){
+ var c=CHC.maskCols(m), R=26, C=2*Math.PI*R, id=m.nm.replace(/\W/g,''), f=Math.max(0,Math.min(1,+ld||0));
+ return '<svg viewBox="0 0 60 60" aria-hidden="true"><defs>'
+  +'<linearGradient id="'+pre+'lg'+id+'" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="'+c[0]+'"/><stop offset="1" stop-color="'+c[1]+'"/></linearGradient>'
+  +'<radialGradient id="'+pre+'rg'+id+'" cx=".5" cy=".4" r=".75"><stop offset="0" stop-color="'+c[1]+'" stop-opacity=".34"/><stop offset=".6" stop-color="'+c[0]+'" stop-opacity=".16"/><stop offset="1" stop-color="'+c[0]+'" stop-opacity=".05"/></radialGradient></defs>'
+  +'<circle class="wash" cx="30" cy="30" r="27" fill="url(#'+pre+'rg'+id+')"/>'
+  +'<circle cx="30" cy="30" r="'+R+'" fill="none" stroke="url(#'+pre+'lg'+id+')" stroke-width="2" opacity=".4"/>'
+  +'<circle class="ld" cx="30" cy="30" r="'+R+'" fill="none" stroke="url(#'+pre+'lg'+id+')" stroke-width="3" stroke-linecap="round" transform="rotate(-90 30 30)" stroke-dasharray="'+(f?(C*f).toFixed(1):'0')+' '+C.toFixed(1)+'"/>'
+  +'<g transform="translate(14 14) scale(.875)" fill="none" stroke="url(#'+pre+'lg'+id+')" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">'+CHC.glyph(m.nm)+'</g></svg>';}
+function chOvBtn(k,nm,d,ic,pressed){
+ return '<button type="button" class="chp-ob" data-chov="'+k+'" aria-pressed="'+pressed+'" aria-label="'+esc(nm)+'" data-tip-t="'+esc(nm)+'" data-tip="'+esc(d)+'">'
+  +'<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">'
+  +(ic.charAt(0)==='<'?ic:'<path d="'+ic+'"/>')+'</svg></button>';}
+
+function chBuild(host){
+ if(CHV.built&&host.querySelector('.chp-stage')&&CHV.sc)return;
+ CHV.ov=chOvGet();
+ host.innerHTML='<div class="chp"><div class="chp-aura" aria-hidden="true"></div><div class="chp-stage" id="chpstage">'
+  +'<div class="chp-masks" role="group" aria-label="Masks">'+MASKS_READ.map(chMaskBtn).join('')+'</div>'
+  +'<div class="chp-ovs" role="group" aria-label="Overlays">'
+  +CH_OVERLAYS.map(function(x){return chOvBtn(x.k,x.nm,x.d,CH_IC[x.k],CHV.ov[x.k]);}).join('')
+  +chOvBtn('trace','Trace','Where the energy leaks. Press a point on the field to trace it.',CH_IC.trace,false)
+  +'</div></div></div>';
+ var stage=host.querySelector('.chp-stage');
+ var sc=CHV.sc=new CHC.Scene(stage,{});
+ sc.ov=CHV.ov; sc.cv.setAttribute('aria-label','Your field: a person made of points inside a torus of light. The reading is in the right panel.');
+ CHV.built=true; CHV.sel=-1; CHV.selAddr=-1; CHV.rail=''; CHV.hov=-1;
+ chWire(host,stage,sc);}
+
+/* every listener goes on once, on elements that outlive a render: the canvas
+   and the buttons are written by chBuild alone and chBuild writes them once */
+function chWire(host,stage,sc){
+ var cv=sc.cv;
+ var seatAt=function(e){var r=cv.getBoundingClientRect(),px=e.clientX-r.left,py=e.clientY-r.top;
+  return {a:sc.nearAddr(px,py,sc.mobile?22:15),px:px,py:py};};
+ cv.addEventListener('pointermove',function(e){
+  var h=seatAt(e), seat=h.a<0?sc.near(h.px,h.py,sc.mobile?46:38):-1;
+  if(h.a!==sc.hovAddr||seat!==sc.hov){sc.hovAddr=h.a;sc.hov=seat;CHV.dirty=true;chHover(h.a,seat);}
+  cv.classList.toggle('hit',h.a>=0||seat>=0);});
+ cv.addEventListener('pointerleave',function(){sc.hov=-1;sc.hovAddr=-1;CHV.dirty=true;chHover(-1,-1);cv.classList.remove('hit');});
+ /* a press on a point traces the seat it belongs to and names the address, a
+    press on the body traces that seat, and a press on nothing puts the trace
+    down. A finger has no hover, so on a touch screen the press is the only
+    way to ask which address a point is, and the rail answers it. */
+ cv.addEventListener('click',function(e){
+  var h=seatAt(e);
+  if(h.a>=0){chTrace(CHC.addr()[h.a].seat,h.a);return;}
+  var seat=sc.near(h.px,h.py,sc.mobile?46:38);
+  if(seat>=0){chTrace(CHV.sel===seat?-1:seat);return;}
+  if(CHV.sel>=0)chTrace(-1);});
+ host.querySelectorAll('[data-chmask]').forEach(function(b){b.onclick=function(){
+  var m=maskOf(b.getAttribute('data-chmask')); if(!m)return;
+  CHV.pick=m.nm;
+  if(typeof uiSet==='function')uiSet('chmask',m.nm);
+  render();};});
+ host.querySelectorAll('[data-chov]').forEach(function(b){b.onclick=function(){
+  var k=b.getAttribute('data-chov');
+  if(k==='trace'){chTrace(CHV.sel>=0?-1:chLeakFirst());return;}
+  CHV.ov[k]=!CHV.ov[k]; sc.ov=CHV.ov; sc.heatDirty=true; chOvSave(CHV.ov);
+  b.setAttribute('aria-pressed',CHV.ov[k]?'true':'false'); CHV.dirty=true;
+  chRail(CHV.r);};});}
+function maskOf(nm){return MASKS_READ.filter(function(m){return m.nm===nm;})[0]||null;}
+
+/* TRACE. Press the toggle or a seat. The torus stops turning so the markers
+   stay put, every other seat dims in the cloud and in the points, a ring marks
+   each place the flow leaves (at most three) and a dotted thread runs from the
+   chosen leak toward the right panel, where the card is. A leak is a closed
+   seat, so the ones marked are the seats with the most shadow. The first press
+   of the toggle goes to the heaviest leak, or to the first seat the mask is
+   worn over when nothing is leaking. */
+function chLeakFirst(){
+ var sc=CHV.sc; if(!sc)return 0;
+ var st=CHC.seatState(sc,true).st;
+ if(st.leaks.length)return st.leaks[0];
+ return BANDS.indexOf(maskOf(CHV.pick).b[0]);}
+function chTrace(k,addr){
+ var sc=CHV.sc; if(!sc)return;
+ CHV.sel=k; CHV.selAddr=k>=0&&addr!==undefined?addr:-1;
+ sc.setSel(CHV.sel,CHV.selAddr); CHV.dirty=true;
+ var host=$('masksview');
+ if(host){host.classList.toggle('chp-tracing',k>=0);
+  var b=host.querySelector('[data-chov="trace"]'); if(b)b.setAttribute('aria-pressed',k>=0?'true':'false');}
+ chRail(CHV.r);
+ chAnchor();
+ /* ON A PHONE THE CARD IS NOT UNDER THE STAGE. The left menu sits between
+    them, so the trace card opened about 480 pixels below the bottom of the
+    stage at 390 wide, measured, and a press on the field changed nothing a
+    person could see except the field. The card is brought to them. */
+ if(sc.mobile&&k>=0){var cd=document.querySelector('#charrail .chr-trace');
+  if(cd&&cd.scrollIntoView){try{cd.scrollIntoView({block:'start',behavior:rbStill()?'auto':'smooth'});}catch(e){cd.scrollIntoView();}}}}
+/* where the dotted thread ends: the right edge of the canvas on a desktop, its
+   foot on a phone, where the card sits under the stage */
+function chAnchor(){
+ var sc=CHV.sc; if(!sc)return;
+ if(CHV.sel<0){sc.anchor=null;return;}
+ sc.anchor=sc.mobile?[sc.w2/2,sc.h2-4]:[sc.w2-4,sc.h2*.5];}
+
+/* THE ADDRESS UNDER THE POINTER, in the right panel and not on the stage. The
+   rail section holds a "Pointing at" line and this writes it. On the stage
+   itself nothing is written: the centre carries no text. */
+function chHoverText(j,seat){
+ var sc=CHV.sc;
+ if(j>=0){var a=CHC.addr()[j];
+  var wo=(CHV.who&&CHV.who[j])||null;
+  return '<b>'+esc(a.k)+'</b>'+(a.plex?', '+esc(a.plex.toLowerCase()):'')+'. '
+   +(a.fld?esc(a.b):esc(chSeatName(a.b))+' point')+(a.c?', '+esc(a.c.toLowerCase())+' channel':'')
+   +'. Charge '+fmtPct('weight',sc.achT[j]*10)+'.'
+   /* round RB: what is running here, and what it does to the body */
+   +(wo&&wo.sab?' The saboteur '+esc(wo.sab.nm)+' runs here and dims the body at this place.':'')
+   +(wo&&wo.cx?' It is part of the complex '+esc(wo.cx.nm)+'.':'');}
+ if(seat>=0){var st=CHC.seatState(sc,true),sh=st.st.sh[seat];
+  return '<b>'+chSentence(chSeatWord(BANDS[seat])+' point').replace(/\.$/,'')+'</b>, '+fmtPct('closed',sh)+' shadow. Press to trace it.';}
+ /* nothing under the pointer is the empty value, a dash. The sentence that
+    stood here explained how to use the line (CO-27, section-explains-itself) */
+ return '\u2013';}
+function chHover(j,seat){
+ var t=chHoverText(j,seat); CHV.hov=j>=0?j:-1;
+ var el=$('chhover'); if(el&&el.getAttribute('data-h')!==t){el.innerHTML=t;el.setAttribute('data-h',t);}}
+
+/* ============================================================
+   THE RIGHT PANEL. Everything the page says, in one rail section.
+   ============================================================ */
+/* WHAT STANDS BEHIND A LEAK: the story, the address, the mask. The chain is the
+   one engine/trace.js already keeps, a story supports a pattern, read off the
+   record and never stored here. A story supports an address and never causes
+   it: nothing on the record observes a cause. The address is the heaviest one
+   at the seat that some story has landed on, or the one a person pressed; if no
+   story has landed at the seat the card says so and names the heaviest address
+   anyway, because the charge there is from the seed and not from a story. */
+function chGraph(){
+ var p=(typeof CURP!=='undefined')?CURP:null;
+ if(!p||!p.story||!Array.isArray(p.story.entries)||!p.story.entries.length||typeof traceFromRecord!=='function')return null;
+ /* THE GRAPH CARRIES THE CHAIN THIS PLAN MAY SEE, 31 October. It was built with
+    no reading, so the graph behind the trace card held no saboteur, complex,
+    hyper complex or super complex for anybody (the nerve to celestial audit's
+    first gap). readSeenOf hands it the reading the page is already drawn from,
+    through the plan's lock. The card below reads only story to address edges,
+    so nothing it prints moves. */
+ var rd=null; try{rd=readSeenOf(p);}catch(e){rd=null;}
+ /* read once per record, per count of entries and per chain: the graph parses
+    every story, and a release moves the chain without a new entry */
+ var key=(p.id||'')+'|'+p.story.entries.length+'|'+(p.story.entries[p.story.entries.length-1].t||'')+'|'+readSeenSig(rd);
+ if(CHV.tg&&CHV.tg.key===key)return CHV.tg;
+ var g=null,ids=null; try{g=traceFromRecord(p,undefined,rd);ids=traceStoryIds(p);}catch(e){g=null;}
+ CHV.tg=g?{key:key,g:g,ids:ids,entries:p.story.entries}:{key:key,g:null};
+ return CHV.tg.g?CHV.tg:null;}
+function chChain(k){
+ var seat=BANDS[k], AF=addrField();
+ var cand=AF.filter(function(a){return a.seat===seat&&!a.field;}).sort(function(a,b){return b.sq-a.sq;});
+ var pressed=CHV.selAddr>=0&&AF[CHV.selAddr]&&AF[CHV.selAddr].seat===seat&&!AF[CHV.selAddr].field?AF[CHV.selAddr]:null;
+ if(pressed)cand=[pressed].concat(cand.filter(function(a){return a.i!==pressed.i;}));
+ var out={seat:seat,addr:cand[0]||null,story:null,when:'',src:'',w:0}, tg=chGraph();
+ if(tg){
+  for(var i=0;i<cand.length;i++){
+   var es=tg.g.edges.filter(function(e){return e.edge==='supports'&&e.to==='pattern:'+cand[i].i&&/^story:/.test(e.from);});
+   if(!es.length)continue;
+   /* the latest story that supports it. Keys are the entry's own time, so they sort as dates. */
+   es.sort(function(a,b){return a.from<b.from?1:-1;});
+   var id=es[0].from.slice(6), ix=tg.ids.indexOf(id), en=ix>=0?tg.entries[ix]:null;
+   if(en&&en.text){out.addr=cand[i];out.story=en.text;out.when=chMon(en.t);out.src=es[0].src||'inferred';out.w=es[0].w||0;break;}}}
+ return out;}
+function chStoryHtml(t){t=String(t||'');return esc(t.length>220?t.slice(0,217)+'...':t);}
+
+/* THE CLIMB ITSELF, 21 November. No screen had ever shown a saboteur or
+   anything above it in its own graph (TASKS.md SM2, SM3): chGraph() above
+   reads only the one story-to-address edge, and the trace card stopped at
+   the address step. The graph it already built (tg.g, the same
+   traceFromRecord this card is already drawn from, through the plan's
+   lock) carries the real chain past it; tsChainUp(g,key), ui/
+   tracesummaryui.js, walks it one real 'supports' edge at a time,
+   address up through saboteur, complex, hyper-complex and, when the
+   reading reaches it, the one named super-complex (Psychopathy,
+   TRACE_NAMED, engine/trace.js), stopping at the chain's own floor or a
+   part that has not compounded further rather than inventing a rung.
+   Each rung reached is rendered with tsPartRow exactly as the drills
+   already do, real content or the honest why it carries none; no row
+   here is Source AI's own composed line, so none needs that mark. Silent
+   when the chain climbs nowhere: a seed still on only its own address
+   prints nothing further rather than an empty "feeds up" box. */
+function chClimbHtml(addrI){
+ var tg=chGraph();
+ if(!tg||!tg.g||typeof tsChainUp!=='function')return '';
+ var levels=tsChainUp(tg.g,'pattern:'+addrI);
+ if(!levels.length)return '';
+ var h='';
+ for(var i=0;i<levels.length;i++){
+  var lv=levels[i], word=tsWord(lv[0].type,lv[0].id), nm=word.charAt(0).toUpperCase()+word.slice(1);
+  h+='<div class="chr-edge">supports</div><div class="chr-step"><div class="chr-k">'+esc(nm)+(lv.length>1?' ('+lv.length+')':'')+'</div>'
+   +'<div class="ts-rows">'+lv.map(tsPartRow).join('')+'</div></div>';}
+ return h;}
+
+/* THE CHARGE TAKES ITS SEAT'S COLOUR. addrRow's right hand word is Heart
+   green by default, the colour it carries for a direction elsewhere, so a
+   charge on a Root address printed in the Heart's colour: a colour that
+   meant a seat the address is not in. ink is the option addrRow already has. */
+function chTraceCard(r){
+ var sc=CHV.sc, k=CHV.sel, st=CHC.seatState(sc,true).st, col=PAL[BANDS[k]], ch=chChain(k), m=maskOf(CHV.pick);
+ var under=MASKS_READ.filter(function(mm){return mm.b.indexOf(BANDS[k])>=0;}).map(function(mm){return mm.nm;});
+ var tabs=st.leaks.slice(); if(tabs.indexOf(k)<0)tabs.push(k);
+ var lk=st.lk[k];
+ var h='<section class="chr-trace" aria-label="Trace" style="--tc:'+col+'">'
+  +'<div class="pm-eye plain">Trace. Where the energy leaks.</div>'
+  +'<div class="chr-tabs" role="group" aria-label="Leaks">'+tabs.map(function(t){
+    return '<button type="button" class="chr-tab" data-chtrace="'+t+'" aria-pressed="'+(t===k)+'" style="--lc:'+PAL[BANDS[t]]+'"><i></i>'+esc(chSeatName(BANDS[t]))+'</button>';}).join('')+'</div>'
+  +'<div class="chr-ttl"><b>'+esc(chSeatName(BANDS[k]))+' point</b><span>'
+  +(lk>.12?'Leaking, '+fmtPct('leak',lk):'Holding. No leak')+'</span></div>';
+ if(ch.story)h+='<div class="chr-step"><div class="chr-k">Story'+(ch.when?', '+esc(ch.when):'')+'<i>'+esc(ch.src)+'</i></div><p class="chr-q">“'+chStoryHtml(ch.story)+'”</p></div><div class="chr-edge">supports</div>';
+ else h+='<div class="chr-step"><div class="chr-k">Story<i>none</i></div><p class="chr-m">No story has landed here. The charge is from your intake.</p></div><div class="chr-edge">supports</div>';
+ if(ch.addr){var n=BY[ch.addr.i];
+  h+='<div class="chr-step"><div class="chr-k">Address '+ch.addr.i+'<i>known</i></div>'+addrRow(n,{em:'Charge '+fmtPct('weight',ch.addr.sq),ink:PAL[ch.addr.seat]})
+   +'<p class="chr-m">'+esc(chSeatName(ch.addr.seat))+' point'+(ch.addr.plexus?', '+esc(ch.addr.plexus.toLowerCase()):'')+(ch.addr.channel?', '+esc(ch.addr.channel.toLowerCase())+' channel':'')+'.</p></div>';
+  h+=chClimbHtml(ch.addr.i);}
+ h+='<div class="chr-edge">worn under</div><div class="chr-step"><div class="chr-k">Mask<i>known</i></div><p class="chr-m"><b>'
+  +esc(under.join(', ')||'No mask')+'</b>, by the '+esc(chSeatWord(BANDS[k]))+' point.'+(under.indexOf(m.nm)<0&&under.length?' You are viewing '+esc(m.nm)+'.':'')+'</p></div>'
+  +'<p class="chr-why">Supports, not causes. The ring on the field marks where the flow leaves at this point. A story put charge on the address. Nothing on the record says it is the only cause.</p>'
+  +'<div class="chr-acts"><button type="button" class="btn" id="chto">Open the story</button><button type="button" class="btn" id="chtc">Close trace</button></div></section>';
+ return h;}
+
+/* EVERY PERCENT ITS OWN HUE, MS23, 17 November, "VGA, and every percent a
+   different hue". pctHue (engine/pct.js) carries the reasoning and the DAC;
+   this hands it the figure this rail prints, so the colour is the printed
+   number's and cannot be another's. A figure that prints as a dash keeps its
+   ink, and the light lightings get the deep tone of the same hue. */
+function chPcCol(kind,v,unread){
+ var p=unread?null:pct(kind,v);
+ return p?pctHue(p,typeof LIGHT==='function'&&LIGHT()):null;}
+function chPc(kind,v,unread){var c=chPcCol(kind,v,unread); return c?' style="color:'+c+'"':'';}
+/* THE TWELVE, MS22, 17 November. "Review the masks, and add the Jungian ones.
+   The engine already carries twelve archetypes and six masks. Whichever one a
+   person embodies fills in." The twelve are ARCH, each in its seat's colour
+   and its own mark, drawn as a ring. The ones this person embodies are the
+   three the Avatar page already calls embodied, avArchEmbodied, the three
+   strongest of compute().aff, which is read off the soul's domains and no
+   story, so the two pages can never disagree about who is embodied. Those
+   fill in: the ring takes its colour and a wash of it, the rest stay a faint
+   outline, which is "the outline of the mask's potential" from round MT
+   carried to the archetypes. Nothing is filled on a profile not read yet.
+   Which archetype sits under which mask is NOT drawn: the two seats that
+   proposed a pairing disagreed (TASKS.md, round GI, item 6) and it is his to
+   rule. A press opens that archetype on the Avatar page, where it is rated.
+
+   NOT WHILE ARCHETYPES IS HIDDEN, 18 November (AV_ARCH_SHOWN, ui/avatarui.js).
+   The page they opened is not drawn, so a press would land on Becoming with
+   nothing about the archetype on it, which is a door to nowhere. Each one is
+   a mark and not a button while the view is hidden: the meaning still shows
+   on hover and tap, and nothing pretends to go anywhere. */
+function chArchHtml(r){
+ var unread=!r||!!r.unread, emb=(!unread&&typeof avArchEmbodied==='function')?avArchEmbodied(r):{};
+ var door=typeof AV_ARCH_SHOWN!=='undefined'&&AV_ARCH_SHOWN, tag=door?'button':'span';
+ var on=ARCH.filter(function(a,i){return emb[i];}).map(function(a){return a.nm;});
+ return '<div class="pm-eye chr-sp">Archetypes</div><div class="chr-arch" role="group" aria-label="Archetypes">'
+  +ARCH.map(function(a,i){var e=!!emb[i], say=chSentence(a.v)+' '+a.d+(unread?'':e?' Embodied, one of the three your field reads strongest.':' Not embodied.');
+   return '<'+tag+(door?' type="button"':' role="img" tabindex="0"')+' class="chr-ar'+(e?' on':'')+'" data-charch="'+esc(a.nm)+'" style="--ac:'+PAL[a.b]+'"'
+    +' aria-label="'+esc(a.nm+'. '+say)+'" data-tip-t="'+esc(a.nm)+'" data-tip="'+esc(say)+'">'
+    +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="'+a.ic+'"/></svg></'+tag+'>';}).join('')+'</div>'
+  +(on.length?'<p class="chr-note chr-arn">Embodied: '+esc(chAnd(on))+'</p>':'')
+  +'<p class="chr-note">'+esc(ARCH_CREDIT)+'</p>';}
+function chRailHtml(r){
+ var sc=CHV.sc, m=maskOf(CHV.pick), unread=!r||r.unread, w=sc.w, li=CHC.leadPat(w), a=CHILD[li], col='#'+'';
+ var pc=CHC.PCOL[li], hexc='#'+pc.map(function(v){return ('0'+Math.round(v).toString(16)).slice(-2);}).join('');
+ var SF=seatField(), AF=addrField();
+ var h='<div class="chr">';
+ if(unread)h+='<p class="chr-note">Nothing read yet, so the field is dark and the cloud is plain. Write what happened in Discover and it starts to answer.</p>';
+ /* the leading pattern, what the mask does, and the one line the stage used to
+    carry as a caption */
+ /* AN UNREAD PROFILE LEADS WITH NOTHING. It printed "Leading pattern, Fear
+    0.0", in Fear's red, to somebody who has entered nothing, which is a
+    reading the record does not hold. The note above says the field is dark;
+    the panel now agrees with it. */
+ if(!unread)h+='<div class="chr-lead" style="--lead:'+hexc+'"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="'+hexc+'" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="'+a.ic+'"/></svg>'
+  +'<div><div class="pm-eye">Leading pattern</div><b>'+esc(a.nm)+'</b><span class="chr-fig"'+chPc('charge',w[a.nm]||0,false)+'>'+fmtPct('charge',w[a.nm]||0)+'</span></div></div>'
+  +'<div class="chr-where">'+esc(chSentence(a.loc))+'</div>';
+ h+='<div class="pm-eye">Mask</div><div class="ad-nm">'+esc(m.nm)+'</div><div class="ad-sub">Worn over the '+esc(chSeats(m))+'</div>'
+  +'<p class="ad-p">It '+esc(m.v)+'.</p>'
+  +'<button type="button" class="btn" id="chread">Read this mask</button>';
+ h+=chArchHtml(r);
+ if(CHV.sel>=0)h+=chTraceCard(r);
+ h+='<div class="pm-eye chr-sp">Pointing at</div><div class="chr-hover" id="chhover" aria-live="polite" data-h="">'+chHoverText(CHV.hov,-1)+'</div>';
+ /* the two readings that light and move the field */
+ var cq=unread?0:Math.round(+r.CQ||0), dq=unread?0:Math.round(+r.DQ||0), vt=unread?0:(+r.X||0);
+ h+='<div class="pm-eye chr-sp">Light and breath</div><div class="chr-read">'
+  +'<div class="chr-row"><span>Coherence</span><b'+chPc('cq',cq,unread)+'>'+fmtPct('cq',cq,{unread:unread})+'</b><i>'+esc(chSentence(charCohWord(unread?0:cq/100)))+' It lights the figure and sets how wide, bright and whole the field is.</i></div>'
+  +'<div class="chr-row"><span>Vitality</span><b'+chPc('vitality',vt,unread)+'>'+fmtPct('vitality',vt,{unread:unread})+'</b><i>'+esc(chVitWord(unread?0:vt))+' It sets how far and how fast the field breathes.</i></div>'
+  +'<div class="chr-row"><span>Decoherence</span><b'+chPc('dq',dq,unread)+'>'+fmtPct('dq',dq,{unread:unread})+'</b><i>The shadow, your 108 addresses and 4 field anchors against the most they could hold. It opens the gaps.</i></div></div>'
+  /* round RB: the glow behind the figure is a picture too, so it is said */
+  +(unread?'':'<p class="chr-note">The glow behind the figure is the colour your whole field gives off: every point\u2019s colour, mixed by how bright it is. It breathes with the field.</p>');
+ /* the seven seats: root first as everywhere, each a button that traces it */
+ h+='<div class="pm-eye chr-sp plain">The seven assemblage points</div><div class="chr-seats">'
+  +SF.map(function(s,k){var sh=charSmooth(CHAR_SEAT_LO,CHAR_SEAT_FULL,s.mean),word=sh<.25?'Open':sh<.6?'Loaded':'Closed';
+   return '<button type="button" class="chr-seat" data-chtrace="'+k+'" aria-pressed="'+(CHV.sel===k)+'" title="'+word+'" style="--sc:'+PAL[s.seat]+'">'
+    +'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="6.5" fill="none" stroke="'+PAL[s.seat]+'" stroke-width="1.7"/></svg>'
+    +'<span class="chr-sn">'+esc(chSeatName(s.seat))+'</span><span class="chr-bar"><i style="width:'+Math.round(sh*100)+'%'+(chPcCol('closed',sh,false)?';background:'+chPcCol('closed',sh,false):'')+'"></i></span><span class="chr-sv"'+chPc('closed',sh,false)+'>'+fmtPct('closed',sh)+'</span></button>';}).join('')
+  +'</div><p class="chr-note">The bar is how closed the point is, from the charge on its own addresses. Past about a third the field pinches there, runs slow and breaks up. An open point swells.</p>';
+ /* what the points are, which is the question the owner asked of the mockup */
+ h+='<div class="pm-eye chr-sp">What the points are</div>'
+  /* NEVER THE LOWER COUNT. This printed the body's own share of the
+     addresses, which is the figure the house rule says is never put in front
+     of a person: the count stated is the whole set. Round RG. */
+  +'<p class="ad-p">Each point is one address, and there are '+AF.length
+  +'. Most sit round the body at the height of their point, going slowly round the spine. '
+  +'Four are field anchors, two above the head and two below the feet, drawn as rings. Size and brightness are the address’s charge, and a ring round a point is a charge above seven tenths.</p>'
+  /* round RB: the saboteur's ring, the complex's second ring, the dimmed body
+     and the line, each said where it is drawn, with what a saboteur and a
+     complex are taken from the one table of meanings */
+  +(CHV.who&&CHV.who.some(function(x){return x&&x.sab;})?'<p class="ad-p">A ring in the point\u2019s own colour marks a point where a saboteur runs. '+esc(unpackOf('saboteur'))
+   +' The body under a saboteur goes dark and grey by how heavy it is. The three heaviest saboteurs are drawn bold, each with a dotted line to the place on the body it dims, and a second ring outside a bold one means that saboteur is part of a complex. '+esc(unpackOf('complex'))+'</p>':'')
+  +'<div class="chr-counts">'+SF.map(function(s){return '<span style="--sc:'+PAL[s.seat]+'"><i></i>'+esc(chSeatName(s.seat))+' <b>'+s.n+'</b></span>';}).join('')+'<span class="chr-anc"><i></i>Anchors <b>4</b></span></div>';
+ h+='</div>';
+ return h;}
+/* the words for a vitality, the left menu's own scale of 0 to 1 */
+function chVitWord(v){return v<.34?'Low. The field barely moves.':v<.67?'Middling. The field breathes.':'High. The field breathes deep and quick.';}
+
+function chRail(r){
+ var host=$('charrail'); if(!host||!CHV.sc)return;
+ if(!r)r=CHV.r; if(!r)return;
+ var h=chRailHtml(r);
+ if(h===CHV.rail&&host.firstChild)return;
+ CHV.rail=h; host.innerHTML=h;
+ var rd=$('chread'); if(rd)rd.onclick=function(){var m=maskOf(CHV.pick);if(m)chDrill(m);};
+ host.querySelectorAll('[data-chtrace]').forEach(function(b){b.onclick=function(){
+  var k=+b.getAttribute('data-chtrace'); chTrace(CHV.sel===k&&b.classList.contains('chr-seat')?-1:k);};});
+ /* an archetype opens on the Avatar page, where it is rated, MS22 */
+ host.querySelectorAll('button[data-charch]').forEach(function(b){b.onclick=function(){
+  if(typeof AV==='undefined'||typeof setTab!=='function')return;
+  AV.sub='arch'; AV.arch=b.getAttribute('data-charch'); setTab(TAB.INTAKE);
+  if(typeof render==='function')render();};});
+ var to=$('chto'); if(to)to.onclick=function(){if(typeof setTab==='function'){setTab(TAB.STORY);}};
+ var tc=$('chtc'); if(tc)tc.onclick=function(){chTrace(-1);};}
+
+/* ============================================================
+   THE LOOP. One requestAnimationFrame, started by the render that finds the
+   page shown and ended by the frame that finds it is not. The page is in motion
+   from the first frame. It is not the app's own loop in ui/ui.js on purpose:
+   that loop draws every surface and this one draws one, and a second consumer
+   there is another place a throw could end requestAnimationFrame for the
+   session.
+   ============================================================ */
+function chLive(){
+ var host=$('masksview');
+ return !!(CHV.sc&&host&&host.isConnected&&S.tab===TAB.MASKS&&document.body.classList.contains('tab-masksview')&&lockSees('mask'));}
+function chStart(){
+ if(CHV.raf||!CHV.sc)return;
+ CHV.last=0; CHV.live=false; CHV.raf=requestAnimationFrame(chFrame);}
+function chFrame(ts){
+ var sc=CHV.sc;
+ if(!chLive()){CHV.raf=0;CHV.live=false;return;}
+ /* THE OPENING. Entering the page starts the clock again, so it opens dim and
+    grows lit to the person's real level in about two seconds every time, and
+    the cloud gathers into the mask while it does. */
+ if(!CHV.live){CHV.live=true;CHV.last=ts;sc.t=0;sc.fn=0;CHV.dirty=true;}
+ var dt=clamp((ts-CHV.last)/1000,0,.05), raw=ts-CHV.last; CHV.last=ts;
+ try{
+  var still=rbStill(), w0=sc.W, h0=sc.H, shown=sc.resize();
+  if(shown){
+   if(sc.W!==w0||sc.H!==h0){CHV.dirty=true;chAnchor();}
+   sc.update(dt,still);
+   /* a person who asked for less motion gets one settled picture, drawn again
+      only when something has changed it */
+   if(!still||CHV.dirty){
+    var a=performance.now(); sc.render(); chAura(sc); var ms=performance.now()-a;
+    CHV.perf.n++;CHV.perf.ms+=ms;if(ms>CHV.perf.max)CHV.perf.max=ms;CHV.dirty=false;
+    if(!still&&raw>0&&raw<250)sc.govern(raw);}}
+ }catch(e){CHV.raf=0;CHV.live=false;throw e;}
+ CHV.raf=requestAnimationFrame(chFrame);}
+
+/* THE ROOM TAKES THE AURA'S COLOUR, round RB, his words: "similar to how
+   we're bringing in the red for the body in the background, I want the
+   background of the character to ... reflect the combination color that the
+   aura is radiating. And I want that dynamic." The Body's red is drawAura in
+   ui/wheel.js, pools of the darkest seat at a strength read off the reading.
+   This is the same idea with the page's own number: the colour is the scene's
+   aura (chcloud.js auraOf, every point's colour mixed by its brightness), and
+   the strength is coherence, so a compressed field sits in a faint grey room
+   and a lit one in its own colour. Nothing is drawn for a profile nobody has
+   read.
+
+   DYNAMIC, THREE WAYS, AND NONE OF THEM INVENTED HERE. The colour follows the
+   cloud, so a mask press, a story or a release moves it, eased over 1.4
+   seconds in the scene. The pool breathes on the torus's own phase (oscPh,
+   from Vitality through charOscillation), so the room and the field inhale on
+   the same beat: the Field's own wash breathes .82 to 1 and this one swings
+   between 12 and 32 percent of its strength as Vitality goes from nothing to
+   full, with a scale of 1.2 to 3.2 percent riding it. And it opens with the
+   page, because the strength reads the grown coherence.
+
+   WHAT IT COSTS. The colour is written only when it moves by three steps in a
+   channel, so the gradient is repainted a few times a second while the colour
+   is travelling and not at all once it has arrived. Every frame writes only
+   opacity and a scale, which the compositor does without a repaint. Under
+   reduced motion it is the settled colour at its middle strength, held. */
+var CHAU={el:null,key:''};
+function chAura(sc){
+ var el=CHAU.el;
+ if(!el||!el.isConnected){el=CHAU.el=document.querySelector('#masksview .chp-aura');CHAU.key='';}
+ if(!el||!sc.aura)return;
+ var key=sc.aura.map(function(v){return Math.round(v/3)*3;}).join(',');
+ if(key!==CHAU.key){CHAU.key=key;el.style.setProperty('--aura',key);}
+ var lvl=sc.unread?0:.2+.5*sc.c, still=!!sc._still, vit=sc.unread?0:sc.vit,
+  br=still?0:Math.sin((sc.oscPh||0)*Math.PI*2), sw=.12+.2*vit;
+ el.style.opacity=(lvl*(1-sw*.5+sw*.5*br)).toFixed(3);
+ el.style.transform=still?'none':'scale('+(1+(.012+.02*vit)*br).toFixed(4)+')';}
+
+/* THE REAL ENTRY. render() calls this on every press anywhere, so everything
+   in it is cheap and idempotent: the numbers are handed to the scene, the
+   buttons are painted from the state and the rail is written only when its
+   markup changed, which keeps a keyboard's place in it. */
+function renderCharacter(r){
+ var host=$('masksview'); if(!host)return;
+ var rail=$('charrail');
+ /* THE MASKS ARE THE TIER'S, ruled 1 October. Below the tier that carries them
+    the host holds the lock's own panel and nothing drawn, the rail's section is
+    emptied, and the scene is dropped, so a stored tab, a drill that names a
+    mask or a plan that lapsed with the page open all land on the panel and
+    never on a picture of what the plan cannot see. */
+ if(!lockSees('mask')){
+  CHV.sc=null; CHV.built=false; CHV.rail=''; CHV.sel=-1; CHV.selAddr=-1; CHV.tg=null;
+  host.classList.remove('chp-tracing');
+  if(rail&&rail.innerHTML)rail.innerHTML='';
+  var lh='<div class="lk-page">'+lockPanelHtml('mask')+'</div>';
+  if(host._lk!==lh){host._lk=lh; host.innerHTML=lh;}
+  return;}
+ if(host._lk){host._lk=null; CHV.built=false;}
+ if(!CHV.pick||CHV.pickFor!==chWho()){CHV.pick=chLast();CHV.pickFor=chWho();}
+ chBuild(host);
+ CHV.r=r;
+ var sc=CHV.sc, d=chData(r);
+ sc.feed(d);
+ /* a mask press and a change of profile both land here, and under reduced
+    motion nothing eases, so the picture is brought to where it is going */
+ if(rbStill())sc.snap();
+ CHV.dirty=true;
+ host.querySelectorAll('[data-chmask]').forEach(function(b){
+  var on=b.getAttribute('data-chmask')===CHV.pick, m=maskOf(b.getAttribute('data-chmask'));
+  b.setAttribute('aria-pressed',on?'true':'false');
+  var R=26,C=2*Math.PI*R,ld=Math.min(1,CHC.maskLoad(m,d.w)/9);
+  b.querySelector('.ld').setAttribute('stroke-dasharray',(C*ld).toFixed(1)+' '+C.toFixed(1));});
+ host.style.setProperty('--mc1',CHC.maskCols(maskOf(CHV.pick))[0]);
+ /* the rail's section opens the first time the page is reached, and is left as
+    the person leaves it after that (ui/panels.js, WANT) */
+ chRail(r);
+ chStart();}
+
+/* THE SUMMARY IN SELECTION. "It gives me a full summary of what that mask is
+   doing. How it operates through me." Opened by the Read this mask button in
+   the right panel, and by a Runs under row in a saboteur's drill
+   (ui/drills.js), which is why it is still here. What it says is read off the
+   same engine the picture is: what the mask does, the seats it is worn over
+   with how closed each is, and the addresses under it carrying the most. */
+function chDrill(m){
+ var r=compute(), SF=seatField(), AF=addrField();
+ var h='<div class="pm-eye">Mask</div><div class="ad-nm">'+esc(m.nm)+'</div>'
+  +'<div class="ad-sub">Worn over the '+esc(chSeats(m))+'</div>'
+  +'<div class="pm-eye">What it does</div><p class="ad-p">'+esc(chSentence('It '+m.v))+'</p>';
+ if(r.unread){
+  h+='<p class="ad-p">Nothing read yet, so this mask is plain. Write what happened in Discover and it starts to fill.</p>';
+  rdShell(h);return;}
+ var seats=SF.filter(function(s){return m.b.indexOf(s.seat)>=0;});
+ h+='<div class="pm-eye">The points it covers</div><div class="chr-seats">'+seats.map(function(s){
+  var sh=charSmooth(CHAR_SEAT_LO,CHAR_SEAT_FULL,s.mean);
+  return '<div class="chr-seat chr-seat-ro" style="--sc:'+PAL[s.seat]+'"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="6.5" fill="none" stroke="'+PAL[s.seat]+'" stroke-width="1.7"/></svg>'
+   +'<span class="chr-sn">'+esc(chSeatName(s.seat))+'</span><span class="chr-bar"><i style="width:'+Math.round(sh*100)+'%'+(chPcCol('closed',sh,false)?';background:'+chPcCol('closed',sh,false):'')+'"></i></span><span class="chr-sv"'+chPc('closed',sh,false)+'>'+fmtPct('closed',sh)+'</span></div>';}).join('')+'</div>';
+ var top=AF.filter(function(a){return !a.field&&m.b.indexOf(a.seat)>=0&&a.sq>0;}).sort(function(a,b){return b.sq-a.sq;}).slice(0,6);
+ h+='<div class="pm-eye">Carrying the most</div>';
+ if(!top.length)h+='<p class="ad-p">Nothing held under this mask.</p>';
+ else h+='<div class="ad-rows">'+top.map(function(a){return addrRow(BY[a.i],{em:'Charge '+fmtPct('weight',a.sq),ink:PAL[a.seat]});}).join('')+'</div>';
+ var cov=AF.filter(function(a){return !a.field&&m.b.indexOf(a.seat)>=0;}).length;
+ h+='<p class="ad-p">It covers '+chPl(cov,'address','addresses')+'. '+chPl(AF.filter(function(a){return !a.field&&m.b.indexOf(a.seat)>=0&&a.sq>=4;}).length,'is','are')+' held at 4 or more.</p>';
+ rdShell(h);}

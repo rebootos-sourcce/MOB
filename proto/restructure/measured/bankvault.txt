@@ -1,0 +1,195 @@
+bankvault.js  commit 73702c4  engine.js md5 561455349f128ef3b3f84000c20d6601 (clean)  ui/release.js md5 2f0fbefa0d0f2f6dc802d3bea398ff85
+
+One ICP per block, from a blank record. Each day: commit the next line of their story bank,
+then release the three heaviest addresses at or above the line if there are any.
+pend = distinct addresses the sniffer found before commit (what the imprints panel would show).
+Each count is shown as before > after for the commit and then for the release.
+
+== Sofia, 5 entries ==
+day	pend	loaded	carrying	balance	entries	| release	opened	cleared	installed	loaded moved by release	balance after release	addresses released
+1	0	0>0	0>0	0>0	0>1	| none	0>0	0>0	0>0	-	-	-
+2	0	0>0	0>0	0>0	1>2	| none	0>0	0>0	0>0	-	-	-
+3	0	0>0	0>0	0>0	2>3	| none	0>0	0>0	0>0	-	-	-
+4	4	0>0	0>38	0>41.3	3>4	| ran	0>3	0>0	0>0	0>0	41.3>26.4	Denial Of Light 25>17.967608560452952; Envy 21>14.993682527024333; Jealousy 21>14.993682527024333
+5	1	0>0	38>49	26.4>47	4>5	| ran	3>6	0>0	0>0	0>0	47>38.6	Escapism 23>15.86514259564489; Addiction 23>15.86514259564489; Lust 23>15.86514259564489
+
+== Diane, 6 entries ==
+day	pend	loaded	carrying	balance	entries	| release	opened	cleared	installed	loaded moved by release	balance after release	addresses released
+1	0	0>0	0>0	0>0	0>1	| none	0>0	0>0	0>0	-	-	-
+2	0	0>0	0>0	0>0	1>2	| none	0>0	0>0	0>0	-	-	-
+3	4	0>0	0>16	0>14.4	2>3	| ran	0>3	0>2	0>0	0>0	14.4>8.6	Co-Dependency 14>8.995788351349557; Savior Complex 10>5.6653242829720245; Need To Be Special 10>5.6653242829720245
+4	4	0>0	16>27	8.6>27.5	3>4	| ran	3>6	2>2	0>0	0>0	27.5>19.9	Fear 25>18.132800000000003; Control 25>18.132800000000003; Insecurity 25>18.132800000000003
+5	4	0>0	27>54	19.9>46.8	4>5	| ran	6>7	2>2	0>0	0>0	46.8>29.7	Denial Of Light 17>11.645072373635305; Fear 17>11.582428800000002; Control 17>11.582428800000002
+6	5	0>0	54>65	29.7>64.5	5>6	| ran	7>10	2>2	0>0	0>0	64.5>52.5	Escapism 39>28.634206454710338; Addiction 39>28.634206454710338; Lust 39>28.634206454710338
+
+== Marcus, 5 entries ==
+day	pend	loaded	carrying	balance	entries	| release	opened	cleared	installed	loaded moved by release	balance after release	addresses released
+1	0	0>0	0>0	0>0	0>1	| none	0>0	0>0	0>0	-	-	-
+2	0	0>0	0>0	0>0	1>2	| none	0>0	0>0	0>0	-	-	-
+3	4	0>0	0>38	0>26.8	2>3	| ran	0>3	0>0	0>0	0>0	26.8>15.1	Denial Of Light 16>10.720346130655564; Envy 13>8.218244554052358; Jealousy 13>8.218244554052358
+4	4	0>0	38>54	15.1>31	3>4	| ran	3>6	0>0	0>0	0>0	31>25.3	Co-Dependency 16>10.550875945943952; Savior Complex 11>6.739249203302251; Need To Be Special 11>6.739249203302251
+5	0	0>0	54>54	25.3>25.3	4>5	| ran	6>6	0>1	0>0	0>0	25.3>10.6	Co-Dependency 11>7.092439163833578; Denial Of Light 10>6.050344405727927; Envy 8>4.073894420848083
+
+== Angela, 6 entries ==
+day	pend	loaded	carrying	balance	entries	| release	opened	cleared	installed	loaded moved by release	balance after release	addresses released
+1	4	0>0	0>17	0>23.1	0>1	| ran	0>3	0>0	0>0	0>0	23.1>13.3	Victimhood 21>14.943999999999999; Lethargy 19>13.160850853498392; Forgetfulness 18>12.49452485959478
+2	4	0>0	17>17	13.3>30.6	1>2	| ran	3>3	0>0	0>0	0>0	30.6>18.1	Victimhood 29>21.32311039999999; Lethargy 27>18.584702782158235; Forgetfulness 26>18.56141643437769
+3	0	0>0	17>17	18.1>18.1	2>3	| ran	3>3	0>0	0>0	0>0	18.1>8.4	Victimhood 20>13.958418133333325; Lethargy 18>11.708253734176537; Forgetfulness 17>10.867413789488644
+4	0	0>0	17>17	8.4>8.4	3>4	| ran	3>3	0>0	0>0	0>0	8.4>3.7	Victimhood 13>7.629528533333328; Lethargy 11>6.761467522712596; Forgetfulness 10>6.063411719575477
+5	0	0>0	9>9	3.7>3.7	4>5	| ran	3>3	0>3	0>0	0>0	3.7>0.9	Victimhood 7>3.3364415999999943; Lethargy 6>2.744344147766416; Forgetfulness 5>2.149410224638194
+6	4	0>0	5>16	0.9>12.7	5>6	| ran	3>6	3>3	0>0	0>0	12.7>7.3	Fear 16>10.707999999999998; Control 16>10.707999999999998; Insecurity 16>10.707999999999998
+
+== Derek, 6 entries ==
+day	pend	loaded	carrying	balance	entries	| release	opened	cleared	installed	loaded moved by release	balance after release	addresses released
+1	0	0>0	0>0	0>0	0>1	| none	0>0	0>0	0>0	-	-	-
+2	0	0>0	0>0	0>0	1>2	| none	0>0	0>0	0>0	-	-	-
+3	4	0>0	0>17	0>23.1	2>3	| ran	0>3	0>0	0>0	0>0	23.1>13.3	Victimhood 21>14.943999999999999; Lethargy 19>13.160850853498392; Forgetfulness 18>12.49452485959478
+4	4	0>0	17>28	13.3>26.7	3>4	| ran	3>6	0>0	0>0	0>0	26.7>20.2	Fear 18>11.802399999999999; Control 18>11.802399999999999; Insecurity 18>11.802399999999999
+5	4	0>0	28>55	20.2>60.5	4>5	| ran	6>9	0>0	0>0	0>0	60.5>45.7	Denial Of Light 25>17.967608560452952; Envy 21>14.993682527024333; Jealousy 21>14.993682527024333
+6	4	0>0	55>66	45.7>59.9	5>6	| ran	9>11	0>0	0>0	0>0	59.9>39.8	Denial Of Light 18>11.78560637554461; Escapism 16>10.76906385906544; Addiction 16>10.76906385906544
+
+== James, 5 entries ==
+day	pend	loaded	carrying	balance	entries	| release	opened	cleared	installed	loaded moved by release	balance after release	addresses released
+1	0	0>0	0>0	0>0	0>1	| none	0>0	0>0	0>0	-	-	-
+2	0	0>0	0>0	0>0	1>2	| none	0>0	0>0	0>0	-	-	-
+3	4	0>0	0>27	0>32.9	2>3	| ran	0>3	0>0	0>0	0>0	32.9>18.8	Denial Of Light 20>14.343977345554261; Envy 17>11.105963540538347; Jealousy 17>11.105963540538347
+4	4	0>0	27>44	18.8>41.9	3>4	| ran	3>6	0>0	0>0	0>0	41.9>32.1	Victimhood 21>14.943999999999999; Lethargy 19>13.160850853498392; Forgetfulness 18>12.49452485959478
+5	4	0>0	44>55	32.1>57.7	4>5	| ran	6>9	0>0	0>0	0>0	57.7>48.1	Escapism 28>20.3843149463178; Addiction 28>20.3843149463178; Lust 28>20.3843149463178
+
+== Ana, 5 entries ==
+day	pend	loaded	carrying	balance	entries	| release	opened	cleared	installed	loaded moved by release	balance after release	addresses released
+1	0	0>0	0>0	0>0	0>1	| none	0>0	0>0	0>0	-	-	-
+2	4	0>0	0>11	0>18.9	1>2	| ran	0>3	0>0	0>0	0>0	18.9>11.3	Fear 25>18.132800000000003; Control 25>18.132800000000003; Insecurity 25>18.132800000000003
+3	4	0>0	11>28	11.3>37.9	2>3	| ran	3>6	0>0	0>0	0>0	37.9>27	Victimhood 24>17.085599999999996; Lethargy 22>15.03497848152315; Forgetfulness 21>15.268703588533995
+4	4	0>0	28>66	27>53.8	3>4	| ran	6>6	0>0	0>0	0>0	53.8>48.4	Fear 17>11.582428800000002; Control 17>11.582428800000002; Insecurity 17>11.582428800000002
+5	4	0>0	66>77	48.4>63.7	4>5	| ran	6>6	0>0	0>0	0>0	63.7>55	Fear 28>20.27742080000001; Control 28>20.27742080000001; Insecurity 28>20.27742080000001
+
+============================================================
+SUMMARY. Measured.
+============================================================
+who	commits	commit left loaded unmoved	commit left carrying unmoved	first day loaded>0	first day carrying>0	first vault (opened)	first vault (cleared)	first vault (installed)	releases	release: addresses in, loaded out
+Sofia	5	5	3	never	4	4	never	never	2	3>0 3>0
+Diane	6	6	2	never	3	3	3	never	4	3>0 3>0 3>0 3>0
+Marcus	5	5	3	never	3	3	5	never	3	3>0 3>0 3>0
+Angela	6	6	4	never	1	1	5	never	6	3>0 3>0 3>0 3>0 3>0 3>0
+Derek	6	6	2	never	3	3	never	never	4	3>0 3>0 3>0 3>0
+James	5	5	2	never	3	3	never	never	3	3>0 3>0 3>0
+Ana	5	5	1	never	2	2	never	never	4	3>0 3>0 3>0 3>0
+
+Across 7 ICPs and 38 commits:
+  a commit that left the loaded count (Held today) where it was: 38 of 38
+  a commit that left the carrying count where it was:            17 of 38
+  a commit that left the balance (summed weight) where it was:   16 of 38
+  first commit of each ICP that moved loaded: 0 of 7; moved carrying: 1 of 7
+  releases run: 26. Releases where loaded dropped by exactly the number of addresses released: 0 of 26
+  loaded drop per release, all runs: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+THE WORD ALREADY IN USE. engine/plan.js planAllowance says "banked" for patterns carried past a
+week's grant. Measured on a free plan past the gift: "0 left this week, banking toward a run of 4". It prints in the profile sheet
+as New ground (ui/panels.js). DECISIONS.md line 58 already rules "The bank is the imprints".
+
+============================================================
+PART TWO. Ten releases from each ICP's reference field. Measured.
+============================================================
+The pool is the shipped Field button's: the three heaviest at or over the line, else the three
+heaviest still carrying (ui/personas.js #bRel).
+Per run: loaded before > after, opened (vault as "released once"), cleared (vault as "run
+left it at 6 of 100 or under"), installed (vault as "opposite in"), and the three addresses.
+
+== Sofia starts: loaded 0, carrying 52, installed 49 ==
+  run 1: loaded 0>0  carrying 52>52  balance 34.7>29.5  opened 0>3  cleared 0>0  installed 49>49  [Need For Approval 15>10; Self-Silencing 12>7; People Pleasing 12>7]
+  run 2: loaded 0>0  carrying 52>46  balance 29.5>23.8  opened 3>5  cleared 0>1  installed 49>49  [Hypervigilance 12>7; Obsession 11>7; Need For Approval 9>5]
+  run 3: loaded 0>0  carrying 46>45  balance 23.8>15.3  opened 5>8  cleared 1>4  installed 49>49  [Guilt Of Pleasure 8>4; Excess Emotion 8>4; Oversensitivity 7>3]
+  run 4: loaded 0>0  carrying 45>45  balance 15.3>9.1  opened 8>9  cleared 4>7  installed 49>49  [Hypervigilance 7>4; Obsession 7>4; Excuse 7>4]
+  run 5: loaded 0>0  carrying 45>38  balance 9.1>6.9  opened 9>9  cleared 7>7  installed 49>49  [Need For Approval 5>2; Obsession 4>1; Hypervigilance 4>1]
+  run 6: loaded 0>0  carrying 38>13  balance 6.9>1.8  opened 9>10  cleared 7>8  installed 49>49  [Co-Dependency 3>0; Excuse 3>0; Guilt Of Pleasure 3>0]
+  run 7: loaded 0>0  carrying 13>4  balance 1.8>0.3  opened 10>11  cleared 8>9  installed 49>49  [Excess Emotion 3>0; Oversensitivity 3>0; Stage Performing 2>0]
+  run 8: loaded 0>0  carrying 4>1  balance 0.3>0  opened 11>11  cleared 9>9  installed 49>49  [Need For Approval 1>0; Obsession 1>0; Hypervigilance 0>0]
+  run 9: loaded 0>0  carrying 1>0  balance 0>0  opened 11>11  cleared 9>9  installed 49>49  [Co-Dependency 0>0]
+  run 10: nothing carrying, release refused
+
+== Diane starts: loaded 8, carrying 91, installed 13 ==
+  run 1: loaded 8>1  carrying 91>91  balance 214.5>165.1  opened 0>3  cleared 0>0  installed 13>13  [Need For Approval 51>38; Anger 44>33; Judgment 44>33]
+  run 2: loaded 1>0  carrying 91>91  balance 165.1>154.2  opened 3>4  cleared 0>0  installed 13>13  [Perfectionism 41>30]
+  run 3: loaded 0>0  carrying 91>91  balance 154.2>113.8  opened 4>5  cleared 0>0  installed 13>13  [Need For Approval 32>23; Excess Emotion 31>22; Anger 29>21]
+  run 4: loaded 0>0  carrying 91>91  balance 113.8>106.5  opened 5>7  cleared 0>0  installed 13>13  [Perfectionism 28>20; Force 25>18; Rigidity 25>18]
+  run 5: loaded 0>0  carrying 91>91  balance 106.5>95.9  opened 7>10  cleared 0>0  installed 13>13  [False Love 23>16; Need To Be Needed 23>16; Deceit 21>15]
+  run 6: loaded 0>0  carrying 91>86  balance 95.9>80.9  opened 10>10  cleared 0>0  installed 13>13  [Excess Emotion 20>14; Perfectionism 19>13; Need For Approval 19>13]
+  run 7: loaded 0>0  carrying 86>78  balance 80.9>54.3  opened 10>11  cleared 0>0  installed 13>13  [Unworthiness 19>13; Anger 18>12; Judgment 18>12]
+  run 8: loaded 0>0  carrying 78>78  balance 54.3>44.5  opened 11>13  cleared 0>0  installed 13>13  [Betrayal 18>12; Oversensitivity 17>11; False Love 14>9]
+  run 9: loaded 0>0  carrying 78>65  balance 44.5>32  opened 13>13  cleared 0>0  installed 13>13  [Excess Emotion 13>8; Perfectionism 12>7; Unworthiness 12>7]
+  run 10: loaded 0>0  carrying 65>60  balance 32>28.8  opened 13>13  cleared 0>0  installed 13>13  [Betrayal 11>7; Oversensitivity 11>7; Need For Approval 10>6]
+
+== Marcus starts: loaded 0, carrying 99, installed 8 ==
+  run 1: loaded 0>0  carrying 99>99  balance 115.4>105.4  opened 0>3  cleared 0>0  installed 8>8  [Co-Dependency 25>18; False Love 24>17; Need To Be Needed 24>17]
+  run 2: loaded 0>0  carrying 99>99  balance 105.4>89.5  opened 3>6  cleared 0>0  installed 8>8  [Envy 22>15; Jealousy 22>15; Blame 21>15]
+  run 3: loaded 0>0  carrying 99>99  balance 89.5>80.9  opened 6>6  cleared 0>0  installed 8>8  [Co-Dependency 17>11; False Love 17>11; Need To Be Needed 17>11]
+  run 4: loaded 0>0  carrying 99>99  balance 80.9>63.7  opened 6>8  cleared 0>0  installed 8>8  [Scarcity 15>10; Resistance 15>10; Envy 15>10]
+  run 5: loaded 0>0  carrying 99>99  balance 63.7>55.4  opened 8>11  cleared 0>0  installed 8>8  [Possession 14>9; Shame 13>8; Guilt 13>8]
+  run 6: loaded 0>0  carrying 99>99  balance 55.4>49.1  opened 11>14  cleared 0>0  installed 8>8  [Escapism 13>8; Addiction 13>8; Lust 13>8]
+  run 7: loaded 0>0  carrying 99>92  balance 49.1>37.3  opened 14>15  cleared 0>0  installed 8>8  [Lethargy 11>7; Co-Dependency 11>7; False Love 10>6]
+  run 8: loaded 0>0  carrying 92>79  balance 37.3>28.8  opened 15>15  cleared 0>3  installed 8>8  [Envy 9>5; Jealousy 9>5; Blame 9>5]
+  run 9: loaded 0>0  carrying 79>73  balance 28.8>25  opened 15>16  cleared 3>6  installed 8>8  [Scarcity 9>5; Resistance 9>5; Fear 7>3]
+  run 10: loaded 0>0  carrying 73>64  balance 25>19.4  opened 16>16  cleared 6>9  installed 8>8  [Shame 7>3; Guilt 7>3; Possession 7>4]
+
+== Angela starts: loaded 0, carrying 74, installed 33 ==
+  run 1: loaded 0>0  carrying 74>74  balance 57.6>46.4  opened 0>3  cleared 0>0  installed 33>33  [Self-Exclusion 15>10; Fear 15>10; Control 15>10]
+  run 2: loaded 0>0  carrying 74>74  balance 46.4>40.7  opened 3>6  cleared 0>0  installed 33>33  [Spiritual Escapism 12>8; Expectation 12>8; Anxiety 11>7]
+  run 3: loaded 0>0  carrying 74>74  balance 40.7>36.5  opened 6>8  cleared 0>3  installed 33>33  [Self-Exclusion 10>6; False Humility 9>5; Seeking Validation 9>5]
+  run 4: loaded 0>0  carrying 74>74  balance 36.5>31.8  opened 8>9  cleared 3>6  installed 33>33  [Fear 9>5; Control 9>5; Insecurity 9>5]
+  run 5: loaded 0>0  carrying 74>74  balance 31.8>28.8  opened 9>12  cleared 6>9  installed 33>33  [Possession 8>4; Overanalysis 8>4; Betrayal 8>4]
+  run 6: loaded 0>0  carrying 74>68  balance 28.8>23.4  opened 12>12  cleared 9>12  installed 33>33  [Spiritual Escapism 7>3; Expectation 7>3; Anxiety 7>4]
+  run 7: loaded 0>0  carrying 68>68  balance 23.4>15.7  opened 12>15  cleared 12>15  installed 33>33  [Knowing Better Than God 7>4; Denial Of Truth 7>4; Fear Of God 7>4]
+  run 8: loaded 0>0  carrying 68>63  balance 15.7>12.9  opened 15>17  cleared 15>17  installed 33>33  [Self-Exclusion 5>2; Shame 5>2; Guilt 5>2]
+  run 9: loaded 0>0  carrying 63>55  balance 12.9>9.1  opened 17>17  cleared 17>17  installed 33>33  [Possession 5>2; Overanalysis 5>2; Fear 4>1]
+  run 10: loaded 0>0  carrying 55>51  balance 9.1>7.2  opened 17>17  cleared 17>17  installed 33>33  [Betrayal 4>1; Expectation 4>1; Anxiety 3>0]
+
+== Derek starts: loaded 20, carrying 90, installed 12 ==
+  run 1: loaded 20>3  carrying 90>90  balance 283.1>219.4  opened 0>3  cleared 0>0  installed 12>12  [Need For Approval 68>52; Manipulation Through Emotion 60>45; Shame 54>41]
+  run 2: loaded 3>0  carrying 90>90  balance 219.4>198.5  opened 3>5  cleared 0>0  installed 12>12  [Compulsion 54>41; Obsession 54>41; Need For Approval 45>34]
+  run 3: loaded 0>0  carrying 90>90  balance 198.5>156.8  opened 5>7  cleared 0>0  installed 12>12  [Scarcity 39>29; Resistance 39>29; Manipulation Through Emotion 38>28]
+  run 4: loaded 0>0  carrying 90>90  balance 156.8>136.1  opened 7>8  cleared 0>0  installed 12>12  [Compulsion 38>28; Obsession 38>28; Excuse 33>24]
+  run 5: loaded 0>0  carrying 90>86  balance 136.1>114  opened 8>10  cleared 0>0  installed 12>12  [Lethargy 31>23; Need For Approval 28>20; Victimhood 28>20]
+  run 6: loaded 0>0  carrying 86>86  balance 114>101.1  opened 10>10  cleared 0>0  installed 12>12  [Scarcity 26>18; Resistance 26>18; Compulsion 26>19]
+  run 7: loaded 0>0  carrying 86>76  balance 101.1>67.1  opened 10>11  cleared 0>0  installed 12>12  [Manipulation Through Emotion 24>17; Oversensitivity 23>16; Excuse 22>15]
+  run 8: loaded 0>0  carrying 76>74  balance 67.1>55  opened 11>11  cleared 0>0  installed 12>12  [Lethargy 21>15; Victimhood 19>13; Compulsion 18>12]
+  run 9: loaded 0>0  carrying 74>68  balance 55>44.5  opened 11>11  cleared 0>0  installed 12>12  [Scarcity 17>11; Resistance 17>11; Need For Approval 15>10]
+  run 10: loaded 0>0  carrying 68>52  balance 44.5>27.3  opened 11>11  cleared 0>0  installed 12>12  [Oversensitivity 15>10; Manipulation Through Emotion 14>9; Lethargy 14>9]
+
+== James starts: loaded 18, carrying 90, installed 6 ==
+  run 1: loaded 18>15  carrying 90>90  balance 290.9>255.8  opened 0>3  cleared 0>0  installed 6>6  [Blame 63>48; Envy 58>44; Jealousy 58>44]
+  run 2: loaded 15>5  carrying 90>90  balance 255.8>217  opened 3>6  cleared 0>0  installed 6>6  [False Love 55>41; Need To Be Needed 55>41; Escapism 53>40]
+  run 3: loaded 5>0  carrying 90>90  balance 217>176.2  opened 6>8  cleared 0>0  installed 6>6  [Blame 46>34; Scarcity 43>32; Resistance 43>32]
+  run 4: loaded 0>0  carrying 90>90  balance 176.2>156.1  opened 8>9  cleared 0>0  installed 6>6  [Expectation 40>30; False Love 38>28; Need To Be Needed 38>28]
+  run 5: loaded 0>0  carrying 90>90  balance 156.1>143.9  opened 9>11  cleared 0>0  installed 6>6  [Escapism 33>24; Addiction 33>24; Lust 33>24]
+  run 6: loaded 0>0  carrying 90>90  balance 143.9>125.5  opened 11>14  cleared 0>0  installed 6>6  [Disconnection 33>24; Panic 33>24; Collapse 33>24]
+  run 7: loaded 0>0  carrying 90>85  balance 125.5>95.3  opened 14>14  cleared 0>0  installed 6>6  [Blame 31>22; Scarcity 30>22; Resistance 30>22]
+  run 8: loaded 0>0  carrying 85>85  balance 95.3>80.7  opened 14>14  cleared 0>0  installed 6>6  [Expectation 27>19; False Love 26>19; Need To Be Needed 26>19]
+  run 9: loaded 0>0  carrying 85>85  balance 80.7>68.5  opened 14>14  cleared 0>0  installed 6>6  [Panic 21>15; Disconnection 21>15; Collapse 21>15]
+  run 10: loaded 0>0  carrying 85>70  balance 68.5>54.2  opened 14>14  cleared 0>0  installed 6>6  [Scarcity 21>15; Resistance 21>15; Blame 20>14]
+
+== Ana starts: loaded 41, carrying 107, installed 0 ==
+  run 1: loaded 41>33  carrying 107>107  balance 398.5>374.9  opened 0>3  cleared 0>0  installed 0>0  [Self-Judgment (Heart) 96>74; Self-Judgment (Solar) 82>63; Need For Approval 80>61]
+  run 2: loaded 33>22  carrying 107>107  balance 374.9>317.8  opened 3>6  cleared 0>0  installed 0>0  [Manipulation Through Emotion 75>57; Hatred 75>57; Resentment (Heart) 75>57]
+  run 3: loaded 22>17  carrying 107>107  balance 317.8>268.1  opened 6>8  cleared 0>0  installed 0>0  [Self-Judgment (Heart) 66>50; Co-Dependency 64>49; Obsession 58>44]
+  run 4: loaded 17>15  carrying 107>107  balance 268.1>257.2  opened 8>11  cleared 0>0  installed 0>0  [Excess Emotion 55>42; Oversensitivity 50>38; Betrayal 49>37]
+  run 5: loaded 15>9  carrying 107>107  balance 257.2>219.2  opened 11>11  cleared 0>0  installed 0>0  [Manipulation Through Emotion 48>36; Hatred 48>36; Resentment (Heart) 48>36]
+  run 6: loaded 9>4  carrying 107>104  balance 219.2>176.3  opened 11>12  cleared 0>0  installed 0>0  [Co-Dependency 44>33; Self-Judgment (Heart) 42>31; Avoidance Of Pleasure 41>30]
+  run 7: loaded 4>1  carrying 104>104  balance 176.3>160.3  opened 12>14  cleared 0>0  installed 0>0  [Force 41>30; Rigidity 41>30; Obsession 40>30]
+  run 8: loaded 1>0  carrying 104>104  balance 160.3>155.1  opened 14>14  cleared 0>0  installed 0>0  [Excess Emotion 40>30]
+  run 9: loaded 0>0  carrying 104>96  balance 155.1>141.3  opened 14>17  cleared 0>0  installed 0>0  [Separation 37>27; Martyrdom 37>27; Longing 37>27]
+  run 10: loaded 0>0  carrying 96>86  balance 141.3>114.5  opened 17>17  cleared 0>0  installed 0>0  [Oversensitivity 35>26; Betrayal 34>25; Manipulation Through Emotion 30>22]
+
+SUMMARY, part two.
+who	loaded at start	runs	first run under the line	loaded after last run	carrying after last	opened after last	first cleared run	cleared after last	first new installed run	release where loaded fell by exactly 3
+Sofia	0	9	1	0	0	11	2	9	never	0 of 9
+Diane	8	10	3	0	60	13	never	0	never	1 of 10
+Marcus	0	10	1	0	64	16	8	9	never	0 of 10
+Angela	0	10	1	0	51	17	3	17	never	0 of 10
+Derek	20	10	3	0	52	11	never	0	never	1 of 10
+James	18	10	4	0	70	14	never	0	never	1 of 10
+Ana	41	10	9	0	86	17	never	0	never	2 of 10
+
+All 69 runs: loaded fell by {"0":54,"1":2,"2":1,"3":3,"5":3,"6":1,"7":1,"8":1,"10":1,"11":1,"17":1} (drop: how many runs). Three addresses went in every time.
+Balance fell on 68 of 69 runs; carrying fell on 29 of 69.
+After the last run each ICP could make, carrying still reads: Sofia 0 (balance 0), Diane 60 (balance 28.8), Marcus 64 (balance 19.4), Angela 51 (balance 7.2), Derek 52 (balance 27.3), James 70 (balance 54.2), Ana 86 (balance 114.5).

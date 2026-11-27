@@ -1,0 +1,37 @@
+seed {"ok":true,"profiles":1,"exportBytes":3393,"typeofProfiles":"undefined","typeofPROFILES":"object"}
+pExport top keys ["v","id","name","created","updated","soul","axes","who","ui","seed","meter","plan","avatar","purpose","laws","intake","work","gates","story","rituals","history","practice","trace","summaries"]
+who keys ["first","middle","last","sex","sealed","born"] born keys ["date","time","place","zone","timeUnknown"]
+after boot t=5.5 {"typeofProfiles":"function","session":"held","curpName":"Zephyrine Quillfeather","stories":1,"eligible":true,"timer":true}
+edit at t=35.6 (a second entry saved, pSave=true)
+direct authProfileSync() at t=75.7 -> {"state":"pushed","version":3}
+
+=== REQUEST LOG, mode counter ===
+t(s)  method path  | body bytes | name/first/middle/last | born date/time/place | story text/marker
+    1 GET   /v1/me                           |      0 | ---- | --- | --
+  1.2 GET   /v1/sync                         |      0 | ---- | --- | --
+ 31.2 GET   /v1/sync                         |      0 | ---- | --- | --
+ 31.2 PUT   /v1/sync                         |   2615 | YYYY | YYY | YY keys=records
+ 61.2 GET   /v1/sync                         |      0 | ---- | --- | --
+ 61.2 PUT   /v1/sync                         |   2795 | YYYY | YYY | YY keys=records
+ 75.7 GET   /v1/sync                         |      0 | ---- | --- | --
+ 75.7 PUT   /v1/sync                         |   2795 | YYYY | YYY | YY keys=records
+non-Worker network: []
+page errors: []
+meta samples:
+  t=5.5 boot timer=true eligible=true stories=1 meta={"accountId":"acc_probe","version":0,"hash":"0e8f110a9fd6f5b496019d86b9ae1514a62e181ecfa719dd3a7de82459e1eb84","updated":"2026-10-09T07:15:06.668Z"}
+  t=10.5 tick timer=true eligible=true stories=1 meta={"accountId":"acc_probe","version":0,"hash":"0e8f110a9fd6f5b496019d86b9ae1514a62e181ecfa719dd3a7de82459e1eb84","updated":"2026-10-09T07:15:06.668Z"}
+  t=15.6 tick timer=true eligible=true stories=1 meta={"accountId":"acc_probe","version":0,"hash":"0e8f110a9fd6f5b496019d86b9ae1514a62e181ecfa719dd3a7de82459e1eb84","updated":"2026-10-09T07:15:06.668Z"}
+  t=20.6 tick timer=true eligible=true stories=1 meta={"accountId":"acc_probe","version":0,"hash":"0e8f110a9fd6f5b496019d86b9ae1514a62e181ecfa719dd3a7de82459e1eb84","updated":"2026-10-09T07:15:06.668Z"}
+  t=25.6 tick timer=true eligible=true stories=1 meta={"accountId":"acc_probe","version":0,"hash":"0e8f110a9fd6f5b496019d86b9ae1514a62e181ecfa719dd3a7de82459e1eb84","updated":"2026-10-09T07:15:06.668Z"}
+  t=30.6 tick timer=true eligible=true stories=1 meta={"accountId":"acc_probe","version":0,"hash":"0e8f110a9fd6f5b496019d86b9ae1514a62e181ecfa719dd3a7de82459e1eb84","updated":"2026-10-09T07:15:06.668Z"}
+  t=35.6 tick timer=true eligible=true stories=2 meta={"accountId":"acc_probe","version":1,"hash":"c370ea0468b217ca8a4531f7744a780c9d2926baef978beeb76a4c74e8f5e87f","updated":"2026-10-09T07:15:36.668Z"}
+  t=40.6 tick timer=true eligible=true stories=2 meta={"accountId":"acc_probe","version":1,"hash":"c370ea0468b217ca8a4531f7744a780c9d2926baef978beeb76a4c74e8f5e87f","updated":"2026-10-09T07:15:36.668Z"}
+  t=45.6 tick timer=true eligible=true stories=2 meta={"accountId":"acc_probe","version":1,"hash":"c370ea0468b217ca8a4531f7744a780c9d2926baef978beeb76a4c74e8f5e87f","updated":"2026-10-09T07:15:36.668Z"}
+  t=50.6 tick timer=true eligible=true stories=2 meta={"accountId":"acc_probe","version":1,"hash":"c370ea0468b217ca8a4531f7744a780c9d2926baef978beeb76a4c74e8f5e87f","updated":"2026-10-09T07:15:36.668Z"}
+  t=55.6 tick timer=true eligible=true stories=2 meta={"accountId":"acc_probe","version":1,"hash":"c370ea0468b217ca8a4531f7744a780c9d2926baef978beeb76a4c74e8f5e87f","updated":"2026-10-09T07:15:36.668Z"}
+  t=60.6 tick timer=true eligible=true stories=2 meta={"accountId":"acc_probe","version":1,"hash":"c370ea0468b217ca8a4531f7744a780c9d2926baef978beeb76a4c74e8f5e87f","updated":"2026-10-09T07:15:36.668Z"}
+  t=65.6 tick timer=true eligible=true stories=2 meta={"accountId":"acc_probe","version":2,"hash":"36b063d3986aeed672a7c8aedaa01be574341224473017924cdb69e651ec2630","updated":"2026-10-09T07:16:06.673Z"}
+  t=70.6 tick timer=true eligible=true stories=2 meta={"accountId":"acc_probe","version":2,"hash":"36b063d3986aeed672a7c8aedaa01be574341224473017924cdb69e651ec2630","updated":"2026-10-09T07:16:06.673Z"}
+  t=75.7 tick timer=true eligible=true stories=2 meta={"accountId":"acc_probe","version":2,"hash":"36b063d3986aeed672a7c8aedaa01be574341224473017924cdb69e651ec2630","updated":"2026-10-09T07:16:06.673Z"}
+  t=75.7 end timer=true eligible=true stories=2 meta={"accountId":"acc_probe","version":3,"hash":"469bdd99446cd96c288269d5fdc735a95abe8b121599745962e539b9d62ecd3a","updated":"2026-10-09T07:16:21.168Z"}
+exit 0

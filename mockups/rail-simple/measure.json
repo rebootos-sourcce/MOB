@@ -1,0 +1,214 @@
+{
+ "base-marcus": {
+  "fdockH": 617,
+  "awTop": 895,
+  "awBottom": 997
+ },
+ "a-marcus": {
+  "blockH": 138,
+  "blockW": 264,
+  "wrapH": 154,
+  "awBottom": 522,
+  "awTop": 420,
+  "vh": 1000
+ },
+ "b-marcus": {
+  "blockH": 146,
+  "blockW": 264,
+  "wrapH": 162,
+  "awBottom": 530,
+  "awTop": 428,
+  "vh": 1000
+ },
+ "c-marcus": {
+  "blockH": 150,
+  "blockW": 264,
+  "wrapH": 166,
+  "awBottom": 534,
+  "awTop": 432,
+  "vh": 1000
+ },
+ "base-tomas": {
+  "fdockH": 617,
+  "awTop": 895,
+  "awBottom": 997
+ },
+ "a-tomas": {
+  "blockH": 138,
+  "blockW": 264,
+  "wrapH": 154,
+  "awBottom": 522,
+  "awTop": 420,
+  "vh": 1000
+ },
+ "b-tomas": {
+  "blockH": 146,
+  "blockW": 264,
+  "wrapH": 162,
+  "awBottom": 530,
+  "awTop": 428,
+  "vh": 1000
+ },
+ "c-tomas": {
+  "blockH": 150,
+  "blockW": 264,
+  "wrapH": 166,
+  "awBottom": 534,
+  "awTop": 432,
+  "vh": 1000
+ },
+ "base-diane": {
+  "fdockH": 617,
+  "awTop": 895,
+  "awBottom": 997
+ },
+ "a-diane": {
+  "blockH": 138,
+  "blockW": 264,
+  "wrapH": 154,
+  "awBottom": 522,
+  "awTop": 420,
+  "vh": 1000
+ },
+ "b-diane": {
+  "blockH": 146,
+  "blockW": 264,
+  "wrapH": 162,
+  "awBottom": 530,
+  "awTop": 428,
+  "vh": 1000
+ },
+ "c-diane": {
+  "blockH": 150,
+  "blockW": 264,
+  "wrapH": 166,
+  "awBottom": 534,
+  "awTop": 432,
+  "vh": 1000
+ },
+ "base-you": {
+  "fdockH": 617,
+  "awTop": 895,
+  "awBottom": 997
+ },
+ "a-you": {
+  "blockH": 138,
+  "blockW": 264,
+  "wrapH": 154,
+  "awBottom": 522,
+  "awTop": 420,
+  "vh": 1000
+ },
+ "b-you": {
+  "blockH": 146,
+  "blockW": 264,
+  "wrapH": 162,
+  "awBottom": 530,
+  "awTop": 428,
+  "vh": 1000
+ },
+ "c-you": {
+  "blockH": 150,
+  "blockW": 264,
+  "wrapH": 166,
+  "awBottom": 534,
+  "awTop": 432,
+  "vh": 1000
+ },
+ "m390-a-marcus": {
+  "blockH": 138,
+  "blockW": 346,
+  "wrapH": 154,
+  "awBottom": 399,
+  "awTop": 297,
+  "vh": 844
+ },
+ "m390-b-marcus": {
+  "blockH": 146,
+  "blockW": 346,
+  "wrapH": 162,
+  "awBottom": 407,
+  "awTop": 305,
+  "vh": 844
+ },
+ "m390-c-marcus": {
+  "blockH": 150,
+  "blockW": 346,
+  "wrapH": 166,
+  "awBottom": 411,
+  "awTop": 309,
+  "vh": 844
+ },
+ "m390-a-tomas": {
+  "blockH": 138,
+  "blockW": 346,
+  "wrapH": 154,
+  "awBottom": 399,
+  "awTop": 297,
+  "vh": 844
+ },
+ "m390-b-tomas": {
+  "blockH": 146,
+  "blockW": 346,
+  "wrapH": 162,
+  "awBottom": 407,
+  "awTop": 305,
+  "vh": 844
+ },
+ "m390-c-tomas": {
+  "blockH": 150,
+  "blockW": 346,
+  "wrapH": 166,
+  "awBottom": 411,
+  "awTop": 309,
+  "vh": 844
+ },
+ "m390-a-diane": {
+  "blockH": 138,
+  "blockW": 346,
+  "wrapH": 154,
+  "awBottom": 989,
+  "awTop": 887,
+  "vh": 844
+ },
+ "m390-b-diane": {
+  "blockH": 146,
+  "blockW": 346,
+  "wrapH": 162,
+  "awBottom": 407,
+  "awTop": 305,
+  "vh": 844
+ },
+ "m390-c-diane": {
+  "blockH": 150,
+  "blockW": 346,
+  "wrapH": 166,
+  "awBottom": 411,
+  "awTop": 309,
+  "vh": 844
+ },
+ "m390-a-you": {
+  "blockH": 138,
+  "blockW": 346,
+  "wrapH": 154,
+  "awBottom": 989,
+  "awTop": 887,
+  "vh": 844
+ },
+ "m390-b-you": {
+  "blockH": 146,
+  "blockW": 346,
+  "wrapH": 162,
+  "awBottom": 407,
+  "awTop": 305,
+  "vh": 844
+ },
+ "m390-c-you": {
+  "blockH": 150,
+  "blockW": 346,
+  "wrapH": 166,
+  "awBottom": 411,
+  "awTop": 309,
+  "vh": 844
+ }
+}

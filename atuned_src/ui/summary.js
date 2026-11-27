@@ -1,0 +1,1576 @@
+/* ============================================================
+   SUMMARY. Five lenses. None of them store anything; each is a pure
+   function of soul, axes and laws, so they cannot drift from what the
+   instrument already knows.
+   ============================================================ */
+/* WHAT EACH OF THE FOUR ROOTS IS lives in engine/data/gloss.js now, said once.
+   This held "Earth, fixed. Builds and holds." and its three siblings, which
+   named an element and a mode nobody had defined, and said fixed of every
+   Architect though a Capricorn is cardinal. The Western lens reads the table
+   and so does the card on the right of the story, so the two cannot say it
+   two ways. */
+function lensWestern(r){
+ var d=DOMAINS[S.doms[0]]||{nm:'',r:''};
+ return {t:'Western',a:d.r,b:unpackOf(String(d.r).toLowerCase()),c:'root domain as element'};}
+function lensEastern(r){
+ var b=r.darkB||'Root';
+
+ /* ROUND PO. Sanskrit names and seed sounds, said as what they are. */
+ return {t:'Eastern',a:b,b:unpackOf(String(b).toLowerCase(),'yoga'),c:'the point carrying the most'};}
+function lensDesign(r){
+ var a=ARCH[r.pi]||{nm:''};
+ return {t:'Design',a:a.nm,b:'defined at the '+(r.darkB||'Root').toLowerCase()+', '
+  /* benign is null while CQ is still filling, and the clause waits with it */
+  +(r.benign===null?'':(r.benign?'initiates':'responds')+', ')+'authority at the '
+  +(r.darkB==='Heart'?'heart':'solar plexus'),c:'archetype and polarity'};}
+function lensGene(r){
+ var top=W.filter(function(n){return n.sq>=4;}).sort(function(a,b){return b.sq-a.sq;})[0];
+ if(!top)return {t:'Gene keys',a:'nothing held',b:'no shadow running',c:'shadow, gift, siddhi'};
+ var c=CHILD.filter(function(x){return x.nm===top.cf;})[0]||{};
+ var SID={Fear:'Trust as stillness',Anger:'Equanimity as mercy',Shame:'Worth as sovereignty',
+  Disgust:'Acceptance as purity',Apathy:'Vitality as devotion',Shock:'Groundedness as presence',
+  Sad:'Joy as bliss',Surprise:'Readiness as wonder',Anticipation:'Presence as timelessness'};
+ return {t:'Gene keys',a:top.k,
+  b:top.cf+' to '+(c.opp||'')+' to '+(SID[top.cf]||''),c:'shadow, gift, siddhi'};}
+/* lensName is gone. It reduced a whole name to one digit and called that the
+   name lens, which is the Expression and only one of six numbers, and it was
+   computing it off a first name. numerology.js does the job properly and the
+   spiritual block reads that. */
+
+/* ============================================================
+   THE SUMMARY.
+
+   Redesigned on the owner's ruling. The app opens here, so this is
+   the first screen and the whole reading has to be on it.
+
+   Analytics across the top as a strip of rings. The story on the
+   left, in prose, as the instrument would say it out loud. The
+   structures on the right, at a glance. The spiritual layer beneath
+   as glyphs with no boxes around them. Full numerology under that.
+
+   THREE COLUMNS ON A DESKTOP, ONE SEQUENCE ON A PHONE. The order in
+   the document is the order a phone reads: verdict, story,
+   structures, spiritual, numbers. The grid puts the middle two side
+   by side when there is room and stacks them when there is not, so
+   it is one build and not two.
+
+   EVERY PERCENTAGE IS THE SAME OBJECT. An icon, a ring carrying the
+   percentage as an arc, and a pill carrying the number. cr() is that
+   object and nothing on this surface prints a bare figure.
+
+   NOTHING HERE IS INVENTED. Every sentence in the prose is
+   conditional on the value it names existing. A selection is drawn
+   as a selection and never given a ring, because a ring is a
+   measurement and a blueprint domain is a choice.
+   ============================================================ */
+
+/* which span the integrity chart is showing. its own, not the compass's, so
+   a person looking at a year here does not change what the compass shows. */
+var SUM_SPAN='quarter';
+/* ---- the strip. all analytics at a glance, which is what was asked for. ---- */
+function sumGlance(r,noCQ){
+ var acc=(typeof accuracy==='function')?accuracy(r):null;
+ var e=(r.X+r.Y+r.Z)/3;
+ var U={unread:r.unread};
+ var row=[
+  /* the glance row's coherence ring reads the tier too, for the same reason */
+  /* A PERCENT IS ALREADY OUT OF A HUNDRED. The third line read "of 100" under
+     every figure that already ends in a percent sign, which is the same
+     number's scale said twice on one tile, the "of the same 90 days" he struck
+     (V17), and the third tier small print he named in GX: "I don't need this
+     like third tier tiny information that no one's ever going to read." The
+     line stays only where the figure has no unit of its own, which is where
+     the scale is information. */
+  /* EVERY TILE PRINTS ITS RING, 17 October, percent phase 2. Each row is
+     [label, seat, fill, figure, title, small print]; the fill is pct(kind) and
+     the figure is fmtPct(kind) off the same value (engine/pct.js), so the arc
+     and the pill are one reading. Before this the ring of carried depth drew
+     SQm*10 and its pill printed SQm to one decimal, pole and energy printed
+     two, and coherence and the shadow printed bare under round PQ, which the
+     16 October ruling supersedes for both, his words: "Instead of 0.0, site
+     wide, we need to convert those numbers into percent." Nought, or a
+     profile nothing has been read for, prints the dash. */
+  ['coherence', r.darkB, pct('cq',r.CQ)||0, fmtPct('cq',r.CQ,U), 'How closely you keep the 21 laws, all added up.',
+   '', TIERCOL[r.tier]],
+  /* THE LABEL SAID 0 TO 10 AND THE NUMBER GOES PAST 54. Measured across the
+     roster: Gordon 54.7, Tomas 45.9, Ana 22.8. It is a sum over every address
+     carrying, so it has no ceiling of ten or of anything else, and a stated
+     range the data walks straight through is a lie on the surface.
+
+     The ring was a second half of the same lie: r.DQ*10 clamped at 100, so
+     every profile past ten drew an identical full ring.
+
+     BOTH ARE FIXED BY THE RULING OF 25 SEPTEMBER rather than here. DQ is the
+     total shadow on all 112 over the most they can hold, so it has a ceiling
+     of 100 and the ring is the figure, on the same scale as coherence. */
+  ['shadow weight', 'Root', pct('dq',r.DQ)||0, fmtPct('dq',r.DQ,U),
+   'All the charge on your 108 addresses and 4 field anchors, against the most they could hold.',
+   ''],
+  /* THIS PRINTED THE OPPOSITE OF WHAT IT MEASURES. It was labelled "installed"
+     and glossed "what has been filled in". SQm is built in compute.js from
+     sum+=n.sq over the loaded addresses, and n.sq is HELD charge: an address
+     joins `loaded` precisely because it is carrying. Installed is the other
+     pole, n.rep, and it is not in this figure at all. So the second screen of
+     the product printed a person's carried load and told them it was the part
+     of them that had been filled in, which is not a wording problem, it is a
+     reading that says the reverse of the truth. */
+  ['carried depth', 'Root', pct('weight',r.SQm)||0, fmtPct('weight',r.SQm,U),
+   'How deep the charge runs, on average, across the addresses carrying it.', ''],
+  /* and this said 0 to 1 while reading 8.49. It is a mean of values clamped
+     to 0 and 10, so ten is the ceiling and always was. */
+  ['pole', 'Heart', pct('pole',r.poleMean)||0, fmtPct('pole',r.poleMean,U),
+   'How much of each opposite is installed, on average, across the body.', ''],
+  ['energy', 'Solar', pct('energy',e)||0, fmtPct('energy',e,U),
+   'The average of vitality, awareness and will.', '']];
+ /* THE TOLERANCE CAME OFF THIS ROW TOO. It read "of 100, plus or minus 11"
+    on the third line of a glance tile, which is the smallest place in the
+    product and the last place a lab readout belongs. Ruled with the rest of
+    the class. The scale stays: every number says what it is out of, and that
+    rule is the reason the third line exists at all. */
+ if(acc)row.push(['identification','3rd Eye',pct('accuracy',acc.pct)||0,fmtPct('accuracy',acc.pct,U),
+  'How much of you the instrument has actually measured.','']);
+ /* SUPERSEDED ON 2 OCTOBER, CO-31: the third line no longer carries "of 10" or
+    "of 1". A count against a total is a score at any scale, and he read it as
+    one. What follows is the ruling it replaced.
+
+    THE SCALE IS ON THE SCREEN, NOT IN A TOOLTIP. Two rulings meet here and
+    both were being broken by the same line.
+
+    "You read 13, what does that mean." Every number says what it is out of.
+    This row printed 8.49 beside the word pole and 0.83 beside the word
+    energy, on two different scales, with nothing to measure either against.
+
+    And a title attribute is not an answer, because a phone has no hover. Eight
+    definitions in this product live only in a title and a person on a phone
+    can reach none of them. The scale is now a third line in the button, where
+    everybody can see it, and the title keeps the longer sentence. */
+ return '<div class="s-glance">'+row.filter(function(x){return !(noCQ&&x[0]==='coherence');}).map(function(x){
+  return '<button type="button" class="s-gl" data-gl="'+esc(x[0])+'" title="'+esc(x[4])+'">'
+   +cr(x[1],x[2],{size:'sm',label:x[0],raw:x[3],color:x[6]||undefined,
+     /* A READING WHERE HIGH IS THE GOOD END NEVER PRINTS RED. Ruled: "96 per
+        cent flow accuracy and yet it is red. Red is a colour of danger. That
+        is bad colouring." cr reddens anything past ninety, which is correct
+        for shadow weight and exactly backwards for coherence, energy and
+        identification. */
+     hot:(x[0]==='shadow weight'||x[0]==='carried depth')?undefined:false})
+   +'<span class="s-gl-k">'+esc(x[0])
+   +'<em class="s-gl-s">'+esc(x[5]||'')+'</em></span></button>';}).join('')+'</div>';}
+
+/* ---- the story. three paragraphs, in the instrument's voice. ----
+
+   Spiritual into psychological, psychological into the body, and then what the
+   patterns are doing to momentum. The owner asked for this in his words and
+   these are the three joints he named.
+
+   Every clause is guarded. A person with no birth data gets two paragraphs and
+   a line saying what is missing, rather than a paragraph of hedges. */
+/* ============================================================
+   "WHAT YOU TOLD IT" IS GONE FROM THIS PAGE. Ruled 3 November, his words:
+   "get rid of the text, what you told it." The raw journal block (the
+   entries, newest first, and sumWords colouring a matched word by the seat
+   it landed in) sat above the Reading and restated in full what the Reading
+   already turns into a measurement. It had no caller outside this file
+   (sumFull alone built `told` from it), so nothing else on the build reads
+   for it. The journal itself is not gone: Story is where a person's own
+   words live and are written. This page reads them into the measurement and
+   shows the measurement, not the diary entry a second time.
+   ============================================================ */
+/* A BOLD NAME WEARS ITS OWN FAMILY'S COLOUR. Ruled: "where it's bold text,
+   like Witness, Architect, Sage, those bold colours need to relate back to
+   their icon colours."
+
+   Measured before: twelve bold names in the reading and every one of them
+   computed to plain ink. The mechanism already worked four inches away, in
+   sumWords, where a matched word in a story wears its seat. This is that rule
+   applied to the block that lacked it, not a new one.
+
+   A name with no family stays plain rather than being given a colour it has
+   not earned. The numerology figures are the case: an expression of 1 belongs
+   to no seat and no root, so it is not painted. */
+function sumB(text,col,tk,tc){
+ /* A BOLD NAME CAN CARRY ITS MEANING. Round PO, unpack every symbol. When the
+    meaning table has a sentence for the name, the name becomes the product's
+    one tooltip carrier, reachable by tap and by keyboard as well as by hover. */
+ var say=tk?unpackOf(tk,tc):'';
+ var cls=(col?'s-w':'')+(say?(col?' ':'')+'tipu':'');
+ return '<b'+(cls?' class="'+cls+'"':'')+(col?' style="--c:'+col+'"':'')
+  +(say?' tabindex="0" data-tip-k="'+esc(text)+'" data-tip="'+esc(say)+'"':'')+'>'+esc(text)+'</b>';}
+function rootB(nm){return sumB(nm,rootPlain(nm)||null,String(nm).toLowerCase());}
+function archB(nm){
+ var a=ARCH.filter(function(x){return x.nm===nm;})[0];
+ return sumB(nm,a&&a.b?seatCol(a.b):null,nm,'archetype');}
+function seatB(nm,band,tk,tc){return sumB(nm,band?seatCol(band):null,tk,tc);}
+/* THE MEANING, PRINTED IN THE LINE. Round PO. One sentence from the table, set
+   in the quieter ink so the reading stays a reading and the meaning stays
+   beside the word it explains. The sentence is the table's, character for
+   character, which is how tests/unpack.js knows it is there. */
+function sumUn(term,ctx){
+ var s=unpackOf(term,ctx);
+ return s?'<span class="s-un">'+esc(s)+'</span>':'';}
+function sumStory(r){
+ /* the reading sumBirth holds, which is the person's own when they typed a
+    birth. converge asked for the roster name alone, and only a reference case
+    has one in BIRTH, so the blueprint paragraph never opened for anyone real. */
+ var nm2=(PEOPLE[S.who]||{}).nm||'You';
+ var B=sumBirth(), C=B.sp?converge(B.p.nm,r,B.sp):null, e=C?C.e:null;
+ var held=W.filter(function(n){return n.sq>=4;}).sort(function(a,b){return b.sq-a.sq;});
+ var named=r.sabs.filter(function(s){return s.named;}).sort(function(a,b){return b.score-a.score;});
+ var loud=[].concat(r.sups,r.hys,r.cxs,r.sabs).sort(function(a,b){return b.w-a.w;})[0];
+ var seats=flSeats(), stop=null;
+ seats.slice().reverse().forEach(function(x){if(!stop&&x.held)stop=x;});
+ var arch=(ARCH[r.pi]||{}).nm||'';
+ var rootNow=(DOMAINS[S.doms[0]]||{}).r||'';
+ var lean=leanRead(r);
+ var p=[];
+
+ /* ONE. the spiritual into the psychological.
+
+    ROUND PO, UNPACK EVERY SYMBOL. His words: "The blueprint you were born on
+    reads Earth, which is the architect route on life path nine. There's a
+    bunch of assumptions here that the person has to make... you have to unpack
+    blueprint. They don't know what that means. Earth, they don't know what
+    that means. Architect... And they don't know what life path nine."
+
+    So the lead sentence stays exactly as it was, because it is the reading,
+    and every symbol in it is followed by what it means, in the same paragraph,
+    from engine/data/gloss.js and from nowhere else. The sentences come in the
+    order the terms come in the lead. The last of them says whose claim this
+    is: a symbolic reading, with nothing in the body measured. */
+ if(e){
+  var elRoot=ELEM2ROOT[e.sunEl]||'';
+  var num=numerologyOf(nm2,CURP);
+  /* ONE PARAGRAPH, FOUR BLOCKS. The story is three paragraphs, the three joints
+     he named, and a gate holds that, so the meanings do not become paragraphs of
+     their own. They stand in the same paragraph as the lead, one block for each
+     thing the blueprint is read from: the sun, the date as a number, the name as
+     a number, and what is running now. A person can see where each claim comes
+     from, which is the point of unpacking it. */
+  /* A SUN THAT WAS NOT READ HAS NO ELEMENT. A person's own birth reaches this
+     now, and a date alone on a day the sun changed sign leaves the element
+     null, which printed "reads null" and then "the blueprint says nothing,
+     these differ". The element clause and its comparison are left out and the
+     paragraph says what would settle it, the way converge's open bucket does. */
+  var sunGap='The element is not read: the sun changed sign that day, and '
+   +(e.needsTime?'a birth time':'a birth time zone')+' settles which. ';
+  p.push('The blueprint you were born on '+(elRoot
+    ?'reads '+sumB(e.sunEl,rootPlain(elRoot)||null,e.sunEl)+', which is the '+rootB(elRoot)+' '+unp('root')+', on life path '
+    :'runs on life path ')+sumB(String(e.lp),null,'life path')+', the one who '
+   +esc(e.lpMean||'runs')+'. '
+   +sumUn('blueprint')+' '+sumUn('symbolic reading')
+   +'<span class="s-blk">'+(elRoot?(e.sun?sumUn('sun sign')+' '+sumUn(e.sun,'sign')+' ':'')+sumUn(e.sunEl)+' '+sumUn(elRoot.toLowerCase()):esc(sunGap))+'</span>'
+   +'<span class="s-blk">'+sumUn('life path')+' '+sumUn('path:'+e.lp)
+   +(num?' Your full name carries an expression of <b>'+num.expression+'</b>, and numerology claims that '
+     +'one '+esc(numSays('expression',num.expression))+'. '+sumUn('expression'):'')+'</span>'
+   +'<span class="s-blk">What is actually running is '+rootB(rootNow)+', through '+archB(arch)+'. '
+   /* the running root is said once. When it is the born root, this same
+      paragraph has just said what it means, three lines up, and saying it
+      again was the 14 to 18 words Sofia and Angela read twice */
+   +sumUn('running')+' '+(elRoot===rootNow?'':sumUn(rootNow.toLowerCase())+' ')+sumUn('archetype:'+arch.toLowerCase())+' '
+   +(!elRoot?''
+    :elRoot===rootNow
+     /* A CAUSE IS NOT A READING. The blueprint says one thing and the field
+        runs another, and the instrument can say they differ. It cannot say
+        why, and "something was installed on top" was a story about a person
+        the ledger cannot show. Round J13. */
+     ? 'Those agree.'
+     : 'The blueprint says '+esc(elRoot)+'. Your energy runs '+esc(rootNow)+'. These differ.')+'</span>');
+ }else{
+  p.push('There is no birth data on file, so the spiritual layer is not in this reading. '
+   +'Date, time and place would put it in. What is running now is '+rootB(rootNow)
+   +', through '+archB(arch)+'. '+sumUn('running')+' '+sumUn(rootNow.toLowerCase())+' '
+   +sumUn('archetype:'+arch.toLowerCase()));}
+
+ /* TWO. the psychological into the body. */
+ if(held.length){
+  p.push('That reaches the body at '+seatB(held[0].k,held[0].b,'address')+', on the '
+   /* the weight is the reading. "of 10" made it a mark out of ten. */
+   +seatB(String(held[0].cf).toLowerCase(),held[0].b,String(held[0].cf).toLowerCase(),'feeling')
+   +' '+unp('axis')+', at a weight of '
+   /* a percent, 17 October, percent phase 2: the weight the address ring
+      beside it prints, the registry's weight kind */
+   +fmtPct('weight',held[0].sq)+'.'
+   +(loud?' The biggest thing compounding on it is <b>'+esc(loud.nm)+'</b>.':'')
+   +(stop?' Flow stops at the '+seatB(String(stop.p.n).toLowerCase(),stop.p.b,String(stop.p.n).toLowerCase(),'seat')
+     +', which is where the charge is dense enough to close the point.'
+    :' No point is closed, so what is held is not yet stopping flow.')
+   /* ROUND RG. "Shadow weight is 54" was a bare figure under a term nobody
+      on this page had been told. The term carries its sentence now. */
+   +' '+unp('shadow weight','Shadow weight')+' is '+fmtPct('dq',r.DQ)+'.'
+   /* weakL is null until a law is answered: an unanswered law is a seed,
+      and naming a seed as the law furthest shut is a reading nobody gave */
+   +(r.weakL?' The law furthest shut is '
+   +seatB(r.weakL.nm,r.weakL.b,r.weakL.nm.toLowerCase(),'law')+', at the '
+   +seatB(String(r.weakL.b).toLowerCase(),r.weakL.b,String(r.weakL.b).toLowerCase(),'seat')+'.'
+    :' No law is answered yet, so none is named as furthest shut.'));
+ }else{
+  /* ROUND RG. "The line" was never said, and "signal and not yet cost" was
+     shorthand that had also stopped being true: DQ counts the charge under
+     the line since it was rebuilt, and vitality and drag feel it. The line
+     carries its sentence and the clause that overstated is gone. */
+  p.push('Nothing is held above '+unp('the line')+', so nothing is reaching the body as load. '
+   +(r.under?'There are '+r.under+' addresses carrying charge under it.':''));}
+
+ /* THREE. momentum, and what stands between here and the avatar.
+    A PAIR IS {be,notbe}, NOT {seat,becoming}. This read pair.seat and
+    pair.becoming, which round HG's own pairs never carried, so st was
+    always undefined, blocked was always empty and every avatar read as
+    passing. avRows() is the one place a pair resolves to a seat and a
+    gap, shared with the Avatar tab itself, so this asks it rather than
+    keeping a second, wrong resolver. Found by the uiux-architect dispatch,
+    round HS, measured against three held pairs before this fix shipped. */
+ var rows=(typeof avRows==='function')?avRows():[];
+ var blocked=rows.filter(function(x){return x.gap&&!x.gap.clear;});
+ var gapLine='';
+ if(rows.length){
+  gapLine=blocked.length
+   /* A CAUSE IS NOT A READING. "Blocked by the same charge named above" said
+      why the avatar is short, and the ledger cannot show the chain. What the
+      instrument can say is that the part is not passing and which charge sits
+      under it. Round J13. */
+   ? ' Against the avatar you stated, '+blocked.map(function(x){
+       return '<b>'+esc(x.pair.be)+'</b>';}).join(' and ')
+     +(blocked.length>1?' are not passing. The charge named above sits under them.'
+                       :' is not passing. The charge named above sits under it.')
+   : ' Every point your avatar depends on is passing.';
+ }else{
+  gapLine=' No avatar has been stated, so there is nothing to measure this against. '
+   +'Say who you are becoming and this paragraph names what stands in the way.';}
+ /* "100 percent" OF WHAT. The sentence read "the field leans benign at 100
+    percent", which is a share with no denominator on a surface where a
+    percentage could mean the share of the field, the share of the stack or a
+    confidence. It is the split between the two leans, so the sentence says
+    that: benign against malignant, and the two add to a hundred. */
+ /* AND THE LABEL COMES OFF THE FRONT OF IT. "Momentum:" is a Label and the
+    rest of the string is a Reading, so one string was doing two jobs, and
+    neither of the other two paragraphs on this surface carries a label. The
+    sentence also opened on its denominator, "of the two leans the field is",
+    which defers its subject by five words. Both ends are still named and they
+    still add to a hundred, which is what that clause was there for. */
+ /* no lean sentence at all while CQ is still filling and no story cue has
+    come in: leanRead reports read false, and 100 per cent benign off a field
+    with no laws answered is a reading nobody took */
+ /* NO PERCENT. "Leans 100 per cent benign against 0 per cent malignant" was
+    a score, and on a field with one cue in it a share of a hundred reads as a
+    finding. The direction is the reading and the sentence says it once. The
+    clause "which means it is expanding" stated a cause and is now a
+    direction. Round J13, his words: "I keep seeing this percent shit, the
+    hardest carrying zero percent. I don't want that." */
+ /* THE WORD CARRIES ITS MEANING HERE, 16 October, from the review of the
+    crisis screens. He ruled "Your energy leans malignant" and kept the word,
+    and round PO rules that no term stands without its plain meaning in the
+    same place. A hover tip is not the same place on a phone, so the sentence
+    the glossary already holds for the word follows it on the page, read from
+    that one table so the two can never say different things.
+    RENAMED 30 October, his words: "change it to positive and negative."
+    The glossary keys moved too (rail:positive, rail:negative in
+    engine/data/gloss.js); lean.ben, lean.mal and r.benign below are the
+    engine's own field names and are untouched, only the word shown and
+    looked up changed. */
+ var leanW=lean.ben>=lean.mal?'positive':'negative';
+ p.push(((lean.read===false?'':'Your energy leans <b>'
+  +leanW+'</b>'
+  +(r.benign===null?'':', toward '+(r.benign?'expanding':'contracting'))+'. '
+  +unpSay(leanW,'rail'))
+  /* .length, because r.excess is a list and an empty list is truthy: this
+     told every one of the fourteen reference cases the pole was past paying,
+     including the ones with nothing past it. ui.js reads it the same way. */
+  /* "Installed pole" was two terms of art and no picture. Round RG. */
+  +(r.excess.length?' At '+r.excess.length+(r.excess.length===1?' address':' addresses')
+    +' the opposite quality has been pushed past the point where it helps, so some of the work is now costing.':'')
+  +gapLine).trim());
+
+ return '<div class="s-story"><div class="pm-eye">Reading</div>'
+  +p.map(function(t){return '<p class="s-p">'+t+'</p>';}).join('')
+  +'<p class="s-src">Written from the nine '+unp('axis','axes')+', the twenty one '+unp('law','laws')+', the '
+  +unp('blueprint')+' and the birth data. Nothing here is generated from anything the instrument has not measured.</p>'
+  +'</div>';}
+
+/* ---- structures at a glance. the right hand panel. ---- */
+/* hot is handed in because these rows carry two opposite kinds of reading.
+   A mask weight and a seat load are charge, where high is the cost. An
+   archetype share is a proportion of a blueprint, where high is only how
+   much of the blueprint it is. The alarm colour belongs to the first kind
+   and nowhere near the second. */
+function sumStructRow(nm,sub,band,pct,raw,glyph,data,hot){
+ return '<button type="button" class="s-row"'+(data||'')+'>'
+  +cr(band,pct,{size:'sm',raw:raw,glyph:glyph,label:nm,hot:hot})
+  +'<span class="s-row-t"><b>'+esc(nm)+'</b>'+(sub?'<em>'+esc(sub)+'</em>':'')+'</span></button>';}
+/* THE STRUCTURES, IN PIECES. sumStruct was one block of five headings in one
+   column, and the page now places them by what they mean, so each piece is its
+   own function. The markup of every row is the markup it always had, so the
+   drills, the gates and the delegated listener read them exactly as before. */
+function sumBlueprint(){
+ /* the blueprint. a selection, drawn as a selection: icons and names, and no
+    ring on any of them, because a ring is a measurement and this is a choice. */
+ var rootNow=(DOMAINS[S.doms[0]]||{}).r||'';
+ return '<div class="pm-eye">'+unp('blueprint','Blueprint')+'</div><div class="s-sel">'
+  +'<span class="s-sel-r" style="--rc:'+(rootPlain(rootNow)||'var(--accent)')+'">'
+  +unp(String(rootNow).toLowerCase(),rootNow)+'</span>'
+  /* EACH DOMAIN NAME IS A TIPU CARRIER, audit of 4 November, round PO's
+     unpack rule. This printed a native title, "Knowledge. living by working
+     things out", which tip.js falls back to and makes tap reachable, but it
+     was never the product's one meaning table and it never read the
+     domain's clear and distorted expression, only its own short tagline.
+     unpAttr pulls domain:<name> from engine/data/gloss.js instead, the same
+     table and the same carrier the root chip just above already uses. */
+  +S.doms.map(function(di){var d=DOMAINS[di]; if(!d)return '';
+   return '<button type="button" class="s-dom" data-dom="'+di+'" style="--rc:'+rootPlain(d.r)+'">'
+    +svgI('<path d="'+d.ic+'"/>')
+    +'<span class="tipu"'+unpAttr(d.nm,'domain',d.nm)+'>'+esc(d.nm)+'</span></button>';}).join('')+'</div>';}
+function sumArch(r){
+ /* the archetypes. these ARE measured: aff is a real proportion. */
+ /* EVERY ARCHETYPE IN ITS OWN SEAT'S COLOUR. Ruled. Twelve named things were
+    passed the literal 'Heart' here, so a primary Warrior and a primary Sage
+    printed in the same green, and the family the mark belongs to was invisible
+    on the one surface that names it. The seat is on the record now. */
+ /* EVERY NAMED THING IS DESCRIBED AS A BEHAVIOUR, NOT A LABEL. Ruled.
+
+    This printed "Warrior, primary" and "Innocent, secondary", which is a
+    label with a second label under it and tells a person nothing they can
+    act on. The behaviour was already on the record and had never been
+    rendered: ARCH carries a v, and the Warrior's is "moves on the threat".
+    The rank is still there, because first and second do mean something, but
+    it is carried by the order of the rows and by the percentage, which is
+    what an ordered list with a number on it already says. */
+ var aff=(r.aff||[]).map(function(v,i){return {i:i,nm:(ARCH[i]||{}).nm||'',
+   ic:(ARCH[i]||{}).ic, b:(ARCH[i]||{}).b||'Heart', v:v};})
+  .filter(function(x){return x.nm;}).sort(function(a,b){return b.v-a.v;});
+ /* AND THE PERCENT IS HOW FULLY IT IS EXPRESSED. Ruled 16 October, his
+    words: "the archetypes themselves should be 100%. The limiting beliefs are
+    going to drag it down." These rows printed each archetype's share of all
+    twelve, the soul map's lean, which no story or release ever moves. The lean
+    still orders the rows, first and second; the figure is archExpr
+    (engine/archexpr.js), ring and pill both, as on the glass bar's orb. */
+ /* THE BEHAVIOUR LINE IS OFF THIS PAGE, ruled 3 November, his words: "all the
+    text versus ruler, orders the field, warrior moves the threat, sage reads
+    the situation. I fucking hate that." ARCH[i].v, the four word behaviour
+    ("moves on the threat", "orders the field"), used to print under the name
+    here as sub text. It stays ARCH's own field and keeps every other real
+    caller: the archetype drill's door line (ui.js), the Analytics archetype
+    card (analytics.js) and the intake's own archetype question (intakeui.js)
+    all still read ARCH[i].v for their own panels. Summary just stops asking
+    for it, so the row is the name, the ring and the share, nothing under it. */
+ return '<div class="pm-eye">Primary and secondary</div>'
+  +aff.slice(0,4).map(function(x){var ax=archExpr(x.i);
+  return sumStructRow(x.nm, null, x.b,
+   pct('archetype',ax)||0, fmtPct('archetype',ax), x.ic?'<path d="'+x.ic+'"/>':null,
+   ' data-arch="'+x.i+'"', false);}).join('');}
+function sumMasks(r,from,to){
+ /* masks. weight on 0 to 10, so the arc is the weight and the pill is the value. */
+ if(!(r.maskRing&&r.maskRing.length))return '';
+ /* THE MASKS ARE THE TIER'S, ruled 1 October. The list is replaced by the
+    lock's own line and not left empty or shortened, so the section never
+    reads as if a person had no masks. Said once, on the first slice. */
+ if(!lockSees('mask'))return from?'':lockPanelHtml('mask',{brief:true});
+ return r.maskRing.slice(from,to).map(function(m){
+   /* the mask's behaviour, not its two seats. the seats are the ring colour
+      and the drill, and a person cannot do anything with "Root and Sacral". */
+   var md=(MASKS.filter(function(x){return x.nm===m.nm;})[0]||{}).v
+     ||(m.bands||[]).join(' and ');
+   return sumStructRow(m.nm, md, (m.bands||['Heart'])[0],
+    /* a mask's load is a mean of sq, so it asks the weight kind, 17 October */
+    pct('weight',m.w)||0, fmtPct('weight',m.w), null, ' data-mask="'+esc(m.nm)+'"');}).join('');}
+function sumSeats(){
+ /* the seats. load is measured and the ring is the load. */
+ var seats=flSeats().filter(function(x){return x.load>0;})
+  .sort(function(a,b){return b.load-a.load;}).slice(0,4);
+ if(!seats.length)return '';
+ /* "Where it sits" labelled a list of body places with a pronoun that has
+    nothing to point back to. His words, GX: "'where it sits, crown, third
+    eye, throat,' and then the patterns underneath, I don't understand the
+    screen." A label names the slot, and this slot is the four seats carrying
+    the most, sorted by load. "In the body" is already the axes' eyebrow on
+    this page, and ui/mapshelf.js already calls the top one "Heaviest seat". */
+ return '<div class="pm-eye">Heaviest points</div>'+seats.map(function(x){
+   /* and a seat says what a closed one does rather than the word closed */
+   return sumStructRow(x.p.n,
+    x.held?'shut, so charge sits under it':'open, so charge passes through',
+    x.p.n,
+    pct('seatload',x.load)||0, fmtPct('seatload',x.load), null,
+    ' data-seat="'+esc(x.p.n)+'"');}).join('');}
+/* THE BIND. His words, 7 November, corrected twice: not two states held at
+   once, a toggle across days -- "Monday you wake up feeling superior, the
+   next day inferior... confident... unconfident... that's how you can
+   tell" -- read at the fetter level ("the bind would be at the fetter
+   level"). bindAxes (engine/sniff.js) walks the person's own entries in
+   order and watches one fetter's shadow rise and fall; CHILD's own opp
+   field names the real opposite it toggles against, so the line names
+   it, Fear and Trust, not "its opposite". Folded, same as Heaviest seats
+   just above it, because most readings carry none and an empty heading
+   would be one more thing on the screen saying nothing. */
+function sumBind(){
+ var ents=(CURP&&CURP.story&&CURP.story.entries)||[];
+ var binds; try{binds=(typeof bindAxes==='function')?bindAxes(ents):[];}catch(e){binds=[];}
+ if(!binds.length)return '';
+ return binds.map(function(x){
+  var ch=CHILD.filter(function(c){return c.nm===x.fetter;})[0];
+  var opp=ch?ch.opp:'its opposite';
+  return sumStructRow(x.fetter,
+   'Bind: toggles between '+x.fetter.toLowerCase()+' and '+opp.toLowerCase()+', '
+    +x.flips+' time'+(x.flips===1?'':'s')+' across what you’ve written',
+   ch?ch.seat:'Root', 0, String(x.flips), null, ' data-bind="'+esc(x.fetter)+'"');}).join('');}
+function sumChain(r){
+ /* the chain. counts, never against a total. */
+ /* ONLY THE RUNGS THE PLAN CAN SEE ARE COUNTED, and the first one it cannot is
+    said to be locked: a "0" under saboteurs on a person who has some would be
+    a false count, and a row of four zeros says the chain is empty. */
+ return '<div class="pm-eye">The chain</div><div class="s-chain">'
+  +[['saboteurs',r.sabs.length,'sab'],['complexes',r.cxs.length,'cx'],
+    ['hyper',r.hys.length,'hy'],['super',r.sups.length,'sup']].filter(function(x){
+   return lockSees(x[2]);}).map(function(x){
+   return '<span class="s-ch"><b>'+x[1]+'</b>'+x[0]+'</span>';}).join('')+'</div>'
+  +(r.locked&&r.locked.length?lockPanelHtml(r.locked[0],{brief:true}):'');}
+
+/* ---- the spiritual layer. glyphs, no boxes. ----
+   The owner ruled the little boxes out and icons in: a sign, an animal with
+   its element, a life path. Each opens its own detail. Date of birth came out
+   with the boxes, because a birth date is an input and this is a reading. */
+/* ============================================================
+   "UPDATED DAILY, LIKE A HOROSCOPE." INVESTIGATED, 3 November, AND IT IS NOT
+   THERE TO WIRE.
+
+   He asked for a summary of how the celestial layer "works through you in
+   the cycles every single day." Everything this page reads for Western and
+   Eastern astrology and for numerology is a pure function of a birth date, a
+   birth time, a birth place and a name: engine/astro.js (sun, moon, rising,
+   Chinese year and element, Human Design gates, gene key, all off the actual
+   sky at the moment of birth, Meeus low precision series) and
+   engine/numerology.js (the six numbers, off the name and the birth date).
+   Neither file, nor anything else under engine/, takes today's date as an
+   input. There is no personal-day-number function and no transit
+   calculation, today's planetary longitudes read against the natal chart,
+   anywhere in this build. engine/daily.js is a different feature under the
+   same word: the Daily Summary, a frozen journal day and an aim a person
+   sets and answers, nothing to do with the sky.
+
+   So "daily, like a horoscope" is not a display change on real data that
+   already exists; it is new engineering, a transit or personal-day
+   calculation nobody has written. Faking one, a number that looks like it
+   moved but is actually the static natal chart read again, is exactly the
+   plausible looking fake rule 6 forbids. Nothing of that kind is built here.
+   What ships is the real, static, natal reading: Western and Eastern
+   placements (sumChips, above) and full numerology (sumNum, below), exposed
+   rather than hidden, which is real and valuable on its own. A true daily
+   reading is a real, separate piece of work for whoever takes it: a
+   transit engine (today's sky against the birth chart) or a personal-day
+   number (life path plus the universal day, numerology's own real method),
+   neither of which exists in this codebase yet. */
+const CELEM_IC={
+ Metal:'<circle cx="12" cy="12" r="7"/><path d="M12 5v14"/>',
+ Water:'<path d="M4 10c3 3 5 3 8 0s5-3 8 0M4 16c3 3 5 3 8 0s5-3 8 0"/>',
+ Wood:'<path d="M12 21V7M12 7L7 3M12 7l5-4M12 13l-5-3M12 13l5-3"/>',
+ Fire:'<path d="M12 21c4 0 6-2.6 6-6 0-4-4-5-4-9 0 0-3 2-3 5 0-1-1.6-2-1.6-2C9.4 11 6 12 6 15c0 3.4 2 6 6 6z"/>',
+ Earth:'<path d="M3 17h18M6 13h12M9 9h6"/>'};
+/* THE BIRTH MARKS, AS ONE STRIP, and the comparison under them as its own
+   piece. The strip is evidence for the person's root energetics and sits with
+   them; the comparison is working, and folds. sumSpirit is both together, kept
+   for the page that has no reading yet. */
+function sumChips(C){
+ var e=C.e;
+ function chip(k,v,glyph,lab,val,t){
+  return '<button type="button" class="s-chip" data-sp="'+k+'" data-spv="'+esc(String(v))+'" '
+   +'title="'+esc(t)+'"><span class="s-chip-g">'+glyph+'</span>'
+   +'<span class="s-chip-l">'+esc(lab)+'</span>'
+   +(val?'<span class="s-chip-v">'+esc(val)+'</span>':'')+'</button>';}
+ function uni(ch){return '<span class="s-uni">'+ch+'</span>';}
+ /* ROUND PO, UNPACK EVERY SYMBOL. Each chip's tooltip said a few words of what
+    the sign does in a person ("What it runs on underneath", "Design profile")
+    and never what the sign, the number or the system is. It says that now, from
+    engine/data/gloss.js: what the placement is, then what the sign claims. */
+ function say(){return Array.prototype.slice.call(arguments).filter(Boolean).join(' ');}
+ var out='<div class="s-chips">';
+ /* THE SUN AND THE GENE KEY ARE LEFT OFF WHEN THEY WERE NOT READ, as the moon
+    and the rising already are. Only reference cases reached this strip until
+    a person's own birth was routed into converge, and every one of them has a
+    time, so a date alone on a day the sun changed sign would have printed a
+    chip reading null, and a gene key reading null.null, the same defect
+    renderSpirit records. What is missing is named in the comparison. */
+ if(e.sun)out+=chip('sign',e.sun,uni(ZGLYPH[e.sun]||'*'),e.sun,'',
+  say(unpackOf('sun sign'),unpackOf(e.sun,'sign')));
+ if(e.moon)out+=chip('sign',e.moon,uni(ZGLYPH[e.moon]||'*'),e.moon,'moon',
+  say(unpackOf('moon sign'),unpackOf(e.moon,'sign')));
+ if(e.rising)out+=chip('sign',e.rising,uni(ZGLYPH[e.rising]||'*'),e.rising,'rising',
+  say(unpackOf('rising sign'),unpackOf(e.rising,'sign')));
+ /* no chip for a year the hour decides (chineseYear, engine/birth.js) */
+ if(e.chinese)out+=chip('celem',e.celem,svgI(CELEM_IC[e.celem]||CELEM_IC.Earth),e.celem+' '+e.chinese,'',
+  say(unpackOf(e.chinese,'animal'),unpackOf(e.celem,'year')));
+ out+=chip('lp',e.lp,'<span class="s-num-g">'+e.lp+'</span>','Life path',String(e.lp),
+  say(unpackOf('life path'),unpackOf('path:'+e.lp)));
+ out+=chip('hd',(e.hd.profile||'unresolved'),
+  svgI('<path d="M7 4v16M17 4v16M7 9h10M7 15h10"/>'),'Human design',
+  e.hd.profile?('profile '+e.hd.profile):'unresolved',
+  e.hd.unresolved?say(unpackOf('design'),'The type needs the full bodygraph and is not computed. The profile is.')
+   :say(unpackOf('design'),unpackOf('profile')));
+ if(e.gk.gate!=null)out+=chip('gk',e.gk.gate,svgI(GATE_IC),
+  'Gene key',e.gk.gate+'.'+e.gk.line,say(unpackOf('gene key'),unpackOf('gate')));
+ return out+'</div>';}
+function sumConverge(C){
+ var out='<p class="s-p">Five systems, read independently off one birth date. '
+  /* This was a fraction with a sentence after it explaining that it was not a
+     score, which is an admission that it read as one. Two facts in sequence
+     need no defending and say the same thing. */
+  +'<b>'+C.of+'</b> comparison'+(C.of===1?'':'s')+' could be made between them and the '
+  +'field. <b>'+C.agree.length+'</b> point the same way. That is what the convergence is.'
+  +(C.open&&C.open.length?' '+C.open.length+' could not be compared at all: '
+    +esc(C.open.join('; '))+'. Those count for neither side.':'')+'</p>';
+ if(C.agree.length||C.differ.length){
+  out+='<div class="s-agree">';
+  out+=C.agree.map(function(a){return '<div class="s-ag">'+esc(a)+'</div>';}).join('');
+  out+=C.differ.map(function(d){return '<div class="s-dg">'+esc(d)+'</div>';}).join('');
+  out+='</div>';
+  /* HS sweep. A three sentence footnote under the list explained how to read
+     a disagreement in it. The Reading paragraph at the top of this page
+     already says what a split between blueprint and field means, in this
+     person's own names, which is the useful half of the same sentence. */}
+ return out;}
+function sumSpirit(r){
+ /* the person's own reading, for the reason sumStory gives */
+ var B=sumBirth(), C=B.sp?converge(B.p.nm,r,B.sp):null;
+ if(!C)return '<div class="s-spirit"><div class="pm-eye">The spiritual layer</div>'
+  /* HS sweep: the refusal keeps what is missing and what would put it in.
+     The tail on what is stored and why explained the section. */
+  +'<p class="s-p">No birth data on file. Date, time and place would let this run.</p></div>';
+ return '<div class="s-spirit"><div class="pm-eye">The spiritual layer</div>'
+  +(function(){var cv=sumConverge(C), i=cv.indexOf('class="s-agree"');
+   if(i>=0)i=cv.lastIndexOf('<',i);
+   return i<0?cv+sumChips(C):cv.slice(0,i)+sumChips(C)+cv.slice(i);}())+'</div>';}
+
+/* ---- full numerology. six numbers, and every name part on its own. ---- */
+function sumNum(r,bare){
+ /* NOTHING ENTERED MEANS NOTHING READ, AND THIS SURFACE SAID BOTH.
+    sumUnread prints "a number off a default is a number about the default and
+    not about you" and then called this, which fell back to the name "You" and
+    computed a full numerology reading off it, ending in a karmic debt line
+    about something built on a false footing coming down. Twenty lines under
+    the sentence forbidding exactly that. The guard belongs here rather than at
+    the caller, because any future caller has the same problem. */
+ if(r&&r.unread)return '';
+ var nm2=(PEOPLE[S.who]||{}).nm||'You';
+ var N=numerologyOf(nm2,CURP);
+ if(!N)return '';
+ var rows=[
+  ['expression','Expression',N.expression,'Every letter of the full name'],
+  ['soul','Soul urge',N.soul,'The vowels. What is wanted when nobody is asked'],
+  ['personality','Personality',N.personality,'The consonants. What arrives first']];
+ if(N.lifePath!==null)rows.unshift(['lifePath','Life path',N.lifePath,'The birth date']);
+ if(N.birthday!==null)rows.push(['birthday','Birthday',N.birthday,'The day of the month, unreduced']);
+ if(N.maturity!==null)rows.push(['maturity','Maturity',N.maturity,'Life path plus expression']);
+ var out='<div class="s-numer">'+(bare?'':'<div class="pm-eye plain">Numerology, in full</div>')
+  /* HS sweep: the name it was read off stays, because a person checks the
+     spelling. The method sentence after it explained the arithmetic. */
+  +'<p class="s-p">Read off <b>'+esc(N.parts.map(function(p){
+    return p.charAt(0)+p.slice(1).toLowerCase();}).join(' '))+'</b>.</p>'
+  +'<div class="s-nrows">';
+ out+=rows.map(function(x){
+  var v=x[2], master=NUM_MASTER.indexOf(v)>=0;
+  return '<button type="button" class="s-nrow'+(master?' master':'')+'" data-num="'+x[0]+'" '
+   +'title="'+esc(x[3])+'"><span class="s-nv">'+v+'</span>'
+   +'<span class="s-nt"><b>'+esc(x[1])+'</b><em>'
+   +esc(numSays(x[0],v)||x[3])+'</em></span></button>';}).join('');
+ out+='</div>';
+ /* every name part on its own, which is what was asked for */
+ out+='<div class="pm-eye" style="margin-top:16px">Each name</div><div class="s-nparts">';
+ out+=N.each.map(function(x){
+  return '<div class="s-npart"><span class="s-nv sm">'+x.v+'</span>'
+   +'<span class="s-nt"><b>'+esc(x.nm)+'</b><em>'+esc(x.role)+'. '+esc(x.says).toLowerCase()
+   +(x.debt?'. karmic debt '+x.debt:'')+'</em></span></div>';}).join('');
+ out+='</div>';
+ out+='<p class="s-src">Cornerstone <b>'+esc(N.cornerstone)+'</b>, '+esc(N.cornerSays)
+  +'. Capstone <b>'+esc(N.capstone)+'</b>, '+esc(N.capSays)+'.'
+  +(N.debt?' Karmic debt '+N.debt+' on the whole name. '+esc(NUM_DEBT_SAYS[N.debt]):'')
+  +(N.split?' The parts reduce to '+N.split.byPart+' and the flat sum to '+N.split.flat
+    +', which happens when one name carries a master. The parts are the reading.':'')
+  +'</p>';
+ return out+'</div>';}
+
+/* ---- the two paths, each balanced, and one wrapper written once ---- */
+function sumRender(){
+ /* #sumbody, not #sum. #sum is the tab host and it also carries the folded
+    analytics surface, which this function would otherwise overwrite. */
+ var h=document.getElementById('sumbody'); if(!h)return;
+ /* the reading this plan may see: the chain below and the story's biggest
+    compounding pattern are only what a plan can see (ui/lock.js) */
+ var r=computeSeen();
+ h.innerHTML='<div class="sum-wrap">'+(r.unread?sumUnread(r):sumFull(r))+'</div>';
+ sumWire();
+ /* and its side column, today's summary, off the same reading. A paint and
+    never a write: the day is frozen by sumDayOpen, after this returns. */
+ if(typeof sumDayPaint==='function')sumDayPaint(r);
+ sumRunPaint(r);
+ sumHelloWire();}
+
+/* THE RAIL'S TALK BUTTON (#sumhello, shell/body.html). It goes to the
+   Journal and presses the hello there, in that order: stHello mounts her into
+   #stuni, which only exists once the Journal has rendered, so pressing it
+   first from here would find no host and park her again (stUniSync's own
+   first branch). setTab renders the surface it lands on before it returns. */
+function sumHelloWire(){
+ var b=document.getElementById('sumhello'); if(!b||b.dataset.wired)return;
+ b.dataset.wired='1';
+ b.addEventListener('click',function(){
+  setTab(TAB.STORY);
+  if(typeof stHello==='function')stHello();});}
+
+/* NOTHING READ YET IS ITS OWN PAGE.
+
+   The app opens here, so this surface is the first thing a stranger sees. It
+   was printing coherence 42 percent in the largest ring on the screen off
+   nothing but the default six on the laws. A reading is never invented and a
+   percentage is never printed off a default, so the ring holds a dash and the
+   page is the way in instead. The spiritual layer stays: it is derived from a
+   birth date a person entered, not from a default, so it is real or absent. */
+function sumUnread(r){
+ var B=sumBirth(), rc=sumDrivers(B,r);
+ var hero='<div class="sum-hero">'
+  +cr(r.darkB,0,{size:'lg',label:'Coherence',raw:'–',hot:false,color:'var(--dim)'})
+  /* ONE SLOT, ONE LABEL, the same correction as the analytics hero. The
+     label said "Coherence, not read yet" and the line directly under it says
+     the same thing in a full sentence, so the label was both changing with the
+     data and repeating the line. */
+  +'<div><div class="pm-eye">Coherence</div>'
+  /* ONE WORDING FOR THE EMPTY STATE, and nothing after it. This said "Nothing
+     has been entered" where the canonical sentence is "Nothing has been read
+     yet" (objections.json, canonical), then spent a sentence on why the
+     arithmetic is hidden, which is the product explaining itself to a person
+     who did not ask, and then reassured them they would not need a term. The
+     doors underneath are the route. */
+  +'<div class="sum-line">Nothing has been read yet.</div></div></div>'
+  +'<div class="sum-start">'+startHTML('Four ways in.')+'</div>';
+ /* A NAME OR A BIRTH WAS ENTERED. Then what it says stands on the right, the
+    first drivers, and the four doors stand on the left, so the way in is on the
+    first screen beside it and the page is two equal halves, not one half and a
+    hole. Nothing here is read off the field, so nothing here is a reading. */
+ if(rc)return sumWho(r,B,false)
+  +'<div class="sg-two sg-lead"><section class="sg-card sg-start" data-grp="start">'+hero+'</section>'+rc+'</div>'
+  +sumMarks(B,r)
+  +(B.N?'<div class="sg-folds sg-one">'+sgFold('num','Numerology, in full',sumNum(r,true))+'</div>':'');
+ return sumWho(r,B,false)+hero+sumSpirit(r)+sumNum(r);}
+
+/* ============================================================
+   THE SUMMARY, REBUILT. Named wrong four times and this is the correction.
+
+   What it was: a glance strip, then the reading and the blueprint stack side
+   by side, then the spiritual layer, then numerology at the very bottom.
+   Measured at 3990px and 115 interactive elements, with the person's name
+   first appearing 1.9 screens down inside a numerology sentence, and the
+   reading itself sitting as bare text on the page ground with nothing around
+   it. The owner: terrible layout, terrible use of space, the chain beneath
+   the stack is weird, the numerology should be above, and the reading needs
+   a home.
+
+   What it is now, and every part of this is his instruction:
+
+   THE PLATE. The first name at display size, because this page has one job
+   before any other and that job is to say this is you. The band beside it,
+   and the direction out of that band, which lives in TIERDEF and has only
+   ever been reachable through a tooltip.
+
+   THE READING HAS A HOME. A display panel with its own ground and its own
+   edge, so the paragraph a person came here to read is a thing on the page
+   rather than text on the background.
+
+   EVERYTHING STRUCTURAL GOES RIGHT. Blueprint, primary, secondary, masks,
+   expression, soul urge, numerology, the spiritual layer. He asked for it
+   above and he asked for it on the right in the same breath; the right is
+   the one that holds, because the centre then carries the reading and
+   nothing else, and the right column is what this product already calls the
+   information panel. The best arrangement inside that column is the thing
+   the ICPs are being simulated on.
+
+   THE OUTPUT ROW. The block this page has never had: what this state calls
+   for, what to release, and how far to the next marker. A summary with no
+   next action is a diagnosis with no prescription.
+   ============================================================ */
+/* ============================================================
+   WHO THIS IS. Ruled, his words today: "for a summary, we want to add their
+   name, root meaning, energetics as well, as if it's the person, written in
+   grounded language, whatever our documentation says."
+
+   Read as: the name, then what their root energetics mean, said as the person
+   and not as a table. EVERY SENTENCE HERE COMES OUT OF A TABLE THE PRODUCT
+   ALREADY HOLDS and names it in data-src, so nothing on this block is
+   written for the occasion:
+
+     the born root and the running root   the root sentences in engine/data/gloss.js, DOMAINS d
+     a meeting of the four systems        ROOT_SAYS, off rootOverlap
+     any other way it shows up            SIGN_RUNS, CH_RUNS, CE_RUNS,
+                                          LP_RUNS, HD_LINE_RUNS
+     the name's number                    NUM_CORE ex, so and pe
+
+   A name's etymology is not here and is not coming from here: DECISIONS.md
+   rules it out, because a meaning for an arbitrary name cannot be looked up on
+   a device that makes no request, and inventing one is a claim this
+   instrument does not make. What a name carries is its number.
+
+   Nothing prints off a default. The block reads only what the person entered,
+   a name and a birth, so it is the same on a profile that has been read and on
+   one that has not, and it is empty on one that has neither.
+   ============================================================ */
+/* one profile's birth reading and name numbers, read once per render and
+   handed to every piece that needs them */
+function sumBirth(){
+ var p=PEOPLE[S.who]||PEOPLE[0], sp=spiritual(p.nm)||spiritualOf(bornAsBirth(CURP));
+ /* the name's numbers only off a name that is somebody's, for the reason
+    spNumRows gives: a blank profile's roster name is the word You */
+ var full=numFullName(CURP)||(typeof FULLNAME!=='undefined'&&FULLNAME[p.nm])||'';
+ var N=full?numerologyOf(p.nm,CURP):null;
+ return {p:p,sp:sp,N:N,full:full,R:rootOverlap(sp,N)};}
+const SUM_IC={
+ who:'<circle cx="12" cy="8" r="3.6"/><path d="M5 20c.8-4 3.5-6 7-6s6.2 2 7 6"/>',
+ run:'<path d="M19.5 12a7.5 7.5 0 11-2.2-5.3"/><path d="M19.5 4.5v4h-4"/>',
+ cost:'<path d="M8.4 10a3.6 3.6 0 117.2 0"/><path d="M6 10h12l2 10H4z"/>',
+ todo:'<circle cx="12" cy="12" r="8.4"/><path d="M8.4 12h7M12.6 8.4L16.2 12l-3.6 3.6"/>',
+ src:'<circle cx="12" cy="12" r="8.4"/><path d="M12 8v4.4l2.8 1.8"/>',
+ drive:'<path d="M4 6h6v6h6v6h4"/>',
+ down:'<circle cx="12" cy="12" r="8.4"/><path d="M12 8v8M8.6 12.8L12 16.2l3.4-3.4"/>',
+ chev:'<path d="M6 9.5l6 6 6-6"/>'};
+function sumIc(k,cls){return '<svg class="'+(cls||'sg-ic')+'" viewBox="0 0 24 24" aria-hidden="true">'+SUM_IC[k]+'</svg>';}
+function sgSvg(inner){return '<svg viewBox="0 0 24 24" aria-hidden="true">'+inner+'</svg>';}
+function sgCap(t){t=String(t||'');return t.charAt(0).toUpperCase()+t.slice(1);}
+/* a mark in a ring, never a fill */
+function sgRing(inner,col,tipT,tip){
+ return '<span class="sg-c-g" style="--rc:'+(col||'var(--accent)')+'"'
+  +(tip?' data-tip-t="'+esc(tipT)+'" data-tip="'+esc(tip)+'"':'')+'>'+inner+'</span>';}
+/* ============================================================
+   THE FIRST DRIVERS, ON THE RIGHT. Round OJ, his words: "for the summary, on
+   the right side, because this is information that won't change, we want the
+   root energetic meanings of their name... After you get your first root
+   energetics, after you are severed from your mother's umbilical cord, the
+   very next thing is your name... this is really kind of like a cascade of
+   drivers."
+
+   So the right hand card is the part of the person that does not move, in the
+   order it arrived: one, where they were born, the root energetics the four
+   systems give; two, what they were named, a meaning for each part of the
+   name; then everything else on the page, which is what those drivers are
+   running. A numbered ring on a line is the cascade, and nothing explains it.
+
+   THE ROOT OF A NAME HAS NO TABLE IN THIS PRODUCT, and this file does not
+   write one. NAME_MEANINGS below is the slot for it, read by name part, and it
+   holds the owner's three worked examples marked as his and nothing else. A
+   part with no entry says so and never shows a guess. DECISIONS.md, "No
+   etymology table", is the standing ruling this sits against, and DM and DZ in
+   TASKS.md found the references give other roots for the same three names,
+   which is held in each entry's note and not printed.
+   ============================================================ */
+const NAME_MEANINGS={
+ /* RESEARCHED AGAIN, round OK, on his word: "Lance means to pierce, right?
+    It's a weapon that a knight uses. So you need to go do your research
+    again." The meaning of a name for this page is its root as a word, which is
+    what a person grows into, and not only the line of descent. Lance is the
+    lance, the knight's spear, from Latin lancea (a second line of descent runs
+    to Germanic land, which is the lesser one). O'Neill is the descendant of
+    Niall, which most authorities give as champion (also cloud, passionate).
+    Powell is ap Hywel, the son of Hywel, and Hywel is eminent, which is
+    exalted. Sources are Wikipedia's entries on Lance (given name), O'Neill
+    (surname) and Powell (surname), and Behind the Name. This is still a
+    stub of three, and the table that replaces it is vetted before it ships. */
+ lance:{part:'Lance',says:'to pierce',
+  src:'Lance: Old French lance, Latin lancea, the knight\'s spear (Wikipedia, Lance given name; Ancestry; Behind the Name)',
+  note:'A second line runs to Germanic land. The weapon is the root as a word.'},
+ oneill:{part:"O'Neill",says:'champion',
+  src:'O\'Neill: Ó Néill, descendant of Niall, champion (Wikipedia, O\'Neill surname; Library Ireland)',
+  note:'Niall is also given as cloud or passionate. Most authorities give champion.'},
+ powell:{part:'Powell',says:'exalted',
+  src:'Powell: ap Hywel, son of Hywel, eminent (Wikipedia, Powell surname; Behind the Name)',
+  note:'Hywel is eminent, remarkable. Exalted is the same sense.'}};
+function nameKey(s){return String(s||'').toLowerCase().replace(/[^a-z]/g,'');}
+/* the parts of a name as the person entered them, first, middle and last. A
+   reference case has only a full name, so it is split the way numerology
+   splits it. An apostrophe stays inside its part. */
+function sumNameParts(B){
+ var w=CURP&&CURP.who||{}, f=String(w.first||'').trim(), m=String(w.middle||'').trim(), l=String(w.last||'').trim();
+ if(!(f||m||l)&&B.full){var ws=String(B.full).trim().split(/\s+/);
+  f=ws[0]||''; l=ws.length>1?ws[ws.length-1]:''; m=ws.slice(1,-1).join(' ');}
+ var out=[]; if(f)out.push({role:'First',text:f}); if(m)out.push({role:'Middle',text:m}); if(l)out.push({role:'Last',text:l});
+ return out;}
+function nameMeaning(text){
+ var hit=NAME_MEANINGS[nameKey(text)]; if(hit)return hit;
+ var ws=String(text).split(/\s+/);
+ for(var i=0;i<ws.length;i++){if(NAME_MEANINGS[nameKey(ws[i])])return NAME_MEANINGS[nameKey(ws[i])];}
+ return null;}
+/* one row of what a table says about a person, a mark in a ring, a label, a
+   title and the one line the table gives it */
+function sgMeet(src,glyph,k,t,say,tip,col,kh,th){
+ /* ROUND PO. A row may carry its label and its title as markup, so each can be a
+    carrier of its own meaning, and it may carry several sentences, so the
+    meaning of the title and the meaning of what it came from both stand in the
+    row. Anything not given as markup is escaped, as it always was. */
+ var says=(say instanceof Array?say:[say]).filter(Boolean);
+ return '<div class="sg-m" data-src="'+esc(src)+'">'+sgRing(glyph,col,t,tip)
+  +'<div class="sg-m-t"><span class="sg-c-k">'+(kh||esc(k))+'</span><b>'+(th||esc(t))+'</b>'
+  +says.map(function(x){return '<p>'+esc(x)+'</p>';}).join('')+'</div></div>';}
+function sgStage(n,title,body){
+ return '<div class="sg-st" data-stage="'+n+'"><div class="sg-st-h"><span class="sg-st-n">'+n+'</span>'
+  +'<b>'+esc(title)+'</b></div><div class="sg-st-b">'+body+'</div></div>';}
+/* the systems that met, in words, and how strongly only when it is more than
+   light, because most meetings are light and say so once under the stage */
+/* A SHARED ELEMENT NAMES TWO THINGS. Fire in the Western signs and Fire in the
+   Chinese calendar are one word for two systems, and a meeting between them is
+   about both, so the carrier says both. Wood and Metal are Chinese only. */
+function unpTheme(t){
+ var k=String(t).toLowerCase(), w=unpackOf(k), c=unpackOf(k,'year');
+ var say=[w,c].filter(function(x,i,a){return x&&a.indexOf(x)===i;}).join(' ');
+ return say?'<span class="tipu" tabindex="0" data-tip-k="'+esc(t)+'" data-tip="'+esc(say)+'">'+esc(t)+'</span>':'';}
+function sgMeetRow(a){
+ /* THE SYSTEMS ARE NAMED BY CARRIERS. "Western, Number" told a stranger nothing
+    about what Western or Number is, so each name carries its sentence. */
+ var kh=a.sys.map(function(x){return unp(SYSNAME[x].toLowerCase(),SYSNAME[x]);}).join(', ')
+  +(a.strength==='light'?'':esc('. '+RS_STRENGTH[a.strength].replace(/\.$/,'')));
+ return sgMeet('ROOT_SAYS',sgSvg(rsThemeIc(a)),'',a.t,ROOT_SAYS[a.t]||'',RS_BRIDGE[a.voc],null,kh,
+  a.voc==='el'?unpTheme(a.t):'');}
+/* STAGE ONE. Where they were born: the root the sun sign gives, then where the
+   four systems meet, led by the meeting least likely by chance, which is how
+   rootOverlap orders them. FV: "where they overlap, because that's the truth." */
+function sumBorn(B){
+ var sp=B.sp, R=B.R, rows='', more=[];
+ if(!sp)return sgStage(1,'Born',
+  '<p class="sg-note">No birth data on file. Date, time and place would put it in.</p>'
+  +'<button type="button" class="btn s-oact" data-sout="iq">Avatar</button>');
+ /* ROUND PO. The stage says what a birth reading is before it reads one, and
+    the root names the sign it came from and the element it came through. The
+    old line, "Earth, fixed. Builds and holds.", described the root with two
+    words nobody had defined, and it said fixed of every Architect, though a
+    Capricorn is cardinal. */
+ if(!sumSaid(unpackOf('symbolic reading')))rows+='<p class="sg-note">'+unpSay('symbolic reading')+'</p>';
+ var elSay=unpackOf(sp.sunEl), sgSay=unpackOf(sp.sun,'sign');
+ rows+=sgMeet('root',sgSvg(glyphPath(ROOTGLYPH[sp.root])),
+  'Root',sp.root,[unpackOf(sp.root.toLowerCase()),
+   sp.sun?unpackOf('sun sign'):'',sgSay,elSay].filter(function(x){return !sumSaid(x);}),'',rootPlain(sp.root),
+  unp('root','Root'),unp(sp.root.toLowerCase(),sp.root));
+ var sh=R.shown||[], anyLight=sh.some(function(a){return a.strength==='light';});
+ if(sh.length)rows+='<p class="sg-note"><span>'+unpSay('overlap')+'</span>'
+  +(anyLight?' A light one is shared by many people, and a strong one is rare.':'')+'</p>';
+ sh.slice(0,2).forEach(function(a){rows+=sgMeetRow(a);});
+ if(!sh.length)rows+='<p class="sg-note">These four do not land on the same thing.</p>';
+ more=sh.slice(2).map(sgMeetRow).concat((R.range||[]).map(function(x){var say=rsSays(x); if(!say)return '';
+  return sgMeet('range',sgSvg(SYSGLYPH[x.sys]),'',rsName(x),[sgCap(say)+'.'].concat(rsMeans(x)),'',null,
+   unp(SYSNAME[x.sys].toLowerCase(),SYSNAME[x.sys]));}));
+ return {stage:sgStage(1,'Born',rows),more:more.join('')};}
+/* STAGE TWO. What they were named: a root meaning for each part of the name,
+   from NAME_MEANINGS and from nowhere else, then the number the whole name
+   adds to. A part with no entry is said to have none. */
+function sumNamed(B){
+ var parts=sumNameParts(B); if(!parts.length)return '';
+ var any=false, rows='', N=B.N, c=N?NUM_CORE[N.expression]:null;
+ parts.forEach(function(p){p.mn=nameMeaning(p.text); if(p.mn)any=true;});
+ if(any)parts.forEach(function(p){
+  rows+=sgMeet('NAME_MEANINGS','<span class="s-num-g">'+esc(p.text.charAt(0).toUpperCase())+'</span>',
+   p.role,p.text,p.mn?sgCap(p.mn.says):'No meaning on file.',p.mn?'Source. '+p.mn.src+'.':'');});
+ else rows+='<p class="sg-note">No root meaning on file for '
+  +parts.map(function(p){return esc(p.text);}).join(', ').replace(/, ([^,]*)$/,' or $1')+'.</p>';
+ if(c)rows+=sgMeet('NUM_CORE','<span class="s-num-g">'+N.expression+'</span>','Expression',
+  String(N.expression),[sgCap(c.ex)+'.',unpackOf('expression')].filter(function(x){return !sumSaid(x);}),'',null,unp('expression','Expression'));
+ return sgStage(2,'Named',rows);}
+/* the person's own name, or nothing. It knew one label the product gives a
+   record, You, so "Web reading" printed as a person called Web on the first
+   screen after the funnel, F3 of the 31 October walk. ownName in
+   engine/schema.js knows every label the product writes. */
+function sumRealName(){
+ return capName(ownName(CURP&&CURP.name));}
+function sumNameBlock(B,fallback){
+ var nm=sumRealName(), first=nm.split(/\s+/)[0]||(fallback?'You':'');
+ var line=(CURP&&CURP.who&&CURP.who.line)?'<div class="s-pwho">'+esc(CURP.who.line)+'</div>':'';
+ var full=(B.full&&B.full!==first)?'<div class="s-pwho">'+esc(B.full)+'</div>':'';
+ return first?'<div class="s-pname">'+esc(first)+'</div>'+full+line:'';}
+/* HOW MUCH HAS BEEN MEASURED, AS ONE WORD. 15 October, under the owner's 14
+   October ruling: no bare score on a daily surface. The plate's ring used to
+   print the coherence figure; it prints this word now. The figure and the
+   range it swings in sit one tap down, in the core drill the ring opens.
+   tests/golden.js holds the ladder, so a fourth word cannot appear unseen.
+   IT WAS READ OFF accuracy(), and that measured how high the answers were
+   rather than how many there were: every law answered at 10 read partial and
+   every law answered at 1 read early. It reads accCover now, the laws
+   answered and the stories written, and the lines are drawn on that scale
+   (engine/compute.js, accCoverWord), so a whole intake reads full whatever
+   the answers were. */
+function accWord(c){return accCoverWord(c);}
+/* THE PLATE IS THE NAME, AND ALMOST NOTHING ELSE NOW. Ruled 3 November, his
+   words, reading Derek's own plate back to him: "versus Derek partial, get
+   rid of that, get rid of six laws to answer... All that belongs in the
+   information side of things." Two things sat crammed against the name: the
+   coherence ring's own pill (early, partial, or CQ's percent once every law
+   is in) and the band line under it, tierSay(r), which read a real tier name
+   once CQ was complete and "N laws to answer" while it was still filling.
+
+   The ring stays, small and quiet, because tests/pct.js and tests/dailyui.js
+   both read it at this exact path, #sum .s-plate .cr[title^="Coherence"]:
+   dailyui.js's plate percent count and pct.js's S2 slice both depend on a
+   live, real completion reading sitting inside .s-plate, and a ring that
+   stops being real the moment it is unflattering is exactly what rule 6
+   forbids. What moved is everything that was text beside it: the band name,
+   "where it goes" and the gift line are sumStatus() now, read once in the
+   information column (sg-side, next to What drives it) rather than fighting
+   the name for the first line a person reads. */
+function sumPlate(r,B){
+ var cov=(typeof accCover==='function')?accCover(r):null, aw=cov?accWord(cov):'';
+ /* THE FIGURE COMES BACK ONCE IT IS A READING, 17 October, percent phase 2.
+    The 14 October ruling took the bare score off this plate and it stands:
+    a percent of a defined maximum is not a raw score. While the laws are
+    still being answered most of the coherence figure is the default answer,
+    so the plate keeps the word (early, partial) and prints no figure that
+    claims a reading not taken. Once every law is answered (accCover complete,
+    where CQ stops moving) the pill prints CQ as the registry does and equals
+    its ring. Default taken by the team, DECISIONS.md, his to overrule. */
+ var cqp=(cov&&cov.complete&&!r.unread)?fmtPct('cq',r.CQ):null;
+ return '<div class="s-plate">'
+  +'<div class="s-pl-l">'+sumNameBlock(B,true)+'</div>'
+  +'<div class="s-pl-r">'
+   +cr(r.darkB,pct('cq',r.CQ)||0,{size:'sm',label:'Coherence',raw:cqp||aw||'–',hot:false,act:true,data:'data-gl="core"',
+      title:'Coherence, '+(cqp?cqp:(aw?aw+' reading':'not read yet'))+'. Opens the figure and its range.',
+      color:TIERCOL[r.tier]||undefined})
+  +'</div>'
+  +'</div>';}
+/* the head of the page: the plate. On a read profile it is the name and the
+   coherence ring alone. On an unread one it is what was entered and nothing
+   else, so a name and a birth date still read and a default never does. */
+function sumWho(r,B,full){
+ /* A NAME IS ENTERED OR IT IS NOT. A blank profile carries the roster word
+    You, which is a default and not somebody, so it never counts. */
+ if(!full&&!(B.sp||B.N||sumRealName()))return '';
+ /* THE GIFT SITS UNDER THE NAME AGAIN, 20 November, because the column it
+    moved to is gone. His words on the live page: "where it says oscillating
+    50%, just get rid of that entirely." That was sumStatus(), the band, its
+    state and "Where it goes", and the gift rode inside it, so deleting the
+    band without moving the gift would have taken the one line tests/gift.js
+    holds on a new person's first screen off the page with it. Under the plate
+    it is above the fold at 390 as well, where inside the side column it sat
+    at 918 on an 844 screen (TASKS.md #137). */
+ return sgZone('who','Who this is',
+  full?sumPlate(r,B)+sumGift():'<div class="s-plate sg-plain"><div class="s-pl-l">'+sumNameBlock(B,false)+'</div></div>');}
+/* THE BAND AND THE GIFT, MOVED OFF THE NAME AND INTO THE INFORMATION COLUMN.
+   Read once, at the top of the drivers card (sg-side), next to "What drives
+   it" rather than crowding the plate. Both pieces are unchanged, only their
+   place moved: tierSay(r) and TIERCOL still carry the band exactly as
+   before (design.js's GATE 16 reads `.s-pband b` by class, not by position,
+   so it still finds it here), and sumGift() still writes #sumgift with the
+   same id and the same sentence tests/gift.js reads on a brand new person's
+   first screen (inView at scroll 0 holds: this column sits above the fold
+   at the widths that gate opens at).
+   NO CALLER SINCE 20 NOVEMBER. His words: "where it says oscillating 50%,
+   just get rid of that entirely." That is this block, the band's word, its
+   state and Where it goes, so sumFull stopped calling it and the gift moved
+   under the plate (sumWho). Kept rather than deleted on the same footing as
+   sumOutput below: free for a surface that wants the band, and the tier's
+   colour still reads on the plate's own ring. */
+function sumStatus(r,B){
+ var t=TIER_BY[r.tier]||null;
+ /* no band line at all while CQ is still filling: "N laws to answer" was
+    exactly the clutter he named, and the ring in the plate already carries
+    that state as its own pill (early, partial). Once a tier exists it is
+    real, named structure and belongs here. */
+ var band=r.tier?('<div class="s-pband"><b style="color:'+(TIERCOL[r.tier]||'var(--ink)')+'">'
+   +esc(tierSay(r))+'</b>'+(t&&t.state?'<em>'+esc(t.state)+'</em>':'')+'</div>'
+   +(t&&t.toward?'<div class="s-ptoward"><span class="pm-eye">Where it goes</span>'
+     +esc(t.toward)+crisisFloor(t)+'</div>':'')):'';
+ var gift=sumGift();
+ return (band||gift)?'<div class="s-status">'+band+gift+'</div>':'';}
+/* THE GIFT, SAID ONCE AND QUIETLY, in the information column now rather than
+   under the name on the page a new person lands on (tabLandFirst,
+   ui/panels.js). The ruling is "100 patterns, free, with everything
+   visible", and the lock now keeps it (lockGift, ui/lock.js), so nothing on
+   this page is padlocked while it lasts. This is the one line that says why.
+   No count of what is left, no price and no button: the first screen is the
+   person's reading, opened, and not a shop. The count is in Billing and on
+   the card before a release, where it is spent. Read off the lock's own
+   answer, so it goes when the padlocks come back, and never on a worked
+   example. The size is GIFT_N and not a typed hundred. */
+function sumGift(){
+ if(typeof lockGift!=='function'||!lockGift())return '';
+ return '<p class="s-src" id="sumgift">Your gift: '+GIFT_N+' '+unp('pattern','patterns','gift')
+  +', no card. Everything is open.</p>';}
+/* the first drivers card. Unread or read, it is only what a birth and a name
+   say, so it is real or it is absent. */
+function sumDrivers(B,r){
+ var parts=sumNameParts(B);
+ if(!(B.sp||B.N||parts.length))return '';
+ var born=sumBorn(B), isObj=typeof born==='object';
+ return '<section class="sg-card sg-drive" data-grp="drive">'+sgHead('drive','What drives it')
+  +(isObj?born.stage:born)+sumNamed(B)
+  +'<span class="sg-down" aria-hidden="true">'+sumIc('down','sg-ic')+'</span>'
+  +(isObj?sgFold('range','Other ways this shows up',born.more):'')+'</section>';}
+/* the birth marks, one strip across the page under the story and the roots, so
+   neither card has to make room for them and a five or a seven stands level.
+   LABELLED "THE CELESTIAL LAYER" now, ruled 3 November, his words: "the
+   summary needs to show the celestial layer, a summary of how that works
+   through you." The strip itself is unchanged, real Western (sun, moon,
+   rising) and Eastern (Chinese year and element) placements off the same
+   birth record as the full numerology card, through sumChips, which already
+   existed and already read real data (engine/astro.js); it only went
+   unlabelled before. */
+function sumMarks(B,r){
+ var C=B.sp?converge(B.p.nm,r,B.sp):null;
+ return C?'<div class="sg-marks" data-grp="marks"><div class="pm-eye">The celestial layer</div>'
+  +sumChips(C)+'</div>':'';}
+/* a zone is a heading with a mark and one body. The heading names the slot and
+   the slot keeps its name whatever the data says. */
+function sgHead(k,title){
+ return '<h2 class="sg-zh" id="sg-h-'+k+'">'+sumIc(SUM_IC[k]?k:'src')+'<span>'+esc(title)+'</span></h2>';}
+function sgZone(k,title,body,cls){
+ return '<section class="sg-z sg-'+k+(cls?' '+cls:'')+'" data-grp="'+k+'" aria-labelledby="sg-h-'+k+'">'
+  +sgHead(k,title)+body+'</section>';}
+var SUM_OPEN={};
+function sgFold(k,title,body){
+ if(!body)return '';
+ return '<details class="sg-fold" data-fold="'+k+'" data-grp="fold"'+(SUM_OPEN[k]?' open':'')+'>'
+  +'<summary><span>'+esc(title)+'</span>'+sumIc('chev','sg-chev')+'</summary>'
+  +'<div class="sg-fold-b">'+body+'</div></details>';}
+/* THE NINE, AS THE PERSON'S OWN SET. Nine cells in a fixed order, three by
+   three, each with its mark, the place in the body it is felt and the weight.
+   A fixed order because a slot keeps its place and the value carries the
+   state: a person finds Fear where Fear was. */
+function sumNine(){
+ var C=(typeof CHILD!=='undefined')?CHILD:[]; if(!C.length)return '';
+ var top=C.map(function(c){return +(S.charge[c.nm]||0);});
+ var mx=Math.max.apply(null,top);
+ return '<div class="sg-nine">'+C.map(function(c,i){var sq=top[i];
+  return '<div class="sg-n'+(sq>0&&sq===mx?' top':'')+'" data-nine="'+esc(c.nm)+'">'
+   /* the charge on the axis as a percent, 17 October, percent phase 2 */
+   +cr(c.seat,pct('charge',sq)||0,{size:'sm',raw:fmtPct('charge',sq),glyph:'<path d="'+c.ic+'"/>',label:c.nm})
+   +'<span class="sg-n-t"><b>'+esc(c.nm)+'</b><em>'+esc(c.loc)+'</em></span></div>';}).join('')+'</div>';}
+/* THE DAY SLOT MOVED TO THE SIDE. It stood here, under the story and above
+   the output row, full width, holding nothing until the daily summary was
+   built. It was built on 2 October in ui/daily.js, and it went to this page's
+   own side column instead, the right rail, on the funnel review's placement
+   (F24): the words go to the side. sumRender paints it; nothing here does. */
+/* WHAT THIS STATE CALLS FOR. ritFor is a pure function of the reading and has
+   only ever been called from inside the ritual overlay, which opens after a
+   release run, which means a person who has not run one has never seen it. */
+/* the feeling an address carries, as a name: the ritual calendar's own word
+   for it (ritCfWord, ui/ritcal.js), so "Sad" reads Sadness and no second
+   word is made for one feeling */
+function sumFeel(n){
+ var cf=n&&n.cf; if(!cf)return (n&&n.k)||'';
+ var w=(typeof ritCfWord==='function')?ritCfWord(cf):String(cf).toLowerCase();
+ return w.charAt(0).toUpperCase()+w.slice(1);}
+function sumOutput(r){
+ var rit=(typeof ritFor==='function')?ritFor(r):null;
+ var m=(typeof meterRead==='function')?meterRead(CURP):null;
+ var hot=r.loaded.slice().sort(function(a,b){return b.sq-a.sq;})[0];
+ /* how much of the reading a release can still reach, from the engine. It
+    is expression's headroom since 25 September. CQ is the laws alone and a
+    release lifts them only slowly (LIFT_R), so a CQ headroom read almost 0 for
+    everybody; what a release moves visibly is the shadow, through expression. */
+ var rhead=(typeof exHeadroom==='function')?exHeadroom(r.EX):99;
+ var card=function(eye,nm,sub,act){
+  return '<div class="s-out">'
+   +'<span class="pm-eye">'+eye+'</span>'
+   +'<div class="s-out-n">'+esc(nm)+'</div>'
+   +(sub?'<div class="s-out-s">'+esc(sub)+'</div>':'')
+   +(act||'')+'</div>';};
+ /* THE CARD THAT SAYS FIRST GOES FIRST, round RF. "Release this first" stood
+    second, under the protocol, so the row's own words and its order
+    disagreed and the one card carrying the page's main action was the one a
+    person reached second. The release slot leads now in every one of its
+    cases, then the protocol, then the marker, which has no button. */
+ return '<div class="s-outrow">'
+  /* WHAT RELEASE HAS LEFT IN IT, said before the person spends the time, and
+     only when there is something to spend it on.
+
+     A release works on the shadow; it cannot manufacture integrity, because
+     integrity is the twenty one laws and those move when a person answers
+     them or when what they do changes. Measured under the old formula by
+     clearing every charge and reading CQ back: Marcus could run every release
+     this product would ever offer him and move 0.3, Sofia 1.5, Angela 1.0.
+     Since 25 September CQ is the laws alone and a release moves it by
+     nothing, so what is measured here is expression, which is CQ times what
+     the shadow leaves: the most a release can still give back.
+
+     Four cases, and each says only what is true of it. Something above the
+     line, release it. Carrying below the line with room left, release that.
+     Carrying with the room gone, name the lever that is not gone. Carrying
+     nothing, say so, which is the right answer for the people it is true of
+     and was previously said to everybody.
+
+     THIN is 1.5 points of expression. Not a tuned constant: the reading is published
+     to plus or minus about thirteen, so a lever with under one and a half in
+     it cannot produce a move this instrument would call a reading, and the
+     product should not spend a person's fifteen minutes pretending otherwise. */
+  +(function(){
+    var THIN=1.5;
+    /* THE FEELING, NOT THE ADDRESS'S NAME, P0-3 of the inference audit, 23
+       October. This card printed the address, "Release this first:
+       Victimhood, Root seat", after three entries about a father's death,
+       and "Escapism" after three of "I am exhausted". Words never name an
+       address: which one is heaviest is the node table and the blueprint
+       domain choosing, and the address names are character labels. So the
+       card names the feeling the address carries, and leaves the place out
+       until the owner rules where a story's charge lands, because today the
+       place comes from that same table. The address keeps its name on its
+       own drill and on the release card. */
+    if(hot)return card('Release this first',sumFeel(hot),
+     'Your heaviest address holds it, at '+fmtPct('weight',hot.sq)
+      /* ROUND RG. "Points of expression" was a term of art on the same page
+         where Expression is a numerology number, so one word meant two
+         things a scroll apart. The headroom is coherence held back by the
+         charge, which is what exHeadroom measures, and it is said that way. */
+      /* AND THE POINTS ARE A PERCENT, 17 October, percent phase 2. The
+         headroom is a gap on expression's own scale, nought to a hundred, so
+         three points is 3% (PERCENT-FRAMEWORK-2026-10-16.md, item 5), and a
+         gap that rounds to nothing says no sentence at all. */
+      +(r.unread||!r.complete||fmtPct('expression',rhead)===PCT_DASH?''
+        :'. What you carry holds back about '+fmtPct('expression',rhead)+' of your coherence, and release can give it back'),
+     '<button class="btn s-oact" data-sout="rel" data-n="'+hot.i+'">Run a release</button>');
+    if(r.heaviest&&(r.unread||rhead>=THIN))return card('Release this first',sumFeel(r.heaviest),
+     'Your heaviest address is carrying it, below the line, at '+fmtPct('weight',r.heaviest.sq),
+     '<button class="btn s-oact" data-sout="rel" data-n="'+r.heaviest.i+'">Run a release</button>');
+    /* four words, so it is a label. "now" was the fifth and it was carrying
+       nothing: the whole surface is the reading now. */
+    /* while CQ is still filling, expression cannot rise above it, so the
+       headroom is near 0 whatever is held and the figure says nothing */
+    if(!r.complete)return card('What moves the reading','The twenty one laws',
+     'Coherence fills as you answer them. Until it is full, release has little to give back',
+     '<button class="btn s-oact" data-sout="iq">Answer the laws</button>');
+    if(r.heaviest)return card('What moves the reading','The twenty one laws',
+     (fmtPct('expression',rhead)!==PCT_DASH?'What you carry holds back about '+fmtPct('expression',rhead)+' of your coherence, and release '
+      +'can give it back. Past that only the laws move it, and they move when you answer them or when what you do changes'
+      /* under one percent is not nothing, and pass 1 says so: 0.1 of a
+         point printed "nothing left" the day this moved to percents */
+      :(rhead>=0.05?'Release has under 1% left to give back to your coherence. ':'Release has nothing left to give back to your coherence. ')
+      +'What is left is the laws, and they move '
+      +'when you answer them or when what you do changes'),
+     '<button class="btn s-oact" data-sout="iq">Answer the laws</button>');
+    return card('Release this first','Nothing is carrying',
+     'No address is holding anything','');}())
+  /* A LABEL, NOT A CLAUSE. "The protocol this calls for" is five words and
+     came back as "The Protocol This Calls For". card() writes one eyebrow for
+     every card in this row, so the fix belongs in the string rather than in a
+     per call opt out: the row is driven by the reading, which is what "this
+     calls for" was there to say, and the row says it already. */
+  /* THE PROTOCOL NAMED NOTHING, round RF. This read rit.nm, rit.how and rit.d,
+     and ritFor has never returned any of them: it returns the seat, the track
+     and the practice it calls for, under called. So every read profile in the
+     roster was told its protocol was "A practice", with nothing under it, on
+     the card a person is meant to act on. The practice is named now, with its
+     own one line and how long it takes, read off PRACTICE and nowhere else. */
+  +(function(){
+    var c=rit&&rit.called;
+    if(c)return card('The protocol',c.nm,
+     /* the length, unless the practice's own line already says it: Active
+        Listening's reads "Ten minutes on sound", and a card saying ten
+        minutes twice is a card that was not read */
+     [c.d||'',(c.min&&!/minute/i.test(c.d||''))?c.min+(c.min===1?' minute.':' minutes.'):'']
+      .filter(Boolean).join(' '),
+     '<button class="btn s-oact" data-sout="rit">Open it</button>');
+    if(rit)return card('The protocol','A practice',
+     'Nothing in the library fits this reading yet',
+     '<button class="btn s-oact" data-sout="rit">Open it</button>');
+    return card('The protocol','Not read yet',
+     'Write what happened and this fills in','');}())
+  /* A NUMBER CARRIES ITS UNIT. This read "12 away", twelve of what; the
+     record card says the same distance, in patterns since 16 October, the
+     unit the markers count (meterRead, engine/schema.js). And
+     the fallback said "The first one. Open some ground and it appears",
+     which is false: markersFor() always returns the ladder, on a reference
+     age when there is no birth date, so m.next is null only once every
+     marker is behind the person. */
+  +(m&&m.next?card('Next marker',m.next.nm,
+      m.next.left+(m.next.left===1?' new pattern':' new patterns')+' away','')
+    :m?card('Next marker','None left','Every marker is behind you',''):'')
+  +'</div>';}
+
+/* ============================================================
+   ONE MEANING, PRINTED ONCE PER PAGE. Measured 2 October by the visual
+   review and again here: 111 to 130 words printed twice on every worked
+   example's Summary, three times for Sofia's root. The Reading unpacks every
+   term inline, as round PO ruled for exactly that sentence, and the drivers
+   card beside it then printed the same table sentences again as rows, under
+   titles that already carry them as tooltips. Both halves were following
+   the unpack rule, and between them the page said each meaning twice.
+
+   So the Reading is built first and its text is held for the length of one
+   render, and a row on the drivers card leaves out any sentence the Reading
+   already printed. The term on the card keeps its carrier, so the meaning is
+   still one hover or tap away in the same place, which is the rule's own
+   second shape. On a page with no Reading, the unread one, nothing is held
+   and the card prints in full. */
+var SUM_SAID=null;
+function sumPlain(html){
+ return String(html||'').replace(/<[^>]*>/g,' ').replace(/&quot;/g,'"').replace(/&#39;/g,"'")
+  .replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&').replace(/\s+/g,' ');}
+function sumSaid(x){
+ if(!SUM_SAID||!x)return false;
+ return SUM_SAID.indexOf(String(x).replace(/\s+/g,' ').trim())>=0;}
+function sumFull(r){
+ var B=sumBirth();
+ var story=sumStory(r), drv;
+ SUM_SAID=sumPlain(story);
+ try{drv=sumDrivers(B,r);}finally{SUM_SAID=null;}
+ /* THE ORDER IS THE ORDER A PERSON ASKS IN, and every group is one question.
+    Who is this. What is running, and what does it cost. What does the
+    celestial layer say. Then, folded away, where each of those comes from.
+    Every row is two equal halves or three equal thirds. */
+ /* REDESIGNED 3 November, his own words reading Derek's page back to him:
+    the partial badge, "N laws to answer", the gift line, the raw "What you
+    told it" journal block, "the heaviest of the nine is sad at your weight
+    of 97" and the whole "What to do" column (Release this first, the
+    Protocol, Next marker) are all off this surface now. "All that belongs
+    in the information side of things": the band and the gift moved into
+    sumStatus() beside the
+    drivers card rather than vanishing, and What to do is gone outright
+    (sumOutput still exists, read directly by tests/record.js and free for
+    a future release-focused surface, just not rendered here).
+
+    WHAT REPLACED IT: "numerology, make sure that's exposed. The Eastern and
+    Western astrology, those need to be exposed as well... the summary needs
+    to show the celestial layer." Nothing here is new engineering: sumChips
+    (the sun, moon, rising, Chinese year and element, life path) and sumNum
+    (all six numerology numbers) already existed and already read real,
+    computed data (engine/astro.js, engine/numerology.js). sumChips was
+    rendered unlabelled through sumMarks, which now carries its own heading,
+    and sumNum sat collapsed in a closed <details> at the foot of the page;
+    both read the same way, just no longer hidden. */
+ return sumWho(r,B,true)
+  +sumToday()
+  /* THE CENTRE IS THE STORY. Ruled. The reading built from a person's own
+     words, in the instrument's voice. It stands on the first screen, left of
+     the roots, and the phone reads it before them. The drivers card and the
+     band/gift status sit beside it, the information side of the page. */
+  +'<div class="sg-two sg-lead sg-lead2">'
+   +'<div class="sg-col">'
+    +'<section class="sg-card sg-story" data-grp="story">'
+     +'<div class="s-readbox sg-flat">'+story+'</div></section>'
+   +'</div>'
+   +'<div class="sg-side">'+drv+'</div>'
+  +'</div>'
+  /* the patterns block follows the lead on every width. On a phone it was
+     lifted above the story by an order rule written before it existed. */
+  +(typeof sumLoopSlot==='function'?sumLoopSlot(r):'');}
+ /* AND THE PAGE ENDS AT YOUR PATTERNS, 20 November, his words: "everything
+    beneath your patterns... what's running is moving to the left panel. And
+    then the rest of that looks like it's in analytics." Under it stood the
+    celestial strip (sumMarks), What is running, What it costs, Numerology and
+    the Four lenses and Birth comparison folds. Every one of them is still
+    drawn somewhere a person can reach: the celestial placements and every
+    numerology number are the left rail's Root Energetics, which this tab now
+    shows flat (shell/head.html, "THE SUMMARY'S LEFT RAIL IS ONE FLAT
+    READING"); the blueprint and the archetypes are the rail's own grids; the
+    masks are the rail's new What is running (sumRunPaint below); the nine,
+    the seats, the binds and integrity over time are Analytics. Only the calls
+    went. The functions stay, because Analytics, the unread page and the gates
+    still call sumNum, sumMarks, sumGlance and sumIg by name. sumLoopSlot
+    stays, because Your patterns has had no other home since 14 November and
+    deleting it here would delete it from the product. The converge() this
+    function opened with went too: the Birth comparison fold was its only
+    reader on this page. */
+
+/* ============================================================
+   TODAY, IN THE CENTRE, 21 November. The Summary redesign's brief asked for
+   the centre to open on a daily snapshot: today's date and a short read of
+   where the person's record stands today. That read already existed and was
+   already frozen once a day: engine/daily.js composes it and ui/daily.js
+   paints it into #sumday. It sat in the right rail's Today section, so the
+   centre opened on the blueprint, which is the one part of this page that
+   does not change from one day to the next.
+
+   So the host moves, and nothing about what fills it does. #sumday keeps its
+   id, its class and its painter (sumDayPaint, called from sumRender right
+   after this string lands), so the freeze, the aim, its marks and the past
+   days work exactly as they did in the rail. It is a move and not a copy:
+   the rail's section is gone (shell/body.html), because the same frozen
+   sentences printed twice on one screen is the duplicate the daily gate
+   already refuses.
+
+   The date is the engine's own day and word (dlyDay, dlyDayWord), the same
+   day a record freezes under, so the heading and the sentences under it can
+   never be about two different days. It is the only new string here, and it
+   is a label. An empty day takes the whole section with it (dl-empty,
+   sumDayPaint), the way the rail's section went, rather than leaving a date
+   over nothing.
+   ============================================================ */
+function sumToday(){
+ var d=(typeof dlyDay==='function')?dlyDay(Date.now()):null;
+ return '<section class="sg-z sg-today" data-grp="today" aria-labelledby="sg-h-today">'
+  +sgHead('today','Today')
+  +'<div class="sg-card sg-today-c">'
+   +(d?'<p class="sg-date"><time datetime="'+esc(d)+'">'+esc(dlyDayWord(d))+'</time></p>':'')
+   +'<div id="sumday" class="dl"></div>'
+  +'</div></section>';}
+
+/* ============================================================
+   WHAT IS RUNNING, IN THE LEFT RAIL. Moved off the foot of the Summary on
+   the same ruling. The rail's own grids already carry what that card printed
+   first, the blueprint (#roots, #doms) and the two archetypes (#ar1), so
+   copying sumBlueprint and sumArch across would print each of them twice on
+   one screen. The masks are the one part the rail did not carry, so that is
+   all that moves: the first three as the rows they always were, and the rest
+   one tap down under the fold they always had. sumChain is not carried. He
+   named the chain as junk on 18 November, in the Psyche ruling recorded at
+   shell/body.html, and this is that same chain.
+
+   Painted from sumRender, so it is always the reading this page holds, and
+   emptied on an unread page, where there is nothing running to show and a
+   stale list would be a reading of somebody else.
+   ============================================================ */
+function sumRunPaint(r){
+ var h=document.getElementById('sumrun'); if(!h)return;
+ var body=r&&!r.unread?sumMasks(r,0,3):'';
+ h.innerHTML=body?body+sgFold('masks','All masks',sumMasks(r,3,99)||''):'';
+ var sec=h.closest?h.closest('.lsec'):null;
+ if(sec)sec.classList.toggle('sum-empty',!body);
+ /* the rows keep data-mask, so the one listener the page body uses opens them
+    here too, rather than a second copy of its routing */
+ if(!h.dataset.wired){h.dataset.wired='1'; h.addEventListener('click',sumClick);
+  h.addEventListener('toggle',sumFoldKeep,true);}}
+
+/* ============================================================
+   "THE HEAVIEST OF THE NINE IS SAD AT YOUR WEIGHT OF 97" IS GONE. Ruled 3
+   November, his words reading it back verbatim. sumAxes() wrote that
+   sentence (and "under it, X, Y, Z are carrying something", and "standing
+   against them") as the prose version of the same nine axes sumNine()
+   already draws as a compact ring grid two lines above it, real percentages
+   on real rings, with no sentence to parse. The prose had one caller
+   (sumFull) and no test depends on it (tests/dailyui.js's duplicate-sentence
+   probe runs on the page as rendered, not on this function, so it still
+   covers the page with sumAxes gone), so it is removed rather than left
+   calling nothing. The nine still read here through sumNine() alone.
+   ============================================================ */
+
+/* ============================================================
+   THE FIVE LENSES, ON THE PAGE AT LAST.
+
+   He has asked for Eastern and Western on this rail twice. Both were built:
+   lensWestern, lensEastern, lensDesign and lensGene sit at the top of this
+   file, pure functions of soul, axes and laws, four of them, and NOTHING IN
+   THE BUILD HAS EVER CALLED ONE. That is the third time this session the
+   thing he asked for was already written and simply not rendered, after the
+   archetype behaviours and the mask behaviours.
+
+   One lens is deliberately gone and stays gone: lensName reduced a whole name
+   to one digit and called that the name lens, which is the Expression and one
+   of six. numerology.js does that properly and the spiritual block reads it.
+
+   Each lens says what it read, what it means, and what it was read off, which
+   is the third thing a label owes the person it is put on. Nothing here is
+   stored, so none of it can drift from the instrument.
+   ============================================================ */
+function sumLens(r,bare){
+ var L=[lensWestern(r),lensEastern(r),lensDesign(r),lensGene(r)]
+  .filter(function(x){return x&&x.a;});
+ if(!L.length)return '';
+ return (bare?'':'<div class="pm-eye" style="margin-top:18px">Four lenses</div>')
+  +'<div class="s-lens">'+L.map(function(x){
+   /* WHAT IT WAS READ OFF MOVES TO THE ROW'S TITLE, round HS. It was a
+      fourth line in small italics under every lens, "read off root domain as
+      element", the third tier text he asked to have swept off the site. It
+      is kept, one hover away, because it is the provenance of a label put
+      on a person; it is not printed on the page. */
+   return '<div class="s-ln" title="'+esc('Read off '+x.c+'.')+'">'
+    +'<span class="s-ln-t">'+esc(x.t)+'</span>'
+    +'<b class="s-ln-a">'+esc(x.a)+'</b>'
+    +'<span class="s-ln-b">'+esc(x.b)+'</span>'
+   +'</div>';}).join('')+'</div>';}
+
+/* ---- integrity over time ---- */
+function sumIg(r){
+ var sr=(typeof seriesRead==='function')?seriesRead(CURP,SUM_SPAN,Date.now()):null;
+ var head='<div class="s-ig"><div class="s-ig-h">'
+  +'<span class="pm-eye">Integrity over time</span>'
+  +'<div class="s-ig-sp">'+SPANS.map(function(sp){
+    return '<button type="button" class="cn-sb'+(sp.k===SUM_SPAN?' on':'')+'" '
+     +'data-igspan="'+sp.k+'" aria-pressed="'+(sp.k===SUM_SPAN)+'">'
+     +esc(sp.nm)+'</button>';}).join('')+'</div></div>';
+ /* THE POINTS THAT HAVE AN INTEGRITY ON THEM, which is not all of them: the
+    field carries ig as null on any snapshot written before it was recorded,
+    and a null drawn as a zero is a claim that integrity was nothing. */
+ var pts=sr?sr.pts.filter(function(x){return typeof x.ig==='number';}):[];
+ /* ONE EXIT, ONE CLOSING TAG. Two returns each closing the same wrapper reads
+    correctly at run time and counts as one div too many to the build's
+    balance check, which walks the string literals and cannot know that only
+    one of the two ever runs. The check is right to be dumb about it: a
+    renderer with two exits is a renderer with two places to forget a tag. */
+ var body;
+ if(pts.length<2){
+  body='<p class="cn-gp">'
+   +(pts.length?'One reading with an integrity on it in this span, at <b>'
+     +fmtPct('integrity',pts[0].ig)+'</b>. Two makes a line.'
+    :'Nothing on the record for this span.')
+   +'</p>';}
+ else {
+  var lo=0, hi=10;                       /* integrity's real scale, both ends */
+  var t0=sr.t0, tspan=(sr.t1-sr.t0)||1;
+  var xy=pts.map(function(x){
+   return {x:((x.ms-t0)/tspan*100), y:(100-((x.ig-lo)/(hi-lo)*100))};});
+  var d=xy.map(function(q,i){return (i?'L':'M')+q.x.toFixed(2)+','+q.y.toFixed(2);}).join(' ');
+  var area=d+' L'+xy[xy.length-1].x.toFixed(2)+',100 L'+xy[0].x.toFixed(2)+',100 Z';
+  var first=pts[0].ig, last=pts[pts.length-1].ig;
+  var mv=pctMove('integrity',first,last), dir=!mv||!mv.moved?'level':(mv.up?'up':'down');
+  var col=dir==='down'?'var(--bad)':(dir==='up'?'var(--good)':'var(--accent)');
+  body=''
+  +'<svg class="s-ig-g" viewBox="0 0 100 100" preserveAspectRatio="none" '
+  +'aria-label="Integrity over the last '+esc(sr.span.nm.toLowerCase())
+  +', from nothing to 100%">'
+  /* the axis is nought to ten and never the range that happens to be there.
+     integrity has two real ends, so a chart drawn to fit the data would make
+     a quiet month look like a cliff and a good one look flat. */
+  +'<line x1="0" y1="50" x2="100" y2="50" stroke="var(--edge)" stroke-width="1" '
+  +'vector-effect="non-scaling-stroke"/>'
+  +'<path d="'+area+'" fill="'+col+'" opacity=".12"/>'
+  +'<path d="'+d+'" fill="none" stroke="'+col+'" stroke-width="1.6" '
+  +'vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round"/>'
+  +'</svg>'
+  /* the two ends as percents, 17 October, percent phase 2: integrity's
+     scale is nought to ten (engine/pct.js), so 4.9 reads 49%. The word
+     between them is read off the two figures it sits between, so a move too
+     small to print is level and never "up" between two equal figures. */
+  +'<div class="s-ig-f"><span>'+fmtPct('integrity',first)+'</span>'
+  +'<b>'+dir+'</b><span>'+fmtPct('integrity',last)+'</span></div>';}
+ return head+body+'</div>';}
+
+/* ---- one delegated listener for everything on this surface ---- */
+function sumWire(){
+ var h=document.getElementById('sumbody'); if(!h||h.dataset.wired)return;
+ h.dataset.wired='1';
+ /* a fold remembers that it was opened through the next repaint, because
+    the surface is rewritten whole whenever a reading changes. toggle does not
+    bubble, so it is caught on the way down. */
+ h.addEventListener('toggle',sumFoldKeep,true);
+ h.addEventListener('click',sumClick);}
+/* NAMED, 20 November, and nothing in them changed. They were the two
+   anonymous handlers above, and What is running moved to the left rail
+   (sumRunPaint) carrying rows whose data-mask this routing already answers,
+   so the rail attaches the same two functions rather than a copy of them. */
+function sumFoldKeep(ev){var d=ev.target;
+ if(d&&d.getAttribute&&d.getAttribute('data-fold'))SUM_OPEN[d.getAttribute('data-fold')]=d.open;}
+function sumClick(ev){
+  var b=ev.target.closest?ev.target.closest('[data-sout],[data-sp],[data-num],[data-arch],[data-dom],[data-seat],[data-mask],[data-gl],[data-igspan]'):null;
+  if(!b)return;
+  /* the integrity chart's own span. It repaints the surface rather than the
+     chart alone, so the pressed button and the drawn line cannot disagree. */
+  var ig=b.getAttribute('data-igspan');
+  if(ig){SUM_SPAN=ig; sumRender(); return;}
+  /* THE TWO PRIMARY ACTIONS ON THIS PAGE DID NOTHING.
+
+     The output row prints "Open it" under the protocol and "Run a release"
+     under the heaviest address, and data-sout was not in the selector above,
+     so closest() returned null and the handler returned on its first line.
+     Both buttons have been inert since the row was built. They are the only
+     two actions on the surface a stranger opens on, so the product's front
+     door had no handle on it.
+
+     They go to the surfaces that already exist. Open it opens the ritual
+     builder. Run a release picks the one address the card names and opens the
+     run, which is the same call the Story panel makes. */
+  if(b.hasAttribute('data-sout')){
+   var w=b.getAttribute('data-sout');
+   if(w==='rit'&&typeof ritOpen==='function'){ritOpen(null);return;}
+   if(w==='rel'&&typeof relPick==='function'){
+    var nid=+b.getAttribute('data-n');
+    if(!isNaN(nid)){relPick([nid]);return;}}
+   /* the intake, for the person whose release ground is already spent. it is
+      the only lever left that moves integrity, so it needs a door from here. */
+   if(w==='iq'){setTab(TAB.INTAKE);return;}
+   return;}
+  if(b.hasAttribute('data-sp'))return runSpDrill(b.getAttribute('data-sp'),b.getAttribute('data-spv'));
+  if(b.hasAttribute('data-num'))return runNumDrill(b.getAttribute('data-num'));
+  if(b.hasAttribute('data-dom'))return runCellDrill(+b.getAttribute('data-dom'),0);
+  if(b.hasAttribute('data-seat')){
+   /* runSeatDrill takes the APC entry, not a name. Looked up by band rather
+      than passed a string it would then have to parse. */
+   var sn=b.getAttribute('data-seat');
+   var sc=APC.filter(function(x){return x.b===sn;})[0];
+   return sc?runSeatDrill(sc):runCoreDrill();}
+  if(b.hasAttribute('data-gl'))return runCoreDrill();
+  /* an archetype or a mask has no drill of its own yet, so the core reading is
+     the honest destination rather than a button that does nothing. */
+  return runCoreDrill();}

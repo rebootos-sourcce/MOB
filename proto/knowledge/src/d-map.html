@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Knowledge prototype D, Map</title>
+<!--CSS-->
+<style>
+.bar{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;margin-bottom:14px}
+.bar h1{font-size:22px;margin-right:8px}
+.bar input{flex:1 1 240px;max-width:420px;height:48px;padding:0 14px;border-radius:12px;border:1px solid var(--line);background:var(--panel);color:var(--ink);font-size:16px}
+.bar .rec{margin-left:auto;font-size:14px;color:var(--mid)}
+.bar .rec b{color:var(--ink);font-weight:600}
+.map{position:relative;border:1px solid var(--line);border-radius:18px;background:var(--sunk);overflow:hidden}
+.band{display:grid;grid-template-columns:56px minmax(180px,240px) minmax(0,1fr);align-items:center;border-bottom:1px solid #1C1F28;min-height:84px}
+.band:last-child{border-bottom:0}
+.band.hot{background:linear-gradient(90deg,rgba(255,255,255,.03),transparent 60%)}
+.spine{position:relative;align-self:stretch;display:flex;align-items:center;justify-content:center}
+.spine::before{content:"";position:absolute;left:50%;top:0;bottom:0;width:2px;margin-left:-1px;background:#2A2E3A}
+.band:first-child .spine::before{top:50%}
+.band:last-child .spine::before{bottom:50%}
+.spine button{position:relative;z-index:1;width:44px;height:44px;border-radius:50%;border:0;background:var(--sunk);cursor:pointer;padding:0;display:flex;align-items:center;justify-content:center}
+.seatlab{padding:10px 12px 10px 4px}
+.seatlab b{display:block;font-size:17px}
+.seatlab small{color:var(--dim);font-size:13px;line-height:1.3;display:block}
+.row{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:10px 14px 10px 0}
+.ax{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 12px 0 6px;border-radius:999px;border:1px solid var(--line);
+ background:var(--panel);cursor:pointer;font-size:15px}
+.ax .fig{font-size:13px;color:var(--mid)}
+.dots{display:flex;flex-wrap:wrap;gap:0;margin-left:8px;padding-left:10px;border-left:1px solid #22252F}
+.dot{width:44px;height:44px;border:0;background:transparent;cursor:pointer;padding:0;display:flex;align-items:center;justify-content:center}
+.dot i{display:block;border-radius:50%;border:1.5px solid var(--c)}
+.dot.sel i,.ax.sel{box-shadow:0 0 0 3px rgba(126,184,212,.5)}
+.dot.lnk i{background:var(--c)}
+.ax.lnk{border-color:var(--accent)}
+.lines{position:absolute;inset:0;pointer-events:none}
+.key{display:flex;flex-wrap:wrap;gap:8px 20px;align-items:center;margin:10px 2px 24px;color:var(--dim);font-size:14px}
+.key span{display:inline-flex;align-items:center;gap:8px}
+.key i{display:inline-block;border-radius:50%;border:1.5px solid var(--mid)}
+#sheet{scroll-margin-top:60px}
+.rest{margin-top:32px}
+.rest h2{font-size:19px;margin-bottom:6px}
+.rest p.eyebrow{margin-bottom:10px}
+.rest .grp{margin-bottom:18px}
+.rest .chips{display:flex;flex-wrap:wrap;gap:8px}
+@media (max-width:760px){
+ .band{grid-template-columns:48px minmax(0,1fr)}
+ .band .row{grid-column:1 / -1;padding:0 12px 12px 12px}
+ .dots{margin-left:0;padding-left:0;border-left:0}
+ .seatlab small{display:none}
+ .bar .rec{margin-left:0;width:100%}
+}
+</style></head>
+<body>
+<main class="stage" id="stage">
+ <div class="bar"><h1>Where it sits</h1>
+  <input id="q" type="search" placeholder="Find an address, a saboteur, a place" aria-label="Find on the map">
+  <span class="rec" id="rec"></span></div>
+ <div class="map" id="map"></div>
+ <div class="key" id="key"></div>
+ <div id="sheet"></div>
+ <div class="rest" id="rest"></div>
+</main>
+<!--JS-->
+<script>
+/* ============================================================
+   D. THE MAP. The index is the body. Seven seats, crown at the top
+   and root at the bottom, each band carrying its child emotions and
+   every address held there. The person's own weight is the size of a
+   dot. Choose anything and what it links to lights across the seats,
+   with the lines drawn, so a saboteur that runs from the root to the
+   solar plexus is seen doing it.
+
+   Built on: the method of loci and spatial memory, the oldest memory
+   technique there is; Obsidian's graph, where links become visible
+   structure, anchored here to the body so it never becomes a hairball;
+   Oura's contributors, where a figure opens its own explanation in
+   place; and the owner's ruling that the avatar, the body, is the
+   centre of the product.
+
+   What it cannot hold: archetypes, domains and terms have no address,
+   so they sit below the map as a plain index. That is a real cost and
+   it is named, not hidden.
+   ============================================================ */
+var esc=KB.esc, SEL=null, Q='';
+var ORDER=KBD.bands.slice().reverse();
+KB.chrome('D','Map','<b>Why this design.</b> The index is the body: seven seats, crown to root, every address sitting where it is held and sized by your own weight. '
+ +'Pick anything and what it links to lights up across the seats with the lines drawn, so a saboteur that runs from the root to the solar plexus is seen doing it. '
+ +'Place is the oldest memory aid there is, and it ties the knowledge base to the avatar, which is ruled the centre of the product. '
+ +'Archetypes, domains and terms have no address, so they sit under the map as a plain index. That is a real cost of this direction.');
+
+function map(){
+ var p=KB.person(), h='';
+ var hot=null; if(p){var best=-1; ORDER.forEach(function(b){var v=KB.pct(KB.BY['seat:'+b]); if(v>best){best=v;hot=b;}});}
+ ORDER.forEach(function(b){
+  var seat=KB.BY['seat:'+b], c=KBD.pal[b];
+  var axes=KB.E.filter(function(e){return e.kind==='axis'&&e.seat===b;});
+  var nodes=KB.E.filter(function(e){return e.kind==='node'&&e.seat===b;});
+  h+='<div class="band'+(b===hot?' hot':'')+'" style="--c:'+c+'">'
+   +'<div class="spine"><button type="button" data-open="'+esc(seat.id)+'" data-pv="'+esc(seat.id)+'" aria-label="'+esc(b)+' seat">'+KB.ring(seat,40,KB.pct(seat))+'</button></div>'
+   +'<div class="seatlab"><b>'+esc(b)+'</b><small>'+esc(seat.fam.replace(/\s*\([^)]*\)/g,'').split(' / ').slice(0,2).join(', '))+'</small></div>'
+   +'<div class="row">'+axes.map(function(e){var v=KB.pct(e);
+     return '<button type="button" class="ax" data-open="'+esc(e.id)+'" data-pv="'+esc(e.id)+'">'+KB.ring(e,30,v)+esc(e.nm)
+      +(v==null?'':' <span class="fig">'+v+'%</span>')+'</button>';}).join('')
+   +'<span class="dots">'+nodes.map(function(e){var v=KB.pct(e), d=v==null?12:Math.round(8+v*0.26);
+     return '<button type="button" class="dot" data-open="'+esc(e.id)+'" data-pv="'+esc(e.id)+'" aria-label="'+esc(e.nm)+(v==null?'':', '+v+'%')+'" style="--c:'+c+'">'
+      +'<i style="width:'+d+'px;height:'+d+'px;border-color:'+c+';opacity:'+(v==null||v>=10?1:.55)+'"></i></button>';}).join('')+'</span>'
+   +'</div></div>';});
+ document.getElementById('map').innerHTML=h+'<svg class="lines" id="lines"></svg>';
+ document.getElementById('key').innerHTML='<span><i style="width:10px;height:10px"></i>An address. Larger means more held.</span>'
+  +'<span>Rings are the child emotions seated here.</span>'
+  +(p?'<span>The shaded band is the seat with the most addresses carrying charge.</span>':'<span>Nothing read yet, so every address is the same size.</span>');
+ mark();}
+
+/* light what the selection links to, and draw the lines to it */
+function mark(){
+ var M=document.getElementById('map'); M.querySelectorAll('.sel,.lnk').forEach(function(el){el.classList.remove('sel','lnk');});
+ var svg=document.getElementById('lines'); svg.innerHTML='';
+ if(!SEL)return;
+ var e=KB.BY[SEL], ids=[SEL].concat(e.links||[]);
+ if(e.kind==='sab')ids=ids.concat((e.nids||[]).map(function(i){return 'node:'+i;}));
+ var box=M.getBoundingClientRect(), pts=[];
+ ids.forEach(function(id,i){M.querySelectorAll('[data-open="'+id+'"]').forEach(function(el){
+  el.classList.add(i===0?'sel':'lnk');
+  var r=el.getBoundingClientRect(); pts.push([r.left+r.width/2-box.left, r.top+r.height/2-box.top, i===0]);});});
+ var src=pts.filter(function(p){return p[2];})[0]; if(!src&&pts.length)src=pts[0];
+ svg.setAttribute('viewBox','0 0 '+box.width+' '+box.height);
+ pts.forEach(function(p){if(p===src)return;
+  svg.innerHTML+='<line x1="'+src[0]+'" y1="'+src[1]+'" x2="'+p[0]+'" y2="'+p[1]+'" stroke="#7EB8D4" stroke-opacity=".55" stroke-width="1.5"/>';});}
+
+function open(id){
+ SEL=id; KB.markSeen(id); mark();
+ var s=document.getElementById('sheet');
+ s.innerHTML='<div style="display:flex;align-items:center;gap:12px;margin:8px 0 18px"><button type="button" class="btn" id="clr">Clear the selection</button>'
+  +KB.award('an entry becoming Known')+'</div>'+KB.sheet(KB.BY[id]);
+ wireSheet(s); rec();
+ s.scrollIntoView({block:'start',behavior:'smooth'});}
+function wireSheet(s){
+ document.getElementById('clr').onclick=function(){SEL=null; s.innerHTML=''; mark(); window.scrollTo({top:0,behavior:'smooth'});};
+ s.querySelectorAll('[data-open]').forEach(function(el){el.onclick=function(){open(el.getAttribute('data-open'));};});
+ KB.wireCheck(s,rec);}
+
+function rest(){
+ var g=[['sab','Saboteurs','Choose one and the addresses it runs on light on the map.'],['hcx','Architectures',''],['mask','Masks',''],
+  ['arch','Archetypes','No address, so no place on the map.'],['dom','Domains','No address, so no place on the map.'],['term','Terms','']];
+ document.getElementById('rest').innerHTML='<h2>Everything else</h2><p class="eyebrow">What does not sit at one place in the body.</p>'
+  +g.map(function(x){var L=KB.E.filter(function(e){return e.kind===x[0];});
+   if(x[0]==='sab'&&KB.person())L.sort(function(a,b){return (KB.pct(b)||0)-(KB.pct(a)||0);});
+   return '<div class="grp"><div class="eyebrow" style="margin-bottom:6px">'+x[1]+(x[2]?'. '+x[2]:'')+'</div><div class="chips">'
+    +L.map(function(e){return '<button type="button" class="chip" data-open="'+esc(e.id)+'" data-pv="'+esc(e.id)+'">'+esc(e.nm)+'</button>';}).join('')+'</div></div>';}).join('');}
+
+function rec(){var c=KB.counts(); document.getElementById('rec').innerHTML='Seen <b>'+c.seen+' '+(c.seen===1?'entry':'entries')+'</b> · Known <b>'+c.known+' '+(c.known===1?'entry':'entries')+'</b>';}
+
+document.getElementById('q').oninput=function(){Q=this.value.trim().toLowerCase();
+ if(!Q){SEL=null; mark(); return;}
+ var hit=KB.E.filter(function(e){return e.kind!=='term'&&(e.nm+' '+(e.where||'')+' '+(e.theme||'')).toLowerCase().indexOf(Q)>=0;})[0];
+ if(hit){SEL=hit.id; mark();}};
+document.getElementById('q').onkeydown=function(ev){if(ev.key==='Enter'&&SEL)open(SEL);};
+document.getElementById('stage').addEventListener('click',function(ev){
+ var t=ev.target.closest('#map [data-open], #rest [data-open]'); if(t)open(t.getAttribute('data-open'));});
+addEventListener('resize',mark);
+KB.preview(document.getElementById('stage'));
+function all(){SEL=null; document.getElementById('sheet').innerHTML=''; map(); rest(); rec();}
+KB.on(all); all();
+</script>
+</body></html>

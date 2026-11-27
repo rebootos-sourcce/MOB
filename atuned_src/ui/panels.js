@@ -1,0 +1,2105 @@
+
+/* ============================================================
+   CONTROLS
+   ============================================================ */
+const $=function(id){return document.getElementById(id);};
+/* svgI moved to component.js. It is a const, and a const reached for before
+   its declaration throws at call time, which is a trap waiting for the first
+   renderer that loads earlier than this file and wants an icon. */
+/* a list said out loud: apathy and shock; anger, shame and disgust */
+function panAnd(a){return a.length<2?a.join(''):a.slice(0,-1).join(', ')+' and '+a[a.length-1];}
+/* EACH ROW CARRIES ITS OWN MARK, NOT A DOT. FV in TASKS.md, his words:
+   "everything should have meaning, everything should have an icon." These
+   rows led with an eight pixel dot in the seat's colour, which says the seat
+   and nothing about which axis or which law the row is. Every child emotion
+   and every law has carried its own glyph in canon.js since the port, and the
+   stack on the right rail already draws the nine axes with them, so the
+   sliders draw the same mark for the same thing. The colour is still the
+   seat's. ic is optional, so a row with no glyph keeps the dot. */
+function numField(host,name,band,store,key,ic,tip){
+ const d=document.createElement('div');d.className='nf';
+ const col=band?seatCol(band):'var(--gold)';
+ d.innerHTML=(ic?'<i class="nf-g" style="color:'+col+'"><svg viewBox="0 0 24 24" aria-hidden="true">'
+   +glyphPath(ic)+'</svg></i>':'<i style="background:'+col+'"></i>')
+  /* ROUND PO. The label carries what the axis or the law is, from the meaning
+     table, on the label and not on the row: the row holds a slider, and a tap
+     on a slider has to be a drag and not an explanation. */
+  +'<label'+(tip?' class="tipu" tabindex="0" data-tip-k="'+esc(name)+'" data-tip="'+esc(tip)+'"':'')+'>'+name+'</label>'
+  +'<span class="tr" role="slider" tabindex="0" aria-label="'+name+'" aria-valuemin="0" '
+  +'aria-valuemax="10" aria-valuenow="'+store[key]+'"><b style="background:'+col+'"></b></span>'
+  +'<input type="number" min="0" max="10" step="0.5" value="'+store[key]+'" aria-label="'+name+'">';
+ host.appendChild(d);
+ const inp=d.querySelector('input'),trk=d.querySelector('.tr'),tr=d.querySelector('.tr b');
+ tr.style.width=(store[key]*10)+'%';
+ const set=function(v){toYou();store[key]=clamp(v,0,10);
+  tr.style.width=(store[key]*10)+'%';inp.value=store[key].toFixed(1);
+  trk.setAttribute('aria-valuenow',store[key].toFixed(1));saveYou();render();};
+/* +inp.value||0 mapped anything unparseable to zero, so a stray keystroke or
+    clearing the field mid edit silently set the law to its worst value. An
+    unreadable entry now holds the last good one instead of destroying it.
+    Clamping is unchanged: 9999 still reads 10, -50 still reads 0. */
+ inp.addEventListener('input',function(){
+  var raw=inp.value.trim();
+  if(raw===''){return;}                    /* mid edit, not a value of zero */
+  var v=parseFloat(raw);
+  if(!isFinite(v)){inp.value=store[key].toFixed(1);return;}
+  set(v);});
+ inp.addEventListener('blur',function(){inp.value=store[key].toFixed(1);});
+ let dragging=false;
+ const fromX=function(e){const b=trk.getBoundingClientRect();
+  return ((e.clientX-b.left)/b.width)*10;};
+ trk.addEventListener('pointerdown',function(e){dragging=true;trk.setPointerCapture(e.pointerId);set(fromX(e));});
+ trk.addEventListener('pointermove',function(e){if(dragging)set(fromX(e));});
+ trk.addEventListener('pointerup',function(){dragging=false;});
+ trk.addEventListener('pointercancel',function(){dragging=false;});
+ trk.addEventListener('keydown',function(e){
+  if(e.key==='ArrowUp'||e.key==='ArrowRight'){e.preventDefault();set(store[key]+.5);}
+  if(e.key==='ArrowDown'||e.key==='ArrowLeft'){e.preventDefault();set(store[key]-.5);}});
+ trk.addEventListener('wheel',function(e){e.preventDefault();set(store[key]+(e.deltaY<0?.5:-.5));},{passive:false});
+ inp.addEventListener('wheel',function(e){e.preventDefault();set(store[key]+(e.deltaY<0?.5:-.5));},{passive:false});
+ return {inp,tr,trk};}
+/* THE CHILD EMOTION SLIDERS CAME OFF, 18 November, with the left rail's Child
+   emotions section, his words: "I also asked you to remove the child emotions
+   because we're going to have the person do self-reporting in the diagnostic."
+   They were built here into #chg, and numField appends into its host, so a
+   build left behind would throw at load on a host that no longer exists and
+   take every module after this one with it. The laws keep theirs. */
+const LWF={};
+/* THE LAW BOXES LIVE IN THE INTAKE PAGE'S FOLD NOW, 18 November (#iqhand, held in
+   #iqhold until renderIntake takes it, ui/intakeui.js iqHand). They left the right
+   rail with the rest of what sat under Selection. Guarded, so a shell that has
+   no such host builds none and nothing downstream throws. */
+if($('laws'))SI.forEach(function(l){LWF[l.nm]=numField($('laws'),l.nm,l.b,S.law,l.nm,l.ic,unpackOf(l.nm,'law'));});
+/* syncCh stays, and keeps the half that was never about the sliders: nine
+   callers rely on it to coerce each held and opposite value to a number, and
+   a loaded record with a missing axis to a zero. */
+function syncCh(){CHILD.forEach(function(cf){
+ S.charge[cf.nm]=+S.charge[cf.nm]||0; S.replace[cf.nm]=+S.replace[cf.nm]||0;});}
+function syncLw(){SI.forEach(function(l){
+ const f=LWF[l.nm],v=+S.law[l.nm]||0;S.law[l.nm]=v; if(!f)return;
+ f.inp.value=v.toFixed(1);f.tr.style.width=(v*10)+'%';f.trk.setAttribute('aria-valuenow',v.toFixed(1));});}
+/* THE BULK LAW SLIDER ANSWERS NOTHING, P2-5 of the inference audit, 24
+   October. It set every law in one drag, and a law moved off its seed counts
+   as answered (lawIn, saveProfile), so one gesture filled all 21 and CQ, the
+   tier word and full coverage followed it. CQ is exactly as good as the self
+   report, and this was not one. An unanswered law now moves with the slider
+   and its seed moves with it, so it stays unanswered and no save writes it.
+   A law already answered takes the value and stays answered: the person
+   moved their own answer. Moving one law's own control still answers that
+   law, because it moves it off the seed. */
+if($('allLaw'))$('allLaw').addEventListener('input',function(e){toYou();
+ var v=+e.target.value;
+ SINAMES.forEach(function(l){if(!lawIn(l))LAW_SEED[l]=v; S.law[l]=v;});syncLw();saveYou();render();});
+
+/* ---- tabs and depths ---- */
+/* ============================================================
+   WHERE A PERSON WAS, AND THE ONE FIRST LANDING. The owner, 9 October: "when
+   a first time user goes from the funnel to the questions to the app, I want
+   them to start on the summary screen. For the first time after that, it'll
+   just be persistent to wherever they left off. But we want to give them
+   right away information on their summary reading."
+
+   Two device facts, kept in the browser's own store and never in the record,
+   because where somebody was looking is about this screen and not about them:
+   source.tab, the last surface, written by every setTab and read once by the
+   boot; and source.landed, set the first time a person is sent to Summary.
+   The send happens at the two doors a first visitor comes through, a record
+   arriving in a link from the funnel (recordLinkBoot) and the first run
+   closing (obClose), and happens once per device. A person who has landed
+   once opens on wherever they left off, and a device that has never had
+   either fact opens on TABHOME, which was the Field until 23 October and is
+   Discover since.
+
+   Settings and the practitioner page are never remembered: Settings has no
+   door of its own, and the practitioner page is a switch a person may have
+   turned off since. Analytics and Games are folded surfaces, so what is kept
+   is the tab that carries them (TABREAL). A store that is blocked or throws
+   costs the memory and never the start up.
+
+   THE APP OPENS ON DISCOVER, AND THE ONE FIRST LANDING STAYS ON SUMMARY.
+   23 October 2026. His words: "the app opens on Discover. So when you click
+   Discover, you only get the journal and the imprints and the release", and
+   "The most important portions of the app are core loop... That really is
+   the journal to the release." So a device with no memory opens on TABHOME
+   (engine/core.js), Discover's journal page, and every open after the first
+   landing is still wherever the person left off. The first landing itself,
+   once per device, at the funnel's link and at the first run closing, stays
+   on Summary. A default taken by the UX seat and his to overrule. The
+   reasons:
+
+     The 9 October ruling above is his and is about exactly this moment, a
+     first time user arriving from the funnel, where the 23 October ruling is
+     about where the app opens in general and names nothing of the funnel.
+     The specific one is kept until he says otherwise; nothing he said on 23
+     October takes it back.
+     A built feature stands on it. The gift's line, "Your gift: 100
+     patterns, no card. Everything is open.", is drawn on Summary as the
+     page a new person lands on (sumGift, ui/summary.js), so that their first
+     screen is their reading, opened and not a shop, and tests/gift.js holds
+     the line there, on the first screen, from the quiz's own link. Landing
+     on Discover would take the line off a new person's first screen, and
+     putting it on the journal page is a change to his approved layout that
+     nobody asked for. In alpha, "existing features complete" wins.
+     Weighed against it, and measured when this was built: landing a first
+     arrival on Discover worked, the status line said the record loaded and
+     the release column offered three of the record's held addresses with
+     Run lit, and the funnel's own door sells that page ("The app reads every
+     story you write and shows where each one sits in the body. Then it runs
+     a release", viewDoor, funnel/quiz.html). It was the first cut of this
+     change and was reversed for the two reasons above.
+
+   What it costs: "the app opens on Discover" is true on every open but one,
+   the first arrival, which sees its reading and the gift on Summary, in
+   Play, with Discover the first section on the bar. To send the first arrival to
+   Discover too is one line, the setTab below, once the gift's line has a
+   place on the journal page. */
+var TAB_KEY='source.tab', TAB_LANDED_KEY='source.landed';
+function tabKnown(k){
+ var all=[].concat(typeof TABDEF!=='undefined'?TABDEF:[], typeof TABEXTRA!=='undefined'?TABEXTRA:[]);
+ return all.some(function(t){ return t&&t.k===k; });}
+/* A HELD SURFACE IS NOT REOPENED, 17 November. Character came off the bar
+   carrying .held (engine/core.js, above TABEXTRA's entry for it), and a device
+   whose store still says 11 would reopen on a page with no door and no section
+   lit. tabRead answers null for it, so the boot opens on TABHOME instead. */
+function tabKeepable(k){
+ return typeof k==='number'&&k!==TAB.SETTINGS&&k!==TAB.PRACTITIONER&&tabKnown(k)
+  &&!(typeof TABEXTRA!=='undefined'&&TABEXTRA[k]&&TABEXTRA[k].held);}
+function tabKeep(i){
+ try{
+  if(typeof STORE_BOUND==='undefined'||!STORE_BOUND)return;
+  var k=TABREAL(i); if(tabKeepable(k))STORE.set(TAB_KEY,String(k));
+ }catch(e){}}
+function tabRead(){
+ try{
+  if(typeof STORE_BOUND==='undefined'||!STORE_BOUND)return null;
+  var raw=STORE.get(TAB_KEY); if(raw===null||raw===undefined||raw==='')return null;
+  var k=parseInt(raw,10); return (String(k)===String(raw)&&tabKeepable(k))?k:null;
+ }catch(e){ return null; }}
+function tabLandFirst(){
+ try{
+  if(typeof STORE_BOUND==='undefined'||!STORE_BOUND)return false;
+  if(STORE.get(TAB_LANDED_KEY))return false;
+  STORE.set(TAB_LANDED_KEY,'1');
+ }catch(e){ return false; }
+ setTab(TAB.SUMMARY); return true;}
+function setTab(i){
+ /* A FOLDED SURFACE RESOLVES TO ITS PARENT. Analytics and Games came off the
+    bar and their hosts moved inside Summary and Knowledge, so an integer that
+    used to be a tab is now a request for the tab that carries it. Routing
+    every caller through TABREAL means the drills, the tools and any stored
+    value keep working instead of landing on whatever happens to be first. */
+ i=TABREAL(i);
+ /* A HIDDEN SURFACE THAT KEEPS ITS LAST RENDER IS STILL ASSERTING IT. Summary
+    and Analytics are the two surfaces on this bar that print a reading, and
+    both are rebuilt on entry, so what they hold while hidden is whatever was
+    true for whoever was loaded last. Leaving it there means the document
+    carries a coherence figure for a profile that is no longer selected, which
+    anything reading the page finds, and the functional gate did: it swept the
+    body on a cleared field and found two percentages nobody could see. They
+    are emptied on the way out rather than left to go stale.
+
+    TWO SURFACES, TWO CONDITIONS, since round LV: Analytics unfolded from
+    Summary and #ana stopped being a child of #sum, so leaving one no longer
+    has anything to say about the other. Each empties only its own host. */
+ if(S.tab===TAB.SUMMARY&&i!==TAB.SUMMARY){
+  var sb=$('sumbody'); if(sb)sb.innerHTML='';
+  /* and its side column, today's sentences, for the same reason */
+  if(typeof sumDayClear==='function')sumDayClear();}
+ if(S.tab===TAB.ANALYTICS&&i!==TAB.ANALYTICS){
+  var ab=$('ana'); if(ab)ab.innerHTML='';}
+ /* and Knowledge hands the drill panel back to the rail, which it lends to
+    its answer layer while an answer is open (ui/knowledge.js, kbAnsTake) */
+ if(S.tab===TAB.KNOW&&i!==TAB.KNOW&&typeof kbAnsHome==='function')kbAnsHome();
+ /* ACCOUNTABILITY HAS NO HOST TO EMPTY, round QF. It printed a record into
+    #acct while it had a page, and it is the right rail's contents now, which
+    ritRender empties itself the moment Flow is not the tab: the same rule, one
+    writer nearer the markup. */
+ /* AND THE PRACTITIONER'S PAGE, for the same reason and one more: its drills
+    sit in Selection, the panel every surface shares, so a reading about an
+    example left there would stand beside the Field as the person's own.
+    ui/practitioner.js pracLeave empties both. */
+ if(S.tab===TAB.PRACTITIONER&&i!==TAB.PRACTITIONER&&typeof pracLeave==='function')pracLeave();
+ S.tab=i; S.pin=null;
+ if(typeof tabKeep==='function')tabKeep(S.tab);
+ /* THE HOSTS ARE SHOWN FROM BOTH TABLES. This walked TABDEF alone and
+    Settings was shown and hidden by hand below, which held while Settings was
+    the only surface with no door. At KT Games came off the bar into TABEXTRA
+    ("Hide games for now") and the loop stopped reaching its host: setTab
+    answered Games and the host kept display none, measured as a 0 pixel box
+    on a phone by the functional gate. Every doorless surface is in TABEXTRA,
+    so the loop reads it too, and Settings lost its hand written copy of these
+    two lines rather than keep a second writer for one display. */
+ TABDEF.concat(Object.keys(TABEXTRA).map(function(k){return TABEXTRA[k];})).forEach(function(T){
+  var e=$(T.id); if(!e||T.id==='cv')return;
+  e.classList.toggle('on',T.k===i);
+  e.style.display=(T.k===i)?'flex':'none';});
+ (function(){var sE=$('settings'); if(!sE)return;
+  /* the account area replaced renderSettings. The old function is gone rather
+     than left beside it, because two renderers for one host is how a surface
+     ends up half updated. */
+  if(i===TAB.SETTINGS&&typeof renderAccount==='function')renderAccount();
+  /* THE RITUAL IS A SURFACE NOW, NOT A SHEET. It was a modal reached from
+     three places and he had never seen it. As a tab it has to be open the
+     moment the tab is, because a surface that needs a second press to show
+     anything is a blank screen with a name on it. */
+  if(i===TAB.RITUAL&&typeof ritOpen==='function'){
+   if(!RIT.open)ritOpen(null); else ritRender(); }
+  /* AND LEAVING FLOW EMPTIES ALL THREE COLUMNS, round QF. The two menus live
+     in the rails, which no other surface's renderer writes, so markup left in
+     them on the way out stayed in the document: the gate measured 4143
+     characters of builder and 8654 of record still sitting in the rails while
+     the Field was showing. That is the rule this function already keeps for
+     Summary and Analytics, a hidden host never holds a stale reading, and it
+     is kept here by the one painter rather than by a second writer reaching
+     into its hosts. ritRender empties and returns the moment Flow is not the
+     tab, so this costs nothing on every other surface. */
+  else if(typeof ritRender==='function')ritRender();
+  /* ACCOUNTABILITY NEEDS NO LINE OF ITS OWN HERE, round QF. It is the right
+     column of the Ritual page, so the ritOpen above paints it with everything
+     else, and TAB.ACCOUNT no longer reaches setTab as a tab: it is folded onto
+     TAB.RITUAL in engine/core.js and TABREAL answers Ritual for it. */})();
+ /* THE FIELD IS DRAWN ONE OF THREE WAYS NOW, BP8, and which of the canvas,
+    the depth row, a rendition and its layer row are up is decided in one
+    place, fviewPaint in ui/rings.js. This showed the canvas and the depth
+    row itself, and a second writer for one display is how a surface ends up
+    showing two pictures at once. */
+ fviewPaint(i);
+ /* Body's layer row lives in the sub bar now, not over the figure */
+ var lb=$('lbar'), rb=$('rbar');
+ if(lb) lb.style.display=(i===TAB.ENERGY)?'flex':'none';
+ if(rb) rb.style.display=(i===TAB.ENERGY&&PMLAYER==='pain')?'flex':'none';
+ /* CLEAR FROM BOTH TABLES, BECAUSE THE ADD READS BOTH.
+    This cleared TABDEF only. Settings is deliberately not in TABDEF, having no
+    door in the bar, so its class went on through TABOF and never came off. The
+    body then carried tab-settings for the rest of the session on top of
+    whatever tab the person moved to, and the rule that collapses the right
+    rail on Settings stayed applied everywhere. The centre column kept
+    rendering, so from the outside nothing looked broken: the rail was simply
+    gone, on every surface, until a reload.
+
+    Found by the render watch on its first run after it was taught to walk the
+    rails, which is the whole argument for teaching it. It is also the same
+    mistake this repository keeps making in new places: a thing looked up in
+    one table and written from two. */
+ TABDEF.forEach(function(T){document.body.classList.remove(T.cls);});
+ Object.keys(TABEXTRA).forEach(function(k){
+  var T=TABEXTRA[k]; if(T&&T.cls)document.body.classList.remove(T.cls);});
+ document.body.classList.add(TABOF(i).cls);   /* by key, not by position */
+ if(typeof colTab==='function')colTab();   /* the left column's own fold per surface */
+ if(typeof railTab==='function')railTab(); /* and the right's, round RB */
+ /* THE TAB ARRIVES RATHER THAN APPEARING. Switching surfaces was a single
+    frame cut: one host went to display:none and the next to flex, which gives
+    the eye no direction to follow and no sense that anything moved rather than
+    was replaced. Six pixels of rise over the context step, on the surface that
+    just came on.
+
+    The class has to be taken off and the layout read before it goes back on.
+    Adding a class that is already there does not restart a keyframe, so
+    without the offsetWidth read the second visit to a tab animates nothing.
+    This is the one deliberate forced reflow in the product, on a host that was
+    about to be laid out anyway. */
+ (function(){var h=$(i===TAB.SETTINGS?'settings':TABOF(i).id);
+  /* the Field's entry names the canvas, and that is identity and stays. When
+     a rendition is up it is the picture on screen, so it is the one that
+     arrives; the canvas under it is hidden and would rise unseen. */
+  if(i===TAB.FIELD&&fviewOn())h=$('frend');
+  if(!h)return; h.classList.remove('tabin'); void h.offsetWidth;
+  h.classList.add('tabin');})();
+ /* MEASURE THE CANVAS THE MOMENT IT IS VISIBLE, AND NOT ONE LINE EARLIER.
+
+    It used to be measured once at boot, which worked only while Field was the
+    opening surface. It is not any more, so at boot the canvas was display:none
+    and the first draw after switching laid the wheel out for a canvas that did
+    not exist.
+
+    The first fix put this call above, before the body class was set, and the
+    sheet carries `body:not(.tab-field) #cv{display:none!important}`, which
+    beats the inline display this function had just written. So it measured a
+    canvas that was still hidden and read zero by zero. A ResizeObserver
+    corrected it a frame later and nothing looked wrong, which is exactly how
+    it survived a pass. It sits after the class now, where the canvas is
+    actually on screen. */
+ if(i===TAB.FIELD&&typeof layout==='function')layout();
+ /* AND THE RAIL'S ICON GRIDS REFIT ON ARRIVAL, for the same reason the canvas
+    is measured here. Settings is the one surface that takes the columns to
+    display:none, so leaving it gives the grids a width again without a resize
+    event to say so. fitGrid skips a hidden grid and skips an unchanged fit,
+    so this costs one layout read on a surface change and nothing on a draw. */
+ if(typeof fitGrids==='function')fitGrids();
+ /* THE FIELD ASSEMBLES ON ARRIVAL, once per arrival. Here rather than in the
+    renderer, because the renderer runs sixty times a second and arriving is
+    something that happens once. */
+ if(i===TAB.FIELD&&typeof enterStart==='function')enterStart();
+ /* and the circles lying over it arrive with it, once, ui/fieldbar.js */
+ if(i===TAB.FIELD&&typeof fbEnter==='function')fbEnter();
+ /* the Field's sub bar carried the depth row, and the glass bar floating over
+    the stage replaced it. His words: "I don't want that secondary
+    navigation." So the sub bar is Body's alone.
+    AND NOW NOBODY'S BY DEFAULT. LM in TASKS.md: the Mark row, the last thing
+    it carried on the Body, went onto the picture's upper right with its own
+    fold, "close that to reclaim space", so the band would have been an empty
+    glass strip over the stage. Every tab change takes it down; the Masks
+    door's Whole body, bmBarsOne in ui/map.js, is the one writer that raises
+    it, and only while that door is zoomed into a region. */
+ document.body.classList.remove('hassub');
+ ['probe','howto','key','tier','pol'].forEach(function(id){
+  var e=$(id); if(e)e.style.display=(i===TAB.FIELD)?'':'none';});
+ /* pressed state read off each button's own integer, never off its position
+    in a list that could be a different length than TABDEF. */
+ document.querySelectorAll('.tabtop').forEach(function(x){
+  x.setAttribute('aria-pressed',+x.getAttribute('data-tabk')===i);});
+ /* a door above the plan is greyed again after the loop wrote its pressed state */
+ lockTabs();
+ /* the folded bar on a phone names the surface, GF. Settings has no tab of
+    its own, so the folded bar says the button that opened it. */
+ var nn=$('navnow');
+ if(nn){var nT=TABDEF.filter(function(T){return T.k===i;})[0];
+  nn.textContent=nT?nT.nm:(i===TAB.SETTINGS?'Profile':nn.textContent);}
+ secPaint(i);
+ /* THE RAIL OPENS WHAT THE SURFACE IS ABOUT.
+
+    The Body page's whole reading is flow through the seven seats, and the
+    shelf carrying it sits in a rail section that is closed by default. So the
+    owner opened Body and the footer was not there: it was in the document
+    with seven children and real text, measuring zero by zero, behind a
+    collapsed accordion he had no reason to know to open.
+
+    Each surface names the sections it is about and they are opened once, the
+    first time that surface is reached. Once, not every time: a person who
+    closes a section has closed it, and a tab that reopens it on every visit
+    is arguing with them. */
+ (function(){
+  var WANT={};
+  /* Flow and Running left the rail, 18 November; Insight is the one section
+     it opens on every surface that carries it */
+  WANT[TAB.ENERGY]={right:['you']};
+  /* the Awareness grids fold to two lines of what was chosen, round OM, so
+     nothing on the left opens by itself on the Field any more */
+  WANT[TAB.FIELD]={left:[],right:['you']};
+  WANT[TAB.COMPASS]={right:['you']};
+  /* the Story's rail is the imprints since GO, opened by the bank now. The
+     release went into the Story's own third column, round IJ, so it has no
+     rail section left to open. */
+  WANT[TAB.STORY]={right:['simp']};
+  /* the Character page's words are the right rail's own section, round PE */
+  WANT[TAB.MASKS]={right:['chr']};
+  /* the Summary seeded the rail's Today section open here until 21 November,
+     when Today moved into the page's own centre (sumToday, ui/summary.js).
+     A centre zone has no fold to open, so the Summary seeds nothing. */
+  var w=WANT[i]; if(!w)return;
+  SEC_SEEDED=SEC_SEEDED||{};
+  if(SEC_SEEDED[i])return; SEC_SEEDED[i]=1;
+  Object.keys(w).forEach(function(rail){
+   w[rail].forEach(function(k){ if(OPENSEC[rail])OPENSEC[rail][k]=1; });});
+  if(typeof paintSections==='function')paintSections();})();
+ if(i===TAB.INTAKE)renderIntake();
+ /* THE INTAKE PAGE BORROWS THE QUESTIONS' HOST, round OG. intakeui.js draws
+    into #iqbody by id and the Avatar's menu already lends that host out and
+    takes it back, so this does the same: the host goes into #iqp, shown, and
+    is drawn. avShowIntake puts it home again the next time the Avatar paints. */
+ if(i===TAB.QUESTIONS){
+  var iqh=$('iqbody'), iqp=$('iqp');
+  if(iqh&&iqp){if(iqh.parentNode!==iqp)iqp.appendChild(iqh); iqh.hidden=false;}
+  if(typeof renderIntake==='function')renderIntake();}
+ /* GAMES IS ITS OWN TAB AGAIN AND THIS DISPATCH DID NOT KNOW.
+
+    Knowledge used to carry Games as a folded surface, and this rendered both
+    from the parent because the games host sat inside it. The owner ruled Games
+    back onto its own door, core.js unfolded it and body.html moved #games out
+    to be a sibling of #know, and this line was left behind. So the only branch
+    that ever called gmRender was the Knowledge branch, and every other tab,
+    Games included, fell into the else and called lgStop.
+
+    The result was a tab that opened a 903px host with nothing in it. Two
+    conditions now, because they are two surfaces. */
+ if(i===TAB.KNOW)kbRender();
+ /* the practitioner sketch, round LL. Drawn on entry and not held shut here
+    when the mode is off: its door is what the switch governs, and a surface
+    that answered setTab with nothing would be the empty 903px host Games
+    once was. */
+ if(i===TAB.PRACTITIONER&&typeof renderPrac==='function')renderPrac();
+ if(i===TAB.GAMES){ if(!GAME)GAME='lg'; gmRender(); } else lgStop();
+ if(i===TAB.STORY)stRender();
+ else { if(typeof stRailClear==='function')stRailClear();
+  /* round TF: she only runs where she is seen, same rule pause/resume
+     already hold inside uni.js itself; leaving the Journal parks her. */
+  if(typeof uniPark==='function')uniPark(); }
+ /* SUMMARY AND ANALYTICS EACH RENDER TO THEIR OWN DOOR, since round LV. This
+    called both on entry to Summary, back when Analytics had no door of its
+    own and rode in on Summary's arrival; now each tab renders only itself,
+    the same shape as every other entry below. */
+ /* and entering the Summary is the open that freezes today's summary, once
+    a local day, after the page is painted and never inside its render */
+ if(i===TAB.SUMMARY){sumRender(); if(typeof sumDayOpen==='function')sumDayOpen();}
+ else if(i===TAB.ANALYTICS)anaRender();
+ /* THE COMPASS HAS A FRONT DOOR. It was three clicks deep: click one end of
+    the cone marker on the Field stage, then a button inside the drill that
+    opened. The owner looked for it and could not find it, which is the whole
+    finding. It is a tab. coneOpen builds its own canvas and starts its own
+    frame loop, so entering the tab opens it and leaving it stops the loop
+    rather than leaving a requestAnimationFrame running behind another
+    surface. */
+ if(i===TAB.COMPASS)coneOpen(true); else if(CONE.open&&CONE.tab)coneClose();
+ render(); paintSections();
+ tabTop(i);}
+/* A NEW SURFACE STARTS AT ITS OWN TOP.
+
+   On a phone the whole app scrolls inside one container and arriving at a
+   surface did not take the view back to the top of it. A person who had read
+   down the codex and pressed Compass landed four screens below the compass,
+   looking at the bottom of the page they had just left. It reads as the tab
+   doing nothing, which is the worst kind of defect, because the answer a
+   person tries is to press it again and it still does nothing.
+
+   Twice, and the second time is the point. The first cut ran partway through
+   setTab and measured clean on its own, then the gate still failed at 4165:
+   everything after it, the renderers and the rail, scrolls the container
+   again. So it runs last, and once more on the next frame, because a
+   renderer that lays out asynchronously would otherwise win the argument.
+
+   Only a container that has actually moved is written to, so this does
+   nothing at all on a surface already at its top. */
+function tabTop(i){
+ /* AND FOCUS HAS TO MOVE WITH THE TAB, WHICH IS THE ACTUAL CAUSE.
+
+    Resetting the scroll was not enough and the trap said why: a button on the
+    surface the person just left still held focus, and when the new surface
+    laid out the browser scrolled that button back into view. The log reads
+    74, 117, 171 and climbing, which is a smooth scroll and not a jump, so
+    nothing in this file was doing it. The browser was, correctly, keeping the
+    focused control on screen.
+
+    Blurring alone would leave focus nowhere, which is worse for anybody on a
+    keyboard. So focus goes to the button for the tab that was just pressed,
+    which is where a person on a keyboard already is and where a person on a
+    pointer expects nothing. `preventScroll` because focusing is the thing
+    that started this. */
+ var btn=document.querySelector('.tabtop[data-tabk="'+i+'"]');
+ var a=document.activeElement;
+ /* a section button keeps focus, KC: it is in the bar, so it cannot scroll
+    anything, and handing focus on to the tab opened that tab's definition
+    over the page on every press of a section */
+ var inSec=!!(a&&a.closest&&a.closest('#secbar'));
+ if(a&&a!==document.body&&a!==btn&&!inSec){
+  try{ if(btn&&btn.focus)btn.focus({preventScroll:true}); else if(a.blur)a.blur(); }
+  catch(e){ if(a.blur)a.blur(); }}
+ var hit=function(){
+  var sc=document.scrollingElement||document.documentElement;
+  [document.body,document.querySelector('.stage'),sc].forEach(function(el){
+   if(el&&el.scrollTop)el.scrollTop=0;});};
+ hit();
+ if(typeof requestAnimationFrame==='function')requestAnimationFrame(hit);}
+/* THE BAR IS IN THE DOCUMENT AND THIS ONLY WIRES IT. Ruled, and the reason is
+   in the markup beside the buttons: nine buttons built in a loop meant the top
+   menu existed only if the script reached the loop, so every start up failure
+   took the navigation with it.
+
+   The buttons carry their tab integer in data-tabk, which is the identity
+   integer and never the position, so the markup and TABDEF cannot disagree
+   about which button is which. A gate proves the two lists match. */
+(function(){
+ var bar=$('tabbar'); if(!bar)return;
+ bar.querySelectorAll('[data-tabk]').forEach(function(b){
+  var k=+b.getAttribute('data-tabk');
+  b.setAttribute('aria-pressed',k===S.tab);
+  /* THE PRESS SOUNDS, NOT THE ARRIVAL. setTab is called by a drill, a door and
+     a restore as well, and a sound on those would be a sound with no press in
+     front of it. Only these two listeners are a finger on the bar. */
+  b.addEventListener('click',function(){if(typeof sfx==='function')sfx('tap'); setTab(k);});});
+}());
+/* ---- THE FIRST TIER, KC and KM in TASKS.md ----
+   The sections over the tabs, the loop's four since KT. The section is read
+   off the tab through SECOF in engine/core.js, never stored beside it, so the two cannot disagree.
+   Written onto the bar as data-sec, which is what shows the section's group of
+   tabs in head.html; a surface with no section, Settings, leaves the last
+   section's tabs showing with none pressed, so a person can still see where
+   they came from.
+
+   A section remembers the tab last used in it for the session, so Play after
+   a visit to Knowledge goes back to the Compass a person left, not to the
+   first tool. The first visit goes to the section's first tab. */
+var SEC_LAST={};
+function secPaint(i){
+ var sec=SECOF(i), top=document.querySelector('.top');
+ if(sec){SEC_LAST[sec]=TABREAL(i); if(top)top.setAttribute('data-sec',sec);}
+ document.querySelectorAll('#secbar .secb').forEach(function(b){
+  b.setAttribute('aria-pressed',b.getAttribute('data-sec')===sec);});
+ /* A SECTION THAT IS ITS OWN DOOR IS NAMED ONCE, 23 October. The folded bar
+    on a phone reads the section quietly, then the surface in the pressed
+    tab's accent. Discover's surface is the section (door:'section',
+    engine/core.js), so its word goes in the surface's slot, where it reads
+    as the place a person is on, and the quiet slot is left empty rather than
+    printing Discover twice. head.html takes the empty slot out of the row. */
+ var ns=$('navsec'); if(ns){var e=SECTIONS.filter(function(x){return x.k===sec;})[0];
+  var own=TABDEF.filter(function(T){return T.k===TABREAL(i);})[0];
+  ns.textContent=(e&&!(own&&own.door==='section'))?e.nm:'';}
+ secAlign();}
+/* THE SECOND TIER STARTS UNDER THE FIRST, LETTER ON LETTER. KT, his words:
+   "they start pixel for pixel, directly underneath like text-wise, font-wise,
+   name-wise. Underneath the primary navigations. First letter as well. so
+   they're on the same axis. Vertically." The row under the bar began at the
+   bar's own left edge, under the wordmark, so what a section opened sat
+   nowhere near the section that opened it.
+
+   A section's width is its word, so where its first letter lands is only
+   known once it is laid out, and the offset is measured rather than written:
+   the pressed section's word against the first shown tab's word, and the
+   difference goes into the row's left padding through --secx on the bar,
+   which head.html applies above the phone width only. Measured against the
+   padding already there, so a second call with nothing moved changes nothing.
+   Folded, the tab names are clipped to a pixel and cannot be measured, so the
+   icons are lined up instead, and the words line up again when the fold
+   opens, since that change calls this.
+   ON THEIR CENTRES, SINCE LL. The section mark is 23px and the tab mark is
+   16.15, so lining up their left edges put the smaller one 3.4px off the
+   larger one's axis. Two marks of different sizes share an axis through
+   their middles, the way a column of different sized glyphs does. */
+function secAlign(){
+ var top=document.querySelector('.top'), bar=$('tabbar');
+ if(!top||!bar||!window.matchMedia||matchMedia('(max-width:720px)').matches)return;
+ var sb=document.querySelector('#secbar .secb[aria-pressed="true"]');
+ var tb=[].filter.call(bar.querySelectorAll('.tabtop'),function(b){return b.offsetParent;})[0];
+ if(!sb||!tb)return;
+ var a=sb.querySelector('.sn'), b=tb.querySelector('.n'), mid=0;
+ if(!a||!b||b.getBoundingClientRect().width<2){a=sb.querySelector('svg'); b=tb.querySelector('svg'); mid=1;}
+ if(!a||!b)return;
+ var pad=parseFloat(getComputedStyle(bar).paddingLeft)||0;
+ var ra=a.getBoundingClientRect(), rb=b.getBoundingClientRect();
+ var x=Math.max(0,Math.round(pad+ra.left-rb.left+(mid?(ra.width-rb.width)/2:0)));
+ top.style.setProperty('--secx',x+'px');}
+function secGo(sec){
+ var k=SEC_LAST[sec];
+ if(k===undefined){var f=TABDEF.filter(function(T){return T.sec===sec;})[0]; if(!f)return; k=f.k;}
+ setTab(k);}
+(function(){
+ var sb=$('secbar'); if(!sb)return;
+ sb.querySelectorAll('.secb').forEach(function(b){
+  b.addEventListener('click',function(){if(typeof sfx==='function')sfx('tap'); secGo(b.getAttribute('data-sec'));});});
+ /* the pressed section moves when the width moves, when the fold rolls the
+    others in, which it does over a transition, so that is waited out, and
+    when the typeface arrives, since the words are measured in it */
+ addEventListener('resize',secAlign);
+ sb.addEventListener('transitionend',function(e){if(e.propertyName==='max-width')secAlign();});
+ var fold=$('tabnames'); if(fold)fold.addEventListener('change',secAlign);
+ if(document.fonts&&document.fonts.ready)document.fonts.ready.then(secAlign);
+ secPaint(S.tab);}());
+/* ---- THE SEARCH, KC ----
+   One circle where help was. Pressed, the field rolls out and takes the
+   cursor; pressed again, or Escape, or leaving it empty, rolls it back in.
+   Enter takes the words to the codex, which is the product's one search, and
+   opens the deck that holds the most of them when the deck on screen holds
+   none, so a search never lands on an empty page when something matched. */
+(function(){
+ var wrap=$('srch'), btn=$('srchbtn'), q=$('srchq'); if(!wrap||!btn||!q)return;
+ function set(open){
+  wrap.classList.toggle('open',open);
+  btn.setAttribute('aria-expanded',open?'true':'false');
+  q.tabIndex=open?0:-1;
+  if(open){try{q.focus({preventScroll:true});}catch(e){q.focus();}}}
+ function go(){
+  var t=q.value.trim(); if(!t)return;
+  if(typeof KB_Q==='undefined'||typeof kbRows!=='function'){setTab(TAB.KNOW);return;}
+  KB_Q=t;
+  var lq=t.toLowerCase(), hits=function(s){return kbRows(s).filter(function(x){return kbMatch(x,lq);}).length;};
+  if(!hits(KB_SEC)){var best=null,bn=0;
+   KB_SECS.forEach(function(s){var n=hits(s[0]); if(n>bn){bn=n;best=s[0];}});
+   if(best)KB_SEC=best;}
+  q.value=''; set(false);
+  setTab(TAB.KNOW);
+  /* and the cursor goes on to the codex's own field, which now holds the
+     words, so the next key refines the search rather than landing nowhere */
+  var kq=$('kbq'); if(kq){try{kq.focus({preventScroll:true});}catch(e){kq.focus();}
+   try{kq.setSelectionRange(kq.value.length,kq.value.length);}catch(e){}}}
+ btn.addEventListener('click',function(e){e.stopPropagation();
+  if(wrap.classList.contains('open')&&q.value.trim())go();
+  else set(!wrap.classList.contains('open'));});
+ q.addEventListener('keydown',function(e){
+  if(e.key==='Enter'){e.preventDefault();go();}
+  else if(e.key==='Escape'){e.stopPropagation();q.value='';set(false);btn.focus();}});
+ q.addEventListener('blur',function(){
+  setTimeout(function(){if(!q.value.trim()&&document.activeElement!==btn)set(false);},120);});}());
+/* measured once the strip exists, and again whenever the window changes */
+if(typeof paintTabEdge==='function')paintTabEdge();
+/* THE DEPTH ROW WAS BUILT HERE, four .vt buttons in #vbar, and is gone. The
+   glass bar replaced it on the owner's ruling, DK through ED in TASKS.md, and
+   the four depths are its presets now, behind its Depth circle. Their icons
+   and their definitions went with them to ui/fieldbar.js, which loads before
+   this file, so nothing here reaches forward for them. */
+/* The three themes were three text buttons and took more width than the
+   tab bar. A crescent for dark, a six point flake for snow, and for punch
+   a circle with one half solid. Punch is the one place a fill is the
+   message rather than a decoration: the theme is the absence of outlines,
+   so the icon says it by being half solid. */
+const THEMEICON={
+ dark:'M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z',
+ snow:'M12 3v18M4.2 7.5l15.6 9M19.8 7.5l-15.6 9M12 7l-2.6-2.6M12 7l2.6-2.6M12 17l-2.6 2.6M12 17l2.6 2.6',
+ punch:'M12 4a8 8 0 0 1 0 16zM12 12m-8 0a8 8 0 1 0 16 0a8 8 0 1 0-16 0',
+ /* a pane at an angle with light coming off its edge. the one glyph that says
+    refraction rather than blur. */
+ glass:'M5.5 7.2l9-3.2v12.8l-9 3.2zM14.5 4l4 2.4v11.2l-4 2.4M5.5 7.2L9.6 9.4',
+ /* the same pane, lit from the front rather than from behind */
+ glasswhite:'M5.5 7.2l9-3.2v12.8l-9 3.2zM14.5 4l4 2.4v11.2l-4 2.4M19 3l2.4 2.4M21 7.6l1.6-1.6',
+ /* the same pane, lit from the front under a cool sky: the rays of Glass white
+    become a ring, one round mark standing still in the corner. Ring, not fill. */
+ glassblue:'M5.5 7.2l9-3.2v12.8l-9 3.2zM14.5 4l4 2.4v11.2l-4 2.4M22 4.2a1.6 1.6 0 1 0-3.2 0a1.6 1.6 0 1 0 3.2 0',
+ /* three flat planes, no bevel, no light. The mark is the position. */
+ flat:'M3.5 5.5h7v7h-7zM13.5 5.5h7v4h-7zM13.5 12.5h7v6h-7zM3.5 15.5h7v3h-7z',
+ /* a white field with a solid block set into it, which is the whole of Lumen:
+    the ground is paper and everything that carries reading is a black panel
+    standing on it. */
+ lumen:'M3 3h18v18H3zM8 8h8v8H8z'};
+/* FOUR LIGHTINGS. Glass is the fourth, and it is the one aimed forward: the
+   direction the field is moving for 2027 and 2028 is holographic
+   skeuomorphism, which is refraction and real elevation rather than the blur
+   and white hairline everybody shipped in 2020. */
+/* ONE LIST AND ONE SETTER, because the settings surface shows the same four
+   and a second copy of a list of lightings is a list that will drift. */
+/* SIX, on the owner's ruling. Glass on white is the same material under a
+   different sun. Flat is the opposite position to all five others: no bevel,
+   no blur, no shadow, and colour doing the work a material was doing. */
+/* SEVEN. Lumen is the owner's, and it is the only two tone one: white chrome,
+   black panels, the text on top of the black. */
+/* EIGHT. Glass blue is Glass white with its neutral greys moved from warm
+   cream toward blue, and he chose it from the palette board on 18 November:
+   "Let's go with B. For the palette. And let's add that as a new light mode."
+   It is a lighting of its own and Glass white is not touched.
+
+   THE THIRD COLUMN IS WHAT THE ENTRY SAYS WHEN IT IS HOVERED OR HELD, one
+   short sentence a person can use to choose by. The bar's entries are marks
+   with no words, so a mark never stands alone: the name is the tooltip's
+   header and this is its body, through the one tooltip (ui/tip.js). Every
+   lighting has one, not only the new one, because a picker where seven marks
+   explain themselves and one does not is a picker with a hole in it. */
+const LIGHTINGS=[
+ ['dark','Dark','Dark panels on a dark ground, with pale ink.'],
+ ['snow','Snow','Pale panels around a dark stage, with dark ink.'],
+ ['punch','Punch','Solid blocks of colour, with no outlines.'],
+ ['glass','Glass','Dark frosted panels with a bright edge.'],
+ ['glasswhite','Glass white','Pale frosted panels with a warm paper tint.'],
+ ['glassblue','Glass blue','Pale frosted panels with a cool blue tint.'],
+ ['flat','Flat','Plain flat planes, with no blur and no shadow.'],
+ ['lumen','Lumen','A white frame with black panels and light text on them.']];
+/* GLASSWHITE_KIN, in ui/component.js, names the lightings whose body carries
+   the glasswhite class: Glass blue is Glass white with other neutrals, so
+   every rule and every canvas check that already reads glasswhite keeps
+   working on it, and the glassblue class only overrides colour. */
+function setLighting(k){
+ S.theme=k;
+ ['snow','punch','glass','glasswhite','glassblue','flat','lumen'].forEach(function(c){
+  document.body.classList.toggle(c,k===c||(c==='glasswhite'&&GLASSWHITE_KIN.indexOf(k)>=0));});
+ /* the bar's menu and the main menu's lighting on a phone, GF: one list, two
+    doors, one setter, so both say the same lighting is on */
+ ['themes','navthemes'].forEach(function(id){var seg=$(id);
+  if(seg)seg.querySelectorAll('button').forEach(function(x,j){
+   x.setAttribute('aria-pressed',LIGHTINGS[j]&&LIGHTINGS[j][0]===k);});});
+ /* the bar's button shows its icon only, round RB ("I just want the icon"),
+    so the lighting that is on is carried by its name for a screen reader and
+    its tooltip, and no longer printed beside the icon */
+ var lb=$('lightbtn');
+ if(lb){var e=LIGHTINGS.filter(function(t){return t[0]===k;})[0];
+  if(e){lb.setAttribute('aria-label','Lighting, '+e[1]); lb.title='Lighting, '+e[1];}}
+ rebuildSwatches(); render();
+ /* THE AVATAR PAGE REPAINTS ONLY WHEN ASKED, and render() never asks: it is
+    drawn on setTab and on the intake's own presses (renderIntake, then
+    avRefresh). So a lighting changed while it was open left the ring and
+    the energy dials in the old lighting's seat colours, measured 21
+    November: in Snow the dials still carried Dark's hex and Radiance's
+    icon, drawn in Dark's pale ink, all but vanished on Snow's pale face.
+    avSig already keys on S.theme, so this only asks; it repaints when the
+    lighting moved and does nothing otherwise. */
+ if(S.tab===TAB.INTAKE&&typeof avRefresh==='function')avRefresh();}
+LIGHTINGS.forEach(function(t,i){
+ var b=document.createElement('button');b.type='button';
+ b.setAttribute('aria-pressed',i===0);
+ b.className='seg-i'; b.title=t[1]; b.setAttribute('aria-label',t[1]+' theme');
+ /* the meaning, through the one tooltip: hover on a pointer, a held press on
+    a phone, where a tap still chooses the lighting (ui/tip.js, control()) */
+ b.setAttribute('data-tip-t',t[1]); b.setAttribute('data-tip',t[2]);
+ b.innerHTML='<svg viewBox="0 0 24 24" width="19" height="19" aria-hidden="true">'
+  /* A MISSING ICON IS A MISSING ICON, NOT THE WORD UNDEFINED. Adding a seventh
+     lighting put the string "undefined" into a path attribute and the browser
+     logged a parse error on every boot, which the design gate caught. A
+     lighting with no mark now draws nothing and says so in the console once,
+     rather than shipping a broken path. */
+  +'<path d="'+(THEMEICON[t[0]]||'')+'"/></svg>';
+ if(!THEMEICON[t[0]])b.setAttribute('data-noicon','1');
+ b.addEventListener('click',function(){setLighting(t[0]);});
+ $('themes').appendChild(b);
+ /* THE SAME CHOICE IN THE MAIN MENU, GF. The mark and its name side by side,
+    because the menu has the width the bar's segmented row did not, and a
+    person choosing a lighting should not have to know which glyph is Lumen. */
+ var nav=$('navthemes'); if(!nav)return;
+ var n=document.createElement('button');n.type='button';
+ n.setAttribute('aria-pressed',i===0);
+ n.setAttribute('data-tip-t',t[1]); n.setAttribute('data-tip',t[2]);
+ n.innerHTML='<svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><path d="'
+  +(THEMEICON[t[0]]||'')+'"/></svg><span>'+esc(t[1])+'</span>';
+ n.addEventListener('click',function(){setLighting(t[0]);});
+ nav.appendChild(n);});
+/* ---- THE LIGHTING MENU ----
+   The three lighting buttons moved off the bar and into a menu on the owner's
+   ruling. The button names the lighting it is on, so the setting is still
+   readable at a glance without spending three navigation slots on it.
+
+   It closes on the backdrop, on escape and on a choice, and the choice closes
+   it because a person who has picked the lighting can see the result behind
+   the menu and does not need the menu any more. */
+(function(){
+ var btn=$('lightbtn'), menu=$('lightmenu'); if(!btn||!menu)return;
+ function shut(){menu.hidden=true; btn.setAttribute('aria-expanded','false');}
+ function open(){menu.hidden=false; btn.setAttribute('aria-expanded','true');}
+ btn.addEventListener('click',function(e){
+  e.stopPropagation(); if(menu.hidden)open(); else shut();});
+ menu.addEventListener('click',function(e){
+  /* a lighting choice is the last thing this menu is for */
+  if(e.target.closest('button'))shut();
+  e.stopPropagation();});
+ document.addEventListener('click',function(){if(!menu.hidden)shut();});
+ document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'&&!menu.hidden){shut();btn.focus();}});})();
+/* ---- THE MAIN MENU ON A PHONE, GF in TASKS.md ----
+   The folded bar opens and closes the tabs and the lighting under them, the
+   class on .top is the whole state, and the head.html rules under the phone
+   width read it. A tab chosen closes it, because the surface it opens is the
+   thing a person wanted and the menu is in its way; a lighting chosen closes
+   it for the reason the bar's own lighting menu does, the result is behind
+   it. Escape closes it too, the same as every other menu here. */
+(function(){
+ var top=document.querySelector('.top'), tog=$('navtog'), bar=$('tabbar'), lt=$('navthemes');
+ if(!top||!tog||!bar)return;
+ function set(open){top.classList.toggle('navopen',open);
+  tog.setAttribute('aria-expanded',open?'true':'false');}
+ tog.addEventListener('click',function(){set(!top.classList.contains('navopen'));});
+ bar.addEventListener('click',function(e){if(e.target.closest('[data-tabk]'))set(false);});
+ if(lt)lt.addEventListener('click',function(e){if(e.target.closest('button'))set(false);});
+ document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'&&top.classList.contains('navopen')){set(false);tog.focus();}});})();
+/* ---- THE WORDMARK GOES HOME ----
+   Home is where the app opens on the owner's ruling, and it is what clicking
+   the name of the product asks for. It was the Field while the app opened
+   there; it is Discover since 23 October, TABHOME in engine/core.js. */
+(function(){
+ var b=$('brand'); if(!b)return;
+ /* home is where the app opens */
+ b.addEventListener('click',function(){setTab(TABHOME);});})();
+/* the font tuner is gone on the owner's ruling. one face, narrower, no
+   per person override to keep working across every surface. */
+
+/* ---- the icon grids. the icon carries the colour, selection is a ring. ---- */
+DOMAINS.forEach(function(d,i){
+ var b=document.createElement('button');b.className='ib';b.type='button';
+ b.style.setProperty('--c',rootCol(d.r));
+/* THE TOOLTIP SAYS WHAT THE THING IS AND WHAT PRESSING IT DOES. It said
+    "Justice, Architect. <one line>. Shift-click to add." which names the thing
+    and then jumps straight to a keyboard trick, with nothing in between about
+    what a blueprint domain is or what selecting one changes. */
+ /* V21. "A blueprint domain" and "affinity 1.3 on" said what the thing is
+    called and not what it does to a person. The multiplier is suscAll's: a
+    root you run makes its paired axes take 1.3 times the charge. */
+ b.title=d.nm+': '+d.d+'. One of 19 parts of the blueprint you are born with, '
+  +'under the '+d.r+' root.\n\n'
+  +((AFFIN[d.r]||[]).length?'Running it makes '+panAnd(AFFIN[d.r]).toLowerCase()
+    +' land 1.3 times as heavy.\n\n':'')
+  +'Click to make this your blueprint. Shift-click to add it to the ones you '
+  +'already picked. The ring is how far the blueprint you picked reaches it.';
+ b.setAttribute('aria-label',d.nm+', '+d.r+' cluster');
+ b.innerHTML=svgI('<path d="'+d.ic+'"/>')+ibArc()
+  +'<span class="rt" style="background:var(--c)"></span>';
+ b.addEventListener('mouseenter',function(){
+  $('capD').innerHTML='<b style="color:'+rootCol(d.r)+'">'+d.r+'</b>, '+d.nm+'. '+d.d;});
+ b.addEventListener('mouseleave',capD);
+ /* notYours, not toYou. On a worked example this press loaded the blank own
+    profile under the person with nothing said. See personas.js. */
+ b.addEventListener('click',function(e){if(notYours('change the blueprint domain'))return;
+  if(e.shiftKey||!S.doms.length){var k=S.doms.indexOf(i);
+   if(k>=0){if(S.doms.length>1)S.doms.splice(k,1);}else S.doms.push(i);}
+  else S.doms=[i];
+  buildSoul();S.pin=null;syncSoul();saveYou();render();
+  railPick(b,'dom');});
+ $('doms').appendChild(b);});
+/* WHICH ROOT IS LIT. A blueprint domain belongs to exactly one root, so a
+   selection already implies a root whether or not anybody clicked one. The row
+   never said so, which is why a loaded profile showed four identical buttons.
+   This is the derivation, and it is a pure read of S.doms. */
+function rootsLit(){
+ var out={};
+ (S.doms||[]).forEach(function(i){var D=DOMAINS[i]; if(D)out[D.r]=true;});
+ return out;}
+ROOTD.forEach(function(rn){
+ var b=document.createElement('button');b.type='button';b.dataset.r=rn;
+ b.className='rootb';b.setAttribute('aria-pressed',false);
+ /* THE MARK GOES ABOVE THE NAME, NOT INSTEAD OF IT. Four across in the rail
+    leaves each chip about 62 wide and "Architect" takes 50 of that, so a mark
+    beside the name does not fit, and a mark in place of it loses the only
+    place on this surface the four roots are named. The svg carries no text,
+    so the button's name is still the root's name. */
+ b.innerHTML=svgI('<path d="'+ROOTGLYPH[rn]+'"/>')+'<span>'+rn+'</span>';
+ /* the colour is a custom property so the three states in the sheet can each
+    mix against it. it was an inline style, which meant the sheet could not
+    reach it and every state had to be written back in script. */
+ b.style.setProperty('--rc',rootCol(rn));
+ var holds=DOMAINS.filter(function(D){return D.r===rn;}).map(function(D){return D.nm;}).join(', ');
+ b.title=rn+'. Holds '+holds+'. Running it makes '+panAnd(AFFIN[rn]||[]).toLowerCase()
+  +' land 1.3 times as heavy. Filled means you added it. Pale means something you picked is already in it.';
+ b.addEventListener('mouseenter',function(){
+  $('capD').innerHTML='<b style="color:'+rootCol(rn)+'">'+rn+'</b> root domain. Holds '
+   +holds+'.';});
+ b.addEventListener('mouseleave',capD);
+ b.addEventListener('click',function(){if(notYours('change the root domain'))return;
+  var k=S.roots.indexOf(rn);
+  if(k>=0)S.roots.splice(k,1);else S.roots.push(rn);
+  buildSoul();S.pin=null;syncSoul();saveYou();render();
+  railPick(b,'root');});
+ $('roots').appendChild(b);});
+/* What the two states mean, in the rail, once. A legend is cheaper than a
+   person guessing, and there is nowhere else on this row to put it. */
+(function(){
+ var r=$('roots'); if(!r||!r.parentNode)return;
+ var d=document.createElement('div'); d.className='rootlegend'; d.id='rootlegend';
+ r.parentNode.insertBefore(d,r.nextSibling);})();
+/* ESCAPED, ROUND RA: S.roots comes from soul.roots, which the schema boundary
+   only checks is an array of strings, not their content (engine/schema.js);
+   DOMAINS[i].nm is the fixed table and needs nothing. */
+function capD(){
+ /* TASKS.md SW1, his own words on a screenshot: "get rid of some of the
+    unnecessary text, stop adding unnecessary junk." The dropped clause
+    restated, in prose, exactly what the rail's own root buttons already
+    show by their filled/pale state, so it carried no information this
+    caption needed. */
+ $('capD').innerHTML=S.doms.map(function(i){
+  return '<b style="color:'+rootCol(DOMAINS[i].r)+'">'+DOMAINS[i].nm+'</b>';}).join(' + ');}
+[['ar1','a1'],['ar2','a2']].forEach(function(pair){
+ ARCH.forEach(function(a,i){
+  var b=document.createElement('button');b.className='ib';b.type='button';
+  /* EACH ARCHETYPE WEARS ITS SEAT, which was ruled 19 September and reached
+     the reading rows and never these tiles: every one of the twelve was
+     painted the one accent, so the grid showed twelve different things in
+     one colour and Primary read flat on every option the board tried.
+     Carried here on the 26 September ruling of the same board. */
+  b.style.setProperty('--c',icCol(a.b));
+  b.title=a.nm+', '+a.v+'. Shift-click to add. The ring is its share of what your blueprint expresses, against the strongest.';b.setAttribute('aria-label',a.nm);
+  b.innerHTML=svgI('<path d="'+a.ic+'"/>')+ibArc();
+  b.addEventListener('mouseenter',function(){$('capA').innerHTML='<b>'+a.nm+'</b>, '+a.v;});
+  b.addEventListener('mouseleave',capA);
+  b.addEventListener('click',function(e){if(notYours('change the archetype'))return;
+   var k=S.arcs.indexOf(i);
+   if(e.shiftKey){if(k>=0){if(S.arcs.length>1)S.arcs.splice(k,1);}else S.arcs.push(i);}
+   else if(pair[1]==='a1'){S.arcs=[i].concat(S.arcs.filter(function(x){return x!==i;}).slice(0,3));}
+   else {S.arcs=[S.arcs[0]].concat([i]).concat(S.arcs.slice(1).filter(function(x){return x!==i;}).slice(0,2));}
+   buildSoul();S.pin=null;syncSoul();saveYou();render();
+   railPick(b,'arch');});
+  $(pair[0]).appendChild(b);});});
+function capA(){$('capA').innerHTML=S.arcs.map(function(i){
+ return '<b>'+ARCH[i].nm+'</b>';}).join(' + ');}
+/* ============================================================
+   THE RAGGED TAIL IN THE LEFT RAIL, AND WHAT IT WAS COSTING.
+
+   Ruled: "the left hand menu with the icons, can you optimise that space a
+   bit, there is a gap." Measured first, on the Field with a profile loaded.
+   The rail's panel is 302 wide at 1600 and 18 of padding either side, so the
+   grids get 266. They pack at repeat(auto-fill,minmax(44px,1fr)) and land on
+   five columns of 48. The twelve archetypes fill five, five and two, so the
+   last row leaves three cells empty, 162 wide by 48 tall, and it happens
+   twice: once under Primary and again under Secondary with sixteen pixels of
+   label between them. That is the gap, and it is two of them close enough
+   together to read as one. The nineteen blueprint domains fill five, five,
+   five and four and leave one, 54 by 48. At 390 the rail gets 346, the same
+   rule packs seven columns of 44.3, which is the tap floor exactly, and
+   every grid leaves two empty.
+
+   auto-fill takes as many columns as fit, which takes as few rows as
+   possible, and that is the right rule when the item count is unknown. These
+   counts are not unknown: DOMAINS and ARCH are data tables this file reads
+   two functions above.
+
+   THE RULE. Take the most columns that fit at the tap floor, take the rows
+   that implies, then take the FEWEST columns that still fit in that many
+   rows. n = ceil(count / ceil(count / nFit)). And the number of columns is
+   arithmetic on the real length of the real table rather than a count typed
+   into a stylesheet, which is the defect this repository has been bitten by
+   nine times.
+
+   AND THE ROW HEIGHT HAS TO BE PINNED OR THE FIX COSTS MORE THAN THE GAP.
+   Measured, and it is the reason this function writes two properties instead
+   of one. `.ib` is aspect-ratio 1, so a cell's height is its width. Dropping
+   the archetypes from five columns to four widened every cell from 48 to
+   61.5 and made every cell 61.5 TALL with it: each grid went 156 to 196.5
+   and the rail's scroll height went 2094 to 2175. That is eighty one pixels
+   of new scroll bought to close a hole, which is not optimising the space,
+   it is moving it.
+
+   So the row is set to the square cell the sheet's own auto-fill would have
+   produced at this width, which is the height the grid has today. With both
+   axes definite the aspect ratio has nothing left to decide and the cell
+   becomes a rectangle. Same height to the pixel, flush right edge, and a
+   wider tap target than before. Strict improvement or no-op, at every width.
+
+   The sheet keeps auto-fill as its declared value, because this runs after
+   layout and a grid has to be right before it does.
+
+   AND THEN THE ROW CAME DOWN TO THE FLOOR. The owner, 26 September: "make
+   them a little bit smaller so that they don't eat up so much real estate.
+   Since they're hover over anyway to get information... that way we get more
+   of the icons above the fold." Measured at 1600 with a profile loaded, the
+   second archetype grid ended at 1024 on a 1000 tall screen, so the last row
+   of the rail's icons was below the fold on the owner's own width. The row
+   was the square cell, 48.4 at 1600, and the only floor on it is the tap
+   target, so the row is the tap target now: 44, read off --tap like the
+   column floor above. The columns do not move, because the width is already
+   at the floor on one axis or the other: six across in 266 would be 39 wide.
+   Every cell stays at least 44 by 44, the hover and the caption are
+   untouched, and the rail gets 54 pixels back at 1600 with the tighter row
+   gap in the sheet. At 390 the cell was already 44.3 and barely moves.
+   ============================================================ */
+function fitGrid(el){
+ if(!el)return;
+ var n=el.children.length; if(!n)return;
+ /* hidden on Settings, where the columns are display:none. A width of nought
+    would compute one column and write it, and coming back would find the
+    rail a single file. Leave the sheet's own fit standing instead. */
+ var w=el.clientWidth; if(w<1)return;
+ var cs=getComputedStyle(el);
+ var gap=parseFloat(cs.columnGap)||0;
+ /* the floor is read off the custom property, not restated here. It is one
+    value and the sheet owns it. */
+ var tap=parseFloat(getComputedStyle(document.documentElement)
+   .getPropertyValue('--tap'))||44;
+ var nFit=Math.max(1,Math.floor((w+gap)/(tap+gap)));
+ var cols=Math.min(n,Math.ceil(n/Math.ceil(n/nFit)));
+ var rowH=tap;
+ var sig=n+'/'+cols+'/'+rowH.toFixed(2);
+ if(el.dataset.fit===sig)return;
+ el.style.gridTemplateColumns='repeat('+cols+',minmax(0,1fr))';
+ el.style.gridAutoRows=rowH.toFixed(2)+'px';
+ el.dataset.fit=sig;}
+/* by class, never by a list of ids. A fourth icon grid added to the rail is
+   covered by the sheet it already wears, which is the rule this project
+   keeps everywhere else: look a thing up by what it is. */
+function fitGrids(){
+ document.querySelectorAll('.g6,.gdom').forEach(fitGrid);}
+(function(){
+ addEventListener('resize',fitGrids);
+ /* measured after layout and not during it, the same way paintTabEdge learned
+    to. Called straight after the buttons are appended it reads the grid at a
+    width the rail has not settled on yet. */
+ addEventListener('load',fitGrids);
+ if(typeof requestAnimationFrame==='function')
+  requestAnimationFrame(function(){requestAnimationFrame(fitGrids);});})();
+function syncSoul(){
+ $('doms').querySelectorAll('.ib').forEach(function(x,j){
+  x.setAttribute('aria-pressed',j===S.doms[0]);
+  if(S.doms.indexOf(j)>0)x.dataset.r='2';else delete x.dataset.r;});
+ $('ar1').querySelectorAll('.ib').forEach(function(b,i){
+  b.setAttribute('aria-pressed',i===S.arcs[0]);
+  if(S.arcs.indexOf(i)>0)b.dataset.r='2';else delete b.dataset.r;});
+ $('ar2').querySelectorAll('.ib').forEach(function(b,i){
+  b.setAttribute('aria-pressed',false);
+  if(S.arcs.indexOf(i)>=1)b.dataset.r='2';else delete b.dataset.r;});
+ var lit=rootsLit(), nlit=0;
+ $('roots').querySelectorAll('button').forEach(function(b){
+  var on=S.roots.indexOf(b.dataset.r)>=0;
+  b.setAttribute('aria-pressed',on);
+  /* added wins over lit, because a fill and a wash on one control is noise */
+  if(!on&&lit[b.dataset.r]){b.dataset.lit='1';nlit++;}else delete b.dataset.lit;});
+ var lg=$('rootlegend');
+ if(lg)lg.textContent=(S.roots.length?'filled, you added':'')
+  +(S.roots.length&&nlit?' \u00b7 ':'')
+  +(nlit?'pale, something you picked is in here':'');
+ /* HS sweep: with nothing added and nothing pale this printed "click a root
+    to add every domain under it", a how to line under a row of buttons. The
+    legend now speaks only when there is a state on the row to key. */
+ capD();capA();awSum();}
+function rebuildSwatches(){
+ /* every colour the rail's grids wear is per lighting now, so all three move
+    here. The domains alone did before, and they moved to the same value. */
+ $('doms').querySelectorAll('.ib').forEach(function(b,i){b.style.setProperty('--c',rootCol(DOMAINS[i].r));});
+ $('roots').querySelectorAll('.rootb').forEach(function(b){b.style.setProperty('--rc',rootCol(b.dataset.r));});
+ ['ar1','ar2'].forEach(function(id){
+  $(id).querySelectorAll('.ib').forEach(function(b,i){b.style.setProperty('--c',icCol(ARCH[i].b));});});
+ SI.forEach(function(l){
+  var i=LWF[l.nm].inp.parentElement.querySelector('i');if(i)i.style.background=seatCol(l.b);});
+ /* the matrix's own key is written once at boot and again only when the
+    pointer leaves the matrix, so its four root swatches kept the lighting
+    the page opened on until somebody happened to hover it. */
+ awSum();syncMx();mxKey();}
+
+/* ============================================================
+   DENSITY, PROFILE AND HELP. Three controls the product has
+   never had, and the reason it needed them is the owner's own
+   finding: the whole interface reads better scaled down, which
+   is a statement about this product rather than about a monitor.
+
+   Density is three steps, not a slider, because three is a
+   choice and a slider is a chore. It scales one variable that
+   everything else derives from, so nothing has to be restyled.
+
+   The sheet is one surface. Both buttons open it, the backdrop
+   and escape close it, and it is the same object on a phone
+   where it comes up from the bottom instead of the side.
+   ============================================================ */
+const DENS=[['tight','Tight','more on screen, smaller type'],
+ ['','Comfortable','what the reading was designed at'],
+ ['wide','Wide','fewer things, larger type']];
+function densGet(){try{return STORE.get('dens')||'';}catch(e){return '';}}
+function densSet(k){
+ document.body.classList.remove('dens-tight','dens-wide');
+ if(k)document.body.classList.add('dens-'+k);
+ try{STORE.set('dens',k);}catch(e){}
+ densPaint();
+ /* the wheel takes its size from the box, so it has to be told */
+ if(typeof reframe==='function'){reframe();}
+ if(typeof render==='function')render();}
+/* The strip in the top bar is gone. This stays because the profile sheet and
+   the boot sequence both call it, and it does nothing when there is no host. */
+function densPaint(){
+ var host=$('density'); if(!host)return;
+ var now=densGet();
+ host.innerHTML=DENS.map(function(d){
+  return '<button type="button" class="vt'+(d[0]===now?' on':'')+'" data-dens="'+d[0]+'" '
+   +'aria-pressed="'+(d[0]===now)+'" title="'+esc(d[2])+'">'+esc(d[1].slice(0,1))+'</button>';}).join('');
+ host.querySelectorAll('[data-dens]').forEach(function(b){
+  b.onclick=function(){densSet(b.getAttribute('data-dens'));};});}
+
+/* ---- the sheet ---- */
+function sheetOpen(html){
+ var s=$('sheet'), c=$('sheet-card'); if(!s||!c)return;
+ c.innerHTML=html; s.hidden=false;
+ var f=c.querySelector('button,a,input,select'); if(f)f.focus();}
+function sheetShut(){var s=$('sheet'); if(s)s.hidden=true;}
+
+/* ============================================================
+   SETTINGS, IN THE CENTRE.
+
+   It was a sheet over the top of whatever a person was reading, which is the
+   right shape for a confirmation and the wrong one for a place you go to
+   change something and then look at what changed. A modal has to be
+   dismissed before the instrument is visible again, so every setting was
+   changed with the product hidden behind it.
+
+   Same content, same setters, one surface. The sections are the same four
+   the sheet had, laid in columns because the centre has width the sheet
+   never did.
+   ============================================================ */
+/* renderSettings is gone. The account area replaced it, in ui/account.js, on
+   the owner's ruling that the profile page is non-standard and should be a
+   standard one. planSection and planWire stay here and are called from there,
+   ported rather than rebuilt. */
+
+/* ============================================================
+   THE RECORD IMPORT, AND THE DOOR IT DID NOT HAVE.
+
+   This markup and this wiring were written inside profileSheet, and nothing in
+   the app opens profileSheet. Measured in the built product: the token
+   profileSheet appears twice in source.html, the definition and one call inside
+   itself to re-render after a density change, and its host is not in the
+   document after boot. So the paste box and the file picker existed, were
+   correct, went through the atomic boundary, and could not be reached from any
+   tab. A person finished the web reading, saved a real record, and had nowhere
+   in the product to put it.
+
+   Lifted out unchanged rather than rebuilt, so there is one importer and one
+   set of failure messages, and it takes an id prefix because the two hosts that
+   draw it can both be in the document. The account area is the second caller,
+   because Export and Delete already live there and load is the third control of
+   that set: a person looking for what to do with a record file looks where the
+   other two record controls are.
+
+   The boundary is untouched. pImport is atomic, nothing is pushed and CURP does
+   not move until the profile has validated, loaded and saved, and a refusal
+   names the field and leaves what was there alone.
+   ============================================================ */
+function recordImportHtml(p){
+ p=p||'sh';
+ /* the only copy, M9: where the record lives, or that the browser cleared it,
+    said beside the control that answers it. ui/keep.js owns the words. */
+ return '<div class="sh-imp">'
+  +(typeof keepNoteHtml==='function'?keepNoteHtml(p):'')
+  +'<p class="sh-p">Took the reading on the web? Load the record you saved and it '
+  +'continues from there. Nothing is fetched: the file is the handoff.</p>'
+  +'<textarea id="'+p+'imp" class="sh-ta" rows="3" spellcheck="false" '
+  +'placeholder="Paste the record, or choose the file"></textarea>'
+  +'<div class="sh-act">'
+   +'<button class="btn" id="'+p+'impf">Choose a file</button>'
+   +'<button class="btn pri" id="'+p+'impgo">Load it</button>'
+  +'</div>'
+  +'<p class="sh-p sh-impmsg" id="'+p+'impmsg"></p>'
+  +'<input type="file" id="'+p+'impfile" accept="application/json,.json" hidden>'
+  +'</div>';}
+/* A LOAD RESETS THE PLAN TO FREE ON PURPOSE (see pImport's own comment,
+   engine/schema.js): the record's stored plan is never trusted, only the
+   server's. For someone signed OUT that is the whole story, and the message
+   says to sign in. It used to say the same thing to someone already signed
+   IN, who then waited on the ordinary hourly timer (AUTH_PLAN_EVERY_MS,
+   ui/auth.js) before their own paid layers came back -- so a signed-in
+   person restoring their own backup, or opening their own quiz link, could
+   read as Free and be told to sign in when they already had. Read the plan
+   again right now instead of waiting on that timer, and say so, rather than
+   send someone who is signed in off to sign in again. The tail opens with
+   the period that ends its caller's "Loaded X" sentence: both callers
+   append it straight after the name, and tests/golden.js and
+   tests/recordlink.js read that period. */
+function recordPlanTail(){
+ if(typeof authSession==='function'&&authSession()){
+  if(typeof authPlanRead==='function')authPlanRead();
+  return '. The imported plan was reset to Free. Checking your plan with the server.';}
+ return '. The imported plan was reset to Free. Sign in to check any paid tier with the server.';}
+/* THE IMPORT, WIRED. Every write that can fail reports rather than claiming
+   success, which is the standing rule in this product. `after` is called only on
+   a load that landed, so a host that draws the record's own name can redraw it
+   without having to guess whether anything happened. */
+function recordImportWire(p,after){
+ p=p||'sh';
+ var impSay=function(t,bad){var m=$(p+'impmsg'); if(!m)return;
+  m.textContent=t; m.className='sh-p sh-impmsg'+(bad?' bad':' ok');};
+ var impRun=function(txt){
+  if(!txt||!txt.trim()){impSay('Nothing to load yet.',1);return;}
+  var np=pImport(txt);
+  if(!np){ var e=(typeof importError==='function'&&importError())||['it was refused'];
+   impSay('Not loaded. '+e.join('. ')+'.',1); return; }
+  /* read now, before the redraws below can run anything else */
+  var copied=importCopied();
+  recordLanded();
+  /* a record put back answers a cleared store, ui/keep.js */
+  if(typeof keepLanded==='function')keepLanded();
+  if(typeof status==='function')status('Record loaded.');
+  /* THE HOST REDRAWS FIRST AND THE MESSAGE IS WRITTEN AFTER IT.
+     The account area prints the record's own name, so it has to redraw on a
+     load, and redrawing replaces the paragraph this function had just written.
+     Measured: the gate read an empty message on a load that had landed, which
+     is the report vanishing at the moment it is true. So the redraw happens
+     first and the message goes onto whatever element is on the screen when it
+     is read, which is what impSay does by looking the id up at call time. */
+  if(typeof after==='function')after(np);
+  impSay('Loaded '+(np.name||'the record')+(copied?' as a second copy, since this record is already on this device':'')+recordPlanTail());};
+ var ig;
+ if((ig=$(p+'keepsave'))&&typeof keepFile==='function')ig.onclick=function(){keepFile();};
+ if((ig=$(p+'impgo')))ig.onclick=function(){impRun(($(p+'imp')||{}).value||'');};
+ if((ig=$(p+'impf')))ig.onclick=function(){var f=$(p+'impfile'); if(f)f.click();};
+ if((ig=$(p+'impfile')))ig.onchange=function(){
+  var f=ig.files&&ig.files[0]; if(!f)return;
+  var rd=new FileReader();
+  rd.onload=function(){var t=$(p+'imp'); if(t)t.value=String(rd.result||'');
+   impRun(String(rd.result||''));};
+  rd.onerror=function(){impSay('That file could not be read.',1);};
+  rd.readAsText(f);};}
+/* WHAT A LOAD THAT LANDED REDRAWS. Lifted out of impRun so the paste box and
+   the record link below take the same steps after pImport says yes, rather
+   than two copies of the list drifting apart. */
+function recordLanded(){
+ if(typeof syncCh==='function')syncCh();
+ if(typeof syncLw==='function')syncLw();
+ if(typeof syncSoul==='function')syncSoul();
+ if(typeof render==='function')render();}
+
+/* ============================================================
+   THE RECORD IN A LINK, the app's half, round QZ.
+
+   The quiz can open the app with the reading packed into the address, after
+   #r=. engine/schema.js names the format (linkWrap, linkUnwrap) and says why
+   the fragment is the right place for it: a browser never sends that part of
+   an address to any server. This half does the two things only a browser can,
+   reading the address and inflating the gzip, and then hands the text to
+   pImport, the same boundary the paste box above uses. There is no second
+   importer: a record that would be refused pasted is refused linked, by the
+   same name, and a record that loads lands the same way.
+
+   READ ONCE AND TAKEN OFF THE ADDRESS AT ONCE, before anything is decoded,
+   the way authBillingBack takes ?billing= off it. A refresh must not load the
+   record a second time, and a reading should not sit in an address bar where
+   a screenshot or a shared screen carries it. It comes off whether the load
+   then lands or not: a refused link does not get better by being re-read on
+   every reload, and the quiz that made it still holds the answers.
+
+   THE ANSWER IS SAID WHERE IT CAN BE SEEN, recordLinkSay. The link is read
+   and inflated in a few milliseconds, while the boot sheet still covers the
+   screen, and status() fades every line after three seconds whatever its
+   kind. Measured on the first cut: the line was said, faded, and was gone
+   before the sheet lifted, so the person met the record with nothing telling
+   them where it came from. So the line waits for the sheet to lift, through
+   afterBoot, the helper the wheel's entrance already waits on. And when the
+   login door is standing, it goes on the door's own message line through
+   loginSay, which also tells status(): the door covers the status line, and
+   ui/login.js already says why the card has to carry the sentence itself.
+   The message log keeps every line either way.
+   ============================================================ */
+function recordLinkSay(msg,kind){
+ var say=function(){
+  if(typeof LOGIN!=='undefined'&&LOGIN.open&&typeof loginSay==='function')loginSay(msg,kind);
+  else status(msg,kind);};
+ if(typeof afterBoot==='function')afterBoot(say); else say();}
+/* the inflated text is capped as it streams, so a small link that unpacks to
+   an enormous one is stopped part way rather than after it has filled memory */
+var LINK_INFLATE_MAX=4194304;
+function recordLinkTake(){
+ var h=''; try{ h=String(location.hash||''); }catch(e){ return null; }
+ if(h.indexOf('#r=')!==0)return null;
+ var cleared=false;
+ try{ history.replaceState(history.state,'',location.pathname+location.search); cleared=true; }
+ catch(e){ try{ location.hash=''; cleared=true; }catch(e2){} }
+ return {text:h.slice(3), cleared:cleared};}
+/* Resolves, never rejects, with the profile pImport returned or null, and
+   importError() saying why on a null, which is pImport's own contract. */
+function recordLinkInflate(bytes){
+ if(typeof DecompressionStream!=='function'||typeof Response!=='function')
+  return Promise.resolve(importRefuse('this browser cannot unpack a record link. In the quiz, '
+   +'save the record and load the file here instead'));
+ var rd, chunks=[], got=0;
+ try{ rd=new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip')).getReader(); }
+ catch(e){ return Promise.resolve(importRefuse('the link is damaged, so it could not be unpacked')); }
+ var pump=function(){
+  return rd.read().then(function(r){
+   if(r.done)return true;
+   got+=r.value.length;
+   if(got>LINK_INFLATE_MAX){ try{ rd.cancel(); }catch(e){} return false; }
+   chunks.push(r.value); return pump();});};
+ return pump().then(function(whole){
+  if(!whole)return importRefuse('the link unpacks to more than any record holds');
+  var all=new Uint8Array(got), o=0;
+  chunks.forEach(function(c){ all.set(c,o); o+=c.length; });
+  var txt;
+  try{ txt=new TextDecoder('utf-8',{fatal:true}).decode(all); }
+  catch(e){ return importRefuse('what the link unpacks to is not text, so it is damaged'); }
+  return pImport(txt);
+ },function(){ return importRefuse('the link is damaged or cut short, so it could not be unpacked'); });}
+/* the boot step. Returns the promise so a gate can wait on the real result
+   rather than on a timer. */
+/* Set once, true only for the exact landing the paragraph above
+   describes, and read (and cleared) exactly once, by ui/login.js's
+   loginSubmit, whichever runs first. */
+var RECORD_LINK_LANDED=false;
+function recordLinkBoot(){
+ var got=recordLinkTake(); if(!got)return null;
+ var bytes=linkUnwrap(got.text);
+ var run=bytes?recordLinkInflate(bytes):Promise.resolve(null);
+ /* anything that throws on the way to pImport is a refusal and says so, never
+    a promise that fails with nobody listening */
+ return run.then(null,function(e){
+  return importRefuse('the link could not be read, '+((e&&e.message)||'error')); })
+ .then(function(np){
+  var still=got.cleared?'':' The link is still in the address bar, so close this tab when you are done.';
+  if(!np){
+   var e=(importError()||['it was refused']).join('. ');
+   /* a colon and the reason as the boundary wrote it: capitalising it turned
+      the field path axes.Fear.held into a name the record does not have */
+   recordLinkSay('Not loaded from the link: '+e+'. Nothing else was touched.'+still,'fail');
+   return null;}
+  /* read now, before the redraws below can run anything else */
+  var copied=importCopied();
+  /* the record has landed and been saved by now, so a redraw that throws is a
+     drawing fault and not a refused load, and the line still says it loaded */
+  try{ recordLanded(); }
+  catch(e){ try{ if(window.console)console.error('[atuned] redraw after a linked record',e); }catch(e2){} }
+  /* THE FIRST ARRIVAL FROM THE FUNNEL LANDS ON SUMMARY, once per device, so the
+     first thing a person sees is their own reading and the gift's line. The
+     app opens on Discover otherwise, since 23 October. See tabLandFirst. */
+  var landedNow=false;
+  try{ landedNow=!!tabLandFirst(); }catch(e){}
+  /* THE FUNNEL/QUIZ LOGIN OVERRIDE, ruled 11-12 November (DECISIONS.md,
+     "The funnel/quiz replacement's exact scope, and where login lands").
+     His words, final: "When the user creates a login, it lands on the
+     simple dashboard." That is a deliberate override of the first-arrival
+     rule directly above, for this one flow only: a person who arrived
+     through a record link, on a device that had genuinely never landed
+     before (landedNow, not just "a link happened to be present" -- a
+     resend of an old link to an already-landed device is not a first
+     arrival and does not get the override). ui/login.js's loginSubmit
+     reads this flag once, on its own next successful sign in or account
+     creation, and clears it either way, so it can never fire twice and
+     never reaches a login that has nothing to do with this landing. */
+  if(landedNow)RECORD_LINK_LANDED=true;
+  /* A quiz-imported record skips onboarding, which is otherwise the first
+     caller of the anonymous first-visit session. Start that same session
+     here, after a record has actually landed. authFunnelStart sends only a
+     random journey id, reuses an existing session, and never sends the story
+     or name; the app still owns the record and the release itself. */
+  if(typeof authFunnelStart==='function')authFunnelStart();
+  recordLinkSay('Loaded '+(np.name||'the record')+' from the link'+(copied?' as a second copy, since this record is already on this device':'')+recordPlanTail()+still,
+   still?'fail':'');
+  return np;});}
+function profileSheet(){
+ var r=compute(), m=(typeof meterRead==='function')?meterRead(CURP):null;
+ var who=capName((CURP&&CURP.name)||'You');
+ var h='<div class="pm-eye">Profile</div><p class="sh-h plain">'+esc(who)+'</p>'
+  +'<div class="sh-sec"><div class="pm-eye">This reading</div>'
+  /* "of 100" made the headline reading a score, which is the one thing a
+     reading may never be. The comment six lines down struck "of 112" for
+     exactly this and left the number it was actually about. The scale belongs
+     in the label, where Analytics already puts it, and the figure stands as a
+     figure. */
+  +'<div class="sh-row"><span>Coherence, 0 to 100</span><b>'
+   +(r.unread?'not read yet':String(Math.round(r.CQ)))+'</b></div>'
+  +'<div class="sh-row"><span>Tier</span><b'
+  +(r.unread?'':' style="color:'+(TIERCOL[r.tier]||'var(--ink)')+'"')+'>'
+  +esc(r.unread?'not read yet':tierSay(r))+'</b></div>'
+  /* "of 112" was a count against a total, which is the one thing a reading
+     may never be. The number of addresses carrying is the fact. */
+  +'<div class="sh-row"><span>Addresses carrying</span><b>'+r.loaded.length+'</b></div>'
+  /* addresses opened, the Compass ledger's count, and the distance in the
+     patterns the markers count, each with its unit (meterRead). This printed
+     the pattern count under Ground opened, and a bare distance. */
+  +(m?'<div class="sh-row"><span>Ground opened</span><b>'+m.ground+(m.ground===1?' address':' addresses')+'</b></div>':'')
+  +(m&&m.next?'<div class="sh-row"><span>Next marker</span><b>'+esc(m.next.nm)+', '+m.next.left+(m.next.left===1?' new pattern':' new patterns')+' away</b></div>':'')
+  +'</div>'
+  +planSection(m)
+  +'<div class="sh-sec"><div class="pm-eye">Screen</div>'
+  +'<p class="sh-p">How much fits on one screen. This scales the whole interface, not just the type.</p>'
+  +'<div class="dens-list" id="densheet" style="margin-top:8px"></div></div>'
+  +'<div class="sh-sec"><div class="pm-eye">Your record</div>'
+  /* "Nothing has left this device" was false once a first visit had sent its
+     random code and topic (ui/auth.js authFunnelStart, authFunnelCheckpoint) */
+  +'<p class="sh-p">Your record is held in this browser. Your stories are not sent to us, '
+  +'and the name you enter never leaves this device.</p>'
+  +'<div class="sh-row"><span>Snapshots on file</span><b>'+((CURP&&CURP.history&&CURP.history.length)||0)+'</b></div>'
+  +'<div class="sh-row"><span>Storage</span><b>'+(STORE_BOUND?'writing':'blocked')+'</b></div>'
+  /* THE BOUNDARY GETS ITS FIRST CALLER. validateProfile and pImport were built
+     and CLAUDE.md said so: there is no import control in the UI, so the
+     boundary's first real caller will be the record fetch at sign in. The web
+     reading is that caller, and it arrives without a server, because a person
+     carries their own record out of the quiz as a file and loads it here.
+
+     pImport is atomic. Nothing is pushed and CURP does not move until the
+     profile has validated, loaded and saved, and a failure restores what was
+     there and says why. So this can be a paste box without being a way to
+     destroy a profile by pasting the wrong thing. */
+  +recordImportHtml('sh')
+  +'</div>'
+  +'<div class="sh-sec"><div class="pm-eye">Who you are becoming</div>'
+  +'<p class="sh-p">The avatar, the purpose map and the boundary. What the release work is '
+  +'aimed at.</p>'
+  +'<div class="sh-act"><button class="btn" id="shav">Open the avatar</button></div></div>'
+  +'<div class="sh-sec"><button class="btn" id="shclose">Close</button></div>';
+ sheetOpen(h);
+ /* the same three steps, inside the sheet, sharing one setter */
+ /* the importer under this sheet's own ids. Its wiring and its failure wording
+    live with the function, which the account area draws as well. */
+ recordImportWire('sh');
+ var d=$('densheet'), now=densGet();
+ if(d){d.innerHTML=DENS.map(function(x){
+   return '<button type="button" class="dens-opt'+(x[0]===now?' on':'')+'" data-dens2="'+x[0]+'" '
+    +'aria-pressed="'+(x[0]===now)+'"><b>'+esc(x[1])+'</b><em>'+esc(x[2])+'</em></button>';}).join('');
+  d.querySelectorAll('[data-dens2]').forEach(function(b){
+   b.onclick=function(){densSet(b.getAttribute('data-dens2')); profileSheet();};});}
+ planWire();
+ var av=$('shav'); if(av)av.onclick=function(){sheetShut();runAvatarDrill();};
+ var c=$('shclose'); if(c)c.onclick=sheetShut;}
+
+/* ============================================================
+   THE PLAN, on the person's own screen.
+
+   Three facts and two controls, and the controls are the only
+   place in this product that will ever touch a network besides
+   the record fetch. Nothing here knows what a processor is: it
+   reads the plan off the record and calls one host function.
+
+   Rule three governs the controls. A control must never claim
+   success before it has it, so while nothing is bound they say so
+   through status() rather than opening a dead page or pretending.
+   ============================================================ */
+/* o.brief, from Billing, where the tiers group in ui/plans.js sits directly
+   below and carries what is on every tier, the next rung and a press on every
+   rung. Said twice on one pane is the same fact in two places, one edit away
+   from two answers, so brief drops those four and keeps the state and Manage
+   billing. The sheet, and the gate that reads it, keep the full form. */
+function planSection(m,o){
+ o=o||{};
+ var pl=(CURP&&CURP.plan)||null;
+ var t=planOf(pl), st=planState(pl);
+ /* through meterBudget, the one read the release panel uses, because the free
+    weeks count from when the gift ran out and only the record knows that. A
+    second read here quoted a different number from the panel that charges it. */
+ var al=(CURP&&meterBudget(CURP).allow)||planAllowance(pl,(m&&m.unique)||0);
+ var up=planUpgrade(pl);
+ /* the record goes in with the tier: planYear says nothing unless the record
+    is paid by the year, and printed "Paid for the year." to monthly payers
+    while it read the tier alone */
+ var yr=planYear(t.k,pl);
+ /* A STOPPED PLAN SAYS THE DAY IT ENDS, on the State row a pending or ended
+    plan already uses, because stopping on the payment page keeps the plan on
+    to the end of the paid month: the status stays active, and this panel read
+    exactly as it did before the person pressed stop. ends is that day, read
+    back from the server (planFromServer, engine/plan.js). The value says
+    "ends" beside "ended" below, one word for one fact at two times. */
+ var ends=(st==='live'&&pl&&pl.ends)?planDay(pl.ends):'';
+ /* A CARD THAT DID NOT GO THROUGH STANDS ON THE STATE ROW, 17 October, the pay
+    cycle run. It was said once in a line that fades after three seconds
+    (ui/auth.js) and this row stayed silent, so a person who looked later saw
+    a plan that read as running and an allowance that had stopped moving. New
+    ground waits for the money now (planFromServer, engine/plan.js), so the
+    row says so for as long as it is true, and what still runs beside it. */
+ var late=(st==='live'&&pl&&pl.status==='past_due');
+ var h='<div class="sh-sec"><div class="pm-eye">Your plan</div>'
+  +'<div class="sh-row"><span>On</span><b>'+esc(t.nm)+'</b></div>'
+  +(st==='pending'
+    ? '<div class="sh-row"><span>State</span><b>not confirmed</b></div>'
+    : (st==='ended'?'<div class="sh-row"><span>State</span><b>ended</b></div>'
+    : (late?'<div class="sh-row" id="planlate"><span>State</span><b>the card did not go through</b></div>'
+      +'<p class="sh-p">Everything you have opened still runs. New patterns wait until the card does, '
+      +'and Manage billing replaces the card.</p>'
+    : (ends?'<div class="sh-row"><span>State</span><b>ends '+esc(ends)+'</b></div>':''))))
+  /* THE DAY NEW ONES ARRIVE, 17 October, where a paid tier has less than one
+     run left. It read "0 left this month, banking toward a run of 4", and paid
+     tiers do not bank (planAllowance). renews is the paid period's end off the
+     record; with no day on the record the sentence is left out, not invented. */
+  +'<div class="sh-row"><span>New ground</span><b>'+esc(al.say
+    +((!al.inGift&&al.source!=='free'&&al.runs===0&&al.renews&&planDay(al.renews))
+      ?'. New ones arrive on '+planDay(al.renews):''))+'</b></div>'
+  /* WHAT THE PLAN SHOWS, off SIGHT (engine/plan.js). It said everything while
+     sight was not for sale, ruled back on 1 October. Inside the gift it is
+     everything again, with the gift named as the reason, read off the lock's
+     own answer so this row and the padlocks cannot disagree. */
+  +'<div class="sh-row"><span>You can see</span><b>'+esc(planSightSay(pl,(typeof lockGift==='function')&&lockGift()))+'</b></div>'
+  /* "RERUNNING ANYTHING ALREADY OPEN COSTS NOTHING, ALWAYS" CAME OFF, round
+     NW, 22.K17. This is the plan sheet, read while deciding what a tier
+     buys, and the claim was false: measured, a release at an address
+     already open spends the same allowance as new ground, or plans nothing
+     at all once every line is open. The rerun route that makes it true is
+     the Lines pair on the release panel (relMode, ui/release.js), and this
+     sheet already says it once in PLAN_ALWAYS below, "rerunning anything
+     already open", so the second wording is not put back. */
+  +'<p class="sh-p">'+esc(t.d)+'</p>'
+  /* what is on every tier, and the next rung's sight is in up.say below */
+  +(o.brief?'':'<p class="sh-p dim">On every tier including free: '+esc(PLAN_ALWAYS.join(', '))+'.</p>');
+ if(o.brief)up=null;
+ if(yr)h+='<p class="sh-p">'+esc(yr.say)+'</p>';
+ if(up)h+='<p class="sh-p">'+esc(up.to.nm)+' is '+esc(up.say)+'.</p>';
+ /* WHAT IT IS WORTH, in the unit people already price against. Throughput and
+    never outcome, at the conservative end of the book's own range. */
+ var worth=o.brief?'':planWorth(al.inGift?GIFT_N:t.grant);
+ if(worth)h+='<p class="sh-p">'+esc(worth)+'</p>';
+ /* MANAGE BILLING ONLY FOR A RECORD THAT NAMES A PAID TIER, live or ended, 24
+    October (planNamesPaid, engine/plan.js). On a record that has never paid it
+    could only be refused, "there is no paid plan on this account yet", beside
+    a line promising a page to change tier, replace a card or stop. */
+ var billed=planNamesPaid(pl);
+ if(up||billed)h+='<div class="sh-act">'
+  +(up?'<button class="btn pri" id="planup" data-tier="'+esc(up.to.k)+'">Move to '
+    +esc(planNmIn(up.to))+'</button>':'')
+  +(billed?'<button class="btn" id="planman">Manage billing</button>':'')+'</div>';
+ h+=''
+  /* WHAT THE BUTTON OPENS, said before it is pressed. Manage billing used to
+     answer "not built yet" on a press, so the line beside it only said where
+     payment was not. It opens Stripe's own page now, through authPlanPortal,
+     and a person deciding whether to press it is told what is on the other
+     side.
+
+     "CHANGE TIER" WAS LEFT OFF FOR ONE ROUND, while the server's webhook
+     heard checkout.session.completed and nothing else, so a tier changed on
+     Stripe's page would have billed the new price while the plan here stayed
+     put. The webhook hears customer.subscription.updated now and reads the
+     tier back off the price (reboot-os stripe.js syncSubscription), and
+     ui/auth.js reads the plan back onto this record, so all three are named.
+     STRIPE-SETUP.md switches plan changes on in the portal for the same
+     reason. */
+  +'<p class="sh-p dim">'+(billed?'Manage billing opens the payment page, where you can change tier, '
+  +'replace a card or stop. ':'')+'Nothing about a card is ever held on this device, and the record '
+  +'carries no customer number.</p>'
+  +'</div>';
+ return h;}
+/* A DAY THE PLAN NAMES, as a person writes a date: 9 Nov 2026, the same form
+   the profile list prints (accWhen, ui/account.js), in the person's own time
+   zone because the moment Stripe stops a plan is a moment on their clock.
+   Empty for anything that is not a date, so a sentence built on it can tell. */
+function planDay(iso){
+ var d=new Date(iso); if(!iso||isNaN(d.getTime()))return '';
+ try{ return d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}); }
+ catch(e){ return d.toISOString().slice(0,10); }}
+/* THE SEAM. Two host functions and nothing else. A build with no store bound
+   has nowhere to send anybody, and says so rather than opening a dead page. */
+function planWire(){
+ var up=$('planup'), man=$('planman');
+ if(up)up.onclick=function(){planOpen('checkout',up.getAttribute('data-tier'));};
+ if(man)man.onclick=function(){planOpen('portal',null);};}
+function planOpen(what,tier){
+ /* A CLOSED TIER IS REFUSED HERE, FIRST, whether or not billing is bound. No
+    screen offers a press for one (planLadder carries buy, planUpgrade skips
+    it), so this answers only a caller that forgot to ask. Round RB: tier four
+    went to a ninety nine dollar checkout for a lead suite that is not built.
+    Said by the tier's own name, so opening a second closed rung needs no new
+    sentence. The server is a separate repository and has to refuse the same
+    tier on its own; this stops the instrument from ever asking it to. */
+ if(what==='checkout'&&typeof planBuyable==='function'&&!planBuyable(tier)){
+  var row=(typeof PLAN_BY!=='undefined')?PLAN_BY[tier]:null;
+  status((row&&row.lead&&row.built===false)
+   ?row.nm+' is not open yet. It opens when the lead suite is built. Nothing was charged.'
+   :'That plan cannot be bought. Nothing was charged.','fail');
+  return;}
+ /* The record store is the only thing that can mint a session, because a
+    session needs a key and a key never comes near this file. When there is no
+    store, this is not an error and not a silent no: it is a statement of where
+    the product currently is. */
+ if(typeof PLAN_HOST!=='function'){
+  status('Billing is not connected yet. The plan is read from your record, and '
+   +'the page that changes it lives behind sign in.','fail');
+  return;}
+ /* ONE PLAN, ONE CHARGE. A checkout always starts a new subscription and
+    never moves the one a person has, so a "Move to" press on a live plan
+    opened a second subscription and billed both, measured. A live plan is
+    moved on the payment page (the portal), which changes the plan already
+    running. Decided here, at the one door both "Move to" buttons go
+    through (planWire and planTiersWire), and off planState, the one reading
+    of live. The server refuses the same checkout with a 409 on its own, so
+    an older build that still sends it is stopped there. */
+ if(what==='checkout'&&typeof CURP!=='undefined'&&CURP&&planState(CURP.plan)==='live'){
+  what='portal'; tier=null;}
+ try{ PLAN_HOST(what,tier); }
+ catch(e){ status('Could not open the billing page. Nothing has changed.','fail'); }}
+/* bound by the host the same way storage is, so the engine and this file both
+   stay ignorant of what is on the other side */
+var PLAN_HOST=null;
+function bindPlan(fn){ PLAN_HOST=(typeof fn==='function')?fn:null; return !!PLAN_HOST; }
+
+function helpSheet(){
+ var h='<div class="pm-eye">Help</div><p class="sh-h">How to read this</p>'
+  +'<div class="sh-sec"><div class="pm-eye">The three things on screen</div>'
+  +'<p class="sh-p">The wheel is your field. The rail on the left is what you are made of, '
+  +'the panel on the right is what the instrument reads. Everything on either side is a door '
+  +'into the same detail.</p></div>'
+  +'<div class="sh-sec"><div class="pm-eye">The wheel</div>'
+  +'<div class="sh-row"><span>Move in and out</span><b>scroll</b></div>'
+  +'<div class="sh-row"><span>Move the frame</span><b>click and drag</b></div>'
+  +'<div class="sh-row"><span>Put it back</span><b>double click, or F</b></div>'
+  +'<div class="sh-row"><span>Open an address</span><b>click it</b></div>'
+  +'<div class="sh-row"><span>Set a charge</span><b>drag it, on a mouse</b></div>'
+  +'</div>'
+  +'<div class="sh-sec"><div class="pm-eye">Reading</div>'
+  /* PASS 1 FIRST. This said CQ was "what the field builds against what it
+     costs", which stopped being true on 25 September when CQ became the 21
+     laws summed. And "hover" is not a thing a phone can do: the tooltip
+     opens on a pointer resting or a finger held. */
+  +'<p class="sh-p">CQ is your coherence number: how closely you keep the 21 laws, added up. '
+  +'DQ is the shadow weight: all the charge you are carrying. SQ is how deep that charge sits. '
+  +'Pole is how much of each opposite is installed. Rest the pointer on any of them, or hold a '
+  +'finger on it, for more.</p></div>'
+  +'<div class="sh-sec"><div class="pm-eye">What it does not claim</div>'
+  /* THE DANGLING REFERENCE THE SWEEP LEFT. This said "every reading carries
+     an interval" and then told a person to compare a move against it. Once
+     the figures came off the corner, the Analytics tab and the glance tile,
+     the word interval named nothing on any screen, so the sentence sent
+     somebody looking for a thing that is no longer drawn. The claim under
+     "what it does not claim" is the honest half and it survives in words. */
+  +'<p class="sh-p">Every reading has play in it. A small move is noise, and the '
+  +'instrument says so instead of flattering you.</p></div>'
+  +'<div class="sh-sec"><button class="btn" id="shclose2">Close</button></div>';
+ sheetOpen(h);
+ var c=$('shclose2'); if(c)c.onclick=sheetShut;}
+
+/* wiring, once the shell exists */
+(function(){
+ /* the profile button opens a menu of the account sections, round OI, and its
+    Settings row opens the Settings surface in the centre. The sheet
+    version is kept as a function and no longer wired to anything, because it
+    is the thing that was replaced and deleting it in the same pass as
+    rewiring hides which of the two changed something. */
+ var pb=$('profbtn'); if(pb)pb.onclick=function(){if(typeof profMenu==='function')profMenu(); else setTab(TAB.SETTINGS);};
+ /* help's circle left the bar for the search on KC; helpSheet opens from its
+    row on the profile page, ui/account.js, which round JZ asked for */
+ var sh=$('sheet');
+ if(sh)sh.addEventListener('click',function(e){if(e.target===sh)sheetShut();});
+ addEventListener('keydown',function(e){if(e.key==='Escape')sheetShut();});
+ /* the stored choice has to be on the body before the first paint measures it */
+ var k=densGet(); if(k)document.body.classList.add('dens-'+k);
+ densPaint();})();
+
+/* ---- UNDO ----
+   The control names what it will take back and disappears when there is
+   nothing to take back, because a permanently disabled button is furniture
+   and a button labelled only "undo" makes a person guess. */
+/* ---- THE BOOT CLEARS ITSELF ----
+
+   The fade is CSS and the removal is not: an element at opacity 0 still
+   covers the app and is still in the tab order, so a boot that only animates
+   out is a transparent sheet over a working instrument. It is taken out of
+   the document when it is done. (It does not take the pointer, and has not
+   since .boot became pointer-events:none: a press always went through it,
+   which is why which press counts as the skip is decided by time, in
+   shell/body.html, and not by what the press landed on.)
+
+   Reduced motion has no animation to end on, so that case is handled by the
+   timer rather than by the event. The timer is the floor in every case, so a
+   dropped animationend never leaves the sheet up. */
+/* ---- UNI'S BOOT, ADDED 11 November ----
+
+   "Keep it at 7 for now." The CSS figure above (atuned_src/shell/body.html,
+   atuned_src/shell/head.html) is the unconditional default: with no script,
+   or under prefers-reduced-motion, it is the only thing that ever plays,
+   exactly as it did before tonight. bootUni is the script-driven
+   enhancement that takes over from it once a script is confirmed running,
+   called once from shell/body.html's own ready() as the third argument to
+   __bootPress, below. The choreography itself (the gaze, the colour climb,
+   the flare, when she leaves) is the motion director's spec, round GZ.
+
+   THE CLOCK IS THE SHEET'S OWN FADE, NOT A NEW TIMER. bootUniT reads t off
+   the same bootOut animation shell/body.html already pauses and resumes for
+   HELDFADE, so if a slow start up holds the sheet, Uni holds with it,
+   wherever she was, and resumes from that same frame rather than jumping.
+   The +6760 cancels the fade's own 6.76s delay when --hold is 0, so t runs
+   her own fixed 0 to 7.00 regardless of how far --hold (still open, see
+   shell/head.html) extends the sheet beyond that. */
+var BOOT_UNI_RAF=0, BOOT_UNI_STATE=null;
+/* a minimal cubic-bezier(x1,y1,x2,y2) solver, Newton's method on the curve's
+   own parameter, because setCoherence is not a CSS property and no keyframe
+   can ease it for us. Named once below rather than solved at every call. */
+function bootEase(x1,y1,x2,y2,x){
+ if(x<=0)return 0; if(x>=1)return 1;
+ var t=x;
+ for(var i=0;i<8;i++){
+  var it=1-t, bx=3*it*it*t*x1+3*it*t*t*x2+t*t*t-x;
+  if(Math.abs(bx)<1e-4)break;
+  var d=3*it*it*x1+6*it*t*(x2-x1)+3*t*t*(1-x2);
+  if(Math.abs(d)<1e-6)break;
+  t-=bx/d;}
+ var it2=1-t; return 3*it2*it2*t*y1+3*it2*t*t*y2+t*t*t;}
+var BOOT_UNI_EASE=function(p){return bootEase(.45,0,.55,1,p);};
+/* 7.76 since 17 November, when the script driven sheet became eight seconds
+   (shell/head.html, .boot.bx.bx-uni); the same cancelling as the 6760 it
+   replaces. Read the fade's delay rather than this whenever the two could
+   differ: this is only what --hold at 0 makes it. */
+var BOOT_UNI_FADE_AT=7.76;
+/* the moment the face leaves the stage for the Journal, on the same clock */
+var BOOT_UNI_SETTLE=7.20;
+function bootUniT(fade){
+ try{var ct=fade.currentTime, d=fade.effect.getComputedTiming().delay;
+  if(ct==null)return null;
+  return (ct-d)/1000+BOOT_UNI_FADE_AT;}catch(e){return null;}}
+/* THE SKIP, AT ANY t. Called ahead of the existing ACT path (the skip just
+   below), in the exact order the spec gives, so pressing skip mid gaze or
+   mid flare snaps to the same 7.00 end state the sequence would have
+   reached on its own: cancel the clock, release the gaze, let the flare
+   expire, land coherence and DQ at rest, drop her out with no transition,
+   pause her loop, hand her back to whatever mounts her next. Safe to call
+   even when she was never mounted (reduced motion, or this ran before she
+   could be): every step below is independently guarded. */
+/* THE HAND BACK, 12 November, a real bug his own words caught: "I just
+   landed on the first page to chat, and Uni didn't start up right
+   away." Both places the boot used to let go of her (a clean finish and
+   a skip) called uniPark() unconditionally, which only hides her and
+   moves her into document.body. That is correct when the Journal is not
+   the tab underneath, but on the real first-arrival path it is: TABHOME
+   is TAB.STORY, so the boot finishes directly over the Journal, and
+   nothing after uniPark() ever mounted her back into #stuni. She sat
+   parked until the next tab change or Dashboard press called stRender()
+   for an unrelated reason, measured at over 15s with nothing forcing an
+   earlier one. The fix checks the same thing stRender() itself already
+   checks (storyui.js, the mount right after stOwn()/stDraftBack()) and
+   does it here too, rather than hand her back blind and hope something
+   else mounts her a moment later. */
+function uniHandBack(){
+ var un=(typeof S!=='undefined'&&S&&typeof TAB!=='undefined'&&S.tab===TAB.STORY)?document.getElementById('stuni'):null;
+ if(un&&typeof uniMount==='function'){
+  uniMount(un);
+  try{if(typeof uniApply==='function'&&typeof ST_PARSED!=='undefined')uniApply(ST_PARSED);}catch(e){}
+ } else if(typeof uniPark==='function')uniPark();}
+function bootUniEnd(){
+ try{if(BOOT_UNI_RAF)cancelAnimationFrame(BOOT_UNI_RAF);}catch(e){}
+ BOOT_UNI_RAF=0;
+ try{if(window.Uni)window.Uni.setGaze(null);}catch(e){}
+ try{if(window.Uni)window.Uni.setEmotionIntensity('joy',0);}catch(e){}
+ try{if(window.Uni)window.Uni.setCoherence(100);}catch(e){}
+ try{if(window.Uni)window.Uni.setDQ(70);}catch(e){}
+ try{var host=document.getElementById('bootuni');
+  if(host){host.style.transition='none'; host.style.opacity='0';}}catch(e){}
+ try{if(window.Uni&&window.Uni.pause)window.Uni.pause();}catch(e){}
+ bootUniLand();
+ if(BOOT_UNI_STATE)BOOT_UNI_STATE.done=true;
+ BOOT_UNI_STATE=null;}
+/* THE FACE LANDS. Once, whichever way the boot ended: its own fade, a skip,
+   or the floor in the block below removing the sheet. The intro's clock is
+   taken off the face first, so it never reads a sheet that is gone; then the
+   face goes home through uniHandBack, the one route home, and the flight
+   layer, now empty, is removed. Called from the sheet's own clear() as well,
+   because a dropped animationend must still land her. */
+function bootUniLand(){
+ try{if(window.SrcFace&&typeof window.SrcFace.intro==='function')window.SrcFace.intro(null);}catch(e){}
+ var st=BOOT_UNI_STATE; if(!st||st.landed)return; st.landed=true;
+ try{uniHandBack();}catch(e){}
+ try{if(st.flyAnim)st.flyAnim.cancel();}catch(e){}
+ try{if(st.fly&&st.fly.parentNode)st.fly.parentNode.removeChild(st.fly);}catch(e){}
+ try{var h=document.getElementById('bootuni'); if(h)h.classList.remove('bx-uni-out');}catch(e){}}
+/* THE SETTLE, INTO THE START VIEW. "And then it starts off at the dashboard
+   mini": the Journal's own face box, #stuni, in its compact view. Its box is
+   read off the live page now, never typed, so any layout change to that page
+   (the icon pairs moving, the next step button moving) moves the landing
+   with it. The face is lifted out of the sheet into a layer above it, sized
+   to that box, and carried from the stage into it on a transform alone:
+
+     7.20 to 7.32   the backswing, drawing in by 3 percent on
+                    cubic-bezier(.45,0,.55,1), the same draw back the old
+                    figure's push had, because nothing leaves from rest at
+                    full speed
+     7.32 to 7.92   the move, 600ms, the full context change band, on the
+                    house ease out cubic-bezier(.22,1,.36,1), scale and
+                    position together, so it decelerates into its seat
+
+   It is a vertical drop on the page's own axis of symmetry, so the arc rule
+   has nothing to bend: a curve off the centre line would break the symmetry
+   ruled for every surface. The sheet fades from 7.76 to 8.00 underneath it,
+   and on the sheet's end the face is handed home at exactly the size and
+   place it already shows. Where the Journal is not what is under the sheet
+   (the sign in door is up, or another tab), there is nowhere honest to land,
+   so the face settles where it stands and fades with the card instead.
+
+   THE FLIGHT RUNS ON THE SHEET'S CLOCK, 21 November. His words: "I want to
+   have it line up perfectly with where it starts in the dashboard." It ran
+   720ms of wall time from whichever frame first read 7.20, while the hand
+   home is the sheet's own end at 8.00, so the two raced with 80ms between
+   them. Measured on the build before this change, a frame that read the
+   clock late left the face still at its start box at 7.90 on the sheet's
+   clock, 1058 by 494 against the Journal's 900 by 420 at 1600, and the hand
+   home then cut it 89 pixels down and 17.5 percent smaller in one frame:
+   two things with a cut between them, not one shape landing. Now the
+   flight is pinned to the sheet's timeline and finishes at 7.92, before
+   the hand home, from wherever the clock stands when it starts; a late
+   start flies the same path in less time rather than arriving mid air.
+   And the box is read again on every frame of the flight (bootUniFlyTrack,
+   below), so a Journal that moves while the sheet still covers it is where
+   the last frame lands, not where it stood at 7.20.
+
+   REDUCED MOTION, rbStill (ui/component.js), the media query and the
+   person's own quiet switch alike: no journey. The face is handed home at
+   the settle, under the sheet that still covers it, and the sheet's own
+   fade uncovers it already in place. */
+var BOOT_UNI_LANDED=7.92;
+function bootUniFlyTrack(st){
+ if(!st||!st.fly||st.landed)return;
+ var su=document.getElementById('stuni'); if(!su)return;
+ var b=su.getBoundingClientRect(); if(!(b.width>40&&b.height>40))return;
+ var f=st.fly.style, l=parseFloat(f.left), t=parseFloat(f.top), w=parseFloat(f.width), h=parseFloat(f.height);
+ if(Math.abs(l-b.left)<0.5&&Math.abs(t-b.top)<0.5&&Math.abs(w-b.width)<0.5&&Math.abs(h-b.height)<0.5)return;
+ f.left=b.left+'px'; f.top=b.top+'px'; f.width=b.width+'px'; f.height=b.height+'px';
+ try{if(window.SrcFace&&window.SrcFace.refit)window.SrcFace.refit();}catch(e){}}
+function bootUniFly(st,host,t,fade){
+ if(typeof rbStill==='function'&&rbStill()){ bootUniLand(); return; }
+ var dest=null, stuni=document.getElementById('stuni');
+ try{
+  if(stuni&&typeof S!=='undefined'&&S&&typeof TAB!=='undefined'&&S.tab===TAB.STORY){
+   var b=stuni.getBoundingClientRect();
+   /* the sheet takes no pointer, so this answers what is really on top of
+      the box's centre: the box itself, or a door standing over it */
+   var hit=b.width>40&&b.height>40?document.elementFromPoint(b.left+b.width/2,b.top+b.height/2):null;
+   if(hit&&(hit===stuni||stuni.contains(hit)))dest=b;}
+ }catch(e){dest=null;}
+ /* the widget the face rides in, taken off the host it is in, never by the
+    name uni.js keeps it under: that name is not reachable from here, and the
+    first cut, which used it, fell back to the fade on every boot */
+ var wid=host.querySelector(':scope > .uni-widget');
+ if(!dest||!wid){host.classList.add('bx-uni-out'); return;}
+ var src=host.getBoundingClientRect();
+ var rs=Math.min(src.width,src.height)/2-2, rd=Math.min(dest.width,dest.height)/2-2;
+ if(!(rs>0&&rd>0)){host.classList.add('bx-uni-out'); return;}
+ var k=rs/rd, dx=(src.left+src.width/2)-(dest.left+dest.width/2), dy=(src.top+src.height/2)-(dest.top+dest.height/2);
+ var T0='translate('+dx.toFixed(1)+'px,'+dy.toFixed(1)+'px) scale('+k.toFixed(4)+')';
+ var fly=document.createElement('div'); fly.className='bx-fly'; fly.id='bootfly'; fly.setAttribute('aria-hidden','true');
+ fly.style.left=dest.left+'px'; fly.style.top=dest.top+'px'; fly.style.width=dest.width+'px'; fly.style.height=dest.height+'px';
+ fly.style.transform=T0;
+ document.body.appendChild(fly); fly.appendChild(wid);
+ try{if(window.SrcFace&&window.SrcFace.refit)window.SrcFace.refit();}catch(e){}
+ st.fly=fly;
+ /* what is left of the 720 before 7.92: all of it on time, less on a late
+    frame, never under the 280 a surface move needs to read as a move */
+ var tc=(typeof t==='number'&&isFinite(t))?t:BOOT_UNI_SETTLE;
+ var dur=Math.round(Math.min(720,Math.max(280,(BOOT_UNI_LANDED-tc)*1000)));
+ try{
+  st.flyAnim=fly.animate([
+   {transform:T0,easing:'cubic-bezier(.45,0,.55,1)'},
+   {transform:'translate('+dx.toFixed(1)+'px,'+dy.toFixed(1)+'px) scale('+(k*0.97).toFixed(4)+')',offset:120/720,easing:'cubic-bezier(.22,1,.36,1)'},
+   {transform:'none'}],{duration:dur,fill:'forwards'});
+  /* pinned to the sheet's own timeline at the clock's reading, so the end
+     falls at 7.92 on that clock however late this frame ran */
+  if(fade&&fade.startTime!=null&&(fade.playbackRate||1)===1){
+   var d0=fade.effect.getComputedTiming().delay;
+   st.flyAnim.startTime=fade.startTime+d0+(tc-BOOT_UNI_FADE_AT)*1000;}
+ }catch(e){fly.style.transform='none';}}
+/* THE ENHANCEMENT ITSELF. Mounts the face into #bootuni (shell/body.html) and
+   drives it off the boot clock above. Reduced motion is checked first and
+   bails before anything mounts, which leaves .bx-uni unset and the CSS
+   figure exactly as it always was; tests/boot.js's own reduced-motion rule
+   and the "animation:none!important" it reads already cover that path.
+
+   SINCE 17 November the face plays the intro itself (SrcFace.intro,
+   ui/srcface.js): the sky, the gather, the lock, the beat of life and the
+   breath are all read off this same clock inside the face, so nothing here
+   times them. This block does what is outside the face: the class that
+   gives the sheet its eight seconds, the settle into the Journal at 7.20,
+   and the landing. The words and the card are CSS, on the sheet's own clock.
+
+   Until then the face was mounted here and the choreography below it, the
+   gaze, the coherence climb and the joy flare, drove window.Uni, which
+   uniMount pauses whenever the face takes a host (ui/uni.js,
+   UNI_FACE_HOSTS). So since 16 November every one of those calls landed on
+   a paused instance and drew nothing: the boot showed the face's ordinary
+   entrance and no choreography at all. They are kept only for the case they
+   were left in for, a face that failed to load, and run only then.
+
+   AND THE CLOCK STOPS WITH THE SHEET. The tick asked for another frame until
+   the clock read 7.3, but once the sheet is removed its fade is cancelled,
+   the clock read nought, and the tick asked for a frame every frame for the
+   rest of the session. Measured on the build before this one, four seconds
+   after the sheet had gone: the boot's frame request still advancing (985,
+   then 993 two frames later), its state never done. It stops now on a clock
+   that cannot be read, as well as at its own end. */
+function bootUni(){
+ try{if((typeof matchMedia==='function')&&matchMedia('(prefers-reduced-motion:reduce)').matches)return;}catch(e){}
+ var el=document.getElementById('boot'); if(!el)return;
+ var fade=null;
+ try{fade=el.getAnimations().filter(function(a){return a.animationName==='bootOut';})[0];}catch(e){}
+ if(!fade)return;
+ var host=document.getElementById('bootuni');
+ if(!host||typeof window.Uni==='undefined'||typeof uniMount!=='function')return;
+ /* A START UP THAT RAN PAST MOST OF THE OVERTURE. shell/body.html then plays
+    the fade whole from now, so there is no time left for a sky; the CSS
+    figure, already at its end, is what stands, as it did before Uni */
+ var t0=null;
+ try{var ct=fade.currentTime, d0=fade.effect.getComputedTiming().delay; if(ct!=null)t0=(ct-d0)/1000+6.76;}catch(e){}
+ if(t0!=null&&t0>5.5)return;
+ var face=!!(window.SrcFace&&typeof window.SrcFace.intro==='function');
+ el.classList.add('bx-uni');
+ /* the class moves the fade's delay; read it back now, so the floor that
+    RETIME sets straight after this reads the eight second end */
+ try{void getComputedStyle(el).animationDelay;}catch(e){}
+ /* THE WORDS RUN ON THE SHEET'S CLOCK. They are display:none until .bx-uni
+    lands, so their animations only begin now, when the start up finished,
+    and their 5.35 second delay would count from here: measured late by the
+    whole start up. Each is put on the fade's own start, so the words keep
+    their place in the sequence however long the start up took. */
+ try{ if(fade.startTime!=null)[].forEach.call(el.querySelectorAll('.bx-words>span'),function(w){
+   w.getAnimations().forEach(function(a){ a.startTime=fade.startTime; }); }); }catch(e){}
+ uniMount(host);
+ var st={done:false,landed:false,settled:false,fly:null,flyAnim:null,
+   g1:false,g2:false,g3:false,g4:false,climbDone:false,flared:false,joyOff:false,leaving:false,paused:false};
+ BOOT_UNI_STATE=st;
+ /* the intro's own clock: the sheet's, and nothing at all once the sheet is
+    gone, so the face can never read a cancelled fade as the start */
+ var clock=function(){ if(!el.isConnected)return null; return bootUniT(fade); };
+ if(face){ try{window.SrcFace.intro(clock);}catch(e){} }
+ else{
+  /* THE EYES STAY ON THE SCRIPT, 12 November: his words, "take off the
+     follow mouse animation... off the login for certain." */
+  try{window.Uni.setFollow(false);}catch(e){}
+  try{window.Uni.setBgTransparent(true);}catch(e){}
+  try{window.Uni.setUnread(false); window.Uni.setCoherence(30); window.Uni.setDQ(70);}catch(e){}}
+ /* lands her the moment the sheet is truly gone, whether the sequence ran to
+    its own end or the fade was cut short some other way; a skip lands her
+    through bootUniEnd, and bootUniLand runs once whichever comes first */
+ el.addEventListener('animationend',function onEnd(e){
+  if(e.target!==el||e.animationName!=='bootOut')return;
+  el.removeEventListener('animationend',onEnd);
+  bootUniLand();});
+ var tick=function(){
+  if(st.done)return;
+  var t=clock();
+  if(t==null){st.done=true; BOOT_UNI_RAF=0; bootUniLand(); return;}
+  if(face){
+   if(!st.settled&&t>=BOOT_UNI_SETTLE){st.settled=true; try{bootUniFly(st,host,t,fade);}catch(e){host.classList.add('bx-uni-out');}}
+   else if(st.fly)bootUniFlyTrack(st);
+  }else{
+   if(!st.g1&&t>=0.80){st.g1=true; try{window.Uni.setGaze(0.6,0);}catch(e){}}
+   if(!st.g2&&t>=1.25){st.g2=true; try{window.Uni.setGaze(-0.6,0);}catch(e){}}
+   if(!st.g3&&t>=1.75){st.g3=true; try{window.Uni.setGaze(0,0);}catch(e){}}
+   if(!st.g4&&t>=2.10){st.g4=true; try{window.Uni.setGaze(null);}catch(e){}}
+   if(t>=2.10&&t<4.70){
+    var p=(t-2.10)/2.6; if(p<0)p=0; if(p>1)p=1;
+    try{window.Uni.setCoherence(30+70*BOOT_UNI_EASE(p));}catch(e){}
+   }else if(t>=4.70&&!st.climbDone){st.climbDone=true; try{window.Uni.setCoherence(100);}catch(e){}}
+   if(!st.flared&&t>=4.70){st.flared=true;
+    try{window.Uni.react(1.5); window.Uni.setEmotionIntensity('joy',10);}catch(e){}}
+   if(!st.joyOff&&t>=5.90){st.joyOff=true; try{window.Uni.setEmotionIntensity('joy',0);}catch(e){}}
+   if(!st.leaving&&t>=BOOT_UNI_SETTLE){st.leaving=true; host.classList.add('bx-uni-out');}
+   if(!st.paused&&t>=BOOT_UNI_SETTLE+0.52){st.paused=true; try{window.Uni.pause();}catch(e){}}}
+  if(t<BOOT_UNI_FADE_AT+0.4){BOOT_UNI_RAF=requestAnimationFrame(tick);}
+  else{st.done=true; BOOT_UNI_RAF=0;}};
+ BOOT_UNI_RAF=requestAnimationFrame(tick);}
+/* when the floor below will remove the sheet, on the page's own clock,
+   published for design gate 11, which holds it to the sheet's own fade */
+var BOOT_FLOOR_AT=0;
+(function(){
+ var el=document.getElementById('boot');
+ if(!el){ if(typeof enterLift==='function')enterLift(); return; }
+ var gone=false, lifted=false;
+ /* THE SHEET HAS STARTED TO LIFT, so the Field underneath starts arriving,
+    ui/wheel.js. Once, whichever way the lift began: the sheet's own fade, a
+    press, the floor, or reduced motion clearing it at once. */
+ function lift(){ if(lifted)return; lifted=true;
+  if(typeof enterLift==='function')enterLift(); }
+ function clear(){ if(gone)return; gone=true; lift();
+  if(el.parentNode)el.parentNode.removeChild(el);
+  /* and the face lands, whichever way the sheet went: a floor that cleared
+     it with no animationend would otherwise leave her in the flight layer */
+  try{ if(typeof bootUniLand==='function')bootUniLand(); }catch(e){}
+  document.body.classList.add('booted'); }
+ /* animationstart fires when the fade's delay is over, which is the first
+    frame the sheet is anything less than solid */
+ el.addEventListener('animationstart',function(e){
+  if(e.target===el&&e.animationName==='bootOut')lift();});
+ el.addEventListener('animationend',function(e){
+  if(e.target===el&&e.animationName==='bootOut')clear();});
+ /* THE FLOOR IS READ OFF THE SHEET'S OWN FADE, NOT TYPED HERE.
+    It was a typed 5450 while shell/head.html set the fade to begin at 7.02s,
+    so the floor cut the sheet 1.57 seconds before its fade could start and
+    the fade never once played (ET, EZ in TASKS.md). Two copies of one number
+    in two files is how that happened, so there is one copy now: the end of
+    bootOut as the browser computed it, --hold included, less the time it has
+    already run, and the floor sits a fifth of a second past that. A dropped
+    animationend still never leaves the sheet standing. 5450 survives only as
+    the fallback for a browser with no getAnimations.
+
+    Read again once the animation has actually started. At the moment this
+    runs the sheet's animations can still be pending, with no start time, and
+    a floor measured from here would sit late by however long the first frame
+    took; ready is the promise that it has started, and the floor is set again
+    from its real clock then.
+
+    AND READ AGAIN WHEN THE FADE IS PUT BACK ON THE CLOCK, 23 October. When
+    the start up runs longer than the overture, shell/body.html holds the
+    fade until it is done and then plays it whole from its own start, so the
+    end this read first is no longer the end. retime is that read, handed to
+    shell/body.html with the skip below. */
+ var ft=0, retime=function(){};
+ function floor(ms){ clearTimeout(ft); BOOT_FLOOR_AT=performance.now()+ms; ft=setTimeout(clear,ms); }
+ floor(5450);
+ try{ var fade=el.getAnimations().filter(function(a){return a.animationName==='bootOut';})[0];
+  if(fade){ var set=function(){ if(gone)return;
+    /* A resumed, previously paused fade has a pending play request. Its
+       startTime can still refer to the original first painted frame while
+       playback is pending; using it here makes the floor fire in 200ms,
+       before the full .24s fade or its animationend can finish. The boot
+       gate's held-long/no-press case caught this on every solo run.
+       Never arm a time derived from that stale clock. Keep a bounded
+       watchdog and replace it after the ready promise updates startTime. */
+    if(fade.pending&&fade.ready){
+     floor(5450);
+     fade.ready.then(set,function(){});
+     return;}
+    /* The end is on the page's own timeline, not a hardcoded duration.
+       Leave 200ms for the terminal animation event before the watchdog. */
+    var end=fade.effect.getComputedTiming().endTime;
+    floor(Math.max(0,(fade.startTime!=null?fade.startTime+end-performance.now():end-(fade.currentTime||0)))+200); };
+   set(); retime=set; } }catch(e){}
+ /* AND THERE IS A WAY OUT. Anything over 600ms needs one, and this is five
+    seconds. It is the overture and it is worth watching, so it is not
+    skipped automatically on a return visit and no flag is stored: a person
+    who wants past it presses anything, and a person who wants to watch it
+    watches it. */
+ /* AND THE PRESS THAT SKIPS DOES NOT ALSO PRESS THE APP.
+
+    .boot is pointer-events:none, so the sheet never took the press: it went
+    through to whatever was under the cursor and this handler caught it on the
+    way past. Pressing "go straight in" over the tab strip dismissed the boot
+    and navigated to that tab, which is not what the line offers. Verified by
+    clicking through the sheet onto Compass and landing on Compass.
+
+    Taken in the capture phase and stopped there, so the first press does one
+    thing. Nothing else changes: the sheet still clears itself with no script
+    at all, which is the ruling this whole block exists to keep. */
+ /* WHICH PRESS IS THE SKIP IS DECIDED IN shell/body.html NOW, 23 October,
+    and this is only what a skip does. The capture used to be registered
+    here, which is only once the whole main script has arrived and begun to
+    run: 824ms after the sheet was first painted when measured here, and as
+    long as the file takes to arrive on a slow connection. And it was let go
+    when this block heard the fade end, which is a frame or more after the
+    fade has ended on screen. A press in either gap was lost: in the first
+    it reached a frame with nothing listening, in the second it was eaten
+    as a skip over an app already in view. The capture, the stop and
+    the swallowed click (click is a separate event, sent whatever happened to
+    the pointerdown before it: measured once as a press over the Energetics
+    tab still moving the surface from 2 to 5) are all there now, ahead of the
+    sheet, and a skip that came before this block existed is handed over the
+    moment the start up finishes.
+
+    THE DEVELOPER BUTTON IS THE ONE PRESS IN THIS SHEET THAT MEANS SOMETHING
+    OF ITS OWN, round MH and MI, ui/login.js. Its press is stopped with every
+    other skip, so a listener on the button itself would never see it; the
+    capture says whether the press was on it, and the flag is set here. */
+ var skip=function(p){ if(gone)return;
+  /* UNI, ADDED 11 November. Ahead of everything else a skip does, at any
+     point in the 7 seconds, so she is never caught mid gaze or mid flare. */
+  bootUniEnd();
+  if(p&&p.dev&&typeof DEV_SKIP!=='undefined'){ DEV_SKIP=true;
+   if(typeof loginClose==='function'&&typeof LOGIN!=='undefined'&&LOGIN.open)loginClose(); }
+  el.style.transition='opacity .18s cubic-bezier(.4,0,1,1)';
+  el.style.opacity='0'; lift(); setTimeout(clear,190); };
+ if(typeof __bootPress==='function')__bootPress(skip,function(){try{retime();}catch(e){}},bootUni);
+ var rm=(typeof matchMedia==='function')&&matchMedia('(prefers-reduced-motion:reduce)').matches;
+ if(rm)clear();})();
+
+/* the tab strip's fade is only honest while there is something past the
+   edge, so it is measured rather than always on. */
+function paintTabEdge(){
+ var t=document.getElementById('tabbar'); if(!t)return;
+ var more=t.scrollWidth-t.clientWidth-t.scrollLeft>2;
+ t.setAttribute('data-end',more?'0':'1');}
+(function(){
+ var t=document.getElementById('tabbar');
+ if(t)t.addEventListener('scroll',paintTabEdge);
+ addEventListener('resize',paintTabEdge);
+ /* measured after layout, not during it. Called straight after the tabs are
+    appended it read the strip at its unconstrained width and reported there
+    was nothing past the edge on a window where Summary was off it. */
+ addEventListener('load',paintTabEdge);
+ if(typeof requestAnimationFrame==='function')
+  requestAnimationFrame(function(){requestAnimationFrame(paintTabEdge);});})();
+function paintUndo(){
+ var b=$('undobtn'), f=$('redobtn'), w=$('histpair');
+ if(!b)return;
+ var n=undoDepth(), what=undoPeek();
+ var m=(typeof redoDepth==='function')?redoDepth():0;
+ var fwd=(typeof redoPeek==='function')?redoPeek():null;
+ b.hidden=(n===0);
+ /* THE ARROW CARRIES IT, and the name goes where a name belongs. Ruled: just
+    the arrows. What the step will take back is still written, on every
+    repaint, as the accessible name and the tooltip, so a screen reader and a
+    hover both get the sentence the label used to print. */
+ if(n){ var ub='Back. Takes back '+what+'. '+n+' step'+(n===1?'':'s')+' available.';
+  b.title=ub; b.setAttribute('aria-label',ub); }
+ if(f){ f.hidden=(m===0);
+  if(m){ var rb='Forward. Puts back '+fwd+'. '+m+' step'+(m===1?'':'s')+' forward.';
+   f.title=rb; f.setAttribute('aria-label',rb); } }
+ /* the pair only exists while there is history in either direction. Two
+    permanently disabled arrows in the bar are furniture, which is the same
+    reason the single control was hidden when the stack was empty. */
+ if(w)w.hidden=(n===0&&m===0);}
+(function(){
+ /* one settle for both directions. The field changed underneath everything,
+    so the whole surface repaints and the person is told what moved rather
+    than left to spot it. */
+ function settle(msg){
+  syncCh(); if(typeof syncLw==='function')syncLw();
+  if(typeof syncSoul==='function')syncSoul();
+  /* AND IT SAYS WHETHER THE MOVE WAS SAVED. The save's answer was thrown
+     away and the line was always ok, so on a store that refused the write
+     the person read "Took back" and a reload brought the change back. */
+  saveYou(); var saved=(typeof pSave==='function')?pSave():true;
+  render(); paintUndo();
+  if(saved){status(msg,'ok');return true;}
+  var st=(typeof saveState==='function')?saveState():{};
+  status(msg+(st.err==='NotARecord'?' Nothing saved on a worked example.'
+   :' Not saved. Storage is full or blocked, so a reload brings it back.'),'fail');
+  return false;}
+ /* THE LATCH SOUNDS ONLY ON A MOVE THAT WAS KEPT. Both handlers played undo
+    and kept after settle whatever it answered, so on a store that refused the
+    write the press was heard as a success. Measured with a spy on sfx and a
+    setItem throwing QuotaExceededError: the first Ctrl+Z played refuse and
+    undo in the same millisecond, and a second one inside refuse's 1200 ms gap
+    played undo alone, so the refusal was not heard at all and the latch told
+    the person it had landed. A refused save is heard once, from status, as
+    refuse. */
+ var b=$('undobtn');
+ if(b)b.onclick=function(){
+  var u=undoPop();
+  if(!u){paintUndo();return;}
+  if(settle('Took back '+u.nm+'.')&&typeof sfx==='function')sfx('undo');};
+ var f=$('redobtn');
+ if(f)f.onclick=function(){
+  var u=(typeof redoPop==='function')?redoPop():null;
+  if(!u){paintUndo();return;}
+  if(settle('Put back '+u.nm+'.')&&typeof sfx==='function')sfx('kept');};
+ /* the usual chords, because a person who wants either one reaches for them */
+ addEventListener('keydown',function(e){
+  if(!(e.metaKey||e.ctrlKey))return;
+  var k=e.key.toLowerCase();
+  if(k!=='z'&&k!=='y')return;
+  var t=e.target&&e.target.tagName;
+  if(t==='INPUT'||t==='TEXTAREA')return;   /* let the field have its own */
+  var fwd=(k==='y')||(k==='z'&&e.shiftKey);
+  e.preventDefault();
+  var el=$(fwd?'redobtn':'undobtn');
+  if(el&&!el.hidden)el.onclick();});})();

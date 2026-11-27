@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Release redesign, contact sheet</title>
+<style>
+@font-face{font-family:Inter;font-weight:300 700;src:url(inter.woff2) format('woff2')}
+:root{--bg:#0C0D12;--panel:#151821;--panel2:#1D212C;--ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;--line:rgba(255,255,255,.1);
+ --acc:#7EB8D4;--L:#8FA6C4;--R:#C9AD7A;--REL:#CF8E7E;--INS:#86BFA4;--font:Inter,system-ui,-apple-system,'Segoe UI',sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 var(--font);-webkit-font-smoothing:antialiased}
+header,section,footer{max-width:1240px;margin:0 auto;padding:0 20px}
+header{padding-top:36px}
+h1{font-size:34px;font-weight:600;letter-spacing:-.015em;margin:0 0 6px}
+h2{font-size:24px;font-weight:600;letter-spacing:-.01em;margin:56px 0 6px}
+h3{font-size:17px;font-weight:600;margin:28px 0 6px}
+p{margin:0 0 12px;max-width:44em;color:var(--mid)}
+p b,li b{color:var(--ink);font-weight:500}
+.tag{display:inline-block;font-size:13px;color:var(--dim);margin-bottom:4px}
+nav{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 8px}
+nav a,.btn{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border-radius:22px;border:1px solid var(--line);color:var(--mid);text-decoration:none;font-size:14px}
+nav a:hover,.btn:hover{color:var(--ink);border-color:var(--mid)}
+.rec{border-color:var(--acc)!important;color:var(--ink)!important}
+.strip{display:flex;gap:10px;overflow-x:auto;padding:6px 0 14px;align-items:flex-start}
+.strip figure{margin:0;flex:none}
+.strip img{display:block;height:var(--h,420px);width:auto;border:1px solid var(--line);border-radius:10px;background:#000}
+.strip figcaption{font-size:13px;color:var(--dim);margin-top:6px;max-width:var(--cw,200px);line-height:1.4}
+.strip.d img{--h:340px}.strip.f img{--h:380px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:24px}
+.box{border:1px solid var(--line);border-radius:16px;padding:16px 18px;background:var(--panel)}
+.box h3{margin-top:0}
+table{border-collapse:collapse;width:100%;font-size:14px;margin:8px 0 16px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--mid)}
+th{color:var(--ink);font-weight:500}
+td b{color:var(--ink);font-weight:500}
+.sw{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-1px;margin-right:6px}
+code{font-size:13px;background:var(--panel2);padding:1px 6px;border-radius:6px;color:var(--ink)}
+pre{font-size:12.5px;background:var(--panel2);padding:12px 14px;border-radius:12px;overflow:auto;color:var(--mid);line-height:1.5;margin:8px 0 16px}
+ul{margin:0 0 14px;padding-left:20px;color:var(--mid);max-width:50em}
+li{margin:0 0 6px}
+.rec2{display:inline-block;padding:2px 10px;border-radius:12px;background:var(--acc);color:#0B1418;font-size:13px;font-weight:600;margin-left:8px;vertical-align:2px}
+.legend td:first-child{white-space:nowrap}
+.legend svg{width:26px;height:26px;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;vertical-align:middle;margin-right:8px}
+footer{padding-bottom:80px;color:var(--dim);font-size:14px;margin-top:60px}
+</style></head><body>
+<header>
+ <span class="tag">Mockups only. Nothing in atuned_src/ was changed, nothing was built.</span>
+ <h1>The release room, redesigned</h1>
+ <p>One stage that holds still: no card, no scroll, nothing under the fold. It opens on his voice, writes the opening out as it is said, freezes on the sentence, and then the run, the cooldown and the summary are the same picture. Every number, name, colour, glyph and sentence is read off the engine in <code>source.html</code> by <code>extract.js</code>. Three directions for the run, one recommended.</p>
+ <nav>
+  <a href="#today">Today</a><a href="#grammar">The grammar</a><a href="#opening">The opening</a><a href="#run">The run</a><a href="#done">Done</a><a href="#notes">Honest notes</a><a href="#tests">Tests</a><a href="#asks">Questions</a>
+  <a class="rec" href="record.html">Recorder page for him</a>
+ </nav>
+ <p><b>Live, in motion</b> (the small bar at the top of each page jumps to any moment and changes speed):
+  <a class="btn rec" href="room.html?dir=ring">A Ring, recommended</a>
+  <a class="btn" href="room.html?dir=edges">B Edges</a>
+  <a class="btn" href="room.html?dir=stage">C Stage</a>
+  <a class="btn" href="room.html?dir=ring&who=angela&first=0">A as Angela, later run</a>
+  <a class="btn" href="room.html?dir=ring&rate=12">A at 12x</a></p>
+</header>
+
+<section id="today">
+ <h2>Where it starts: today's release, as he saw it</h2>
+ <p>Photographed from <code>source.html</code> with Gordon loaded and Root, 3rd Eye and Heart picked, in every phase. The welcome cycles four lines in a card under a row of dots; the opening is a separate screen; the run is a list of one hundred rows in a scroller with a back, now and forward control; the card itself scrolls; the done card is a tall page. Measured on those frames: the card is <b>1001 pixels tall in an 878 pixel window at 1600 by 1000</b> and <b>1013 in 741 at 390 by 844</b>, so Voice, the second count row and the elapsed clock are under the fold; the document holds <b>408 buttons</b> for the list rows; and the Pause button in the welcome and the opening is an empty pill, because the icon's stylesheet is only added when the run starts.</p>
+ <div class="strip d" id="s-base"></div>
+</section>
+
+<section id="grammar">
+ <h2>The grammar: four things, drawn four times, not by colour alone</h2>
+ <p>Left and feminine are one thing and right and masculine are one thing (<code>C3_POLE</code>: Feminine, Left channel, parasympathetic; Masculine, Right channel, sympathetic). So there are two sides to draw, not four, and the words masculine, feminine, parasympathetic and sympathetic stay off the run, as ruled at round LY. They are in the aria labels and in the legend under Details on the done state.</p>
+ <table class="legend">
+  <tr><th></th><th>Position</th><th>Shape</th><th>Motion</th><th>Colour</th><th>The number</th></tr>
+  <tr><td><svg viewBox="0 0 24 24" style="stroke:var(--L)"><path d="M15.5 5.5a8 8 0 100 13"/><circle cx="13.5" cy="12" r="1.7"/></svg><b>Left</b></td><td>Left of the stage, left flank of the ring</td><td>A bowl with a point at its centre. One smooth round-capped line</td><td>Drains continuously over the block. A slow six second breath at the left edge</td><td><span class="sw" style="background:var(--L)"></span>Steel</td><td>Statements left on this side. A tick when the side is done</td></tr>
+  <tr><td><svg viewBox="0 0 24 24" style="stroke:var(--R)"><path d="M8 5.5l10 6.5-10 6.5z"/></svg><b>Right</b></td><td>Right of the stage, right flank of the ring</td><td>A triangle pointing out. Ten hard square-capped segments</td><td>Steps down one tenth at a time, and a short pulse on each statement</td><td><span class="sw" style="background:var(--R)"></span>Brass</td><td>Statements left on this side</td></tr>
+  <tr><td><svg viewBox="0 0 24 24" style="stroke:var(--REL)"><path d="M12 19V6M7 11l5-5 5 5"/></svg><b>Release</b></td><td>Above or first in the pair, never at a side</td><td>An arrow leaving, in a ring that empties</td><td>The number falls, and settles upward as it falls</td><td><span class="sw" style="background:var(--REL)"></span>Clay</td><td>Patterns left to say. Counts down to nought</td></tr>
+  <tr><td><svg viewBox="0 0 24 24" style="stroke:var(--INS)"><path d="M12 5v11M7 12l5 5 5-5M7 20h10"/></svg><b>Install</b></td><td>Below or second in the pair</td><td>An arrow set down on a line, in a ring that fills</td><td>The number rises, and settles downward as it lands</td><td><span class="sw" style="background:var(--INS)"></span>Sage</td><td>Truths set. Counts up from nought</td></tr>
+ </table>
+ <p>The only saturated colour on the stage is the address ring, in its own seat colour, because it is what is being worked on. The four tones are muted on purpose. Only one side and one half are alive at a time: the live side drains, the waiting side holds full and dim, the finished side is empty with a tick, and the half that is not running holds its number dimmed.</p>
+</section>
+
+<section id="opening">
+ <h2>The opening: one screen, on his voice, writing as it is said</h2>
+ <p>The first frame is the stage with a breathing voice mark and a caret. His clip starts on the press of Run release, which is the gesture a browser needs. The words write out character by character as he says them, all of it on one screen, and the first statement is not a line to read: it is a sentence the screen writes in full, freezes, and pulses twice, and then the run begins <b>underneath it</b> on the same stage. No number and no word sits near the prompt. The screen is a function of the clip's playback time, so Pause is exact and nothing can drift.</p>
+ <h3>First 5 seconds, 390 by 844, then 1600 by 1000, then the 360 by 640 floor</h3>
+ <div class="strip" id="s-open-p"></div>
+ <div class="strip d" id="s-open-d"></div>
+ <div class="strip f" id="s-open-f"></div>
+ <h3>The sentence: written, frozen, pulsed, held, then the run starts under it</h3>
+ <div class="strip" id="s-stem-p"></div>
+ <div class="strip d" id="s-stem-d"></div>
+ <div class="grid2">
+  <div class="box">
+   <h3>The script, PROPOSED for him to edit (25 words and the two sentences)</h3>
+   <p><b>1.</b> Sit down. Feet on the floor. Move your awareness inside your body. Take one deep breath. When you are ready, repeat this in your mind.</p>
+   <p><b>2, first run.</b> I am releasing believing, thinking, feeling, behaving and acting that I am ...</p>
+   <p><b>3, every run after.</b> I am letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am ...</p>
+   <p>The three dots are a held silence, not a word. The names of the addresses are not in the clip, because a clip cannot know them; the run says them. House voice note: "sit back" and "relax" stay out of written copy, and the screen now prints exactly what he says, so the script he records is the script that is written.</p>
+  </div>
+  <div class="box">
+   <h3>How the writing keeps time with the voice</h3>
+   <p>One function: <code>charsAt(line, t)</code> returns how many characters are written at time <code>t</code>. Only where <code>t</code> comes from changes.</p>
+   <ul>
+    <li><b>His clip, with its timing track.</b> <code>t = audio.currentTime</code>, read every animation frame. Nothing is counted by a timer, so it cannot drift, Pause freezes it, and a stall in playback stalls the text.</li>
+    <li><b>His clip, no timing track.</b> The same, spread across <code>audio.duration</code> by the weight of each word, with the pauses the recorder found if it has any.</li>
+    <li><b>The app voice, as the fall back.</b> <code>speechSynthesis</code> boundary events give <code>charIndex</code> at each word on local voices in Chrome desktop, Safari and Firefox. Network voices and most Android voices send none. So: snap to <code>charIndex</code> when events arrive, and between them advance at the measured rate (<code>RUN.spokeMs / RUN.spokeW</code>, already kept); if no boundary arrives within 700 ms of <code>onstart</code>, run on the schedule alone.</li>
+    <li><b>Voice off.</b> The same schedule at the reading rate, 0.40 seconds a word (<code>REL_WORD_S</code>). The opening is not a different screen when it is silent.</li>
+   </ul>
+   <p>Every character is in the document from the first frame and only its opacity moves, so nothing reflows while it writes, <code>textContent</code> is always the whole sentence for a reader or a test, and reduced motion simply shows it all. Cost: the opening runs one animation frame loop for about twenty seconds, and changes at most a few classes per frame.</p>
+  </div>
+ </div>
+ <div class="grid2">
+  <div class="box">
+   <h3>Carrying his voice in the one file, no network</h3>
+   <p>About 20 seconds of speech once the three lines are recorded. Embedded as a data URL in a script literal beside the font, decoded by <code>new Audio(src)</code> on the press of Run release.</p>
+   <table>
+    <tr><th>Encoding</th><th>Rate</th><th>20 s, raw</th><th>As base64</th><th>Plays in</th></tr>
+    <tr><td>AAC-LC in an m4a, mono <span class="rec2">recommended</span></td><td>32 kbps</td><td>about 80 KB</td><td>about 105 KB</td><td>every browser the product runs in</td></tr>
+    <tr><td>Opus in webm, mono</td><td>24 kbps</td><td>about 60 KB</td><td>about 80 KB</td><td>Chrome, Firefox, Edge; Safari 17 and later, not before</td></tr>
+   </table>
+   <p>The build is 3.7 MB today, so the clip is under three per cent of it. A build step reads <code>atuned_src/audio/opening.m4a</code> and <code>opening.json</code> and writes one script file, <code>ui/openingclip.js</code>, loaded before <code>release.js</code> in <code>MANIFEST</code>. It is a data literal the engine never sees, so the engine stays host free. With no clip present the literal is empty, and the opening falls back down the ladder above to the app voice, then to silent reading. A data URL is not a network request, but design gate 7 should be run once with it in to be sure.</p>
+  </div>
+  <div class="box">
+   <h3>Making the timing track, and the recorder</h3>
+   <p><b>The easy way, built:</b> <a class="btn rec" href="record.html">record.html</a> is one self-contained page for him. It shows the three lines, records each with a big Record button, plays each back with the words writing out so he can see whether it is right, lets him edit the words, and saves two files: <code>atuned-opening.wav</code> and <code>atuned-opening-timing.json</code>. Steps written for a ten year old are on the page: the Allow microphone box, where it appears, and which two files to send back.</p>
+   <p><b>How it finds the words:</b> it records raw samples (not <code>MediaRecorder</code>, which hides the audio inside a codec), measures loudness every 10 milliseconds, finds the pauses between sentences, and spreads the words between them by length. Tested here against a synthetic take with five sentences: every sentence start and end found within 30 milliseconds. It says so on the page when the pauses it found do not match the sentences, and asks for a slower take.</p>
+   <p><b>The exact way, if ever wanted:</b> a forced aligner run once over the clip and the script (<code>whisper</code> with word timestamps, or <code>aeneas</code>) writes the same file shape, word by word, to the millisecond. The player does not care which made it.</p>
+  </div>
+ </div>
+ <pre>atuned-opening-timing.json
+{ "version":1, "clip":"atuned-opening.wav", "durationSeconds":19.8,
+  "lines":[ { "id":"intro", "text":"Sit down. ...", "silentTail":false,
+              "clipStart":0, "clipEnd":8.1, "start":0.15, "end":7.9,
+              "words":[ {"w":"Sit","s":0.15,"e":0.41}, {"w":"down.","s":0.45,"e":0.8}, ... ] },
+            { "id":"stem-first", ... "silentTail":true, "words":[ ..., {"w":"...","s":13.9,"e":14.4} ] },
+            { "id":"stem-six",   ... } ] }</pre>
+</section>
+
+<section id="run">
+ <h2>The run: three directions, every one with no scroll</h2>
+ <p>All three share the top, the pinned sentence, the prompt, the bar and the grammar above. They differ in where the four counters live.</p>
+
+ <h3>A. The ring <span class="rec2">recommended</span></h3>
+ <p>The address is the centrepiece: its ring, its own glyph, its percent falling live as each line is said. The left side is the left flank of the ring and the right side is its right flank, so the picture is the body. Release and install sit under it as a pair. The same address at the head of a block, on each side of each half, and as the second address.</p>
+ <div class="strip" id="s-ring-p"></div>
+ <div class="strip d" id="s-ring-d"></div>
+ <div class="strip f" id="s-ring-f"></div>
+
+ <h3>B. The edges</h3>
+ <p>Left and right are the screen's own edges: a smooth tube down the left that breathes, a ten segment ladder down the right that steps. The four counters sit in one row at the foot. Smallest footprint, calmest, and the most peripheral: the sentence has the whole middle.</p>
+ <div class="strip" id="s-edges-p"></div>
+ <div class="strip d" id="s-edges-d"></div>
+ <div class="strip f" id="s-edges-f"></div>
+
+ <h3>C. The stage</h3>
+ <p>The address hero on top, the prompt in the middle, four labelled counter cards in two rows: sides on top, halves beneath. The most legible and the heaviest: it spends the most height and is the most like a dashboard.</p>
+ <div class="strip" id="s-stage-p"></div>
+ <div class="strip d" id="s-stage-d"></div>
+ <div class="strip f" id="s-stage-f"></div>
+
+ <h3>States that must survive: heavy, paused, the sound sheet, a later run</h3>
+ <p>Marking a line heavy is a tap on the sentence itself (the whole sentence is the target; a red ring at its end is the affordance, and fills with a double ring when it is on). Pause dims the stage and turns into Resume. The Voice control is a split: the left half switches the voice, the right half opens the sound sheet that holds Seat tone, Vibration and the voice's name and where it runs. A later run uses the engine's own six channel sentence.</p>
+ <div class="strip" id="s-states"></div>
+
+ <h3>Five people, from different rungs: the same screen</h3>
+ <p>Gordon is the heaviest and Sofia the lightest in the cast; Angela and Derek sit between. The ring's percent reads 12 to 95 across them and the layout does not move.</p>
+ <div class="strip" id="s-people"></div>
+</section>
+
+<section id="done">
+ <h2>Done and the cooldown, in the same language</h2>
+ <p>The cooldown is the opening again: his clip, the four lines writing out as they are said, and the two minutes as a clay ring that drains, with its time inside it. Under it the four counters at their final values, with a tick on each finished side. Done is the one filled button. When the two minutes run out, or on request, the summary: one sentence, the two counters, up to three heavy lines, the addresses as rings to mark heavy, and Details, which swaps in the expression note and the legend. A run ended early with End says what it actually said.</p>
+ <div class="strip" id="s-done-p"></div>
+ <div class="strip d" id="s-done-d"></div>
+ <div class="strip f" id="s-done-f"></div>
+</section>
+
+<section id="notes">
+ <h2>Honest notes</h2>
+ <div class="grid2">
+  <div class="box">
+   <h3>What a person reads at a glance</h3>
+   <p><b>Four seconds in:</b> a green heart ring at 52 percent that is shrinking (this is what I am working on, and it is going down), one sentence in the middle (this is what I say), and four small counters, two of which are moving. What they do next is obvious: say it. Their fear, that they are doing it wrong or that it will never end, is answered by the two numbers that fall.</p>
+   <p><b>The count:</b> seven things to look at (address, pinned sentence, prompt, four counters) and five things to press (the sentence, voice, sound, pause, end), against about twenty two visible and 408 in the document today. The words on the stage besides the prompt: four counter labels and the address name. Words before the first number: the address name and its seat, three. Taps to the thing they came for: none.</p>
+   <p><b>Tissue test, walked with four people.</b> <b>Derek</b> reads the Release number first and trusts it. <b>Gordon</b> reads the sentence and the ring, and the subject on the sentence is what moves him. <b>Angela</b> (level 4 or 5, ring at 15 percent) will not decode two glyphs on first sight, so the words Left and Right are always printed under them; she does not need the symbols to use it, and the first run is where she learns them. <b>Sofia</b> will want the pole words, and they are in the legend under Details and in the aria labels, not on the run, as ruled. Where they would stop: the install side reads "Joy." a hundred times in a row, which is a copy gap and not a layout one (question 4).</p>
+  </div>
+  <div class="box">
+   <h3>First-screen height at 360 by 640, measured</h3>
+   <div id="heights"></div>
+   <p>Every direction fits with no scroll. The tallest statement in the cast, with its subject, is five lines at 360 and sits in a zone that holds six. Worst case checked by <code>check.js</code> for four people, three directions, three viewports, every block.</p>
+  </div>
+  <div class="box">
+   <h3>What it costs per frame</h3>
+   <div id="perf"></div>
+   <p>Measured in headless Chromium with the software renderer, ten seconds each, so read the shape and not the figure. The mock recomputes the run state on every frame, which the build does not: it updates once a statement, and the rows marked "one update a statement" are the build's cost. In the build the run has no frame loop at all: the left drain, the ring arc and the segments are CSS transitions set once per statement, the left breath and the right pulse are CSS keyframes on opacity, and the numbers change four times a second at most. The one frame loop is the opening, about twenty seconds.</p>
+  </div>
+  <div class="box">
+   <h3>Length, which the screen cannot fix</h3>
+   <p>At the default of 100 patterns a channel and four seconds between statements, three addresses is <b>82 minutes</b> (<code>relSecFrom</code>: 4949 seconds, Gordon). The screen is built to be left alone for that long: nothing flashes, nothing animates faster than a breath, the only thing that moves each four seconds is one sentence, and every counter is a glance. But a person who must stay for 82 minutes has a different problem, which is the dose, and it is his call (question 6).</p>
+   <p><b>Reduced motion</b> shows every character at once, removes the breath, the pulse and the drift, and keeps the numbers and the fills.</p>
+  </div>
+ </div>
+</section>
+
+<section id="tests">
+ <h2>What the build must change in the gates</h2>
+ <div class="grid2">
+  <div class="box">
+   <h3><code>tests/design.js</code>, the release run (about lines 1447 to 1580)</h3>
+   <ul>
+    <li><b>Shown equals spoken.</b> It reads the first <code>#rel .rel-line</code> or <code>.rel-speak</code> and compares the whole of what was shown with every utterance. The sentence is now two elements: the pinned <code>.rel-stem</code> and the <code>.rel-line</code>. At a head the utterance is stem plus line; at a pass it is the line alone. The comparison must join the two, or keep the stem inside <code>.rel-line</code> as a span so the existing read still holds. Both are one line of the gate.</li>
+    <li><b>The first statement opens on the six channels:</b> <code>head.text.indexOf(q.stem)===0</code> reads the stem from the stem element for a later run, and his five channel sentence for the first run.</li>
+    <li><b>Opening lines equal <code>OPENING</code>:</b> the opening is now one typed block; the gate reads the whole text content, which is complete from the first frame, and compares it with the script.</li>
+    <li><b>The eyebrow:</b> <code>.pm-eye</code> read "Release, opening" and "Released". There is no eyebrow on the new stage; the gate reads <code>#rel[data-phase]</code> instead (<code>open</code>, <code>run</code>, <code>done</code>).</li>
+    <li><b>New checks:</b> no page scroll in any phase at 1600 by 1000, 390 by 844 and 360 by 640; every control 44 by 44; the prompt and pinned sentence at 16 pixels or more; the prompt block contains the statement and nothing else, no digit and no label; every release statement carries a subject or "myself"; Release never rises and Install never falls over a run; the live side's number falls and the other side holds; the four counters differ in class and glyph; the pulse runs at most twice; with reduced motion the whole opening is visible at the first frame.</li>
+   </ul>
+  </div>
+  <div class="box">
+   <h3><code>tests/functional.js</code></h3>
+   <ul>
+    <li><b>Lines 1144 to 1160</b> drive Run release, then <code>#relskip</code>, then read each line of the plan through <code>.rel-line</code>, and read the half and side from the carousel heading <code>.rel-cr-h</code> ("Release, left channel"). The carousel is gone. Keep <code>#relgo</code>, <code>#relskip</code> and <code>.rel-line</code>; read half and side from <code>data-half</code> and <code>data-side</code> on <code>#rel</code>, which the room should carry.</li>
+    <li><b>Lines 5260 to 5400</b>, the seat tone: <code>#reltone</code> is clicked mid run. It now lives in the sound sheet, so the test presses <code>#relmore</code> first. <code>#relpause</code> and <code>#relstop</code> are unchanged, and the Voice control keeps <code>id="relvoice"</code> and <code>role="switch"</code>. <code>.rel-node</code> is read for the address name: keep that class on it.</li>
+    <li><b>New:</b> tapping the prompt sets <code>RUN.heavy</code> and <code>aria-pressed</code>; End with a mark commits it through <code>meterHeavy</code>; the sheet opens and closes with Escape; Pause stops the numbers; the done state offers Done and Build a ritual and an early End reports what was said.</li>
+   </ul>
+   <h3>And in <code>ui/release.js</code></h3>
+   <p><code>relRender</code> becomes three scene builders and a state apply; <code>relCar</code>, <code>relCarSync</code>, <code>relCarBind</code>, <code>relTally</code>, <code>relClock</code>, <code>relDial</code>, <code>relStrips</code> and the <code>.rel-cr-*</code> rules go; <code>relShort</code> takes a subject; <code>relCss</code> is no longer needed for the icon size, which is also what leaves today's welcome Pause blank. The arithmetic, the plan, the meter, the rerun order, the two minute settle, <code>relWrite</code>, <code>relCoolDown</code>, the heavy keys and <code>REL_SIDE</code> are untouched.</p>
+  </div>
+ </div>
+</section>
+
+<section id="asks">
+ <h2>Questions for him</h2>
+ <ol style="max-width:52em;color:var(--mid)">
+  <li><b>Install or Reframe?</b> He says release and install. The product says Reframe for the half and Installed for the count. The mock says Release and Install everywhere, one word each. Does Install win everywhere, including the area labelled Reframe in the ritual?</li>
+  <li><b>One sentence or two?</b> His five channel sentence ("I am releasing believing, thinking, feeling, behaving and acting that I am ...") against the engine's six channel one he ruled on 26 September ("I am letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am"). The mock uses his for the first run and the engine's after, and records both. Should every run use one of them, and is it "releasing" or "letting go of"?</li>
+  <li><b>Until the recording exists,</b> may the app voice say the opening as a stand in? That reverses his 27 September ruling that the synthetic voice never says the welcome. The design works under either answer: with no clip and the voice on, the app voice reads it; with the voice off, or if he would rather not, it writes at reading pace in silence.</li>
+  <li><b>The install statements.</b> The reframe half says "Joy." a hundred times in a block, with no subject. Should it say what the release says, with the subject ("I choose joy with my boss"), and who writes the sentence for each of the nine states?</li>
+  <li><b>The word between the pattern and the subject,</b> "separation from my boss", "fear of my boss", "anger at my boss". The mock proposes nine defaults by charge and a short list of exceptions. Is that table the copy seat's to write for all 112, with "about" as the fall back?</li>
+  <li><b>Eighty two minutes.</b> Three addresses at 100 and four seconds is 82 minutes. Does the default drop, or does a person work up to it, the way the gates do?</li>
+  <li><b>The list and its arrows are gone.</b> No scroller means no Back, Now and Forward. The sentence and the one after it are shown. Is losing "cycle backward" acceptable, given "you need to see the next word coming up" is kept?</li>
+  <li><b>DQ and Down</b> were two figures on the run. SQ lowering in real time is now the address ring itself, and DQ moves to the summary. Is that enough "you should see it lowering"?</li>
+  <li><b>Direction.</b> A, the ring, is recommended. B is calmer and smaller; C is the plainest. Which one does he want built?</li>
+ </ol>
+</section>
+<footer>Frames are shot by <code>shots.js</code> (deterministic, <code>?t=</code>), measured by <code>check.js</code>, <code>heights.js</code> and <code>perf.js</code>. Data by <code>extract.js</code>. The baseline is in <code>baseline/</code>.</footer>
+
+<script>
+function strip(id,items,w){var el=document.getElementById(id);if(!el)return;
+ el.innerHTML=items.map(function(i){return '<figure><a href="'+i[0]+'"><img src="'+i[0]+'" alt="'+i[1]+'"></a><figcaption style="--cw:'+(w||190)+'px">'+i[1]+'</figcaption></figure>';}).join('');}
+var F='frames/', B='baseline/';
+strip('s-base',[[B+'1600-1-welcome-a.png','Welcome, 1600. One line of four at a time under five dots.'],[B+'1600-3-opening.png','Opening, 1600. A second screen, and an empty Pause.'],[B+'1600-4-run-head.png','Run, 1600. The card is taller than the window, Voice is cut off.'],
+ [B+'390-1-welcome-a.png','Welcome, 390'],[B+'390-3-opening.png','Opening, 390'],[B+'390-5-run-pass.png','Run, 390. Counts are under the fold.'],[B+'390-6-done-cooldown.png','Done and cooldown, 390.'],[B+'1600-7-done-summary.png','Done summary, 1600.']],220);
+function oframes(sz,cls){return [0,1,2,3,5].map(function(t){return [F+'open-'+t+'s-'+sz+'.png',t+' s'];});}
+strip('s-open-p',oframes('p'),170);strip('s-open-d',oframes('d'),260);strip('s-open-f',oframes('f'),150);
+function sframes(sz){return [['intro-end','Intro written'],['stem-half','Sentence writing'],['stem-written','Written in full'],['stem-pulse-a','Pulse, first peak'],['stem-pulse-b','Pulse, second'],['stem-frozen','Frozen. The run starts under it']].map(function(a){return [F+'open-'+a[0]+'-'+sz+'.png',a[1]];});}
+strip('s-stem-p',sframes('p'),170);strip('s-stem-d',sframes('d'),260);
+function rframes(dir,sz){return [['head','Head of a block, left release. The words light as said'],['lrel','Left release, a statement in'],['rrel','Right release. Left is done'],['lins','Left install'],['rins','Right install'],['addr2','Second address']].map(function(a){return [F+'run-'+dir+'-'+a[0]+'-'+sz+'.png',a[1]];});}
+['ring','edges','stage'].forEach(function(d){strip('s-'+d+'-p',rframes(d,'p'),170);strip('s-'+d+'-d',rframes(d,'d').slice(0,4),260);strip('s-'+d+'-f',rframes(d,'f'),150);});
+strip('s-states',[[F+'run-ring-heavy-p.png','Heavy marked, A, 390'],[F+'run-ring-paused-p.png','Paused, A, 390'],[F+'run-ring-sheet-p.png','Sound sheet, A, 390'],[F+'run-ring-later-p.png','A later run, six channel sentence, A, 390'],
+ [F+'run-edges-heavy-p.png','Heavy, B, 390'],[F+'run-stage-sheet-p.png','Sound sheet, C, 390'],[F+'run-ring-sheet-f.png','Sound sheet, A, 360 by 640'],[F+'run-ring-heavy-d.png','Heavy, A, 1600']],170);
+strip('s-people',[['gordon','Gordon, 58, managing partner'],['derek','Derek, 39, high performer'],['angela','Angela, 36, seeker'],['sofia','Sofia, 41, practitioner']].map(function(a){return [F+'run-ring-'+(a[0]==='gordon'?'rrel':a[0])+'-p.png',a[1]];}).concat([['derek','Derek, 1600'],['sofia','Sofia, 1600']].map(function(a){return [F+'run-ring-'+a[0]+'-d.png',a[1]];})),170);
+function dframes(sz){return [['cool-a','Cooldown, written as said'],['cool-b','Cooldown, settling'],['early','Ended early with End'],['sum','Summary'],['sum-more','Details']].map(function(a){return [F+'done-'+a[0]+'-'+sz+'.png',a[1]];});}
+strip('done-p'.replace('done','s-done'),dframes('p'),170);strip('s-done-d',dframes('d'),260);strip('s-done-f',dframes('f'),150);
+function tbl(rows,cols){return '<table><tr>'+cols.map(function(c){return '<th>'+c[1]+'</th>';}).join('')+'</tr>'+rows.map(function(r){return '<tr>'+cols.map(function(c){return '<td>'+r[c[0]]+'</td>';}).join('')+'</tr>';}).join('')+'</table>';}
+</script>
+<script src="frames/heights.js"></script>
+<script src="frames/perf.js"></script>
+<script>
+(function(){
+ var h=document.getElementById('heights'), p=document.getElementById('perf');
+ if(window.HEIGHTS&&h){var rows=HEIGHTS.filter(function(r){return r.view==='360x640'||r.view==='390x844';}).map(function(r){
+   return {v:r.view,d:{edges:'B edges',ring:'A ring',stage:'C stage'}[r.dir],top:r.header+r.hero,stem:r.stem,zone:r.zone,inst:r.dir==='ring'?r.instrument+' (flexes)':r.instrument,bar:r.bar,pad:r.pad,used:r.dir==='ring'?'fills it':r.used,free:r.dir==='ring'?'0':r.free};});
+  h.innerHTML=tbl(rows,[['v','Viewport'],['d','Direction'],['top','Address'],['stem','Pinned sentence'],['zone','Prompt zone'],['inst','Counters'],['bar','Bar'],['pad','Padding'],['free','Pixels spare']]);}
+ if(window.PERF&&p){p.innerHTML=tbl(PERF.map(function(r){return {v:r.view,c:r.case,f:r.fps,t:r.taskMsPerFrame+' ms',s:r.scriptMsPerFrame+' ms',l:r.layoutMsPerFrame+' ms',pc:r.cpuPct+' %'};}),
+  [['v','Viewport'],['c','Case'],['f','Frames a second'],['t','Main thread per frame'],['s','Script'],['l','Layout'],['pc','One core']]);}
+})();
+</script>
+</body></html>

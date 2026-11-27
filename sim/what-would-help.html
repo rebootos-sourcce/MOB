@@ -1,0 +1,798 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>What would have kept them</title><meta name="description" content="Nine figures, what the run measured about each, and the improvement each measured sticking point implies.">
+<style>
+:root{
+ --bg:#0C0D12; --panel:#1A1D26; --panel-2:#252833; --sunk:#090A0E;
+ --ink:#EFEDE8; --mid:#B4B0A8; --dim:#94908A; --line:rgba(239,237,232,.13);
+ --accent:#7EB8D4; --au:#C2A063; --good:#68CBA4; --bad:#D4736D;
+ --root:#D6524C; --sacral:#D8924E; --solar:#DABF6A;
+ --heart:#5FD5A6; --throat:#5EBBDB; --eye:#7D93E0; --crown:#A77EDB;
+ --w:1120px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);
+ font:400 16px/1.62 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+ letter-spacing:.005em}
+.wrap{max-width:var(--w);margin:0 auto;padding:40px 16px 90px}
+h1{font-size:clamp(28px,4.6vw,44px);line-height:1.1;margin:0 0 10px;font-weight:600;letter-spacing:-.015em}
+h2{font-size:clamp(20px,2.6vw,26px);margin:54px 0 6px;font-weight:600;letter-spacing:-.01em}
+h3{font-size:17px;margin:0;font-weight:600}
+h2+.lede{margin-top:0;color:var(--mid)}
+p{margin:0 0 14px;max-width:74ch}
+.lede{color:var(--mid);font-size:17px}
+.eye{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin:0 0 8px}
+.rule{height:1px;background:var(--line);border:0;margin:36px 0}
+.note{border-left:2px solid var(--au);padding:2px 0 2px 16px;color:var(--mid);margin:0 0 20px;max-width:74ch}
+.note.bad{border-color:var(--bad)}
+.stamp{font:400 12.5px/1.75 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+ color:var(--dim);background:var(--sunk);border:1px solid var(--line);
+ border-radius:8px;padding:14px 16px;margin:22px 0 0;overflow-x:auto;white-space:pre}
+.grid{display:grid;gap:14px}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+.tile{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px}
+.tile .n{font-size:clamp(26px,3.4vw,38px);line-height:1.05;font-weight:600;letter-spacing:-.02em;display:block}
+.tile .l{color:var(--dim);font-size:13px;display:block;margin-top:6px}
+.tile .s{color:var(--mid);font-size:13.5px;display:block;margin-top:8px}
+.big{background:linear-gradient(180deg,var(--panel-2),var(--panel));
+ border:1px solid var(--line);border-radius:16px;padding:26px 24px}
+.big .gr{font-size:clamp(52px,9vw,88px);line-height:.95;font-weight:600;letter-spacing:-.035em}
+.big .gl2{font-size:clamp(22px,3vw,30px);color:var(--au);font-weight:600;margin-left:10px}
+.ch{width:100%;height:auto;display:block;overflow:visible}
+/* A CHART IS NOT A PICTURE, IT IS TYPE. Scaling an 880 wide frame into 358
+   scales its 12px labels to about 5 and the most important chart on the page
+   stops being readable exactly where it is read most. The frame keeps a minimum
+   width on a phone and scrolls inside its own box, which is what the tables
+   already do. */
+.chwrap{overflow-x:auto;margin:10px 0 6px;-webkit-overflow-scrolling:touch}
+.gl{stroke:var(--line);stroke-width:1}
+.ln{fill:none;stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.dot{fill:var(--dim)}
+text{font:400 12px ui-sans-serif,system-ui,sans-serif}
+.ax{fill:var(--dim)}
+.bl{fill:var(--mid);font-size:12.5px}
+.bn{fill:var(--ink);font-size:12.5px}
+.lg{font-size:12.5px;font-weight:600}
+table.tb{width:100%;border-collapse:collapse;margin:14px 0 6px;font-size:14px}
+table.tb th{text-align:left;font-weight:600;font-size:11.5px;letter-spacing:.09em;
+ text-transform:uppercase;color:var(--dim);border-bottom:1px solid var(--line);
+ padding:0 12px 8px 0;vertical-align:bottom}
+table.tb td{padding:11px 12px 11px 0;border-bottom:1px solid var(--line);vertical-align:top}
+table.tb td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+table.tb tr.tot td{border-bottom:0;border-top:1px solid var(--line)}
+table.tb tr.zero td{background:rgba(212,115,109,.07)}
+table.tb tr.win td{background:rgba(104,203,164,.06)}
+table.tb tr.soft td{background:rgba(218,191,106,.06)}
+td.q{color:var(--mid);max-width:44ch}
+.fine{color:var(--dim);font-size:12.5px;display:block;margin-top:3px;line-height:1.45}
+.good{color:var(--good)} .bad{color:var(--bad)} .warn{color:var(--solar)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px}
+.card header{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.card .role{color:var(--dim);font-size:13px;margin:0;width:100%}
+.dot2{width:9px;height:9px;border-radius:50%;display:inline-block}
+dl.kv{margin:0 0 12px;display:grid;gap:3px}
+dl.kv div{display:flex;justify-content:space-between;gap:12px;align-items:baseline;
+ border-bottom:1px dotted var(--line);padding-bottom:3px}
+dl.kv dt{color:var(--dim);font-size:13px;margin:0}
+dl.kv dd{margin:0;font-variant-numeric:tabular-nums;font-size:14px;white-space:nowrap}
+.why{font-size:13.5px;color:var(--mid);margin:0 0 8px}
+.why b{color:var(--ink)}
+.split{font-size:12.5px;color:var(--dim);margin:0;border-top:1px solid var(--line);padding-top:8px}
+blockquote{margin:0 0 12px;padding:0 0 0 14px;border-left:2px solid var(--accent);
+ color:var(--ink);font-size:15px;line-height:1.55}
+blockquote p{margin:0 0 7px;max-width:52ch}
+blockquote p:last-child{margin:0}
+.tag{display:inline-block;font:600 11px/1 ui-monospace,SFMono-Regular,Menlo,monospace;
+ letter-spacing:.06em;color:var(--au);border:1px solid var(--line);border-radius:4px;
+ padding:4px 6px;background:var(--sunk);white-space:nowrap}
+.tag.g{color:var(--good)} .tag.b{color:var(--bad)} .tag.m{color:var(--mid)}
+ul,ol{margin:0 0 16px;padding-left:22px;max-width:74ch}
+li{margin-bottom:8px}
+li b{font-weight:600}
+code{font:400 13.5px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+ background:var(--sunk);border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+.foot{color:var(--dim);font-size:13px;margin-top:40px}
+@media (max-width:820px){
+ .ch{min-width:700px}
+ .g3,.g2,.g4{grid-template-columns:1fr}
+ .wrap{padding:26px 16px 70px}
+ table.tb{display:block;overflow-x:auto;white-space:nowrap}
+ td.q{white-space:normal;min-width:30ch}
+ .fine{white-space:normal}
+}
+@media print{body{background:#fff;color:#111}}
+</style></head><body><div class="wrap">
+<p class="eye">At&uuml;ned, the UI and UX seat</p>
+<h1>What would have kept them</h1>
+<p class="lede">Nine figures, 1000 simulated arrivals a run,
+19 runs of ninety days each. The grade was 38.91.
+This page asks the other question: what would have kept the people it lost.</p>
+
+
+<div class="note bad"><b>Read this first, because it decides what the rest is worth.</b>
+The thousand are simulated. Asking a simulated cohort what it wants returns this
+model&rsquo;s own assumptions wearing the costume of an answer, and none of it is
+evidence about a human being. What is real on this page is the left hand column:
+every session length, every story told, every release run, every departure and
+every sticking point below was produced by driving the shipped engine for ninety
+days and reading the surface off <code>source.html</code> in Chromium. So the
+method is not a survey. For each figure, the run says where they stopped and what
+their session could afford, and the ask is derived from those two facts. Nothing
+goes on the list that does not trace to one. Taste is refused, including this
+seat&rsquo;s own, and the refusals are printed beside the asks.</div>
+
+<h2>How an ask was derived</h2>
+<p class="lede">Three rules, applied to every figure.</p>
+<ol>
+<li><b>It has to trace to a departure, not to a complaint.</b>
+&ldquo;More simultaneous choices than a working memory holds&rdquo; was met by 668 of a thousand and attributed
+12 departures. &ldquo;There is no way to hand it to anybody&rdquo; was met by 199 and
+attributed 41. The second
+is the smaller experience and the larger loss, so it ranks above the first.
+A friction everybody meets and nobody leaves on is a nuisance, not a sticking point.</li>
+<li><b>It has to fit the session that figure actually has.</b> Diane tells
+no stories at all in ninety days. That is not a preference and it
+is not reluctance: her session is worth 2.1 minutes across
+the whole quarter and the only door to her own charge is measured at
+3.4 minutes. The improvement that implies is a narrower door,
+not a nicer one.</li>
+<li><b>It has to survive being modelled.</b> Every ask on this page was turned
+into a change, applied to the same harness, and re-run to the same stopping rule.
+What it moved is printed beside it, including the ones that moved nothing.</li>
+</ol>
+
+<h2>The nine</h2>
+<p class="lede">Left column measured. Right column derived. The quotation marks
+are this seat writing in the figure&rsquo;s register over the figure&rsquo;s own
+numbers, and nobody said any of it.</p>
+<div class="grid g2" style="margin-top:16px">
+<div class="card">
+<header><h3>Diane</h3><span class="tag m">46, founder, second company</span>
+<span class="tag">180 of 1000</span>
+<span class="tag">grid 3</span>
+<span class="tag">both</span>
+<p class="role">daily, in forty second slices</p></header>
+<dl class="kv">
+<div><dt>opened the file at all</dt><dd>87.1%</dd></div>
+<div><dt>sessions in ninety days</dt><dd>1.32</dd></div>
+<div><dt>minutes, all ninety days</dt><dd>2.1</dd></div>
+<div><dt>stories told</dt><dd>0.00</dd></div>
+<div><dt>releases run</dt><dd>0.00</dd></div>
+<div><dt>ever closed the loop</dt><dd>0.0%</dd></div>
+<div><dt>active at day seven</dt><dd>85.3%</dd></div>
+<div><dt>active at day thirty</dt><dd>1.6%</dd></div>
+<div><dt>gone by day three</dt><dd>46.3%</dd></div>
+</dl>
+<p class="why"><b>What lost them.</b> The absence became permanent <b>71</b>. The reading does not move <b>60</b>. The intake is sixty three questions <b>20</b>.</p>
+<blockquote><p>&ldquo;I opened it between two meetings and I got a number.&rdquo;</p><p>&ldquo;I came back the next day and it was the same number. There is nothing to do with that.&rdquo;</p><p>&ldquo;Do not ask me for fifteen minutes. I do not have fifteen minutes and I am not going to pretend I do so that your product works.&rdquo;</p><p>&ldquo;If it wants a story it can have one sentence. One thumb, in a lift.&rdquo;</p></blockquote>
+<p class="why"><b>The ask.</b> A door that fits the session she actually has, and a reading that is different from yesterday because of something she did.</p>
+<p class="why"><b>Answered by.</b> <span class="tag g">C1</span> The narrow door, <span class="tag g">C4</span> What the holding costs, printed, <span class="tag g">C11</span> The record arrives at sign in, <span class="tag g">C2a</span> The removal compounds inside the run</p>
+<p class="split"><b>Not this.</b> A calmer, better written Story page. She never reaches the Story page. The measured door costs more minutes than her whole session.</p>
+</div>
+<div class="card">
+<header><h3>Derek</h3><span class="tag m">39, high performer, endurance</span>
+<span class="tag">170 of 1000</span>
+<span class="tag">grid 2</span>
+<span class="tag">both</span>
+<p class="role">daily while a protocol is live</p></header>
+<dl class="kv">
+<div><dt>opened the file at all</dt><dd>72.5%</dd></div>
+<div><dt>sessions in ninety days</dt><dd>2.15</dd></div>
+<div><dt>minutes, all ninety days</dt><dd>19.4</dd></div>
+<div><dt>stories told</dt><dd>0.76</dd></div>
+<div><dt>releases run</dt><dd>0.03</dd></div>
+<div><dt>ever closed the loop</dt><dd>1.7%</dd></div>
+<div><dt>active at day seven</dt><dd>70.6%</dd></div>
+<div><dt>active at day thirty</dt><dd>2.7%</dd></div>
+<div><dt>gone by day three</dt><dd>53.7%</dd></div>
+</dl>
+<p class="why"><b>What lost them.</b> Nothing is above the line, so there is nothing to release <b>46</b>. The reading does not move <b>38</b>. The absence became permanent <b>25</b>.</p>
+<blockquote><p>&ldquo;I told it something true and it told me nothing is carrying.&rdquo;</p><p>&ldquo;I am carrying it. That is why I typed it.&rdquo;</p><p>&ldquo;Give me the protocol and give me the cost. I will run a protocol for a quarter. I will not run a mood.&rdquo;</p><p>&ldquo;Tell me what it costs in watts.&rdquo;</p></blockquote>
+<p class="why"><b>The ask.</b> The release has to be available on what he is actually carrying, and the cost has to be printed in a unit he can act on.</p>
+<p class="why"><b>Answered by.</b> <span class="tag g">C3</span> The release reads carrying rather than loaded, <span class="tag g">C4</span> What the holding costs, printed, <span class="tag g">C2a</span> The removal compounds inside the run</p>
+<p class="split"><b>Not this.</b> Encouragement, streak confetti, or a congratulation. He is the figure most likely to run a daily protocol for ninety days and the least likely to be moved by praise.</p>
+</div>
+<div class="card">
+<header><h3>Marcus</h3><span class="tag m">44, creative director</span>
+<span class="tag">160 of 1000</span>
+<span class="tag">grid 4</span>
+<span class="tag">both</span>
+<p class="role">every few days, as an inspection</p></header>
+<dl class="kv">
+<div><dt>opened the file at all</dt><dd>57.8%</dd></div>
+<div><dt>sessions in ninety days</dt><dd>1.82</dd></div>
+<div><dt>minutes, all ninety days</dt><dd>10.0</dd></div>
+<div><dt>stories told</dt><dd>0.48</dd></div>
+<div><dt>releases run</dt><dd>0.01</dd></div>
+<div><dt>ever closed the loop</dt><dd>0.0%</dd></div>
+<div><dt>active at day seven</dt><dd>53.0%</dd></div>
+<div><dt>active at day thirty</dt><dd>7.5%</dd></div>
+<div><dt>gone by day three</dt><dd>50.1%</dd></div>
+</dl>
+<p class="why"><b>What lost them.</b> The absence became permanent <b>55</b>. The box reads nothing out of what they wrote <b>9</b>. The intake is sixty three questions <b>7</b>.</p>
+<blockquote><p>&ldquo;I came back to see whether you had fixed the thing I found. Nothing told me whether you had.&rdquo;</p><p>&ldquo;I can see what is wrong with anything in four seconds. This screen hands me eighty things to be wrong about.&rdquo;</p><p>&ldquo;If it is good I send it to four people. There is no way to send it.&rdquo;</p></blockquote>
+<p class="why"><b>The ask.</b> A record of what changed since he last looked, a screen with fewer things on it, and a send.</p>
+<p class="why"><b>Answered by.</b> <span class="tag g">C8</span> The rails ship folded, <span class="tag g">C8b</span> The top collapses to two, <span class="tag g">C9</span> A way to hand it to somebody, <span class="tag g">C7</span> The two level menu</p>
+<p class="split"><b>Not this.</b> A tour, a walkthrough, or coach marks. He does not lack instruction. He is at level four on the grid, he buys it, reads half of it and avoids the work.</p>
+</div>
+<div class="card">
+<header><h3>Angela</h3><span class="tag m">36, seeker, six modalities</span>
+<span class="tag">150 of 1000</span>
+<span class="tag">grid 5</span>
+<span class="tag">phone</span>
+<p class="role">bursts, then nothing</p></header>
+<dl class="kv">
+<div><dt>opened the file at all</dt><dd>78.5%</dd></div>
+<div><dt>sessions in ninety days</dt><dd>1.22</dd></div>
+<div><dt>minutes, all ninety days</dt><dd>11.7</dd></div>
+<div><dt>stories told</dt><dd>0.88</dd></div>
+<div><dt>releases run</dt><dd>0.01</dd></div>
+<div><dt>ever closed the loop</dt><dd>0.2%</dd></div>
+<div><dt>active at day seven</dt><dd>69.9%</dd></div>
+<div><dt>active at day thirty</dt><dd>1.6%</dd></div>
+<div><dt>gone by day three</dt><dd>47.8%</dd></div>
+</dl>
+<p class="why"><b>What lost them.</b> The absence became permanent <b>58</b>. The box reads nothing out of what they wrote <b>28</b>. Nothing is above the line, so there is nothing to release <b>9</b>.</p>
+<blockquote><p>&ldquo;I wrote the truest thing I have written in a year and it read nothing out of it.&rdquo;</p><p>&ldquo;Then it told me I was proud. I am not proud. I am tired.&rdquo;</p><p>&ldquo;I reached for the summary and it was past the edge of my screen.&rdquo;</p></blockquote>
+<p class="why"><b>The ask.</b> Read what she wrote. When the instrument is guessing, it has to ask instead of tell.</p>
+<p class="why"><b>Answered by.</b> <span class="tag g">C5</span> The lexicon reads ordinary sentences, <span class="tag g">C5b</span> An inferred address is a question, <span class="tag g">C7</span> The two level menu</p>
+<p class="split"><b>Not this.</b> Warmer language. The words are not what lost her. What lost her is an instrument that returned nothing from her sentence and then named an address she had not described.</p>
+</div>
+<div class="card">
+<header><h3>Sofia</h3><span class="tag m">41, somatic practitioner</span>
+<span class="tag">140 of 1000</span>
+<span class="tag">grid 6</span>
+<span class="tag">both</span>
+<p class="role">weekly, and at eleven at night</p></header>
+<dl class="kv">
+<div><dt>opened the file at all</dt><dd>82.3%</dd></div>
+<div><dt>sessions in ninety days</dt><dd>3.26</dd></div>
+<div><dt>minutes, all ninety days</dt><dd>45.2</dd></div>
+<div><dt>stories told</dt><dd>2.90</dd></div>
+<div><dt>releases run</dt><dd>0.47</dd></div>
+<div><dt>ever closed the loop</dt><dd>18.2%</dd></div>
+<div><dt>active at day seven</dt><dd>77.6%</dd></div>
+<div><dt>active at day thirty</dt><dd>8.9%</dd></div>
+<div><dt>gone by day three</dt><dd>34.7%</dd></div>
+</dl>
+<p class="why"><b>What lost them.</b> The absence became permanent <b>41</b>. The box reads nothing out of what they wrote <b>31</b>. There is no way to hand it to anybody <b>31</b>.</p>
+<blockquote><p>&ldquo;I want to open this on a client’s phone and leave it with them. I cannot.&rdquo;</p><p>&ldquo;I use it at eleven at night for myself and it does not read what I say to it.&rdquo;</p><p>&ldquo;My value to you is that I would hand it to forty people a year.&rdquo;</p></blockquote>
+<p class="why"><b>The ask.</b> A way to hand a reading to another person, with a consent she can explain in one sentence, and a sniffer that reads a practitioner’s own register.</p>
+<p class="why"><b>Answered by.</b> <span class="tag g">C9</span> A way to hand it to somebody, <span class="tag g">C5</span> The lexicon reads ordinary sentences</p>
+<p class="split"><b>Not this.</b> A practitioner badge or a directory listing. That is a business idea. It does not touch either thing her session measured.</p>
+</div>
+<div class="card">
+<header><h3>James</h3><span class="tag m">57, C-suite, third turnaround</span>
+<span class="tag">100 of 1000</span>
+<span class="tag">grid 2</span>
+<span class="tag">both</span>
+<p class="role">once, possibly twice</p></header>
+<dl class="kv">
+<div><dt>opened the file at all</dt><dd>43.1%</dd></div>
+<div><dt>sessions in ninety days</dt><dd>0.41</dd></div>
+<div><dt>minutes, all ninety days</dt><dd>1.0</dd></div>
+<div><dt>stories told</dt><dd>0.02</dd></div>
+<div><dt>releases run</dt><dd>0.00</dd></div>
+<div><dt>ever closed the loop</dt><dd>0.0%</dd></div>
+<div><dt>active at day seven</dt><dd>36.2%</dd></div>
+<div><dt>active at day thirty</dt><dd>0.4%</dd></div>
+<div><dt>gone by day three</dt><dd>72.6%</dd></div>
+</dl>
+<p class="why"><b>What lost them.</b> The absence became permanent <b>26</b>. The reading does not move <b>12</b>. The intake is sixty three questions <b>4</b>.</p>
+<blockquote><p>&ldquo;A peer mentioned a number. I want mine and I want it in the first ten seconds.&rdquo;</p><p>&ldquo;I am not answering sixty three questions and I am not going to be seen answering them.&rdquo;</p><p>&ldquo;Do not open with my pain.&rdquo;</p></blockquote>
+<p class="why"><b>The ask.</b> The reading exists before any work is done, and nothing on the first screen looks like self help.</p>
+<p class="why"><b>Answered by.</b> <span class="tag g">C11</span> The record arrives at sign in, <span class="tag g">C1</span> The narrow door, <span class="tag g">C8b</span> The top collapses to two</p>
+<p class="split"><b>Not this.</b> A persona picker or a worksheet with better typography. Measured: he leaves on the shape of it, not the craft of it.</p>
+</div>
+<div class="card">
+<header><h3>Ana</h3><span class="tag m">47, teacher, one year out</span>
+<span class="tag">50 of 1000</span>
+<span class="tag">grid 4</span>
+<span class="tag">phone</span>
+<p class="role">irregular, at night</p></header>
+<dl class="kv">
+<div><dt>opened the file at all</dt><dd>72.9%</dd></div>
+<div><dt>sessions in ninety days</dt><dd>3.09</dd></div>
+<div><dt>minutes, all ninety days</dt><dd>46.6</dd></div>
+<div><dt>stories told</dt><dd>2.79</dd></div>
+<div><dt>releases run</dt><dd>0.98</dd></div>
+<div><dt>ever closed the loop</dt><dd>23.5%</dd></div>
+<div><dt>active at day seven</dt><dd>70.3%</dd></div>
+<div><dt>active at day thirty</dt><dd>7.6%</dd></div>
+<div><dt>gone by day three</dt><dd>47.4%</dd></div>
+</dl>
+<p class="why"><b>What lost them.</b> Nothing is above the line, so there is nothing to release <b>21</b>. The absence became permanent <b>8</b>. The reading names an address the person did not describe <b>4</b>.</p>
+<blockquote><p>&ldquo;It named the shape of it and I cried.&rdquo;</p><p>&ldquo;Then it did the same thing the next day, and the day after.&rdquo;</p><p>&ldquo;I am in the middle of something. I need the far side, not a better description of the middle.&rdquo;</p><p>&ldquo;I did everything it asked for three weeks and the number is where it was.&rdquo;</p></blockquote>
+<p class="why"><b>The ask.</b> The work has to accumulate. A cleared address has to stay cleared and a release has to reach the far pole.</p>
+<p class="why"><b>Answered by.</b> <span class="tag g">C2c</span> A cleared address stays cleared, <span class="tag g">C2b</span> The install reaches the far pole, <span class="tag g">C2a</span> The removal compounds inside the run, <span class="tag g">C3</span> The release reads carrying rather than loaded</p>
+<p class="split"><b>Not this.</b> A gentler tone. She is the one figure in the roster for whom a wrong answer costs something, and the thing that failed her is arithmetic.</p>
+</div>
+<div class="card">
+<header><h3>Gordon</h3><span class="tag m">58, managing partner</span>
+<span class="tag">35 of 1000</span>
+<span class="tag">grid 1</span>
+<span class="tag">both</span>
+<p class="role">refuses</p></header>
+<dl class="kv">
+<div><dt>opened the file at all</dt><dd>7.7%</dd></div>
+<div><dt>sessions in ninety days</dt><dd>0.06</dd></div>
+<div><dt>minutes, all ninety days</dt><dd>0.1</dd></div>
+<div><dt>stories told</dt><dd>0.00</dd></div>
+<div><dt>releases run</dt><dd>0.00</dd></div>
+<div><dt>ever closed the loop</dt><dd>0.0%</dd></div>
+<div><dt>active at day seven</dt><dd>5.6%</dd></div>
+<div><dt>active at day thirty</dt><dd>0.0%</dd></div>
+<div><dt>gone by day three</dt><dd>94.0%</dd></div>
+</dl>
+<p class="why"><b>What lost them.</b> The absence became permanent <b>2</b>.</p>
+<blockquote><p>&ldquo;There is nothing wrong with me.&rdquo;</p><p>&ldquo;Four people left in a year and each of them had their reasons.&rdquo;</p><p>&ldquo;I do not have a problem. I have a business that needs running.&rdquo;</p></blockquote>
+<p class="why"><b>What it means.</b> Nothing. He is not the customer and the product should not be bent towards him. The one thing his data does ask for is that the instrument read denial, because his own line is the heaviest reading in the roster and the shipped sniffer returns nothing from it.</p>
+<p class="why"><b>Answered by.</b> <span class="tag g">C5</span> The lexicon reads ordinary sentences</p>
+<p class="split"><b>Not this.</b> Anything built to convert him. Every hour aimed at him is an hour not aimed at the largest segment in the cohort.</p>
+</div>
+<div class="card">
+<header><h3>Rosa</h3><span class="tag m">61, retired midwife</span>
+<span class="tag">15 of 1000</span>
+<span class="tag">grid 10</span>
+<span class="tag">both</span>
+<p class="role">once, out of courtesy</p></header>
+<dl class="kv">
+<div><dt>opened the file at all</dt><dd>9.8%</dd></div>
+<div><dt>sessions in ninety days</dt><dd>0.14</dd></div>
+<div><dt>minutes, all ninety days</dt><dd>0.4</dd></div>
+<div><dt>stories told</dt><dd>0.01</dd></div>
+<div><dt>releases run</dt><dd>0.00</dd></div>
+<div><dt>ever closed the loop</dt><dd>0.0%</dd></div>
+<div><dt>active at day seven</dt><dd>6.7%</dd></div>
+<div><dt>active at day thirty</dt><dd>0.0%</dd></div>
+<div><dt>gone by day three</dt><dd>90.2%</dd></div>
+</dl>
+<p class="why"><b>What lost them.</b> The absence became permanent <b>1</b>.</p>
+<blockquote><p>&ldquo;Nothing in particular.&rdquo;</p><p>&ldquo;Things do not sit on me the way they used to.&rdquo;</p></blockquote>
+<p class="why"><b>What it means.</b> Nothing, and the product should agree. Her line is the one sentence in the bank that ought to keep reading nothing, and after the lexicon patch it is the only one of the 41 that still does.</p>
+
+<p class="split"><b>Not this.</b> A gentler onboarding for people who are well. They are not the market and pretending otherwise costs the people who are not.</p>
+</div>
+</div>
+
+<h2>The ranked improvements</h2>
+<p class="lede">Ordered by what each one moved on its own, measured. Every row
+names the sticking point it answers, the people the baseline lost to that
+sticking point, the figures the loss column says it would keep, the file it
+lands in and roughly what it costs.</p>
+<div class="chwrap"><svg class="ch" viewBox="0 0 880 476" role="img" aria-label="grade movement of each change, applied alone on the baseline"><line class="gl" x1="422.6275" y1="10" x2="422.6275" y2="462"/><text class="bl" x="4" y="29">C9  A way to hand it to somebody</text><rect x="422.6" y="19" width="397.4" height="15" fill="#68CBA4" opacity=".9" rx="2"/><text class="bn" x="826.0" y="31" text-anchor="start">+7.75</text><text class="bl" x="4" y="55">C5  The lexicon reads ordinary sentences</text><rect x="422.6" y="45" width="392.2" height="15" fill="#68CBA4" opacity=".9" rx="2"/><text class="bn" x="820.9" y="57" text-anchor="start">+7.65</text><text class="bl" x="4" y="81">C10  A price, and an allowance with something behind it</text><rect x="422.6" y="71" width="308.2" height="15" fill="#68CBA4" opacity=".9" rx="2"/><text class="bn" x="736.8" y="83" text-anchor="start">+6.01</text><text class="bl" x="4" y="107">C3  The release reads carrying rather than loaded</text><rect x="422.6" y="97" width="260.0" height="15" fill="#68CBA4" opacity=".9" rx="2"/><text class="bn" x="688.6" y="109" text-anchor="start">+5.07</text><text class="bl" x="4" y="133">C8  The rails ship folded</text><rect x="422.6" y="123" width="114.9" height="15" fill="#68CBA4" opacity=".9" rx="2"/><text class="bn" x="543.5" y="135" text-anchor="start">+2.24</text><text class="bl" x="4" y="159">C12  Three defects that are simply true</text><rect x="422.6" y="149" width="112.8" height="15" fill="#68CBA4" opacity=".9" rx="2"/><text class="bn" x="541.4" y="161" text-anchor="start">+2.20</text><text class="bl" x="4" y="185">C7  The two level menu</text><rect x="422.6" y="175" width="105.1" height="15" fill="#68CBA4" opacity=".9" rx="2"/><text class="bn" x="533.7" y="187" text-anchor="start">+2.05</text><text class="bl" x="4" y="211">C4  What the holding costs, printed</text><rect x="422.6" y="201" width="77.4" height="15" fill="#68CBA4" opacity=".9" rx="2"/><text class="bn" x="506.1" y="213" text-anchor="start">+1.51</text><text class="bl" x="4" y="237">C6n  And the return rate it buys</text><rect x="422.6" y="227" width="51.8" height="15" fill="#DABF6A" opacity=".9" rx="2"/><text class="bn" x="480.4" y="239" text-anchor="start">+1.01</text><text class="bl" x="4" y="263">C8b  The top collapses to two</text><rect x="422.6" y="253" width="47.2" height="15" fill="#68CBA4" opacity=".9" rx="2"/><text class="bn" x="475.8" y="265" text-anchor="start">+0.92</text><text class="bl" x="4" y="289">C6  Something asks them to come back</text><rect x="422.6" y="279" width="13.8" height="15" fill="#68CBA4" opacity=".9" rx="2"/><text class="bn" x="442.5" y="291" text-anchor="start">+0.27</text><text class="bl" x="4" y="315">C11  The record arrives at sign in</text><rect x="422.6" y="305" width="6.2" height="15" fill="#68CBA4" opacity=".9" rx="2"/><text class="bn" x="434.8" y="317" text-anchor="start">+0.12</text><text class="bl" x="4" y="341">C5b  An inferred address is a question</text><rect x="422.6" y="331" width="5.1" height="15" fill="#68CBA4" opacity=".9" rx="2"/><text class="bn" x="433.8" y="343" text-anchor="start">+0.10</text><text class="bl" x="4" y="367">C1  The narrow door</text><rect x="422.6" y="357" width="4.6" height="15" fill="#68CBA4" opacity=".9" rx="2"/><text class="bn" x="433.2" y="369" text-anchor="start">+0.09</text><text class="bl" x="4" y="393">C2c  A cleared address stays cleared</text><rect x="422.6" y="383" width="1.5" height="15" fill="#94908A" opacity=".9" rx="2"/><text class="bn" x="428.6" y="395" text-anchor="start">+0.00</text><text class="bl" x="4" y="419">C2b  The install reaches the far pole</text><rect x="419.6" y="409" width="3.1" height="15" fill="#D4736D" opacity=".9" rx="2"/><text class="bn" x="413.6" y="421" text-anchor="end">-0.06</text><text class="bl" x="4" y="445">C2a  The removal compounds inside the run</text><rect x="416.5" y="435" width="6.2" height="15" fill="#D4736D" opacity=".9" rx="2"/><text class="bn" x="410.5" y="447" text-anchor="end">-0.12</text></svg></div>
+<p class="fine">Each bar is that change applied alone on the baseline, run to the
+same stopping rule as the baseline, and the grade compared against
+38.91. The amber bar is the one step whose parameter is not traced
+to a measurement.</p>
+<table class="tb">
+<thead><tr><th></th><th>The change</th><th class="num">Grade</th>
+<th>Answers</th><th class="num">Lost</th><th>Keeps</th><th>Lands in</th><th>Cost</th></tr></thead>
+<tbody>
+<tr class="win">
+<td><span class="tag g">C9</span></td>
+<td><b>A way to hand it to somebody</b><span class="fine">A control that produces a reading for another person, and the practitioner grant behind it with explicit consent, a visible list of who has sight, and revocation.</span></td>
+<td class="num"><b>+7.75</b><span class="fine">17 runs</span></td>
+<td class="q">There is no way to hand it to anybody</td>
+<td class="num">41<span class="fine">met 199</span></td>
+<td class="q">Sofia, Marcus, Angela</td>
+<td class="q"><code>a new atuned_src/ui/share.js, the record boundary, and the consent surface</code></td>
+<td class="q">Two weeks. It is a consequential grant over somatic and psychological self report, so consent, the list and revocation are not optional and are most of the work.
+</td></tr>
+<tr class="win">
+<td><span class="tag g">C5</span></td>
+<td><b>The lexicon reads ordinary sentences</b><span class="fine">Thirty entries, each one a phrase, a seat, an amount and the address it states outright. LEX already carries the third element for this and thirty entries already use it.</span></td>
+<td class="num"><b>+7.65</b><span class="fine">18 runs</span></td>
+<td class="q">The box reads nothing out of what they wrote</td>
+<td class="num">68<span class="fine">met 257</span></td>
+<td class="q">Sofia, Angela, Marcus, Ana</td>
+<td class="q"><code>atuned_src/engine/data/lex.js</code></td>
+<td class="q">Two days for these thirty and the gate that holds them. The general case is not two days: this patch was written against a bank of 41 sentences and a bank is not a language.
+</td></tr>
+<tr class="win">
+<td><span class="tag g">C10</span></td>
+<td><b>A price, and an allowance with something behind it</b><span class="fine">relCoolDown never reads relLeft, so the panel printed four patterns of the zero you have left and the run went ahead. The allowance is enforced, and a tier exists on a surface a person can reach.</span></td>
+<td class="num"><b>+6.01</b><span class="fine">19 runs</span></td>
+<td class="q">The panel says nothing is left and the run goes ahead</td>
+<td class="num">0<span class="fine">met 3</span></td>
+<td class="q">nobody</td>
+<td class="q"><code>atuned_src/ui/release.js, and a tiers surface</code></td>
+<td class="q">One line for the enforcement. The tier ladder is already ruled in DECISIONS.md, so the surface is a week.
+</td></tr>
+<tr class="win">
+<td><span class="tag g">C3</span></td>
+<td><b>The release reads carrying rather than loaded</b><span class="fine">An address enters the reading at four of ten. Below that a person carrying load at a hundred addresses is told nothing is carrying and the release has nothing to offer. The engine already returns carrying for exactly this reason and the action surfaces still read loaded.</span></td>
+<td class="num"><b>+5.07</b><span class="fine">27 runs</span></td>
+<td class="q">Nothing is above the line, so there is nothing to release</td>
+<td class="num">89<span class="fine">met 381</span></td>
+<td class="q">Derek, Ana, Angela, Sofia, Marcus</td>
+<td class="q"><code>atuned_src/ui/release.js, atuned_src/ui/summary.js</code></td>
+<td class="q">Hours. One word, and then the copy that goes with a reading below the line.
+</td></tr>
+<tr class="win">
+<td><span class="tag g">C8</span></td>
+<td><b>The rails ship folded</b><span class="fine">Every section in both rails ships shut with its header showing, and the fold state is remembered. The mechanism is already there: every section already has a header that folds it.</span></td>
+<td class="num"><b>+2.24</b><span class="fine">15 runs</span></td>
+<td class="q">More simultaneous choices than a working memory holds</td>
+<td class="num">12<span class="fine">met 668</span></td>
+<td class="q">Derek, Marcus</td>
+<td class="q"><code>atuned_src/shell/head.html, and a stored preference</code></td>
+<td class="q">A day. A default and a remembered state.
+</td></tr>
+<tr class="win">
+<td><span class="tag g">C12</span></td>
+<td><b>Three defects that are simply true</b><span class="fine">pracDays never reads the done flag, so a saved plan counts as a day practised. The headline rounds and the band does not, so 40.6 prints 41 beside Incoherent. One control is measured under the tap floor.</span></td>
+<td class="num"><b>+2.20</b><span class="fine">15 runs</span></td>
+<td class="q">The record credits a plan as a day practised. The band word and the number on the same line disagree</td>
+<td class="num">5<span class="fine">met 195</span></td>
+<td class="q">Sofia, Derek, Marcus, Angela</td>
+<td class="q"><code>atuned_src/engine/ladder.js, atuned_src/ui/summary.js, atuned_src/shell/head.html</code></td>
+<td class="q">A day for all three.
+</td></tr>
+<tr class="win">
+<td><span class="tag g">C7</span></td>
+<td><b>The two level menu</b><span class="fine">Nine top level entries become four parents with children, which is the structure already specified. The whole bar is then reachable on a phone and the bar stops spending half the working memory budget before any content.</span></td>
+<td class="num"><b>+2.05</b><span class="fine">19 runs</span></td>
+<td class="q">The surface they wanted is off the tab strip. More simultaneous choices than a working memory holds</td>
+<td class="num">18<span class="fine">met 668</span></td>
+<td class="q">Angela, Ana, Marcus</td>
+<td class="q"><code>atuned_src/shell/body.html, atuned_src/ui/nav.js</code></td>
+<td class="q">Three days. The integers are identity and may not be renumbered, so this is display order and a parent layer, not a renaming.
+</td></tr>
+<tr class="win">
+<td><span class="tag g">C4</span></td>
+<td><b>What the holding costs, printed</b><span class="fine">A line that says what the charge costs in output, on the surface that already prints the reading. Not the pain, the cost.</span></td>
+<td class="num"><b>+1.51</b><span class="fine">21 runs</span></td>
+<td class="q">The reading does not move</td>
+<td class="num">110<span class="fine">met 279</span></td>
+<td class="q">Derek, Diane, James</td>
+<td class="q"><code>atuned_src/ui/summary.js, a new read in atuned_src/engine/read.js</code></td>
+<td class="q">Two days, and the harder half is deciding what the unit is. A number nobody can act on is worse than no line.
+</td></tr>
+<tr class="soft">
+<td><span class="tag">C6n</span></td>
+<td><b>And the return rate it buys</b><span class="fine">The return the notification actually earns. Nothing in this repository measures it and nothing in this file pretends otherwise. It is a judgement of 12 per cent of otherwise skipped days, turned in a step of its own so it can be subtracted.</span></td>
+<td class="num"><b>+1.01</b><span class="fine">19 runs</span></td>
+<td class="q">Nothing asked them to come back</td>
+<td class="num">1<span class="fine">met 478</span></td>
+<td class="q">Angela, Derek, Ana</td>
+<td class="q"><code>the same seam as C6</code></td>
+<td class="q">Nothing beyond C6. The cost is credibility, which is why it is separated.
+<span class="fine"><b>Judged.</b> A return rate of 12% of otherwise skipped days. Nothing in this repository measures it. It is here to be subtracted.</span></td></tr>
+<tr class="win">
+<td><span class="tag g">C8b</span></td>
+<td><b>The top collapses to two</b><span class="fine">The top carries the same seven controls above the fold on every surface at both widths. Two stay, who is signed in and one menu, and the rest go behind it.</span></td>
+<td class="num"><b>+0.92</b><span class="fine">19 runs</span></td>
+<td class="q">More simultaneous choices than a working memory holds</td>
+<td class="num">12<span class="fine">met 668</span></td>
+<td class="q">Angela, Ana, James</td>
+<td class="q"><code>atuned_src/shell/body.html</code></td>
+<td class="q">Two days, and the work is deciding what those five are for rather than moving them.
+</td></tr>
+<tr class="">
+<td><span class="tag">C6</span></td>
+<td><b>Something asks them to come back</b><span class="fine">A notification against a ritual the person set, which is the accountability seam the fork already put in scope. This step turns off the friction of nothing asking. It does not raise the return rate.</span></td>
+<td class="num"><b>+0.27</b><span class="fine">16 runs</span></td>
+<td class="q">Nothing asked them to come back</td>
+<td class="num">1<span class="fine">met 478</span></td>
+<td class="q">Angela, Diane, Marcus, Sofia</td>
+<td class="q"><code>the accounts seam: a service worker, a server, and a consent screen</code></td>
+<td class="q">Weeks, and it is the last thing to build rather than the first. A notification calling somebody back to a loop that returns them where they started calls them back to nothing.
+</td></tr>
+<tr class="">
+<td><span class="tag">C11</span></td>
+<td><b>The record arrives at sign in</b><span class="fine">The quiz is taken in the funnel and the record is fetched at sign in, so the landing surface has a reading on a first arrival and nobody meets a sixty three question intake inside the app.</span></td>
+<td class="num"><b>+0.12</b><span class="fine">19 runs</span></td>
+<td class="q">The intake is sixty three questions</td>
+<td class="num">38<span class="fine">met 154</span></td>
+<td class="q">Diane, James, Marcus</td>
+<td class="q"><code>the record fetch seam, which is the one place the app gains network</code></td>
+<td class="q">The accounts fork. Weeks, and it is already ruled.
+</td></tr>
+<tr class="">
+<td><span class="tag">C5b</span></td>
+<td><b>An inferred address is a question</b><span class="fine">Every imprint carries inferred. The panel prints it as a finding either way, so a wrong address arrives with confidence. An inferred address is printed as a question with its candidates and a way to say no.</span></td>
+<td class="num"><b>+0.10</b><span class="fine">19 runs</span></td>
+<td class="q">The reading names an address the person did not describe</td>
+<td class="num">13<span class="fine">met 118</span></td>
+<td class="q">Angela, Ana</td>
+<td class="q"><code>atuned_src/ui/storyui.js</code></td>
+<td class="q">Two days. The flag is already on the imprint.
+</td></tr>
+<tr class="">
+<td><span class="tag">C1</span></td>
+<td><b>The narrow door</b><span class="fine">A one line box on the surface a person already landed on, committing on enter, opening the same engine call the Story page opens. The wide door stays for the people who want it.</span></td>
+<td class="num"><b>+0.09</b><span class="fine">15 runs</span></td>
+<td class="q">The reading does not move. Every story makes the number worse</td>
+<td class="num">119<span class="fine">met 279</span></td>
+<td class="q">Diane, James, Marcus</td>
+<td class="q"><code>atuned_src/ui/storyui.js, atuned_src/shell/body.html</code></td>
+<td class="q">Two days. The box, the commit on enter, and the panel it opens into already exist on the Story page.
+<span class="fine"><b>Judged.</b> The door costs 3.4 minutes in the harness’s own cost table and this step sets it to 0.8. Both numbers are judgement, not measurement. The product change is real and named above, the size of it is not measured, and the model sweep bounds what that whole cost table is worth at 2.50 points.</span></td></tr>
+<tr class="">
+<td><span class="tag">C2c</span></td>
+<td><b>A cleared address stays cleared</b><span class="fine">A story may push an address that was cleared straight back over the line, so the same charge is released repeatedly and nothing accumulates. The level a release left an address at becomes a floor.</span></td>
+<td class="num"><b>+0.00</b><span class="fine">19 runs</span></td>
+<td class="q">Every story makes the number worse. The reading does not move</td>
+<td class="num">119<span class="fine">met 279</span></td>
+<td class="q">Ana, Sofia, Derek</td>
+<td class="q"><code>atuned_src/engine/compute.js and the charge model</code></td>
+<td class="q">A week. It is a new piece of state on the profile, so it is schema, and schema is the cross compatibility contract.
+</td></tr>
+<tr class="">
+<td><span class="tag">C2b</span></td>
+<td><b>The install reaches the far pole</b><span class="fine">The release installs 62 per cent of what it took, so the address is left holding less of the fetter and not the opposite state. The install is placed at the pole instead.</span></td>
+<td class="num"><b>-0.06</b><span class="fine">15 runs</span></td>
+<td class="q">The reading does not move. Every story makes the number worse</td>
+<td class="num">119<span class="fine">met 279</span></td>
+<td class="q">Ana, Sofia, Angela</td>
+<td class="q"><code>atuned_src/ui/release.js</code></td>
+<td class="q">Hours in the code, and the same ruling as C2a.
+</td></tr>
+<tr class="">
+<td><span class="tag">C2a</span></td>
+<td><b>The removal compounds inside the run</b><span class="fine">The release takes 21 per cent of the weight once, whatever the length of the run, so a twelve line run and a three line run remove the same amount. Each line of the run takes from what is left instead.</span></td>
+<td class="num"><b>-0.12</b><span class="fine">22 runs</span></td>
+<td class="q">The reading does not move</td>
+<td class="num">110<span class="fine">met 279</span></td>
+<td class="q">Diane, Derek, James, Ana</td>
+<td class="q"><code>atuned_src/ui/release.js, and the contract with SOURCE</code></td>
+<td class="q">Days in the code and a ruling before it. This is arithmetic the book shares, so it is the owner’s call and not a design decision.
+</td></tr>
+</tbody></table>
+<p class="fine">Lost is people of a thousand arrivals whose departure the
+baseline attributed to one of the sticking points that change answers. It is an
+attribution and not a cause: the heaviest single friction of the session somebody
+left on is the one the departure is filed under.</p>
+
+<h2>What each figure would have got</h2>
+<p class="lede">Read down the ask column and the same three mechanisms account
+for nearly all of it.</p>
+<ul>
+<li><b>A narrower door, not a better one.</b> Diane, James and Marcus between
+them are 440 of
+1000 and all three lose the same way: the session they have is shorter than the
+door they are offered. Nothing about the Story page&rsquo;s quality is in that
+sentence.</li>
+<li><b>Something to release, and a release that accumulates.</b> Derek, Ana,
+Angela and Sofia are 510
+of 1000. &ldquo;Nothing is above the line, so there is nothing to release&rdquo; cost 89 and
+&ldquo;Every story makes the number worse&rdquo; cost 9. Both are arithmetic. The engine already
+returns <code>carrying</code> for the first one and the action surfaces do not
+read it.</li>
+<li><b>An instrument that reads what was written.</b> &ldquo;The box reads nothing out of what they wrote&rdquo;
+cost 68 and &ldquo;The reading names an address the person did not describe&rdquo; cost 13. Measured through the shipped
+<code>parseStory</code>: the bank read 22 of
+41 ordinary sentences before the patch and
+40 after, and the roster&rsquo;s own <code>says</code> lines
+went 2 of 14 to 9.
+That is 30 entries in one data file.</li>
+</ul>
+
+<h2>What the lexicon patch actually did</h2>
+<p class="lede">Measured through the shipped sniffer, not asserted. Every line
+below changed verdict.</p>
+<table class="tb">
+<thead><tr><th>Sentence</th><th>Was</th><th>Now</th><th>Addresses offered</th></tr></thead>
+<tbody>
+<tr class="win">
+<td class="q">&ldquo;I worked until eleven again and I have nothing to show anyone for it.&rdquo;<span class="fine">Diane</span></td>
+<td>nothing</td><td><b>read</b></td>
+<td class="q">Need For Approval
+</td></tr>
+<tr class="win">
+<td class="q">&ldquo;Rest feels like a moral failure. I said that out loud in a board meeting and nobody blinked.&rdquo;<span class="fine">Diane</span></td>
+<td>nothing</td><td><b>read</b></td>
+<td class="q">Need For Approval
+</td></tr>
+<tr class="win">
+<td class="q">&ldquo;I snapped at my cofounder in front of the team and I have not apologised.&rdquo;<span class="fine">Diane</span></td>
+<td>inferred</td><td><b>read</b></td>
+<td class="q">Self-Judgment (Solar), Need For Approval
+<span class="fine">was Pride, Arrogance, Competition</span></td></tr>
+<tr class="win">
+<td class="q">&ldquo;My last three sessions were slower and nothing in the data explains it.&rdquo;<span class="fine">Derek</span></td>
+<td>nothing</td><td><b>read</b></td>
+<td class="q">Anxiety
+</td></tr>
+<tr class="win">
+<td class="q">&ldquo;Pain is information. I have raced on a stress fracture and I would do it again.&rdquo;<span class="fine">Derek</span></td>
+<td>nothing</td><td><b>read</b></td>
+<td class="q">Deceit, Fear, Control
+</td></tr>
+<tr class="win">
+<td class="q">&ldquo;My shoulders are up by my ears before I even start. My chest is tight on the warm up.&rdquo;<span class="fine">Derek</span></td>
+<td>inferred</td><td><b>read</b></td>
+<td class="q">Pride, Arrogance, Competition
+<span class="fine">was Separation, Martyrdom, Longing</span></td></tr>
+<tr class="win">
+<td class="q">&ldquo;I can see what is wrong with anything in four seconds. It has cost me two studios.&rdquo;<span class="fine">Marcus</span></td>
+<td>nothing</td><td><b>read</b></td>
+<td class="q">False Humility, Seeking Validation, Self-Exclusion
+</td></tr>
+<tr class="win">
+<td class="q">&ldquo;I killed a good idea today because it was not mine and I knew I was doing it.&rdquo;<span class="fine">Marcus</span></td>
+<td>nothing</td><td><b>read</b></td>
+<td class="q">False Humility, Seeking Validation, Self-Exclusion
+</td></tr>
+<tr class="win">
+<td class="q">&ldquo;I am ashamed of how I spoke to the junior and I will not bring it up tomorrow.&rdquo;<span class="fine">Marcus</span></td>
+<td>inferred</td><td><b>read</b></td>
+<td class="q">Need For Approval
+<span class="fine">was Pride, Arrogance, Competition</span></td></tr>
+<tr class="win">
+<td class="q">&ldquo;I lied about the timeline. Again. It is easier than the conversation.&rdquo;<span class="fine">Marcus</span></td>
+<td>inferred</td><td><b>read</b></td>
+<td class="q">Need For Approval
+<span class="fine">was Deceit, Lying, Excuse</span></td></tr>
+<tr class="win">
+<td class="q">&ldquo;Nothing I made this year interests me. I am disgusted by all of it.&rdquo;<span class="fine">Marcus</span></td>
+<td>nothing</td><td><b>read</b></td>
+<td class="q">Co-Dependency
+</td></tr>
+<tr class="win">
+<td class="q">&ldquo;Everything happens for a reason. I have said that at three funerals and I believed it each time.&rdquo;<span class="fine">Angela</span></td>
+<td>inferred</td><td><b>read</b></td>
+<td class="q">Spiritual Escapism, Hatred
+<span class="fine">was Separation, Martyrdom, Longing</span></td></tr>
+<tr class="win">
+<td class="q">&ldquo;I have done six modalities and I am still looking for the one that lands.&rdquo;<span class="fine">Angela</span></td>
+<td>nothing</td><td><b>read</b></td>
+<td class="q">Anxiety
+</td></tr>
+<tr class="win">
+<td class="q">&ldquo;I want to know why I keep choosing the same kind of person.&rdquo;<span class="fine">Angela</span></td>
+<td>nothing</td><td><b>read</b></td>
+<td class="q">Co-Dependency
+</td></tr>
+</tbody></table>
+<p class="fine">26 of 41 lines changed verdict.
+1 still reads nothing and it is
+Rosa&rsquo;s, which is correct. 4
+still come back entirely inferred, which is why C5b is a separate change: stating
+more addresses is not the same as never printing a guess as a finding.</p>
+
+<h2>What was refused</h2>
+<p class="lede">These are the improvements a cohort would ask for if a cohort
+were asked, and none of them traces to a measured departure. The last one is this
+seat&rsquo;s own and it is refused on the same grounds.</p>
+<table class="tb">
+<thead><tr><th>The proposal</th><th>Why it is refused</th></tr></thead>
+<tbody>
+<tr class="zero"><td><b>An onboarding tour</b></td><td class="q">Nobody left because they did not
+understand the screen. &ldquo;More simultaneous choices than a working memory holds&rdquo; was met by 668 of a thousand and
+attributed 12 departures. The count is the problem, not the
+explanation of the count, and a tour adds a screen to a product already measured
+at 71 choices above the fold on the landing surface.</td></tr>
+<tr class="zero"><td><b>Warmer, softer copy</b></td><td class="q">Angela is the figure this is
+aimed at. She lost 28 to the box reading nothing out of her
+sentence and 9 to it naming an address she had not
+described. Neither is a tone.</td></tr>
+<tr class="zero"><td><b>More content in Knowledge, Games or Ritual</b></td><td class="q">&ldquo;The content is exhausted&rdquo;
+was met by 0 of a thousand. Nobody exhausts the content because
+nobody stays long enough to reach the end of it. Building more of it moves
+nothing on this page.</td></tr>
+<tr class="zero"><td><b>More badges, points and achievements</b></td><td class="q">The ladder is
+already the thing that fires: 910 marks were earned
+across a thousand arrivals and 4.0% of them ever closed the
+loop. The marks are what a person gets instead of a moving reading, and more of
+them is more of the wrong thing.</td></tr>
+<tr class="zero"><td><b>A third theme, animation and a polish pass</b></td><td class="q">Visual and
+kinetic is carried at 8 of 10 from the earlier run and no departure in the loss
+column attaches to it. Worth doing, not worth doing first, and inventing an
+instrument to score it higher would be writing the grade instead of earning it.</td></tr>
+<tr class="zero"><td><b>Redesign the four doors on the Field</b><span class="fine">this seat&rsquo;s own
+proposal, killed</span></td><td class="q">It was the first thing I wanted to do and the loss
+column does not support it. Not one attributed departure in the run happens on
+the doors. Diane opens the file, sees them, and leaves because the reading did
+not move.</td></tr>
+</tbody></table>
+
+<h2>Where the load actually sits</h2>
+<p class="lede">A separate probe, because a proposal to reduce a count needs the
+count&rsquo;s parts. Every above the fold control on every surface, sorted into
+the regions of the shell.</p>
+<table class="tb">
+<thead><tr><th>Surface</th><th class="num">Above the fold</th><th class="num">Tab bar</th>
+<th class="num">Top</th><th class="num">Sub bar</th><th class="num">Stage</th>
+<th class="num">Left rail</th><th class="num">Right rail</th>
+<th class="num">In a foldable section</th></tr></thead>
+<tbody>
+<tr><td><b>Energetics</b></td><td class="num">85</td>
+<td class="num">9</td><td class="num">7</td>
+<td class="num">0</td><td class="num">14</td>
+<td class="num">47</td><td class="num">8</td>
+<td class="num">53</td></tr>
+<tr><td><b>Ritual</b></td><td class="num">78</td>
+<td class="num">9</td><td class="num">7</td>
+<td class="num">0</td><td class="num">7</td>
+<td class="num">47</td><td class="num">8</td>
+<td class="num">53</td></tr>
+<tr><td><b>Story</b></td><td class="num">91</td>
+<td class="num">9</td><td class="num">7</td>
+<td class="num">0</td><td class="num">20</td>
+<td class="num">47</td><td class="num">8</td>
+<td class="num">53</td></tr>
+<tr><td><b>Field</b></td><td class="num">71</td>
+<td class="num">9</td><td class="num">7</td>
+<td class="num">2</td><td class="num">9</td>
+<td class="num">37</td><td class="num">7</td>
+<td class="num">41</td></tr>
+<tr><td><b>Body</b></td><td class="num">66</td>
+<td class="num">9</td><td class="num">7</td>
+<td class="num">7</td><td class="num">0</td>
+<td class="num">37</td><td class="num">6</td>
+<td class="num">41</td></tr>
+<tr><td><b>Compass</b></td><td class="num">82</td>
+<td class="num">9</td><td class="num">7</td>
+<td class="num">0</td><td class="num">11</td>
+<td class="num">47</td><td class="num">8</td>
+<td class="num">53</td></tr>
+<tr><td><b>Knowledge</b></td><td class="num">127</td>
+<td class="num">9</td><td class="num">7</td>
+<td class="num">0</td><td class="num">56</td>
+<td class="num">47</td><td class="num">8</td>
+<td class="num">53</td></tr>
+<tr><td><b>Games</b></td><td class="num">74</td>
+<td class="num">9</td><td class="num">7</td>
+<td class="num">0</td><td class="num">3</td>
+<td class="num">47</td><td class="num">8</td>
+<td class="num">53</td></tr>
+<tr><td><b>Summary</b></td><td class="num">77</td>
+<td class="num">9</td><td class="num">7</td>
+<td class="num">0</td><td class="num">4</td>
+<td class="num">47</td><td class="num">10</td>
+<td class="num">55</td></tr>
+</tbody></table>
+<p class="fine">At 1600 by 1000, on a loaded profile. The working memory target is
+four and the product&rsquo;s own floor is under twelve. The chrome alone, the top
+and the bar, is 16
+controls before any content, which is the reason this criterion cannot be fixed
+inside a surface. At 390 both rails are already off screen, so the phone counts
+are 15
+to 26
+and the load problem is a desk problem.</p>
+
+<hr class="rule">
+<h2>What this is, and what it is not</h2>
+<div class="stamp">source.html   md5 5f2180b2b64fb30b6d484f364535d29e
+engine.js     md5 315e3ced4119eef2770f64534b10a68f
+commit        41b07e4
+fold probe    md5 5f2180b2b64fb30b6d484f364535d29e   commit 41b07e4
+pinned at     /home/user/MOB/sim/pin
+working tree  source.html c8871990c63da1611f7a6206df1ec13a
+              engine.js   417fea2e4f7c7c538fe57a5d7cc3db83
+
+THE BUILD MOVED UNDER THIS RUN. Two seats were live in atuned_src and
+the release path while it ran. Everything measured here was measured
+against the pinned build above and nothing was measured against the
+working tree. Re-measure before reading these numbers against a newer
+build.
+chromium      1194, file://, 1600x1000 and 390x844
+measured      2026-09-21T02:25:22.699Z
+cohort        1000 a run, 19 runs behind the baseline
+lexicon       231 entries to 261
+
+  node sim/measure.js       the surface, writes sim/measured.json
+  node sim/fold.js          where the load sits, writes sim/folded.json
+  node sim/lexcheck.js      the lexicon patch, writes sim/lexmeasured.json
+  node sim/harness.js       the baseline cohort, writes sim/runs.json
+  node sim/ninety.js        every change modelled, writes sim/ninety.json
+  node sim/build-help.js    this page
+  node sim/shot.js          renders both pages and asserts what they are
+
+  SIM_ROOT=sim/pin pins the build every step above reads, so a measurement
+  cannot have its subject change under it while other seats are working.</div>
+<p class="foot">Every number on this page came out of a run or a probe. Every
+sentence in quotation marks was written by this seat over those numbers and was
+said by nobody. The model in the run is one thing only, when somebody opens the
+file and when they stop, it is stated in full in <code>sim/harness.js</code>, and
+it is judgement. This is not research and must not be quoted as research. Five
+people with phones and two afternoons would replace most of the derived half of
+this page with measurements, and the asks it would confirm or kill are listed
+above in the order to test them.</p>
+
+</div></body></html>

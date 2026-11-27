@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Compass layout readings</title>
+<style>
+:root{--bg:#0e0f13;--panel:#181a21;--edge:#2c2f3a;--ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;--accent:#7EB8D4;--root:#C4635E;--sac:#D19255;--sol:#D4BC70;--heart:#6FC5A3;--throat:#65B8D4;--eye:#8296DB;--crown:#A98BCE}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 Inter,system-ui,sans-serif;padding:28px}
+h1{font-size:18px;font-weight:600;margin:0 0 4px}
+p.lede{margin:0 0 22px;color:var(--mid);max-width:900px}
+.row{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.card{border:1px solid var(--edge);border-radius:14px;padding:16px;background:#12141a}
+.card h2{font-size:14px;font-weight:600;margin:0 0 2px}
+.card .tag{font-size:12px;color:var(--dim);margin-bottom:12px}
+.card.pick{border-color:var(--accent)}
+.wf{display:grid;gap:6px;height:230px}
+.box{border:1px solid var(--edge);border-radius:8px;background:var(--panel);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;font-size:11px;color:var(--mid);text-align:center;padding:4px;position:relative}
+.pane{background:#101010;border-color:#3a3e4b}
+.dot{width:12px;height:12px;border-radius:50%;border:1.6px solid var(--accent);display:inline-block}
+.dots{display:flex;gap:4px;position:absolute;top:6px;left:6px}
+.dots.r{left:auto;right:6px}
+.fig{width:48px;height:70px;background:linear-gradient(#7EB8D455,#C4635E44);clip-path:polygon(50% 0,100% 40%,50% 100%,0 40%)}
+.col{display:flex;flex-direction:column;gap:6px}
+.pr{display:flex;flex-direction:column;gap:6px;height:100%;justify-content:space-between;padding:6px}
+.pr i{display:block;width:100%;height:22px;border-radius:6px;border:1px solid var(--edge);background:#1c1f27}
+.note{margin-top:12px;font-size:12.5px;color:var(--mid)}
+.note b{color:var(--ink);font-weight:600}
+</style></head><body>
+<h1>Compass page, three readings of "the centre, left, right of that render pane"</h1>
+<p class="lede">His sentence is ambiguous. The build takes the first reading. The other two are the plausible alternatives, drawn at the same scale, so he can say which one he meant.</p>
+<div class="row">
+
+<div class="card pick">
+ <h2>A. Characters become the two panels (built)</h2>
+ <div class="tag">Left panel, render pane centred, right panel. Overlays in the pane.</div>
+ <div class="wf" style="grid-template-columns:.8fr 2.4fr .8fr">
+  <div class="box"><div class="pr"><i></i><i></i><i></i><i></i></div></div>
+  <div class="box pane"><span class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></span><span class="dots r"><span class="dot"></span><span class="dot"></span></span><div class="fig"></div>render pane<span class="dots" style="top:auto;bottom:6px;left:auto;right:6px"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span></div>
+  <div class="box"><div class="pr"><i></i><i></i><i></i><i></i></div></div>
+ </div>
+ <div class="note"><b>Left panel:</b> Light, Desire and will, Order, Power. <b>Right panel:</b> Perception, Trust, Charge, Revelation. <b>Pane:</b> the figure and its overlays only. The reading stays in the app's right column.</div>
+</div>
+
+<div class="card">
+ <h2>B. Characters become circles in the overlay row</h2>
+ <div class="tag">His earlier words: "Character icons go where the overlay icons are."</div>
+ <div class="wf" style="grid-template-columns:1fr">
+  <div class="box pane"><span class="dots" style="gap:3px"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot" style="border-color:var(--sol)"></span><span class="dot" style="border-color:var(--sol)"></span><span class="dot" style="border-color:var(--sol)"></span><span class="dot" style="border-color:var(--sol)"></span><span class="dot" style="border-color:var(--sol)"></span><span class="dot" style="border-color:var(--sol)"></span><span class="dot" style="border-color:var(--sol)"></span><span class="dot" style="border-color:var(--sol)"></span></span><div class="fig"></div>render pane, full width<span style="font-size:11px;color:var(--dim)">no side panels, eight character circles beside the overlays</span></div>
+ </div>
+ <div class="note"><b>Costs:</b> twelve circles in one row (the fold, three overlays, eight characters), the character names only on hover, and the figure gets the full width back.</div>
+</div>
+
+<div class="card">
+ <h2>C. The app's own two columns are the panels</h2>
+ <div class="tag">The left and right rails already exist on every page.</div>
+ <div class="wf" style="grid-template-columns:.8fr 2.4fr .8fr">
+  <div class="box"><div class="pr"><i></i><i></i><i></i><i></i></div>left rail<span style="color:var(--dim)">profile inputs</span></div>
+  <div class="box pane"><span class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></span><div class="fig"></div>render pane<span style="color:var(--dim)">character names stay inside it</span></div>
+  <div class="box"><div class="pr"><i></i><i></i><i></i><i></i></div>right rail<span style="color:var(--dim)">reading</span></div>
+ </div>
+ <div class="note"><b>Costs:</b> this is the page before this round, with only the overlays changed. The left rail holds the profile inputs, none of which are about the compass.</div>
+</div>
+
+</div></body></html>

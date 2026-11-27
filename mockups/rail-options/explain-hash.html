@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The DQ marks, explained</title><link rel="stylesheet" href="explain.css">
+<style>.hz{display:flex;gap:10px;align-items:flex-end;height:150px;position:relative;padding:0 4px}.hz .c{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;position:relative}
+.hz .t{position:absolute;inset:0 0 0 0;border-radius:6px;background:rgba(128,128,128,.10);box-shadow:inset 0 0 0 1px var(--edge)}.hz .b{position:relative;width:100%;border-radius:5px 5px 2px 2px;transition:height .4s}
+.hz .l{position:absolute;left:-2px;right:-2px;height:0;border-top:1px dashed rgba(255,255,255,.28)}.hz .l span{position:absolute;right:0;top:-17px;font-size:11px;color:var(--dim);background:var(--panel);padding:0 4px}
+.nm{display:flex;gap:10px;padding:5px 4px 0;font-size:11.5px;color:var(--dim)}.nm span{flex:1;text-align:center}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:22px}.rowh{font-size:13px;color:var(--dim);margin:0 0 8px}.pane h3{font-size:15px;margin:0 0 4px;font-weight:600}
+.pane .pc{font-size:13px;color:var(--dim);margin:0 0 12px}.clip{color:#D4736D}
+</style></head>
+<body>
+<h1>The DQ marks: what "doubled" means</h1>
+<p class="sub">DQ is the total of the shadow a person is carrying: all the held charge on all 112 addresses of the body. Across the DQ bar in the left column there are seven upright marks, one for each seat of the body, root on the left to crown on the right, and they now run the whole width of the bar. This sheet shows how tall those marks are drawn, two ways, for the same two people.</p>
+<div id="inbar"></div><div id="app"></div>
+<div class="plain" id="plain"></div>
+<p class="stamp">Example people: Marcus (a creative director, low charge) and Tomas (a long haul driver, high charge). Figures read out of the built page on 1 October. Mockup only.</p>
+<script src="rail-data.js"></script><script src="rail-lib.js"></script>
+<script>
+(function(){
+ var RL=window.RL; document.body.insertAdjacentHTML('afterbegin',RL.defs());
+ function hash(P,gain){
+  var v=P.seatMean.map(function(m){return Math.max(0,Math.min(1,m/10*gain));}), h='<div class="hz"><div class="l" style="top:0"><span>full</span></div><div class="l" style="top:50%"><span>half</span></div>';
+  v.forEach(function(x,i){h+='<div class="c"><div class="t"></div><div class="b" style="height:'+(x*100).toFixed(1)+'%;background:'+RL.SEAT[i]+';opacity:.92"></div></div>';});
+  h+='</div><div class="nm">'+RL.BANDS.map(function(b){return '<span>'+b+'</span>';}).join('')+'</div>';
+  var clipped=P.seatMean.filter(function(m){return m/10*gain>=1;}).length;
+  return {h:h,clipped:clipped,max:Math.max.apply(null,v)};}
+ function pane(P,gain,title,tag){
+  var o=hash(P,gain);
+  return '<div class="pane"><h3>'+title+'</h3><p class="pc">'+P.nm+', DQ '+Math.round(P.DQ)+'%. '+tag+'</p>'+o.h+'</div>';}
+ var M=RL.person('marcus'), T=RL.person('tomas');
+ var ib='<p class="rowh">Where they sit: across the whole CQ and DQ bar, as it is drawn in the left column. Top row strict one to one, bottom row doubled.</p><div class="grid2">';
+ [M,T].forEach(function(P){ib+='<div class="pane"><h3>'+P.nm+'</h3><p class="pc">CQ '+Math.round(P.CQ)+', DQ '+Math.round(P.DQ)+'.</p><div class="who" style="font-size:12.5px;color:var(--dim);margin:0 0 5px">Strict one to one</div>'+RL.cqdqBar(P,470,52,{gain:1})+'<div style="font-size:12.5px;color:var(--dim);margin:12px 0 5px">Doubled</div>'+RL.cqdqBar(P,470,52,{gain:2})+'</div>';});
+ document.getElementById('inbar').innerHTML=ib+'</div><div style="height:26px"></div>';
+ document.getElementById('app').innerHTML='<p class="rowh">Strict one to one: a mark is exactly as tall as the charge at that seat, against the most that seat could hold.</p><div class="grid2">'
+  +pane(M,1,'Marcus, strict','The tallest mark reaches about a seventh of the way up.')+pane(T,1,'Tomas, strict','Every seat shows, and none reaches the top.')+'</div>'
+  +'<p class="rowh" style="margin-top:26px">Doubled, as built today: every mark is drawn twice as tall, and stops at full.</p><div class="grid2">'
+  +pane(M,2,'Marcus, doubled','The same seven marks, twice as tall. The differences between seats are easier to see.')+pane(T,2,'Tomas, doubled','Several seats now stand at full height, so they can no longer be told apart from each other.')+'</div>';
+ var mm=Math.max.apply(null,M.seatMean)/10, tm=T.seatMean.filter(function(m){return m>=5;}).length;
+ document.getElementById('plain').innerHTML=
+  '<p><b>What a mark means.</b> Each mark is one seat of the body. Its height is how much charge is being held at that seat, compared with the most that seat could hold. A tall mark means a heavy seat. A short mark means a clear one.</p>'
+  +'<p><b>The problem.</b> A person with a low reading, like Marcus, has seven very short marks. Strictly drawn, the tallest is only '+Math.round(mm*100)+' percent of the way up, and the seven look like a row of ticks. That is honest, and it is hard to read.</p>'
+  +'<p><b>What doubled does.</b> It draws every mark twice as tall, so a seat holding half of what it could stands at full height. Marcus gets visible differences between his seats. The cost is on the other side: for a heavy person like Tomas, '+tm+' of his seven seats already hold half or more, so they all stand at full height and look the same.</p>'
+  +'<p><b>The choice.</b> Strict is the honest scale and reads poorly for most people, who live in the low half. Doubled reads well for them and flattens the heavy end. A third way, which I would try next, is to draw each mark strictly but stretch the whole row so the tallest mark always reaches the top, with the real figure printed beside it.</p>';
+})();
+</script></body></html>

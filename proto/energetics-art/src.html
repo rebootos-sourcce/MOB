@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Energetics art pass</title>
+<!--FONT-->
+<style>
+/* ============================================================
+   ENERGETICS, AN ART PASS. Round IT in TASKS.md. Mockups, not the app.
+
+   Three treatments of the same section intakeui.js renders today, with the
+   same content: 21 laws in seven seats, three framings a law, a 0 to 10
+   answer, and the score and spread iqScore makes of them. The tokens and the
+   badge geometry are the product's own (shell/head.html, component.js
+   crBadge), copied rather than invented.
+   ============================================================ */
+:root{
+ --bg:#0C0D12; --stage:#0A0B0E; --panel:#1A1D26; --panel-2:#252833; --sunk:#090A0E;
+ --edge:rgba(255,255,255,.09); --edge-2:rgba(255,255,255,.14);
+ --ink:#EFEDE8; --mid:#B4B0A8; --dim:#94908A;
+ --accent:#7EB8D4; --on-accent:#0B1418; --au:#C2A063;
+ --sans:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif; --num:var(--sans);
+ --r:14px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+.pb{position:sticky;top:0;z-index:50;display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:10px 16px;background:#2A2410;color:#F3E3B5;border-bottom:1px solid #5A4A1C;font-size:13.5px}
+.pb b{font-weight:600}.pb .sp{flex:1}
+.chip{white-space:nowrap;border-radius:999px;padding:5px 11px;font-size:13px;cursor:pointer;min-height:32px;background:#3A3216;border:1px solid #6A5822;color:#F3E3B5}
+.chip.on{background:#F3E3B5;color:#2A2410;border-color:#F3E3B5;font-weight:600}
+.wrap{max-width:1280px;margin:0 auto;padding:18px 16px 64px}
+.hd h1{font-size:26px;font-weight:600;margin:4px 0 6px;letter-spacing:-.01em}
+.eyebrow{font-size:12.5px;color:var(--dim)}
+.seg{display:inline-flex;gap:4px;padding:4px;border:1px solid var(--edge-2);border-radius:999px;background:var(--sunk);flex-wrap:wrap}
+.seg button{border:0;background:transparent;padding:8px 16px;border-radius:999px;cursor:pointer;min-height:40px;color:var(--mid);font-size:14px}
+.seg button.on{background:var(--accent);color:var(--on-accent);font-weight:600}
+.wn{border-left:2px solid var(--au);padding:4px 0 4px 12px;font-size:13.5px;color:var(--mid);margin:16px 0 0;max-width:80ch}
+.wn .eyebrow{color:var(--au)}
+.wn ul{margin:4px 0 0;padding-left:18px}.wn li{margin:3px 0}
+.surface{margin-top:14px;background:var(--panel);border:1px solid var(--edge);border-radius:var(--r);padding:28px 28px 32px}
+
+/* the badge, ported from component.js crBadge and head.html .crb */
+.crb{position:relative;display:inline-block;flex:0 0 auto;box-sizing:content-box}
+.crb-a{display:block;transform:rotate(-90deg)}
+.crb-g{position:absolute;left:0;top:0;display:grid;place-items:center;color:var(--c);pointer-events:none}
+.crb-g svg{fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round}
+.crb-v{position:absolute;right:0;bottom:0;font-family:var(--num);font-weight:500;line-height:1;background:var(--panel-2);color:var(--ink);
+ border:1px solid color-mix(in srgb,var(--c) 44%,transparent);border-radius:999px;padding:2px 6px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.crb.sm{width:34px;height:34px;padding:0 24px 8px 0}.crb.sm .crb-g{width:34px;height:34px}.crb.sm .crb-g svg{width:15px;height:15px;stroke-width:1.8}.crb.sm .crb-v{font-size:11.5px;padding:1.5px 6px}
+.crb.md{width:44px;height:44px;padding:0 28px 9px 0}.crb.md .crb-g{width:44px;height:44px}.crb.md .crb-g svg{width:20px;height:20px;stroke-width:1.6}.crb.md .crb-v{font-size:12.5px;padding:2px 7px}
+.crb.bare{padding:0}
+
+/* the header every treatment shares, set the way Summary sets a name */
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap}
+.nm{font-size:56px;font-weight:600;letter-spacing:-.02em;line-height:1.02;margin:0}
+.who{font-size:14px;color:var(--mid);margin-top:8px}
+.who .gap{color:var(--dim)}
+.who button{background:none;border:0;color:var(--accent);cursor:pointer;padding:0 4px;min-height:32px}
+.cq{display:flex;align-items:center;gap:12px}
+.cqp{display:inline-flex;align-items:center;gap:10px;border:1px solid color-mix(in srgb,var(--accent) 40%,transparent);background:var(--sunk);border-radius:999px;padding:6px 16px 6px 6px}
+.cqp b{font-size:22px;font-weight:600;font-variant-numeric:tabular-nums}
+.cqw{display:flex;flex-direction:column;line-height:1.25}
+.cqw .t{color:var(--accent);font-size:19px;font-weight:600}
+.cqw .s{color:var(--dim);font-size:13px}
+.key{margin:18px 0 0;font-size:13.5px;color:var(--dim)}
+.key b{color:var(--accent);font-weight:600;margin-right:4px}.key i{font-style:normal;margin:0 8px;color:#4A4C54}
+.pm{font-size:12.5px;color:var(--dim);font-weight:500}
+
+/* THE ANSWER. Eleven points in one row on a desktop, two rows on a phone, so
+   no point is narrower than 44 pixels. One row of eleven at 390 is 30 wide. */
+.sc{display:grid;grid-template-columns:repeat(11,minmax(0,1fr));gap:4px}
+.sc button{min-height:44px;border-radius:10px;border:1px solid var(--edge-2);background:var(--sunk);color:var(--mid);cursor:pointer;font-variant-numeric:tabular-nums;font-size:14px}
+.sc button:hover{border-color:color-mix(in srgb,var(--c) 60%,transparent)}
+.sc button.on{background:color-mix(in srgb,var(--c) 26%,var(--sunk));border-color:var(--c);color:var(--ink);font-weight:600}
+.fr{display:grid;gap:8px}
+.fr em{font-style:normal;font-size:12.5px;color:var(--c);font-weight:500}
+.fr .q{font-size:15.5px;color:var(--ink);line-height:1.45}
+
+/* THE GAP. The measurement is the distance between three readings of one
+   law, so it is drawn as three marks on one line, not printed as a number */
+.gap3{display:block;width:100%;height:auto}
+
+/* ---- A. The reading list, in Summary's treatment ---- */
+.seatrow{display:grid;grid-template-columns:220px minmax(0,1fr);gap:24px;padding:18px 0;border-top:1px solid var(--edge)}
+.seatrow:first-child{border-top:0}
+.seathd{display:flex;gap:12px;align-items:flex-start}
+.seathd .n{font-size:17px;font-weight:600;color:var(--c)}
+.seathd .l{font-size:13px;color:var(--dim)}
+.laws{display:flex;flex-direction:column}
+.lawr{display:grid;grid-template-columns:auto minmax(0,1fr) 200px;gap:14px;align-items:center;padding:6px 8px;border-radius:12px;border:1px solid transparent;
+ background:none;text-align:left;cursor:pointer;width:100%;min-height:56px}
+.lawr:hover{background:rgba(255,255,255,.025)}
+.lawr.on{border-color:color-mix(in srgb,var(--c) 40%,transparent);background:rgba(255,255,255,.02)}
+.lawr .t{font-size:16px;font-weight:500}
+.lawr .v{font-size:13px;color:var(--dim)}
+.open{padding:8px 8px 16px 64px;display:grid;gap:18px}
+.open .fr{grid-template-columns:minmax(0,1fr) 540px;gap:20px;align-items:center}
+
+/* ---- B. The wheel, in the Field's treatment ---- */
+.side .sc{grid-template-columns:repeat(6,minmax(0,1fr))}
+.fieldstage{background:var(--stage);border-radius:var(--r);border:1px solid var(--edge);display:grid;grid-template-columns:minmax(0,1fr) 420px;gap:0;overflow:hidden;margin-top:18px}
+.wheel{padding:14px;display:flex;align-items:flex-start;justify-content:center}
+.wheel svg{width:100%;max-width:640px;height:auto}
+.wheel .lb{cursor:pointer}
+.side{border-left:1px solid var(--edge);padding:22px;display:flex;flex-direction:column;gap:18px;background:rgba(255,255,255,.012)}
+.side h3{margin:0;font-size:22px;font-weight:600}
+.side .sl{font-size:13px;color:var(--dim)}
+
+/* ---- C. One law at a time ---- */
+.strip{display:flex;gap:14px;flex-wrap:wrap;margin-top:18px;padding:10px 12px;background:var(--stage);border:1px solid var(--edge);border-radius:999px;justify-content:center}
+.strip .grp{display:flex;gap:2px}
+.strip button{background:none;border:0;padding:5px;cursor:pointer;border-radius:999px;min-width:34px;min-height:34px}
+.strip button.on{outline:1.5px solid var(--accent);outline-offset:-1px}
+.focus{display:grid;grid-template-columns:260px minmax(0,1fr);gap:40px;margin-top:26px;align-items:start}
+.hero{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;position:sticky;top:80px}
+.hero .ln{font-size:30px;font-weight:600;letter-spacing:-.01em}
+.hero .sl{font-size:14px;color:var(--dim)}
+.qs{display:flex;flex-direction:column;gap:26px;max-width:720px}
+.nav{display:flex;gap:10px;justify-content:space-between;margin-top:6px}
+.btn{border:1px solid var(--edge-2);background:var(--panel-2);border-radius:10px;padding:10px 18px;min-height:44px;cursor:pointer;font-size:14px}
+.btn.pri{background:var(--accent);color:var(--on-accent);border-color:var(--accent);font-weight:600}
+
+@media (max-width:1100px){.fieldstage{grid-template-columns:1fr}.side{border-left:0;border-top:1px solid var(--edge)}
+ .open{padding-left:8px}.open .fr{grid-template-columns:1fr}}
+@media (max-width:760px){.seatrow{grid-template-columns:1fr;gap:10px}.lawr{grid-template-columns:auto minmax(0,1fr)}.lawr .gw{grid-column:1/-1}
+ .focus{grid-template-columns:1fr;gap:18px}.hero{position:static}}
+@media (max-width:520px){.pb{position:static}.surface{padding:18px 14px 22px}.side{padding:16px 10px}.wheel{padding:6px}.nm{font-size:40px}.hd h1{font-size:22px}
+ .sc{grid-template-columns:repeat(6,minmax(0,1fr))}.strip{border-radius:18px;gap:8px}.hero .ln{font-size:24px}}
+</style></head><body>
+<div class="wrap">
+ <div class="hd"><div class="eyebrow">Round IT. The Energetics section, three ways, in the Field's and Summary's flavour.</div><h1>Energetics art pass</h1></div>
+ <div id="mode"></div>
+ <div id="view"></div>
+ <div id="note"></div>
+</div>
+<!--DATA-->
+<script>
+var T=DATA.tables, PAL=T.PAL, WHO='Marcus', MODE='a', OPEN=4;
+var ANS={}; Object.keys(DATA.people).forEach(function(k){ANS[k]=Object.assign({},DATA.people[k].answers);});
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function col(b){return PAL[b];}
+/* iqScore, engine/intake.js, verbatim but for reading the answers passed in */
+function iqScore(a){var out={};
+ T.SI.forEach(function(l,li){var v=[a[li*3],a[li*3+1],a[li*3+2]];
+  if(v.some(function(x){return x==null;}))return;
+  var mean=(v[0]+v[1]+v[2])/3, spread=Math.max.apply(null,v)-Math.min.apply(null,v);
+  out[l.nm]={score:Math.round(mean*10)/10,spread:Math.round(spread*10)/10,reliable:spread>=3,
+   lean:spread<3?'even, within measurement noise':v[0]>v[1]?'holds when it costs, slips when unseen':'holds when unseen, slips when it costs'};});
+ return out;}
+/* crBadge, ui/component.js, same box, radius and stroke */
+var CRB={sm:{box:34,r:13.5,w:3},md:{box:44,r:17.5,w:3.6}};
+function badge(seat,pct,glyph,val,size,bare){var G=CRB[size||'sm'],p=Math.max(0,Math.min(100,pct||0)),C=2*Math.PI*G.r,off=C*(1-p/100),c=col(seat),h=G.box/2;
+ return '<span class="crb '+(size||'sm')+(bare?' bare':'')+'" style="--c:'+c+'"><svg class="crb-a" width="'+G.box+'" height="'+G.box+'" aria-hidden="true">'
+  +'<circle cx="'+h+'" cy="'+h+'" r="'+G.r+'" fill="none" stroke="rgba(128,128,128,.22)" stroke-width="'+G.w+'"/>'
+  +'<circle cx="'+h+'" cy="'+h+'" r="'+G.r+'" fill="none" stroke="'+c+'" stroke-width="'+G.w+'" stroke-linecap="round" stroke-dasharray="'+C.toFixed(1)+'" stroke-dashoffset="'+off.toFixed(1)+'"/></svg>'
+  +'<span class="crb-g"><svg viewBox="0 0 24 24" aria-hidden="true">'+glyph+'</svg></span>'+(bare||val==null?'':'<span class="crb-v">'+esc(val)+'</span>')+'</span>';}
+function lawGlyph(l){return '<path d="'+l.ic+'"/>';}
+function seatGlyph(b){return T.GLYPH[b]||T.GLYPH._;}
+function answers(){return ANS[WHO];}
+function got(li){var a=answers();return [0,1,2].filter(function(t){return a[li*3+t]!=null;}).length;}
+function answered(){var a=answers();return Object.keys(a).filter(function(k){return a[k]!=null;}).length;}
+function lawsOf(b){return T.SI.map(function(l,li){return {l:l,li:li};}).filter(function(x){return x.l.b===b;});}
+
+/* the three readings of one law on one line from 0 to 10. Hollow where the
+   question is unanswered, a ring where it is, and the span between the
+   outer two drawn in the seat colour, which is the spread */
+function gapLine(li,w){w=w||200;var a=answers(),c=col(T.SI[li].b),h=26,x0=8,x1=w-8;
+ function X(v){return x0+(x1-x0)*v/10;}
+ var v=[0,1,2].map(function(t){return a[li*3+t];}), have=v.filter(function(x){return x!=null;});
+ var s='<svg class="gap3" viewBox="0 0 '+w+' '+h+'" aria-hidden="true"><line x1="'+x0+'" x2="'+x1+'" y1="13" y2="13" stroke="rgba(255,255,255,.12)"/>';
+ [0,5,10].forEach(function(t){s+='<line x1="'+X(t)+'" x2="'+X(t)+'" y1="9" y2="17" stroke="rgba(255,255,255,.14)"/>';});
+ if(have.length>1)s+='<line x1="'+X(Math.min.apply(null,have))+'" x2="'+X(Math.max.apply(null,have))+'" y1="13" y2="13" stroke="'+c+'" stroke-width="3" stroke-opacity=".55" stroke-linecap="round"/>';
+ v.forEach(function(x,t){if(x==null)return;var dy=[-0,0,0][t];s+='<circle cx="'+X(x)+'" cy="'+(13+dy)+'" r="'+(t===2?3.2:4.6)+'" fill="'+(t===2?c:'#090A0E')+'" stroke="'+c+'" stroke-width="1.6"/>';});
+ return s+'</svg>';}
+function framings(li){var a=answers(),l=T.SI[li],h='';
+ [0,1,2].forEach(function(t){var q=T.Q[li*3+t],v=a[li*3+t];
+  /* A REFERENCE PROFILE CARRIES DECIMALS, Marcus answers 4.7, which no point
+     on an eleven point scale equals. The shipped surface compares with ===
+     and so shows a scored law over a scale with nothing selected. Here the
+     nearest point is marked and the exact figure is printed beside the label. */
+  var near=v==null?null:Math.round(v), exact=v!=null&&v!==near?' <span style="color:var(--dim)">'+v+'</span>':'';
+  h+='<div class="fr" style="--c:'+col(l.b)+'"><div><em>'+esc(T.SIDE[q.side]||q.side)+'</em>'+exact+'<div class="q">'+esc(q.q)+'</div></div><div class="sc">';
+  for(var n=0;n<=10;n++)h+='<button class="'+(near===n?'on':'')+'" data-a="'+(li*3+t)+'" data-v="'+n+'" aria-label="'+n+'">'+n+'</button>';
+  h+='</div></div>';});
+ return h;}
+function header(){var P=DATA.people[WHO],sc=iqScore(answers()),n=Object.keys(sc).length,left=63-answered();
+ var name=WHO==='You'?'Who you are':P.nm, role=(P.role||'').replace(/\s*·\s*ICP$/,'');
+ var cq=WHO==='You'?null:P.CQ;
+ return '<div class="top"><div><h2 class="nm">'+esc(name)+'</h2><div class="who">'+(role?esc(role)+' <span class="gap">·</span> ':'')
+  +'<span class="gap">no birth moment on file</span><button>Edit</button></div></div>'
+  +'<div class="cq"><span class="cqp">'+badge('Throat',cq==null?0:cq,'<text x="12" y="16" text-anchor="middle" font-size="9" font-weight="600" fill="currentColor" stroke="none">CQ</text>',null,'md',true)
+  +'<b>'+(cq==null?'–':Math.round(cq))+'</b></span><div class="cqw"><span class="t">'+(n===21&&P.tier?esc(P.tier):left+' left')+'</span><span class="s">'+n+' of 21 laws measured</span></div></div></div>'
+  +'<div class="key"><b>0</b>never<i>·</i><b>5</b>about half the time<i>·</i><b>10</b>every time<i>·</i>about fifteen minutes, stop whenever</div>';}
+
+/* ---------- A ---------- */
+function vA(){var sc=iqScore(answers()),h='<div class="surface">'+header()+'<div style="margin-top:22px">';
+ T.SEATS.forEach(function(b){var L=lawsOf(b),c=col(b);
+  var ms=L.map(function(x){return sc[x.l.nm];}).filter(Boolean),mean=ms.length?ms.reduce(function(a,s){return a+s.score;},0)/ms.length:0;
+  h+='<div class="seatrow" style="--c:'+c+'"><div class="seathd">'+badge(b,mean*10,seatGlyph(b),ms.length?mean.toFixed(1):null,'md',!ms.length)
+   +'<div><div class="n">'+esc(b)+'</div><div class="l">'+esc(T.SEATLINE[b])+'</div></div></div><div class="laws">';
+  L.forEach(function(x){var s=sc[x.l.nm],g=got(x.li),on=OPEN===x.li;
+   h+='<button class="lawr'+(on?' on':'')+'" style="--c:'+c+'" data-law="'+x.li+'">'+badge(b,s?s.score*10:g/3*100,lawGlyph(x.l),s?s.score.toFixed(1):null,'sm',!s)
+    +'<span><span class="t">'+esc(x.l.nm)+'</span><br><span class="v">'+(s?'spread '+s.spread+', '+esc(s.lean):g?(3-g)+' left':'unanswered')+'</span></span>'
+    +'<span class="gw">'+gapLine(x.li)+'</span></button>';
+   if(on)h+='<div class="open">'+framings(x.li)+'</div>';});
+  h+='</div></div>';});
+ return h+'</div></div>';}
+
+/* ---------- B ---------- */
+function vB(){var sc=iqScore(answers()),P=DATA.people[WHO],cq=WHO==='You'?null:P.CQ,S=640,C=S/2;
+ var s='<svg viewBox="-44 -8 '+(S+88)+' '+(S+16)+'" role="img" aria-label="The twenty one laws around the seven seats">';
+ s+='<defs><radialGradient id="orb" cx="42%" cy="36%" r="70%"><stop offset="0" stop-color="#CFE6F1" stop-opacity="'+(cq==null?.18:.95)+'"/><stop offset=".45" stop-color="#7EB8D4" stop-opacity="'+(cq==null?.12:.85)+'"/><stop offset="1" stop-color="#2C4A5A" stop-opacity="'+(cq==null?.2:.9)+'"/></radialGradient>'
+  +'<radialGradient id="halo"><stop offset="0" stop-color="#7EB8D4" stop-opacity="'+(cq==null?.05:.22)+'"/><stop offset="1" stop-color="#7EB8D4" stop-opacity="0"/></radialGradient></defs>';
+ s+='<circle cx="'+C+'" cy="'+C+'" r="200" fill="url(#halo)"/>';
+ [150,236].forEach(function(r){s+='<circle cx="'+C+'" cy="'+C+'" r="'+r+'" fill="none" stroke="rgba(255,255,255,.05)" stroke-width="10"/>';});
+ var per=360/T.SI.length, gapd=4, start=-lawsOf(T.SEATS[0]).length*per/2;
+ function pt(r,deg){var a=(deg-90)*Math.PI/180;return [C+r*Math.cos(a),C+r*Math.sin(a)];}
+ function arc(r,d0,d1){var p0=pt(r,d0),p1=pt(r,d1);return 'M'+p0[0].toFixed(1)+' '+p0[1].toFixed(1)+'A'+r+' '+r+' 0 '+(d1-d0>180?1:0)+' 1 '+p1[0].toFixed(1)+' '+p1[1].toFixed(1);}
+ T.SEATS.forEach(function(b,si){var L=lawsOf(b),c=col(b),d0=start+gapd/2,d1=start+L.length*per-gapd/2;start+=L.length*per;
+  var ms=L.map(function(x){return sc[x.l.nm];}).filter(Boolean),mean=ms.length?ms.reduce(function(a,q){return a+q.score;},0)/ms.length:0;
+  s+='<path d="'+arc(292,d0,d1)+'" fill="none" stroke="'+c+'" stroke-opacity=".16" stroke-width="5" stroke-linecap="round"/>';
+  if(mean>0)s+='<path d="'+arc(292,d0,d0+(d1-d0)*mean/10)+'" fill="none" stroke="'+c+'" stroke-opacity=".75" stroke-width="5" stroke-linecap="round"/>';
+  var lp=pt(314,(d0+d1)/2);
+  s+='<text x="'+lp[0].toFixed(1)+'" y="'+(lp[1]+4).toFixed(1)+'" fill="'+c+'" fill-opacity=".9" font-size="13" text-anchor="middle">'+esc(b)+'</text>';
+  L.forEach(function(x,k){var deg=d0+(d1-d0)*(k+.5)/L.length,q=sc[x.l.nm],g=got(x.li),on=OPEN===x.li;
+   var v=q?q.score:0, t0=pt(92,deg), t1=pt(92+ (q?v*4.6:0)+4,deg);
+   s+='<line x1="'+t0[0].toFixed(1)+'" y1="'+t0[1].toFixed(1)+'" x2="'+t1[0].toFixed(1)+'" y2="'+t1[1].toFixed(1)+'" stroke="'+c+'" stroke-width="3" stroke-linecap="round" stroke-opacity="'+(q?.85:.25)+'"/>';
+   var p=pt(214,deg),r=20,Cc=2*Math.PI*r,frac=q?v/10:g/3;
+   s+='<g class="lb" data-law="'+x.li+'" role="button" aria-label="'+esc(x.l.nm)+'" tabindex="0">'
+    +'<circle cx="'+p[0]+'" cy="'+p[1]+'" r="30" fill="#0A0B0E" fill-opacity="0"/>'
+    +(on?'<circle cx="'+p[0]+'" cy="'+p[1]+'" r="28" fill="none" stroke="#7EB8D4" stroke-width="1.4"/>':'')
+    +'<circle cx="'+p[0]+'" cy="'+p[1]+'" r="'+r+'" fill="none" stroke="rgba(128,128,128,.22)" stroke-width="3"/>'
+    +'<circle cx="'+p[0]+'" cy="'+p[1]+'" r="'+r+'" fill="none" stroke="'+c+'" stroke-width="3" stroke-linecap="round" stroke-dasharray="'+Cc.toFixed(1)+'" stroke-dashoffset="'+(Cc*(1-frac)).toFixed(1)+'" transform="rotate(-90 '+p[0]+' '+p[1]+')"/>'
+    +'<g transform="translate('+(p[0]-9)+' '+(p[1]-9)+') scale(.75)" fill="none" stroke="'+c+'" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="'+x.l.ic+'"/></g>'
+    +(q?'<text x="'+p[0]+'" y="'+(p[1]+38)+'" fill="#B4B0A8" font-size="12" text-anchor="middle">'+q.score.toFixed(1)+'</text>':'')+'</g>';});});
+ s+='<circle cx="'+C+'" cy="'+C+'" r="66" fill="url(#orb)"/>';
+ s+='<text x="'+C+'" y="'+(C+12)+'" fill="'+(cq==null?'#94908A':'#0B1418')+'" fill-opacity="'+(cq==null?1:.8)+'" font-size="36" font-weight="600" text-anchor="middle">'+(cq==null?'–':Math.round(cq))+'</text>';
+ s+='</svg>';
+ var l=T.SI[OPEN], q=sc[l.nm], c=col(l.b);
+ var side='<div class="side" style="--c:'+c+'"><div style="display:flex;gap:12px;align-items:center">'+badge(l.b,q?q.score*10:got(OPEN)/3*100,lawGlyph(l),q?q.score.toFixed(1):null,'md',!q)
+  +'<div><h3>'+esc(l.nm)+'</h3><div class="sl"><span style="color:'+c+'">'+esc(l.b)+'</span>, '+esc(T.SEATLINE[l.b])+'</div></div></div>'
+  +'<div>'+gapLine(OPEN,356)+'<div class="sl">'+(q?'spread '+q.spread+', '+esc(q.lean):'three readings, one line')+'</div></div>'+framings(OPEN)+'</div>';
+ return '<div class="surface">'+header()+'<div class="fieldstage"><div class="wheel">'+s+'</div>'+side+'</div></div>';}
+
+/* ---------- C ---------- */
+function vC(){var sc=iqScore(answers()),l=T.SI[OPEN],q=sc[l.nm],c=col(l.b);
+ var st='<div class="strip">'+T.SEATS.map(function(b){return '<span class="grp">'+lawsOf(b).map(function(x){var s=sc[x.l.nm],g=got(x.li);
+   return '<button class="'+(OPEN===x.li?'on':'')+'" data-law="'+x.li+'" aria-label="'+esc(x.l.nm)+'" title="'+esc(x.l.nm)+'">'+badge(b,s?s.score*10:g/3*100,lawGlyph(x.l),null,'sm',true)+'</button>';}).join('')+'</span>';}).join('')+'</div>';
+ var ring=function(){var S=200,C=100,r=78,Cc=2*Math.PI*r,frac=q?q.score/10:got(OPEN)/3;
+  return '<svg viewBox="0 0 '+S+' '+S+'" width="220" height="220" aria-hidden="true"><defs><radialGradient id="lit" cx="50%" cy="42%" r="60%"><stop offset="0" stop-color="'+c+'" stop-opacity=".18"/><stop offset="1" stop-color="'+c+'" stop-opacity="0"/></radialGradient></defs>'
+   +'<circle cx="'+C+'" cy="'+C+'" r="96" fill="url(#lit)"/><circle cx="'+C+'" cy="'+C+'" r="'+r+'" fill="none" stroke="rgba(128,128,128,.2)" stroke-width="6"/>'
+   +'<circle cx="'+C+'" cy="'+C+'" r="'+r+'" fill="none" stroke="'+c+'" stroke-width="6" stroke-linecap="round" stroke-dasharray="'+Cc.toFixed(1)+'" stroke-dashoffset="'+(Cc*(1-frac)).toFixed(1)+'" transform="rotate(-90 100 100)"/>'
+   +'<g transform="translate(64 60) scale(3)" fill="none" stroke="'+c+'" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="'+l.ic+'"/></g>'
+   +(q?'<text x="100" y="150" fill="#EFEDE8" font-size="20" font-weight="600" text-anchor="middle">'+q.score.toFixed(1)+'</text>':'')+'</svg>';};
+ var h='<div class="surface">'+header()+st+'<div class="focus" style="--c:'+c+'"><div class="hero">'+ring()
+  +'<div class="ln">'+esc(l.nm)+'</div><div class="sl"><span style="color:'+c+'">'+esc(l.b)+'</span>, '+esc(T.SEATLINE[l.b])+'</div>'
+  +'<div style="width:100%;max-width:240px">'+gapLine(OPEN,240)+'</div><div class="sl">'+(q?'spread '+q.spread+', '+esc(q.lean):(3-got(OPEN))+' left')+'</div></div>'
+  +'<div class="qs">'+framings(OPEN)+'<div class="nav"><button class="btn" data-step="-1">Previous law</button><button class="btn pri" data-step="1">Next law</button></div></div></div></div>';
+ return h;}
+
+var NOTES={
+ a:['<b>Summary\'s treatment.</b> The name as the page\'s one large word, the CQ as a ring and a figure with its tier beside it in the accent, and every law as the badge Summary already uses: its own glyph in a ring whose arc is the score, the figure in a pill.',
+    'No box inside a box. Today each seat is a tinted card holding three bordered cards; here a seat is a row between two hairlines, and its colour is carried by the seat name and the rings alone.',
+    'The spread is drawn, not printed. Three marks on one line from 0 to 10, hollow for the two framings and solid for the ordinary day, with the seat colour spanning the gap. That gap is the whole measurement and today it is a sentence.',
+    'The profile switcher, New, Save and Export are gone from the section. The header already carries the profile, and saving already happens on every press.'],
+ b:['<b>The Field\'s treatment.</b> A dark stage with one light source: CQ as the lit orb at the centre, the way the Field carries coherence. The seven seats sit on the outer ring in body order, crown at the top, each arc filled to its seat\'s mean.',
+    'Each law is a ring badge on the inner circle, and a tick runs inward toward the orb with a length set by the score, which is the Field\'s tick treatment carried over. A blank profile is a dark wheel with an unlit orb; it lights as the laws are answered.',
+    'Pressing a law opens its three framings in the side panel, beside the wheel, so the figure never leaves the screen while a person answers.',
+    'A measured cost: at 390 wide the wheel scales to about 45 per cent and a law on it is about 27 pixels to press, under the 44 floor. On a phone this treatment needs C\'s strip as its picker.'],
+ c:['<b>One law at a time.</b> The Field\'s strip of badges runs across the top, twenty one rings grouped by seat, each filling as its law is answered. It is the map and the progress bar at once, so the bar and the count come off the page.',
+    'The law in hand is the one lit thing: its glyph at three times size in a ring, washed in its own seat colour, with the three framings to its right. Previous and next walk the body in order.',
+    'It does not lower the control count below A or B, measured at 55 on all three. What it lowers is what reads as the page: one law in hand and the rest reduced to a strip of rings.'],
+ all:['<b>Measured, on all three.</b> With one law open the shipped section shows 69 controls; each mockup shows 55. The 14 that go are the identity form rolled to one line with an Edit, and the profile switcher, New, Save and Export, which the header and autosave already cover.',
+    'The answer scale drops to two rows under 520 pixels wide, so every point is at least 44 wide. One row of eleven at 390 is about 30 wide, under the floor.',
+    'A defect found in the shipped section, not fixed here: Marcus answers in decimals, 4.7 and 8.1, and intakeui.js marks a point only when the answer equals it exactly, so every scored law opens onto a scale with nothing selected. The mockups mark the nearest point and print the exact figure.',
+    'Colour only where it means a seat. The accent is kept for the CQ and the selected law. The alarm red is not used anywhere.']};
+function draw(){var v=document.getElementById('view');v.innerHTML=MODE==='a'?vA():MODE==='b'?vB():vC();
+ document.getElementById('note').innerHTML='<div class="wn"><div class="eyebrow">Working note, art direction</div><ul>'+NOTES[MODE].concat(NOTES.all).map(function(x){return '<li>'+x+'</li>';}).join('')+'</ul></div>';
+ wire();}
+function wire(){var v=document.getElementById('view');
+ v.querySelectorAll('[data-law]').forEach(function(e){var f=function(){var li=+e.getAttribute('data-law');OPEN=(MODE==='a'&&OPEN===li)?-1:li;if(OPEN<0&&MODE!=='a')OPEN=li;draw();};e.onclick=f;e.onkeydown=function(k){if(k.key==='Enter'||k.key===' '){k.preventDefault();f();}};});
+ v.querySelectorAll('[data-a]').forEach(function(e){e.onclick=function(){answers()[+e.dataset.a]=+e.dataset.v;draw();};});
+ /* walk in the body order the strip shows, not the table order */
+ v.querySelectorAll('[data-step]').forEach(function(e){e.onclick=function(){
+  var order=[];T.SEATS.forEach(function(b){lawsOf(b).forEach(function(x){order.push(x.li);});});
+  var i=order.indexOf(OPEN);OPEN=order[(i+ +e.dataset.step+21)%21];draw();window.scrollTo(0,0);};});}
+function setMode(){var host=document.getElementById('mode'),opts=[['a','A. The reading list'],['b','B. The wheel'],['c','C. One law at a time']];
+ host.innerHTML='<div class="seg">'+opts.map(function(o){return '<button data-k="'+o[0]+'" class="'+(o[0]===MODE?'on':'')+'">'+o[1]+'</button>';}).join('')+'</div>';
+ host.querySelectorAll('button').forEach(function(b){b.onclick=function(){MODE=b.dataset.k;if(OPEN<0)OPEN=4;setMode();draw();};});}
+function banner(){document.body.insertAdjacentHTML('afterbegin','<div class="pb"><b>Prototype, not the app.</b><span>Energetics art pass, round IT. Laws, questions and Marcus\'s answers are the engine\'s own, read on commit '+DATA.stamp.commit+'. Answers pressed here are not saved.</span><span class="sp"></span><span>Profile</span>'
+ +['Marcus','You'].map(function(n){return '<button class="chip'+(n===WHO?' on':'')+'" data-who="'+n+'">'+(n==='You'?'Blank':n)+'</button>';}).join(' ')+'</div>');
+ document.querySelectorAll('.pb [data-who]').forEach(function(b){b.onclick=function(){WHO=b.dataset.who;document.querySelectorAll('.pb [data-who]').forEach(function(x){x.classList.toggle('on',x.dataset.who===WHO);});draw();};});}
+var hq=location.hash.slice(1).split('&').reduce(function(a,kv){var p=kv.split('=');if(p[0])a[p[0]]=p[1];return a;},{});
+if(hq.mode)MODE=hq.mode; if(hq.who&&DATA.people[hq.who])WHO=hq.who; if(hq.law)OPEN=+hq.law;
+banner();setMode();draw();
+</script></body></html>

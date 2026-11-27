@@ -1,0 +1,113 @@
+/* ============================================================
+   THE FIELD LEFT PANEL PROTOTYPE, round GO. Only what the overlay adds.
+   Every colour, radius and motion is a product token, so the options read
+   in the product's own hand under every lighting.
+   ============================================================ */
+
+/* ---- the Energetic Summary, symbols ----
+   One scale for every mark in the section, the house's: a pressable mark is
+   an 18 pixel glyph in a 40 pixel ring inside a 44 pixel target, the glass
+   bar's orb; a mark that labels is 16, the section header's. As built the
+   section carried four sizes, 12, 13, 15 and 17, and none of them was either. */
+.fp-rs{display:flex;flex-direction:column;gap:6px;padding:2px 0 6px}
+.fp-ic{width:16px;height:16px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.6;
+ stroke-linecap:round;stroke-linejoin:round}
+.fp-ic.th{width:18px;height:18px;position:relative}
+.fp-ic.big{width:22px;height:22px;color:var(--gold)}
+.fp-eye{display:flex;align-items:center;gap:8px;margin:8px 0 2px;font-size:12px;font-weight:600;
+ color:var(--mid);letter-spacing:.01em}
+.fp-eye .fp-ic{color:var(--gold)}
+.fp-meets{display:flex;flex-direction:column;gap:2px}
+.fp-meet{display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:10px;min-height:48px;
+ padding:2px 6px 2px 0;border:0;border-radius:var(--r-xs);background:transparent;color:var(--ink);
+ text-align:left;cursor:pointer;font:inherit;
+ transition:background-color var(--t-micro) var(--ease-out)}
+.fp-meet:hover,.fp-meet:focus-visible{background:var(--sunk)}
+.fp-orb{--c:var(--gold);position:relative;width:40px;height:40px;margin:2px;border-radius:50%;
+ display:grid;place-items:center;color:var(--c);background:var(--fb-glass)}
+.fp-arc{position:absolute;inset:0;width:40px;height:40px;transform:rotate(-90deg)}
+.fp-arc circle{fill:none;stroke-width:2.6}
+.fp-arc .trk{stroke:color-mix(in srgb,var(--ink) 16%,transparent)}
+.fp-arc .val{stroke:var(--c);stroke-linecap:round}
+.fp-mn{font-size:15px;font-weight:600}
+.fp-sys{display:flex;gap:4px}
+.fp-s{width:22px;height:22px;display:grid;place-items:center;border-radius:50%;color:var(--dim);opacity:.45}
+.fp-s.on{color:var(--gold);opacity:1;box-shadow:inset 0 0 0 1.2px color-mix(in srgb,var(--gold) 55%,transparent)}
+.fp-s .fp-ic{width:13px;height:13px}
+.fp-range{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.fp-tile{display:flex;align-items:center;gap:8px;min-height:44px;padding:6px 10px;border:1px solid var(--edge);
+ border-radius:var(--r-xs);background:transparent;color:var(--ink);font:inherit;font-size:13px;text-align:left;
+ cursor:pointer;transition:background-color var(--t-micro) var(--ease-out),border-color var(--t-micro) var(--ease-out)}
+.fp-tile .fp-ic{color:var(--gold)}
+.fp-tile:hover,.fp-tile:focus-visible{background:var(--sunk);border-color:var(--edge-2)}
+/* two lines before an ellipsis: Year of the Rooster was cut to Year of the R */
+.fp-tile span{overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;line-height:1.25}
+.fp-empty{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--mid);margin:2px 0 8px}
+.fp-none{font-size:14px;color:var(--mid);margin:2px 0}
+
+/* ---- the Energetic Summary, orbs: the glass bar's own circles, named ---- */
+.fp-orbs{display:flex;flex-wrap:wrap;gap:4px 2px}
+.fp-orbs .fb-b{min-width:74px;min-height:72px;padding:4px 2px;border-radius:12px}
+/* a name wraps inside its own width: on one line Year of the Rooster ran into
+   Expression 1 beside it */
+.fp-orbs .fb-nm{font-size:11px;width:74px;max-width:74px;text-align:center;line-height:1.2;white-space:normal;
+ overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.fp-o .fb-arc .val{opacity:1}
+.fp-rng .fb-orb{--c:var(--gold)}
+.fp-rng .fb-gl{color:var(--gold)}
+
+/* ---- the layer reading: its mark beside its name, and the switch ---- */
+.fp-lh{display:flex;align-items:center;gap:10px}
+.fp-lg{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:var(--accent);
+ box-shadow:inset 0 0 0 1.4px color-mix(in srgb,var(--accent) 50%,transparent);flex:0 0 auto}
+.fp-lg svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.fp-sw{display:inline-flex;align-items:center;gap:10px;min-height:44px;margin:6px 0 2px;padding:0 12px 0 6px;
+ border:1px solid var(--edge);border-radius:999px;background:transparent;color:var(--mid);font:inherit;font-size:14px;cursor:pointer}
+.fp-sw .fp-kn{width:34px;height:20px;border-radius:999px;position:relative;background:var(--sunk);
+ box-shadow:inset 0 0 0 1.2px var(--edge-2);transition:background-color var(--t-micro) var(--ease-out)}
+.fp-sw .fp-kn::after{content:'';position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;
+ background:var(--mid);transition:transform var(--t-element) var(--ease-out),background-color var(--t-micro) var(--ease-out)}
+.fp-sw.on{color:var(--ink)}
+.fp-sw.on .fp-kn{background:color-mix(in srgb,var(--accent) 35%,transparent)}
+.fp-sw.on .fp-kn::after{transform:translateX(14px);background:var(--accent)}
+.fp-lr .ad-k{flex:1 1 auto}
+.fp-q{margin:4px 0}
+
+/* ============================================================
+   THE DOCK. Not the product: the questions, set apart in a tint the product
+   does not use for anything, so nobody mistakes it for a surface.
+   ============================================================ */
+/* held under the bar's row: open at full height it reached over the upper left
+   of the stage and took the presses meant for Assemblage Points, measured by
+   the shoot script failing to reach the button */
+.fp-dock{position:fixed;left:16px;bottom:16px;z-index:60;width:352px;max-height:calc(100vh - 230px);
+ display:flex;flex-direction:column;border-radius:14px;overflow:hidden;
+ background:color-mix(in srgb,var(--panel) 94%,transparent);color:var(--ink);font-family:var(--sans);
+ box-shadow:0 12px 40px rgba(0,0,0,.45),inset 0 0 0 1px color-mix(in srgb,#d9a441 55%,transparent)}
+.fpd-hd{display:grid;grid-template-columns:1fr 44px;align-items:center;column-gap:8px;padding:10px 6px 8px 16px;
+ border-bottom:1px solid var(--edge)}
+.fpd-hd b{font-size:15px;color:#d9a441}
+.fpd-hd span{grid-column:1;font-size:12px;color:var(--mid)}
+.fpd-fold{grid-column:2;grid-row:1 / span 2;width:44px;height:44px;border:0;border-radius:10px;background:transparent;
+ color:var(--mid);cursor:pointer;display:grid;place-items:center}
+.fpd-fold svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;
+ transition:transform var(--t-element) var(--ease-out)}
+.fpd-fold:hover{background:var(--sunk);color:var(--ink)}
+.fpd-bd{overflow:auto;padding:4px 16px 12px}
+.fpd-q{padding:10px 0;border-bottom:1px solid var(--edge)}
+.fpd-q:last-child{border-bottom:0}
+.fpd-t{font-size:13px;font-weight:600;color:var(--mid);margin-bottom:6px}
+.fpd-os{display:flex;flex-wrap:wrap;gap:6px}
+.fpd-o{min-height:44px;padding:0 12px;border:1px solid var(--edge);border-radius:999px;background:transparent;
+ color:var(--ink);font:inherit;font-size:14px;cursor:pointer;
+ transition:background-color var(--t-micro) var(--ease-out),border-color var(--t-micro) var(--ease-out)}
+.fpd-o:hover{background:var(--sunk)}
+.fpd-o.on{border-color:#d9a441;background:color-mix(in srgb,#d9a441 18%,transparent);color:var(--ink)}
+.fpd-n{margin:8px 0 0;font-size:13px;line-height:1.4;color:var(--mid)}
+.fp-dock.folded{width:auto}
+.fp-dock.folded .fpd-bd,.fp-dock.folded .fpd-hd span{display:none}
+.fp-dock.folded .fpd-hd{border-bottom:0;cursor:pointer}
+.fp-dock.folded .fpd-fold svg{transform:rotate(180deg)}
+@media (max-width:720px){
+ .fp-dock{left:8px;right:8px;bottom:8px;width:auto;max-height:62vh}
+ .fp-dock.folded{left:auto}}

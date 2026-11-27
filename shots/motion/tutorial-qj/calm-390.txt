@@ -1,0 +1,6 @@
+step 1 0
+step 2 0 ghosts 0
+step 3 0 ghosts 0
+step 4 0 ghosts 0
+step 5 0 ghosts 0
+all running in the document 0

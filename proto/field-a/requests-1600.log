@@ -1,0 +1,30 @@
+viewport 1600x1000
+requests observed: 2
+GET file:///home/user/MOB/proto/field-a/index.html
+GET file:///home/user/MOB/engine.js
+
+not a local file read: 0
+
+page errors: 0
+
+
+gate:
+gate, 18 pass 0 fail, at 1600 by 1000
+pass  today drew ink, 242067 lit pixels of 482064
+pass  band drew ink, 303396 lit pixels of 482064
+pass  mark drew ink, 259407 lit pixels of 482064
+pass  axis drew ink, 265150 lit pixels of 482064
+pass  spine drew ink, 253350 lit pixels of 482064
+pass  band beats today on at least one axis
+pass  mark beats today on at least one axis
+pass  axis beats today on at least one axis
+pass  spine beats today on at least one axis
+pass  the band name holds 4.5 to 1 over the band, got 7.05
+pass  every axis label fits its own seat arc, 0 past it
+pass  nothing in the chrome under 11 px, 0 found
+pass  no em dash in the rendered text
+pass  no all caps run in the copy
+pass  every figure label is one word with no comma
+pass  no figure printed with an interval or a tolerance
+pass  the reading is the engine’s, 108 addresses, coherence 7.6 on Ana
+pass  the page references the engine and nothing else

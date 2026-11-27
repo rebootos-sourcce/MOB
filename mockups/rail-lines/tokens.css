@@ -1,0 +1,21 @@
+/* The app's own tokens, copied from atuned_src/shell/head.html, so the
+   standalone pages draw with the same colours the rail does. Dark is the
+   default. body.snow is the paper lighting. */
+@font-face{font-family:Inter;src:url(../rail-options/inter.woff2) format("woff2");font-weight:300 700}
+:root{
+ --bg:#0C0D12; --panel:#1A1D26; --panel-2:#252833; --sunk:#12141A;
+ --edge:rgba(255,255,255,.09); --edge-2:rgba(255,255,255,.14);
+ --ink:#EFEDE8; --mid:#B4B0A8; --dim:#94908A;
+ --root:#D6524C; --sacral:#D8924E; --solar:#DABF6A; --heart:#5FD5A6;
+ --throat:#5EBBDB; --eye:#7D93E0; --crown:#A77EDB;
+ --alarm:#FF2E1F; --accent:#7EB8D4; --on-accent:#0B1418;
+ --num:'Inter',system-ui,-apple-system,sans-serif; --r-xs:8px;
+}
+body.snow{
+ --bg:#E8E7E2; --panel:rgba(255,255,255,.62); --panel-2:rgba(255,255,255,.76); --sunk:rgba(228,226,220,.6);
+ --edge:rgba(20,22,28,.10); --edge-2:rgba(20,22,28,.18);
+ --ink:#16171C; --mid:#4E4C48; --dim:#605E59;
+ --root:#9B4B47; --sacral:#8E6231; --solar:#7E6C29; --heart:#2A7A5C;
+ --throat:#2C6F88; --eye:#4C5F9E; --crown:#6E5490;
+ --accent:#2F6E92; --on-accent:#F4F8FA;
+}

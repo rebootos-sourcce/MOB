@@ -1,0 +1,30 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Frames</title>
+<link rel="stylesheet" href="rail-simple.css">
+<style>
+:root{--bg:#0C0D12;--panel:#1A1D26;--panel-2:#252833;--ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;--edge:rgba(255,255,255,.09);--edge-2:rgba(255,255,255,.14)}
+body{margin:0;background:var(--bg);color:var(--ink);font:12px Inter,system-ui,sans-serif;padding:14px 16px}
+.row{display:flex;gap:10px;margin:0 0 6px}
+.cell{width:262px;box-sizing:content-box;background:var(--panel);border-radius:12px;padding:10px 10px 6px;position:relative}
+.cell i{position:absolute;right:8px;top:6px;font:500 10px/1 ui-monospace,monospace;color:var(--dim);font-style:normal}
+h3{margin:10px 0 6px;font:600 12px Inter,system-ui,sans-serif;color:var(--mid)}
+</style></head><body>
+<div id="g"></div>
+<script src="data.js"></script><script src="rail-simple.js"></script>
+<script>
+/* A frame strip is made by freezing the clock and painting an instant, so each cell is exact.
+   Row one is the arrival, the first 1.2 seconds. Row two is the settled instrument a half second apart. Row three is one full cycle of the Compass's drift. */
+var q=new URLSearchParams(location.search), opt=q.get('opt')||'a', who=(q.get('who')||'marcus').split(',');
+function strip(title,frames){var h=document.createElement('h3');h.textContent=title;document.getElementById('g').appendChild(h);
+ var r=document.createElement('div');r.className='row';document.getElementById('g').appendChild(r);
+ frames.forEach(function(f){var c=document.createElement('div');c.className='cell';var t=document.createElement('i');t.textContent=f.label;c.appendChild(t);
+  var host=document.createElement('div');c.appendChild(host);r.appendChild(c);
+  RS.clock=f.clock; RS.mount(host,opt,RS_DATA[f.who],{W:262,age:f.age,manual:true});});}
+who.forEach(function(w){
+ var arr=[0,.1,.25,.45,.75,1.2].map(function(a){return {who:w,clock:20+a,age:a,label:'t = '+a.toFixed(2)+' s'};});
+ strip(RS_DATA[w].nm+', arriving',arr);
+ var alive=[0,.55,1.1,1.65,2.2,2.75].map(function(a){return {who:w,clock:30+a,age:10+a,label:'+ '+a.toFixed(2)+' s'};});
+ strip(RS_DATA[w].nm+', settled and alive, the wave travelling and the liquid moving',alive);
+ var seam=[0,2.2,4.4,6.6,8.8,11].map(function(a){return {who:w,clock:60+a,age:10+a,label:'+ '+a.toFixed(1)+' s'};});
+ strip(RS_DATA[w].nm+', the seam swinging inside its range (one drift cycle, eleven seconds)',seam);});
+document.title='ready';
+</script></body></html>

@@ -1,0 +1,110 @@
+/* Shared by the four knowledge base mockups. The tokens are the shipped
+   dark theme's own, from shell/head.html, so a mockup reads as this
+   product's family and never as a second product. */
+:root{
+ --bg:#0C0D12; --panel:#1A1D26; --panel-2:#252833; --sunk:#090A0E;
+ --ink:#EFEDE8; --mid:#B4B0A8; --dim:#94908A; --line:#2C3040;
+ --accent:#7EB8D4; --on-accent:#0B1418; --proto:#D9B45A;
+ --r:12px; --gut:24px;
+ --font:system-ui,-apple-system,"Segoe UI",Roboto,Inter,sans-serif;
+ --num:ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 var(--font);
+ -webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+button,[role=button],select,input{min-height:44px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h1,h2,h3{margin:0;font-weight:600;letter-spacing:.005em}
+p{margin:0}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* ---------- THE PROTOTYPE CHROME. It says what it is on every screen. ---------- */
+.proto-bar{position:sticky;top:0;z-index:50;display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;
+ padding:8px var(--gut);background:#1C1810;border-bottom:1px dashed var(--proto);color:#EADFC4;font-size:14px}
+.proto-bar b{color:var(--proto);font-weight:600}
+.proto-bar .sp{flex:1}
+.proto-bar label{display:flex;align-items:center;gap:8px;color:#CFC4A8}
+.proto-bar select,.proto-bar button{background:#2A2418;border:1px solid #5A4C2A;border-radius:8px;
+ color:#F1E7CF;padding:0 12px;font-size:14px;cursor:pointer}
+.proto-note{border:1px dashed var(--proto);border-radius:10px;padding:10px 12px;color:#E6D9B8;
+ background:rgba(217,180,90,.06);font-size:14px;line-height:1.45}
+.proto-note b{color:var(--proto)}
+.award-slot{display:inline-flex;align-items:center;gap:8px;border:1px dashed var(--proto);border-radius:999px;
+ padding:4px 12px;font-size:13px;color:#E6D9B8;background:rgba(217,180,90,.05)}
+.award-slot svg{width:16px;height:16px;fill:none;stroke:var(--proto);stroke-width:1.6}
+
+/* the app's navigation, drawn as a placeholder so no shipped label is reused */
+.nav-ph{display:flex;align-items:center;gap:10px;height:64px;padding:0 var(--gut);
+ border-bottom:1px solid var(--line);background:var(--sunk)}
+.nav-ph .mk{width:92px;height:18px;border-radius:4px;background:#23262F}
+.nav-ph .pl{height:12px;border-radius:6px;background:#1E2029}
+.nav-ph .cap{margin-left:auto;color:var(--dim);font-size:13px}
+
+/* ---------- the stage, which is the whole width under the navigation ---------- */
+.stage{padding:24px var(--gut) 64px;max-width:none}
+.eyebrow{font-size:13px;color:var(--dim);letter-spacing:.02em}
+.muted{color:var(--mid)}
+.dim{color:var(--dim)}
+
+/* the ring: a seat coloured outline around the entry's mark. Ring, never fill. */
+.ring{flex:none;display:block}
+.ring .trk{fill:none;stroke:var(--line);stroke-width:2}
+.ring .arc{fill:none;stroke-width:2.5;stroke-linecap:round}
+.ring .gl{fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:0 16px;
+ border-radius:10px;border:1px solid var(--line);background:var(--panel);cursor:pointer;font-size:15px}
+.btn:hover{border-color:#44495A}
+.btn.pri{background:var(--accent);color:var(--on-accent);border-color:var(--accent);font-weight:600}
+.chip{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 14px;border-radius:999px;
+ border:1px solid var(--line);background:transparent;cursor:pointer;font-size:15px;color:var(--mid)}
+.chip.on{color:var(--ink);border-color:var(--accent);background:rgba(126,184,212,.08)}
+.fig{font-family:var(--num);font-variant-numeric:tabular-nums}
+
+/* the entry sheet, shared: an entry read in place at full width */
+.sheet{display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,360px);gap:32px;align-items:start}
+.sheet .read{max-width:68ch}
+.sheet h2{font-size:30px;line-height:1.2;margin:4px 0 8px}
+.sheet .def{font-size:19px;line-height:1.5;color:var(--ink);margin-bottom:20px}
+.sec{margin:0 0 18px}
+.sec .eyebrow{margin-bottom:4px}
+.sec p{color:#DAD7D0}
+.say{font-style:italic;color:#E8E4DA;border-left:2px solid var(--line);padding-left:12px}
+.you{border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;background:var(--panel);margin-bottom:18px}
+.you .eyebrow{margin-bottom:2px}
+.links h3{font-size:14px;color:var(--dim);font-weight:500;margin:0 0 8px}
+.lk{display:flex;align-items:center;gap:10px;width:100%;min-height:48px;padding:6px 10px;border-radius:10px;
+ border:1px solid transparent;background:transparent;text-align:left;cursor:pointer}
+.lk:hover,.lk:focus-visible{background:var(--panel);border-color:var(--line)}
+.lk .t{display:flex;flex-direction:column;line-height:1.25}
+.lk .t small{color:var(--dim);font-size:13px}
+.state{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--dim)}
+.state i{width:8px;height:8px;border-radius:50%;border:1.5px solid var(--dim);display:inline-block}
+.state.known i{background:var(--accent);border-color:var(--accent)}
+.state.known{color:var(--accent)}
+
+/* the check: one question, three answers, retrieval rather than rereading */
+.check{border:1px solid var(--line);border-radius:var(--r);padding:14px;background:var(--panel)}
+.check .q{font-weight:600;margin:0 0 10px}
+.check .opts{display:flex;flex-direction:column;gap:8px}
+.check .opt{text-align:left;padding:10px 14px;border-radius:10px;border:1px solid var(--line);
+ background:var(--sunk);cursor:pointer;font-size:15px;line-height:1.35}
+.check .opt.right{border-color:#5FD5A6;color:#CFF3E3}
+.check .opt.wrong{border-color:#D6524C;color:#F2C9C6}
+.check .res{margin-top:10px;font-size:15px}
+
+/* the preview card, shown on hover or focus over a link. Wikipedia measured
+   it: more pages reached per session for less leaving. */
+.pv{position:fixed;z-index:60;max-width:340px;padding:12px 14px;border-radius:12px;background:#20232D;
+ border:1px solid #3A3F50;box-shadow:0 12px 32px rgba(0,0,0,.45);font-size:14px;line-height:1.45;pointer-events:none}
+.pv b{display:block;font-size:15px;margin-bottom:4px}
+
+@media (max-width:760px){
+ :root{--gut:16px}
+ .sheet{grid-template-columns:1fr;gap:20px}
+ .sheet h2{font-size:26px}
+ .sheet .def{font-size:18px}
+ .nav-ph .pl:nth-child(n+6){display:none}
+ .nav-ph .cap{display:none}
+}

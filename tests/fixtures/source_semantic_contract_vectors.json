@@ -1,0 +1,216 @@
+{
+  "status": "SPECIFIED_NOT_EXECUTED_AGAINST_APP",
+  "contract_version": "source.tdd.v1",
+  "cases": [
+    {
+      "id": "angry_direct",
+      "utterance": "I was angry at my boss",
+      "candidate_family": "anger",
+      "case_type": "speaker-present",
+      "expected_guard": "possible"
+    },
+    {
+      "id": "angry_denied",
+      "utterance": "I was not angry",
+      "candidate_family": "anger",
+      "case_type": "negated",
+      "expected_guard": "do_not_score"
+    },
+    {
+      "id": "angry_other",
+      "utterance": "My boss was angry at me",
+      "candidate_family": "anger",
+      "case_type": "other-actor",
+      "expected_guard": "do_not_assign_to_speaker"
+    },
+    {
+      "id": "angry_temporal",
+      "utterance": "I used to be angry, but not anymore",
+      "candidate_family": "anger",
+      "case_type": "past-vs-present",
+      "expected_guard": "do_not_assume_current"
+    },
+    {
+      "id": "angry_hypothetical",
+      "utterance": "If I got angry, I would leave",
+      "candidate_family": "anger",
+      "case_type": "hypothetical",
+      "expected_guard": "do_not_score"
+    },
+    {
+      "id": "anger_intensity",
+      "utterance": "I was fucking pissed off",
+      "candidate_family": "anger",
+      "case_type": "intensified",
+      "expected_guard": "no_numeric_intensity_without_user_scale"
+    },
+    {
+      "id": "anger_correction",
+      "utterance": "I wasn't angry. I was humiliated.",
+      "candidate_family": "humiliation",
+      "case_type": "self-correction",
+      "expected_guard": "revise_not_override"
+    },
+    {
+      "id": "uncertain_motive",
+      "utterance": "My boss humiliated me in front of the team",
+      "candidate_family": "humiliation",
+      "case_type": "intent-unknown",
+      "expected_guard": "do_not_assert_intent"
+    },
+    {
+      "id": "quiet_case",
+      "utterance": "The meeting began at nine",
+      "candidate_family": "no_signal",
+      "case_type": "plain",
+      "expected_guard": "abstain"
+    },
+    {
+      "id": "warm_case",
+      "utterance": "I felt calm after talking to my partner",
+      "candidate_family": "positive",
+      "case_type": "positive",
+      "expected_guard": "do_not_create_shadow"
+    },
+    {
+      "id": "mad_ambiguous",
+      "utterance": "I'm mad about this band",
+      "candidate_family": "ambiguous",
+      "case_type": "regional",
+      "expected_guard": "ask_or_abstain"
+    },
+    {
+      "id": "loss_grief",
+      "utterance": "My father passed away",
+      "candidate_family": "grief",
+      "case_type": "third-party-death",
+      "expected_guard": "do_not_score_personal_wrongdoing"
+    },
+    {
+      "id": "loss_direction",
+      "utterance": "I lost my keys",
+      "candidate_family": "not_grief",
+      "case_type": "ambiguous-word",
+      "expected_guard": "do_not_map_grief"
+    },
+    {
+      "id": "actor_reversal_a",
+      "utterance": "I lied to her",
+      "candidate_family": "Truth-candidate",
+      "case_type": "speaker-act",
+      "expected_guard": "do_not_prove_deception_intent"
+    },
+    {
+      "id": "actor_reversal_b",
+      "utterance": "She lied to me",
+      "candidate_family": "Truth-candidate",
+      "case_type": "third-party-act",
+      "expected_guard": "do_not_score_speaker"
+    },
+    {
+      "id": "directed_truth",
+      "utterance": "I made a mistake and corrected it",
+      "candidate_family": "Truth-candidate",
+      "case_type": "correction",
+      "expected_guard": "do_not_assume_deception"
+    },
+    {
+      "id": "crying_support",
+      "utterance": "I started crying after the call",
+      "candidate_family": "sadness",
+      "case_type": "contextual",
+      "expected_guard": "do_not_diagnose"
+    },
+    {
+      "id": "voice_vent",
+      "utterance": "I just want to vent",
+      "candidate_family": "user_intent",
+      "case_type": "vent",
+      "expected_guard": "no_exploration_question"
+    },
+    {
+      "id": "voice_move_on",
+      "utterance": "I don't want to talk about it anymore",
+      "candidate_family": "user_intent",
+      "case_type": "move_on",
+      "expected_guard": "stop_probing"
+    },
+    {
+      "id": "silence",
+      "utterance": "",
+      "candidate_family": "unread",
+      "case_type": "empty",
+      "expected_guard": "no_cq_change"
+    },
+    {
+      "id": "two_registries",
+      "utterance": "I was furious and also terrified",
+      "candidate_family": "multi-register",
+      "case_type": "multi",
+      "expected_guard": "keep_multiple_candidates"
+    },
+    {
+      "id": "numb_ambiguous",
+      "utterance": "My hand went numb",
+      "candidate_family": "somatic",
+      "case_type": "ambiguous",
+      "expected_guard": "no_psych_spiritual_diagnosis"
+    },
+    {
+      "id": "denied_lie",
+      "utterance": "I never lied to her",
+      "candidate_family": "Truth-candidate",
+      "case_type": "negated",
+      "expected_guard": "do_not_score_deception"
+    },
+    {
+      "id": "quoted",
+      "utterance": "She said, 'I am a liar'",
+      "candidate_family": "Truth-candidate",
+      "case_type": "quoted",
+      "expected_guard": "do_not_score_speaker"
+    },
+    {
+      "id": "sarcasm",
+      "utterance": "Great, another perfect meeting",
+      "candidate_family": "ambiguous",
+      "case_type": "sarcasm",
+      "expected_guard": "abstain_or_ask"
+    },
+    {
+      "id": "idiomatic",
+      "utterance": "I feel like I’m drowning in work",
+      "candidate_family": "overwhelm",
+      "case_type": "metaphor",
+      "expected_guard": "not_literal_medical_event"
+    },
+    {
+      "id": "rejected_pattern",
+      "utterance": "No, that interpretation doesn't fit me",
+      "candidate_family": "user_correction",
+      "case_type": "reject",
+      "expected_guard": "retire_candidate"
+    },
+    {
+      "id": "chakra_fuzzy",
+      "utterance": "I feel powerless to change anything",
+      "candidate_family": "agency",
+      "case_type": "semantic",
+      "expected_guard": "chakra_only_candidate_not_fact"
+    },
+    {
+      "id": "competing_meaning",
+      "utterance": "I was exhausted after hiking",
+      "candidate_family": "fatigue",
+      "case_type": "physical-context",
+      "expected_guard": "do_not_assume_psychic_block"
+    },
+    {
+      "id": "story_opt_in",
+      "utterance": "Tell me the Truth story",
+      "candidate_family": "narrative",
+      "case_type": "opt_in",
+      "expected_guard": "use_approved_E29_example"
+    }
+  ]
+}

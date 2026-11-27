@@ -1,0 +1,565 @@
+{
+ "Sofia-1600": [
+  {
+   "k": "Guilt Of Pleasure",
+   "sq": 3.1,
+   "seat": "Sacral",
+   "depthPx": 44.1,
+   "pressable": 53,
+   "over": {
+    "sab Judge": 51,
+    "seat": 85
+   }
+  },
+  {
+   "k": "Addiction",
+   "sq": 2.7,
+   "seat": "Sacral",
+   "depthPx": 44.1,
+   "pressable": 71,
+   "over": {
+    "seat": 85
+   }
+  },
+  {
+   "k": "Lust",
+   "sq": 2.7,
+   "seat": "Sacral",
+   "depthPx": 44.1,
+   "pressable": 71,
+   "over": {
+    "seat": 85
+   }
+  },
+  {
+   "k": "Shame Of Desire",
+   "sq": 2.6,
+   "seat": "Sacral",
+   "depthPx": 44.1,
+   "pressable": 71,
+   "over": {
+    "seat": 85
+   }
+  }
+ ],
+ "Diane-1600": [
+  {
+   "k": "Anger",
+   "sq": 6.7,
+   "seat": "Solar",
+   "depthPx": 44.1,
+   "pressable": 71,
+   "over": {
+    "seat": 85
+   }
+  },
+  {
+   "k": "Judgment",
+   "sq": 6.7,
+   "seat": "Solar",
+   "depthPx": 44.1,
+   "pressable": 55,
+   "over": {
+    "sab Manipulator": 44,
+    "seat": 85
+   }
+  },
+  {
+   "k": "Entitlement",
+   "sq": 6.7,
+   "seat": "Solar",
+   "depthPx": 44.1,
+   "pressable": 55,
+   "over": {
+    "sab Manipulator": 44,
+    "seat": 85
+   }
+  },
+  {
+   "k": "Rebellion",
+   "sq": 6.7,
+   "seat": "Solar",
+   "depthPx": 44.1,
+   "pressable": 56,
+   "over": {
+    "sab Superior": 37,
+    "sab Hyper-Achiever": 3,
+    "sab Solar Striker": 2,
+    "seat": 85
+   }
+  }
+ ],
+ "Marcus-1600": [
+  {
+   "k": "Co-Dependency",
+   "sq": 4.3,
+   "seat": "Sacral",
+   "depthPx": 44.1,
+   "pressable": 53,
+   "over": {
+    "sab Diffuse Recoiler": 51,
+    "seat": 85
+   }
+  },
+  {
+   "k": "False Love",
+   "sq": 4.1,
+   "seat": "Heart",
+   "depthPx": 44.1,
+   "pressable": 58,
+   "over": {
+    "sab Victim": 37,
+    "seat": 85
+   }
+  },
+  {
+   "k": "Need To Be Needed",
+   "sq": 4.1,
+   "seat": "Heart",
+   "depthPx": 44.1,
+   "pressable": 71,
+   "over": {
+    "seat": 85
+   }
+  },
+  {
+   "k": "Envy",
+   "sq": 3.7,
+   "seat": "Sacral",
+   "depthPx": 44.1,
+   "pressable": 64,
+   "over": {
+    "sab Skeptic": 18,
+    "seat": 85
+   }
+  }
+ ],
+ "Angela-1600": [
+  {
+   "k": "Fear",
+   "sq": 3.1,
+   "seat": "Root",
+   "depthPx": 44.1,
+   "pressable": 71,
+   "over": {
+    "seat": 85
+   }
+  },
+  {
+   "k": "Control",
+   "sq": 3.1,
+   "seat": "Root",
+   "depthPx": 44.1,
+   "pressable": 58,
+   "over": {
+    "sab Negotiator": 37,
+    "seat": 85
+   }
+  },
+  {
+   "k": "Insecurity",
+   "sq": 3.1,
+   "seat": "Root",
+   "depthPx": 44.1,
+   "pressable": 71,
+   "over": {
+    "seat": 85
+   }
+  },
+  {
+   "k": "Force",
+   "sq": 2.2,
+   "seat": "Solar",
+   "depthPx": 44.1,
+   "pressable": 53,
+   "over": {
+    "seat": 136
+   }
+  }
+ ],
+ "Derek-1600": [
+  {
+   "k": "Manipulation Through Emotion",
+   "sq": 9.5,
+   "seat": "Sacral",
+   "depthPx": 47.2,
+   "pressable": 49,
+   "over": {
+    "sab Imposter": 11,
+    "seat": 136
+   }
+  },
+  {
+   "k": "Pride",
+   "sq": 8.8,
+   "seat": "Solar",
+   "depthPx": 44.7,
+   "pressable": 51,
+   "over": {
+    "sab Controller": 58,
+    "seat": 85
+   }
+  },
+  {
+   "k": "Arrogance",
+   "sq": 8.8,
+   "seat": "Solar",
+   "depthPx": 44.7,
+   "pressable": 52,
+   "over": {
+    "sab Controller": 31,
+    "sab Aggressor": 22,
+    "seat": 85
+   }
+  },
+  {
+   "k": "Competition",
+   "sq": 8.8,
+   "seat": "Solar",
+   "depthPx": 44.7,
+   "pressable": 54,
+   "over": {
+    "sab Aggressor": 48,
+    "seat": 85
+   }
+  }
+ ],
+ "James-1600": [
+  {
+   "k": "Escapism",
+   "sq": 9.3,
+   "seat": "Root",
+   "depthPx": 46.5,
+   "pressable": 55,
+   "over": {
+    "sab Root Mourner": 26,
+    "sab Overthinker": 18,
+    "seat": 85
+   }
+  },
+  {
+   "k": "Addiction",
+   "sq": 9.3,
+   "seat": "Sacral",
+   "depthPx": 46.5,
+   "pressable": 71,
+   "over": {
+    "seat": 85
+   }
+  },
+  {
+   "k": "Lust",
+   "sq": 9.3,
+   "seat": "Sacral",
+   "depthPx": 46.5,
+   "pressable": 71,
+   "over": {
+    "seat": 85
+   }
+  },
+  {
+   "k": "Shame Of Desire",
+   "sq": 8.2,
+   "seat": "Sacral",
+   "depthPx": 44.1,
+   "pressable": 58,
+   "over": {
+    "sab Diffuse Recoiler": 18,
+    "sab Sacral Striker": 19,
+    "seat": 85
+   }
+  }
+ ],
+ "Sofia-390": [
+  {
+   "k": "Guilt Of Pleasure",
+   "sq": 3.1,
+   "seat": "Sacral",
+   "depthPx": 19.2,
+   "pressable": 6,
+   "over": {
+    "sab Judge": 187,
+    "seat": 85
+   }
+  },
+  {
+   "k": "Addiction",
+   "sq": 2.7,
+   "seat": "Sacral",
+   "depthPx": 19.2,
+   "pressable": 71,
+   "over": {
+    "seat": 85
+   }
+  },
+  {
+   "k": "Lust",
+   "sq": 2.7,
+   "seat": "Sacral",
+   "depthPx": 19.2,
+   "pressable": 71,
+   "over": {
+    "seat": 85
+   }
+  },
+  {
+   "k": "Shame Of Desire",
+   "sq": 2.6,
+   "seat": "Sacral",
+   "depthPx": 19.2,
+   "pressable": 6,
+   "over": {
+    "seat": 272
+   }
+  }
+ ],
+ "Diane-390": [
+  {
+   "k": "Anger",
+   "sq": 6.7,
+   "seat": "Solar",
+   "depthPx": 19.2,
+   "pressable": 20,
+   "over": {
+    "sab Controller": 19,
+    "sab Manipulator": 126,
+    "seat": 85
+   }
+  },
+  {
+   "k": "Judgment",
+   "sq": 6.7,
+   "seat": "Solar",
+   "depthPx": 19.2,
+   "pressable": 8,
+   "over": {
+    "sab Manipulator": 142,
+    "sab Superior": 37,
+    "sab Solar Striker": 3,
+    "seat": 85
+   }
+  },
+  {
+   "k": "Entitlement",
+   "sq": 6.7,
+   "seat": "Solar",
+   "depthPx": 19.2,
+   "pressable": 3,
+   "over": {
+    "sab Superior": 65,
+    "sab Hyper-Achiever": 40,
+    "sab Perfectionist": 33,
+    "sab Solar Striker": 3,
+    "sab Manipulator": 41,
+    "seat": 98
+   }
+  },
+  {
+   "k": "Rebellion",
+   "sq": 6.7,
+   "seat": "Solar",
+   "depthPx": 19.2,
+   "pressable": 0,
+   "over": {
+    "sab Perfectionist": 134,
+    "sab Hyper-Achiever": 21,
+    "sab Superior": 25,
+    "seat": 109
+   }
+  }
+ ],
+ "Marcus-390": [
+  {
+   "k": "Co-Dependency",
+   "sq": 4.3,
+   "seat": "Sacral",
+   "depthPx": 19.2,
+   "pressable": 6,
+   "over": {
+    "sab Diffuse Recoiler": 187,
+    "seat": 85
+   }
+  },
+  {
+   "k": "False Love",
+   "sq": 4.1,
+   "seat": "Heart",
+   "depthPx": 19.2,
+   "pressable": 9,
+   "over": {
+    "sab Victim": 179,
+    "seat": 85
+   }
+  },
+  {
+   "k": "Need To Be Needed",
+   "sq": 4.1,
+   "seat": "Heart",
+   "depthPx": 19.2,
+   "pressable": 20,
+   "over": {
+    "sab Victim": 72,
+    "sab Heart Recoiler": 73,
+    "seat": 85
+   }
+  },
+  {
+   "k": "Envy",
+   "sq": 3.7,
+   "seat": "Sacral",
+   "depthPx": 19.2,
+   "pressable": 13,
+   "over": {
+    "sab Diffuse Recoiler": 109,
+    "sab Skeptic": 58,
+    "seat": 85
+   }
+  }
+ ],
+ "Angela-390": [
+  {
+   "k": "Fear",
+   "sq": 3.1,
+   "seat": "Root",
+   "depthPx": 19.2,
+   "pressable": 46,
+   "over": {
+    "sab Negotiator": 72,
+    "seat": 85
+   }
+  },
+  {
+   "k": "Control",
+   "sq": 3.1,
+   "seat": "Root",
+   "depthPx": 19.2,
+   "pressable": 9,
+   "over": {
+    "sab Negotiator": 179,
+    "seat": 85
+   }
+  },
+  {
+   "k": "Insecurity",
+   "sq": 3.1,
+   "seat": "Root",
+   "depthPx": 19.2,
+   "pressable": 24,
+   "over": {
+    "sab Negotiator": 134,
+    "seat": 85
+   }
+  },
+  {
+   "k": "Force",
+   "sq": 2.2,
+   "seat": "Solar",
+   "depthPx": 19.2,
+   "pressable": 5,
+   "over": {
+    "sab Diffuse Mourner overshot": 5,
+    "seat": 270
+   }
+  }
+ ],
+ "Derek-390": [
+  {
+   "k": "Manipulation Through Emotion",
+   "sq": 9.5,
+   "seat": "Sacral",
+   "depthPx": 22.8,
+   "pressable": 0,
+   "over": {
+    "sab Imposter": 177,
+    "seat": 112
+   }
+  },
+  {
+   "k": "Pride",
+   "sq": 8.8,
+   "seat": "Solar",
+   "depthPx": 21.7,
+   "pressable": 8,
+   "over": {
+    "sab Diffuse Bracer": 120,
+    "sab Controller": 79,
+    "seat": 68
+   }
+  },
+  {
+   "k": "Arrogance",
+   "sq": 8.8,
+   "seat": "Solar",
+   "depthPx": 21.7,
+   "pressable": 10,
+   "over": {
+    "sab Diffuse Bracer": 6,
+    "sab Controller": 179,
+    "sab Aggressor": 8,
+    "seat": 68
+   }
+  },
+  {
+   "k": "Competition",
+   "sq": 8.8,
+   "seat": "Solar",
+   "depthPx": 21.7,
+   "pressable": 10,
+   "over": {
+    "sab Controller": 144,
+    "sab Aggressor": 49,
+    "seat": 68
+   }
+  }
+ ],
+ "James-390": [
+  {
+   "k": "Escapism",
+   "sq": 9.3,
+   "seat": "Root",
+   "depthPx": 22.5,
+   "pressable": 10,
+   "over": {
+    "sab Diffuse Freezer overshot": 80,
+    "sab Root Mourner": 104,
+    "sab Overthinker": 9,
+    "seat": 68
+   }
+  },
+  {
+   "k": "Addiction",
+   "sq": 9.3,
+   "seat": "Sacral",
+   "depthPx": 22.5,
+   "pressable": 71,
+   "over": {
+    "sab Imposter": 17,
+    "seat": 68
+   }
+  },
+  {
+   "k": "Lust",
+   "sq": 9.3,
+   "seat": "Sacral",
+   "depthPx": 22.5,
+   "pressable": 30,
+   "over": {
+    "sab Imposter": 118,
+    "sab Diffuse Recoiler": 17,
+    "seat": 68
+   }
+  },
+  {
+   "k": "Shame Of Desire",
+   "sq": 8.2,
+   "seat": "Sacral",
+   "depthPx": 20.9,
+   "pressable": 0,
+   "over": {
+    "sab Diffuse Recoiler": 179,
+    "sab Sacral Striker": 6,
+    "seat": 104
+   }
+  }
+ ]
+}

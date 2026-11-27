@@ -1,0 +1,10179 @@
+{
+ "blank": {
+  "a-1600": {
+   "choicesOnScreen": 30,
+   "choicesOnScreenSurface": 9,
+   "choicesSurface": 14,
+   "wordsBeforeFirstInput": 29,
+   "firstInputTop": 263,
+   "sidewaysScroll": false
+  },
+  "b-1600": {
+   "choicesOnScreen": 72,
+   "choicesOnScreenSurface": 51,
+   "choicesSurface": 99,
+   "wordsBeforeFirstInput": 14,
+   "firstInputTop": 194,
+   "sidewaysScroll": false
+  },
+  "c-1600": {
+   "choicesOnScreen": 30,
+   "choicesOnScreenSurface": 9,
+   "choicesSurface": 9,
+   "wordsBeforeFirstInput": 26,
+   "firstInputTop": 224,
+   "sidewaysScroll": false
+  },
+  "d-1600": {
+   "choicesOnScreen": 45,
+   "choicesOnScreenSurface": 24,
+   "choicesSurface": 85,
+   "wordsBeforeFirstInput": 9,
+   "firstInputTop": 164,
+   "sidewaysScroll": false
+  },
+  "a-390": {
+   "choicesOnScreen": 17,
+   "choicesOnScreenSurface": 4,
+   "choicesSurface": 14,
+   "wordsBeforeFirstInput": 29,
+   "firstInputTop": 445,
+   "sidewaysScroll": false
+  },
+  "b-390": {
+   "choicesOnScreen": 30,
+   "choicesOnScreenSurface": 17,
+   "choicesSurface": 99,
+   "wordsBeforeFirstInput": 119,
+   "firstInputTop": 1682,
+   "sidewaysScroll": false
+  },
+  "c-390": {
+   "choicesOnScreen": 19,
+   "choicesOnScreenSurface": 6,
+   "choicesSurface": 9,
+   "wordsBeforeFirstInput": 13,
+   "firstInputTop": 408,
+   "sidewaysScroll": false
+  },
+  "d-390": {
+   "choicesOnScreen": 20,
+   "choicesOnScreenSurface": 7,
+   "choicesSurface": 85,
+   "wordsBeforeFirstInput": 5,
+   "firstInputTop": 341,
+   "sidewaysScroll": false
+  }
+ },
+ "walk": {
+  "a-sofia-1600": {
+   "actions": 21,
+   "steps": [
+    {
+     "fresh": 3,
+     "seen": 3,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "first"
+    },
+    {
+     "fresh": 5,
+     "seen": 5,
+     "readingSeen": 2,
+     "nearestPx": 5,
+     "aiInView": true,
+     "step": "middle"
+    },
+    {
+     "fresh": 6,
+     "seen": 6,
+     "readingSeen": 3,
+     "nearestPx": 5,
+     "aiInView": true,
+     "step": "last"
+    },
+    {
+     "fresh": 7,
+     "seen": 7,
+     "readingSeen": 3,
+     "nearestPx": 5,
+     "aiInView": true,
+     "step": "date"
+    },
+    {
+     "fresh": 6,
+     "seen": 6,
+     "readingSeen": 2,
+     "nearestPx": 37,
+     "aiInView": true,
+     "step": "time"
+    },
+    {
+     "fresh": 5,
+     "seen": 5,
+     "readingSeen": 3,
+     "nearestPx": 5,
+     "aiInView": true,
+     "step": "place"
+    },
+    {
+     "fresh": 3,
+     "seen": 3,
+     "readingSeen": 2,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "zone"
+    },
+    {
+     "fresh": 6,
+     "seen": 6,
+     "readingSeen": 3,
+     "nearestPx": 5,
+     "aiInView": true,
+     "step": "type"
+    },
+    {
+     "fresh": 5,
+     "seen": 5,
+     "readingSeen": 1,
+     "nearestPx": 74,
+     "aiInView": true,
+     "step": "archetype"
+    },
+    {
+     "fresh": 2,
+     "seen": 2,
+     "readingSeen": 0,
+     "nearestPx": 150,
+     "aiInView": true,
+     "step": "q0"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": true,
+     "step": "q1"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": true,
+     "step": "q2"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": true,
+     "step": "q3"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": true,
+     "step": "q4"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": true,
+     "step": "q5"
+    },
+    {
+     "fresh": 1,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 325,
+     "aiInView": true,
+     "step": "q6"
+    },
+    {
+     "fresh": 1,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 5,
+     "aiInView": true,
+     "step": "q7"
+    },
+    {
+     "fresh": 1,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 107,
+     "aiInView": true,
+     "step": "q8"
+    }
+   ],
+   "done": {
+    "names": 3,
+    "roots": 1,
+    "sky": true,
+    "pattern": true,
+    "channels": true,
+    "arch": true,
+    "child": 9,
+    "ai": 9,
+    "missing": []
+   },
+   "stepsWithReading": 13,
+   "stepsSeen": 13,
+   "stepCount": 18,
+   "stepsReadingSeen": 9,
+   "aiInViewSteps": 18,
+   "firstNameSeen": true,
+   "firstNameNearestPx": 0,
+   "finished": {
+    "choicesOnScreen": 26,
+    "choicesSurface": 72,
+    "words": 550,
+    "smallControls": 1
+   }
+  },
+  "a-diane-1600": {
+   "actions": 21,
+   "steps": [
+    {
+     "fresh": 3,
+     "seen": 3,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "first"
+    },
+    {
+     "fresh": 5,
+     "seen": 5,
+     "readingSeen": 2,
+     "nearestPx": 5,
+     "aiInView": true,
+     "step": "middle"
+    },
+    {
+     "fresh": 4,
+     "seen": 4,
+     "readingSeen": 2,
+     "nearestPx": 5,
+     "aiInView": true,
+     "step": "last"
+    },
+    {
+     "fresh": 7,
+     "seen": 7,
+     "readingSeen": 3,
+     "nearestPx": 5,
+     "aiInView": true,
+     "step": "date"
+    },
+    {
+     "fresh": 7,
+     "seen": 7,
+     "readingSeen": 3,
+     "nearestPx": 37,
+     "aiInView": true,
+     "step": "time"
+    },
+    {
+     "fresh": 5,
+     "seen": 5,
+     "readingSeen": 3,
+     "nearestPx": 5,
+     "aiInView": true,
+     "step": "place"
+    },
+    {
+     "fresh": 1,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "zone"
+    },
+    {
+     "fresh": 4,
+     "seen": 4,
+     "readingSeen": 1,
+     "nearestPx": 5,
+     "aiInView": true,
+     "step": "type"
+    },
+    {
+     "fresh": 5,
+     "seen": 5,
+     "readingSeen": 1,
+     "nearestPx": 58,
+     "aiInView": true,
+     "step": "archetype"
+    },
+    {
+     "fresh": 3,
+     "seen": 3,
+     "readingSeen": 0,
+     "nearestPx": 120,
+     "aiInView": true,
+     "step": "q0"
+    },
+    {
+     "fresh": 1,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 212,
+     "aiInView": true,
+     "step": "q1"
+    },
+    {
+     "fresh": 1,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 129,
+     "aiInView": true,
+     "step": "q2"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": true,
+     "step": "q3"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": true,
+     "step": "q4"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": true,
+     "step": "q5"
+    },
+    {
+     "fresh": 1,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 325,
+     "aiInView": true,
+     "step": "q6"
+    },
+    {
+     "fresh": 1,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 5,
+     "aiInView": true,
+     "step": "q7"
+    },
+    {
+     "fresh": 2,
+     "seen": 2,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q8"
+    }
+   ],
+   "done": {
+    "names": 3,
+    "roots": 1,
+    "sky": true,
+    "pattern": true,
+    "channels": true,
+    "arch": true,
+    "child": 9,
+    "ai": 10,
+    "missing": []
+   },
+   "stepsWithReading": 15,
+   "stepsSeen": 15,
+   "stepCount": 18,
+   "stepsReadingSeen": 8,
+   "aiInViewSteps": 18,
+   "firstNameSeen": true,
+   "firstNameNearestPx": 0,
+   "finished": {
+    "choicesOnScreen": 25,
+    "choicesSurface": 72,
+    "words": 559,
+    "smallControls": 1
+   }
+  },
+  "a-marcus-1600": {
+   "actions": 21,
+   "steps": [
+    {
+     "fresh": 3,
+     "seen": 3,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "first"
+    },
+    {
+     "fresh": 5,
+     "seen": 5,
+     "readingSeen": 2,
+     "nearestPx": 5,
+     "aiInView": true,
+     "step": "middle"
+    },
+    {
+     "fresh": 6,
+     "seen": 6,
+     "readingSeen": 3,
+     "nearestPx": 5,
+     "aiInView": true,
+     "step": "last"
+    },
+    {
+     "fresh": 7,
+     "seen": 7,
+     "readingSeen": 3,
+     "nearestPx": 5,
+     "aiInView": true,
+     "step": "date"
+    },
+    {
+     "fresh": 6,
+     "seen": 6,
+     "readingSeen": 3,
+     "nearestPx": 37,
+     "aiInView": true,
+     "step": "time"
+    },
+    {
+     "fresh": 5,
+     "seen": 5,
+     "readingSeen": 3,
+     "nearestPx": 5,
+     "aiInView": true,
+     "step": "place"
+    },
+    {
+     "fresh": 1,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "zone"
+    },
+    {
+     "fresh": 4,
+     "seen": 4,
+     "readingSeen": 1,
+     "nearestPx": 5,
+     "aiInView": true,
+     "step": "type"
+    },
+    {
+     "fresh": 5,
+     "seen": 5,
+     "readingSeen": 1,
+     "nearestPx": 36,
+     "aiInView": true,
+     "step": "archetype"
+    },
+    {
+     "fresh": 2,
+     "seen": 2,
+     "readingSeen": 0,
+     "nearestPx": 150,
+     "aiInView": true,
+     "step": "q0"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": true,
+     "step": "q1"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": true,
+     "step": "q2"
+    },
+    {
+     "fresh": 1,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 49,
+     "aiInView": true,
+     "step": "q3"
+    },
+    {
+     "fresh": 1,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q4"
+    },
+    {
+     "fresh": 1,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 44,
+     "aiInView": true,
+     "step": "q5"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": true,
+     "step": "q6"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": true,
+     "step": "q7"
+    },
+    {
+     "fresh": 1,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 152,
+     "aiInView": true,
+     "step": "q8"
+    }
+   ],
+   "done": {
+    "names": 3,
+    "roots": 1,
+    "sky": true,
+    "pattern": true,
+    "channels": true,
+    "arch": true,
+    "child": 9,
+    "ai": 10,
+    "missing": []
+   },
+   "stepsWithReading": 14,
+   "stepsSeen": 14,
+   "stepCount": 18,
+   "stepsReadingSeen": 8,
+   "aiInViewSteps": 18,
+   "firstNameSeen": true,
+   "firstNameNearestPx": 0,
+   "finished": {
+    "choicesOnScreen": 25,
+    "choicesSurface": 72,
+    "words": 554,
+    "smallControls": 1
+   }
+  },
+  "a-angela-1600": {
+   "actions": 21,
+   "steps": [
+    {
+     "fresh": 3,
+     "seen": 3,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "first"
+    },
+    {
+     "fresh": 5,
+     "seen": 5,
+     "readingSeen": 2,
+     "nearestPx": 5,
+     "aiInView": true,
+     "step": "middle"
+    },
+    {
+     "fresh": 4,
+     "seen": 4,
+     "readingSeen": 2,
+     "nearestPx": 5,
+     "aiInView": true,
+     "step": "last"
+    },
+    {
+     "fresh": 8,
+     "seen": 8,
+     "readingSeen": 4,
+     "nearestPx": 5,
+     "aiInView": true,
+     "step": "date"
+    },
+    {
+     "fresh": 7,
+     "seen": 7,
+     "readingSeen": 3,
+     "nearestPx": 37,
+     "aiInView": true,
+     "step": "time"
+    },
+    {
+     "fresh": 5,
+     "seen": 5,
+     "readingSeen": 3,
+     "nearestPx": 5,
+     "aiInView": true,
+     "step": "place"
+    },
+    {
+     "fresh": 1,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "zone"
+    },
+    {
+     "fresh": 4,
+     "seen": 4,
+     "readingSeen": 1,
+     "nearestPx": 5,
+     "aiInView": true,
+     "step": "type"
+    },
+    {
+     "fresh": 5,
+     "seen": 5,
+     "readingSeen": 1,
+     "nearestPx": 196,
+     "aiInView": true,
+     "step": "archetype"
+    },
+    {
+     "fresh": 2,
+     "seen": 2,
+     "readingSeen": 0,
+     "nearestPx": 172,
+     "aiInView": true,
+     "step": "q0"
+    },
+    {
+     "fresh": 1,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 368,
+     "aiInView": true,
+     "step": "q1"
+    },
+    {
+     "fresh": 1,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q2"
+    },
+    {
+     "fresh": 1,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 40,
+     "aiInView": true,
+     "step": "q3"
+    },
+    {
+     "fresh": 1,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 143,
+     "aiInView": true,
+     "step": "q4"
+    },
+    {
+     "fresh": 1,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 245,
+     "aiInView": true,
+     "step": "q5"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": true,
+     "step": "q6"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": true,
+     "step": "q7"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": true,
+     "step": "q8"
+    }
+   ],
+   "done": {
+    "names": 3,
+    "roots": 1,
+    "sky": true,
+    "pattern": true,
+    "channels": true,
+    "arch": true,
+    "child": 9,
+    "ai": 9,
+    "missing": []
+   },
+   "stepsWithReading": 15,
+   "stepsSeen": 15,
+   "stepCount": 18,
+   "stepsReadingSeen": 8,
+   "aiInViewSteps": 18,
+   "firstNameSeen": true,
+   "firstNameNearestPx": 0,
+   "finished": {
+    "choicesOnScreen": 26,
+    "choicesSurface": 72,
+    "words": 545,
+    "smallControls": 1
+   }
+  },
+  "a-derek-1600": {
+   "actions": 21,
+   "steps": [
+    {
+     "fresh": 3,
+     "seen": 3,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "first"
+    },
+    {
+     "fresh": 5,
+     "seen": 5,
+     "readingSeen": 2,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "middle"
+    },
+    {
+     "fresh": 4,
+     "seen": 4,
+     "readingSeen": 2,
+     "nearestPx": 5,
+     "aiInView": true,
+     "step": "last"
+    },
+    {
+     "fresh": 7,
+     "seen": 7,
+     "readingSeen": 3,
+     "nearestPx": 5,
+     "aiInView": true,
+     "step": "date"
+    },
+    {
+     "fresh": 7,
+     "seen": 7,
+     "readingSeen": 3,
+     "nearestPx": 37,
+     "aiInView": true,
+     "step": "time"
+    },
+    {
+     "fresh": 5,
+     "seen": 5,
+     "readingSeen": 3,
+     "nearestPx": 5,
+     "aiInView": true,
+     "step": "place"
+    },
+    {
+     "fresh": 1,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "zone"
+    },
+    {
+     "fresh": 4,
+     "seen": 4,
+     "readingSeen": 1,
+     "nearestPx": 5,
+     "aiInView": true,
+     "step": "type"
+    },
+    {
+     "fresh": 5,
+     "seen": 5,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "archetype"
+    },
+    {
+     "fresh": 3,
+     "seen": 3,
+     "readingSeen": 0,
+     "nearestPx": 53,
+     "aiInView": true,
+     "step": "q0"
+    },
+    {
+     "fresh": 1,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 144,
+     "aiInView": true,
+     "step": "q1"
+    },
+    {
+     "fresh": 1,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 196,
+     "aiInView": true,
+     "step": "q2"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": true,
+     "step": "q3"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": true,
+     "step": "q4"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": true,
+     "step": "q5"
+    },
+    {
+     "fresh": 1,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 302,
+     "aiInView": true,
+     "step": "q6"
+    },
+    {
+     "fresh": 1,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q7"
+    },
+    {
+     "fresh": 2,
+     "seen": 2,
+     "readingSeen": 0,
+     "nearestPx": 5,
+     "aiInView": true,
+     "step": "q8"
+    }
+   ],
+   "done": {
+    "names": 3,
+    "roots": 1,
+    "sky": true,
+    "pattern": true,
+    "channels": true,
+    "arch": true,
+    "child": 9,
+    "ai": 10,
+    "missing": []
+   },
+   "stepsWithReading": 15,
+   "stepsSeen": 15,
+   "stepCount": 18,
+   "stepsReadingSeen": 8,
+   "aiInViewSteps": 18,
+   "firstNameSeen": true,
+   "firstNameNearestPx": 0,
+   "finished": {
+    "choicesOnScreen": 25,
+    "choicesSurface": 72,
+    "words": 566,
+    "smallControls": 1
+   }
+  },
+  "a-james-1600": {
+   "actions": 20,
+   "steps": [
+    {
+     "fresh": 3,
+     "seen": 3,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "first"
+    },
+    {
+     "fresh": 5,
+     "seen": 5,
+     "readingSeen": 2,
+     "nearestPx": 5,
+     "aiInView": true,
+     "step": "middle"
+    },
+    {
+     "fresh": 4,
+     "seen": 4,
+     "readingSeen": 2,
+     "nearestPx": 5,
+     "aiInView": true,
+     "step": "last"
+    },
+    {
+     "fresh": 7,
+     "seen": 7,
+     "readingSeen": 3,
+     "nearestPx": 5,
+     "aiInView": true,
+     "step": "date"
+    },
+    {
+     "fresh": 6,
+     "seen": 6,
+     "readingSeen": 2,
+     "nearestPx": 37,
+     "aiInView": true,
+     "step": "time"
+    },
+    {
+     "fresh": 5,
+     "seen": 5,
+     "readingSeen": 3,
+     "nearestPx": 5,
+     "aiInView": true,
+     "step": "place"
+    },
+    {
+     "fresh": 3,
+     "seen": 3,
+     "readingSeen": 2,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "zone"
+    },
+    {
+     "fresh": 2,
+     "seen": 2,
+     "readingSeen": 0,
+     "nearestPx": 11,
+     "aiInView": true,
+     "step": "archetype"
+    },
+    {
+     "fresh": 4,
+     "seen": 4,
+     "readingSeen": 0,
+     "nearestPx": 173,
+     "aiInView": true,
+     "step": "q0"
+    },
+    {
+     "fresh": 2,
+     "seen": 2,
+     "readingSeen": 0,
+     "nearestPx": 264,
+     "aiInView": true,
+     "step": "q1"
+    },
+    {
+     "fresh": 2,
+     "seen": 2,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q2"
+    },
+    {
+     "fresh": 2,
+     "seen": 2,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q3"
+    },
+    {
+     "fresh": 1,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 172,
+     "aiInView": true,
+     "step": "q4"
+    },
+    {
+     "fresh": 1,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 275,
+     "aiInView": true,
+     "step": "q5"
+    },
+    {
+     "fresh": 1,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 377,
+     "aiInView": true,
+     "step": "q6"
+    },
+    {
+     "fresh": 1,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 57,
+     "aiInView": true,
+     "step": "q7"
+    },
+    {
+     "fresh": 1,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 159,
+     "aiInView": true,
+     "step": "q8"
+    }
+   ],
+   "done": {
+    "names": 3,
+    "roots": 1,
+    "sky": true,
+    "pattern": false,
+    "channels": true,
+    "arch": true,
+    "child": 9,
+    "ai": 9,
+    "missing": [
+     "four letter type"
+    ]
+   },
+   "stepsWithReading": 17,
+   "stepsSeen": 17,
+   "stepCount": 17,
+   "stepsReadingSeen": 7,
+   "aiInViewSteps": 17,
+   "firstNameSeen": true,
+   "firstNameNearestPx": 0,
+   "finished": {
+    "choicesOnScreen": 26,
+    "choicesSurface": 72,
+    "words": 536,
+    "smallControls": 1
+   }
+  },
+  "b-sofia-1600": {
+   "actions": 19,
+   "steps": [
+    {
+     "fresh": 6,
+     "seen": 6,
+     "readingSeen": 4,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "first"
+    },
+    {
+     "fresh": 8,
+     "seen": 8,
+     "readingSeen": 5,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "middle"
+    },
+    {
+     "fresh": 9,
+     "seen": 9,
+     "readingSeen": 6,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "last"
+    },
+    {
+     "fresh": 14,
+     "seen": 14,
+     "readingSeen": 10,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "date"
+    },
+    {
+     "fresh": 13,
+     "seen": 13,
+     "readingSeen": 9,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "time"
+    },
+    {
+     "fresh": 9,
+     "seen": 9,
+     "readingSeen": 7,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "place"
+    },
+    {
+     "fresh": 3,
+     "seen": 3,
+     "readingSeen": 2,
+     "nearestPx": 67,
+     "aiInView": true,
+     "step": "zone"
+    },
+    {
+     "fresh": 8,
+     "seen": 8,
+     "readingSeen": 6,
+     "nearestPx": 18,
+     "aiInView": true,
+     "step": "type"
+    },
+    {
+     "fresh": 12,
+     "seen": 12,
+     "readingSeen": 8,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "archetype"
+    },
+    {
+     "fresh": 13,
+     "seen": 13,
+     "readingSeen": 9,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q0"
+    },
+    {
+     "fresh": 5,
+     "seen": 5,
+     "readingSeen": 5,
+     "nearestPx": 126,
+     "aiInView": true,
+     "step": "q1"
+    },
+    {
+     "fresh": 5,
+     "seen": 5,
+     "readingSeen": 5,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q2"
+    },
+    {
+     "fresh": 5,
+     "seen": 4,
+     "readingSeen": 4,
+     "nearestPx": 2,
+     "aiInView": true,
+     "step": "q3"
+    },
+    {
+     "fresh": 5,
+     "seen": 3,
+     "readingSeen": 3,
+     "nearestPx": 33,
+     "aiInView": true,
+     "step": "q4"
+    },
+    {
+     "fresh": 5,
+     "seen": 2,
+     "readingSeen": 2,
+     "nearestPx": 15,
+     "aiInView": true,
+     "step": "q5"
+    },
+    {
+     "fresh": 5,
+     "seen": 2,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q6"
+    },
+    {
+     "fresh": 6,
+     "seen": 3,
+     "readingSeen": 2,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q7"
+    },
+    {
+     "fresh": 6,
+     "seen": 3,
+     "readingSeen": 2,
+     "nearestPx": 15,
+     "aiInView": true,
+     "step": "q8"
+    }
+   ],
+   "done": {
+    "names": 3,
+    "roots": 1,
+    "sky": true,
+    "pattern": true,
+    "channels": true,
+    "arch": true,
+    "child": 9,
+    "ai": 9,
+    "missing": []
+   },
+   "stepsWithReading": 18,
+   "stepsSeen": 18,
+   "stepCount": 18,
+   "stepsReadingSeen": 18,
+   "aiInViewSteps": 18,
+   "firstNameSeen": true,
+   "firstNameNearestPx": 0,
+   "finished": {
+    "choicesOnScreen": 69,
+    "choicesSurface": 99,
+    "words": 484,
+    "smallControls": 1
+   }
+  },
+  "b-diane-1600": {
+   "actions": 19,
+   "steps": [
+    {
+     "fresh": 6,
+     "seen": 6,
+     "readingSeen": 4,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "first"
+    },
+    {
+     "fresh": 8,
+     "seen": 8,
+     "readingSeen": 5,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "middle"
+    },
+    {
+     "fresh": 7,
+     "seen": 7,
+     "readingSeen": 5,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "last"
+    },
+    {
+     "fresh": 13,
+     "seen": 13,
+     "readingSeen": 9,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "date"
+    },
+    {
+     "fresh": 14,
+     "seen": 14,
+     "readingSeen": 10,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "time"
+    },
+    {
+     "fresh": 3,
+     "seen": 3,
+     "readingSeen": 2,
+     "nearestPx": 67,
+     "aiInView": true,
+     "step": "place"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": true,
+     "step": "zone"
+    },
+    {
+     "fresh": 8,
+     "seen": 8,
+     "readingSeen": 6,
+     "nearestPx": 18,
+     "aiInView": true,
+     "step": "type"
+    },
+    {
+     "fresh": 12,
+     "seen": 12,
+     "readingSeen": 8,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "archetype"
+    },
+    {
+     "fresh": 7,
+     "seen": 7,
+     "readingSeen": 4,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q0"
+    },
+    {
+     "fresh": 6,
+     "seen": 6,
+     "readingSeen": 5,
+     "nearestPx": 129,
+     "aiInView": true,
+     "step": "q1"
+    },
+    {
+     "fresh": 6,
+     "seen": 6,
+     "readingSeen": 5,
+     "nearestPx": 3,
+     "aiInView": true,
+     "step": "q2"
+    },
+    {
+     "fresh": 5,
+     "seen": 4,
+     "readingSeen": 4,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q3"
+    },
+    {
+     "fresh": 5,
+     "seen": 3,
+     "readingSeen": 3,
+     "nearestPx": 47,
+     "aiInView": true,
+     "step": "q4"
+    },
+    {
+     "fresh": 5,
+     "seen": 2,
+     "readingSeen": 2,
+     "nearestPx": 29,
+     "aiInView": true,
+     "step": "q5"
+    },
+    {
+     "fresh": 5,
+     "seen": 2,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q6"
+    },
+    {
+     "fresh": 6,
+     "seen": 3,
+     "readingSeen": 2,
+     "nearestPx": 1,
+     "aiInView": true,
+     "step": "q7"
+    },
+    {
+     "fresh": 7,
+     "seen": 4,
+     "readingSeen": 2,
+     "nearestPx": 1,
+     "aiInView": true,
+     "step": "q8"
+    }
+   ],
+   "done": {
+    "names": 3,
+    "roots": 1,
+    "sky": true,
+    "pattern": true,
+    "channels": true,
+    "arch": true,
+    "child": 9,
+    "ai": 10,
+    "missing": []
+   },
+   "stepsWithReading": 17,
+   "stepsSeen": 17,
+   "stepCount": 18,
+   "stepsReadingSeen": 17,
+   "aiInViewSteps": 18,
+   "firstNameSeen": true,
+   "firstNameNearestPx": 0,
+   "finished": {
+    "choicesOnScreen": 68,
+    "choicesSurface": 99,
+    "words": 491,
+    "smallControls": 1
+   }
+  },
+  "b-marcus-1600": {
+   "actions": 19,
+   "steps": [
+    {
+     "fresh": 6,
+     "seen": 6,
+     "readingSeen": 4,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "first"
+    },
+    {
+     "fresh": 8,
+     "seen": 8,
+     "readingSeen": 5,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "middle"
+    },
+    {
+     "fresh": 7,
+     "seen": 7,
+     "readingSeen": 5,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "last"
+    },
+    {
+     "fresh": 13,
+     "seen": 13,
+     "readingSeen": 9,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "date"
+    },
+    {
+     "fresh": 12,
+     "seen": 12,
+     "readingSeen": 9,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "time"
+    },
+    {
+     "fresh": 4,
+     "seen": 4,
+     "readingSeen": 3,
+     "nearestPx": 67,
+     "aiInView": true,
+     "step": "place"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": true,
+     "step": "zone"
+    },
+    {
+     "fresh": 8,
+     "seen": 8,
+     "readingSeen": 6,
+     "nearestPx": 18,
+     "aiInView": true,
+     "step": "type"
+    },
+    {
+     "fresh": 12,
+     "seen": 12,
+     "readingSeen": 8,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "archetype"
+    },
+    {
+     "fresh": 13,
+     "seen": 13,
+     "readingSeen": 9,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q0"
+    },
+    {
+     "fresh": 4,
+     "seen": 4,
+     "readingSeen": 4,
+     "nearestPx": 126,
+     "aiInView": true,
+     "step": "q1"
+    },
+    {
+     "fresh": 4,
+     "seen": 4,
+     "readingSeen": 4,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q2"
+    },
+    {
+     "fresh": 6,
+     "seen": 5,
+     "readingSeen": 4,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q3"
+    },
+    {
+     "fresh": 6,
+     "seen": 4,
+     "readingSeen": 3,
+     "nearestPx": 33,
+     "aiInView": true,
+     "step": "q4"
+    },
+    {
+     "fresh": 6,
+     "seen": 3,
+     "readingSeen": 2,
+     "nearestPx": 15,
+     "aiInView": true,
+     "step": "q5"
+    },
+    {
+     "fresh": 4,
+     "seen": 1,
+     "readingSeen": 1,
+     "nearestPx": 89,
+     "aiInView": true,
+     "step": "q6"
+    },
+    {
+     "fresh": 5,
+     "seen": 2,
+     "readingSeen": 2,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q7"
+    },
+    {
+     "fresh": 6,
+     "seen": 3,
+     "readingSeen": 2,
+     "nearestPx": 15,
+     "aiInView": true,
+     "step": "q8"
+    }
+   ],
+   "done": {
+    "names": 3,
+    "roots": 1,
+    "sky": true,
+    "pattern": true,
+    "channels": true,
+    "arch": true,
+    "child": 9,
+    "ai": 10,
+    "missing": []
+   },
+   "stepsWithReading": 17,
+   "stepsSeen": 17,
+   "stepCount": 18,
+   "stepsReadingSeen": 17,
+   "aiInViewSteps": 18,
+   "firstNameSeen": true,
+   "firstNameNearestPx": 0,
+   "finished": {
+    "choicesOnScreen": 68,
+    "choicesSurface": 99,
+    "words": 485,
+    "smallControls": 1
+   }
+  },
+  "b-angela-1600": {
+   "actions": 19,
+   "steps": [
+    {
+     "fresh": 6,
+     "seen": 6,
+     "readingSeen": 4,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "first"
+    },
+    {
+     "fresh": 8,
+     "seen": 8,
+     "readingSeen": 5,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "middle"
+    },
+    {
+     "fresh": 7,
+     "seen": 7,
+     "readingSeen": 5,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "last"
+    },
+    {
+     "fresh": 15,
+     "seen": 15,
+     "readingSeen": 11,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "date"
+    },
+    {
+     "fresh": 14,
+     "seen": 14,
+     "readingSeen": 10,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "time"
+    },
+    {
+     "fresh": 2,
+     "seen": 2,
+     "readingSeen": 1,
+     "nearestPx": 67,
+     "aiInView": true,
+     "step": "place"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": true,
+     "step": "zone"
+    },
+    {
+     "fresh": 8,
+     "seen": 8,
+     "readingSeen": 6,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "type"
+    },
+    {
+     "fresh": 12,
+     "seen": 12,
+     "readingSeen": 8,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "archetype"
+    },
+    {
+     "fresh": 13,
+     "seen": 13,
+     "readingSeen": 9,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q0"
+    },
+    {
+     "fresh": 5,
+     "seen": 5,
+     "readingSeen": 4,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q1"
+    },
+    {
+     "fresh": 6,
+     "seen": 6,
+     "readingSeen": 5,
+     "nearestPx": 15,
+     "aiInView": true,
+     "step": "q2"
+    },
+    {
+     "fresh": 6,
+     "seen": 5,
+     "readingSeen": 4,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q3"
+    },
+    {
+     "fresh": 6,
+     "seen": 4,
+     "readingSeen": 3,
+     "nearestPx": 47,
+     "aiInView": true,
+     "step": "q4"
+    },
+    {
+     "fresh": 6,
+     "seen": 3,
+     "readingSeen": 2,
+     "nearestPx": 29,
+     "aiInView": true,
+     "step": "q5"
+    },
+    {
+     "fresh": 4,
+     "seen": 1,
+     "readingSeen": 1,
+     "nearestPx": 104,
+     "aiInView": true,
+     "step": "q6"
+    },
+    {
+     "fresh": 5,
+     "seen": 2,
+     "readingSeen": 2,
+     "nearestPx": 1,
+     "aiInView": true,
+     "step": "q7"
+    },
+    {
+     "fresh": 5,
+     "seen": 2,
+     "readingSeen": 2,
+     "nearestPx": 1,
+     "aiInView": true,
+     "step": "q8"
+    }
+   ],
+   "done": {
+    "names": 3,
+    "roots": 1,
+    "sky": true,
+    "pattern": true,
+    "channels": true,
+    "arch": true,
+    "child": 9,
+    "ai": 9,
+    "missing": []
+   },
+   "stepsWithReading": 17,
+   "stepsSeen": 17,
+   "stepCount": 18,
+   "stepsReadingSeen": 17,
+   "aiInViewSteps": 18,
+   "firstNameSeen": true,
+   "firstNameNearestPx": 0,
+   "finished": {
+    "choicesOnScreen": 69,
+    "choicesSurface": 99,
+    "words": 478,
+    "smallControls": 1
+   }
+  },
+  "b-derek-1600": {
+   "actions": 19,
+   "steps": [
+    {
+     "fresh": 6,
+     "seen": 6,
+     "readingSeen": 4,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "first"
+    },
+    {
+     "fresh": 8,
+     "seen": 8,
+     "readingSeen": 5,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "middle"
+    },
+    {
+     "fresh": 7,
+     "seen": 7,
+     "readingSeen": 5,
+     "nearestPx": 7,
+     "aiInView": true,
+     "step": "last"
+    },
+    {
+     "fresh": 14,
+     "seen": 14,
+     "readingSeen": 10,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "date"
+    },
+    {
+     "fresh": 14,
+     "seen": 14,
+     "readingSeen": 10,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "time"
+    },
+    {
+     "fresh": 3,
+     "seen": 3,
+     "readingSeen": 2,
+     "nearestPx": 90,
+     "aiInView": true,
+     "step": "place"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": true,
+     "step": "zone"
+    },
+    {
+     "fresh": 8,
+     "seen": 8,
+     "readingSeen": 6,
+     "nearestPx": 40,
+     "aiInView": true,
+     "step": "type"
+    },
+    {
+     "fresh": 12,
+     "seen": 12,
+     "readingSeen": 8,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "archetype"
+    },
+    {
+     "fresh": 14,
+     "seen": 14,
+     "readingSeen": 9,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q0"
+    },
+    {
+     "fresh": 6,
+     "seen": 6,
+     "readingSeen": 5,
+     "nearestPx": 140,
+     "aiInView": true,
+     "step": "q1"
+    },
+    {
+     "fresh": 6,
+     "seen": 6,
+     "readingSeen": 5,
+     "nearestPx": 15,
+     "aiInView": true,
+     "step": "q2"
+    },
+    {
+     "fresh": 5,
+     "seen": 4,
+     "readingSeen": 4,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q3"
+    },
+    {
+     "fresh": 5,
+     "seen": 3,
+     "readingSeen": 3,
+     "nearestPx": 47,
+     "aiInView": true,
+     "step": "q4"
+    },
+    {
+     "fresh": 5,
+     "seen": 2,
+     "readingSeen": 2,
+     "nearestPx": 29,
+     "aiInView": true,
+     "step": "q5"
+    },
+    {
+     "fresh": 5,
+     "seen": 2,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q6"
+    },
+    {
+     "fresh": 6,
+     "seen": 3,
+     "readingSeen": 2,
+     "nearestPx": 1,
+     "aiInView": true,
+     "step": "q7"
+    },
+    {
+     "fresh": 7,
+     "seen": 4,
+     "readingSeen": 2,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q8"
+    }
+   ],
+   "done": {
+    "names": 3,
+    "roots": 1,
+    "sky": true,
+    "pattern": true,
+    "channels": true,
+    "arch": true,
+    "child": 9,
+    "ai": 10,
+    "missing": []
+   },
+   "stepsWithReading": 17,
+   "stepsSeen": 17,
+   "stepCount": 18,
+   "stepsReadingSeen": 17,
+   "aiInViewSteps": 18,
+   "firstNameSeen": true,
+   "firstNameNearestPx": 0,
+   "finished": {
+    "choicesOnScreen": 68,
+    "choicesSurface": 99,
+    "words": 498,
+    "smallControls": 1
+   }
+  },
+  "b-james-1600": {
+   "actions": 18,
+   "steps": [
+    {
+     "fresh": 6,
+     "seen": 6,
+     "readingSeen": 4,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "first"
+    },
+    {
+     "fresh": 8,
+     "seen": 8,
+     "readingSeen": 5,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "middle"
+    },
+    {
+     "fresh": 7,
+     "seen": 7,
+     "readingSeen": 5,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "last"
+    },
+    {
+     "fresh": 14,
+     "seen": 14,
+     "readingSeen": 10,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "date"
+    },
+    {
+     "fresh": 12,
+     "seen": 12,
+     "readingSeen": 8,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "time"
+    },
+    {
+     "fresh": 3,
+     "seen": 3,
+     "readingSeen": 2,
+     "nearestPx": 67,
+     "aiInView": true,
+     "step": "place"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": true,
+     "step": "zone"
+    },
+    {
+     "fresh": 4,
+     "seen": 4,
+     "readingSeen": 2,
+     "nearestPx": 63,
+     "aiInView": true,
+     "step": "archetype"
+    },
+    {
+     "fresh": 9,
+     "seen": 9,
+     "readingSeen": 5,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q0"
+    },
+    {
+     "fresh": 7,
+     "seen": 7,
+     "readingSeen": 5,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q1"
+    },
+    {
+     "fresh": 7,
+     "seen": 7,
+     "readingSeen": 5,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q2"
+    },
+    {
+     "fresh": 7,
+     "seen": 6,
+     "readingSeen": 4,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q3"
+    },
+    {
+     "fresh": 6,
+     "seen": 4,
+     "readingSeen": 3,
+     "nearestPx": 61,
+     "aiInView": true,
+     "step": "q4"
+    },
+    {
+     "fresh": 6,
+     "seen": 3,
+     "readingSeen": 2,
+     "nearestPx": 58,
+     "aiInView": true,
+     "step": "q5"
+    },
+    {
+     "fresh": 5,
+     "seen": 2,
+     "readingSeen": 1,
+     "nearestPx": 4,
+     "aiInView": true,
+     "step": "q6"
+    },
+    {
+     "fresh": 6,
+     "seen": 3,
+     "readingSeen": 2,
+     "nearestPx": 30,
+     "aiInView": true,
+     "step": "q7"
+    },
+    {
+     "fresh": 6,
+     "seen": 3,
+     "readingSeen": 2,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q8"
+    }
+   ],
+   "done": {
+    "names": 3,
+    "roots": 1,
+    "sky": true,
+    "pattern": false,
+    "channels": true,
+    "arch": true,
+    "child": 9,
+    "ai": 9,
+    "missing": [
+     "four letter type"
+    ]
+   },
+   "stepsWithReading": 16,
+   "stepsSeen": 16,
+   "stepCount": 17,
+   "stepsReadingSeen": 16,
+   "aiInViewSteps": 17,
+   "firstNameSeen": true,
+   "firstNameNearestPx": 0,
+   "finished": {
+    "choicesOnScreen": 69,
+    "choicesSurface": 99,
+    "words": 505,
+    "smallControls": 1
+   }
+  },
+  "c-sofia-1600": {
+   "actions": 26,
+   "steps": [
+    {
+     "fresh": 7,
+     "seen": 7,
+     "readingSeen": 5,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "first"
+    },
+    {
+     "fresh": 9,
+     "seen": 9,
+     "readingSeen": 6,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "middle"
+    },
+    {
+     "fresh": 11,
+     "seen": 11,
+     "readingSeen": 9,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "last"
+    },
+    {
+     "fresh": 19,
+     "seen": 19,
+     "readingSeen": 15,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "date"
+    },
+    {
+     "fresh": 13,
+     "seen": 13,
+     "readingSeen": 9,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "time"
+    },
+    {
+     "fresh": 4,
+     "seen": 4,
+     "readingSeen": 3,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "place+zone"
+    },
+    {
+     "fresh": 15,
+     "seen": 15,
+     "readingSeen": 12,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "type"
+    },
+    {
+     "fresh": 15,
+     "seen": 15,
+     "readingSeen": 11,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "archetype"
+    },
+    {
+     "fresh": 10,
+     "seen": 10,
+     "readingSeen": 8,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q0"
+    },
+    {
+     "fresh": 5,
+     "seen": 5,
+     "readingSeen": 5,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q1"
+    },
+    {
+     "fresh": 4,
+     "seen": 4,
+     "readingSeen": 4,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q2"
+    },
+    {
+     "fresh": 4,
+     "seen": 3,
+     "readingSeen": 3,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q3"
+    },
+    {
+     "fresh": 4,
+     "seen": 2,
+     "readingSeen": 2,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q4"
+    },
+    {
+     "fresh": 4,
+     "seen": 1,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q5"
+    },
+    {
+     "fresh": 5,
+     "seen": 2,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q6"
+    },
+    {
+     "fresh": 5,
+     "seen": 2,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q7"
+    },
+    {
+     "fresh": 7,
+     "seen": 5,
+     "readingSeen": 4,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q8"
+    }
+   ],
+   "done": {
+    "names": 3,
+    "roots": 1,
+    "sky": true,
+    "pattern": true,
+    "channels": true,
+    "arch": true,
+    "child": 9,
+    "ai": 9,
+    "missing": []
+   },
+   "stepsWithReading": 17,
+   "stepsSeen": 17,
+   "stepCount": 17,
+   "stepsReadingSeen": 17,
+   "aiInViewSteps": 17,
+   "firstNameSeen": true,
+   "firstNameNearestPx": 0,
+   "finished": {
+    "choicesOnScreen": 47,
+    "choicesSurface": 36,
+    "words": 243,
+    "smallControls": 0
+   }
+  },
+  "c-diane-1600": {
+   "actions": 26,
+   "steps": [
+    {
+     "fresh": 7,
+     "seen": 7,
+     "readingSeen": 5,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "first"
+    },
+    {
+     "fresh": 9,
+     "seen": 9,
+     "readingSeen": 6,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "middle"
+    },
+    {
+     "fresh": 11,
+     "seen": 11,
+     "readingSeen": 9,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "last"
+    },
+    {
+     "fresh": 18,
+     "seen": 18,
+     "readingSeen": 14,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "date"
+    },
+    {
+     "fresh": 15,
+     "seen": 15,
+     "readingSeen": 11,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "time"
+    },
+    {
+     "fresh": 3,
+     "seen": 3,
+     "readingSeen": 2,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "place+zone"
+    },
+    {
+     "fresh": 13,
+     "seen": 13,
+     "readingSeen": 11,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "type"
+    },
+    {
+     "fresh": 15,
+     "seen": 15,
+     "readingSeen": 11,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "archetype"
+    },
+    {
+     "fresh": 11,
+     "seen": 11,
+     "readingSeen": 8,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q0"
+    },
+    {
+     "fresh": 6,
+     "seen": 6,
+     "readingSeen": 5,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q1"
+    },
+    {
+     "fresh": 5,
+     "seen": 5,
+     "readingSeen": 4,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q2"
+    },
+    {
+     "fresh": 4,
+     "seen": 3,
+     "readingSeen": 3,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q3"
+    },
+    {
+     "fresh": 4,
+     "seen": 2,
+     "readingSeen": 2,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q4"
+    },
+    {
+     "fresh": 4,
+     "seen": 1,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q5"
+    },
+    {
+     "fresh": 5,
+     "seen": 2,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q6"
+    },
+    {
+     "fresh": 5,
+     "seen": 2,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q7"
+    },
+    {
+     "fresh": 8,
+     "seen": 6,
+     "readingSeen": 4,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q8"
+    }
+   ],
+   "done": {
+    "names": 3,
+    "roots": 1,
+    "sky": true,
+    "pattern": true,
+    "channels": true,
+    "arch": true,
+    "child": 9,
+    "ai": 10,
+    "missing": []
+   },
+   "stepsWithReading": 17,
+   "stepsSeen": 17,
+   "stepCount": 17,
+   "stepsReadingSeen": 17,
+   "aiInViewSteps": 17,
+   "firstNameSeen": true,
+   "firstNameNearestPx": 0,
+   "finished": {
+    "choicesOnScreen": 46,
+    "choicesSurface": 36,
+    "words": 250,
+    "smallControls": 0
+   }
+  },
+  "c-marcus-1600": {
+   "actions": 26,
+   "steps": [
+    {
+     "fresh": 7,
+     "seen": 7,
+     "readingSeen": 5,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "first"
+    },
+    {
+     "fresh": 9,
+     "seen": 9,
+     "readingSeen": 6,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "middle"
+    },
+    {
+     "fresh": 11,
+     "seen": 11,
+     "readingSeen": 9,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "last"
+    },
+    {
+     "fresh": 15,
+     "seen": 15,
+     "readingSeen": 12,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "date"
+    },
+    {
+     "fresh": 14,
+     "seen": 14,
+     "readingSeen": 11,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "time"
+    },
+    {
+     "fresh": 3,
+     "seen": 3,
+     "readingSeen": 2,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "place+zone"
+    },
+    {
+     "fresh": 13,
+     "seen": 13,
+     "readingSeen": 11,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "type"
+    },
+    {
+     "fresh": 15,
+     "seen": 15,
+     "readingSeen": 11,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "archetype"
+    },
+    {
+     "fresh": 6,
+     "seen": 6,
+     "readingSeen": 4,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q0"
+    },
+    {
+     "fresh": 5,
+     "seen": 5,
+     "readingSeen": 5,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q1"
+    },
+    {
+     "fresh": 4,
+     "seen": 4,
+     "readingSeen": 4,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q2"
+    },
+    {
+     "fresh": 5,
+     "seen": 4,
+     "readingSeen": 3,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q3"
+    },
+    {
+     "fresh": 4,
+     "seen": 2,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q4"
+    },
+    {
+     "fresh": 5,
+     "seen": 2,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q5"
+    },
+    {
+     "fresh": 4,
+     "seen": 1,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q6"
+    },
+    {
+     "fresh": 4,
+     "seen": 1,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q7"
+    },
+    {
+     "fresh": 7,
+     "seen": 5,
+     "readingSeen": 4,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q8"
+    }
+   ],
+   "done": {
+    "names": 3,
+    "roots": 1,
+    "sky": true,
+    "pattern": true,
+    "channels": true,
+    "arch": true,
+    "child": 9,
+    "ai": 10,
+    "missing": []
+   },
+   "stepsWithReading": 17,
+   "stepsSeen": 17,
+   "stepCount": 17,
+   "stepsReadingSeen": 17,
+   "aiInViewSteps": 17,
+   "firstNameSeen": true,
+   "firstNameNearestPx": 0,
+   "finished": {
+    "choicesOnScreen": 46,
+    "choicesSurface": 36,
+    "words": 242,
+    "smallControls": 0
+   }
+  },
+  "c-angela-1600": {
+   "actions": 26,
+   "steps": [
+    {
+     "fresh": 7,
+     "seen": 7,
+     "readingSeen": 5,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "first"
+    },
+    {
+     "fresh": 9,
+     "seen": 9,
+     "readingSeen": 6,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "middle"
+    },
+    {
+     "fresh": 11,
+     "seen": 11,
+     "readingSeen": 9,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "last"
+    },
+    {
+     "fresh": 19,
+     "seen": 19,
+     "readingSeen": 15,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "date"
+    },
+    {
+     "fresh": 15,
+     "seen": 15,
+     "readingSeen": 11,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "time"
+    },
+    {
+     "fresh": 2,
+     "seen": 2,
+     "readingSeen": 2,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "place+zone"
+    },
+    {
+     "fresh": 13,
+     "seen": 13,
+     "readingSeen": 11,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "type"
+    },
+    {
+     "fresh": 15,
+     "seen": 15,
+     "readingSeen": 11,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "archetype"
+    },
+    {
+     "fresh": 6,
+     "seen": 6,
+     "readingSeen": 4,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q0"
+    },
+    {
+     "fresh": 6,
+     "seen": 6,
+     "readingSeen": 5,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q1"
+    },
+    {
+     "fresh": 5,
+     "seen": 5,
+     "readingSeen": 4,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q2"
+    },
+    {
+     "fresh": 5,
+     "seen": 4,
+     "readingSeen": 3,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q3"
+    },
+    {
+     "fresh": 5,
+     "seen": 3,
+     "readingSeen": 2,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q4"
+    },
+    {
+     "fresh": 5,
+     "seen": 2,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q5"
+    },
+    {
+     "fresh": 4,
+     "seen": 1,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q6"
+    },
+    {
+     "fresh": 4,
+     "seen": 1,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q7"
+    },
+    {
+     "fresh": 6,
+     "seen": 4,
+     "readingSeen": 4,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q8"
+    }
+   ],
+   "done": {
+    "names": 3,
+    "roots": 1,
+    "sky": true,
+    "pattern": true,
+    "channels": true,
+    "arch": true,
+    "child": 9,
+    "ai": 9,
+    "missing": []
+   },
+   "stepsWithReading": 17,
+   "stepsSeen": 17,
+   "stepCount": 17,
+   "stepsReadingSeen": 17,
+   "aiInViewSteps": 17,
+   "firstNameSeen": true,
+   "firstNameNearestPx": 0,
+   "finished": {
+    "choicesOnScreen": 47,
+    "choicesSurface": 36,
+    "words": 237,
+    "smallControls": 0
+   }
+  },
+  "c-derek-1600": {
+   "actions": 26,
+   "steps": [
+    {
+     "fresh": 7,
+     "seen": 7,
+     "readingSeen": 5,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "first"
+    },
+    {
+     "fresh": 8,
+     "seen": 8,
+     "readingSeen": 6,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "middle"
+    },
+    {
+     "fresh": 11,
+     "seen": 11,
+     "readingSeen": 9,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "last"
+    },
+    {
+     "fresh": 18,
+     "seen": 18,
+     "readingSeen": 14,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "date"
+    },
+    {
+     "fresh": 15,
+     "seen": 15,
+     "readingSeen": 11,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "time"
+    },
+    {
+     "fresh": 3,
+     "seen": 3,
+     "readingSeen": 2,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "place+zone"
+    },
+    {
+     "fresh": 13,
+     "seen": 13,
+     "readingSeen": 11,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "type"
+    },
+    {
+     "fresh": 15,
+     "seen": 15,
+     "readingSeen": 11,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "archetype"
+    },
+    {
+     "fresh": 7,
+     "seen": 7,
+     "readingSeen": 4,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q0"
+    },
+    {
+     "fresh": 6,
+     "seen": 6,
+     "readingSeen": 5,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q1"
+    },
+    {
+     "fresh": 5,
+     "seen": 5,
+     "readingSeen": 4,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q2"
+    },
+    {
+     "fresh": 4,
+     "seen": 3,
+     "readingSeen": 3,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q3"
+    },
+    {
+     "fresh": 4,
+     "seen": 2,
+     "readingSeen": 2,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q4"
+    },
+    {
+     "fresh": 4,
+     "seen": 1,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q5"
+    },
+    {
+     "fresh": 5,
+     "seen": 2,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q6"
+    },
+    {
+     "fresh": 5,
+     "seen": 2,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q7"
+    },
+    {
+     "fresh": 8,
+     "seen": 6,
+     "readingSeen": 4,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q8"
+    }
+   ],
+   "done": {
+    "names": 3,
+    "roots": 1,
+    "sky": true,
+    "pattern": true,
+    "channels": true,
+    "arch": true,
+    "child": 9,
+    "ai": 10,
+    "missing": []
+   },
+   "stepsWithReading": 17,
+   "stepsSeen": 17,
+   "stepCount": 17,
+   "stepsReadingSeen": 17,
+   "aiInViewSteps": 17,
+   "firstNameSeen": true,
+   "firstNameNearestPx": 0,
+   "finished": {
+    "choicesOnScreen": 46,
+    "choicesSurface": 36,
+    "words": 257,
+    "smallControls": 0
+   }
+  },
+  "c-james-1600": {
+   "actions": 25,
+   "steps": [
+    {
+     "fresh": 7,
+     "seen": 7,
+     "readingSeen": 5,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "first"
+    },
+    {
+     "fresh": 9,
+     "seen": 9,
+     "readingSeen": 6,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "middle"
+    },
+    {
+     "fresh": 11,
+     "seen": 11,
+     "readingSeen": 9,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "last"
+    },
+    {
+     "fresh": 19,
+     "seen": 19,
+     "readingSeen": 15,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "date"
+    },
+    {
+     "fresh": 13,
+     "seen": 13,
+     "readingSeen": 9,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "time"
+    },
+    {
+     "fresh": 4,
+     "seen": 4,
+     "readingSeen": 3,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "place+zone"
+    },
+    {
+     "fresh": 1,
+     "seen": 1,
+     "readingSeen": 1,
+     "nearestPx": 147,
+     "aiInView": true,
+     "step": "type"
+    },
+    {
+     "fresh": 7,
+     "seen": 7,
+     "readingSeen": 5,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "archetype"
+    },
+    {
+     "fresh": 8,
+     "seen": 8,
+     "readingSeen": 4,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q0"
+    },
+    {
+     "fresh": 7,
+     "seen": 7,
+     "readingSeen": 5,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q1"
+    },
+    {
+     "fresh": 6,
+     "seen": 6,
+     "readingSeen": 4,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q2"
+    },
+    {
+     "fresh": 6,
+     "seen": 5,
+     "readingSeen": 3,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q3"
+    },
+    {
+     "fresh": 5,
+     "seen": 3,
+     "readingSeen": 2,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q4"
+    },
+    {
+     "fresh": 5,
+     "seen": 2,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q5"
+    },
+    {
+     "fresh": 5,
+     "seen": 2,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q6"
+    },
+    {
+     "fresh": 5,
+     "seen": 2,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q7"
+    },
+    {
+     "fresh": 7,
+     "seen": 5,
+     "readingSeen": 4,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q8"
+    }
+   ],
+   "done": {
+    "names": 3,
+    "roots": 1,
+    "sky": true,
+    "pattern": false,
+    "channels": true,
+    "arch": true,
+    "child": 9,
+    "ai": 9,
+    "missing": [
+     "four letter type"
+    ]
+   },
+   "stepsWithReading": 17,
+   "stepsSeen": 17,
+   "stepCount": 17,
+   "stepsReadingSeen": 17,
+   "aiInViewSteps": 17,
+   "firstNameSeen": true,
+   "firstNameNearestPx": 0,
+   "finished": {
+    "choicesOnScreen": 47,
+    "choicesSurface": 36,
+    "words": 264,
+    "smallControls": 0
+   }
+  },
+  "d-sofia-1600": {
+   "actions": 19,
+   "steps": [
+    {
+     "fresh": 6,
+     "seen": 6,
+     "readingSeen": 4,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "first"
+    },
+    {
+     "fresh": 8,
+     "seen": 8,
+     "readingSeen": 5,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "middle"
+    },
+    {
+     "fresh": 7,
+     "seen": 7,
+     "readingSeen": 5,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "last"
+    },
+    {
+     "fresh": 14,
+     "seen": 14,
+     "readingSeen": 10,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "date"
+    },
+    {
+     "fresh": 13,
+     "seen": 13,
+     "readingSeen": 9,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "time"
+    },
+    {
+     "fresh": 9,
+     "seen": 9,
+     "readingSeen": 7,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "place"
+    },
+    {
+     "fresh": 3,
+     "seen": 3,
+     "readingSeen": 2,
+     "nearestPx": 59,
+     "aiInView": true,
+     "step": "zone"
+    },
+    {
+     "fresh": 6,
+     "seen": 3,
+     "readingSeen": 1,
+     "nearestPx": 109,
+     "aiInView": true,
+     "step": "type"
+    },
+    {
+     "fresh": 10,
+     "seen": 5,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "archetype"
+    },
+    {
+     "fresh": 11,
+     "seen": 5,
+     "readingSeen": 1,
+     "nearestPx": 20,
+     "aiInView": true,
+     "step": "q0"
+    },
+    {
+     "fresh": 3,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 853,
+     "aiInView": true,
+     "step": "q1"
+    },
+    {
+     "fresh": 3,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 699,
+     "aiInView": true,
+     "step": "q2"
+    },
+    {
+     "fresh": 2,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 567,
+     "aiInView": true,
+     "step": "q3"
+    },
+    {
+     "fresh": 1,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 942,
+     "aiInView": true,
+     "step": "q4"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": true,
+     "step": "q5"
+    },
+    {
+     "fresh": 2,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 267,
+     "aiInView": true,
+     "step": "q6"
+    },
+    {
+     "fresh": 2,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q7"
+    },
+    {
+     "fresh": 2,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 91,
+     "aiInView": true,
+     "step": "q8"
+    }
+   ],
+   "done": {
+    "names": 3,
+    "roots": 1,
+    "sky": true,
+    "pattern": true,
+    "channels": true,
+    "arch": true,
+    "child": 9,
+    "ai": 9,
+    "missing": []
+   },
+   "stepsWithReading": 17,
+   "stepsSeen": 13,
+   "stepCount": 18,
+   "stepsReadingSeen": 10,
+   "aiInViewSteps": 18,
+   "firstNameSeen": true,
+   "firstNameNearestPx": 0,
+   "finished": {
+    "choicesOnScreen": 57,
+    "choicesSurface": 91,
+    "words": 618,
+    "smallControls": 1
+   }
+  },
+  "d-diane-1600": {
+   "actions": 19,
+   "steps": [
+    {
+     "fresh": 6,
+     "seen": 6,
+     "readingSeen": 4,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "first"
+    },
+    {
+     "fresh": 8,
+     "seen": 8,
+     "readingSeen": 5,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "middle"
+    },
+    {
+     "fresh": 7,
+     "seen": 7,
+     "readingSeen": 5,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "last"
+    },
+    {
+     "fresh": 14,
+     "seen": 14,
+     "readingSeen": 10,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "date"
+    },
+    {
+     "fresh": 14,
+     "seen": 14,
+     "readingSeen": 10,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "time"
+    },
+    {
+     "fresh": 9,
+     "seen": 9,
+     "readingSeen": 7,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "place"
+    },
+    {
+     "fresh": 2,
+     "seen": 2,
+     "readingSeen": 1,
+     "nearestPx": 103,
+     "aiInView": true,
+     "step": "zone"
+    },
+    {
+     "fresh": 6,
+     "seen": 3,
+     "readingSeen": 1,
+     "nearestPx": 109,
+     "aiInView": true,
+     "step": "type"
+    },
+    {
+     "fresh": 10,
+     "seen": 5,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "archetype"
+    },
+    {
+     "fresh": 12,
+     "seen": 6,
+     "readingSeen": 1,
+     "nearestPx": 94,
+     "aiInView": true,
+     "step": "q0"
+    },
+    {
+     "fresh": 4,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 128,
+     "aiInView": true,
+     "step": "q1"
+    },
+    {
+     "fresh": 4,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q2"
+    },
+    {
+     "fresh": 2,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 567,
+     "aiInView": true,
+     "step": "q3"
+    },
+    {
+     "fresh": 1,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 986,
+     "aiInView": true,
+     "step": "q4"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": true,
+     "step": "q5"
+    },
+    {
+     "fresh": 1,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 267,
+     "aiInView": true,
+     "step": "q6"
+    },
+    {
+     "fresh": 1,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q7"
+    },
+    {
+     "fresh": 3,
+     "seen": 2,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q8"
+    }
+   ],
+   "done": {
+    "names": 3,
+    "roots": 1,
+    "sky": true,
+    "pattern": true,
+    "channels": true,
+    "arch": true,
+    "child": 9,
+    "ai": 10,
+    "missing": []
+   },
+   "stepsWithReading": 17,
+   "stepsSeen": 15,
+   "stepCount": 18,
+   "stepsReadingSeen": 10,
+   "aiInViewSteps": 18,
+   "firstNameSeen": true,
+   "firstNameNearestPx": 0,
+   "finished": {
+    "choicesOnScreen": 56,
+    "choicesSurface": 91,
+    "words": 626,
+    "smallControls": 1
+   }
+  },
+  "d-marcus-1600": {
+   "actions": 19,
+   "steps": [
+    {
+     "fresh": 6,
+     "seen": 6,
+     "readingSeen": 4,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "first"
+    },
+    {
+     "fresh": 8,
+     "seen": 8,
+     "readingSeen": 5,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "middle"
+    },
+    {
+     "fresh": 7,
+     "seen": 7,
+     "readingSeen": 5,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "last"
+    },
+    {
+     "fresh": 13,
+     "seen": 13,
+     "readingSeen": 9,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "date"
+    },
+    {
+     "fresh": 12,
+     "seen": 12,
+     "readingSeen": 9,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "time"
+    },
+    {
+     "fresh": 9,
+     "seen": 9,
+     "readingSeen": 7,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "place"
+    },
+    {
+     "fresh": 2,
+     "seen": 2,
+     "readingSeen": 1,
+     "nearestPx": 103,
+     "aiInView": true,
+     "step": "zone"
+    },
+    {
+     "fresh": 6,
+     "seen": 3,
+     "readingSeen": 1,
+     "nearestPx": 109,
+     "aiInView": true,
+     "step": "type"
+    },
+    {
+     "fresh": 10,
+     "seen": 5,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "archetype"
+    },
+    {
+     "fresh": 11,
+     "seen": 5,
+     "readingSeen": 1,
+     "nearestPx": 20,
+     "aiInView": true,
+     "step": "q0"
+    },
+    {
+     "fresh": 3,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 853,
+     "aiInView": true,
+     "step": "q1"
+    },
+    {
+     "fresh": 3,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 699,
+     "aiInView": true,
+     "step": "q2"
+    },
+    {
+     "fresh": 3,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 112,
+     "aiInView": true,
+     "step": "q3"
+    },
+    {
+     "fresh": 2,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 151,
+     "aiInView": true,
+     "step": "q4"
+    },
+    {
+     "fresh": 2,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q5"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": true,
+     "step": "q6"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": true,
+     "step": "q7"
+    },
+    {
+     "fresh": 1,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 136,
+     "aiInView": true,
+     "step": "q8"
+    }
+   ],
+   "done": {
+    "names": 3,
+    "roots": 1,
+    "sky": true,
+    "pattern": true,
+    "channels": true,
+    "arch": true,
+    "child": 9,
+    "ai": 10,
+    "missing": []
+   },
+   "stepsWithReading": 16,
+   "stepsSeen": 14,
+   "stepCount": 18,
+   "stepsReadingSeen": 10,
+   "aiInViewSteps": 18,
+   "firstNameSeen": true,
+   "firstNameNearestPx": 0,
+   "finished": {
+    "choicesOnScreen": 56,
+    "choicesSurface": 91,
+    "words": 624,
+    "smallControls": 1
+   }
+  },
+  "d-angela-1600": {
+   "actions": 19,
+   "steps": [
+    {
+     "fresh": 6,
+     "seen": 6,
+     "readingSeen": 4,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "first"
+    },
+    {
+     "fresh": 8,
+     "seen": 8,
+     "readingSeen": 5,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "middle"
+    },
+    {
+     "fresh": 7,
+     "seen": 7,
+     "readingSeen": 5,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "last"
+    },
+    {
+     "fresh": 15,
+     "seen": 15,
+     "readingSeen": 11,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "date"
+    },
+    {
+     "fresh": 14,
+     "seen": 14,
+     "readingSeen": 10,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "time"
+    },
+    {
+     "fresh": 9,
+     "seen": 9,
+     "readingSeen": 7,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "place"
+    },
+    {
+     "fresh": 2,
+     "seen": 2,
+     "readingSeen": 1,
+     "nearestPx": 103,
+     "aiInView": true,
+     "step": "zone"
+    },
+    {
+     "fresh": 6,
+     "seen": 3,
+     "readingSeen": 1,
+     "nearestPx": 109,
+     "aiInView": true,
+     "step": "type"
+    },
+    {
+     "fresh": 10,
+     "seen": 5,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "archetype"
+    },
+    {
+     "fresh": 11,
+     "seen": 5,
+     "readingSeen": 1,
+     "nearestPx": 49,
+     "aiInView": true,
+     "step": "q0"
+    },
+    {
+     "fresh": 4,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 329,
+     "aiInView": true,
+     "step": "q1"
+    },
+    {
+     "fresh": 4,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q2"
+    },
+    {
+     "fresh": 3,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 114,
+     "aiInView": true,
+     "step": "q3"
+    },
+    {
+     "fresh": 3,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 289,
+     "aiInView": true,
+     "step": "q4"
+    },
+    {
+     "fresh": 2,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q5"
+    },
+    {
+     "fresh": 1,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 810,
+     "aiInView": true,
+     "step": "q6"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": true,
+     "step": "q7"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": true,
+     "step": "q8"
+    }
+   ],
+   "done": {
+    "names": 3,
+    "roots": 1,
+    "sky": true,
+    "pattern": true,
+    "channels": true,
+    "arch": true,
+    "child": 9,
+    "ai": 9,
+    "missing": []
+   },
+   "stepsWithReading": 16,
+   "stepsSeen": 15,
+   "stepCount": 18,
+   "stepsReadingSeen": 10,
+   "aiInViewSteps": 18,
+   "firstNameSeen": true,
+   "firstNameNearestPx": 0,
+   "finished": {
+    "choicesOnScreen": 52,
+    "choicesSurface": 91,
+    "words": 608,
+    "smallControls": 1
+   }
+  },
+  "d-derek-1600": {
+   "actions": 19,
+   "steps": [
+    {
+     "fresh": 6,
+     "seen": 6,
+     "readingSeen": 4,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "first"
+    },
+    {
+     "fresh": 8,
+     "seen": 8,
+     "readingSeen": 5,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "middle"
+    },
+    {
+     "fresh": 7,
+     "seen": 7,
+     "readingSeen": 5,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "last"
+    },
+    {
+     "fresh": 14,
+     "seen": 14,
+     "readingSeen": 10,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "date"
+    },
+    {
+     "fresh": 14,
+     "seen": 14,
+     "readingSeen": 10,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "time"
+    },
+    {
+     "fresh": 9,
+     "seen": 9,
+     "readingSeen": 7,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "place"
+    },
+    {
+     "fresh": 2,
+     "seen": 2,
+     "readingSeen": 1,
+     "nearestPx": 103,
+     "aiInView": true,
+     "step": "zone"
+    },
+    {
+     "fresh": 6,
+     "seen": 3,
+     "readingSeen": 1,
+     "nearestPx": 109,
+     "aiInView": true,
+     "step": "type"
+    },
+    {
+     "fresh": 10,
+     "seen": 5,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "archetype"
+    },
+    {
+     "fresh": 12,
+     "seen": 6,
+     "readingSeen": 1,
+     "nearestPx": 20,
+     "aiInView": true,
+     "step": "q0"
+    },
+    {
+     "fresh": 4,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 196,
+     "aiInView": true,
+     "step": "q1"
+    },
+    {
+     "fresh": 4,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q2"
+    },
+    {
+     "fresh": 2,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 567,
+     "aiInView": true,
+     "step": "q3"
+    },
+    {
+     "fresh": 1,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 986,
+     "aiInView": true,
+     "step": "q4"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": true,
+     "step": "q5"
+    },
+    {
+     "fresh": 1,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 244,
+     "aiInView": true,
+     "step": "q6"
+    },
+    {
+     "fresh": 1,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q7"
+    },
+    {
+     "fresh": 3,
+     "seen": 2,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q8"
+    }
+   ],
+   "done": {
+    "names": 3,
+    "roots": 1,
+    "sky": true,
+    "pattern": true,
+    "channels": true,
+    "arch": true,
+    "child": 9,
+    "ai": 10,
+    "missing": []
+   },
+   "stepsWithReading": 17,
+   "stepsSeen": 15,
+   "stepCount": 18,
+   "stepsReadingSeen": 10,
+   "aiInViewSteps": 18,
+   "firstNameSeen": true,
+   "firstNameNearestPx": 0,
+   "finished": {
+    "choicesOnScreen": 56,
+    "choicesSurface": 91,
+    "words": 632,
+    "smallControls": 1
+   }
+  },
+  "d-james-1600": {
+   "actions": 18,
+   "steps": [
+    {
+     "fresh": 6,
+     "seen": 6,
+     "readingSeen": 4,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "first"
+    },
+    {
+     "fresh": 8,
+     "seen": 8,
+     "readingSeen": 5,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "middle"
+    },
+    {
+     "fresh": 7,
+     "seen": 7,
+     "readingSeen": 5,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "last"
+    },
+    {
+     "fresh": 14,
+     "seen": 14,
+     "readingSeen": 10,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "date"
+    },
+    {
+     "fresh": 12,
+     "seen": 12,
+     "readingSeen": 8,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "time"
+    },
+    {
+     "fresh": 9,
+     "seen": 9,
+     "readingSeen": 7,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "place"
+    },
+    {
+     "fresh": 3,
+     "seen": 3,
+     "readingSeen": 2,
+     "nearestPx": 59,
+     "aiInView": true,
+     "step": "zone"
+    },
+    {
+     "fresh": 4,
+     "seen": 2,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "archetype"
+    },
+    {
+     "fresh": 7,
+     "seen": 4,
+     "readingSeen": 0,
+     "nearestPx": 146,
+     "aiInView": true,
+     "step": "q0"
+    },
+    {
+     "fresh": 5,
+     "seen": 2,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q1"
+    },
+    {
+     "fresh": 5,
+     "seen": 2,
+     "readingSeen": 0,
+     "nearestPx": 33,
+     "aiInView": true,
+     "step": "q2"
+    },
+    {
+     "fresh": 5,
+     "seen": 2,
+     "readingSeen": 0,
+     "nearestPx": 209,
+     "aiInView": true,
+     "step": "q3"
+    },
+    {
+     "fresh": 3,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q4"
+    },
+    {
+     "fresh": 2,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 193,
+     "aiInView": true,
+     "step": "q5"
+    },
+    {
+     "fresh": 1,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 319,
+     "aiInView": true,
+     "step": "q6"
+    },
+    {
+     "fresh": 1,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q7"
+    },
+    {
+     "fresh": 1,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 143,
+     "aiInView": true,
+     "step": "q8"
+    }
+   ],
+   "done": {
+    "names": 3,
+    "roots": 1,
+    "sky": true,
+    "pattern": false,
+    "channels": true,
+    "arch": true,
+    "child": 9,
+    "ai": 9,
+    "missing": [
+     "four letter type"
+    ]
+   },
+   "stepsWithReading": 17,
+   "stepsSeen": 17,
+   "stepCount": 17,
+   "stepsReadingSeen": 7,
+   "aiInViewSteps": 17,
+   "firstNameSeen": true,
+   "firstNameNearestPx": 0,
+   "finished": {
+    "choicesOnScreen": 56,
+    "choicesSurface": 88,
+    "words": 612,
+    "smallControls": 1
+   }
+  },
+  "a-sofia-390": {
+   "actions": 21,
+   "steps": [
+    {
+     "fresh": 3,
+     "seen": 1,
+     "readingSeen": 1,
+     "nearestPx": 5,
+     "aiInView": false,
+     "step": "first"
+    },
+    {
+     "fresh": 5,
+     "seen": 2,
+     "readingSeen": 2,
+     "nearestPx": 5,
+     "aiInView": false,
+     "step": "middle"
+    },
+    {
+     "fresh": 6,
+     "seen": 3,
+     "readingSeen": 3,
+     "nearestPx": 5,
+     "aiInView": false,
+     "step": "last"
+    },
+    {
+     "fresh": 7,
+     "seen": 3,
+     "readingSeen": 3,
+     "nearestPx": 5,
+     "aiInView": false,
+     "step": "date"
+    },
+    {
+     "fresh": 6,
+     "seen": 2,
+     "readingSeen": 2,
+     "nearestPx": 37,
+     "aiInView": false,
+     "step": "time"
+    },
+    {
+     "fresh": 5,
+     "seen": 3,
+     "readingSeen": 3,
+     "nearestPx": 37,
+     "aiInView": false,
+     "step": "place"
+    },
+    {
+     "fresh": 3,
+     "seen": 2,
+     "readingSeen": 2,
+     "nearestPx": 5,
+     "aiInView": false,
+     "step": "zone"
+    },
+    {
+     "fresh": 6,
+     "seen": 3,
+     "readingSeen": 3,
+     "nearestPx": 5,
+     "aiInView": false,
+     "step": "type"
+    },
+    {
+     "fresh": 5,
+     "seen": 4,
+     "readingSeen": 0,
+     "nearestPx": 218,
+     "aiInView": true,
+     "step": "archetype"
+    },
+    {
+     "fresh": 2,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 692,
+     "aiInView": false,
+     "step": "q0"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": false,
+     "step": "q1"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": false,
+     "step": "q2"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": false,
+     "step": "q3"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": false,
+     "step": "q4"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": false,
+     "step": "q5"
+    },
+    {
+     "fresh": 1,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1826,
+     "aiInView": false,
+     "step": "q6"
+    },
+    {
+     "fresh": 1,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2002,
+     "aiInView": false,
+     "step": "q7"
+    },
+    {
+     "fresh": 1,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2177,
+     "aiInView": false,
+     "step": "q8"
+    }
+   ],
+   "done": {
+    "names": 3,
+    "roots": 1,
+    "sky": true,
+    "pattern": true,
+    "channels": true,
+    "arch": true,
+    "child": 9,
+    "ai": 9,
+    "missing": []
+   },
+   "stepsWithReading": 13,
+   "stepsSeen": 9,
+   "stepCount": 18,
+   "stepsReadingSeen": 8,
+   "aiInViewSteps": 1,
+   "firstNameSeen": true,
+   "firstNameNearestPx": 5,
+   "finished": {
+    "choicesOnScreen": 16,
+    "choicesSurface": 72,
+    "words": 687,
+    "smallControls": 1
+   }
+  },
+  "a-diane-390": {
+   "actions": 21,
+   "steps": [
+    {
+     "fresh": 3,
+     "seen": 1,
+     "readingSeen": 1,
+     "nearestPx": 5,
+     "aiInView": false,
+     "step": "first"
+    },
+    {
+     "fresh": 5,
+     "seen": 2,
+     "readingSeen": 2,
+     "nearestPx": 5,
+     "aiInView": false,
+     "step": "middle"
+    },
+    {
+     "fresh": 4,
+     "seen": 2,
+     "readingSeen": 2,
+     "nearestPx": 5,
+     "aiInView": false,
+     "step": "last"
+    },
+    {
+     "fresh": 7,
+     "seen": 3,
+     "readingSeen": 3,
+     "nearestPx": 5,
+     "aiInView": false,
+     "step": "date"
+    },
+    {
+     "fresh": 7,
+     "seen": 3,
+     "readingSeen": 3,
+     "nearestPx": 37,
+     "aiInView": false,
+     "step": "time"
+    },
+    {
+     "fresh": 5,
+     "seen": 3,
+     "readingSeen": 3,
+     "nearestPx": 37,
+     "aiInView": false,
+     "step": "place"
+    },
+    {
+     "fresh": 1,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 808,
+     "aiInView": false,
+     "step": "zone"
+    },
+    {
+     "fresh": 4,
+     "seen": 1,
+     "readingSeen": 1,
+     "nearestPx": 5,
+     "aiInView": false,
+     "step": "type"
+    },
+    {
+     "fresh": 5,
+     "seen": 4,
+     "readingSeen": 0,
+     "nearestPx": 331,
+     "aiInView": true,
+     "step": "archetype"
+    },
+    {
+     "fresh": 3,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 692,
+     "aiInView": false,
+     "step": "q0"
+    },
+    {
+     "fresh": 1,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 868,
+     "aiInView": false,
+     "step": "q1"
+    },
+    {
+     "fresh": 1,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1043,
+     "aiInView": false,
+     "step": "q2"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": false,
+     "step": "q3"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": false,
+     "step": "q4"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": false,
+     "step": "q5"
+    },
+    {
+     "fresh": 1,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1878,
+     "aiInView": false,
+     "step": "q6"
+    },
+    {
+     "fresh": 1,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2054,
+     "aiInView": false,
+     "step": "q7"
+    },
+    {
+     "fresh": 2,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2096,
+     "aiInView": false,
+     "step": "q8"
+    }
+   ],
+   "done": {
+    "names": 3,
+    "roots": 1,
+    "sky": true,
+    "pattern": true,
+    "channels": true,
+    "arch": true,
+    "child": 9,
+    "ai": 10,
+    "missing": []
+   },
+   "stepsWithReading": 15,
+   "stepsSeen": 8,
+   "stepCount": 18,
+   "stepsReadingSeen": 7,
+   "aiInViewSteps": 1,
+   "firstNameSeen": true,
+   "firstNameNearestPx": 5,
+   "finished": {
+    "choicesOnScreen": 16,
+    "choicesSurface": 72,
+    "words": 703,
+    "smallControls": 1
+   }
+  },
+  "a-marcus-390": {
+   "actions": 21,
+   "steps": [
+    {
+     "fresh": 3,
+     "seen": 1,
+     "readingSeen": 1,
+     "nearestPx": 5,
+     "aiInView": false,
+     "step": "first"
+    },
+    {
+     "fresh": 5,
+     "seen": 2,
+     "readingSeen": 2,
+     "nearestPx": 5,
+     "aiInView": false,
+     "step": "middle"
+    },
+    {
+     "fresh": 4,
+     "seen": 2,
+     "readingSeen": 2,
+     "nearestPx": 5,
+     "aiInView": false,
+     "step": "last"
+    },
+    {
+     "fresh": 7,
+     "seen": 3,
+     "readingSeen": 3,
+     "nearestPx": 5,
+     "aiInView": false,
+     "step": "date"
+    },
+    {
+     "fresh": 6,
+     "seen": 3,
+     "readingSeen": 3,
+     "nearestPx": 37,
+     "aiInView": false,
+     "step": "time"
+    },
+    {
+     "fresh": 5,
+     "seen": 3,
+     "readingSeen": 3,
+     "nearestPx": 37,
+     "aiInView": false,
+     "step": "place"
+    },
+    {
+     "fresh": 1,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 785,
+     "aiInView": false,
+     "step": "zone"
+    },
+    {
+     "fresh": 4,
+     "seen": 1,
+     "readingSeen": 1,
+     "nearestPx": 5,
+     "aiInView": false,
+     "step": "type"
+    },
+    {
+     "fresh": 5,
+     "seen": 4,
+     "readingSeen": 0,
+     "nearestPx": 218,
+     "aiInView": true,
+     "step": "archetype"
+    },
+    {
+     "fresh": 2,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 692,
+     "aiInView": false,
+     "step": "q0"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": false,
+     "step": "q1"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": false,
+     "step": "q2"
+    },
+    {
+     "fresh": 1,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1219,
+     "aiInView": false,
+     "step": "q3"
+    },
+    {
+     "fresh": 1,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1394,
+     "aiInView": false,
+     "step": "q4"
+    },
+    {
+     "fresh": 1,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1570,
+     "aiInView": false,
+     "step": "q5"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": false,
+     "step": "q6"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": false,
+     "step": "q7"
+    },
+    {
+     "fresh": 1,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2229,
+     "aiInView": false,
+     "step": "q8"
+    }
+   ],
+   "done": {
+    "names": 3,
+    "roots": 1,
+    "sky": true,
+    "pattern": true,
+    "channels": true,
+    "arch": true,
+    "child": 9,
+    "ai": 10,
+    "missing": []
+   },
+   "stepsWithReading": 14,
+   "stepsSeen": 8,
+   "stepCount": 18,
+   "stepsReadingSeen": 7,
+   "aiInViewSteps": 1,
+   "firstNameSeen": true,
+   "firstNameNearestPx": 5,
+   "finished": {
+    "choicesOnScreen": 16,
+    "choicesSurface": 72,
+    "words": 693,
+    "smallControls": 1
+   }
+  },
+  "a-angela-390": {
+   "actions": 21,
+   "steps": [
+    {
+     "fresh": 3,
+     "seen": 1,
+     "readingSeen": 1,
+     "nearestPx": 5,
+     "aiInView": false,
+     "step": "first"
+    },
+    {
+     "fresh": 5,
+     "seen": 2,
+     "readingSeen": 2,
+     "nearestPx": 5,
+     "aiInView": false,
+     "step": "middle"
+    },
+    {
+     "fresh": 4,
+     "seen": 2,
+     "readingSeen": 2,
+     "nearestPx": 5,
+     "aiInView": false,
+     "step": "last"
+    },
+    {
+     "fresh": 8,
+     "seen": 4,
+     "readingSeen": 4,
+     "nearestPx": 5,
+     "aiInView": false,
+     "step": "date"
+    },
+    {
+     "fresh": 7,
+     "seen": 3,
+     "readingSeen": 3,
+     "nearestPx": 37,
+     "aiInView": false,
+     "step": "time"
+    },
+    {
+     "fresh": 5,
+     "seen": 3,
+     "readingSeen": 3,
+     "nearestPx": 37,
+     "aiInView": false,
+     "step": "place"
+    },
+    {
+     "fresh": 1,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 808,
+     "aiInView": false,
+     "step": "zone"
+    },
+    {
+     "fresh": 4,
+     "seen": 1,
+     "readingSeen": 1,
+     "nearestPx": 5,
+     "aiInView": false,
+     "step": "type"
+    },
+    {
+     "fresh": 5,
+     "seen": 4,
+     "readingSeen": 0,
+     "nearestPx": 444,
+     "aiInView": true,
+     "step": "archetype"
+    },
+    {
+     "fresh": 2,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 692,
+     "aiInView": false,
+     "step": "q0"
+    },
+    {
+     "fresh": 1,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 949,
+     "aiInView": false,
+     "step": "q1"
+    },
+    {
+     "fresh": 1,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1124,
+     "aiInView": false,
+     "step": "q2"
+    },
+    {
+     "fresh": 1,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1300,
+     "aiInView": false,
+     "step": "q3"
+    },
+    {
+     "fresh": 1,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1475,
+     "aiInView": false,
+     "step": "q4"
+    },
+    {
+     "fresh": 1,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1651,
+     "aiInView": false,
+     "step": "q5"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": false,
+     "step": "q6"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": false,
+     "step": "q7"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": false,
+     "step": "q8"
+    }
+   ],
+   "done": {
+    "names": 3,
+    "roots": 1,
+    "sky": true,
+    "pattern": true,
+    "channels": true,
+    "arch": true,
+    "child": 9,
+    "ai": 9,
+    "missing": []
+   },
+   "stepsWithReading": 15,
+   "stepsSeen": 8,
+   "stepCount": 18,
+   "stepsReadingSeen": 7,
+   "aiInViewSteps": 1,
+   "firstNameSeen": true,
+   "firstNameNearestPx": 5,
+   "finished": {
+    "choicesOnScreen": 16,
+    "choicesSurface": 72,
+    "words": 676,
+    "smallControls": 1
+   }
+  },
+  "a-derek-390": {
+   "actions": 21,
+   "steps": [
+    {
+     "fresh": 3,
+     "seen": 1,
+     "readingSeen": 1,
+     "nearestPx": 5,
+     "aiInView": false,
+     "step": "first"
+    },
+    {
+     "fresh": 5,
+     "seen": 2,
+     "readingSeen": 2,
+     "nearestPx": 5,
+     "aiInView": false,
+     "step": "middle"
+    },
+    {
+     "fresh": 4,
+     "seen": 2,
+     "readingSeen": 2,
+     "nearestPx": 5,
+     "aiInView": false,
+     "step": "last"
+    },
+    {
+     "fresh": 7,
+     "seen": 3,
+     "readingSeen": 3,
+     "nearestPx": 5,
+     "aiInView": false,
+     "step": "date"
+    },
+    {
+     "fresh": 7,
+     "seen": 3,
+     "readingSeen": 3,
+     "nearestPx": 37,
+     "aiInView": false,
+     "step": "time"
+    },
+    {
+     "fresh": 5,
+     "seen": 3,
+     "readingSeen": 3,
+     "nearestPx": 37,
+     "aiInView": false,
+     "step": "place"
+    },
+    {
+     "fresh": 1,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 808,
+     "aiInView": false,
+     "step": "zone"
+    },
+    {
+     "fresh": 4,
+     "seen": 1,
+     "readingSeen": 1,
+     "nearestPx": 5,
+     "aiInView": false,
+     "step": "type"
+    },
+    {
+     "fresh": 5,
+     "seen": 4,
+     "readingSeen": 0,
+     "nearestPx": 218,
+     "aiInView": true,
+     "step": "archetype"
+    },
+    {
+     "fresh": 3,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 692,
+     "aiInView": false,
+     "step": "q0"
+    },
+    {
+     "fresh": 1,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 868,
+     "aiInView": false,
+     "step": "q1"
+    },
+    {
+     "fresh": 1,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1043,
+     "aiInView": false,
+     "step": "q2"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": false,
+     "step": "q3"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": false,
+     "step": "q4"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": false,
+     "step": "q5"
+    },
+    {
+     "fresh": 1,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1878,
+     "aiInView": false,
+     "step": "q6"
+    },
+    {
+     "fresh": 1,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2054,
+     "aiInView": false,
+     "step": "q7"
+    },
+    {
+     "fresh": 2,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2096,
+     "aiInView": false,
+     "step": "q8"
+    }
+   ],
+   "done": {
+    "names": 3,
+    "roots": 1,
+    "sky": true,
+    "pattern": true,
+    "channels": true,
+    "arch": true,
+    "child": 9,
+    "ai": 10,
+    "missing": []
+   },
+   "stepsWithReading": 15,
+   "stepsSeen": 8,
+   "stepCount": 18,
+   "stepsReadingSeen": 7,
+   "aiInViewSteps": 1,
+   "firstNameSeen": true,
+   "firstNameNearestPx": 5,
+   "finished": {
+    "choicesOnScreen": 16,
+    "choicesSurface": 72,
+    "words": 714,
+    "smallControls": 1
+   }
+  },
+  "a-james-390": {
+   "actions": 20,
+   "steps": [
+    {
+     "fresh": 3,
+     "seen": 1,
+     "readingSeen": 1,
+     "nearestPx": 5,
+     "aiInView": false,
+     "step": "first"
+    },
+    {
+     "fresh": 5,
+     "seen": 2,
+     "readingSeen": 2,
+     "nearestPx": 5,
+     "aiInView": false,
+     "step": "middle"
+    },
+    {
+     "fresh": 4,
+     "seen": 2,
+     "readingSeen": 2,
+     "nearestPx": 5,
+     "aiInView": false,
+     "step": "last"
+    },
+    {
+     "fresh": 7,
+     "seen": 3,
+     "readingSeen": 3,
+     "nearestPx": 5,
+     "aiInView": false,
+     "step": "date"
+    },
+    {
+     "fresh": 6,
+     "seen": 2,
+     "readingSeen": 2,
+     "nearestPx": 37,
+     "aiInView": false,
+     "step": "time"
+    },
+    {
+     "fresh": 5,
+     "seen": 3,
+     "readingSeen": 3,
+     "nearestPx": 37,
+     "aiInView": false,
+     "step": "place"
+    },
+    {
+     "fresh": 3,
+     "seen": 2,
+     "readingSeen": 2,
+     "nearestPx": 5,
+     "aiInView": false,
+     "step": "zone"
+    },
+    {
+     "fresh": 2,
+     "seen": 2,
+     "readingSeen": 0,
+     "nearestPx": 331,
+     "aiInView": true,
+     "step": "archetype"
+    },
+    {
+     "fresh": 4,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 712,
+     "aiInView": false,
+     "step": "q0"
+    },
+    {
+     "fresh": 2,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 887,
+     "aiInView": false,
+     "step": "q1"
+    },
+    {
+     "fresh": 2,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1063,
+     "aiInView": false,
+     "step": "q2"
+    },
+    {
+     "fresh": 2,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1238,
+     "aiInView": false,
+     "step": "q3"
+    },
+    {
+     "fresh": 1,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1547,
+     "aiInView": false,
+     "step": "q4"
+    },
+    {
+     "fresh": 1,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1722,
+     "aiInView": false,
+     "step": "q5"
+    },
+    {
+     "fresh": 1,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1898,
+     "aiInView": false,
+     "step": "q6"
+    },
+    {
+     "fresh": 1,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2073,
+     "aiInView": false,
+     "step": "q7"
+    },
+    {
+     "fresh": 1,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2249,
+     "aiInView": false,
+     "step": "q8"
+    }
+   ],
+   "done": {
+    "names": 3,
+    "roots": 1,
+    "sky": true,
+    "pattern": false,
+    "channels": true,
+    "arch": true,
+    "child": 9,
+    "ai": 9,
+    "missing": [
+     "four letter type"
+    ]
+   },
+   "stepsWithReading": 17,
+   "stepsSeen": 8,
+   "stepCount": 17,
+   "stepsReadingSeen": 7,
+   "aiInViewSteps": 1,
+   "firstNameSeen": true,
+   "firstNameNearestPx": 5,
+   "finished": {
+    "choicesOnScreen": 16,
+    "choicesSurface": 72,
+    "words": 683,
+    "smallControls": 1
+   }
+  },
+  "b-sofia-390": {
+   "actions": 19,
+   "steps": [
+    {
+     "fresh": 6,
+     "seen": 2,
+     "readingSeen": 0,
+     "nearestPx": 142,
+     "aiInView": true,
+     "step": "first"
+    },
+    {
+     "fresh": 8,
+     "seen": 3,
+     "readingSeen": 0,
+     "nearestPx": 142,
+     "aiInView": true,
+     "step": "middle"
+    },
+    {
+     "fresh": 7,
+     "seen": 2,
+     "readingSeen": 0,
+     "nearestPx": 223,
+     "aiInView": true,
+     "step": "last"
+    },
+    {
+     "fresh": 14,
+     "seen": 4,
+     "readingSeen": 0,
+     "nearestPx": 304,
+     "aiInView": true,
+     "step": "date"
+    },
+    {
+     "fresh": 13,
+     "seen": 4,
+     "readingSeen": 0,
+     "nearestPx": 304,
+     "aiInView": true,
+     "step": "time"
+    },
+    {
+     "fresh": 9,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 426,
+     "aiInView": true,
+     "step": "place"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": true,
+     "step": "zone"
+    },
+    {
+     "fresh": 8,
+     "seen": 2,
+     "readingSeen": 0,
+     "nearestPx": 509,
+     "aiInView": true,
+     "step": "type"
+    },
+    {
+     "fresh": 12,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 693,
+     "aiInView": false,
+     "step": "archetype"
+    },
+    {
+     "fresh": 13,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1119,
+     "aiInView": false,
+     "step": "q0"
+    },
+    {
+     "fresh": 5,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2055,
+     "aiInView": false,
+     "step": "q1"
+    },
+    {
+     "fresh": 5,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2254,
+     "aiInView": false,
+     "step": "q2"
+    },
+    {
+     "fresh": 5,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2347,
+     "aiInView": false,
+     "step": "q3"
+    },
+    {
+     "fresh": 5,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2523,
+     "aiInView": false,
+     "step": "q4"
+    },
+    {
+     "fresh": 5,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2698,
+     "aiInView": false,
+     "step": "q5"
+    },
+    {
+     "fresh": 5,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2277,
+     "aiInView": false,
+     "step": "q6"
+    },
+    {
+     "fresh": 6,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2475,
+     "aiInView": false,
+     "step": "q7"
+    },
+    {
+     "fresh": 6,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2651,
+     "aiInView": false,
+     "step": "q8"
+    }
+   ],
+   "done": {
+    "names": 3,
+    "roots": 1,
+    "sky": true,
+    "pattern": true,
+    "channels": true,
+    "arch": true,
+    "child": 9,
+    "ai": 9,
+    "missing": []
+   },
+   "stepsWithReading": 17,
+   "stepsSeen": 6,
+   "stepCount": 18,
+   "stepsReadingSeen": 0,
+   "aiInViewSteps": 8,
+   "firstNameSeen": true,
+   "firstNameNearestPx": 142,
+   "finished": {
+    "choicesOnScreen": 30,
+    "choicesSurface": 99,
+    "words": 692,
+    "smallControls": 1
+   }
+  },
+  "b-diane-390": {
+   "actions": 19,
+   "steps": [
+    {
+     "fresh": 6,
+     "seen": 2,
+     "readingSeen": 0,
+     "nearestPx": 142,
+     "aiInView": true,
+     "step": "first"
+    },
+    {
+     "fresh": 8,
+     "seen": 3,
+     "readingSeen": 0,
+     "nearestPx": 142,
+     "aiInView": true,
+     "step": "middle"
+    },
+    {
+     "fresh": 7,
+     "seen": 2,
+     "readingSeen": 0,
+     "nearestPx": 223,
+     "aiInView": true,
+     "step": "last"
+    },
+    {
+     "fresh": 14,
+     "seen": 4,
+     "readingSeen": 0,
+     "nearestPx": 303,
+     "aiInView": true,
+     "step": "date"
+    },
+    {
+     "fresh": 14,
+     "seen": 4,
+     "readingSeen": 0,
+     "nearestPx": 303,
+     "aiInView": true,
+     "step": "time"
+    },
+    {
+     "fresh": 9,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 426,
+     "aiInView": true,
+     "step": "place"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": true,
+     "step": "zone"
+    },
+    {
+     "fresh": 8,
+     "seen": 2,
+     "readingSeen": 0,
+     "nearestPx": 508,
+     "aiInView": true,
+     "step": "type"
+    },
+    {
+     "fresh": 12,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 797,
+     "aiInView": false,
+     "step": "archetype"
+    },
+    {
+     "fresh": 14,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1119,
+     "aiInView": false,
+     "step": "q0"
+    },
+    {
+     "fresh": 6,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1294,
+     "aiInView": false,
+     "step": "q1"
+    },
+    {
+     "fresh": 6,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1493,
+     "aiInView": false,
+     "step": "q2"
+    },
+    {
+     "fresh": 5,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2421,
+     "aiInView": false,
+     "step": "q3"
+    },
+    {
+     "fresh": 5,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2597,
+     "aiInView": false,
+     "step": "q4"
+    },
+    {
+     "fresh": 5,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2772,
+     "aiInView": false,
+     "step": "q5"
+    },
+    {
+     "fresh": 5,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2329,
+     "aiInView": false,
+     "step": "q6"
+    },
+    {
+     "fresh": 6,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2527,
+     "aiInView": false,
+     "step": "q7"
+    },
+    {
+     "fresh": 7,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2569,
+     "aiInView": false,
+     "step": "q8"
+    }
+   ],
+   "done": {
+    "names": 3,
+    "roots": 1,
+    "sky": true,
+    "pattern": true,
+    "channels": true,
+    "arch": true,
+    "child": 9,
+    "ai": 10,
+    "missing": []
+   },
+   "stepsWithReading": 17,
+   "stepsSeen": 6,
+   "stepCount": 18,
+   "stepsReadingSeen": 0,
+   "aiInViewSteps": 8,
+   "firstNameSeen": true,
+   "firstNameNearestPx": 142,
+   "finished": {
+    "choicesOnScreen": 30,
+    "choicesSurface": 99,
+    "words": 706,
+    "smallControls": 1
+   }
+  },
+  "b-marcus-390": {
+   "actions": 19,
+   "steps": [
+    {
+     "fresh": 6,
+     "seen": 2,
+     "readingSeen": 0,
+     "nearestPx": 142,
+     "aiInView": true,
+     "step": "first"
+    },
+    {
+     "fresh": 8,
+     "seen": 3,
+     "readingSeen": 0,
+     "nearestPx": 142,
+     "aiInView": true,
+     "step": "middle"
+    },
+    {
+     "fresh": 7,
+     "seen": 2,
+     "readingSeen": 0,
+     "nearestPx": 223,
+     "aiInView": true,
+     "step": "last"
+    },
+    {
+     "fresh": 13,
+     "seen": 4,
+     "readingSeen": 0,
+     "nearestPx": 304,
+     "aiInView": true,
+     "step": "date"
+    },
+    {
+     "fresh": 12,
+     "seen": 3,
+     "readingSeen": 0,
+     "nearestPx": 304,
+     "aiInView": true,
+     "step": "time"
+    },
+    {
+     "fresh": 9,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 426,
+     "aiInView": true,
+     "step": "place"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": true,
+     "step": "zone"
+    },
+    {
+     "fresh": 8,
+     "seen": 2,
+     "readingSeen": 0,
+     "nearestPx": 509,
+     "aiInView": true,
+     "step": "type"
+    },
+    {
+     "fresh": 12,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 693,
+     "aiInView": false,
+     "step": "archetype"
+    },
+    {
+     "fresh": 13,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1119,
+     "aiInView": false,
+     "step": "q0"
+    },
+    {
+     "fresh": 4,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2055,
+     "aiInView": false,
+     "step": "q1"
+    },
+    {
+     "fresh": 4,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2254,
+     "aiInView": false,
+     "step": "q2"
+    },
+    {
+     "fresh": 6,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1669,
+     "aiInView": false,
+     "step": "q3"
+    },
+    {
+     "fresh": 6,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1844,
+     "aiInView": false,
+     "step": "q4"
+    },
+    {
+     "fresh": 6,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2020,
+     "aiInView": false,
+     "step": "q5"
+    },
+    {
+     "fresh": 4,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2843,
+     "aiInView": false,
+     "step": "q6"
+    },
+    {
+     "fresh": 5,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 3042,
+     "aiInView": false,
+     "step": "q7"
+    },
+    {
+     "fresh": 6,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2703,
+     "aiInView": false,
+     "step": "q8"
+    }
+   ],
+   "done": {
+    "names": 3,
+    "roots": 1,
+    "sky": true,
+    "pattern": true,
+    "channels": true,
+    "arch": true,
+    "child": 9,
+    "ai": 10,
+    "missing": []
+   },
+   "stepsWithReading": 17,
+   "stepsSeen": 6,
+   "stepCount": 18,
+   "stepsReadingSeen": 0,
+   "aiInViewSteps": 8,
+   "firstNameSeen": true,
+   "firstNameNearestPx": 142,
+   "finished": {
+    "choicesOnScreen": 30,
+    "choicesSurface": 99,
+    "words": 694,
+    "smallControls": 1
+   }
+  },
+  "b-angela-390": {
+   "actions": 19,
+   "steps": [
+    {
+     "fresh": 6,
+     "seen": 2,
+     "readingSeen": 0,
+     "nearestPx": 142,
+     "aiInView": true,
+     "step": "first"
+    },
+    {
+     "fresh": 8,
+     "seen": 3,
+     "readingSeen": 0,
+     "nearestPx": 142,
+     "aiInView": true,
+     "step": "middle"
+    },
+    {
+     "fresh": 7,
+     "seen": 2,
+     "readingSeen": 0,
+     "nearestPx": 223,
+     "aiInView": true,
+     "step": "last"
+    },
+    {
+     "fresh": 15,
+     "seen": 4,
+     "readingSeen": 0,
+     "nearestPx": 304,
+     "aiInView": true,
+     "step": "date"
+    },
+    {
+     "fresh": 14,
+     "seen": 4,
+     "readingSeen": 0,
+     "nearestPx": 304,
+     "aiInView": true,
+     "step": "time"
+    },
+    {
+     "fresh": 9,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 426,
+     "aiInView": true,
+     "step": "place"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": true,
+     "step": "zone"
+    },
+    {
+     "fresh": 8,
+     "seen": 2,
+     "readingSeen": 0,
+     "nearestPx": 509,
+     "aiInView": true,
+     "step": "type"
+    },
+    {
+     "fresh": 12,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 900,
+     "aiInView": false,
+     "step": "archetype"
+    },
+    {
+     "fresh": 13,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1119,
+     "aiInView": false,
+     "step": "q0"
+    },
+    {
+     "fresh": 5,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1376,
+     "aiInView": false,
+     "step": "q1"
+    },
+    {
+     "fresh": 6,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1575,
+     "aiInView": false,
+     "step": "q2"
+    },
+    {
+     "fresh": 6,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1750,
+     "aiInView": false,
+     "step": "q3"
+    },
+    {
+     "fresh": 6,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1926,
+     "aiInView": false,
+     "step": "q4"
+    },
+    {
+     "fresh": 6,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2101,
+     "aiInView": false,
+     "step": "q5"
+    },
+    {
+     "fresh": 4,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2791,
+     "aiInView": false,
+     "step": "q6"
+    },
+    {
+     "fresh": 5,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2990,
+     "aiInView": false,
+     "step": "q7"
+    },
+    {
+     "fresh": 5,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 3166,
+     "aiInView": false,
+     "step": "q8"
+    }
+   ],
+   "done": {
+    "names": 3,
+    "roots": 1,
+    "sky": true,
+    "pattern": true,
+    "channels": true,
+    "arch": true,
+    "child": 9,
+    "ai": 9,
+    "missing": []
+   },
+   "stepsWithReading": 17,
+   "stepsSeen": 6,
+   "stepCount": 18,
+   "stepsReadingSeen": 0,
+   "aiInViewSteps": 8,
+   "firstNameSeen": true,
+   "firstNameNearestPx": 142,
+   "finished": {
+    "choicesOnScreen": 30,
+    "choicesSurface": 99,
+    "words": 680,
+    "smallControls": 1
+   }
+  },
+  "b-derek-390": {
+   "actions": 19,
+   "steps": [
+    {
+     "fresh": 6,
+     "seen": 2,
+     "readingSeen": 0,
+     "nearestPx": 143,
+     "aiInView": true,
+     "step": "first"
+    },
+    {
+     "fresh": 8,
+     "seen": 3,
+     "readingSeen": 0,
+     "nearestPx": 142,
+     "aiInView": true,
+     "step": "middle"
+    },
+    {
+     "fresh": 7,
+     "seen": 2,
+     "readingSeen": 0,
+     "nearestPx": 223,
+     "aiInView": true,
+     "step": "last"
+    },
+    {
+     "fresh": 14,
+     "seen": 4,
+     "readingSeen": 0,
+     "nearestPx": 304,
+     "aiInView": true,
+     "step": "date"
+    },
+    {
+     "fresh": 14,
+     "seen": 4,
+     "readingSeen": 0,
+     "nearestPx": 304,
+     "aiInView": true,
+     "step": "time"
+    },
+    {
+     "fresh": 3,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 426,
+     "aiInView": true,
+     "step": "place"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": true,
+     "step": "zone"
+    },
+    {
+     "fresh": 8,
+     "seen": 2,
+     "readingSeen": 0,
+     "nearestPx": 508,
+     "aiInView": true,
+     "step": "type"
+    },
+    {
+     "fresh": 12,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 693,
+     "aiInView": false,
+     "step": "archetype"
+    },
+    {
+     "fresh": 14,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1119,
+     "aiInView": false,
+     "step": "q0"
+    },
+    {
+     "fresh": 6,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1294,
+     "aiInView": false,
+     "step": "q1"
+    },
+    {
+     "fresh": 6,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1493,
+     "aiInView": false,
+     "step": "q2"
+    },
+    {
+     "fresh": 5,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2399,
+     "aiInView": false,
+     "step": "q3"
+    },
+    {
+     "fresh": 5,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2575,
+     "aiInView": false,
+     "step": "q4"
+    },
+    {
+     "fresh": 5,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2750,
+     "aiInView": false,
+     "step": "q5"
+    },
+    {
+     "fresh": 5,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2329,
+     "aiInView": false,
+     "step": "q6"
+    },
+    {
+     "fresh": 6,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2527,
+     "aiInView": false,
+     "step": "q7"
+    },
+    {
+     "fresh": 7,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2569,
+     "aiInView": false,
+     "step": "q8"
+    }
+   ],
+   "done": {
+    "names": 3,
+    "roots": 1,
+    "sky": true,
+    "pattern": true,
+    "channels": true,
+    "arch": true,
+    "child": 9,
+    "ai": 10,
+    "missing": []
+   },
+   "stepsWithReading": 17,
+   "stepsSeen": 6,
+   "stepCount": 18,
+   "stepsReadingSeen": 0,
+   "aiInViewSteps": 8,
+   "firstNameSeen": true,
+   "firstNameNearestPx": 143,
+   "finished": {
+    "choicesOnScreen": 30,
+    "choicesSurface": 99,
+    "words": 720,
+    "smallControls": 1
+   }
+  },
+  "b-james-390": {
+   "actions": 18,
+   "steps": [
+    {
+     "fresh": 6,
+     "seen": 2,
+     "readingSeen": 0,
+     "nearestPx": 142,
+     "aiInView": true,
+     "step": "first"
+    },
+    {
+     "fresh": 8,
+     "seen": 3,
+     "readingSeen": 0,
+     "nearestPx": 142,
+     "aiInView": true,
+     "step": "middle"
+    },
+    {
+     "fresh": 7,
+     "seen": 2,
+     "readingSeen": 0,
+     "nearestPx": 223,
+     "aiInView": true,
+     "step": "last"
+    },
+    {
+     "fresh": 14,
+     "seen": 4,
+     "readingSeen": 0,
+     "nearestPx": 304,
+     "aiInView": true,
+     "step": "date"
+    },
+    {
+     "fresh": 12,
+     "seen": 4,
+     "readingSeen": 0,
+     "nearestPx": 304,
+     "aiInView": true,
+     "step": "time"
+    },
+    {
+     "fresh": 9,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 426,
+     "aiInView": true,
+     "step": "place"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": true,
+     "step": "zone"
+    },
+    {
+     "fresh": 4,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 797,
+     "aiInView": true,
+     "step": "archetype"
+    },
+    {
+     "fresh": 9,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1138,
+     "aiInView": false,
+     "step": "q0"
+    },
+    {
+     "fresh": 7,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1314,
+     "aiInView": false,
+     "step": "q1"
+    },
+    {
+     "fresh": 7,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1513,
+     "aiInView": false,
+     "step": "q2"
+    },
+    {
+     "fresh": 7,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1688,
+     "aiInView": false,
+     "step": "q3"
+    },
+    {
+     "fresh": 6,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1997,
+     "aiInView": false,
+     "step": "q4"
+    },
+    {
+     "fresh": 6,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2173,
+     "aiInView": false,
+     "step": "q5"
+    },
+    {
+     "fresh": 5,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2348,
+     "aiInView": false,
+     "step": "q6"
+    },
+    {
+     "fresh": 6,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2547,
+     "aiInView": false,
+     "step": "q7"
+    },
+    {
+     "fresh": 6,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2722,
+     "aiInView": false,
+     "step": "q8"
+    }
+   ],
+   "done": {
+    "names": 3,
+    "roots": 1,
+    "sky": true,
+    "pattern": false,
+    "channels": true,
+    "arch": true,
+    "child": 9,
+    "ai": 9,
+    "missing": [
+     "four letter type"
+    ]
+   },
+   "stepsWithReading": 16,
+   "stepsSeen": 7,
+   "stepCount": 17,
+   "stepsReadingSeen": 0,
+   "aiInViewSteps": 8,
+   "firstNameSeen": true,
+   "firstNameNearestPx": 142,
+   "finished": {
+    "choicesOnScreen": 30,
+    "choicesSurface": 99,
+    "words": 734,
+    "smallControls": 1
+   }
+  },
+  "c-sofia-390": {
+   "actions": 26,
+   "steps": [
+    {
+     "fresh": 7,
+     "seen": 3,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "first"
+    },
+    {
+     "fresh": 9,
+     "seen": 3,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "middle"
+    },
+    {
+     "fresh": 11,
+     "seen": 4,
+     "readingSeen": 4,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "last"
+    },
+    {
+     "fresh": 19,
+     "seen": 5,
+     "readingSeen": 5,
+     "nearestPx": 0,
+     "aiInView": false,
+     "step": "date"
+    },
+    {
+     "fresh": 13,
+     "seen": 8,
+     "readingSeen": 4,
+     "nearestPx": 464,
+     "aiInView": true,
+     "step": "time"
+    },
+    {
+     "fresh": 4,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "place+zone"
+    },
+    {
+     "fresh": 15,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "type"
+    },
+    {
+     "fresh": 15,
+     "seen": 4,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "archetype"
+    },
+    {
+     "fresh": 10,
+     "seen": 2,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q0"
+    },
+    {
+     "fresh": 5,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q1"
+    },
+    {
+     "fresh": 4,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q2"
+    },
+    {
+     "fresh": 4,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q3"
+    },
+    {
+     "fresh": 4,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q4"
+    },
+    {
+     "fresh": 4,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q5"
+    },
+    {
+     "fresh": 5,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q6"
+    },
+    {
+     "fresh": 5,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q7"
+    },
+    {
+     "fresh": 7,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q8"
+    }
+   ],
+   "done": {
+    "names": 3,
+    "roots": 1,
+    "sky": true,
+    "pattern": true,
+    "channels": true,
+    "arch": true,
+    "child": 9,
+    "ai": 9,
+    "missing": []
+   },
+   "stepsWithReading": 17,
+   "stepsSeen": 12,
+   "stepCount": 17,
+   "stepsReadingSeen": 5,
+   "aiInViewSteps": 16,
+   "firstNameSeen": true,
+   "firstNameNearestPx": 0,
+   "finished": {
+    "choicesOnScreen": 16,
+    "choicesSurface": 36,
+    "words": 451,
+    "smallControls": 0
+   }
+  },
+  "c-diane-390": {
+   "actions": 26,
+   "steps": [
+    {
+     "fresh": 7,
+     "seen": 3,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "first"
+    },
+    {
+     "fresh": 9,
+     "seen": 3,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "middle"
+    },
+    {
+     "fresh": 11,
+     "seen": 4,
+     "readingSeen": 4,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "last"
+    },
+    {
+     "fresh": 19,
+     "seen": 5,
+     "readingSeen": 5,
+     "nearestPx": 0,
+     "aiInView": false,
+     "step": "date"
+    },
+    {
+     "fresh": 15,
+     "seen": 5,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "time"
+    },
+    {
+     "fresh": 3,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "place+zone"
+    },
+    {
+     "fresh": 13,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "type"
+    },
+    {
+     "fresh": 15,
+     "seen": 4,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "archetype"
+    },
+    {
+     "fresh": 11,
+     "seen": 2,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q0"
+    },
+    {
+     "fresh": 6,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q1"
+    },
+    {
+     "fresh": 5,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q2"
+    },
+    {
+     "fresh": 4,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q3"
+    },
+    {
+     "fresh": 4,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q4"
+    },
+    {
+     "fresh": 4,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q5"
+    },
+    {
+     "fresh": 5,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q6"
+    },
+    {
+     "fresh": 5,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q7"
+    },
+    {
+     "fresh": 8,
+     "seen": 2,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q8"
+    }
+   ],
+   "done": {
+    "names": 3,
+    "roots": 1,
+    "sky": true,
+    "pattern": true,
+    "channels": true,
+    "arch": true,
+    "child": 9,
+    "ai": 10,
+    "missing": []
+   },
+   "stepsWithReading": 17,
+   "stepsSeen": 11,
+   "stepCount": 17,
+   "stepsReadingSeen": 5,
+   "aiInViewSteps": 16,
+   "firstNameSeen": true,
+   "firstNameNearestPx": 0,
+   "finished": {
+    "choicesOnScreen": 16,
+    "choicesSurface": 36,
+    "words": 465,
+    "smallControls": 0
+   }
+  },
+  "c-marcus-390": {
+   "actions": 26,
+   "steps": [
+    {
+     "fresh": 7,
+     "seen": 3,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "first"
+    },
+    {
+     "fresh": 9,
+     "seen": 3,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "middle"
+    },
+    {
+     "fresh": 11,
+     "seen": 4,
+     "readingSeen": 4,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "last"
+    },
+    {
+     "fresh": 16,
+     "seen": 4,
+     "readingSeen": 4,
+     "nearestPx": 0,
+     "aiInView": false,
+     "step": "date"
+    },
+    {
+     "fresh": 14,
+     "seen": 1,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "time"
+    },
+    {
+     "fresh": 3,
+     "seen": 1,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "place+zone"
+    },
+    {
+     "fresh": 13,
+     "seen": 4,
+     "readingSeen": 4,
+     "nearestPx": 0,
+     "aiInView": false,
+     "step": "type"
+    },
+    {
+     "fresh": 15,
+     "seen": 2,
+     "readingSeen": 2,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "archetype"
+    },
+    {
+     "fresh": 10,
+     "seen": 1,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q0"
+    },
+    {
+     "fresh": 5,
+     "seen": 1,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q1"
+    },
+    {
+     "fresh": 4,
+     "seen": 1,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q2"
+    },
+    {
+     "fresh": 5,
+     "seen": 1,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q3"
+    },
+    {
+     "fresh": 5,
+     "seen": 1,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q4"
+    },
+    {
+     "fresh": 5,
+     "seen": 1,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q5"
+    },
+    {
+     "fresh": 4,
+     "seen": 1,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q6"
+    },
+    {
+     "fresh": 4,
+     "seen": 1,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q7"
+    },
+    {
+     "fresh": 7,
+     "seen": 2,
+     "readingSeen": 2,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q8"
+    }
+   ],
+   "done": {
+    "names": 3,
+    "roots": 1,
+    "sky": true,
+    "pattern": true,
+    "channels": true,
+    "arch": true,
+    "child": 9,
+    "ai": 10,
+    "missing": []
+   },
+   "stepsWithReading": 17,
+   "stepsSeen": 17,
+   "stepCount": 17,
+   "stepsReadingSeen": 17,
+   "aiInViewSteps": 15,
+   "firstNameSeen": true,
+   "firstNameNearestPx": 0,
+   "finished": {
+    "choicesOnScreen": 16,
+    "choicesSurface": 36,
+    "words": 451,
+    "smallControls": 0
+   }
+  },
+  "c-angela-390": {
+   "actions": 26,
+   "steps": [
+    {
+     "fresh": 7,
+     "seen": 3,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "first"
+    },
+    {
+     "fresh": 9,
+     "seen": 3,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "middle"
+    },
+    {
+     "fresh": 11,
+     "seen": 4,
+     "readingSeen": 4,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "last"
+    },
+    {
+     "fresh": 20,
+     "seen": 5,
+     "readingSeen": 5,
+     "nearestPx": 0,
+     "aiInView": false,
+     "step": "date"
+    },
+    {
+     "fresh": 15,
+     "seen": 5,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "time"
+    },
+    {
+     "fresh": 3,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "place+zone"
+    },
+    {
+     "fresh": 13,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "type"
+    },
+    {
+     "fresh": 15,
+     "seen": 4,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "archetype"
+    },
+    {
+     "fresh": 10,
+     "seen": 2,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q0"
+    },
+    {
+     "fresh": 6,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q1"
+    },
+    {
+     "fresh": 5,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q2"
+    },
+    {
+     "fresh": 5,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q3"
+    },
+    {
+     "fresh": 5,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q4"
+    },
+    {
+     "fresh": 5,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q5"
+    },
+    {
+     "fresh": 4,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q6"
+    },
+    {
+     "fresh": 4,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q7"
+    },
+    {
+     "fresh": 6,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q8"
+    }
+   ],
+   "done": {
+    "names": 3,
+    "roots": 1,
+    "sky": true,
+    "pattern": true,
+    "channels": true,
+    "arch": true,
+    "child": 9,
+    "ai": 9,
+    "missing": []
+   },
+   "stepsWithReading": 17,
+   "stepsSeen": 13,
+   "stepCount": 17,
+   "stepsReadingSeen": 5,
+   "aiInViewSteps": 16,
+   "firstNameSeen": true,
+   "firstNameNearestPx": 0,
+   "finished": {
+    "choicesOnScreen": 16,
+    "choicesSurface": 36,
+    "words": 439,
+    "smallControls": 0
+   }
+  },
+  "c-derek-390": {
+   "actions": 26,
+   "steps": [
+    {
+     "fresh": 7,
+     "seen": 2,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "first"
+    },
+    {
+     "fresh": 9,
+     "seen": 3,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "middle"
+    },
+    {
+     "fresh": 11,
+     "seen": 4,
+     "readingSeen": 4,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "last"
+    },
+    {
+     "fresh": 18,
+     "seen": 5,
+     "readingSeen": 5,
+     "nearestPx": 0,
+     "aiInView": false,
+     "step": "date"
+    },
+    {
+     "fresh": 15,
+     "seen": 5,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "time"
+    },
+    {
+     "fresh": 3,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "place+zone"
+    },
+    {
+     "fresh": 13,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "type"
+    },
+    {
+     "fresh": 15,
+     "seen": 4,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "archetype"
+    },
+    {
+     "fresh": 11,
+     "seen": 2,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q0"
+    },
+    {
+     "fresh": 6,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q1"
+    },
+    {
+     "fresh": 5,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q2"
+    },
+    {
+     "fresh": 4,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q3"
+    },
+    {
+     "fresh": 4,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q4"
+    },
+    {
+     "fresh": 4,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q5"
+    },
+    {
+     "fresh": 5,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q6"
+    },
+    {
+     "fresh": 5,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q7"
+    },
+    {
+     "fresh": 8,
+     "seen": 2,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q8"
+    }
+   ],
+   "done": {
+    "names": 3,
+    "roots": 1,
+    "sky": true,
+    "pattern": true,
+    "channels": true,
+    "arch": true,
+    "child": 9,
+    "ai": 10,
+    "missing": []
+   },
+   "stepsWithReading": 17,
+   "stepsSeen": 11,
+   "stepCount": 17,
+   "stepsReadingSeen": 5,
+   "aiInViewSteps": 16,
+   "firstNameSeen": true,
+   "firstNameNearestPx": 0,
+   "finished": {
+    "choicesOnScreen": 16,
+    "choicesSurface": 36,
+    "words": 479,
+    "smallControls": 0
+   }
+  },
+  "c-james-390": {
+   "actions": 25,
+   "steps": [
+    {
+     "fresh": 7,
+     "seen": 2,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "first"
+    },
+    {
+     "fresh": 9,
+     "seen": 3,
+     "readingSeen": 1,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "middle"
+    },
+    {
+     "fresh": 11,
+     "seen": 4,
+     "readingSeen": 4,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "last"
+    },
+    {
+     "fresh": 18,
+     "seen": 5,
+     "readingSeen": 5,
+     "nearestPx": 0,
+     "aiInView": false,
+     "step": "date"
+    },
+    {
+     "fresh": 13,
+     "seen": 8,
+     "readingSeen": 4,
+     "nearestPx": 464,
+     "aiInView": true,
+     "step": "time"
+    },
+    {
+     "fresh": 4,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "place+zone"
+    },
+    {
+     "fresh": 1,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1241,
+     "aiInView": true,
+     "step": "type"
+    },
+    {
+     "fresh": 7,
+     "seen": 2,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "archetype"
+    },
+    {
+     "fresh": 8,
+     "seen": 4,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q0"
+    },
+    {
+     "fresh": 7,
+     "seen": 2,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q1"
+    },
+    {
+     "fresh": 6,
+     "seen": 2,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q2"
+    },
+    {
+     "fresh": 6,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q3"
+    },
+    {
+     "fresh": 5,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q4"
+    },
+    {
+     "fresh": 5,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q5"
+    },
+    {
+     "fresh": 5,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q6"
+    },
+    {
+     "fresh": 5,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q7"
+    },
+    {
+     "fresh": 7,
+     "seen": 1,
+     "readingSeen": 0,
+     "nearestPx": 0,
+     "aiInView": true,
+     "step": "q8"
+    }
+   ],
+   "done": {
+    "names": 3,
+    "roots": 1,
+    "sky": true,
+    "pattern": false,
+    "channels": true,
+    "arch": true,
+    "child": 9,
+    "ai": 9,
+    "missing": [
+     "four letter type"
+    ]
+   },
+   "stepsWithReading": 17,
+   "stepsSeen": 16,
+   "stepCount": 17,
+   "stepsReadingSeen": 5,
+   "aiInViewSteps": 16,
+   "firstNameSeen": true,
+   "firstNameNearestPx": 0,
+   "finished": {
+    "choicesOnScreen": 16,
+    "choicesSurface": 36,
+    "words": 493,
+    "smallControls": 0
+   }
+  },
+  "d-sofia-390": {
+   "actions": 19,
+   "steps": [
+    {
+     "fresh": 6,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2830,
+     "aiInView": false,
+     "step": "first"
+    },
+    {
+     "fresh": 8,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2751,
+     "aiInView": false,
+     "step": "middle"
+    },
+    {
+     "fresh": 9,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2673,
+     "aiInView": false,
+     "step": "last"
+    },
+    {
+     "fresh": 14,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2623,
+     "aiInView": false,
+     "step": "date"
+    },
+    {
+     "fresh": 13,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2545,
+     "aiInView": false,
+     "step": "time"
+    },
+    {
+     "fresh": 9,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2528,
+     "aiInView": false,
+     "step": "place"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": false,
+     "step": "zone"
+    },
+    {
+     "fresh": 6,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2371,
+     "aiInView": false,
+     "step": "type"
+    },
+    {
+     "fresh": 10,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2183,
+     "aiInView": false,
+     "step": "archetype"
+    },
+    {
+     "fresh": 11,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1779,
+     "aiInView": false,
+     "step": "q0"
+    },
+    {
+     "fresh": 3,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 3701,
+     "aiInView": false,
+     "step": "q1"
+    },
+    {
+     "fresh": 3,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 3595,
+     "aiInView": false,
+     "step": "q2"
+    },
+    {
+     "fresh": 2,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 3489,
+     "aiInView": false,
+     "step": "q3"
+    },
+    {
+     "fresh": 1,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 3313,
+     "aiInView": false,
+     "step": "q4"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": false,
+     "step": "q5"
+    },
+    {
+     "fresh": 2,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 800,
+     "aiInView": false,
+     "step": "q6"
+    },
+    {
+     "fresh": 2,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 625,
+     "aiInView": false,
+     "step": "q7"
+    },
+    {
+     "fresh": 2,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 449,
+     "aiInView": false,
+     "step": "q8"
+    }
+   ],
+   "done": {
+    "names": 3,
+    "roots": 1,
+    "sky": true,
+    "pattern": true,
+    "channels": true,
+    "arch": true,
+    "child": 9,
+    "ai": 9,
+    "missing": []
+   },
+   "stepsWithReading": 16,
+   "stepsSeen": 0,
+   "stepCount": 18,
+   "stepsReadingSeen": 0,
+   "aiInViewSteps": 0,
+   "firstNameSeen": false,
+   "firstNameNearestPx": 2830,
+   "finished": {
+    "choicesOnScreen": 20,
+    "choicesSurface": 91,
+    "words": 1026,
+    "smallControls": 1
+   }
+  },
+  "d-diane-390": {
+   "actions": 19,
+   "steps": [
+    {
+     "fresh": 6,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2830,
+     "aiInView": false,
+     "step": "first"
+    },
+    {
+     "fresh": 8,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2751,
+     "aiInView": false,
+     "step": "middle"
+    },
+    {
+     "fresh": 9,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2673,
+     "aiInView": false,
+     "step": "last"
+    },
+    {
+     "fresh": 14,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2623,
+     "aiInView": false,
+     "step": "date"
+    },
+    {
+     "fresh": 14,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2545,
+     "aiInView": false,
+     "step": "time"
+    },
+    {
+     "fresh": 9,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2529,
+     "aiInView": false,
+     "step": "place"
+    },
+    {
+     "fresh": 2,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2502,
+     "aiInView": false,
+     "step": "zone"
+    },
+    {
+     "fresh": 6,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2417,
+     "aiInView": false,
+     "step": "type"
+    },
+    {
+     "fresh": 10,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2115,
+     "aiInView": false,
+     "step": "archetype"
+    },
+    {
+     "fresh": 12,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1824,
+     "aiInView": false,
+     "step": "q0"
+    },
+    {
+     "fresh": 4,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1856,
+     "aiInView": false,
+     "step": "q1"
+    },
+    {
+     "fresh": 4,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1680,
+     "aiInView": false,
+     "step": "q2"
+    },
+    {
+     "fresh": 2,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 3615,
+     "aiInView": false,
+     "step": "q3"
+    },
+    {
+     "fresh": 1,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 3509,
+     "aiInView": false,
+     "step": "q4"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": false,
+     "step": "q5"
+    },
+    {
+     "fresh": 1,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 823,
+     "aiInView": false,
+     "step": "q6"
+    },
+    {
+     "fresh": 1,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 647,
+     "aiInView": false,
+     "step": "q7"
+    },
+    {
+     "fresh": 3,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 472,
+     "aiInView": false,
+     "step": "q8"
+    }
+   ],
+   "done": {
+    "names": 3,
+    "roots": 1,
+    "sky": true,
+    "pattern": true,
+    "channels": true,
+    "arch": true,
+    "child": 9,
+    "ai": 10,
+    "missing": []
+   },
+   "stepsWithReading": 17,
+   "stepsSeen": 0,
+   "stepCount": 18,
+   "stepsReadingSeen": 0,
+   "aiInViewSteps": 0,
+   "firstNameSeen": false,
+   "firstNameNearestPx": 2830,
+   "finished": {
+    "choicesOnScreen": 20,
+    "choicesSurface": 91,
+    "words": 1041,
+    "smallControls": 1
+   }
+  },
+  "d-marcus-390": {
+   "actions": 19,
+   "steps": [
+    {
+     "fresh": 6,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2830,
+     "aiInView": false,
+     "step": "first"
+    },
+    {
+     "fresh": 8,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2751,
+     "aiInView": false,
+     "step": "middle"
+    },
+    {
+     "fresh": 9,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2673,
+     "aiInView": false,
+     "step": "last"
+    },
+    {
+     "fresh": 13,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2623,
+     "aiInView": false,
+     "step": "date"
+    },
+    {
+     "fresh": 12,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2597,
+     "aiInView": false,
+     "step": "time"
+    },
+    {
+     "fresh": 9,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2529,
+     "aiInView": false,
+     "step": "place"
+    },
+    {
+     "fresh": 2,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2479,
+     "aiInView": false,
+     "step": "zone"
+    },
+    {
+     "fresh": 6,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2372,
+     "aiInView": false,
+     "step": "type"
+    },
+    {
+     "fresh": 10,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2183,
+     "aiInView": false,
+     "step": "archetype"
+    },
+    {
+     "fresh": 11,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1779,
+     "aiInView": false,
+     "step": "q0"
+    },
+    {
+     "fresh": 3,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 3750,
+     "aiInView": false,
+     "step": "q1"
+    },
+    {
+     "fresh": 3,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 3644,
+     "aiInView": false,
+     "step": "q2"
+    },
+    {
+     "fresh": 3,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1483,
+     "aiInView": false,
+     "step": "q3"
+    },
+    {
+     "fresh": 2,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1307,
+     "aiInView": false,
+     "step": "q4"
+    },
+    {
+     "fresh": 2,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1132,
+     "aiInView": false,
+     "step": "q5"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": false,
+     "step": "q6"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": false,
+     "step": "q7"
+    },
+    {
+     "fresh": 1,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 449,
+     "aiInView": false,
+     "step": "q8"
+    }
+   ],
+   "done": {
+    "names": 3,
+    "roots": 1,
+    "sky": true,
+    "pattern": true,
+    "channels": true,
+    "arch": true,
+    "child": 9,
+    "ai": 10,
+    "missing": []
+   },
+   "stepsWithReading": 16,
+   "stepsSeen": 0,
+   "stepCount": 18,
+   "stepsReadingSeen": 0,
+   "aiInViewSteps": 0,
+   "firstNameSeen": false,
+   "firstNameNearestPx": 2830,
+   "finished": {
+    "choicesOnScreen": 20,
+    "choicesSurface": 91,
+    "words": 1034,
+    "smallControls": 1
+   }
+  },
+  "d-angela-390": {
+   "actions": 19,
+   "steps": [
+    {
+     "fresh": 6,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2830,
+     "aiInView": false,
+     "step": "first"
+    },
+    {
+     "fresh": 8,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2752,
+     "aiInView": false,
+     "step": "middle"
+    },
+    {
+     "fresh": 7,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2702,
+     "aiInView": false,
+     "step": "last"
+    },
+    {
+     "fresh": 15,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2624,
+     "aiInView": false,
+     "step": "date"
+    },
+    {
+     "fresh": 14,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2545,
+     "aiInView": false,
+     "step": "time"
+    },
+    {
+     "fresh": 9,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2529,
+     "aiInView": false,
+     "step": "place"
+    },
+    {
+     "fresh": 2,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2502,
+     "aiInView": false,
+     "step": "zone"
+    },
+    {
+     "fresh": 6,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2394,
+     "aiInView": false,
+     "step": "type"
+    },
+    {
+     "fresh": 10,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1979,
+     "aiInView": false,
+     "step": "archetype"
+    },
+    {
+     "fresh": 11,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1801,
+     "aiInView": false,
+     "step": "q0"
+    },
+    {
+     "fresh": 4,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1678,
+     "aiInView": false,
+     "step": "q1"
+    },
+    {
+     "fresh": 4,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1502,
+     "aiInView": false,
+     "step": "q2"
+    },
+    {
+     "fresh": 3,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1327,
+     "aiInView": false,
+     "step": "q3"
+    },
+    {
+     "fresh": 3,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1151,
+     "aiInView": false,
+     "step": "q4"
+    },
+    {
+     "fresh": 2,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 976,
+     "aiInView": false,
+     "step": "q5"
+    },
+    {
+     "fresh": 1,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 3012,
+     "aiInView": false,
+     "step": "q6"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": false,
+     "step": "q7"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": true,
+     "step": "q8"
+    }
+   ],
+   "done": {
+    "names": 3,
+    "roots": 1,
+    "sky": true,
+    "pattern": true,
+    "channels": true,
+    "arch": true,
+    "child": 9,
+    "ai": 9,
+    "missing": []
+   },
+   "stepsWithReading": 16,
+   "stepsSeen": 0,
+   "stepCount": 18,
+   "stepsReadingSeen": 0,
+   "aiInViewSteps": 1,
+   "firstNameSeen": false,
+   "firstNameNearestPx": 2830,
+   "finished": {
+    "choicesOnScreen": 20,
+    "choicesSurface": 91,
+    "words": 1010,
+    "smallControls": 1
+   }
+  },
+  "d-derek-390": {
+   "actions": 19,
+   "steps": [
+    {
+     "fresh": 6,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2830,
+     "aiInView": false,
+     "step": "first"
+    },
+    {
+     "fresh": 8,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2752,
+     "aiInView": false,
+     "step": "middle"
+    },
+    {
+     "fresh": 7,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2702,
+     "aiInView": false,
+     "step": "last"
+    },
+    {
+     "fresh": 14,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2624,
+     "aiInView": false,
+     "step": "date"
+    },
+    {
+     "fresh": 14,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2545,
+     "aiInView": false,
+     "step": "time"
+    },
+    {
+     "fresh": 9,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2529,
+     "aiInView": false,
+     "step": "place"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": false,
+     "step": "zone"
+    },
+    {
+     "fresh": 6,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2394,
+     "aiInView": false,
+     "step": "type"
+    },
+    {
+     "fresh": 10,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2205,
+     "aiInView": false,
+     "step": "archetype"
+    },
+    {
+     "fresh": 12,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1801,
+     "aiInView": false,
+     "step": "q0"
+    },
+    {
+     "fresh": 4,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1834,
+     "aiInView": false,
+     "step": "q1"
+    },
+    {
+     "fresh": 4,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1658,
+     "aiInView": false,
+     "step": "q2"
+    },
+    {
+     "fresh": 2,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 3593,
+     "aiInView": false,
+     "step": "q3"
+    },
+    {
+     "fresh": 1,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 3487,
+     "aiInView": false,
+     "step": "q4"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": false,
+     "step": "q5"
+    },
+    {
+     "fresh": 1,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 800,
+     "aiInView": false,
+     "step": "q6"
+    },
+    {
+     "fresh": 1,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 625,
+     "aiInView": false,
+     "step": "q7"
+    },
+    {
+     "fresh": 3,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 449,
+     "aiInView": false,
+     "step": "q8"
+    }
+   ],
+   "done": {
+    "names": 3,
+    "roots": 1,
+    "sky": true,
+    "pattern": true,
+    "channels": true,
+    "arch": true,
+    "child": 9,
+    "ai": 10,
+    "missing": []
+   },
+   "stepsWithReading": 16,
+   "stepsSeen": 0,
+   "stepCount": 18,
+   "stepsReadingSeen": 0,
+   "aiInViewSteps": 0,
+   "firstNameSeen": false,
+   "firstNameNearestPx": 2830,
+   "finished": {
+    "choicesOnScreen": 20,
+    "choicesSurface": 91,
+    "words": 1051,
+    "smallControls": 1
+   }
+  },
+  "d-james-390": {
+   "actions": 18,
+   "steps": [
+    {
+     "fresh": 6,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2830,
+     "aiInView": false,
+     "step": "first"
+    },
+    {
+     "fresh": 8,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2752,
+     "aiInView": false,
+     "step": "middle"
+    },
+    {
+     "fresh": 7,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2702,
+     "aiInView": false,
+     "step": "last"
+    },
+    {
+     "fresh": 14,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2624,
+     "aiInView": false,
+     "step": "date"
+    },
+    {
+     "fresh": 12,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2545,
+     "aiInView": false,
+     "step": "time"
+    },
+    {
+     "fresh": 9,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2529,
+     "aiInView": false,
+     "step": "place"
+    },
+    {
+     "fresh": 0,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": null,
+     "aiInView": false,
+     "step": "zone"
+    },
+    {
+     "fresh": 4,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 2092,
+     "aiInView": false,
+     "step": "archetype"
+    },
+    {
+     "fresh": 7,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1801,
+     "aiInView": false,
+     "step": "q0"
+    },
+    {
+     "fresh": 5,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1626,
+     "aiInView": false,
+     "step": "q1"
+    },
+    {
+     "fresh": 5,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1450,
+     "aiInView": false,
+     "step": "q2"
+    },
+    {
+     "fresh": 5,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1275,
+     "aiInView": false,
+     "step": "q3"
+    },
+    {
+     "fresh": 3,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 1099,
+     "aiInView": false,
+     "step": "q4"
+    },
+    {
+     "fresh": 2,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 924,
+     "aiInView": false,
+     "step": "q5"
+    },
+    {
+     "fresh": 1,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 748,
+     "aiInView": false,
+     "step": "q6"
+    },
+    {
+     "fresh": 1,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 573,
+     "aiInView": false,
+     "step": "q7"
+    },
+    {
+     "fresh": 1,
+     "seen": 0,
+     "readingSeen": 0,
+     "nearestPx": 397,
+     "aiInView": false,
+     "step": "q8"
+    }
+   ],
+   "done": {
+    "names": 3,
+    "roots": 1,
+    "sky": true,
+    "pattern": false,
+    "channels": true,
+    "arch": true,
+    "child": 9,
+    "ai": 9,
+    "missing": [
+     "four letter type"
+    ]
+   },
+   "stepsWithReading": 16,
+   "stepsSeen": 0,
+   "stepCount": 17,
+   "stepsReadingSeen": 0,
+   "aiInViewSteps": 0,
+   "firstNameSeen": false,
+   "firstNameNearestPx": 2830,
+   "finished": {
+    "choicesOnScreen": 20,
+    "choicesSurface": 88,
+    "words": 1030,
+    "smallControls": 1
+   }
+  }
+ },
+ "reach": {
+  "a-angela-1600": [
+   {
+    "k": "n0",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": false,
+    "title": "First name / Angela"
+   },
+   {
+    "k": "expression",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Numerology / Expression 6"
+   },
+   {
+    "k": "lifePath",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Numerology / Life path 33"
+   },
+   {
+    "k": "sun",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Sun / Gemini"
+   },
+   {
+    "k": "moon",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Moon / Sagittarius"
+   },
+   {
+    "k": "p0",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Pattern / ENFP"
+   },
+   {
+    "k": "out",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Channels / Two channels of one vehicle"
+   },
+   {
+    "k": "a1",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Archetype / Innocent, then Magician"
+   },
+   {
+    "k": "c:Fear",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "What you carry / Fear"
+   },
+   {
+    "k": "essence",
+    "present": false
+   }
+  ],
+  "a-derek-1600": [
+   {
+    "k": "n0",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": false,
+    "title": "First name / Derek"
+   },
+   {
+    "k": "expression",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Numerology / Expression 8"
+   },
+   {
+    "k": "lifePath",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Numerology / Life path 9"
+   },
+   {
+    "k": "sun",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Sun / Capricorn"
+   },
+   {
+    "k": "moon",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Moon / Virgo"
+   },
+   {
+    "k": "p0",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Pattern / ESTJ"
+   },
+   {
+    "k": "out",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Channels / Two channels of one vehicle"
+   },
+   {
+    "k": "a1",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Archetype / Warrior, then Explorer"
+   },
+   {
+    "k": "c:Anticipation",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "What you carry / Anticipation"
+   },
+   {
+    "k": "essence",
+    "present": false
+   }
+  ],
+  "a-james-1600": [
+   {
+    "k": "n0",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": false,
+    "title": "First name / James"
+   },
+   {
+    "k": "expression",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Numerology / Expression 1"
+   },
+   {
+    "k": "lifePath",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Numerology / Life path 7"
+   },
+   {
+    "k": "sun",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Sun / Libra"
+   },
+   {
+    "k": "moon",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Moon / Taurus"
+   },
+   {
+    "k": "p0",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Pattern / not read yet"
+   },
+   {
+    "k": "out",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Channels / Two channels of one vehicle"
+   },
+   {
+    "k": "a1",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Archetype / Ruler, then Warrior"
+   },
+   {
+    "k": "c:Anger",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "What you carry / Anger"
+   },
+   {
+    "k": "essence",
+    "present": false
+   }
+  ],
+  "b-angela-1600": [
+   {
+    "k": "n0",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": false,
+    "title": "First name / Angela"
+   },
+   {
+    "k": "expression",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Numerology / Expression 6"
+   },
+   {
+    "k": "lifePath",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Numerology / Life path 33"
+   },
+   {
+    "k": "sun",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Sun / Gemini"
+   },
+   {
+    "k": "moon",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Moon / Sagittarius"
+   },
+   {
+    "k": "p0",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Pattern / ENFP"
+   },
+   {
+    "k": "out",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Channels / Two channels of one vehicle"
+   },
+   {
+    "k": "a1",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Archetype / Innocent, then Magician"
+   },
+   {
+    "k": "c:Fear",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "What you carry / Fear"
+   },
+   {
+    "k": "essence",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Essence / "
+   }
+  ],
+  "b-derek-1600": [
+   {
+    "k": "n0",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": false,
+    "title": "First name / Derek"
+   },
+   {
+    "k": "expression",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Numerology / Expression 8"
+   },
+   {
+    "k": "lifePath",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Numerology / Life path 9"
+   },
+   {
+    "k": "sun",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Sun / Capricorn"
+   },
+   {
+    "k": "moon",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Moon / Virgo"
+   },
+   {
+    "k": "p0",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Pattern / ESTJ"
+   },
+   {
+    "k": "out",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Channels / Two channels of one vehicle"
+   },
+   {
+    "k": "a1",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Archetype / Warrior, then Explorer"
+   },
+   {
+    "k": "c:Anticipation",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "What you carry / Anticipation"
+   },
+   {
+    "k": "essence",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Essence / "
+   }
+  ],
+  "b-james-1600": [
+   {
+    "k": "n0",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": false,
+    "title": "First name / James"
+   },
+   {
+    "k": "expression",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Numerology / Expression 1"
+   },
+   {
+    "k": "lifePath",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Numerology / Life path 7"
+   },
+   {
+    "k": "sun",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Sun / Libra"
+   },
+   {
+    "k": "moon",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Moon / Taurus"
+   },
+   {
+    "k": "p0",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Pattern / not read yet"
+   },
+   {
+    "k": "out",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Channels / Two channels of one vehicle"
+   },
+   {
+    "k": "a1",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Archetype / Ruler, then Warrior"
+   },
+   {
+    "k": "c:Anger",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "What you carry / Anger"
+   },
+   {
+    "k": "essence",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Essence / "
+   }
+  ],
+  "c-angela-1600": [
+   {
+    "k": "n0",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": false,
+    "title": "First name / Angela"
+   },
+   {
+    "k": "expression",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Numerology / Expression 6"
+   },
+   {
+    "k": "lifePath",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Numerology / Life path 33"
+   },
+   {
+    "k": "sun",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Sun / Gemini"
+   },
+   {
+    "k": "moon",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Moon / Sagittarius"
+   },
+   {
+    "k": "p0",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Pattern / ENFP"
+   },
+   {
+    "k": "out",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Channels / Two channels of one vehicle"
+   },
+   {
+    "k": "a1",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Archetype / Innocent, then Magician"
+   },
+   {
+    "k": "c:Fear",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "What you carry / Fear"
+   },
+   {
+    "k": "essence",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Essence / "
+   }
+  ],
+  "c-derek-1600": [
+   {
+    "k": "n0",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": false,
+    "title": "First name / Derek"
+   },
+   {
+    "k": "expression",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Numerology / Expression 8"
+   },
+   {
+    "k": "lifePath",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Numerology / Life path 9"
+   },
+   {
+    "k": "sun",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Sun / Capricorn"
+   },
+   {
+    "k": "moon",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Moon / Virgo"
+   },
+   {
+    "k": "p0",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Pattern / ESTJ"
+   },
+   {
+    "k": "out",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Channels / Two channels of one vehicle"
+   },
+   {
+    "k": "a1",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Archetype / Warrior, then Explorer"
+   },
+   {
+    "k": "c:Anticipation",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "What you carry / Anticipation"
+   },
+   {
+    "k": "essence",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Essence / "
+   }
+  ],
+  "c-james-1600": [
+   {
+    "k": "n0",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": false,
+    "title": "First name / James"
+   },
+   {
+    "k": "expression",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Numerology / Expression 1"
+   },
+   {
+    "k": "lifePath",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Numerology / Life path 7"
+   },
+   {
+    "k": "sun",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Sun / Libra"
+   },
+   {
+    "k": "moon",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Moon / Taurus"
+   },
+   {
+    "k": "p0",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Pattern / not read yet"
+   },
+   {
+    "k": "out",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Channels / Two channels of one vehicle"
+   },
+   {
+    "k": "a1",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Archetype / Ruler, then Warrior"
+   },
+   {
+    "k": "c:Anger",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "What you carry / Anger"
+   },
+   {
+    "k": "essence",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Essence / "
+   }
+  ],
+  "d-angela-1600": [
+   {
+    "k": "n0",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": false,
+    "title": "First name / Angela"
+   },
+   {
+    "k": "expression",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Numerology / Expression 6"
+   },
+   {
+    "k": "lifePath",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Numerology / Life path 33"
+   },
+   {
+    "k": "sun",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Sun / Gemini"
+   },
+   {
+    "k": "moon",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Moon / Sagittarius"
+   },
+   {
+    "k": "p0",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Pattern / ENFP"
+   },
+   {
+    "k": "out",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Channels / Two channels of one vehicle"
+   },
+   {
+    "k": "a1",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Archetype / Innocent, then Magician"
+   },
+   {
+    "k": "c:Fear",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "What you carry / Fear"
+   },
+   {
+    "k": "essence",
+    "present": false
+   }
+  ],
+  "d-derek-1600": [
+   {
+    "k": "n0",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": false,
+    "title": "First name / Derek"
+   },
+   {
+    "k": "expression",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Numerology / Expression 8"
+   },
+   {
+    "k": "lifePath",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Numerology / Life path 9"
+   },
+   {
+    "k": "sun",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Sun / Capricorn"
+   },
+   {
+    "k": "moon",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Moon / Virgo"
+   },
+   {
+    "k": "p0",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Pattern / ESTJ"
+   },
+   {
+    "k": "out",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Channels / Two channels of one vehicle"
+   },
+   {
+    "k": "a1",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Archetype / Warrior, then Explorer"
+   },
+   {
+    "k": "c:Anticipation",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "What you carry / Anticipation"
+   },
+   {
+    "k": "essence",
+    "present": false
+   }
+  ],
+  "d-james-1600": [
+   {
+    "k": "n0",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": false,
+    "title": "First name / James"
+   },
+   {
+    "k": "expression",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Numerology / Expression 1"
+   },
+   {
+    "k": "lifePath",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Numerology / Life path 7"
+   },
+   {
+    "k": "sun",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Sun / Libra"
+   },
+   {
+    "k": "moon",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Moon / Taurus"
+   },
+   {
+    "k": "p0",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Pattern / not read yet"
+   },
+   {
+    "k": "out",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Channels / Two channels of one vehicle"
+   },
+   {
+    "k": "a1",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Archetype / Ruler, then Warrior"
+   },
+   {
+    "k": "c:Anger",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "What you carry / Anger"
+   },
+   {
+    "k": "essence",
+    "present": false
+   }
+  ],
+  "a-angela-390": [
+   {
+    "k": "n0",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "First name / Angela"
+   },
+   {
+    "k": "expression",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Numerology / Expression 6"
+   },
+   {
+    "k": "lifePath",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Numerology / Life path 33"
+   },
+   {
+    "k": "sun",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Sun / Gemini"
+   },
+   {
+    "k": "moon",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Moon / Sagittarius"
+   },
+   {
+    "k": "p0",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Pattern / ENFP"
+   },
+   {
+    "k": "out",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Channels / Two channels of one vehicle"
+   },
+   {
+    "k": "a1",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Archetype / Innocent, then Magician"
+   },
+   {
+    "k": "c:Fear",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "What you carry / Fear"
+   },
+   {
+    "k": "essence",
+    "present": false
+   }
+  ],
+  "a-derek-390": [
+   {
+    "k": "n0",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "First name / Derek"
+   },
+   {
+    "k": "expression",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Numerology / Expression 8"
+   },
+   {
+    "k": "lifePath",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Numerology / Life path 9"
+   },
+   {
+    "k": "sun",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Sun / Capricorn"
+   },
+   {
+    "k": "moon",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Moon / Virgo"
+   },
+   {
+    "k": "p0",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Pattern / ESTJ"
+   },
+   {
+    "k": "out",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Channels / Two channels of one vehicle"
+   },
+   {
+    "k": "a1",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Archetype / Warrior, then Explorer"
+   },
+   {
+    "k": "c:Anticipation",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "What you carry / Anticipation"
+   },
+   {
+    "k": "essence",
+    "present": false
+   }
+  ],
+  "a-james-390": [
+   {
+    "k": "n0",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "First name / James"
+   },
+   {
+    "k": "expression",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Numerology / Expression 1"
+   },
+   {
+    "k": "lifePath",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Numerology / Life path 7"
+   },
+   {
+    "k": "sun",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Sun / Libra"
+   },
+   {
+    "k": "moon",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Moon / Taurus"
+   },
+   {
+    "k": "p0",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Pattern / not read yet"
+   },
+   {
+    "k": "out",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Channels / Two channels of one vehicle"
+   },
+   {
+    "k": "a1",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Archetype / Ruler, then Warrior"
+   },
+   {
+    "k": "c:Anger",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "What you carry / Anger"
+   },
+   {
+    "k": "essence",
+    "present": false
+   }
+  ],
+  "b-angela-390": [
+   {
+    "k": "n0",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "First name / Angela"
+   },
+   {
+    "k": "expression",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Numerology / Expression 6"
+   },
+   {
+    "k": "lifePath",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Numerology / Life path 33"
+   },
+   {
+    "k": "sun",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Sun / Gemini"
+   },
+   {
+    "k": "moon",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Moon / Sagittarius"
+   },
+   {
+    "k": "p0",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Pattern / ENFP"
+   },
+   {
+    "k": "out",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Channels / Two channels of one vehicle"
+   },
+   {
+    "k": "a1",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Archetype / Innocent, then Magician"
+   },
+   {
+    "k": "c:Fear",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "What you carry / Fear"
+   },
+   {
+    "k": "essence",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Essence / "
+   }
+  ],
+  "b-derek-390": [
+   {
+    "k": "n0",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "First name / Derek"
+   },
+   {
+    "k": "expression",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Numerology / Expression 8"
+   },
+   {
+    "k": "lifePath",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Numerology / Life path 9"
+   },
+   {
+    "k": "sun",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Sun / Capricorn"
+   },
+   {
+    "k": "moon",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Moon / Virgo"
+   },
+   {
+    "k": "p0",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Pattern / ESTJ"
+   },
+   {
+    "k": "out",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Channels / Two channels of one vehicle"
+   },
+   {
+    "k": "a1",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Archetype / Warrior, then Explorer"
+   },
+   {
+    "k": "c:Anticipation",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "What you carry / Anticipation"
+   },
+   {
+    "k": "essence",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Essence / "
+   }
+  ],
+  "b-james-390": [
+   {
+    "k": "n0",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "First name / James"
+   },
+   {
+    "k": "expression",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Numerology / Expression 1"
+   },
+   {
+    "k": "lifePath",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Numerology / Life path 7"
+   },
+   {
+    "k": "sun",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Sun / Libra"
+   },
+   {
+    "k": "moon",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Moon / Taurus"
+   },
+   {
+    "k": "p0",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Pattern / not read yet"
+   },
+   {
+    "k": "out",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Channels / Two channels of one vehicle"
+   },
+   {
+    "k": "a1",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Archetype / Ruler, then Warrior"
+   },
+   {
+    "k": "c:Anger",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "What you carry / Anger"
+   },
+   {
+    "k": "essence",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Essence / "
+   }
+  ],
+  "c-angela-390": [
+   {
+    "k": "n0",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "First name / Angela"
+   },
+   {
+    "k": "expression",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Numerology / Expression 6"
+   },
+   {
+    "k": "lifePath",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Numerology / Life path 33"
+   },
+   {
+    "k": "sun",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Sun / Gemini"
+   },
+   {
+    "k": "moon",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Moon / Sagittarius"
+   },
+   {
+    "k": "p0",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Pattern / ENFP"
+   },
+   {
+    "k": "out",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Channels / Two channels of one vehicle"
+   },
+   {
+    "k": "a1",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Archetype / Innocent, then Magician"
+   },
+   {
+    "k": "c:Fear",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "What you carry / Fear"
+   },
+   {
+    "k": "essence",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Essence / "
+   }
+  ],
+  "c-derek-390": [
+   {
+    "k": "n0",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "First name / Derek"
+   },
+   {
+    "k": "expression",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Numerology / Expression 8"
+   },
+   {
+    "k": "lifePath",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Numerology / Life path 9"
+   },
+   {
+    "k": "sun",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Sun / Capricorn"
+   },
+   {
+    "k": "moon",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Moon / Virgo"
+   },
+   {
+    "k": "p0",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Pattern / ESTJ"
+   },
+   {
+    "k": "out",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Channels / Two channels of one vehicle"
+   },
+   {
+    "k": "a1",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Archetype / Warrior, then Explorer"
+   },
+   {
+    "k": "c:Anticipation",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "What you carry / Anticipation"
+   },
+   {
+    "k": "essence",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Essence / "
+   }
+  ],
+  "c-james-390": [
+   {
+    "k": "n0",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "First name / James"
+   },
+   {
+    "k": "expression",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Numerology / Expression 1"
+   },
+   {
+    "k": "lifePath",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Numerology / Life path 7"
+   },
+   {
+    "k": "sun",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Sun / Libra"
+   },
+   {
+    "k": "moon",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Moon / Taurus"
+   },
+   {
+    "k": "p0",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Pattern / not read yet"
+   },
+   {
+    "k": "out",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Channels / Two channels of one vehicle"
+   },
+   {
+    "k": "a1",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Archetype / Ruler, then Warrior"
+   },
+   {
+    "k": "c:Anger",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "What you carry / Anger"
+   },
+   {
+    "k": "essence",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Essence / "
+   }
+  ],
+  "d-angela-390": [
+   {
+    "k": "n0",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "First name / Angela"
+   },
+   {
+    "k": "expression",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Numerology / Expression 6"
+   },
+   {
+    "k": "lifePath",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Numerology / Life path 33"
+   },
+   {
+    "k": "sun",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Sun / Gemini"
+   },
+   {
+    "k": "moon",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Moon / Sagittarius"
+   },
+   {
+    "k": "p0",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Pattern / ENFP"
+   },
+   {
+    "k": "out",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Channels / Two channels of one vehicle"
+   },
+   {
+    "k": "a1",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Archetype / Innocent, then Magician"
+   },
+   {
+    "k": "c:Fear",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "What you carry / Fear"
+   },
+   {
+    "k": "essence",
+    "present": false
+   }
+  ],
+  "d-derek-390": [
+   {
+    "k": "n0",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "First name / Derek"
+   },
+   {
+    "k": "expression",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Numerology / Expression 8"
+   },
+   {
+    "k": "lifePath",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Numerology / Life path 9"
+   },
+   {
+    "k": "sun",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Sun / Capricorn"
+   },
+   {
+    "k": "moon",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Moon / Virgo"
+   },
+   {
+    "k": "p0",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Pattern / ESTJ"
+   },
+   {
+    "k": "out",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Channels / Two channels of one vehicle"
+   },
+   {
+    "k": "a1",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Archetype / Warrior, then Explorer"
+   },
+   {
+    "k": "c:Anticipation",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "What you carry / Anticipation"
+   },
+   {
+    "k": "essence",
+    "present": false
+   }
+  ],
+  "d-james-390": [
+   {
+    "k": "n0",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "First name / James"
+   },
+   {
+    "k": "expression",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Numerology / Expression 1"
+   },
+   {
+    "k": "lifePath",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Numerology / Life path 7"
+   },
+   {
+    "k": "sun",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Sun / Libra"
+   },
+   {
+    "k": "moon",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Moon / Taurus"
+   },
+   {
+    "k": "p0",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Pattern / not read yet"
+   },
+   {
+    "k": "out",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Channels / Two channels of one vehicle"
+   },
+   {
+    "k": "a1",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "Archetype / Ruler, then Warrior"
+   },
+   {
+    "k": "c:Anger",
+    "present": true,
+    "taps": 1,
+    "opened": true,
+    "inView": true,
+    "title": "What you carry / Anger"
+   },
+   {
+    "k": "essence",
+    "present": false
+   }
+  ]
+ },
+ "floors": {
+  "390": {
+   "pageErrors": [],
+   "outboundRequests": []
+  },
+  "1600": {
+   "pageErrors": [],
+   "outboundRequests": []
+  }
+ },
+ "note": "Tiles and Staged from the full run; Quiet and Portrait rerun after their channel strip was made pressable. Same build otherwise."
+}

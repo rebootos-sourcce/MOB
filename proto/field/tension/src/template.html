@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en" data-build="proto-field-tension-{{ID}}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Field mockup {{ID}}</title>
+<style>
+:root{
+ --bg:#0E0E0F; --stage:#101010; --panel:#15161A; --edge:#26282E;
+ --ink:#E6E7EA; --dim:#9A9CA4; --accent:#7EB8D4; --proto:#D6A93B; --alarm:#FF2E1F;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink)}
+body{font:400 14.5px/1.5 Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+.proto{position:sticky;top:0;z-index:5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:var(--proto);color:#16130A;
+ font-weight:600;font-size:13px;padding:6px 16px}
+.proto span{font-weight:500;opacity:.85}
+header{padding:16px 16px 6px;max-width:1400px;margin:0 auto}
+.eyebrow{font-size:12px;color:var(--dim);font-weight:600;letter-spacing:.02em}
+h1{font-size:22px;line-height:1.25;margin:4px 0 6px;font-weight:600}
+.sub{color:#C9CBD2;max-width:78ch;margin:0}
+nav.vars{display:flex;gap:6px;flex-wrap:wrap;padding:10px 16px 0;max-width:1400px;margin:0 auto}
+nav.vars a{color:var(--dim);text-decoration:none;border:1px solid var(--edge);border-radius:999px;
+ padding:4px 12px;font-size:13px}
+nav.vars a[aria-current]{color:var(--ink);border-color:var(--accent)}
+main{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:14px;padding:12px 16px;max-width:1400px;margin:0 auto}
+.stage{position:relative;height:min(74vh,860px);min-height:420px;background:var(--stage);
+ border:1px solid var(--edge);border-radius:12px;overflow:hidden}
+.stage canvas{display:block;touch-action:none;cursor:crosshair}
+.hint{position:absolute;left:12px;top:10px;right:12px;font-size:12.5px;color:var(--dim);pointer-events:none}
+.zro{position:absolute;right:12px;bottom:10px;font-size:12px;color:var(--dim);pointer-events:none;
+ font-variant-numeric:tabular-nums}
+aside{background:var(--panel);border:1px solid var(--edge);border-radius:12px;padding:12px 12px 8px;
+ max-height:min(74vh,860px);overflow:auto}
+aside h2{font-size:14px;margin:0;font-weight:600}
+aside .small{font-size:12.5px;color:var(--dim);margin:2px 0 8px}
+#hot{list-style:none;margin:0;padding:0}
+#hot li button{all:unset;box-sizing:border-box;cursor:pointer;display:grid;width:100%;
+ grid-template-columns:10px minmax(0,1fr) 34px 74px;gap:4px 8px;align-items:center;padding:6px 4px;
+ border-radius:8px}
+#hot li button:hover,#hot li button:focus-visible{background:#1D1F25}
+#hot .dot{width:8px;height:8px;border-radius:50%}
+#hot .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:13px}
+#hot .val{font-weight:600;font-variant-numeric:tabular-nums;text-align:right;font-size:13px}
+#hot .dir{font-size:12px;color:var(--dim)}
+#hot .dir.expanding{color:#E7C98A} #hot .dir.collapsing{color:#9DB4E6}
+#hot .bar{grid-column:2/5;height:3px;background:#23252B;border-radius:2px;overflow:hidden}
+#hot .bar i{display:block;height:100%}
+.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:0 16px 12px;max-width:1400px;margin:0 auto}
+.controls button,#policy button{font:inherit;font-size:13px;color:var(--ink);background:#1A1C22;
+ border:1px solid var(--edge);border-radius:999px;padding:7px 14px;cursor:pointer;min-height:36px}
+.controls button:hover,#policy button:hover{border-color:#3A3D46}
+.controls button[aria-pressed="true"],#policy button[aria-pressed="true"]{border-color:var(--accent);color:#fff}
+.controls label{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--dim)}
+.controls input[type=range]{width:140px;accent-color:var(--accent)}
+#policy{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:0 16px 12px;max-width:1400px;margin:0 auto}
+#policy .lbl{font-size:13px;color:var(--ink);font-weight:600;margin-right:4px}
+details{max-width:1400px;margin:0 auto 32px;padding:0 16px;color:var(--dim);font-size:13px}
+details summary{cursor:pointer;color:var(--ink)}
+table{border-collapse:collapse;margin-top:8px;width:100%;max-width:880px}
+td,th{border-bottom:1px solid var(--edge);padding:5px 8px;text-align:left;vertical-align:top}
+th{color:var(--ink);font-weight:600}
+@media (max-width:860px){
+ main{grid-template-columns:minmax(0,1fr)}
+ .stage{height:62vh;min-height:360px}
+ aside{max-height:none}
+ .controls input[type=range]{width:110px}}
+</style>
+</head>
+<body>
+<div class="proto" role="note">Prototype. <span>Mock loads. Not the app, not your reading.</span></div>
+<header>
+ <div class="eyebrow">Field mockup {{ID}} of four · tension on heavy load, names around the pointer</div>
+ <h1>{{NAME}}</h1>
+ <p class="sub">{{SUB}}</p>
+</header>
+<nav class="vars" aria-label="The four mockups">
+ <a href="a-strain.html"{{CUR_A}}>A · Strain marks</a>
+ <a href="b-wire.html"{{CUR_B}}>B · Taut wire</a>
+ <a href="c-heat.html"{{CUR_C}}>C · Heat</a>
+ <a href="d-fringe.html"{{CUR_D}}>D · Fringes, and which names win</a>
+</nav>
+<main>
+ <div class="stage" id="stage"><canvas id="cv" aria-label="The Field, a ring of addresses round a core, with tension drawn on the heavy ones"></canvas>
+  <div class="hint" id="hint"></div><div class="zro" id="zro"></div></div>
+ <aside aria-label="Running hot">
+  <h2>Running hot · <span id="hotn"></span></h2>
+  <p class="small">Every address north of five, heaviest first, and which way it is moving. Press one to go to it.</p>
+  <ol id="hot"></ol>
+ </aside>
+</main>
+<div class="controls">
+ <button type="button" id="b-replay">Replay the load up</button>
+ <button type="button" id="b-story">Load a story into 3rd Eye</button>
+ <button type="button" id="b-release">Release it</button>
+ <button type="button" id="b-names">Zoom to the names</button>
+ <button type="button" id="b-reset">Reset view</button>
+ <button type="button" id="b-motion" aria-pressed="false">Reduced motion: off</button>
+ <label for="r-rad">Radius <input type="range" id="r-rad" min="80" max="340" step="10"> <span id="r-radv"></span></label>
+</div>
+<div id="policy" hidden></div>
+<details>
+ <summary>Timing, for the team</summary>
+ {{TABLE}}
+</details>
+<script>
+{{VARIANT_JS}}
+</script>
+<script>
+{{COMMON_JS}}
+</script>
+</body>
+</html>

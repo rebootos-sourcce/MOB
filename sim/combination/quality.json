@@ -1,0 +1,5683 @@
+{
+ "when": "2026-09-21T05:13:18.430Z",
+ "head": "647a099",
+ "dirty": true,
+ "hours": 40,
+ "dims": [
+  {
+   "k": "contained",
+   "nm": "Self contained",
+   "why": "CLAUDE.md: one file, no dependencies, no network. A prototype that fetches has not proved anything about a product that cannot.",
+   "how": "Outbound references in the deliverable pages: a script, style, image, font or fetch pointing at a host. Four when there are none, minus two for each distinct one."
+  },
+  {
+   "k": "widths",
+   "nm": "Looked at, both widths",
+   "why": "CLAUDE.md: reading CSS is not reviewing a screen, and the shots are taken at 1600 and 390.",
+   "how": "Shots present in the tree at that commit at both widths, and a script that takes them. Two for each width, and nothing for shots with no script behind them."
+  },
+  {
+   "k": "measured",
+   "nm": "Figures measured, not typed",
+   "why": "CLAUDE.md, twelve times bitten: read the count off the run. A figure typed into a page is the defect this repository keeps paying for.",
+   "how": "Two for a measurement file in the family, Two for the page carrying a stamp: a commit, an md5 or a timestamp."
+  },
+  {
+   "k": "refuses",
+   "nm": "Refuses to build without its data",
+   "why": "The gates: a build that proceeds with its data missing prints a page of nothing and calls it a result.",
+   "how": "A builder or probe script in the family that exits non zero on a missing input. Four with the guard, two for a script with none, nothing with no script."
+  },
+  {
+   "k": "repro",
+   "nm": "Reproduction printed on the page",
+   "why": "A figure nobody can regenerate is a claim. The two simulation pages print their own chain.",
+   "how": "The deliverable page naming the command that rebuilds it."
+  },
+  {
+   "k": "voice",
+   "nm": "Voice gate",
+   "why": "The house voice is a ruling, not a preference, and it has a runnable gate.",
+   "how": "The repository voice gate run against the deliverable pages. Four minus one for each hard failure."
+  },
+  {
+   "k": "lands",
+   "nm": "Names where it lands",
+   "why": "A point is only earned by a change that would move the product, named with the file it lands in. That rule was written for the simulation and it is the same rule here.",
+   "how": "Distinct paths under atuned_src named in the deliverable pages. Two for one, four for two or more."
+  },
+  {
+   "k": "open",
+   "nm": "Says what is still open",
+   "why": "DECISIONS.md and the queue: an artefact that names nothing open has either decided something it does not own or hidden the question.",
+   "how": "Counts the page saying what it is not doing, what needs a ruling, and whose call it is. This is the weakest of the eight and it is a word search."
+  }
+ ],
+ "families": [
+  {
+   "k": "story4",
+   "nm": "The four story designs",
+   "dir": "proto/story4",
+   "seat": "design",
+   "commits": 1,
+   "iters": [
+    {
+     "i": 1,
+     "commit": "08de6c4",
+     "when": "09-20 22:19",
+     "subject": "Four story page designs, and the defect they all had to route around",
+     "tree": false,
+     "dims": {
+      "contained": 4,
+      "widths": 4,
+      "measured": 0,
+      "refuses": 2,
+      "repro": 0,
+      "voice": 4,
+      "lands": 1.6,
+      "open": 0.8
+     },
+     "total": 16.4,
+     "max": 32,
+     "note": {
+      "pages": 5,
+      "png": 20,
+      "shotScript": true,
+      "data": 0,
+      "scripts": 1,
+      "guard": null,
+      "voiceFailures": 0,
+      "voiceGates": {},
+      "lands": [
+       "atuned_src/shell/head.html.",
+       "atuned_src/shell/head.html"
+      ]
+     },
+     "pages": [
+      "bench.html",
+      "body.html",
+      "instrument.html",
+      "mirror.html",
+      "index.html"
+     ],
+     "pageRows": [
+      {
+       "page": "bench.html",
+       "dims": {
+        "contained": 4,
+        "widths": 4,
+        "measured": 0,
+        "refuses": 2,
+        "repro": 0,
+        "voice": 4,
+        "lands": 2,
+        "open": 1
+       },
+       "total": 17,
+       "max": 32,
+       "bytes": 38438,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": null,
+        "voiceFailures": 0,
+        "voiceGates": {},
+        "lands": [
+         "atuned_src/shell/head.html."
+        ],
+        "openHits": 1
+       }
+      },
+      {
+       "page": "body.html",
+       "dims": {
+        "contained": 4,
+        "widths": 4,
+        "measured": 0,
+        "refuses": 2,
+        "repro": 0,
+        "voice": 4,
+        "lands": 2,
+        "open": 1
+       },
+       "total": 17,
+       "max": 32,
+       "bytes": 43067,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": null,
+        "voiceFailures": 0,
+        "voiceGates": {},
+        "lands": [
+         "atuned_src/shell/head.html."
+        ],
+        "openHits": 1
+       }
+      },
+      {
+       "page": "instrument.html",
+       "dims": {
+        "contained": 4,
+        "widths": 4,
+        "measured": 0,
+        "refuses": 2,
+        "repro": 0,
+        "voice": 4,
+        "lands": 2,
+        "open": 1
+       },
+       "total": 17,
+       "max": 32,
+       "bytes": 43180,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": null,
+        "voiceFailures": 0,
+        "voiceGates": {},
+        "lands": [
+         "atuned_src/shell/head.html"
+        ],
+        "openHits": 1
+       }
+      },
+      {
+       "page": "mirror.html",
+       "dims": {
+        "contained": 4,
+        "widths": 4,
+        "measured": 0,
+        "refuses": 2,
+        "repro": 0,
+        "voice": 4,
+        "lands": 2,
+        "open": 1
+       },
+       "total": 17,
+       "max": 32,
+       "bytes": 42198,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": null,
+        "voiceFailures": 0,
+        "voiceGates": {},
+        "lands": [
+         "atuned_src/shell/head.html."
+        ],
+        "openHits": 1
+       }
+      },
+      {
+       "page": "index.html",
+       "dims": {
+        "contained": 4,
+        "widths": 4,
+        "measured": 0,
+        "refuses": 2,
+        "repro": 0,
+        "voice": 4,
+        "lands": 0,
+        "open": 0
+       },
+       "total": 14,
+       "max": 32,
+       "bytes": 4143,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": null,
+        "voiceFailures": 0,
+        "voiceGates": {},
+        "lands": [],
+        "openHits": 0
+       }
+      }
+     ],
+     "bytes": 171026,
+     "weakest": [
+      "measured",
+      "repro"
+     ],
+     "weakestAt": 0
+    },
+    {
+     "i": 2,
+     "commit": "working tree",
+     "when": "now",
+     "subject": "the working tree as it stands",
+     "tree": true,
+     "dims": {
+      "contained": 4,
+      "widths": 4,
+      "measured": 0,
+      "refuses": 2,
+      "repro": 0,
+      "voice": 4,
+      "lands": 1.6,
+      "open": 0.8
+     },
+     "total": 16.4,
+     "max": 32,
+     "note": {
+      "pages": 5,
+      "png": 20,
+      "shotScript": true,
+      "data": 0,
+      "scripts": 1,
+      "guard": null,
+      "voiceFailures": 0,
+      "voiceGates": {},
+      "lands": [
+       "atuned_src/shell/head.html.",
+       "atuned_src/shell/head.html"
+      ]
+     },
+     "pages": [
+      "bench.html",
+      "body.html",
+      "instrument.html",
+      "mirror.html",
+      "index.html"
+     ],
+     "pageRows": [
+      {
+       "page": "bench.html",
+       "dims": {
+        "contained": 4,
+        "widths": 4,
+        "measured": 0,
+        "refuses": 2,
+        "repro": 0,
+        "voice": 4,
+        "lands": 2,
+        "open": 1
+       },
+       "total": 17,
+       "max": 32,
+       "bytes": 38438,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": null,
+        "voiceFailures": 0,
+        "voiceGates": {},
+        "lands": [
+         "atuned_src/shell/head.html."
+        ],
+        "openHits": 1
+       }
+      },
+      {
+       "page": "body.html",
+       "dims": {
+        "contained": 4,
+        "widths": 4,
+        "measured": 0,
+        "refuses": 2,
+        "repro": 0,
+        "voice": 4,
+        "lands": 2,
+        "open": 1
+       },
+       "total": 17,
+       "max": 32,
+       "bytes": 43067,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": null,
+        "voiceFailures": 0,
+        "voiceGates": {},
+        "lands": [
+         "atuned_src/shell/head.html."
+        ],
+        "openHits": 1
+       }
+      },
+      {
+       "page": "instrument.html",
+       "dims": {
+        "contained": 4,
+        "widths": 4,
+        "measured": 0,
+        "refuses": 2,
+        "repro": 0,
+        "voice": 4,
+        "lands": 2,
+        "open": 1
+       },
+       "total": 17,
+       "max": 32,
+       "bytes": 43180,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": null,
+        "voiceFailures": 0,
+        "voiceGates": {},
+        "lands": [
+         "atuned_src/shell/head.html"
+        ],
+        "openHits": 1
+       }
+      },
+      {
+       "page": "mirror.html",
+       "dims": {
+        "contained": 4,
+        "widths": 4,
+        "measured": 0,
+        "refuses": 2,
+        "repro": 0,
+        "voice": 4,
+        "lands": 2,
+        "open": 1
+       },
+       "total": 17,
+       "max": 32,
+       "bytes": 42198,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": null,
+        "voiceFailures": 0,
+        "voiceGates": {},
+        "lands": [
+         "atuned_src/shell/head.html."
+        ],
+        "openHits": 1
+       }
+      },
+      {
+       "page": "index.html",
+       "dims": {
+        "contained": 4,
+        "widths": 4,
+        "measured": 0,
+        "refuses": 2,
+        "repro": 0,
+        "voice": 4,
+        "lands": 0,
+        "open": 0
+       },
+       "total": 14,
+       "max": 32,
+       "bytes": 4143,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": null,
+        "voiceFailures": 0,
+        "voiceGates": {},
+        "lands": [],
+        "openHits": 0
+       }
+      }
+     ],
+     "bytes": 171026,
+     "weakest": [
+      "measured",
+      "repro"
+     ],
+     "weakestAt": 0
+    }
+   ]
+  },
+  {
+   "k": "nav",
+   "nm": "The navigation prototype",
+   "dir": "proto/nav",
+   "seat": "ux",
+   "commits": 3,
+   "iters": [
+    {
+     "i": 1,
+     "commit": "82c8107",
+     "when": "09-20 22:03",
+     "subject": "Turn the onboarding off, stack the boot subtitle, queue the eighteenth pass",
+     "tree": false,
+     "dims": {
+      "contained": 4,
+      "widths": 4,
+      "measured": 2,
+      "refuses": 2,
+      "repro": 0,
+      "voice": 4,
+      "lands": 0,
+      "open": 1
+     },
+     "total": 17,
+     "max": 32,
+     "note": {
+      "pages": 1,
+      "png": 9,
+      "shotScript": true,
+      "data": 4,
+      "scripts": 3,
+      "guard": null,
+      "voiceFailures": 0,
+      "voiceGates": {},
+      "lands": []
+     },
+     "pages": [
+      "index.html"
+     ],
+     "pageRows": [
+      {
+       "page": "index.html",
+       "dims": {
+        "contained": 4,
+        "widths": 4,
+        "measured": 2,
+        "refuses": 2,
+        "repro": 0,
+        "voice": 4,
+        "lands": 0,
+        "open": 1
+       },
+       "total": 17,
+       "max": 32,
+       "bytes": 36926,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": null,
+        "voiceFailures": 0,
+        "voiceGates": {},
+        "lands": [],
+        "openHits": 1
+       }
+      }
+     ],
+     "bytes": 36926,
+     "weakest": [
+      "repro",
+      "lands"
+     ],
+     "weakestAt": 0
+    },
+    {
+     "i": 2,
+     "commit": "working tree",
+     "when": "now",
+     "subject": "the working tree as it stands",
+     "tree": true,
+     "dims": {
+      "contained": 4,
+      "widths": 4,
+      "measured": 2,
+      "refuses": 2,
+      "repro": 0,
+      "voice": 4,
+      "lands": 0,
+      "open": 1
+     },
+     "total": 17,
+     "max": 32,
+     "note": {
+      "pages": 1,
+      "png": 9,
+      "shotScript": true,
+      "data": 4,
+      "scripts": 3,
+      "guard": null,
+      "voiceFailures": 0,
+      "voiceGates": {},
+      "lands": []
+     },
+     "pages": [
+      "index.html"
+     ],
+     "pageRows": [
+      {
+       "page": "index.html",
+       "dims": {
+        "contained": 4,
+        "widths": 4,
+        "measured": 2,
+        "refuses": 2,
+        "repro": 0,
+        "voice": 4,
+        "lands": 0,
+        "open": 1
+       },
+       "total": 17,
+       "max": 32,
+       "bytes": 36926,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": null,
+        "voiceFailures": 0,
+        "voiceGates": {},
+        "lands": [],
+        "openHits": 1
+       }
+      }
+     ],
+     "bytes": 36926,
+     "weakest": [
+      "repro",
+      "lands"
+     ],
+     "weakestAt": 0
+    }
+   ]
+  },
+  {
+   "k": "logo",
+   "nm": "The logo rounds",
+   "dir": "proto/logo",
+   "seat": "art",
+   "commits": 7,
+   "iters": [
+    {
+     "i": 1,
+     "commit": "15d149a",
+     "when": "09-20 21:27",
+     "subject": "The voice gate caught my own string within minutes of landing",
+     "tree": false,
+     "dims": {
+      "contained": 4,
+      "widths": 4,
+      "measured": 2,
+      "refuses": 2,
+      "repro": 0,
+      "voice": 0,
+      "lands": 4,
+      "open": 1
+     },
+     "total": 17,
+     "max": 32,
+     "note": {
+      "pages": 1,
+      "png": 2,
+      "shotScript": true,
+      "data": 2,
+      "scripts": 3,
+      "guard": null,
+      "voiceFailures": 8,
+      "voiceGates": {
+       "caps": 6
+      },
+      "lands": [
+       "atuned_src/shell/body.html",
+       "atuned_src/shell/head.html"
+      ]
+     },
+     "pages": [
+      "index.html"
+     ],
+     "pageRows": [
+      {
+       "page": "index.html",
+       "dims": {
+        "contained": 4,
+        "widths": 4,
+        "measured": 2,
+        "refuses": 2,
+        "repro": 0,
+        "voice": 0,
+        "lands": 4,
+        "open": 1
+       },
+       "total": 17,
+       "max": 32,
+       "bytes": 75265,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": null,
+        "voiceFailures": 8,
+        "voiceGates": {
+         "caps": 6
+        },
+        "lands": [
+         "atuned_src/shell/body.html",
+         "atuned_src/shell/head.html"
+        ],
+        "openHits": 1
+       }
+      }
+     ],
+     "bytes": 75265,
+     "weakest": [
+      "repro",
+      "voice"
+     ],
+     "weakestAt": 0
+    },
+    {
+     "i": 2,
+     "commit": "c759cd9",
+     "when": "09-20 21:28",
+     "subject": "Logo geometry in flight",
+     "tree": false,
+     "dims": {
+      "contained": 4,
+      "widths": 4,
+      "measured": 2,
+      "refuses": 2,
+      "repro": 0,
+      "voice": 0,
+      "lands": 4,
+      "open": 1
+     },
+     "total": 17,
+     "max": 32,
+     "note": {
+      "pages": 1,
+      "png": 2,
+      "shotScript": true,
+      "data": 2,
+      "scripts": 3,
+      "guard": null,
+      "voiceFailures": 8,
+      "voiceGates": {
+       "caps": 6
+      },
+      "lands": [
+       "atuned_src/shell/body.html",
+       "atuned_src/shell/head.html"
+      ]
+     },
+     "pages": [
+      "index.html"
+     ],
+     "pageRows": [
+      {
+       "page": "index.html",
+       "dims": {
+        "contained": 4,
+        "widths": 4,
+        "measured": 2,
+        "refuses": 2,
+        "repro": 0,
+        "voice": 0,
+        "lands": 4,
+        "open": 1
+       },
+       "total": 17,
+       "max": 32,
+       "bytes": 75265,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": null,
+        "voiceFailures": 8,
+        "voiceGates": {
+         "caps": 6
+        },
+        "lands": [
+         "atuned_src/shell/body.html",
+         "atuned_src/shell/head.html"
+        ],
+        "openHits": 1
+       }
+      }
+     ],
+     "bytes": 75265,
+     "weakest": [
+      "repro",
+      "voice"
+     ],
+     "weakestAt": 0
+    },
+    {
+     "i": 3,
+     "commit": "1faf631",
+     "when": "09-20 21:28",
+     "subject": "The menu becomes two levels, and it is legal because the integers do not move",
+     "tree": false,
+     "dims": {
+      "contained": 4,
+      "widths": 4,
+      "measured": 2,
+      "refuses": 2,
+      "repro": 0,
+      "voice": 0,
+      "lands": 4,
+      "open": 1
+     },
+     "total": 17,
+     "max": 32,
+     "note": {
+      "pages": 1,
+      "png": 2,
+      "shotScript": true,
+      "data": 2,
+      "scripts": 3,
+      "guard": null,
+      "voiceFailures": 8,
+      "voiceGates": {
+       "caps": 6
+      },
+      "lands": [
+       "atuned_src/shell/body.html",
+       "atuned_src/shell/head.html"
+      ]
+     },
+     "pages": [
+      "index.html"
+     ],
+     "pageRows": [
+      {
+       "page": "index.html",
+       "dims": {
+        "contained": 4,
+        "widths": 4,
+        "measured": 2,
+        "refuses": 2,
+        "repro": 0,
+        "voice": 0,
+        "lands": 4,
+        "open": 1
+       },
+       "total": 17,
+       "max": 32,
+       "bytes": 78528,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": null,
+        "voiceFailures": 8,
+        "voiceGates": {
+         "caps": 6
+        },
+        "lands": [
+         "atuned_src/shell/body.html",
+         "atuned_src/shell/head.html"
+        ],
+        "openHits": 1
+       }
+      }
+     ],
+     "bytes": 78528,
+     "weakest": [
+      "repro",
+      "voice"
+     ],
+     "weakestAt": 0
+    },
+    {
+     "i": 4,
+     "commit": "a162ec7",
+     "when": "09-20 21:32",
+     "subject": "The release flow was silent because the voice defaulted to off",
+     "tree": false,
+     "dims": {
+      "contained": 4,
+      "widths": 4,
+      "measured": 2,
+      "refuses": 2,
+      "repro": 0,
+      "voice": 0,
+      "lands": 4,
+      "open": 1
+     },
+     "total": 17,
+     "max": 32,
+     "note": {
+      "pages": 1,
+      "png": 2,
+      "shotScript": true,
+      "data": 2,
+      "scripts": 3,
+      "guard": null,
+      "voiceFailures": 9,
+      "voiceGates": {
+       "caps": 6,
+       "count-against-total": 1
+      },
+      "lands": [
+       "atuned_src/shell/body.html",
+       "atuned_src/shell/head.html"
+      ]
+     },
+     "pages": [
+      "index.html"
+     ],
+     "pageRows": [
+      {
+       "page": "index.html",
+       "dims": {
+        "contained": 4,
+        "widths": 4,
+        "measured": 2,
+        "refuses": 2,
+        "repro": 0,
+        "voice": 0,
+        "lands": 4,
+        "open": 1
+       },
+       "total": 17,
+       "max": 32,
+       "bytes": 79495,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": null,
+        "voiceFailures": 9,
+        "voiceGates": {
+         "caps": 6,
+         "count-against-total": 1
+        },
+        "lands": [
+         "atuned_src/shell/body.html",
+         "atuned_src/shell/head.html"
+        ],
+        "openHits": 1
+       }
+      }
+     ],
+     "bytes": 79495,
+     "weakest": [
+      "repro",
+      "voice"
+     ],
+     "weakestAt": 0
+    },
+    {
+     "i": 5,
+     "commit": "d2b6681",
+     "when": "09-20 21:47",
+     "subject": "Centre the boot card dots, and queue the logotype",
+     "tree": false,
+     "dims": {
+      "contained": 4,
+      "widths": 4,
+      "measured": 2,
+      "refuses": 2,
+      "repro": 0,
+      "voice": 0,
+      "lands": 4,
+      "open": 1
+     },
+     "total": 17,
+     "max": 32,
+     "note": {
+      "pages": 1,
+      "png": 2,
+      "shotScript": true,
+      "data": 2,
+      "scripts": 3,
+      "guard": null,
+      "voiceFailures": 8,
+      "voiceGates": {
+       "caps": 6,
+       "count-against-total": 1
+      },
+      "lands": [
+       "atuned_src/shell/body.html",
+       "atuned_src/shell/head.html"
+      ]
+     },
+     "pages": [
+      "index.html"
+     ],
+     "pageRows": [
+      {
+       "page": "index.html",
+       "dims": {
+        "contained": 4,
+        "widths": 4,
+        "measured": 2,
+        "refuses": 2,
+        "repro": 0,
+        "voice": 0,
+        "lands": 4,
+        "open": 1
+       },
+       "total": 17,
+       "max": 32,
+       "bytes": 81568,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": null,
+        "voiceFailures": 8,
+        "voiceGates": {
+         "caps": 6,
+         "count-against-total": 1
+        },
+        "lands": [
+         "atuned_src/shell/body.html",
+         "atuned_src/shell/head.html"
+        ],
+        "openHits": 1
+       }
+      }
+     ],
+     "bytes": 81568,
+     "weakest": [
+      "repro",
+      "voice"
+     ],
+     "weakestAt": 0
+    },
+    {
+     "i": 6,
+     "commit": "3e00651",
+     "when": "09-20 22:54",
+     "subject": "Two rounds on the nine cuts, the favicon ring, and the grey for paper",
+     "tree": false,
+     "dims": {
+      "contained": 4,
+      "widths": 4,
+      "measured": 2,
+      "refuses": 4,
+      "repro": 0,
+      "voice": 0,
+      "lands": 4,
+      "open": 1
+     },
+     "total": 19,
+     "max": 32,
+     "note": {
+      "pages": 1,
+      "png": 6,
+      "shotScript": true,
+      "data": 8,
+      "scripts": 15,
+      "guard": "r2build.js",
+      "voiceFailures": 8,
+      "voiceGates": {
+       "caps": 6,
+       "count-against-total": 1
+      },
+      "lands": [
+       "atuned_src/shell/body.html",
+       "atuned_src/shell/head.html"
+      ]
+     },
+     "pages": [
+      "index.html"
+     ],
+     "pageRows": [
+      {
+       "page": "index.html",
+       "dims": {
+        "contained": 4,
+        "widths": 4,
+        "measured": 2,
+        "refuses": 4,
+        "repro": 0,
+        "voice": 0,
+        "lands": 4,
+        "open": 1
+       },
+       "total": 19,
+       "max": 32,
+       "bytes": 81568,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": null,
+        "voiceFailures": 8,
+        "voiceGates": {
+         "caps": 6,
+         "count-against-total": 1
+        },
+        "lands": [
+         "atuned_src/shell/body.html",
+         "atuned_src/shell/head.html"
+        ],
+        "openHits": 1
+       }
+      }
+     ],
+     "bytes": 81568,
+     "weakest": [
+      "repro",
+      "voice"
+     ],
+     "weakestAt": 0
+    },
+    {
+     "i": 7,
+     "commit": "working tree",
+     "when": "now",
+     "subject": "the working tree as it stands",
+     "tree": true,
+     "dims": {
+      "contained": 4,
+      "widths": 4,
+      "measured": 2,
+      "refuses": 4,
+      "repro": 0,
+      "voice": 0,
+      "lands": 4,
+      "open": 1
+     },
+     "total": 19,
+     "max": 32,
+     "note": {
+      "pages": 1,
+      "png": 6,
+      "shotScript": true,
+      "data": 8,
+      "scripts": 15,
+      "guard": "r2build.js",
+      "voiceFailures": 8,
+      "voiceGates": {
+       "caps": 6,
+       "count-against-total": 1
+      },
+      "lands": [
+       "atuned_src/shell/body.html",
+       "atuned_src/shell/head.html"
+      ]
+     },
+     "pages": [
+      "index.html"
+     ],
+     "pageRows": [
+      {
+       "page": "index.html",
+       "dims": {
+        "contained": 4,
+        "widths": 4,
+        "measured": 2,
+        "refuses": 4,
+        "repro": 0,
+        "voice": 0,
+        "lands": 4,
+        "open": 1
+       },
+       "total": 19,
+       "max": 32,
+       "bytes": 81568,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": null,
+        "voiceFailures": 8,
+        "voiceGates": {
+         "caps": 6,
+         "count-against-total": 1
+        },
+        "lands": [
+         "atuned_src/shell/body.html",
+         "atuned_src/shell/head.html"
+        ],
+        "openHits": 1
+       }
+      }
+     ],
+     "bytes": 81568,
+     "weakest": [
+      "repro",
+      "voice"
+     ],
+     "weakestAt": 0
+    }
+   ]
+  },
+  {
+   "k": "dials",
+   "nm": "The dial prototype",
+   "dir": "proto/dials",
+   "seat": "design",
+   "commits": 1,
+   "iters": [
+    {
+     "i": 1,
+     "commit": "8e2e73f",
+     "when": "09-21 00:27",
+     "subject": "One dial, used twice, and the third drawing nobody sees",
+     "tree": false,
+     "dims": {
+      "contained": 4,
+      "widths": 4,
+      "measured": 2,
+      "refuses": 2,
+      "repro": 0,
+      "voice": 3,
+      "lands": 4,
+      "open": 1
+     },
+     "total": 20,
+     "max": 32,
+     "note": {
+      "pages": 1,
+      "png": 2,
+      "shotScript": true,
+      "data": 1,
+      "scripts": 1,
+      "guard": null,
+      "voiceFailures": 1,
+      "voiceGates": {
+       "tolerance": 1
+      },
+      "lands": [
+       "atuned_src/ui/ui.js",
+       "atuned_src/shell/head.html"
+      ]
+     },
+     "pages": [
+      "index.html"
+     ],
+     "pageRows": [
+      {
+       "page": "index.html",
+       "dims": {
+        "contained": 4,
+        "widths": 4,
+        "measured": 2,
+        "refuses": 2,
+        "repro": 0,
+        "voice": 3,
+        "lands": 4,
+        "open": 1
+       },
+       "total": 20,
+       "max": 32,
+       "bytes": 41839,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": null,
+        "voiceFailures": 1,
+        "voiceGates": {
+         "tolerance": 1
+        },
+        "lands": [
+         "atuned_src/ui/ui.js",
+         "atuned_src/shell/head.html"
+        ],
+        "openHits": 1
+       }
+      }
+     ],
+     "bytes": 41839,
+     "weakest": [
+      "repro"
+     ],
+     "weakestAt": 0
+    },
+    {
+     "i": 2,
+     "commit": "working tree",
+     "when": "now",
+     "subject": "the working tree as it stands",
+     "tree": true,
+     "dims": {
+      "contained": 4,
+      "widths": 4,
+      "measured": 2,
+      "refuses": 2,
+      "repro": 0,
+      "voice": 3,
+      "lands": 4,
+      "open": 1
+     },
+     "total": 20,
+     "max": 32,
+     "note": {
+      "pages": 1,
+      "png": 2,
+      "shotScript": true,
+      "data": 1,
+      "scripts": 1,
+      "guard": null,
+      "voiceFailures": 1,
+      "voiceGates": {
+       "tolerance": 1
+      },
+      "lands": [
+       "atuned_src/ui/ui.js",
+       "atuned_src/shell/head.html"
+      ]
+     },
+     "pages": [
+      "index.html"
+     ],
+     "pageRows": [
+      {
+       "page": "index.html",
+       "dims": {
+        "contained": 4,
+        "widths": 4,
+        "measured": 2,
+        "refuses": 2,
+        "repro": 0,
+        "voice": 3,
+        "lands": 4,
+        "open": 1
+       },
+       "total": 20,
+       "max": 32,
+       "bytes": 41839,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": null,
+        "voiceFailures": 1,
+        "voiceGates": {
+         "tolerance": 1
+        },
+        "lands": [
+         "atuned_src/ui/ui.js",
+         "atuned_src/shell/head.html"
+        ],
+        "openHits": 1
+       }
+      }
+     ],
+     "bytes": 41839,
+     "weakest": [
+      "repro"
+     ],
+     "weakestAt": 0
+    }
+   ]
+  },
+  {
+   "k": "feathers",
+   "nm": "The feather prototype, second",
+   "dir": "proto/feathers",
+   "seat": "design",
+   "commits": 1,
+   "iters": [
+    {
+     "i": 1,
+     "commit": "620a457",
+     "when": "09-21 00:32",
+     "subject": "The feathers get a target, and width cannot carry the count",
+     "tree": false,
+     "dims": {
+      "contained": 4,
+      "widths": 4,
+      "measured": 2,
+      "refuses": 2,
+      "repro": 0,
+      "voice": 4,
+      "lands": 0,
+      "open": 1
+     },
+     "total": 17,
+     "max": 32,
+     "note": {
+      "pages": 1,
+      "png": 10,
+      "shotScript": true,
+      "data": 3,
+      "scripts": 1,
+      "guard": null,
+      "voiceFailures": 0,
+      "voiceGates": {},
+      "lands": []
+     },
+     "pages": [
+      "index.html"
+     ],
+     "pageRows": [
+      {
+       "page": "index.html",
+       "dims": {
+        "contained": 4,
+        "widths": 4,
+        "measured": 2,
+        "refuses": 2,
+        "repro": 0,
+        "voice": 4,
+        "lands": 0,
+        "open": 1
+       },
+       "total": 17,
+       "max": 32,
+       "bytes": 60629,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": null,
+        "voiceFailures": 0,
+        "voiceGates": {},
+        "lands": [],
+        "openHits": 1
+       }
+      }
+     ],
+     "bytes": 60629,
+     "weakest": [
+      "repro",
+      "lands"
+     ],
+     "weakestAt": 0
+    },
+    {
+     "i": 2,
+     "commit": "working tree",
+     "when": "now",
+     "subject": "the working tree as it stands",
+     "tree": true,
+     "dims": {
+      "contained": 4,
+      "widths": 4,
+      "measured": 2,
+      "refuses": 2,
+      "repro": 0,
+      "voice": 4,
+      "lands": 0,
+      "open": 1
+     },
+     "total": 17,
+     "max": 32,
+     "note": {
+      "pages": 1,
+      "png": 10,
+      "shotScript": true,
+      "data": 3,
+      "scripts": 1,
+      "guard": null,
+      "voiceFailures": 0,
+      "voiceGates": {},
+      "lands": []
+     },
+     "pages": [
+      "index.html"
+     ],
+     "pageRows": [
+      {
+       "page": "index.html",
+       "dims": {
+        "contained": 4,
+        "widths": 4,
+        "measured": 2,
+        "refuses": 2,
+        "repro": 0,
+        "voice": 4,
+        "lands": 0,
+        "open": 1
+       },
+       "total": 17,
+       "max": 32,
+       "bytes": 60629,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": null,
+        "voiceFailures": 0,
+        "voiceGates": {},
+        "lands": [],
+        "openHits": 1
+       }
+      }
+     ],
+     "bytes": 60629,
+     "weakest": [
+      "repro",
+      "lands"
+     ],
+     "weakestAt": 0
+    }
+   ]
+  },
+  {
+   "k": "feather",
+   "nm": "The feather prototype, first",
+   "dir": "proto/feather",
+   "seat": "design",
+   "commits": 1,
+   "iters": [
+    {
+     "i": 1,
+     "commit": "058a3f9",
+     "when": "09-20 07:18",
+     "subject": "Colour that means something, a boot that settles, and a welcome",
+     "tree": false,
+     "dims": {
+      "contained": 4,
+      "widths": 0,
+      "measured": 0,
+      "refuses": 2,
+      "repro": 0,
+      "voice": 4,
+      "lands": 0,
+      "open": 1
+     },
+     "total": 11,
+     "max": 32,
+     "note": {
+      "pages": 1,
+      "png": 0,
+      "shotScript": false,
+      "data": 0,
+      "scripts": 1,
+      "guard": null,
+      "voiceFailures": 0,
+      "voiceGates": {},
+      "lands": []
+     },
+     "pages": [
+      "index.html"
+     ],
+     "pageRows": [
+      {
+       "page": "index.html",
+       "dims": {
+        "contained": 4,
+        "widths": 0,
+        "measured": 0,
+        "refuses": 2,
+        "repro": 0,
+        "voice": 4,
+        "lands": 0,
+        "open": 1
+       },
+       "total": 11,
+       "max": 32,
+       "bytes": 1913,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": null,
+        "voiceFailures": 0,
+        "voiceGates": {},
+        "lands": [],
+        "openHits": 1
+       }
+      }
+     ],
+     "bytes": 1913,
+     "weakest": [
+      "widths",
+      "measured",
+      "repro",
+      "lands"
+     ],
+     "weakestAt": 0
+    },
+    {
+     "i": 2,
+     "commit": "working tree",
+     "when": "now",
+     "subject": "the working tree as it stands",
+     "tree": true,
+     "dims": {
+      "contained": 4,
+      "widths": 0,
+      "measured": 0,
+      "refuses": 2,
+      "repro": 0,
+      "voice": 4,
+      "lands": 0,
+      "open": 1
+     },
+     "total": 11,
+     "max": 32,
+     "note": {
+      "pages": 1,
+      "png": 0,
+      "shotScript": false,
+      "data": 0,
+      "scripts": 1,
+      "guard": null,
+      "voiceFailures": 0,
+      "voiceGates": {},
+      "lands": []
+     },
+     "pages": [
+      "index.html"
+     ],
+     "pageRows": [
+      {
+       "page": "index.html",
+       "dims": {
+        "contained": 4,
+        "widths": 0,
+        "measured": 0,
+        "refuses": 2,
+        "repro": 0,
+        "voice": 4,
+        "lands": 0,
+        "open": 1
+       },
+       "total": 11,
+       "max": 32,
+       "bytes": 1913,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": null,
+        "voiceFailures": 0,
+        "voiceGates": {},
+        "lands": [],
+        "openHits": 1
+       }
+      }
+     ],
+     "bytes": 1913,
+     "weakest": [
+      "widths",
+      "measured",
+      "repro",
+      "lands"
+     ],
+     "weakestAt": 0
+    }
+   ]
+  },
+  {
+   "k": "ladder",
+   "nm": "The ladder",
+   "dir": "proto/ladder",
+   "seat": "game",
+   "commits": 1,
+   "iters": [
+    {
+     "i": 1,
+     "commit": "942aadc",
+     "when": "09-21 00:40",
+     "subject": "The ladder. Scoring, marks and awards, built on the loop",
+     "tree": false,
+     "dims": {
+      "contained": 4,
+      "widths": 4,
+      "measured": 0,
+      "refuses": 2,
+      "repro": 0,
+      "voice": 3,
+      "lands": 0,
+      "open": 1
+     },
+     "total": 14,
+     "max": 32,
+     "note": {
+      "pages": 1,
+      "png": 2,
+      "shotScript": true,
+      "data": 0,
+      "scripts": 4,
+      "guard": null,
+      "voiceFailures": 1,
+      "voiceGates": {
+       "caps": 1
+      },
+      "lands": []
+     },
+     "pages": [
+      "index.html"
+     ],
+     "pageRows": [
+      {
+       "page": "index.html",
+       "dims": {
+        "contained": 4,
+        "widths": 4,
+        "measured": 0,
+        "refuses": 2,
+        "repro": 0,
+        "voice": 3,
+        "lands": 0,
+        "open": 1
+       },
+       "total": 14,
+       "max": 32,
+       "bytes": 34511,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": null,
+        "voiceFailures": 1,
+        "voiceGates": {
+         "caps": 1
+        },
+        "lands": [],
+        "openHits": 1
+       }
+      }
+     ],
+     "bytes": 34511,
+     "weakest": [
+      "measured",
+      "repro",
+      "lands"
+     ],
+     "weakestAt": 0
+    },
+    {
+     "i": 2,
+     "commit": "working tree",
+     "when": "now",
+     "subject": "the working tree as it stands",
+     "tree": true,
+     "dims": {
+      "contained": 4,
+      "widths": 4,
+      "measured": 0,
+      "refuses": 2,
+      "repro": 0,
+      "voice": 3,
+      "lands": 0,
+      "open": 1
+     },
+     "total": 14,
+     "max": 32,
+     "note": {
+      "pages": 1,
+      "png": 2,
+      "shotScript": true,
+      "data": 0,
+      "scripts": 4,
+      "guard": null,
+      "voiceFailures": 1,
+      "voiceGates": {
+       "caps": 1
+      },
+      "lands": []
+     },
+     "pages": [
+      "index.html"
+     ],
+     "pageRows": [
+      {
+       "page": "index.html",
+       "dims": {
+        "contained": 4,
+        "widths": 4,
+        "measured": 0,
+        "refuses": 2,
+        "repro": 0,
+        "voice": 3,
+        "lands": 0,
+        "open": 1
+       },
+       "total": 14,
+       "max": 32,
+       "bytes": 34511,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": null,
+        "voiceFailures": 1,
+        "voiceGates": {
+         "caps": 1
+        },
+        "lands": [],
+        "openHits": 1
+       }
+      }
+     ],
+     "bytes": 34511,
+     "weakest": [
+      "measured",
+      "repro",
+      "lands"
+     ],
+     "weakestAt": 0
+    }
+   ]
+  },
+  {
+   "k": "funnel",
+   "nm": "The funnel",
+   "dir": "funnel",
+   "seat": "growth",
+   "commits": 16,
+   "iters": [
+    {
+     "i": 1,
+     "commit": "a54a16b",
+     "when": "09-20 14:52",
+     "subject": "The funnel exists, the CQ is back, and every drill has a way out",
+     "tree": false,
+     "dims": {
+      "contained": 4,
+      "widths": 2,
+      "measured": 0,
+      "refuses": 0,
+      "repro": 0,
+      "voice": 4,
+      "lands": 0,
+      "open": 1
+     },
+     "total": 11,
+     "max": 32,
+     "note": {
+      "pages": 2,
+      "png": 5,
+      "shotScript": false,
+      "data": 0,
+      "scripts": 0,
+      "guard": null,
+      "voiceFailures": 0,
+      "voiceGates": {},
+      "lands": []
+     },
+     "pages": [
+      "index.html",
+      "quiz.html"
+     ],
+     "pageRows": [
+      {
+       "page": "index.html",
+       "dims": {
+        "contained": 4,
+        "widths": 2,
+        "measured": 0,
+        "refuses": 0,
+        "repro": 0,
+        "voice": 4,
+        "lands": 0,
+        "open": 0
+       },
+       "total": 10,
+       "max": 32,
+       "bytes": 12398,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": null,
+        "voiceFailures": 0,
+        "voiceGates": {},
+        "lands": [],
+        "openHits": 0
+       }
+      },
+      {
+       "page": "quiz.html",
+       "dims": {
+        "contained": 4,
+        "widths": 2,
+        "measured": 0,
+        "refuses": 0,
+        "repro": 0,
+        "voice": null,
+        "lands": 0,
+        "open": 2
+       },
+       "total": 8,
+       "max": 28,
+       "bytes": 454670,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": null,
+        "voiceUnscored": true,
+        "lands": [],
+        "openHits": 2
+       }
+      }
+     ],
+     "bytes": 467068,
+     "weakest": [
+      "measured",
+      "refuses",
+      "repro",
+      "lands"
+     ],
+     "weakestAt": 0
+    },
+    {
+     "i": 2,
+     "commit": "48f981d",
+     "when": "09-20 16:21",
+     "subject": "The safety referral has never fired, and the build asked for two files it does not carry",
+     "tree": false,
+     "dims": {
+      "contained": 4,
+      "widths": 2,
+      "measured": 0,
+      "refuses": 2,
+      "repro": 0,
+      "voice": 4,
+      "lands": 0,
+      "open": 1
+     },
+     "total": 13,
+     "max": 32,
+     "note": {
+      "pages": 2,
+      "png": 5,
+      "shotScript": false,
+      "data": 0,
+      "scripts": 1,
+      "guard": null,
+      "voiceFailures": 0,
+      "voiceGates": {},
+      "lands": []
+     },
+     "pages": [
+      "index.html",
+      "quiz.html"
+     ],
+     "pageRows": [
+      {
+       "page": "index.html",
+       "dims": {
+        "contained": 4,
+        "widths": 2,
+        "measured": 0,
+        "refuses": 2,
+        "repro": 0,
+        "voice": 4,
+        "lands": 0,
+        "open": 0
+       },
+       "total": 12,
+       "max": 32,
+       "bytes": 12398,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": null,
+        "voiceFailures": 0,
+        "voiceGates": {},
+        "lands": [],
+        "openHits": 0
+       }
+      },
+      {
+       "page": "quiz.html",
+       "dims": {
+        "contained": 4,
+        "widths": 2,
+        "measured": 0,
+        "refuses": 2,
+        "repro": 0,
+        "voice": null,
+        "lands": 0,
+        "open": 2
+       },
+       "total": 10,
+       "max": 28,
+       "bytes": 454670,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": null,
+        "voiceUnscored": true,
+        "lands": [],
+        "openHits": 2
+       }
+      }
+     ],
+     "bytes": 467068,
+     "weakest": [
+      "measured",
+      "repro",
+      "lands"
+     ],
+     "weakestAt": 0
+    },
+    {
+     "i": 3,
+     "commit": "7f1fb74",
+     "when": "09-20 16:30",
+     "subject": "Seven gate checks were reading the wrong person, and the clean case was never clean",
+     "tree": false,
+     "dims": {
+      "contained": 4,
+      "widths": 2,
+      "measured": 0,
+      "refuses": 2,
+      "repro": 0,
+      "voice": 4,
+      "lands": 0,
+      "open": 1.5
+     },
+     "total": 13.5,
+     "max": 32,
+     "note": {
+      "pages": 2,
+      "png": 7,
+      "shotScript": false,
+      "data": 0,
+      "scripts": 1,
+      "guard": null,
+      "voiceFailures": 0,
+      "voiceGates": {},
+      "lands": []
+     },
+     "pages": [
+      "index.html",
+      "quiz.html"
+     ],
+     "pageRows": [
+      {
+       "page": "index.html",
+       "dims": {
+        "contained": 4,
+        "widths": 2,
+        "measured": 0,
+        "refuses": 2,
+        "repro": 0,
+        "voice": 4,
+        "lands": 0,
+        "open": 1
+       },
+       "total": 13,
+       "max": 32,
+       "bytes": 12637,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": null,
+        "voiceFailures": 0,
+        "voiceGates": {},
+        "lands": [],
+        "openHits": 1
+       }
+      },
+      {
+       "page": "quiz.html",
+       "dims": {
+        "contained": 4,
+        "widths": 2,
+        "measured": 0,
+        "refuses": 2,
+        "repro": 0,
+        "voice": null,
+        "lands": 0,
+        "open": 2
+       },
+       "total": 10,
+       "max": 28,
+       "bytes": 24116,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": null,
+        "voiceUnscored": true,
+        "lands": [],
+        "openHits": 2
+       }
+      }
+     ],
+     "bytes": 36753,
+     "weakest": [
+      "measured",
+      "repro",
+      "lands"
+     ],
+     "weakestAt": 0
+    },
+    {
+     "i": 4,
+     "commit": "515dce0",
+     "when": "09-20 16:31",
+     "subject": "The monitor log, and the questions rendered at this commit",
+     "tree": false,
+     "dims": {
+      "contained": 4,
+      "widths": 2,
+      "measured": 0,
+      "refuses": 2,
+      "repro": 0,
+      "voice": 4,
+      "lands": 0,
+      "open": 1.5
+     },
+     "total": 13.5,
+     "max": 32,
+     "note": {
+      "pages": 2,
+      "png": 7,
+      "shotScript": false,
+      "data": 0,
+      "scripts": 1,
+      "guard": null,
+      "voiceFailures": 0,
+      "voiceGates": {},
+      "lands": []
+     },
+     "pages": [
+      "index.html",
+      "quiz.html"
+     ],
+     "pageRows": [
+      {
+       "page": "index.html",
+       "dims": {
+        "contained": 4,
+        "widths": 2,
+        "measured": 0,
+        "refuses": 2,
+        "repro": 0,
+        "voice": 4,
+        "lands": 0,
+        "open": 1
+       },
+       "total": 13,
+       "max": 32,
+       "bytes": 12879,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": null,
+        "voiceFailures": 0,
+        "voiceGates": {},
+        "lands": [],
+        "openHits": 1
+       }
+      },
+      {
+       "page": "quiz.html",
+       "dims": {
+        "contained": 4,
+        "widths": 2,
+        "measured": 0,
+        "refuses": 2,
+        "repro": 0,
+        "voice": null,
+        "lands": 0,
+        "open": 2
+       },
+       "total": 10,
+       "max": 28,
+       "bytes": 24322,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": null,
+        "voiceUnscored": true,
+        "lands": [],
+        "openHits": 2
+       }
+      }
+     ],
+     "bytes": 37201,
+     "weakest": [
+      "measured",
+      "repro",
+      "lands"
+     ],
+     "weakestAt": 0
+    },
+    {
+     "i": 5,
+     "commit": "edf008e",
+     "when": "09-20 16:41",
+     "subject": "The funnel becomes sendable, the tag question is answered, and the counts leave this file",
+     "tree": false,
+     "dims": {
+      "contained": 4,
+      "widths": 2,
+      "measured": 0,
+      "refuses": 2,
+      "repro": 0,
+      "voice": 4,
+      "lands": 0,
+      "open": 1.5
+     },
+     "total": 13.5,
+     "max": 32,
+     "note": {
+      "pages": 2,
+      "png": 8,
+      "shotScript": false,
+      "data": 0,
+      "scripts": 2,
+      "guard": null,
+      "voiceFailures": 0,
+      "voiceGates": {},
+      "lands": []
+     },
+     "pages": [
+      "index.html",
+      "quiz.html"
+     ],
+     "pageRows": [
+      {
+       "page": "index.html",
+       "dims": {
+        "contained": 4,
+        "widths": 2,
+        "measured": 0,
+        "refuses": 2,
+        "repro": 0,
+        "voice": 4,
+        "lands": 0,
+        "open": 1
+       },
+       "total": 13,
+       "max": 32,
+       "bytes": 13458,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": null,
+        "voiceFailures": 0,
+        "voiceGates": {},
+        "lands": [],
+        "openHits": 1
+       }
+      },
+      {
+       "page": "quiz.html",
+       "dims": {
+        "contained": 4,
+        "widths": 2,
+        "measured": 0,
+        "refuses": 2,
+        "repro": 0,
+        "voice": null,
+        "lands": 0,
+        "open": 2
+       },
+       "total": 10,
+       "max": 28,
+       "bytes": 24953,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": null,
+        "voiceUnscored": true,
+        "lands": [],
+        "openHits": 2
+       }
+      }
+     ],
+     "bytes": 38411,
+     "weakest": [
+      "measured",
+      "repro",
+      "lands"
+     ],
+     "weakestAt": 0
+    },
+    {
+     "i": 6,
+     "commit": "39d4bb7",
+     "when": "09-20 18:20",
+     "subject": "The render watch walks the rails, and finds that settings took one with it",
+     "tree": false,
+     "dims": {
+      "contained": 4,
+      "widths": 2,
+      "measured": 0,
+      "refuses": 2,
+      "repro": 2,
+      "voice": 4,
+      "lands": 0,
+      "open": 1.5
+     },
+     "total": 15.5,
+     "max": 32,
+     "note": {
+      "pages": 2,
+      "png": 8,
+      "shotScript": false,
+      "data": 0,
+      "scripts": 3,
+      "guard": null,
+      "voiceFailures": 0,
+      "voiceGates": {},
+      "lands": []
+     },
+     "pages": [
+      "index.html",
+      "quiz.html"
+     ],
+     "pageRows": [
+      {
+       "page": "index.html",
+       "dims": {
+        "contained": 4,
+        "widths": 2,
+        "measured": 0,
+        "refuses": 2,
+        "repro": 4,
+        "voice": 4,
+        "lands": 0,
+        "open": 1
+       },
+       "total": 17,
+       "max": 32,
+       "bytes": 55506,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": "BUILD-single.sh",
+        "voiceFailures": 0,
+        "voiceGates": {},
+        "lands": [],
+        "openHits": 1
+       }
+      },
+      {
+       "page": "quiz.html",
+       "dims": {
+        "contained": 4,
+        "widths": 2,
+        "measured": 0,
+        "refuses": 2,
+        "repro": 0,
+        "voice": null,
+        "lands": 0,
+        "open": 2
+       },
+       "total": 10,
+       "max": 28,
+       "bytes": 29221,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": null,
+        "voiceUnscored": true,
+        "lands": [],
+        "openHits": 2
+       }
+      }
+     ],
+     "bytes": 84727,
+     "weakest": [
+      "measured",
+      "lands"
+     ],
+     "weakestAt": 0
+    },
+    {
+     "i": 7,
+     "commit": "c797c2c",
+     "when": "09-20 18:26",
+     "subject": "The funnel uses its width, carries a figure, and every card is the same object",
+     "tree": false,
+     "dims": {
+      "contained": 4,
+      "widths": 2,
+      "measured": 0,
+      "refuses": 2,
+      "repro": 2,
+      "voice": 4,
+      "lands": 0,
+      "open": 1.5
+     },
+     "total": 15.5,
+     "max": 32,
+     "note": {
+      "pages": 2,
+      "png": 8,
+      "shotScript": false,
+      "data": 0,
+      "scripts": 3,
+      "guard": null,
+      "voiceFailures": 0,
+      "voiceGates": {},
+      "lands": []
+     },
+     "pages": [
+      "index.html",
+      "quiz.html"
+     ],
+     "pageRows": [
+      {
+       "page": "index.html",
+       "dims": {
+        "contained": 4,
+        "widths": 2,
+        "measured": 0,
+        "refuses": 2,
+        "repro": 4,
+        "voice": 4,
+        "lands": 0,
+        "open": 1
+       },
+       "total": 17,
+       "max": 32,
+       "bytes": 55356,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": "BUILD-single.sh",
+        "voiceFailures": 0,
+        "voiceGates": {},
+        "lands": [],
+        "openHits": 1
+       }
+      },
+      {
+       "page": "quiz.html",
+       "dims": {
+        "contained": 4,
+        "widths": 2,
+        "measured": 0,
+        "refuses": 2,
+        "repro": 0,
+        "voice": null,
+        "lands": 0,
+        "open": 2
+       },
+       "total": 10,
+       "max": 28,
+       "bytes": 29221,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": null,
+        "voiceUnscored": true,
+        "lands": [],
+        "openHits": 2
+       }
+      }
+     ],
+     "bytes": 84577,
+     "weakest": [
+      "measured",
+      "lands"
+     ],
+     "weakestAt": 0
+    },
+    {
+     "i": 8,
+     "commit": "e46fd40",
+     "when": "09-20 20:43",
+     "subject": "He wrote the mechanism, and it is the engine's own ladder in plain words",
+     "tree": false,
+     "dims": {
+      "contained": 4,
+      "widths": 2,
+      "measured": 0,
+      "refuses": 2,
+      "repro": 3,
+      "voice": 4,
+      "lands": 0,
+      "open": 1.25
+     },
+     "total": 16.25,
+     "max": 32,
+     "note": {
+      "pages": 4,
+      "png": 8,
+      "shotScript": false,
+      "data": 0,
+      "scripts": 3,
+      "guard": null,
+      "voiceFailures": 0,
+      "voiceGates": {},
+      "lands": []
+     },
+     "pages": [
+      "index.html",
+      "quiz.html",
+      "about.html",
+      "buy.html"
+     ],
+     "pageRows": [
+      {
+       "page": "index.html",
+       "dims": {
+        "contained": 4,
+        "widths": 2,
+        "measured": 0,
+        "refuses": 2,
+        "repro": 4,
+        "voice": 4,
+        "lands": 0,
+        "open": 1
+       },
+       "total": 17,
+       "max": 32,
+       "bytes": 55356,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": "BUILD-single.sh",
+        "voiceFailures": 0,
+        "voiceGates": {},
+        "lands": [],
+        "openHits": 1
+       }
+      },
+      {
+       "page": "quiz.html",
+       "dims": {
+        "contained": 4,
+        "widths": 2,
+        "measured": 0,
+        "refuses": 2,
+        "repro": 0,
+        "voice": null,
+        "lands": 0,
+        "open": 2
+       },
+       "total": 10,
+       "max": 28,
+       "bytes": 29221,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": null,
+        "voiceUnscored": true,
+        "lands": [],
+        "openHits": 2
+       }
+      },
+      {
+       "page": "about.html",
+       "dims": {
+        "contained": 4,
+        "widths": 2,
+        "measured": 0,
+        "refuses": 2,
+        "repro": 4,
+        "voice": 4,
+        "lands": 0,
+        "open": 1
+       },
+       "total": 17,
+       "max": 32,
+       "bytes": 20503,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": "BUILD-single.sh",
+        "voiceFailures": 0,
+        "voiceGates": {},
+        "lands": [],
+        "openHits": 1
+       }
+      },
+      {
+       "page": "buy.html",
+       "dims": {
+        "contained": 4,
+        "widths": 2,
+        "measured": 0,
+        "refuses": 2,
+        "repro": 4,
+        "voice": 4,
+        "lands": 0,
+        "open": 1
+       },
+       "total": 17,
+       "max": 32,
+       "bytes": 18969,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": "BUILD-single.sh",
+        "voiceFailures": 0,
+        "voiceGates": {},
+        "lands": [],
+        "openHits": 1
+       }
+      }
+     ],
+     "bytes": 124049,
+     "weakest": [
+      "measured",
+      "lands"
+     ],
+     "weakestAt": 0
+    },
+    {
+     "i": 9,
+     "commit": "fb4e941",
+     "when": "09-20 20:53",
+     "subject": "Saturation up twelve percent everywhere, and the feathers do not mean what he thinks",
+     "tree": false,
+     "dims": {
+      "contained": 4,
+      "widths": 2,
+      "measured": 0,
+      "refuses": 2,
+      "repro": 3,
+      "voice": 4,
+      "lands": 0.5,
+      "open": 1.25
+     },
+     "total": 16.75,
+     "max": 32,
+     "note": {
+      "pages": 4,
+      "png": 8,
+      "shotScript": false,
+      "data": 0,
+      "scripts": 3,
+      "guard": null,
+      "voiceFailures": 0,
+      "voiceGates": {},
+      "lands": [
+       "atuned_src/engine/compute.js"
+      ]
+     },
+     "pages": [
+      "index.html",
+      "quiz.html",
+      "about.html",
+      "buy.html"
+     ],
+     "pageRows": [
+      {
+       "page": "index.html",
+       "dims": {
+        "contained": 4,
+        "widths": 2,
+        "measured": 0,
+        "refuses": 2,
+        "repro": 4,
+        "voice": 4,
+        "lands": 0,
+        "open": 1
+       },
+       "total": 17,
+       "max": 32,
+       "bytes": 55356,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": "BUILD-single.sh",
+        "voiceFailures": 0,
+        "voiceGates": {},
+        "lands": [],
+        "openHits": 1
+       }
+      },
+      {
+       "page": "quiz.html",
+       "dims": {
+        "contained": 4,
+        "widths": 2,
+        "measured": 0,
+        "refuses": 2,
+        "repro": 0,
+        "voice": null,
+        "lands": 0,
+        "open": 2
+       },
+       "total": 10,
+       "max": 28,
+       "bytes": 29221,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": null,
+        "voiceUnscored": true,
+        "lands": [],
+        "openHits": 2
+       }
+      },
+      {
+       "page": "about.html",
+       "dims": {
+        "contained": 4,
+        "widths": 2,
+        "measured": 0,
+        "refuses": 2,
+        "repro": 4,
+        "voice": 4,
+        "lands": 2,
+        "open": 1
+       },
+       "total": 19,
+       "max": 32,
+       "bytes": 26307,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": "BUILD-single.sh",
+        "voiceFailures": 0,
+        "voiceGates": {},
+        "lands": [
+         "atuned_src/engine/compute.js"
+        ],
+        "openHits": 1
+       }
+      },
+      {
+       "page": "buy.html",
+       "dims": {
+        "contained": 4,
+        "widths": 2,
+        "measured": 0,
+        "refuses": 2,
+        "repro": 4,
+        "voice": 4,
+        "lands": 0,
+        "open": 1
+       },
+       "total": 17,
+       "max": 32,
+       "bytes": 20910,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": "BUILD-single.sh",
+        "voiceFailures": 0,
+        "voiceGates": {},
+        "lands": [],
+        "openHits": 1
+       }
+      }
+     ],
+     "bytes": 131794,
+     "weakest": [
+      "measured"
+     ],
+     "weakestAt": 0
+    },
+    {
+     "i": 10,
+     "commit": "9829040",
+     "when": "09-20 20:55",
+     "subject": "The about and buy pages in flight, and a gate row moving with them",
+     "tree": false,
+     "dims": {
+      "contained": 4,
+      "widths": 2,
+      "measured": 0,
+      "refuses": 2,
+      "repro": 3,
+      "voice": 4,
+      "lands": 0.5,
+      "open": 1.25
+     },
+     "total": 16.75,
+     "max": 32,
+     "note": {
+      "pages": 4,
+      "png": 8,
+      "shotScript": false,
+      "data": 0,
+      "scripts": 3,
+      "guard": null,
+      "voiceFailures": 0,
+      "voiceGates": {},
+      "lands": [
+       "atuned_src/engine/compute.js"
+      ]
+     },
+     "pages": [
+      "index.html",
+      "quiz.html",
+      "about.html",
+      "buy.html"
+     ],
+     "pageRows": [
+      {
+       "page": "index.html",
+       "dims": {
+        "contained": 4,
+        "widths": 2,
+        "measured": 0,
+        "refuses": 2,
+        "repro": 4,
+        "voice": 4,
+        "lands": 0,
+        "open": 1
+       },
+       "total": 17,
+       "max": 32,
+       "bytes": 55356,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": "BUILD-single.sh",
+        "voiceFailures": 0,
+        "voiceGates": {},
+        "lands": [],
+        "openHits": 1
+       }
+      },
+      {
+       "page": "quiz.html",
+       "dims": {
+        "contained": 4,
+        "widths": 2,
+        "measured": 0,
+        "refuses": 2,
+        "repro": 0,
+        "voice": null,
+        "lands": 0,
+        "open": 2
+       },
+       "total": 10,
+       "max": 28,
+       "bytes": 29221,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": null,
+        "voiceUnscored": true,
+        "lands": [],
+        "openHits": 2
+       }
+      },
+      {
+       "page": "about.html",
+       "dims": {
+        "contained": 4,
+        "widths": 2,
+        "measured": 0,
+        "refuses": 2,
+        "repro": 4,
+        "voice": 4,
+        "lands": 2,
+        "open": 1
+       },
+       "total": 19,
+       "max": 32,
+       "bytes": 26831,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": "BUILD-single.sh",
+        "voiceFailures": 0,
+        "voiceGates": {},
+        "lands": [
+         "atuned_src/engine/compute.js"
+        ],
+        "openHits": 1
+       }
+      },
+      {
+       "page": "buy.html",
+       "dims": {
+        "contained": 4,
+        "widths": 2,
+        "measured": 0,
+        "refuses": 2,
+        "repro": 4,
+        "voice": 4,
+        "lands": 0,
+        "open": 1
+       },
+       "total": 17,
+       "max": 32,
+       "bytes": 21434,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": "BUILD-single.sh",
+        "voiceFailures": 0,
+        "voiceGates": {},
+        "lands": [],
+        "openHits": 1
+       }
+      }
+     ],
+     "bytes": 132842,
+     "weakest": [
+      "measured"
+     ],
+     "weakestAt": 0
+    },
+    {
+     "i": 11,
+     "commit": "23fdccc",
+     "when": "09-20 20:59",
+     "subject": "The story page goes to the front of the queue, and the brand pages land",
+     "tree": false,
+     "dims": {
+      "contained": 4,
+      "widths": 2,
+      "measured": 0,
+      "refuses": 2,
+      "repro": 3,
+      "voice": 4,
+      "lands": 0.5,
+      "open": 1.25
+     },
+     "total": 16.75,
+     "max": 32,
+     "note": {
+      "pages": 4,
+      "png": 12,
+      "shotScript": false,
+      "data": 0,
+      "scripts": 3,
+      "guard": null,
+      "voiceFailures": 0,
+      "voiceGates": {},
+      "lands": [
+       "atuned_src/engine/compute.js"
+      ]
+     },
+     "pages": [
+      "index.html",
+      "quiz.html",
+      "about.html",
+      "buy.html"
+     ],
+     "pageRows": [
+      {
+       "page": "index.html",
+       "dims": {
+        "contained": 4,
+        "widths": 2,
+        "measured": 0,
+        "refuses": 2,
+        "repro": 4,
+        "voice": 4,
+        "lands": 0,
+        "open": 1
+       },
+       "total": 17,
+       "max": 32,
+       "bytes": 55356,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": "BUILD-single.sh",
+        "voiceFailures": 0,
+        "voiceGates": {},
+        "lands": [],
+        "openHits": 1
+       }
+      },
+      {
+       "page": "quiz.html",
+       "dims": {
+        "contained": 4,
+        "widths": 2,
+        "measured": 0,
+        "refuses": 2,
+        "repro": 0,
+        "voice": null,
+        "lands": 0,
+        "open": 2
+       },
+       "total": 10,
+       "max": 28,
+       "bytes": 29221,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": null,
+        "voiceUnscored": true,
+        "lands": [],
+        "openHits": 2
+       }
+      },
+      {
+       "page": "about.html",
+       "dims": {
+        "contained": 4,
+        "widths": 2,
+        "measured": 0,
+        "refuses": 2,
+        "repro": 4,
+        "voice": 4,
+        "lands": 2,
+        "open": 1
+       },
+       "total": 19,
+       "max": 32,
+       "bytes": 26831,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": "BUILD-single.sh",
+        "voiceFailures": 0,
+        "voiceGates": {},
+        "lands": [
+         "atuned_src/engine/compute.js"
+        ],
+        "openHits": 1
+       }
+      },
+      {
+       "page": "buy.html",
+       "dims": {
+        "contained": 4,
+        "widths": 2,
+        "measured": 0,
+        "refuses": 2,
+        "repro": 4,
+        "voice": 4,
+        "lands": 0,
+        "open": 1
+       },
+       "total": 17,
+       "max": 32,
+       "bytes": 21434,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": "BUILD-single.sh",
+        "voiceFailures": 0,
+        "voiceGates": {},
+        "lands": [],
+        "openHits": 1
+       }
+      }
+     ],
+     "bytes": 132842,
+     "weakest": [
+      "measured"
+     ],
+     "weakestAt": 0
+    },
+    {
+     "i": 12,
+     "commit": "ec94db6",
+     "when": "09-21 00:39",
+     "subject": "The seven band ring, a gate under the funnel, and the loop closed",
+     "tree": false,
+     "dims": {
+      "contained": 4,
+      "widths": 2,
+      "measured": 0,
+      "refuses": 2,
+      "repro": 3,
+      "voice": 4,
+      "lands": 0.5,
+      "open": 1.25
+     },
+     "total": 16.75,
+     "max": 32,
+     "note": {
+      "pages": 4,
+      "png": 12,
+      "shotScript": false,
+      "data": 0,
+      "scripts": 5,
+      "guard": null,
+      "voiceFailures": 0,
+      "voiceGates": {},
+      "lands": [
+       "atuned_src/engine/compute.js"
+      ]
+     },
+     "pages": [
+      "index.html",
+      "quiz.html",
+      "about.html",
+      "buy.html"
+     ],
+     "pageRows": [
+      {
+       "page": "index.html",
+       "dims": {
+        "contained": 4,
+        "widths": 2,
+        "measured": 0,
+        "refuses": 2,
+        "repro": 4,
+        "voice": 4,
+        "lands": 0,
+        "open": 1
+       },
+       "total": 17,
+       "max": 32,
+       "bytes": 60884,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": "BUILD-single.sh",
+        "voiceFailures": 0,
+        "voiceGates": {},
+        "lands": [],
+        "openHits": 1
+       }
+      },
+      {
+       "page": "quiz.html",
+       "dims": {
+        "contained": 4,
+        "widths": 2,
+        "measured": 0,
+        "refuses": 2,
+        "repro": 0,
+        "voice": 4,
+        "lands": 0,
+        "open": 2
+       },
+       "total": 14,
+       "max": 32,
+       "bytes": 35557,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": null,
+        "voiceFailures": 0,
+        "voiceGates": {},
+        "lands": [],
+        "openHits": 2
+       }
+      },
+      {
+       "page": "about.html",
+       "dims": {
+        "contained": 4,
+        "widths": 2,
+        "measured": 0,
+        "refuses": 2,
+        "repro": 4,
+        "voice": 4,
+        "lands": 2,
+        "open": 1
+       },
+       "total": 19,
+       "max": 32,
+       "bytes": 29364,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": "BUILD-single.sh",
+        "voiceFailures": 0,
+        "voiceGates": {},
+        "lands": [
+         "atuned_src/engine/compute.js"
+        ],
+        "openHits": 1
+       }
+      },
+      {
+       "page": "buy.html",
+       "dims": {
+        "contained": 4,
+        "widths": 2,
+        "measured": 0,
+        "refuses": 2,
+        "repro": 4,
+        "voice": 4,
+        "lands": 0,
+        "open": 1
+       },
+       "total": 17,
+       "max": 32,
+       "bytes": 23967,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": "BUILD-single.sh",
+        "voiceFailures": 0,
+        "voiceGates": {},
+        "lands": [],
+        "openHits": 1
+       }
+      }
+     ],
+     "bytes": 149772,
+     "weakest": [
+      "measured"
+     ],
+     "weakestAt": 0
+    },
+    {
+     "i": 13,
+     "commit": "working tree",
+     "when": "now",
+     "subject": "the working tree as it stands",
+     "tree": true,
+     "dims": {
+      "contained": 4,
+      "widths": 2,
+      "measured": 0,
+      "refuses": 2,
+      "repro": 3,
+      "voice": 4,
+      "lands": 0.5,
+      "open": 1.25
+     },
+     "total": 16.75,
+     "max": 32,
+     "note": {
+      "pages": 4,
+      "png": 12,
+      "shotScript": false,
+      "data": 0,
+      "scripts": 6,
+      "guard": null,
+      "voiceFailures": 0,
+      "voiceGates": {},
+      "lands": [
+       "atuned_src/engine/compute.js"
+      ]
+     },
+     "pages": [
+      "index.html",
+      "quiz.html",
+      "about.html",
+      "buy.html"
+     ],
+     "pageRows": [
+      {
+       "page": "index.html",
+       "dims": {
+        "contained": 4,
+        "widths": 2,
+        "measured": 0,
+        "refuses": 2,
+        "repro": 4,
+        "voice": 4,
+        "lands": 0,
+        "open": 1
+       },
+       "total": 17,
+       "max": 32,
+       "bytes": 60884,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": "BUILD-single.sh",
+        "voiceFailures": 0,
+        "voiceGates": {},
+        "lands": [],
+        "openHits": 1
+       }
+      },
+      {
+       "page": "quiz.html",
+       "dims": {
+        "contained": 4,
+        "widths": 2,
+        "measured": 0,
+        "refuses": 2,
+        "repro": 0,
+        "voice": 4,
+        "lands": 0,
+        "open": 2
+       },
+       "total": 14,
+       "max": 32,
+       "bytes": 35557,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": null,
+        "voiceFailures": 0,
+        "voiceGates": {},
+        "lands": [],
+        "openHits": 2
+       }
+      },
+      {
+       "page": "about.html",
+       "dims": {
+        "contained": 4,
+        "widths": 2,
+        "measured": 0,
+        "refuses": 2,
+        "repro": 4,
+        "voice": 4,
+        "lands": 2,
+        "open": 1
+       },
+       "total": 19,
+       "max": 32,
+       "bytes": 29364,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": "BUILD-single.sh",
+        "voiceFailures": 0,
+        "voiceGates": {},
+        "lands": [
+         "atuned_src/engine/compute.js"
+        ],
+        "openHits": 1
+       }
+      },
+      {
+       "page": "buy.html",
+       "dims": {
+        "contained": 4,
+        "widths": 2,
+        "measured": 0,
+        "refuses": 2,
+        "repro": 4,
+        "voice": 4,
+        "lands": 0,
+        "open": 1
+       },
+       "total": 17,
+       "max": 32,
+       "bytes": 23967,
+       "note": {
+        "hosts": [],
+        "stamped": false,
+        "repro": "BUILD-single.sh",
+        "voiceFailures": 0,
+        "voiceGates": {},
+        "lands": [],
+        "openHits": 1
+       }
+      }
+     ],
+     "bytes": 149772,
+     "weakest": [
+      "measured"
+     ],
+     "weakestAt": 0
+    }
+   ]
+  },
+  {
+   "k": "sim",
+   "nm": "The simulation pages",
+   "dir": "sim",
+   "seat": "research",
+   "commits": 19,
+   "iters": [
+    {
+     "i": 1,
+     "commit": "72d5e23",
+     "when": "09-21 00:56",
+     "subject": "The ninety day run, against the real engine, and the number it settles on",
+     "tree": false,
+     "dims": {
+      "contained": 4,
+      "widths": 0,
+      "measured": 4,
+      "refuses": 4,
+      "repro": 4,
+      "voice": 0,
+      "lands": 0,
+      "open": 1
+     },
+     "total": 17,
+     "max": 32,
+     "note": {
+      "pages": 1,
+      "png": 0,
+      "shotScript": false,
+      "data": 2,
+      "scripts": 4,
+      "guard": "build.js",
+      "voiceFailures": 13,
+      "voiceGates": {
+       "caps": 6,
+       "count-against-total": 6,
+       "tolerance": 1
+      },
+      "lands": []
+     },
+     "pages": [
+      "ninety-days.html"
+     ],
+     "pageRows": [
+      {
+       "page": "ninety-days.html",
+       "dims": {
+        "contained": 4,
+        "widths": 0,
+        "measured": 4,
+        "refuses": 4,
+        "repro": 4,
+        "voice": 0,
+        "lands": 0,
+        "open": 1
+       },
+       "total": 17,
+       "max": 32,
+       "bytes": 83471,
+       "note": {
+        "hosts": [],
+        "stamped": true,
+        "repro": "node sim/measure.js",
+        "voiceFailures": 13,
+        "voiceGates": {
+         "caps": 6,
+         "count-against-total": 6,
+         "tolerance": 1
+        },
+        "lands": [],
+        "openHits": 1
+       }
+      }
+     ],
+     "bytes": 83471,
+     "weakest": [
+      "widths",
+      "voice",
+      "lands"
+     ],
+     "weakestAt": 0
+    },
+    {
+     "i": 2,
+     "commit": "dde54ce",
+     "when": "09-21 00:58",
+     "subject": "Read the commit count off the run, and the roster count off the roster",
+     "tree": false,
+     "dims": {
+      "contained": 4,
+      "widths": 0,
+      "measured": 4,
+      "refuses": 4,
+      "repro": 4,
+      "voice": 0,
+      "lands": 0,
+      "open": 1
+     },
+     "total": 17,
+     "max": 32,
+     "note": {
+      "pages": 1,
+      "png": 0,
+      "shotScript": false,
+      "data": 2,
+      "scripts": 4,
+      "guard": "build.js",
+      "voiceFailures": 13,
+      "voiceGates": {
+       "caps": 6,
+       "count-against-total": 6,
+       "tolerance": 1
+      },
+      "lands": []
+     },
+     "pages": [
+      "ninety-days.html"
+     ],
+     "pageRows": [
+      {
+       "page": "ninety-days.html",
+       "dims": {
+        "contained": 4,
+        "widths": 0,
+        "measured": 4,
+        "refuses": 4,
+        "repro": 4,
+        "voice": 0,
+        "lands": 0,
+        "open": 1
+       },
+       "total": 17,
+       "max": 32,
+       "bytes": 83936,
+       "note": {
+        "hosts": [],
+        "stamped": true,
+        "repro": "node sim/measure.js",
+        "voiceFailures": 13,
+        "voiceGates": {
+         "caps": 6,
+         "count-against-total": 6,
+         "tolerance": 1
+        },
+        "lands": [],
+        "openHits": 1
+       }
+      }
+     ],
+     "bytes": 83936,
+     "weakest": [
+      "widths",
+      "voice",
+      "lands"
+     ],
+     "weakestAt": 0
+    },
+    {
+     "i": 3,
+     "commit": "8b386ee",
+     "when": "09-21 02:58",
+     "subject": "Pin the build under the sim, and stamp the lexicon measurement",
+     "tree": false,
+     "dims": {
+      "contained": 4,
+      "widths": 0,
+      "measured": 4,
+      "refuses": 4,
+      "repro": 4,
+      "voice": 0,
+      "lands": 0,
+      "open": 1
+     },
+     "total": 17,
+     "max": 32,
+     "note": {
+      "pages": 1,
+      "png": 0,
+      "shotScript": false,
+      "data": 4,
+      "scripts": 11,
+      "guard": "build-help.js",
+      "voiceFailures": 13,
+      "voiceGates": {
+       "caps": 6,
+       "count-against-total": 6,
+       "tolerance": 1
+      },
+      "lands": []
+     },
+     "pages": [
+      "ninety-days.html"
+     ],
+     "pageRows": [
+      {
+       "page": "ninety-days.html",
+       "dims": {
+        "contained": 4,
+        "widths": 0,
+        "measured": 4,
+        "refuses": 4,
+        "repro": 4,
+        "voice": 0,
+        "lands": 0,
+        "open": 1
+       },
+       "total": 17,
+       "max": 32,
+       "bytes": 83936,
+       "note": {
+        "hosts": [],
+        "stamped": true,
+        "repro": "node sim/measure.js",
+        "voiceFailures": 13,
+        "voiceGates": {
+         "caps": 6,
+         "count-against-total": 6,
+         "tolerance": 1
+        },
+        "lands": [],
+        "openHits": 1
+       }
+      }
+     ],
+     "bytes": 83936,
+     "weakest": [
+      "widths",
+      "voice",
+      "lands"
+     ],
+     "weakestAt": 0
+    },
+    {
+     "i": 4,
+     "commit": "73ef419",
+     "when": "09-21 03:07",
+     "subject": "Fix a builder that never parsed, and two claims the data does not support",
+     "tree": false,
+     "dims": {
+      "contained": 4,
+      "widths": 0,
+      "measured": 4,
+      "refuses": 4,
+      "repro": 4,
+      "voice": 0,
+      "lands": 0,
+      "open": 1
+     },
+     "total": 17,
+     "max": 32,
+     "note": {
+      "pages": 1,
+      "png": 0,
+      "shotScript": false,
+      "data": 5,
+      "scripts": 11,
+      "guard": "build-help.js",
+      "voiceFailures": 13,
+      "voiceGates": {
+       "caps": 6,
+       "count-against-total": 6,
+       "tolerance": 1
+      },
+      "lands": []
+     },
+     "pages": [
+      "ninety-days.html"
+     ],
+     "pageRows": [
+      {
+       "page": "ninety-days.html",
+       "dims": {
+        "contained": 4,
+        "widths": 0,
+        "measured": 4,
+        "refuses": 4,
+        "repro": 4,
+        "voice": 0,
+        "lands": 0,
+        "open": 1
+       },
+       "total": 17,
+       "max": 32,
+       "bytes": 83936,
+       "note": {
+        "hosts": [],
+        "stamped": true,
+        "repro": "node sim/measure.js",
+        "voiceFailures": 13,
+        "voiceGates": {
+         "caps": 6,
+         "count-against-total": 6,
+         "tolerance": 1
+        },
+        "lands": [],
+        "openHits": 1
+       }
+      }
+     ],
+     "bytes": 83936,
+     "weakest": [
+      "widths",
+      "voice",
+      "lands"
+     ],
+     "weakestAt": 0
+    },
+    {
+     "i": 5,
+     "commit": "0b61b2f",
+     "when": "09-21 03:11",
+     "subject": "Look at the pages, and fix the three things looking found",
+     "tree": false,
+     "dims": {
+      "contained": 4,
+      "widths": 0,
+      "measured": 4,
+      "refuses": 4,
+      "repro": 4,
+      "voice": 0,
+      "lands": 0,
+      "open": 1
+     },
+     "total": 17,
+     "max": 32,
+     "note": {
+      "pages": 1,
+      "png": 0,
+      "shotScript": true,
+      "data": 5,
+      "scripts": 12,
+      "guard": "build-help.js",
+      "voiceFailures": 13,
+      "voiceGates": {
+       "caps": 6,
+       "count-against-total": 6,
+       "tolerance": 1
+      },
+      "lands": []
+     },
+     "pages": [
+      "ninety-days.html"
+     ],
+     "pageRows": [
+      {
+       "page": "ninety-days.html",
+       "dims": {
+        "contained": 4,
+        "widths": 0,
+        "measured": 4,
+        "refuses": 4,
+        "repro": 4,
+        "voice": 0,
+        "lands": 0,
+        "open": 1
+       },
+       "total": 17,
+       "max": 32,
+       "bytes": 83936,
+       "note": {
+        "hosts": [],
+        "stamped": true,
+        "repro": "node sim/measure.js",
+        "voiceFailures": 13,
+        "voiceGates": {
+         "caps": 6,
+         "count-against-total": 6,
+         "tolerance": 1
+        },
+        "lands": [],
+        "openHits": 1
+       }
+      }
+     ],
+     "bytes": 83936,
+     "weakest": [
+      "widths",
+      "voice",
+      "lands"
+     ],
+     "weakestAt": 0
+    },
+    {
+     "i": 6,
+     "commit": "2e18cf3",
+     "when": "09-21 03:13",
+     "subject": "Read the loss column at the end of the curve, not only at the start",
+     "tree": false,
+     "dims": {
+      "contained": 4,
+      "widths": 0,
+      "measured": 4,
+      "refuses": 4,
+      "repro": 4,
+      "voice": 0,
+      "lands": 0,
+      "open": 1
+     },
+     "total": 17,
+     "max": 32,
+     "note": {
+      "pages": 1,
+      "png": 0,
+      "shotScript": true,
+      "data": 5,
+      "scripts": 12,
+      "guard": "build-help.js",
+      "voiceFailures": 13,
+      "voiceGates": {
+       "caps": 6,
+       "count-against-total": 6,
+       "tolerance": 1
+      },
+      "lands": []
+     },
+     "pages": [
+      "ninety-days.html"
+     ],
+     "pageRows": [
+      {
+       "page": "ninety-days.html",
+       "dims": {
+        "contained": 4,
+        "widths": 0,
+        "measured": 4,
+        "refuses": 4,
+        "repro": 4,
+        "voice": 0,
+        "lands": 0,
+        "open": 1
+       },
+       "total": 17,
+       "max": 32,
+       "bytes": 83936,
+       "note": {
+        "hosts": [],
+        "stamped": true,
+        "repro": "node sim/measure.js",
+        "voiceFailures": 13,
+        "voiceGates": {
+         "caps": 6,
+         "count-against-total": 6,
+         "tolerance": 1
+        },
+        "lands": [],
+        "openHits": 1
+       }
+      }
+     ],
+     "bytes": 83936,
+     "weakest": [
+      "widths",
+      "voice",
+      "lands"
+     ],
+     "weakestAt": 0
+    },
+    {
+     "i": 7,
+     "commit": "b80a6bb",
+     "when": "09-21 03:15",
+     "subject": "Say which parameters are judged, not only which one is soft",
+     "tree": false,
+     "dims": {
+      "contained": 4,
+      "widths": 0,
+      "measured": 4,
+      "refuses": 4,
+      "repro": 4,
+      "voice": 0,
+      "lands": 0,
+      "open": 1
+     },
+     "total": 17,
+     "max": 32,
+     "note": {
+      "pages": 1,
+      "png": 0,
+      "shotScript": true,
+      "data": 5,
+      "scripts": 12,
+      "guard": "build-help.js",
+      "voiceFailures": 13,
+      "voiceGates": {
+       "caps": 6,
+       "count-against-total": 6,
+       "tolerance": 1
+      },
+      "lands": []
+     },
+     "pages": [
+      "ninety-days.html"
+     ],
+     "pageRows": [
+      {
+       "page": "ninety-days.html",
+       "dims": {
+        "contained": 4,
+        "widths": 0,
+        "measured": 4,
+        "refuses": 4,
+        "repro": 4,
+        "voice": 0,
+        "lands": 0,
+        "open": 1
+       },
+       "total": 17,
+       "max": 32,
+       "bytes": 83936,
+       "note": {
+        "hosts": [],
+        "stamped": true,
+        "repro": "node sim/measure.js",
+        "voiceFailures": 13,
+        "voiceGates": {
+         "caps": 6,
+         "count-against-total": 6,
+         "tolerance": 1
+        },
+        "lands": [],
+        "openHits": 1
+       }
+      }
+     ],
+     "bytes": 83936,
+     "weakest": [
+      "widths",
+      "voice",
+      "lands"
+     ],
+     "weakestAt": 0
+    },
+    {
+     "i": 8,
+     "commit": "bcae112",
+     "when": "09-21 03:15",
+     "subject": "Quote a friction name embedded in a sentence",
+     "tree": false,
+     "dims": {
+      "contained": 4,
+      "widths": 0,
+      "measured": 4,
+      "refuses": 4,
+      "repro": 4,
+      "voice": 0,
+      "lands": 0,
+      "open": 1
+     },
+     "total": 17,
+     "max": 32,
+     "note": {
+      "pages": 1,
+      "png": 0,
+      "shotScript": true,
+      "data": 5,
+      "scripts": 12,
+      "guard": "build-help.js",
+      "voiceFailures": 13,
+      "voiceGates": {
+       "caps": 6,
+       "count-against-total": 6,
+       "tolerance": 1
+      },
+      "lands": []
+     },
+     "pages": [
+      "ninety-days.html"
+     ],
+     "pageRows": [
+      {
+       "page": "ninety-days.html",
+       "dims": {
+        "contained": 4,
+        "widths": 0,
+        "measured": 4,
+        "refuses": 4,
+        "repro": 4,
+        "voice": 0,
+        "lands": 0,
+        "open": 1
+       },
+       "total": 17,
+       "max": 32,
+       "bytes": 83936,
+       "note": {
+        "hosts": [],
+        "stamped": true,
+        "repro": "node sim/measure.js",
+        "voiceFailures": 13,
+        "voiceGates": {
+         "caps": 6,
+         "count-against-total": 6,
+         "tolerance": 1
+        },
+        "lands": [],
+        "openHits": 1
+       }
+      }
+     ],
+     "bytes": 83936,
+     "weakest": [
+      "widths",
+      "voice",
+      "lands"
+     ],
+     "weakestAt": 0
+    },
+    {
+     "i": 9,
+     "commit": "117c65e",
+     "when": "09-21 03:16",
+     "subject": "Fix an adding up paragraph that contradicted itself",
+     "tree": false,
+     "dims": {
+      "contained": 4,
+      "widths": 0,
+      "measured": 4,
+      "refuses": 4,
+      "repro": 4,
+      "voice": 0,
+      "lands": 0,
+      "open": 1
+     },
+     "total": 17,
+     "max": 32,
+     "note": {
+      "pages": 1,
+      "png": 0,
+      "shotScript": true,
+      "data": 5,
+      "scripts": 12,
+      "guard": "build-help.js",
+      "voiceFailures": 13,
+      "voiceGates": {
+       "caps": 6,
+       "count-against-total": 6,
+       "tolerance": 1
+      },
+      "lands": []
+     },
+     "pages": [
+      "ninety-days.html"
+     ],
+     "pageRows": [
+      {
+       "page": "ninety-days.html",
+       "dims": {
+        "contained": 4,
+        "widths": 0,
+        "measured": 4,
+        "refuses": 4,
+        "repro": 4,
+        "voice": 0,
+        "lands": 0,
+        "open": 1
+       },
+       "total": 17,
+       "max": 32,
+       "bytes": 83936,
+       "note": {
+        "hosts": [],
+        "stamped": true,
+        "repro": "node sim/measure.js",
+        "voiceFailures": 13,
+        "voiceGates": {
+         "caps": 6,
+         "count-against-total": 6,
+         "tolerance": 1
+        },
+        "lands": [],
+        "openHits": 1
+       }
+      }
+     ],
+     "bytes": 83936,
+     "weakest": [
+      "widths",
+      "voice",
+      "lands"
+     ],
+     "weakestAt": 0
+    },
+    {
+     "i": 10,
+     "commit": "125f151",
+     "when": "09-21 03:17",
+     "subject": "Size the chart gutter and the grid step off the data",
+     "tree": false,
+     "dims": {
+      "contained": 4,
+      "widths": 0,
+      "measured": 4,
+      "refuses": 4,
+      "repro": 4,
+      "voice": 0,
+      "lands": 0,
+      "open": 1
+     },
+     "total": 17,
+     "max": 32,
+     "note": {
+      "pages": 1,
+      "png": 0,
+      "shotScript": true,
+      "data": 5,
+      "scripts": 12,
+      "guard": "build-help.js",
+      "voiceFailures": 13,
+      "voiceGates": {
+       "caps": 6,
+       "count-against-total": 6,
+       "tolerance": 1
+      },
+      "lands": []
+     },
+     "pages": [
+      "ninety-days.html"
+     ],
+     "pageRows": [
+      {
+       "page": "ninety-days.html",
+       "dims": {
+        "contained": 4,
+        "widths": 0,
+        "measured": 4,
+        "refuses": 4,
+        "repro": 4,
+        "voice": 0,
+        "lands": 0,
+        "open": 1
+       },
+       "total": 17,
+       "max": 32,
+       "bytes": 83936,
+       "note": {
+        "hosts": [],
+        "stamped": true,
+        "repro": "node sim/measure.js",
+        "voiceFailures": 13,
+        "voiceGates": {
+         "caps": 6,
+         "count-against-total": 6,
+         "tolerance": 1
+        },
+        "lands": [],
+        "openHits": 1
+       }
+      }
+     ],
+     "bytes": 83936,
+     "weakest": [
+      "widths",
+      "voice",
+      "lands"
+     ],
+     "weakestAt": 0
+    },
+    {
+     "i": 11,
+     "commit": "41ea1f6",
+     "when": "09-21 03:19",
+     "subject": "Size the bar chart label gutter from the labels",
+     "tree": false,
+     "dims": {
+      "contained": 4,
+      "widths": 0,
+      "measured": 4,
+      "refuses": 4,
+      "repro": 4,
+      "voice": 0,
+      "lands": 0,
+      "open": 1
+     },
+     "total": 17,
+     "max": 32,
+     "note": {
+      "pages": 1,
+      "png": 0,
+      "shotScript": true,
+      "data": 5,
+      "scripts": 12,
+      "guard": "build-help.js",
+      "voiceFailures": 13,
+      "voiceGates": {
+       "caps": 6,
+       "count-against-total": 6,
+       "tolerance": 1
+      },
+      "lands": []
+     },
+     "pages": [
+      "ninety-days.html"
+     ],
+     "pageRows": [
+      {
+       "page": "ninety-days.html",
+       "dims": {
+        "contained": 4,
+        "widths": 0,
+        "measured": 4,
+        "refuses": 4,
+        "repro": 4,
+        "voice": 0,
+        "lands": 0,
+        "open": 1
+       },
+       "total": 17,
+       "max": 32,
+       "bytes": 83936,
+       "note": {
+        "hosts": [],
+        "stamped": true,
+        "repro": "node sim/measure.js",
+        "voiceFailures": 13,
+        "voiceGates": {
+         "caps": 6,
+         "count-against-total": 6,
+         "tolerance": 1
+        },
+        "lands": [],
+        "openHits": 1
+       }
+      }
+     ],
+     "bytes": 83936,
+     "weakest": [
+      "widths",
+      "voice",
+      "lands"
+     ],
+     "weakestAt": 0
+    },
+    {
+     "i": 12,
+     "commit": "d25fa43",
+     "when": "09-21 03:20",
+     "subject": "Read the counts in these sentences instead of typing them",
+     "tree": false,
+     "dims": {
+      "contained": 4,
+      "widths": 0,
+      "measured": 4,
+      "refuses": 4,
+      "repro": 4,
+      "voice": 0,
+      "lands": 0,
+      "open": 1
+     },
+     "total": 17,
+     "max": 32,
+     "note": {
+      "pages": 1,
+      "png": 0,
+      "shotScript": true,
+      "data": 5,
+      "scripts": 12,
+      "guard": "build-help.js",
+      "voiceFailures": 13,
+      "voiceGates": {
+       "caps": 6,
+       "count-against-total": 6,
+       "tolerance": 1
+      },
+      "lands": []
+     },
+     "pages": [
+      "ninety-days.html"
+     ],
+     "pageRows": [
+      {
+       "page": "ninety-days.html",
+       "dims": {
+        "contained": 4,
+        "widths": 0,
+        "measured": 4,
+        "refuses": 4,
+        "repro": 4,
+        "voice": 0,
+        "lands": 0,
+        "open": 1
+       },
+       "total": 17,
+       "max": 32,
+       "bytes": 83936,
+       "note": {
+        "hosts": [],
+        "stamped": true,
+        "repro": "node sim/measure.js",
+        "voiceFailures": 13,
+        "voiceGates": {
+         "caps": 6,
+         "count-against-total": 6,
+         "tolerance": 1
+        },
+        "lands": [],
+        "openHits": 1
+       }
+      }
+     ],
+     "bytes": 83936,
+     "weakest": [
+      "widths",
+      "voice",
+      "lands"
+     ],
+     "weakestAt": 0
+    },
+    {
+     "i": 13,
+     "commit": "57e16c4",
+     "when": "09-21 03:22",
+     "subject": "Check the reproduction claim instead of asserting it",
+     "tree": false,
+     "dims": {
+      "contained": 4,
+      "widths": 0,
+      "measured": 4,
+      "refuses": 4,
+      "repro": 4,
+      "voice": 0,
+      "lands": 0,
+      "open": 1
+     },
+     "total": 17,
+     "max": 32,
+     "note": {
+      "pages": 1,
+      "png": 0,
+      "shotScript": true,
+      "data": 5,
+      "scripts": 12,
+      "guard": "build-help.js",
+      "voiceFailures": 13,
+      "voiceGates": {
+       "caps": 6,
+       "count-against-total": 6,
+       "tolerance": 1
+      },
+      "lands": []
+     },
+     "pages": [
+      "ninety-days.html"
+     ],
+     "pageRows": [
+      {
+       "page": "ninety-days.html",
+       "dims": {
+        "contained": 4,
+        "widths": 0,
+        "measured": 4,
+        "refuses": 4,
+        "repro": 4,
+        "voice": 0,
+        "lands": 0,
+        "open": 1
+       },
+       "total": 17,
+       "max": 32,
+       "bytes": 83936,
+       "note": {
+        "hosts": [],
+        "stamped": true,
+        "repro": "node sim/measure.js",
+        "voiceFailures": 13,
+        "voiceGates": {
+         "caps": 6,
+         "count-against-total": 6,
+         "tolerance": 1
+        },
+        "lands": [],
+        "openHits": 1
+       }
+      }
+     ],
+     "bytes": 83936,
+     "weakest": [
+      "widths",
+      "voice",
+      "lands"
+     ],
+     "weakestAt": 0
+    },
+    {
+     "i": 14,
+     "commit": "65acb04",
+     "when": "09-21 03:23",
+     "subject": "A sticking point outside the recorded five is not zero",
+     "tree": false,
+     "dims": {
+      "contained": 4,
+      "widths": 0,
+      "measured": 4,
+      "refuses": 4,
+      "repro": 4,
+      "voice": 0,
+      "lands": 0,
+      "open": 1
+     },
+     "total": 17,
+     "max": 32,
+     "note": {
+      "pages": 1,
+      "png": 0,
+      "shotScript": true,
+      "data": 5,
+      "scripts": 12,
+      "guard": "build-help.js",
+      "voiceFailures": 13,
+      "voiceGates": {
+       "caps": 6,
+       "count-against-total": 6,
+       "tolerance": 1
+      },
+      "lands": []
+     },
+     "pages": [
+      "ninety-days.html"
+     ],
+     "pageRows": [
+      {
+       "page": "ninety-days.html",
+       "dims": {
+        "contained": 4,
+        "widths": 0,
+        "measured": 4,
+        "refuses": 4,
+        "repro": 4,
+        "voice": 0,
+        "lands": 0,
+        "open": 1
+       },
+       "total": 17,
+       "max": 32,
+       "bytes": 83936,
+       "note": {
+        "hosts": [],
+        "stamped": true,
+        "repro": "node sim/measure.js",
+        "voiceFailures": 13,
+        "voiceGates": {
+         "caps": 6,
+         "count-against-total": 6,
+         "tolerance": 1
+        },
+        "lands": [],
+        "openHits": 1
+       }
+      }
+     ],
+     "bytes": 83936,
+     "weakest": [
+      "widths",
+      "voice",
+      "lands"
+     ],
+     "weakestAt": 0
+    },
+    {
+     "i": 15,
+     "commit": "c9c1d5f",
+     "when": "09-21 03:24",
+     "subject": "Report the peak as well as the end of the curve",
+     "tree": false,
+     "dims": {
+      "contained": 4,
+      "widths": 0,
+      "measured": 4,
+      "refuses": 4,
+      "repro": 4,
+      "voice": 0,
+      "lands": 0,
+      "open": 1
+     },
+     "total": 17,
+     "max": 32,
+     "note": {
+      "pages": 1,
+      "png": 0,
+      "shotScript": true,
+      "data": 5,
+      "scripts": 12,
+      "guard": "build-help.js",
+      "voiceFailures": 13,
+      "voiceGates": {
+       "caps": 6,
+       "count-against-total": 6,
+       "tolerance": 1
+      },
+      "lands": []
+     },
+     "pages": [
+      "ninety-days.html"
+     ],
+     "pageRows": [
+      {
+       "page": "ninety-days.html",
+       "dims": {
+        "contained": 4,
+        "widths": 0,
+        "measured": 4,
+        "refuses": 4,
+        "repro": 4,
+        "voice": 0,
+        "lands": 0,
+        "open": 1
+       },
+       "total": 17,
+       "max": 32,
+       "bytes": 83936,
+       "note": {
+        "hosts": [],
+        "stamped": true,
+        "repro": "node sim/measure.js",
+        "voiceFailures": 13,
+        "voiceGates": {
+         "caps": 6,
+         "count-against-total": 6,
+         "tolerance": 1
+        },
+        "lands": [],
+        "openHits": 1
+       }
+      }
+     ],
+     "bytes": 83936,
+     "weakest": [
+      "widths",
+      "voice",
+      "lands"
+     ],
+     "weakestAt": 0
+    },
+    {
+     "i": 16,
+     "commit": "58538f1",
+     "when": "09-21 03:24",
+     "subject": "A page built from a smoke run says so at the top",
+     "tree": false,
+     "dims": {
+      "contained": 4,
+      "widths": 0,
+      "measured": 4,
+      "refuses": 4,
+      "repro": 4,
+      "voice": 0,
+      "lands": 0,
+      "open": 1
+     },
+     "total": 17,
+     "max": 32,
+     "note": {
+      "pages": 1,
+      "png": 0,
+      "shotScript": true,
+      "data": 5,
+      "scripts": 12,
+      "guard": "build-help.js",
+      "voiceFailures": 13,
+      "voiceGates": {
+       "caps": 6,
+       "count-against-total": 6,
+       "tolerance": 1
+      },
+      "lands": []
+     },
+     "pages": [
+      "ninety-days.html"
+     ],
+     "pageRows": [
+      {
+       "page": "ninety-days.html",
+       "dims": {
+        "contained": 4,
+        "widths": 0,
+        "measured": 4,
+        "refuses": 4,
+        "repro": 4,
+        "voice": 0,
+        "lands": 0,
+        "open": 1
+       },
+       "total": 17,
+       "max": 32,
+       "bytes": 83936,
+       "note": {
+        "hosts": [],
+        "stamped": true,
+        "repro": "node sim/measure.js",
+        "voiceFailures": 13,
+        "voiceGates": {
+         "caps": 6,
+         "count-against-total": 6,
+         "tolerance": 1
+        },
+        "lands": [],
+        "openHits": 1
+       }
+      }
+     ],
+     "bytes": 83936,
+     "weakest": [
+      "widths",
+      "voice",
+      "lands"
+     ],
+     "weakestAt": 0
+    },
+    {
+     "i": 17,
+     "commit": "628c170",
+     "when": "09-21 03:27",
+     "subject": "Print the pin and the shot step in the reproduction chain",
+     "tree": false,
+     "dims": {
+      "contained": 4,
+      "widths": 0,
+      "measured": 4,
+      "refuses": 4,
+      "repro": 4,
+      "voice": 0,
+      "lands": 0,
+      "open": 1
+     },
+     "total": 17,
+     "max": 32,
+     "note": {
+      "pages": 1,
+      "png": 0,
+      "shotScript": true,
+      "data": 5,
+      "scripts": 12,
+      "guard": "build-help.js",
+      "voiceFailures": 13,
+      "voiceGates": {
+       "caps": 6,
+       "count-against-total": 6,
+       "tolerance": 1
+      },
+      "lands": []
+     },
+     "pages": [
+      "ninety-days.html"
+     ],
+     "pageRows": [
+      {
+       "page": "ninety-days.html",
+       "dims": {
+        "contained": 4,
+        "widths": 0,
+        "measured": 4,
+        "refuses": 4,
+        "repro": 4,
+        "voice": 0,
+        "lands": 0,
+        "open": 1
+       },
+       "total": 17,
+       "max": 32,
+       "bytes": 83936,
+       "note": {
+        "hosts": [],
+        "stamped": true,
+        "repro": "node sim/measure.js",
+        "voiceFailures": 13,
+        "voiceGates": {
+         "caps": 6,
+         "count-against-total": 6,
+         "tolerance": 1
+        },
+        "lands": [],
+        "openHits": 1
+       }
+      }
+     ],
+     "bytes": 83936,
+     "weakest": [
+      "widths",
+      "voice",
+      "lands"
+     ],
+     "weakestAt": 0
+    },
+    {
+     "i": 18,
+     "commit": "86c183b",
+     "when": "09-21 03:34",
+     "subject": "The two pages, built from the full iteration",
+     "tree": false,
+     "dims": {
+      "contained": 4,
+      "widths": 0,
+      "measured": 4,
+      "refuses": 4,
+      "repro": 4,
+      "voice": 0,
+      "lands": 2.67,
+      "open": 0.67
+     },
+     "total": 19.34,
+     "max": 32,
+     "note": {
+      "pages": 3,
+      "png": 0,
+      "shotScript": true,
+      "data": 5,
+      "scripts": 12,
+      "guard": "build-help.js",
+      "voiceFailures": 39,
+      "voiceGates": {
+       "caps": 27,
+       "count-against-total": 7,
+       "tolerance": 1,
+       "filler": 4
+      },
+      "lands": [
+       "atuned_src/ui/share.js",
+       "atuned_src/engine/data/lex.js",
+       "atuned_src/ui/release.js",
+       "atuned_src/ui/summary.js",
+       "atuned_src/shell/head.html",
+       "atuned_src/engine/ladder.js"
+      ]
+     },
+     "pages": [
+      "ninety-days.html",
+      "to-ninety.html",
+      "what-would-help.html"
+     ],
+     "pageRows": [
+      {
+       "page": "ninety-days.html",
+       "dims": {
+        "contained": 4,
+        "widths": 0,
+        "measured": 4,
+        "refuses": 4,
+        "repro": 4,
+        "voice": 0,
+        "lands": 0,
+        "open": 1
+       },
+       "total": 17,
+       "max": 32,
+       "bytes": 83936,
+       "note": {
+        "hosts": [],
+        "stamped": true,
+        "repro": "node sim/measure.js",
+        "voiceFailures": 13,
+        "voiceGates": {
+         "caps": 6,
+         "count-against-total": 6,
+         "tolerance": 1
+        },
+        "lands": [],
+        "openHits": 1
+       }
+      },
+      {
+       "page": "to-ninety.html",
+       "dims": {
+        "contained": 4,
+        "widths": 0,
+        "measured": 4,
+        "refuses": 4,
+        "repro": 4,
+        "voice": 0,
+        "lands": 4,
+        "open": 0
+       },
+       "total": 20,
+       "max": 32,
+       "bytes": 74478,
+       "note": {
+        "hosts": [],
+        "stamped": true,
+        "repro": "node sim/measure.js",
+        "voiceFailures": 14,
+        "voiceGates": {
+         "filler": 3,
+         "caps": 11
+        },
+        "lands": [
+         "atuned_src/ui/share.js",
+         "atuned_src/engine/data/lex.js",
+         "atuned_src/ui/release.js",
+         "atuned_src/ui/summary.js",
+         "atuned_src/shell/head.html",
+         "atuned_src/engine/ladder.js"
+        ],
+        "openHits": 0
+       }
+      },
+      {
+       "page": "what-would-help.html",
+       "dims": {
+        "contained": 4,
+        "widths": 0,
+        "measured": 4,
+        "refuses": 4,
+        "repro": 4,
+        "voice": 0,
+        "lands": 4,
+        "open": 1
+       },
+       "total": 21,
+       "max": 32,
+       "bytes": 56308,
+       "note": {
+        "hosts": [],
+        "stamped": true,
+        "repro": "node sim/measure.js",
+        "voiceFailures": 12,
+        "voiceGates": {
+         "caps": 10,
+         "filler": 1,
+         "count-against-total": 1
+        },
+        "lands": [
+         "atuned_src/ui/share.js",
+         "atuned_src/engine/data/lex.js",
+         "atuned_src/ui/release.js",
+         "atuned_src/ui/summary.js",
+         "atuned_src/shell/head.html",
+         "atuned_src/engine/ladder.js"
+        ],
+        "openHits": 1
+       }
+      }
+     ],
+     "bytes": 214722,
+     "weakest": [
+      "widths",
+      "voice"
+     ],
+     "weakestAt": 0
+    },
+    {
+     "i": 19,
+     "commit": "21f57f5",
+     "when": "09-21 05:00",
+     "subject": "The combination search, and the team's own rubric, both driven off the pinned build",
+     "tree": false,
+     "dims": {
+      "contained": 4,
+      "widths": 0,
+      "measured": 4,
+      "refuses": 4,
+      "repro": 4,
+      "voice": 0,
+      "lands": 2.67,
+      "open": 0.67
+     },
+     "total": 19.34,
+     "max": 32,
+     "note": {
+      "pages": 3,
+      "png": 0,
+      "shotScript": true,
+      "data": 5,
+      "scripts": 12,
+      "guard": "build-help.js",
+      "voiceFailures": 39,
+      "voiceGates": {
+       "caps": 27,
+       "count-against-total": 7,
+       "tolerance": 1,
+       "filler": 4
+      },
+      "lands": [
+       "atuned_src/ui/share.js",
+       "atuned_src/engine/data/lex.js",
+       "atuned_src/ui/release.js",
+       "atuned_src/ui/summary.js",
+       "atuned_src/shell/head.html",
+       "atuned_src/engine/ladder.js"
+      ]
+     },
+     "pages": [
+      "ninety-days.html",
+      "to-ninety.html",
+      "what-would-help.html"
+     ],
+     "pageRows": [
+      {
+       "page": "ninety-days.html",
+       "dims": {
+        "contained": 4,
+        "widths": 0,
+        "measured": 4,
+        "refuses": 4,
+        "repro": 4,
+        "voice": 0,
+        "lands": 0,
+        "open": 1
+       },
+       "total": 17,
+       "max": 32,
+       "bytes": 83936,
+       "note": {
+        "hosts": [],
+        "stamped": true,
+        "repro": "node sim/measure.js",
+        "voiceFailures": 13,
+        "voiceGates": {
+         "caps": 6,
+         "count-against-total": 6,
+         "tolerance": 1
+        },
+        "lands": [],
+        "openHits": 1
+       }
+      },
+      {
+       "page": "to-ninety.html",
+       "dims": {
+        "contained": 4,
+        "widths": 0,
+        "measured": 4,
+        "refuses": 4,
+        "repro": 4,
+        "voice": 0,
+        "lands": 4,
+        "open": 0
+       },
+       "total": 20,
+       "max": 32,
+       "bytes": 74478,
+       "note": {
+        "hosts": [],
+        "stamped": true,
+        "repro": "node sim/measure.js",
+        "voiceFailures": 14,
+        "voiceGates": {
+         "filler": 3,
+         "caps": 11
+        },
+        "lands": [
+         "atuned_src/ui/share.js",
+         "atuned_src/engine/data/lex.js",
+         "atuned_src/ui/release.js",
+         "atuned_src/ui/summary.js",
+         "atuned_src/shell/head.html",
+         "atuned_src/engine/ladder.js"
+        ],
+        "openHits": 0
+       }
+      },
+      {
+       "page": "what-would-help.html",
+       "dims": {
+        "contained": 4,
+        "widths": 0,
+        "measured": 4,
+        "refuses": 4,
+        "repro": 4,
+        "voice": 0,
+        "lands": 4,
+        "open": 1
+       },
+       "total": 21,
+       "max": 32,
+       "bytes": 56308,
+       "note": {
+        "hosts": [],
+        "stamped": true,
+        "repro": "node sim/measure.js",
+        "voiceFailures": 12,
+        "voiceGates": {
+         "caps": 10,
+         "filler": 1,
+         "count-against-total": 1
+        },
+        "lands": [
+         "atuned_src/ui/share.js",
+         "atuned_src/engine/data/lex.js",
+         "atuned_src/ui/release.js",
+         "atuned_src/ui/summary.js",
+         "atuned_src/shell/head.html",
+         "atuned_src/engine/ladder.js"
+        ],
+        "openHits": 1
+       }
+      }
+     ],
+     "bytes": 214722,
+     "weakest": [
+      "widths",
+      "voice"
+     ],
+     "weakestAt": 0
+    },
+    {
+     "i": 20,
+     "commit": "working tree",
+     "when": "now",
+     "subject": "the working tree as it stands",
+     "tree": true,
+     "dims": {
+      "contained": 4,
+      "widths": 0,
+      "measured": 4,
+      "refuses": 4,
+      "repro": 4,
+      "voice": 0,
+      "lands": 2.67,
+      "open": 0.67
+     },
+     "total": 19.34,
+     "max": 32,
+     "note": {
+      "pages": 3,
+      "png": 0,
+      "shotScript": true,
+      "data": 5,
+      "scripts": 12,
+      "guard": "build-help.js",
+      "voiceFailures": 39,
+      "voiceGates": {
+       "caps": 27,
+       "count-against-total": 7,
+       "tolerance": 1,
+       "filler": 4
+      },
+      "lands": [
+       "atuned_src/ui/share.js",
+       "atuned_src/engine/data/lex.js",
+       "atuned_src/ui/release.js",
+       "atuned_src/ui/summary.js",
+       "atuned_src/shell/head.html",
+       "atuned_src/engine/ladder.js"
+      ]
+     },
+     "pages": [
+      "ninety-days.html",
+      "to-ninety.html",
+      "what-would-help.html"
+     ],
+     "pageRows": [
+      {
+       "page": "ninety-days.html",
+       "dims": {
+        "contained": 4,
+        "widths": 0,
+        "measured": 4,
+        "refuses": 4,
+        "repro": 4,
+        "voice": 0,
+        "lands": 0,
+        "open": 1
+       },
+       "total": 17,
+       "max": 32,
+       "bytes": 83936,
+       "note": {
+        "hosts": [],
+        "stamped": true,
+        "repro": "node sim/measure.js",
+        "voiceFailures": 13,
+        "voiceGates": {
+         "caps": 6,
+         "count-against-total": 6,
+         "tolerance": 1
+        },
+        "lands": [],
+        "openHits": 1
+       }
+      },
+      {
+       "page": "to-ninety.html",
+       "dims": {
+        "contained": 4,
+        "widths": 0,
+        "measured": 4,
+        "refuses": 4,
+        "repro": 4,
+        "voice": 0,
+        "lands": 4,
+        "open": 0
+       },
+       "total": 20,
+       "max": 32,
+       "bytes": 74478,
+       "note": {
+        "hosts": [],
+        "stamped": true,
+        "repro": "node sim/measure.js",
+        "voiceFailures": 14,
+        "voiceGates": {
+         "filler": 3,
+         "caps": 11
+        },
+        "lands": [
+         "atuned_src/ui/share.js",
+         "atuned_src/engine/data/lex.js",
+         "atuned_src/ui/release.js",
+         "atuned_src/ui/summary.js",
+         "atuned_src/shell/head.html",
+         "atuned_src/engine/ladder.js"
+        ],
+        "openHits": 0
+       }
+      },
+      {
+       "page": "what-would-help.html",
+       "dims": {
+        "contained": 4,
+        "widths": 0,
+        "measured": 4,
+        "refuses": 4,
+        "repro": 4,
+        "voice": 0,
+        "lands": 4,
+        "open": 1
+       },
+       "total": 21,
+       "max": 32,
+       "bytes": 56308,
+       "note": {
+        "hosts": [],
+        "stamped": true,
+        "repro": "node sim/measure.js",
+        "voiceFailures": 12,
+        "voiceGates": {
+         "caps": 10,
+         "filler": 1,
+         "count-against-total": 1
+        },
+        "lands": [
+         "atuned_src/ui/share.js",
+         "atuned_src/engine/data/lex.js",
+         "atuned_src/ui/release.js",
+         "atuned_src/ui/summary.js",
+         "atuned_src/shell/head.html",
+         "atuned_src/engine/ladder.js"
+        ],
+        "openHits": 1
+       }
+      }
+     ],
+     "bytes": 214722,
+     "weakest": [
+      "widths",
+      "voice"
+     ],
+     "weakestAt": 0
+    }
+   ]
+  }
+ ],
+ "passes": 91,
+ "dimScores": 717,
+ "transitions": [
+  {
+   "fam": "story4",
+   "from": "08de6c4",
+   "to": "working tree",
+   "weakest": [
+    "measured",
+    "repro"
+   ],
+   "raised": [],
+   "followed": false,
+   "dTotal": 0,
+   "regressed": []
+  },
+  {
+   "fam": "nav",
+   "from": "82c8107",
+   "to": "working tree",
+   "weakest": [
+    "repro",
+    "lands"
+   ],
+   "raised": [],
+   "followed": false,
+   "dTotal": 0,
+   "regressed": []
+  },
+  {
+   "fam": "logo",
+   "from": "15d149a",
+   "to": "c759cd9",
+   "weakest": [
+    "repro",
+    "voice"
+   ],
+   "raised": [],
+   "followed": false,
+   "dTotal": 0,
+   "regressed": []
+  },
+  {
+   "fam": "logo",
+   "from": "c759cd9",
+   "to": "1faf631",
+   "weakest": [
+    "repro",
+    "voice"
+   ],
+   "raised": [],
+   "followed": false,
+   "dTotal": 0,
+   "regressed": []
+  },
+  {
+   "fam": "logo",
+   "from": "1faf631",
+   "to": "a162ec7",
+   "weakest": [
+    "repro",
+    "voice"
+   ],
+   "raised": [],
+   "followed": false,
+   "dTotal": 0,
+   "regressed": []
+  },
+  {
+   "fam": "logo",
+   "from": "a162ec7",
+   "to": "d2b6681",
+   "weakest": [
+    "repro",
+    "voice"
+   ],
+   "raised": [],
+   "followed": false,
+   "dTotal": 0,
+   "regressed": []
+  },
+  {
+   "fam": "logo",
+   "from": "d2b6681",
+   "to": "3e00651",
+   "weakest": [
+    "repro",
+    "voice"
+   ],
+   "raised": [],
+   "followed": false,
+   "dTotal": 2,
+   "regressed": []
+  },
+  {
+   "fam": "logo",
+   "from": "3e00651",
+   "to": "working tree",
+   "weakest": [
+    "repro",
+    "voice"
+   ],
+   "raised": [],
+   "followed": false,
+   "dTotal": 0,
+   "regressed": []
+  },
+  {
+   "fam": "dials",
+   "from": "8e2e73f",
+   "to": "working tree",
+   "weakest": [
+    "repro"
+   ],
+   "raised": [],
+   "followed": false,
+   "dTotal": 0,
+   "regressed": []
+  },
+  {
+   "fam": "feathers",
+   "from": "620a457",
+   "to": "working tree",
+   "weakest": [
+    "repro",
+    "lands"
+   ],
+   "raised": [],
+   "followed": false,
+   "dTotal": 0,
+   "regressed": []
+  },
+  {
+   "fam": "feather",
+   "from": "058a3f9",
+   "to": "working tree",
+   "weakest": [
+    "widths",
+    "measured",
+    "repro",
+    "lands"
+   ],
+   "raised": [],
+   "followed": false,
+   "dTotal": 0,
+   "regressed": []
+  },
+  {
+   "fam": "ladder",
+   "from": "942aadc",
+   "to": "working tree",
+   "weakest": [
+    "measured",
+    "repro",
+    "lands"
+   ],
+   "raised": [],
+   "followed": false,
+   "dTotal": 0,
+   "regressed": []
+  },
+  {
+   "fam": "funnel",
+   "from": "a54a16b",
+   "to": "48f981d",
+   "weakest": [
+    "measured",
+    "refuses",
+    "repro",
+    "lands"
+   ],
+   "raised": [
+    "refuses"
+   ],
+   "followed": true,
+   "dTotal": 2,
+   "regressed": []
+  },
+  {
+   "fam": "funnel",
+   "from": "48f981d",
+   "to": "7f1fb74",
+   "weakest": [
+    "measured",
+    "repro",
+    "lands"
+   ],
+   "raised": [],
+   "followed": false,
+   "dTotal": 0.5,
+   "regressed": []
+  },
+  {
+   "fam": "funnel",
+   "from": "7f1fb74",
+   "to": "515dce0",
+   "weakest": [
+    "measured",
+    "repro",
+    "lands"
+   ],
+   "raised": [],
+   "followed": false,
+   "dTotal": 0,
+   "regressed": []
+  },
+  {
+   "fam": "funnel",
+   "from": "515dce0",
+   "to": "edf008e",
+   "weakest": [
+    "measured",
+    "repro",
+    "lands"
+   ],
+   "raised": [],
+   "followed": false,
+   "dTotal": 0,
+   "regressed": []
+  },
+  {
+   "fam": "funnel",
+   "from": "edf008e",
+   "to": "39d4bb7",
+   "weakest": [
+    "measured",
+    "repro",
+    "lands"
+   ],
+   "raised": [
+    "repro"
+   ],
+   "followed": true,
+   "dTotal": 2,
+   "regressed": []
+  },
+  {
+   "fam": "funnel",
+   "from": "39d4bb7",
+   "to": "c797c2c",
+   "weakest": [
+    "measured",
+    "lands"
+   ],
+   "raised": [],
+   "followed": false,
+   "dTotal": 0,
+   "regressed": []
+  },
+  {
+   "fam": "funnel",
+   "from": "c797c2c",
+   "to": "e46fd40",
+   "weakest": [
+    "measured",
+    "lands"
+   ],
+   "raised": [],
+   "followed": false,
+   "dTotal": 0.75,
+   "regressed": [
+    "open"
+   ]
+  },
+  {
+   "fam": "funnel",
+   "from": "e46fd40",
+   "to": "fb4e941",
+   "weakest": [
+    "measured",
+    "lands"
+   ],
+   "raised": [
+    "lands"
+   ],
+   "followed": true,
+   "dTotal": 0.5,
+   "regressed": []
+  },
+  {
+   "fam": "funnel",
+   "from": "fb4e941",
+   "to": "9829040",
+   "weakest": [
+    "measured"
+   ],
+   "raised": [],
+   "followed": false,
+   "dTotal": 0,
+   "regressed": []
+  },
+  {
+   "fam": "funnel",
+   "from": "9829040",
+   "to": "23fdccc",
+   "weakest": [
+    "measured"
+   ],
+   "raised": [],
+   "followed": false,
+   "dTotal": 0,
+   "regressed": []
+  },
+  {
+   "fam": "funnel",
+   "from": "23fdccc",
+   "to": "ec94db6",
+   "weakest": [
+    "measured"
+   ],
+   "raised": [],
+   "followed": false,
+   "dTotal": 0,
+   "regressed": []
+  },
+  {
+   "fam": "funnel",
+   "from": "ec94db6",
+   "to": "working tree",
+   "weakest": [
+    "measured"
+   ],
+   "raised": [],
+   "followed": false,
+   "dTotal": 0,
+   "regressed": []
+  },
+  {
+   "fam": "sim",
+   "from": "72d5e23",
+   "to": "dde54ce",
+   "weakest": [
+    "widths",
+    "voice",
+    "lands"
+   ],
+   "raised": [],
+   "followed": false,
+   "dTotal": 0,
+   "regressed": []
+  },
+  {
+   "fam": "sim",
+   "from": "dde54ce",
+   "to": "8b386ee",
+   "weakest": [
+    "widths",
+    "voice",
+    "lands"
+   ],
+   "raised": [],
+   "followed": false,
+   "dTotal": 0,
+   "regressed": []
+  },
+  {
+   "fam": "sim",
+   "from": "8b386ee",
+   "to": "73ef419",
+   "weakest": [
+    "widths",
+    "voice",
+    "lands"
+   ],
+   "raised": [],
+   "followed": false,
+   "dTotal": 0,
+   "regressed": []
+  },
+  {
+   "fam": "sim",
+   "from": "73ef419",
+   "to": "0b61b2f",
+   "weakest": [
+    "widths",
+    "voice",
+    "lands"
+   ],
+   "raised": [],
+   "followed": false,
+   "dTotal": 0,
+   "regressed": []
+  },
+  {
+   "fam": "sim",
+   "from": "0b61b2f",
+   "to": "2e18cf3",
+   "weakest": [
+    "widths",
+    "voice",
+    "lands"
+   ],
+   "raised": [],
+   "followed": false,
+   "dTotal": 0,
+   "regressed": []
+  },
+  {
+   "fam": "sim",
+   "from": "2e18cf3",
+   "to": "b80a6bb",
+   "weakest": [
+    "widths",
+    "voice",
+    "lands"
+   ],
+   "raised": [],
+   "followed": false,
+   "dTotal": 0,
+   "regressed": []
+  },
+  {
+   "fam": "sim",
+   "from": "b80a6bb",
+   "to": "bcae112",
+   "weakest": [
+    "widths",
+    "voice",
+    "lands"
+   ],
+   "raised": [],
+   "followed": false,
+   "dTotal": 0,
+   "regressed": []
+  },
+  {
+   "fam": "sim",
+   "from": "bcae112",
+   "to": "117c65e",
+   "weakest": [
+    "widths",
+    "voice",
+    "lands"
+   ],
+   "raised": [],
+   "followed": false,
+   "dTotal": 0,
+   "regressed": []
+  },
+  {
+   "fam": "sim",
+   "from": "117c65e",
+   "to": "125f151",
+   "weakest": [
+    "widths",
+    "voice",
+    "lands"
+   ],
+   "raised": [],
+   "followed": false,
+   "dTotal": 0,
+   "regressed": []
+  },
+  {
+   "fam": "sim",
+   "from": "125f151",
+   "to": "41ea1f6",
+   "weakest": [
+    "widths",
+    "voice",
+    "lands"
+   ],
+   "raised": [],
+   "followed": false,
+   "dTotal": 0,
+   "regressed": []
+  },
+  {
+   "fam": "sim",
+   "from": "41ea1f6",
+   "to": "d25fa43",
+   "weakest": [
+    "widths",
+    "voice",
+    "lands"
+   ],
+   "raised": [],
+   "followed": false,
+   "dTotal": 0,
+   "regressed": []
+  },
+  {
+   "fam": "sim",
+   "from": "d25fa43",
+   "to": "57e16c4",
+   "weakest": [
+    "widths",
+    "voice",
+    "lands"
+   ],
+   "raised": [],
+   "followed": false,
+   "dTotal": 0,
+   "regressed": []
+  },
+  {
+   "fam": "sim",
+   "from": "57e16c4",
+   "to": "65acb04",
+   "weakest": [
+    "widths",
+    "voice",
+    "lands"
+   ],
+   "raised": [],
+   "followed": false,
+   "dTotal": 0,
+   "regressed": []
+  },
+  {
+   "fam": "sim",
+   "from": "65acb04",
+   "to": "c9c1d5f",
+   "weakest": [
+    "widths",
+    "voice",
+    "lands"
+   ],
+   "raised": [],
+   "followed": false,
+   "dTotal": 0,
+   "regressed": []
+  },
+  {
+   "fam": "sim",
+   "from": "c9c1d5f",
+   "to": "58538f1",
+   "weakest": [
+    "widths",
+    "voice",
+    "lands"
+   ],
+   "raised": [],
+   "followed": false,
+   "dTotal": 0,
+   "regressed": []
+  },
+  {
+   "fam": "sim",
+   "from": "58538f1",
+   "to": "628c170",
+   "weakest": [
+    "widths",
+    "voice",
+    "lands"
+   ],
+   "raised": [],
+   "followed": false,
+   "dTotal": 0,
+   "regressed": []
+  },
+  {
+   "fam": "sim",
+   "from": "628c170",
+   "to": "86c183b",
+   "weakest": [
+    "widths",
+    "voice",
+    "lands"
+   ],
+   "raised": [
+    "lands"
+   ],
+   "followed": true,
+   "dTotal": 2.34,
+   "regressed": [
+    "open"
+   ]
+  },
+  {
+   "fam": "sim",
+   "from": "86c183b",
+   "to": "21f57f5",
+   "weakest": [
+    "widths",
+    "voice"
+   ],
+   "raised": [],
+   "followed": false,
+   "dTotal": 0,
+   "regressed": []
+  },
+  {
+   "fam": "sim",
+   "from": "21f57f5",
+   "to": "working tree",
+   "weakest": [
+    "widths",
+    "voice"
+   ],
+   "raised": [],
+   "followed": false,
+   "dTotal": 0,
+   "regressed": []
+  }
+ ],
+ "srcMd5": "4b044f78008e21efd3506927b23618bf",
+ "voiceSelfCheck": 1,
+ "familyVersions": 52,
+ "followRate": 0.093,
+ "spread": [
+  {
+   "k": "contained",
+   "n": 91,
+   "mean": 4,
+   "sd": 0,
+   "lo": 4,
+   "hi": 4,
+   "discriminates": false
+  },
+  {
+   "k": "widths",
+   "n": 91,
+   "mean": 1.93,
+   "sd": 1.533,
+   "lo": 0,
+   "hi": 4,
+   "discriminates": true
+  },
+  {
+   "k": "measured",
+   "n": 91,
+   "mean": 1.43,
+   "sd": 1.771,
+   "lo": 0,
+   "hi": 4,
+   "discriminates": true
+  },
+  {
+   "k": "refuses",
+   "n": 91,
+   "mean": 2.57,
+   "sd": 1.002,
+   "lo": 0,
+   "hi": 4,
+   "discriminates": true
+  },
+  {
+   "k": "repro",
+   "n": 91,
+   "mean": 2.02,
+   "sd": 2.011,
+   "lo": 0,
+   "hi": 4,
+   "discriminates": true
+  },
+  {
+   "k": "voice",
+   "n": 80,
+   "mean": 2.3,
+   "sd": 1.951,
+   "lo": 0,
+   "hi": 4,
+   "discriminates": true
+  },
+  {
+   "k": "lands",
+   "n": 91,
+   "mean": 0.95,
+   "sd": 1.53,
+   "lo": 0,
+   "hi": 4,
+   "discriminates": true
+  },
+  {
+   "k": "open",
+   "n": 91,
+   "mean": 1.07,
+   "sd": 0.467,
+   "lo": 0,
+   "hi": 2,
+   "discriminates": true
+  }
+ ],
+ "unscored": [
+  {
+   "k": "Is it good",
+   "say": "whether the artefact is well designed. No regex reads composition, and the team scoring its own taste is the weakest evidence in this document."
+  },
+  {
+   "k": "Was it the right thing to build",
+   "say": "a perfect artefact nobody needed scores full marks here. Only the owner’s queue answers this."
+  },
+  {
+   "k": "Is the claim true",
+   "say": "the voice gate says so itself: no gate reads a sentence against the reading it names."
+  },
+  {
+   "k": "Did it land",
+   "say": "whether the change reached atuned_src at all. This file reads what the artefact says, not what shipped."
+  }
+ ]
+}

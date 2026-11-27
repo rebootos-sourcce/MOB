@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pain map</title>
+<!--KIT-->
+<style>
+.stagewrap{display:grid;grid-template-columns:minmax(0,1fr);gap:16px}
+.stage{position:relative;background:radial-gradient(ellipse at 50% 40%,#16181f,#0b0c10 70%);border:1px solid var(--edge);border-radius:18px;height:max(560px,min(calc(100vh - 290px),900px));overflow:hidden}
+.stage svg.fig{position:absolute;left:50%;top:0;height:100%;transform:translateX(-50%)}
+.body{fill:rgba(150,152,160,.09);stroke:rgba(239,237,232,.28);stroke-width:1.4;vector-effect:non-scaling-stroke}
+.glass{background:rgba(26,29,38,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--edge-2);border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+/* the second tier, an overlay in the stage's corner */
+.layerbtn{position:absolute;left:16px;top:16px;display:flex;align-items:center;gap:10px;padding:8px 14px 8px 10px;cursor:pointer;min-height:var(--tap);z-index:5}
+.layerbtn b{font-weight:600}
+.layers{position:absolute;left:16px;top:70px;padding:8px;z-index:6;width:250px;display:none}
+.layers.open{display:block}
+.layers button{display:flex;width:100%;align-items:center;gap:12px;border:0;background:transparent;padding:10px;border-radius:10px;cursor:pointer;text-align:left;min-height:var(--tap)}
+.layers button:hover{background:rgba(255,255,255,.06)}
+.layers button.on{background:rgba(126,184,212,.16);color:var(--accent)}
+.layers button span.n{margin-left:auto;font-size:12px;color:var(--dim)}
+/* option B: the second tier as an icon rail docked inside the stage */
+.rail{position:absolute;left:12px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:6px;padding:6px;z-index:5}
+.rail button{width:48px;height:48px;border:0;border-radius:12px;background:transparent;display:grid;place-items:center;cursor:pointer;position:relative}
+.rail button.on{background:rgba(126,184,212,.18)}
+.rail button .tt{position:absolute;left:56px;white-space:nowrap;font-size:12px;padding:4px 8px;border-radius:8px;background:#000;opacity:0;pointer-events:none;transition:opacity .15s}
+.rail button:hover .tt{opacity:1}
+/* the third tier, at the bottom of the centre graphic */
+.regions{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);display:flex;gap:4px;padding:6px;z-index:5;max-width:calc(100% - 24px);overflow-x:auto;scrollbar-width:none}
+.regions button{display:flex;flex-direction:column;align-items:center;gap:3px;border:0;background:transparent;border-radius:12px;padding:6px 10px;min-width:62px;cursor:pointer;font-size:12px;color:var(--mid)}
+.regions button.on{background:rgba(126,184,212,.16);color:var(--accent)}
+.pickcard{position:absolute;right:16px;top:16px;width:320px;padding:16px;z-index:5}
+.pickcard h3{margin:0 0 4px;font-size:18px}
+.pickcard .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.seatbtn{cursor:pointer}
+.seatbtn:hover .sr{stroke-width:.5}
+.hint{position:absolute;right:16px;top:16px;width:300px;padding:14px 16px;z-index:4;font-size:13px;color:var(--mid)}
+@media (max-width:760px){
+ .stage{height:auto;aspect-ratio:auto;min-height:0;padding-bottom:0}
+ .stage svg.fig{position:relative;left:0;transform:none;width:100%;height:auto;display:block;padding-top:58px}
+ .pickcard,.hint{position:relative;right:auto;top:auto;width:auto;margin:0 10px 90px}
+ .layers{width:calc(100% - 32px)}
+ .regions{position:absolute;bottom:10px}
+ .rail{top:auto;bottom:80px;transform:none;flex-direction:row;left:50%;transform:translateX(-50%)}
+}
+</style></head><body>
+<div class="wrap">
+ <div class="hd"><div>
+  <div class="eyebrow">Body, the Pain map and its navigation. Item 3 of 6.</div>
+  <h1>Paint where it hurts, or press the seat</h1>
+  <p>The layer switch and the region switch come off the page and into the picture, as overlays. The seven seats sit on the heat map and can be pressed directly.</p>
+ </div></div>
+ <div style="margin-bottom:12px" id="mode"></div>
+ <div class="stagewrap"><div class="stage" id="stage"></div></div>
+ <div id="today" class="grid2" style="display:none;margin-top:14px">
+  <div class="today"><img src="{{img:today-pain.jpg}}" alt="Pain today at 1600"><div class="cap">Today at 1600: the layer row and the region row sit above the page, two bars deep, and the seats are drawn but not pressable.</div></div>
+  <div class="today" style="max-width:300px"><img src="{{img:today-pain-390.jpg}}" alt="Pain today at 390"><div class="cap">Today at 390: the two rows take the first screen before the figure starts.</div></div>
+ </div>
+</div>
+<!--DATA-->
+<script>
+var MODE=(location.hash.match(/mode=(\w+)/)||[])[1]||'overlay', LAYER='pain', REG=null, SEAT=null, OPEN=false;
+var LAYERS=[['bands','Fetters','M12 12m-1.5 0a1.5 1.5 0 103 0 1.5 1.5 0 10-3 0M6 7m-1.2 0a1.2 1.2 0 102.4 0 1.2 1.2 0 10-2.4 0M18 8m-1.2 0a1.2 1.2 0 102.4 0 1.2 1.2 0 10-2.4 0M8 18m-1.2 0a1.2 1.2 0 102.4 0 1.2 1.2 0 10-2.4 0M17 17m-1.2 0a1.2 1.2 0 102.4 0 1.2 1.2 0 10-2.4 0'],
+ ['sab','Saboteurs',FAM_OUT.Predatory+' M8 11h2.6 M13.4 11H16'],['cx','Complexes','M3 7l5-2 5 2-1 6-4 5-4-5z M11 8l5-2 5 2-1 6-4 5-2-2.5'],
+ ['hyper','Hyper',FAM_OUT.Rigidity],['masks','Masks',T.MASKS[0].ic],['pain','Pain','M3 12h4l2-6 3 12 2-8 2 4h5'],['nerves','Flow','M12 3v18 M12 7m-2 0a2 2 0 104 0 2 2 0 10-4 0 M12 14m-2 0a2 2 0 104 0 2 2 0 10-4 0']];
+var REGIC={head:'M12 11m-6 0a6 6 0 1012 0 6 6 0 10-12 0 M9 20h6',throat:'M9 3v6c0 2 1 3 3 3s3-1 3-3V3 M8 21c0-5 2-7 4-7s4 2 4 7',
+ shoulders:'M3 16c2-6 5-8 9-8s7 2 9 8 M12 4v4',arms:'M8 3l-2 9 2 9 M16 3l2 9-2 9',torso:'M7 4h10l1 16H6z M7 9h10 M7 13h10',
+ pelvis:'M4 7h16c0 6-4 11-8 11S4 13 4 7z M12 7v11',legs:'M9 3l-1 18 M15 3l1 18 M8 11h2 M14 11h2',hands:'M8 21v-8l-2-4 M8 13V5 M11 13V4 M14 13V5 M17 14V8 M8 21h9l1-7',
+ feet:'M7 4v11c0 3 2 5 5 5h7c0-2-2-3-4-3h-3V4'};
+function sqm(){return sqMap();}
+function heat(){
+ var P=PP(), sq=sqm(), h='<defs><radialGradient id="hg"><stop offset="0" stop-color="#fff" stop-opacity=".9"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>'
+  +Object.keys(SEATNM).map(function(k){return '<radialGradient id="hg'+k+'"><stop offset="0" stop-color="'+colK(k)+'" stop-opacity=".95"/><stop offset=".55" stop-color="'+colK(k)+'" stop-opacity=".35"/><stop offset="1" stop-color="'+colK(k)+'" stop-opacity="0"/></radialGradient>';}).join('')
+  +'<clipPath id="bc">'+bodyPath('')+'</clipPath></defs>';
+ var inReg=function(n){if(SEAT)return SEATK[n.b]===SEAT;if(!REG)return false;var r=T.PAINREG.filter(function(x){return x.k===REG;})[0];return r.bands.indexOf(n.b)>=0;};
+ h+='<g clip-path="url(#bc)" style="mix-blend-mode:screen">';
+ T.NODES.forEach(function(n){if(n.i>108)return;var v=sq[n.i]||0;if(v<5||!inReg(n))return;var p=P.pos[n.i];
+  var r=1.5+(v-5)*.55;h+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="'+r+'" fill="url(#hg'+SEATK[n.b]+')" opacity="'+(.45+(v-5)*.1).toFixed(2)+'"/>';});
+ h+='</g>';
+ if(REG){var r=T.PAINREG.filter(function(x){return x.k===REG;})[0];
+  h+='<g clip-path="url(#bc)">'+r.box.map(function(b){return '<rect x="'+b[0]+'" y="'+b[1]+'" width="'+(b[2]-b[0])+'" height="'+(b[3]-b[1])+'" fill="'+col(r.bands[0])+'" opacity=".10"/>';}).join('')+'</g>';}
+ T.NODES.forEach(function(n){if(n.i>108)return;var v=sq[n.i]||0;if(v<5||!inReg(n))return;var p=P.pos[n.i];
+  h+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r=".45" fill="'+col(n.b)+'"><title>'+esc(n.k)+'</title></circle>';});
+ return h;}
+function layerDraw(){
+ var P=PP(),sq=sqm(),h='';
+ if(LAYER==='bands')T.NODES.forEach(function(n){if(n.i>108)return;var v=sq[n.i]||0,p=P.pos[n.i];if(v<4)return;h+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r=".55" fill="'+col(n.b)+'"/>';});
+ if(/sab|cx|hyper|masks/.test(LAYER)){var list=LAYER==='masks'?[]:P.sabs.slice().sort(function(a,b){return b.w-a.w;}).slice(0,10);
+  list.forEach(function(s){var x=0,y=0,k=0;(s.parts||[]).forEach(function(id){var p=P.pos[id];if(p){x+=p[0];y+=p[1];k++;}});x/=k||1;y/=k||1;
+   h+=maskSvg(s,6).replace('<svg ','<svg x="'+(x-3)+'" y="'+(y-3)+'" ');});
+  if(LAYER!=='sab')h+='<text x="50" y="99" text-anchor="middle" font-size="1.6" fill="#94908A">This layer is drawn as item 2 draws it. Open the masks mockup for the full design.</text>';}
+ if(LAYER==='nerves'){P.seats.forEach(function(s){var y=PMYP[s.k];h+='<circle cx="50" cy="'+y+'" r="'+(0.8+s.pass*2.2)+'" fill="'+colK(s.k)+'" opacity=".5"/>';});
+  h+='<text x="50" y="99" text-anchor="middle" font-size="1.6" fill="#94908A">Item 4 redraws this layer as a nervous system.</text>';}
+ return h;}
+function seats(){
+ /* the seven seats, pressable. a 44 px target sits under each ring even
+    where the ring is drawn smaller */
+ var P=PP(),h='';T.PMBANDS.forEach(function(b){var st=P.seats.filter(function(s){return s.k===b.k;})[0]||{},on=SEAT===b.k,c=colK(b.k);
+  h+='<g class="seatbtn" data-seat="'+b.k+'"><circle cx="50" cy="'+b.yp+'" r="3.2" fill="transparent"/>'
+   +(on?'<circle cx="50" cy="'+b.yp+'" r="3" fill="none" stroke="#EFEDE8" stroke-width=".25"/>':'')
+   +'<circle class="sr" cx="50" cy="'+b.yp+'" r="'+(on?2.3:1.9)+'" fill="#0b0c10" fill-opacity=".75" stroke="'+c+'" stroke-width="'+(on?.5:.3)+'"/>'
+   +'<svg x="48.9" y="'+(b.yp-1.1)+'" width="2.2" height="2.2" viewBox="0 0 24 24" fill="none" stroke="'+c+'" stroke-width="2">'+T.SEATGLYPH[b.b]+'</svg>'
+   +'<title>'+esc(SEATNM[b.k])+', press to read what it holds</title></g>';});return h;}
+function card(){
+ var P=PP(),sq=sqm();
+ if(SEAT){var b=T.PMBANDS.filter(function(x){return x.k===SEAT;})[0],st=P.seats.filter(function(s){return s.k===SEAT;})[0],fs=T.FLOWSEAT.filter(function(f){return f.k===SEAT;})[0];
+  var held=T.NODES.filter(function(n){return SEATK[n.b]===SEAT&&(sq[n.i]||0)>=5;}).sort(function(a,c){return sq[c.i]-sq[a.i];});
+  var regs=T.PAINREG.filter(function(r){return r.bands.indexOf(b.b)>=0;});
+  return '<div class="pickcard glass"><div class="eyebrow" style="color:'+colK(SEAT)+'">'+seatIc(b.b,14)+' The seat</div><h3>'+esc(SEATNM[SEATK[b.b]])+'</h3>'
+   +'<div class="small muted">'+esc(fs.nv)+', '+esc(fs.vt)+'. '+esc(fs.seat.charAt(0).toUpperCase()+fs.seat.slice(1))+'.</div>'
+   +'<p style="margin:10px 0 4px">'+(held.length?'Hot here: <b>'+held.slice(0,3).map(function(n){return esc(n.k);}).join(', ')+'</b>'+(held.length>3?' and '+(held.length-3)+' more':'')+'.':'Nothing here is hot enough to show.')+'</p>'
+   +'<div class="eyebrow" style="margin-top:10px">Where it shows up as pain</div><div class="row">'+regs.map(function(r){return '<button class="chip" data-reg="'+r.k+'">'+ic(REGIC[r.k],16)+esc(r.nm)+'</button>';}).join('')+'</div>'
+   +'<p class="small dim" style="margin-top:10px">Links to this seat in the Knowledge base.</p></div>';}
+ if(REG){var r=T.PAINREG.filter(function(x){return x.k===REG;})[0];
+  var held=T.NODES.filter(function(n){return r.bands.indexOf(n.b)>=0&&(sq[n.i]||0)>=5;}).sort(function(a,c){return sq[c.i]-sq[a.i];});
+  return '<div class="pickcard glass"><div class="eyebrow">'+ic(REGIC[r.k],14)+' The region</div><h3>'+esc(r.nm)+'</h3>'
+   +'<div class="small muted">Often felt as '+esc(r.common)+'.</div><p style="margin:10px 0 4px">'+esc(r.pattern)+'</p>'
+   +'<p class="small" style="margin:8px 0 0">'+(held.length?'Hot here for '+esc(WHO)+': <b>'+held.slice(0,3).map(function(n){return esc(n.k);}).join(', ')+'</b>'+(held.length>3?' and '+(held.length-3)+' more':'')+'.':'Nothing here is hot for '+esc(WHO)+'.')+'</p>'
+   +'<div class="eyebrow" style="margin-top:10px">Its seats</div><div class="row">'+r.bands.map(function(bb){return '<button class="chip" data-seatc="'+SEATK[bb]+'">'+seatIc(bb,15)+esc(SEATNM[SEATK[bb]])+'</button>';}).join('')+'</div></div>';}
+ return LAYER==='pain'?'<div class="hint glass">Nothing is drawn until you say where. Press a place on the body, a region below, or one of the seven seats.</div>':'';}
+function pickRegionAt(x,y){var best=null;T.PAINREG.forEach(function(r){r.box.forEach(function(b){if(x>=b[0]&&x<=b[2]&&y>=b[1]&&y<=b[3]){var a=(b[2]-b[0])*(b[3]-b[1]);if(!best||a<best.a)best={k:r.k,a:a};}});});return best&&best.k;}
+function draw(){
+ var st=document.getElementById('stage'),L=LAYERS.filter(function(l){return l[0]===LAYER;})[0],P=PP();
+ var cnt={bands:P.sq.filter(function(r){return r[0]<=108&&r[1]>=4;}).length,sab:P.sabs.length,cx:P.cxs.length,hyper:P.hys.length+P.sups.length,masks:P.masks.length,pain:P.sq.filter(function(r){return r[0]<=108&&r[1]>=5;}).length,nerves:7};
+ var h='<svg class="fig" viewBox="22 0 56 100" id="fig">'+bodyPath('class="body"')+(LAYER==='pain'?heat():layerDraw())+(LAYER==='pain'||LAYER==='nerves'?seats():'')+'</svg>';
+ if(MODE==='overlay'){
+  h+='<button class="layerbtn glass" id="lb">'+ic(L[2],20,'var(--accent)')+'<span class="dim small">Layer</span><b>'+L[1]+'</b>'+ic('M6 9l6 6 6-6',16)+'</button>'
+   +'<div class="layers glass'+(OPEN?' open':'')+'">'+LAYERS.map(function(l){return '<button data-l="'+l[0]+'" class="'+(l[0]===LAYER?'on':'')+'">'+ic(l[2],20)+l[1]+'<span class="n">'+(l[0]==='nerves'?'':cnt[l[0]])+'</span></button>';}).join('')+'</div>';
+ }else{
+  h+='<div class="rail glass">'+LAYERS.map(function(l){return '<button data-l="'+l[0]+'" class="'+(l[0]===LAYER?'on':'')+'" aria-label="'+l[1]+'">'+ic(l[2],22,l[0]===LAYER?'var(--accent)':'var(--mid)')+'<span class="tt">'+l[1]+(l[0]==='nerves'?'':', '+cnt[l[0]])+'</span></button>';}).join('')+'</div>';}
+ if(LAYER==='pain')h+='<div class="regions glass">'+T.PAINREG.map(function(r){return '<button data-reg="'+r.k+'" class="'+(REG===r.k?'on':'')+'">'+ic(REGIC[r.k],22)+r.nm+'</button>';}).join('')+'</div>';
+ h+=card();
+ st.innerHTML=h;
+ var lb=document.getElementById('lb');if(lb)lb.onclick=function(){OPEN=!OPEN;draw();};
+ st.querySelectorAll('[data-l]').forEach(function(b){b.onclick=function(){LAYER=b.dataset.l;OPEN=false;REG=null;SEAT=null;draw();};});
+ st.querySelectorAll('[data-reg]').forEach(function(b){b.onclick=function(e){e.stopPropagation();REG=REG===b.dataset.reg?null:b.dataset.reg;SEAT=null;draw();};});
+ st.querySelectorAll('[data-seat]').forEach(function(b){b.onclick=function(e){e.stopPropagation();SEAT=SEAT===b.dataset.seat?null:b.dataset.seat;REG=null;draw();};});
+ st.querySelectorAll('[data-seatc]').forEach(function(b){b.onclick=function(e){e.stopPropagation();SEAT=b.dataset.seatc;REG=null;draw();};});
+ var fig=document.getElementById('fig');fig.onclick=function(e){if(LAYER!=='pain')return;var pt=fig.createSVGPoint();pt.x=e.clientX;pt.y=e.clientY;var q=pt.matrixTransform(fig.getScreenCTM().inverse());
+  var k=pickRegionAt(q.x,q.y);if(k){REG=k;SEAT=null;draw();}};
+ document.getElementById('today').style.display=MODE==='today'?'':'none';
+ st.style.display=MODE==='today'?'none':'';}
+banner('Pain map and its navigation, item 3 of the FW round');
+seg(document.getElementById('mode'),[['overlay','A. Overlays, as asked'],['rail','B. An icon rail in the picture'],['today','Today, for comparison']],MODE,function(k){MODE=k;OPEN=false;draw();});
+window.shootPrep=function(){if(MODE!=='today'&&!SEAT){SEAT='sacral';draw();}};
+draw();
+</script></body></html>

@@ -1,0 +1,18 @@
+[
+ {"slug":"inter","name":"Inter","role":"baseline","pkg":"@fontsource-variable/inter","file":"inter-latin-wght-normal.woff2","w":"100 900","cat":"neo-grotesque","fam":"Inter"},
+ {"slug":"geist","name":"Geist","role":"ui","pkg":"@fontsource-variable/geist","file":"geist-latin-wght-normal.woff2","w":"100 900","cat":"neo-grotesque","fam":"Geist"},
+ {"slug":"manrope","name":"Manrope","role":"ui","pkg":"@fontsource-variable/manrope","file":"manrope-latin-wght-normal.woff2","w":"200 800","cat":"geometric-grotesque","fam":"Manrope"},
+ {"slug":"onest","name":"Onest","role":"ui","pkg":"@fontsource-variable/onest","file":"onest-latin-wght-normal.woff2","w":"100 900","cat":"neo-grotesque","fam":"Onest"},
+ {"slug":"sora","name":"Sora","role":"ui","pkg":"@fontsource-variable/sora","file":"sora-latin-wght-normal.woff2","w":"100 800","cat":"geometric, wide","fam":"Sora"},
+ {"slug":"plus-jakarta-sans","name":"Plus Jakarta Sans","role":"ui","pkg":"@fontsource-variable/plus-jakarta-sans","file":"plus-jakarta-sans-latin-wght-normal.woff2","w":"200 800","cat":"geometric-humanist","fam":"Plus Jakarta Sans"},
+ {"slug":"instrument-sans","name":"Instrument Sans","role":"ui","pkg":"@fontsource-variable/instrument-sans","file":"instrument-sans-latin-wght-normal.woff2","w":"400 700","cat":"grotesque","fam":"Instrument Sans"},
+ {"slug":"figtree","name":"Figtree","role":"ui","pkg":"@fontsource-variable/figtree","file":"figtree-latin-wght-normal.woff2","w":"300 900","cat":"geometric-friendly","fam":"Figtree"},
+ {"slug":"space-grotesk","name":"Space Grotesk","role":"ui","pkg":"@fontsource-variable/space-grotesk","file":"space-grotesk-latin-wght-normal.woff2","w":"300 700","cat":"quirky grotesque","fam":"Space Grotesk"},
+ {"slug":"red-hat-display","name":"Red Hat Display","role":"ui","pkg":"@fontsource-variable/red-hat-display","file":"red-hat-display-latin-wght-normal.woff2","w":"300 900","cat":"geometric","fam":"Red Hat Display"},
+ {"slug":"outfit","name":"Outfit","role":"ui","pkg":"@fontsource-variable/outfit","file":"outfit-latin-wght-normal.woff2","w":"100 900","cat":"geometric, low x height","fam":"Outfit"},
+ {"slug":"bricolage-grotesque","name":"Bricolage Grotesque","role":"ui","pkg":"@fontsource-variable/bricolage-grotesque","file":"bricolage-grotesque-latin-wght-normal.woff2","w":"200 800","cat":"display grotesque","fam":"Bricolage Grotesque"},
+ {"slug":"geist-mono","name":"Geist Mono","role":"mono","pkg":"@fontsource-variable/geist-mono","file":"geist-mono-latin-wght-normal.woff2","w":"100 900","cat":"mono","fam":"Geist Mono"},
+ {"slug":"jetbrains-mono","name":"JetBrains Mono","role":"mono","pkg":"@fontsource-variable/jetbrains-mono","file":"jetbrains-mono-latin-wght-normal.woff2","w":"100 800","cat":"mono","fam":"JetBrains Mono"},
+ {"slug":"ibm-plex-mono","name":"IBM Plex Mono","role":"mono","pkg":"@fontsource/ibm-plex-mono","file":"ibm-plex-mono-latin-400-normal.woff2","w":"400","cat":"mono (static 400 and 500)","fam":"IBM Plex Mono"},
+ {"slug":"space-mono","name":"Space Mono","role":"mono","pkg":"@fontsource/space-mono","file":"space-mono-latin-400-normal.woff2","w":"400","cat":"mono (static 400)","fam":"Space Mono"}
+]

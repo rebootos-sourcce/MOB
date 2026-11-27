@@ -1,0 +1,438 @@
+{
+ "field-1-closed-1600": {
+  "state": "closed",
+  "sheet": null,
+  "stage": [
+   322,
+   157,
+   1268,
+   833
+  ],
+  "shelf": [
+   1224,
+   167,
+   380,
+   746
+  ],
+  "title": "",
+  "titleTop": 202,
+  "ringOn": false,
+  "ring": null,
+  "ringVisible": false,
+  "scrollY": 0
+ },
+ "field-2-address-1600": {
+  "state": "item",
+  "sheet": null,
+  "stage": [
+   322,
+   157,
+   1268,
+   833
+  ],
+  "shelf": [
+   1200,
+   167,
+   380,
+   746
+  ],
+  "title": "Escapism",
+  "titleTop": 197,
+  "ringOn": true,
+  "ring": [
+   1123,
+   365
+  ],
+  "ringVisible": true,
+  "scrollY": 0
+ },
+ "field-3-chain-1600": {
+  "state": "item",
+  "sheet": null,
+  "stage": [
+   322,
+   157,
+   1268,
+   833
+  ],
+  "shelf": [
+   1200,
+   167,
+   380,
+   746
+  ],
+  "title": "Avoider",
+  "titleTop": 197,
+  "ringOn": false,
+  "ring": null,
+  "ringVisible": false,
+  "scrollY": 0
+ },
+ "field-4-share-1600": {
+  "state": "item",
+  "sheet": null,
+  "stage": [
+   322,
+   181,
+   1268,
+   809
+  ],
+  "shelf": [
+   1200,
+   191,
+   380,
+   722
+  ],
+  "title": "Avoider",
+  "titleTop": 221,
+  "ringOn": false,
+  "ring": null,
+  "ringVisible": false,
+  "scrollY": 0
+ },
+ "field-5-saved-1600": {
+  "state": "item",
+  "sheet": null,
+  "stage": [
+   322,
+   181,
+   1268,
+   809
+  ],
+  "shelf": [
+   1200,
+   191,
+   380,
+   722
+  ],
+  "title": "Escapism",
+  "titleTop": 221,
+  "ringOn": true,
+  "ring": [
+   1117,
+   383
+  ],
+  "ringVisible": true,
+  "scrollY": 0
+ },
+ "field-6-page-1600": {
+  "state": "page",
+  "sheet": null,
+  "stage": [
+   322,
+   181,
+   1268,
+   809
+  ],
+  "shelf": [
+   1200,
+   191,
+   380,
+   722
+  ],
+  "title": "Field",
+  "titleTop": 221,
+  "ringOn": false,
+  "ring": null,
+  "ringVisible": false,
+  "scrollY": 0
+ },
+ "field-7-full-1600": {
+  "state": "closed",
+  "sheet": null,
+  "stage": [
+   10,
+   157,
+   1580,
+   833
+  ],
+  "shelf": [
+   1224,
+   167,
+   380,
+   746
+  ],
+  "title": "Field",
+  "titleTop": 197,
+  "ringOn": false,
+  "ring": null,
+  "ringVisible": false,
+  "scrollY": 0
+ },
+ "body-1-closed-1600": {
+  "state": "closed",
+  "sheet": null,
+  "stage": [
+   322,
+   157,
+   1268,
+   833
+  ],
+  "shelf": [
+   1224,
+   167,
+   380,
+   746
+  ],
+  "title": "",
+  "titleTop": 202,
+  "ringOn": false,
+  "ring": null,
+  "ringVisible": false,
+  "scrollY": 0
+ },
+ "body-2-address-1600": {
+  "state": "item",
+  "sheet": null,
+  "stage": [
+   322,
+   157,
+   1268,
+   833
+  ],
+  "shelf": [
+   1200,
+   167,
+   380,
+   813
+  ],
+  "title": "Escapism",
+  "titleTop": 197,
+  "ringOn": true,
+  "ring": [
+   904,
+   621
+  ],
+  "ringVisible": true,
+  "scrollY": 0
+ },
+ "body-3-page-1600": {
+  "state": "page",
+  "sheet": null,
+  "stage": [
+   322,
+   157,
+   1268,
+   833
+  ],
+  "shelf": [
+   1200,
+   167,
+   380,
+   813
+  ],
+  "title": "Body",
+  "titleTop": 197,
+  "ringOn": false,
+  "ring": null,
+  "ringVisible": false,
+  "scrollY": 0
+ },
+ "field-1-closed-390": {
+  "state": "closed",
+  "sheet": null,
+  "stage": [
+   7,
+   320,
+   376,
+   753
+  ],
+  "shelf": [
+   0,
+   868,
+   390,
+   473
+  ],
+  "title": "",
+  "titleTop": 896,
+  "ringOn": false,
+  "ring": null,
+  "ringVisible": false,
+  "scrollY": 0
+ },
+ "field-2-address-390": {
+  "state": "item",
+  "sheet": "half",
+  "stage": [
+   7,
+   38,
+   376,
+   753
+  ],
+  "shelf": [
+   0,
+   371,
+   390,
+   473
+  ],
+  "title": "Escapism",
+  "titleTop": 395,
+  "ringOn": true,
+  "ring": [
+   267,
+   186
+  ],
+  "ringVisible": true,
+  "scrollY": 282
+ },
+ "field-3-chain-390": {
+  "state": "item",
+  "sheet": "half",
+  "stage": [
+   7,
+   -9,
+   376,
+   753
+  ],
+  "shelf": [
+   0,
+   371,
+   390,
+   473
+  ],
+  "title": "Dramatizer",
+  "titleTop": 395,
+  "ringOn": false,
+  "ring": null,
+  "ringVisible": false,
+  "scrollY": 329
+ },
+ "field-4-share-390": {
+  "state": "item",
+  "sheet": "half",
+  "stage": [
+   7,
+   -9,
+   376,
+   753
+  ],
+  "shelf": [
+   0,
+   371,
+   390,
+   473
+  ],
+  "title": "Dramatizer",
+  "titleTop": 395,
+  "ringOn": false,
+  "ring": null,
+  "ringVisible": false,
+  "scrollY": 353
+ },
+ "field-5-saved-390": {
+  "state": "item",
+  "sheet": "half",
+  "stage": [
+   7,
+   38,
+   376,
+   753
+  ],
+  "shelf": [
+   0,
+   371,
+   390,
+   473
+  ],
+  "title": "Escapism",
+  "titleTop": 395,
+  "ringOn": true,
+  "ring": [
+   267,
+   186
+  ],
+  "ringVisible": true,
+  "scrollY": 306
+ },
+ "field-6-page-390": {
+  "state": "page",
+  "sheet": "full",
+  "stage": [
+   7,
+   38,
+   376,
+   753
+  ],
+  "shelf": [
+   0,
+   84,
+   390,
+   760
+  ],
+  "title": "Field",
+  "titleTop": 111,
+  "ringOn": false,
+  "ring": null,
+  "ringVisible": false,
+  "scrollY": 306
+ },
+ "body-1-closed-390": {
+  "state": "closed",
+  "sheet": null,
+  "stage": [
+   7,
+   369,
+   376,
+   472
+  ],
+  "shelf": [
+   0,
+   868,
+   390,
+   473
+  ],
+  "title": "",
+  "titleTop": 896,
+  "ringOn": false,
+  "ring": null,
+  "ringVisible": false,
+  "scrollY": 0
+ },
+ "body-2-address-390": {
+  "state": "item",
+  "sheet": "half",
+  "stage": [
+   7,
+   -71,
+   376,
+   472
+  ],
+  "shelf": [
+   0,
+   371,
+   390,
+   473
+  ],
+  "title": "Escapism",
+  "titleTop": 395,
+  "ringOn": true,
+  "ring": [
+   172,
+   187
+  ],
+  "ringVisible": true,
+  "scrollY": 440
+ },
+ "body-3-page-390": {
+  "state": "page",
+  "sheet": "full",
+  "stage": [
+   7,
+   -71,
+   376,
+   472
+  ],
+  "shelf": [
+   0,
+   84,
+   390,
+   760
+  ],
+  "title": "Body",
+  "titleTop": 108,
+  "ringOn": false,
+  "ring": null,
+  "ringVisible": false,
+  "scrollY": 440
+ }
+}

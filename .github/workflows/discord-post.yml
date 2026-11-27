@@ -1,0 +1,85 @@
+# Post one card, by hand, to the team's #milestones or #investors channel on
+# Discord. 16 October: the owner's server has a "Wins" category with
+# #investors, #atuned-feedback, #milestones and #latest. #atuned-feedback is
+# the app's own relay (functions/feedback.js) and #latest is posted by the
+# deploy job. These two are announcements a person writes: the team drafts the
+# text, the owner approves it, and somebody starts this run with it. Nothing
+# ever posts here on its own, and #investors least of all.
+#
+# Hand start only, on main only, and the webhook addresses are GitHub secrets
+# that are never printed. The message reaches the script through env and is
+# handed to jq as an argument, so "$(anything)" in it is text and is never
+# run. allowed_mentions is empty, so "@everyone" in it cannot ping anybody.
+# tools/discord-workflows.py runs this script against a stand in curl.
+#
+# A green run means Discord took the card. Not set, set wrong, or refused
+# fails the run with the reason, because a hand post that reads green with
+# nothing posted would be read as posted.
+name: discord post
+on:
+  workflow_dispatch:
+    inputs:
+      channel:
+        description: "which channel: milestones or investors"
+        required: true
+        type: choice
+        options: [milestones, investors]
+      message:
+        description: "the text, as approved, at most 1800 characters"
+        required: true
+        type: string
+permissions:
+  contents: read
+jobs:
+  post:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: post one card to the chosen channel
+        env:
+          CHANNEL: ${{ inputs.channel }}
+          MESSAGE: ${{ inputs.message }}
+          HOOK_MILESTONES: ${{ secrets.DISCORD_WEBHOOK_MILESTONES }}
+          HOOK_INVESTORS: ${{ secrets.DISCORD_WEBHOOK_INVESTORS }}
+        run: |
+          if [ "$GITHUB_REF" != refs/heads/main ]; then
+            echo "::error::Start this from main. It was started on $GITHUB_REF, and nothing was posted."
+            exit 1
+          fi
+          # each channel reads only its own secret, so an unset investors
+          # address can never fall through to another channel
+          case "$CHANNEL" in
+            milestones) HOOK="$HOOK_MILESTONES"; NAME=DISCORD_WEBHOOK_MILESTONES; TITLE="Milestone" ;;
+            investors)  HOOK="$HOOK_INVESTORS";  NAME=DISCORD_WEBHOOK_INVESTORS;  TITLE="Investor update" ;;
+            *) echo "::error::channel must be milestones or investors. Nothing was posted."; exit 1 ;;
+          esac
+          if [ -z "$HOOK" ]; then
+            echo "::error::$NAME is not set on GitHub, so nothing was posted."
+            exit 1
+          fi
+          if ! [[ "$HOOK" =~ ^https://((ptb|canary)\.)?discord(app)?\.com/api/webhooks/[0-9]+/[A-Za-z0-9_-]+$ ]]; then
+            echo "::error::$NAME is set on GitHub but is not a Discord webhook address, so nothing was posted."
+            exit 1
+          fi
+          text="$(printf '%s' "$MESSAGE" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
+          if [ -z "$text" ]; then
+            echo "::error::The message is empty, so nothing was posted."
+            exit 1
+          fi
+          # characters, not bytes: wc -m counts bytes when no UTF-8 locale is
+          # set, which refused 1800 accented letters as 3600 (measured)
+          n="$(jq -rn --arg t "$text" '$t | length')"
+          if [ "$n" -gt 1800 ]; then
+            echo "::error::The message is $n characters and the limit is 1800, so nothing was posted."
+            exit 1
+          fi
+          jq -n --arg t "$TITLE" --arg d "$text" \
+            '{username: "Atuned", allowed_mentions: {parse: []},
+              embeds: [{title: $t, description: $d, footer: {text: "posted by hand from GitHub Actions"}}]}' > "$RUNNER_TEMP/card.json"
+          code="$(curl -sS -o /dev/null -w '%{http_code}' --max-time 15 -X POST -H 'content-type: application/json' \
+            --data @"$RUNNER_TEMP/card.json" "$HOOK" 2>/dev/null)" || code="000"
+          rm -f "$RUNNER_TEMP/card.json"
+          case "$code" in
+            2??) echo "posted to #$CHANNEL: $TITLE, $n characters" ;;
+            *) echo "::error::Discord did not take the card (status $code), so nothing was posted to #$CHANNEL."; exit 1 ;;
+          esac

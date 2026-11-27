@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The ladder</title>
+<!-- ============================================================
+     proto/game/one.html  ·  THE BADGE, THE AWARD AND THE REWARD.
+
+     One file. No dependency, no request, no framework. Every number and every
+     string of the person's own words in here was dumped out of the real engine
+     by proto/game/gen.js: engine.js driven headless, Diane loaded off the
+     roster, compute() run, ledgerRead, streakRead and ladderRead called, and
+     the content chain run through proto/game/chain.js, stem.js and frames.js.
+     Nothing on this page was authored by hand except the example entry, and
+     every reading of that entry is computed from it.
+
+     THE HOUSE RULES THIS PAGE IS BUILT UNDER, because a prototype that breaks
+     them is not a prototype of this product.
+       Never a count against a total. The earned marks are shown and the next
+       one is named. The ones past it are not enumerated, so nobody is invited
+       to finish their own nervous system.
+       The streak is drawn and never printed as a number.
+       Icons are ring, not fill.
+       Sentence case in the body, and no soft wellness language.
+       Seat colour means the same thing it means everywhere else.
+     ============================================================ -->
+<style>
+:root{
+ --bg:#0C0D12; --panel:#1A1D26; --panel-2:#252833; --sunk:#090A0E;
+ --ink:#EFEDE8; --mid:#B4B0A8; --dim:#94908A;
+ --accent:#7EB8D4; --au:#C2A063; --alarm:#FF2E1F;
+ --line:rgba(255,255,255,.09);
+ --Root:#CF5953; --Sacral:#D19255; --Solar:#D4BC70; --Heart:#65CFA5;
+ --Throat:#65B8D4; --Eye:#8296DB; --Crown:#A883D6;
+ --f:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f);
+ font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1560px;margin:0 auto;padding:22px 16px 64px}
+h1{font-size:19px;font-weight:600;letter-spacing:.01em;margin:0}
+.eye{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);
+ font-weight:600;margin:0 0 8px}
+.hd{display:flex;align-items:flex-start;gap:18px;flex-wrap:wrap;
+ padding-bottom:16px;border-bottom:1px solid var(--line);margin-bottom:20px}
+.hd .who{color:var(--mid);font-size:13px;max-width:52ch}
+.loop{display:flex;gap:6px;margin-left:auto;flex-wrap:wrap}
+.loop b{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;
+ padding:5px 10px;border:1px solid var(--line);border-radius:99px;color:var(--dim)}
+.loop b.on{color:var(--bg);background:var(--accent);border-color:var(--accent)}
+.grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;align-items:start}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px}
+.card+.card{margin-top:16px}
+.card h2{font-size:14px;font-weight:600;margin:0 0 4px}
+.note{color:var(--dim);font-size:12.5px;margin:0 0 12px}
+.src{color:var(--dim);font-size:11px;margin:10px 0 0;padding-top:9px;border-top:1px solid var(--line)}
+/* ---- the entry, with the frames marked in it ---- */
+.entry{background:var(--sunk);border:1px solid var(--line);border-radius:9px;
+ padding:13px;font-size:14.5px;line-height:1.7}
+mark{background:none;color:inherit;padding:1px 0;
+ border-bottom:2px solid var(--c,var(--accent))}
+mark.two{border-bottom-style:dashed}
+.leg{display:flex;flex-direction:column;gap:6px;margin-top:11px}
+.leg div{font-size:12px;color:var(--mid);display:flex;gap:8px;align-items:baseline}
+.leg i{width:18px;height:0;border-bottom:2px solid var(--c);flex:none;position:relative;top:-4px}
+/* ---- imprint pills ---- */
+.pills{display:flex;flex-wrap:wrap;gap:7px;margin-top:4px}
+.pill{border:1px solid var(--c);color:var(--ink);background:transparent;
+ border-radius:99px;padding:5px 10px;font-size:12.5px;display:inline-flex;gap:7px;align-items:baseline}
+.pill b{color:var(--c);font-variant-numeric:tabular-nums;font-weight:600}
+.pill.was{border-style:dashed;opacity:.45}
+/* ---- the practice card ---- */
+.prac{border:1px solid var(--line);border-radius:9px;padding:13px;background:var(--panel-2)}
+.prac .nm{font-size:16px;font-weight:600}
+.prac .min{color:var(--accent);font-weight:600;font-variant-numeric:tabular-nums}
+.step{font-size:13.5px;color:var(--mid);margin:10px 0 0}
+.graft{background:var(--sunk);border-left:2px solid var(--Solar);
+ padding:9px 11px;margin:10px 0 0;border-radius:0 7px 7px 0}
+.graft q{font-style:normal;font-size:14.5px;color:var(--ink)}
+.graft q:before{content:'\201C'}.graft q:after{content:'\201D'}
+.graft .by{display:block;font-size:11px;color:var(--dim);margin-top:5px}
+.aff{background:var(--sunk);border:1px solid var(--line);border-radius:9px;padding:13px;margin-top:12px}
+.aff .say{font-size:15px;line-height:1.55}
+.swap{color:var(--au);border-bottom:1px dotted var(--au)}
+.strike{color:var(--dim);text-decoration:line-through}
+.two-up{display:flex;gap:10px;flex-wrap:wrap;margin-top:11px}
+.btn{font:inherit;font-size:13px;padding:8px 13px;border-radius:8px;cursor:pointer;
+ background:transparent;border:1px solid var(--line);color:var(--ink)}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:#0B1418;font-weight:600}
+/* ---- the record ---- */
+.days{display:flex;gap:4px;margin:2px 0 0}
+.days span{width:100%;height:26px;border-radius:4px;border:1px solid var(--line)}
+.days span.on{background:var(--accent);border-color:var(--accent)}
+.days span.gap{background:transparent}
+.days span.today{box-shadow:0 0 0 2px var(--au)}
+.dlab{display:flex;justify-content:space-between;font-size:11px;color:var(--dim);margin-top:6px}
+.led{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);
+ border:1px solid var(--line);border-radius:9px;overflow:hidden;margin-top:14px}
+.led div{background:var(--panel);padding:10px 12px}
+.led b{display:block;font-size:20px;font-weight:600;font-variant-numeric:tabular-nums}
+.led span{font-size:11.5px;color:var(--dim)}
+/* ---- marks and awards ---- */
+.marks{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:9px;margin-top:4px}
+.mk{border:1px solid var(--c);border-radius:9px;padding:10px;text-align:center}
+.mk svg{display:block;margin:0 auto 6px;stroke:var(--c);fill:none;
+ stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.mk .n{font-size:11.5px;line-height:1.3}
+.mk .fam{font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-top:4px}
+.next{border:1px dashed var(--line);border-radius:9px;padding:11px;margin-top:11px;
+ display:flex;gap:11px;align-items:flex-start}
+.next svg{stroke:var(--dim);fill:none;stroke-width:1.6;flex:none}
+.next .n{font-size:13px;font-weight:600}
+.next .d{font-size:12px;color:var(--dim)}
+.aw{border:1px solid var(--c);border-radius:9px;padding:11px;margin-top:9px}
+.aw .t{display:flex;justify-content:space-between;gap:9px;align-items:baseline}
+.aw .nm{font-size:13.5px;font-weight:600}
+.aw .fam{font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--c)}
+.aw .d{font-size:12px;color:var(--mid);margin-top:4px}
+.aw .nd{font-size:11px;color:var(--dim);margin-top:6px}
+.aw.shut{border-color:var(--line);opacity:.5}
+/* ---- the bank ---- */
+.bank{display:flex;gap:14px;align-items:center;margin-top:2px}
+.bank svg{stroke:var(--au);fill:none;stroke-width:1.5;flex:none}
+.bank .big{font-size:29px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1}
+.bank .sub{font-size:12px;color:var(--dim)}
+.rows{margin-top:13px;border-top:1px solid var(--line)}
+.rows div{display:flex;justify-content:space-between;gap:10px;padding:7px 0;
+ border-bottom:1px solid var(--line);font-size:12.5px}
+.rows div span:last-child{color:var(--accent);font-variant-numeric:tabular-nums;font-weight:600}
+/* ---- the avatar slot, which belongs to another seat ---- */
+.slot{border:1px dashed var(--accent);border-radius:12px;padding:16px;background:transparent}
+.slot .box{height:132px;border-radius:9px;background:
+ radial-gradient(circle at 50% 42%,rgba(126,184,212,.17),transparent 68%);
+ border:1px solid var(--line);display:flex;align-items:center;justify-content:center;
+ color:var(--dim);font-size:12px;text-align:center;padding:14px}
+.slot ol{margin:12px 0 0;padding-left:20px;font-size:12.5px;color:var(--mid)}
+.slot li{margin-bottom:6px}
+.pts{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px}
+.pt{flex:1 1 130px;border:1px solid var(--line);border-radius:9px;padding:11px}
+.pt b{display:block;font-size:23px;font-weight:600;font-variant-numeric:tabular-nums}
+.pt span{font-size:11.5px;color:var(--dim)}
+@media (max-width:1180px){.grid{grid-template-columns:1fr 1fr}}
+@media (max-width:760px){.grid{grid-template-columns:1fr}.wrap{padding:16px 16px 56px}
+ .loop{margin-left:0}.bank .big{font-size:25px}}
+</style></head><body>
+<div class="wrap">
+ <div class="hd">
+  <div>
+   <h1>The ladder</h1>
+   <div class="who" id="who"></div>
+  </div>
+  <div class="loop">
+   <b class="on">Discover</b><b class="on">Play</b><b class="on">Flow</b><b class="on">Body</b>
+  </div>
+ </div>
+ <div class="grid" id="g"></div>
+</div>
+<script>
+var D={"stamp":"2026-09-20T14:22:04.643Z","who":"Diane","role":"founder, second company \u00b7 ICP","says":"I work until the work is done and the work is never done. Rest feels like a moral failure.","reading":{"CQ":28.1,"DQ":3.51,"band":null,"seat":"Solar","tier":3,"track":"Somatic","releasable":8,"loaded":8,"sabs":13},"entry":"Board call ran to nine again. I said yes to the extra review because saying no felt worse than the work, and the work is never done. Rest feels like a moral failure. I can never say what I actually mean in front of them, so I write it down afterwards instead and then delete it.","chain":{"span":{"text":"is never done","at":118,"end":131,"word":null,"frame":"a standard with no end"},"second":{"text":"Rest feels like a moral failure","at":133,"end":164,"word":null,"frame":"a need called a failure"},"fetter":"Anger","opp":"Equanimity","seat":"Solar","oppSeat":"Solar","affirm":{"form":"swap","text":"I can not yet say what I actually mean in front of them","ours":"I can never say what I actually mean in front of them","from":"can never","to":"can not yet","was":"never","at":2,"mine":true},"from":"frame","why":["the entry claimed never about itself, so the affirmation is that sentence with one word hedged and the word is marked"],"folded":1,"imprintsBuilt":[],"imprints":[{"name":"Anger","band":"Solar","fetter":"Anger","amt":1.8,"inferred":false,"from":"frame"},{"name":"Judgment","band":"Solar","fetter":"Anger","amt":1.8,"inferred":false,"from":"frame"},{"name":"Entitlement","band":"Solar","fetter":"Anger","amt":1.8,"inferred":false,"from":"frame"},{"name":"Rebellion","band":"Solar","fetter":"Anger","amt":1.8,"inferred":false,"from":"frame"},{"name":"Need For Approval","band":"Sacral","fetter":"Shame","amt":7.3,"inferred":false,"from":"frame"}],"frames":[{"nm":"a standard with no end","seat":"solar","amt":22,"span":"is never done","at":118},{"nm":"a need called a failure","seat":"sacral","amt":22,"span":"Rest feels like a moral failure","at":133}]},"practice":{"called":{"k":"truth","nm":"The Somatic Truth Check","track":"Somatic","min":2,"tier":2,"d":"Expansion is true. Contraction is distortion.","how":"Hold the statement and read the body. Expansion means true. Contraction means distortion. Use it live, in the moment, as an instrument."},"graft":"is never done","floor":{"nm":"The Somatic Truth Check","min":2,"how":"Hold the statement and read the body. Expansion means true. Contraction means distortion. Use it live, in the moment, as an instrument."}},"record":{"ledger":{"minutes":26,"planned":26,"done":13,"rituals":13,"lines":96,"ground":24,"clear":2,"carry":5,"snaps":6},"streak":{"run":13,"live":true,"best":7,"days":13,"gap":0},"days":[0,1,2,3,4,5,6,8,9,10,11,12,13]},"marks":{"all":[{"k":"first","fam":"Practice","b":"Root","nm":"First run","d":"You ran one. The instrument is no longer a thing you are reading about.","ic":"M12 21V6 M7 11l5-5 5 5"},{"k":"week","fam":"Practice","b":"Root","nm":"Seven days","d":"Seven days in a row. This is where it stops being a decision each morning.","ic":"M4 6h16v14H4z M4 11h16 M8 3v4 M16 3v4"},{"k":"month","fam":"Practice","b":"Root","nm":"Thirty days","d":"Thirty in a row. The nervous system has had long enough to believe you.","ic":"M4 6h16v14H4z M4 11h16 M8 3v4 M16 3v4 M9 15l2 2 4-4"},{"k":"season","fam":"Practice","b":"Root","nm":"Ninety days","d":"A quarter of a year, unbroken. Nothing about this is a beginner number.","ic":"M12 3a9 9 0 109 9 M12 3v9h9 M12 12l5 5"},{"k":"hour","fam":"Practice","b":"Root","nm":"Sixty minutes","d":"An hour of practice on the record, however it was spread.","ic":"M12 3a9 9 0 100 18 9 9 0 100-18 M12 7v5l4 2"},{"k":"ten","fam":"Ground","b":"Throat","nm":"Ten addresses","d":"Ten distinct addresses opened. Not ten runs. Ten places.","ic":"M4 4h7v7H4z M13 4h7v7h-7z M4 13h7v7H4z M13 13h7v7h-7z"},{"k":"fifty","fam":"Ground","b":"Throat","nm":"Fifty addresses","d":"Fifty. Close to half the architecture has been opened at least once.","ic":"M3 12h18 M3 7h18 M3 17h18 M7 3v18 M17 3v18"},{"k":"told","fam":"Ground","b":"Throat","nm":"First story","d":"You told it something true and let it read the charge out of that.","ic":"M4 5h16v11H8l-4 4z"},{"k":"kept","fam":"Ground","b":"Throat","nm":"Ten stories","d":"Ten told. The field is being read from your own words and not from a form.","ic":"M4 5h16v11H8l-4 4z M8 9h8 M8 12h5"},{"k":"nine","fam":"Structure","b":"Heart","nm":"Nine axes","d":"Every one of the nine has a value you entered. Nothing is a default.","ic":"M5 5h14v14H5z M5 10h14 M5 15h14 M10 5v14 M15 5v14"},{"k":"laws","fam":"Structure","b":"Heart","nm":"Laws measured","d":"The intake is complete, so integrity is measured rather than assumed.","ic":"M12 4v4 M4 8h16 M4 8l-2 5h4z M20 8l-2 5h4z"},{"k":"stated","fam":"Structure","b":"Heart","nm":"Blueprint stated","d":"You named your type, and the field carries that until you move it.","ic":"M4 20V8l8-5 8 5v12 M9 20v-7h6v7"},{"k":"aimed","fam":"Structure","b":"Heart","nm":"Purpose set","d":"Six values placed. The compass has something to point at.","ic":"M12 3a9 9 0 100 18 9 9 0 100-18 M12 8l3 8-3-2-3 2z"},{"k":"turned","fam":"Structure","b":"Heart","nm":"First clearing","d":"An address that was carrying is held at the far pole instead.","ic":"M4 12a8 8 0 1116 0 8 8 0 01-16 0 M8 12l3 3 5-6"},{"k":"seat","fam":"Structure","b":"Heart","nm":"Five clear","d":"Five addresses holding the opposite. That is structure, not a good day.","ic":"M4 12a8 8 0 1116 0 8 8 0 01-16 0 M12 4v16 M4 12h16"},{"k":"watched","fam":"Structure","b":"Heart","nm":"Ten snapshots","d":"Ten readings on file, so the movement is yours to see and not to recall.","ic":"M3 17l5-6 4 4 3-4 6 6 M3 5h18v14H3z"}],"earned":["first","week","ten","told","laws","stated","turned"],"next":"nine"},"awards":[{"k":"cleared","fam":"Cleared","b":"Throat","nm":"Ground cleared","d":"An address that was carrying is held at the opposite pole instead.","needs":"a release","reach":true,"got":true,"n":2},{"k":"held","fam":"Held","b":"Heart","nm":"Seven days at the pole","d":"An axis that stayed at its coherent pole for seven readings in a row.","needs":"a reading, and nothing else","reach":true,"got":true,"n":13},{"k":"moved","fam":"Moved","b":"Root","nm":"A band crossed","d":"Coherence crossed a band boundary, in either direction, on a date.","needs":"two readings","reach":true,"got":true,"n":6}],"bank":{"earned":74,"granted":100,"spentFloor":4,"runCap":25,"rates":{"ritual":1,"journal":1,"mark":5,"award":5,"season":8},"weekDaily":22,"allowance":10},"pal":{"Root":"#CF5953","Sacral":"#D19255","Solar":"#D4BC70","Heart":"#65CFA5","Throat":"#65B8D4","3rd Eye":"#8296DB","Crown":"#A883D6"},"unreachable":0};
+var SEAT={'Root':'var(--Root)','Sacral':'var(--Sacral)','Solar':'var(--Solar)',
+ 'Heart':'var(--Heart)','Throat':'var(--Throat)','3rd Eye':'var(--Eye)','Crown':'var(--Crown)'};
+var KSEAT={root:'Root',sacral:'Sacral',solar:'Solar',heart:'Heart',throat:'Throat',
+ eye:'3rd Eye',crown:'Crown',coherent:'Heart'};
+function col(b){return SEAT[b]||'var(--accent)';}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){
+ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function ic(d,n){n=n||22;return '<svg viewBox="0 0 24 24" width="'+n+'" height="'+n
+ +'" aria-hidden="true">'+String(d).split(' M').map(function(p,i){
+  return '<path d="'+(i?'M'+p:p)+'"/>';}).join('')+'</svg>';}
+
+document.getElementById('who').innerHTML=esc(D.who)+', '+esc(D.role)
+ +'. Coherence '+D.reading.CQ+', the '+String(D.reading.seat).toLowerCase()
+ +' carrying the most, '+D.reading.loaded+' addresses above the line and '
+ +D.reading.releasable+' of them releasable.';
+
+/* ---------- 1. THE ENTRY, AND WHAT THE PRODUCT READ OUT OF IT ---------- */
+function entryHtml(){
+ var t=D.entry, fs=(D.chain.frames||[]).slice().sort(function(a,b){return a.at-b.at;});
+ var out='', last=0;
+ fs.forEach(function(f,i){
+  if(f.at<last)return;
+  out+=esc(t.slice(last,f.at))
+   +'<mark class="'+(i?'two':'')+'" style="--c:'+col(KSEAT[f.seat])+'">'
+   +esc(t.substr(f.at,f.span.length))+'</mark>';
+  last=f.at+f.span.length;});
+ out+=esc(t.slice(last));
+ return out;}
+
+var c1='<div class="card"><p class="eye">Discover · the journal</p>'
+ +'<h2>What she wrote, and what the instrument read out of it</h2>'
+ +'<p class="note">The marks under the words are the frames the sniffer matched. '
+ +'A frame is a form of sentence rather than a word, and the run it matched is '
+ +'the quotation the rest of the loop uses. The charge and the quotation are one match.</p>'
+ +'<div class="entry">'+entryHtml()+'</div>'
+ +'<div class="leg">'+(D.chain.frames||[]).map(function(f){
+   return '<div><i style="--c:'+col(KSEAT[f.seat])+'"></i><span>'+esc(f.nm)
+    +', at the '+esc(KSEAT[f.seat]||f.seat).toLowerCase()+', intensity '+Math.abs(f.amt)+'</span></div>';}).join('')
+ +'</div>'
+ +'<p class="src">Read by the sniffer as built: '+D.chain.imprintsBuilt.length
+ +' imprints. With the stemmer and the frame layer: '+D.chain.imprints.length
+ +'. Measured across the repository’s fourteen persona voices the span rate goes '
+ +'from 1 of 14 to 9 of 14, and weighted over the nine ICPs from 0 of 1000 to 935 of 1000.</p>'
+ +'</div>';
+
+c1+='<div class="card"><p class="eye">Discover · the imprints</p>'
+ +'<h2>Where it landed</h2>'
+ +'<p class="note">Real addresses off the 112, at the intensity the existing '
+ +'arithmetic gives them. Named rather than inferred, because the frame states '
+ +'its own axis instead of guessing one from the seat.</p>'
+ +'<div class="pills">'+D.chain.imprints.map(function(i){
+   return '<span class="pill" style="--c:'+col(i.band)+'">'+esc(i.name)
+    +'<b>'+i.amt.toFixed(1)+'</b></span>';}).join('')
+ +'</div>'
+ +(D.chain.imprintsBuilt.length?'':'<p class="src">The build reads this entry as '
+  +'nothing at all. Every pill above exists because of the frame layer.</p>')
+ +'</div>';
+
+/* ---------- 2. THE RITUAL, WITH HER OWN WORDS IN IT ---------- */
+var p=D.practice.called;
+var c2='<div class="card"><p class="eye">Play · the ritual</p>'
+ +'<h2>'+esc(p.nm)+' <span class="min">'+p.min+'m</span></h2>'
+ +'<p class="note">The '+esc(D.reading.seat).toLowerCase()+' is carrying the most, '
+ +'so the '+esc(D.reading.track).toLowerCase()+' track is what the state calls for. '
+ +'Tier '+D.reading.tier+' and below. One practice on the card, not the whole library.</p>'
+ +'<div class="prac"><div class="step">'+esc(p.how)+'</div>'
+ +'<div class="graft"><q>'+esc(D.practice.graft)+'</q>'
+ +'<span class="by">Her words, from the entry above. The app cut the quotation and '
+ +'did not write it. This is the statement the practice holds.</span></div></div>'
+ +'<p class="src">Self reference effect, Symons and Johnson 1997, 129 studies, d 0.45. '
+ +'Used at half that in the model, because their outcome is recall and this is '
+ +'a daily probability of practising.</p></div>';
+
+var a=D.chain.affirm;
+var affSay='';
+if(a&&a.form==='swap'){
+ affSay=esc(a.ours.slice(0,a.at))
+  +'<span class="strike">'+esc(a.from)+'</span> <span class="swap">'+esc(a.to)+'</span>'
+  +esc(a.ours.slice(a.at+a.from.length));
+} else if(a){ affSay='<span class="swap">'+esc(a.text)+'</span>'; }
+c2+='<div class="card"><p class="eye">Play · the affirmation</p>'
+ +'<h2>A sentence to test, not a sentence to believe</h2>'
+ +'<p class="note">Her own claim with one word hedged. The struck word is what '
+ +'she wrote and the gold word is the only thing the app changed. It is editable '
+ +'before it enters anything, and it enters as the thing she holds against the '
+ +'body for '+D.practice.floor.min+' minutes.</p>'
+ +'<div class="aff"><div class="say">'+affSay+'</div>'
+ +'<div class="two-up"><button class="btn pri">Keep it</button>'
+ +'<button class="btn">Write my own</button></div></div>'
+ +'<div class="prac" style="margin-top:12px"><div class="nm">The floor'
+ +' <span class="min">'+D.practice.floor.min+'m</span></div>'
+ +'<div class="step">'
+ +(D.practice.called.k==='truth'
+   ? 'Her state called for the two minute practice today, so the full ritual and '
+    +'the floor are the same act and the card says so rather than printing it '
+    +'twice. On a day that calls for twenty minutes they are not: the floor is '
+    +'still this, one sentence held against the body.'
+   : 'Sixty seconds. Hold the sentence and read the body, and nothing else.')
+ +' A day kept on the floor is a day kept, and that is the whole mechanic.</div></div>'
+ +'<p class="src">Nobody is asked to repeat a positive statement about themselves. '
+ +'Wood, Perunovic and Lee 2009: low self esteem participants who repeated one '
+ +'felt worse, and the arm that did no harm held the statement as both true and '
+ +'not true. Eight hundred of the weighted thousand arrive at grid level four or below.</p>'
+ +'</div>';
+
+/* ---------- 3. THE RECORD, THE MARKS, THE AWARDS, THE BANK ---------- */
+var st=D.record, days=st.days, lastDay=days[days.length-1];
+var cells='';
+for(var back=13;back>=0;back--){
+ var on=days.indexOf(back)>=0;
+ cells+='<span class="'+(on?'on':'gap')+(back===0?' today':'')+'"></span>';}
+var cRun='<div class="card"><p class="eye">Flow · the run</p>'
+ +'<h2>Fourteen days, as they happened</h2>'
+ +'<p class="note">Drawn and never printed as a number. A gap of one day carries '
+ +'through. Two is the grace day. Three or more halves what was standing and it '
+ +'never reaches zero.</p>'
+ +'<div class="days">'+cells+'</div>'
+ +'<div class="dlab"><span>two weeks ago</span><span>today</span></div>'
+ +'<div class="led">'
+ +'<div><b>'+st.ledger.done+'</b><span>rituals done</span></div>'
+ +'<div><b>'+st.ledger.minutes+'</b><span>minutes practised</span></div>'
+ +'<div><b>'+st.ledger.ground+'</b><span>addresses opened</span></div>'
+ +'<div><b>'+st.ledger.clear+'</b><span>held at the far pole</span></div>'
+ +'</div>'
+ +'<p class="src">Every one of those four is a count of something that happened. '
+ +'None of them is against a total.</p></div>';
+
+var c3='';
+var got=D.marks.all.filter(function(m){return D.marks.earned.indexOf(m.k)>=0;});
+var nx=D.marks.all.filter(function(m){return m.k===D.marks.next;})[0];
+c3+='<div class="card"><p class="eye">Flow · the marks</p>'
+ +'<h2>What she has earned</h2>'
+ +'<p class="note">A mark is a test against the record, so it is a fact with a '
+ +'date rather than a prize. Three families, and the family colour is the seat '
+ +'colour it means everywhere else.</p>'
+ +'<div class="marks">'+got.map(function(m){
+   return '<div class="mk" style="--c:'+col(m.b)+'">'+ic(m.ic,24)
+    +'<div class="n">'+esc(m.nm)+'</div><div class="fam">'+esc(m.fam)+'</div></div>';}).join('')
+ +'</div>'
+ +(nx?'<div class="next">'+ic(nx.ic,24)+'<div><div class="n">Next, '+esc(nx.nm)+'</div>'
+   +'<div class="d">'+esc(nx.d)+'</div></div></div>':'')
+ +'<p class="src">One next mark, and the ones past it are deliberately not '
+ +'enumerated. A list of a person’s unfinished self is a completion bar on a '
+ +'nervous system.</p></div>';
+
+c3+='<div class="card"><p class="eye">Body · the awards</p>'
+ +'<h2>What changed in her</h2>'
+ +'<p class="note">A mark counts what she did. An award records what moved. '
+ +'Three families, and the third exists because of a measurement.</p>'
+ +D.awards.map(function(w){
+  return '<div class="aw'+(w.reach?'':' shut')+'" style="--c:'+col(w.b)+'">'
+   +'<div class="t"><span class="nm">'+esc(w.nm)+'</span>'
+   +'<span class="fam">'+esc(w.fam)+(w.got?' · earned':'')+'</span></div>'
+   +'<div class="d">'+esc(w.d)+'</div>'
+   +'<div class="nd">Needs '+esc(w.needs)+(w.reach?'':'. Shut, for this reading')+'</div>'
+   +'</div>';}).join('')
+ +'<p class="src">Measured off engine/ladder.js and the sq ≥ 4 release '
+ +'threshold: four of the sixteen marks can never be earned by the 465 of 1000 '
+ +'who reach a complete reading with nothing above the release line. The Held '
+ +'family is the answer to that, and it needs a reading and nothing else.</p></div>';
+
+c3+='<div class="card"><p class="eye">The reward</p>'
+ +'<h2>The bank</h2>'
+ +'<div class="bank">'+ic('M12 3a9 9 0 100 18 9 9 0 100-18 M12 7v10 M8.5 10.5h7 M8.5 13.5h7',44)
+ +'<div><div class="big">'+D.bank.earned+'</div>'
+ +'<div class="sub">patterns earned, on top of the '+D.bank.granted+' she was given</div></div></div>'
+ +'<div class="rows">'
+ +'<div><span>A ritual done</span><span>'+D.bank.rates.ritual+'</span></div>'
+ +'<div><span>An entry that produced an imprint</span><span>'+D.bank.rates.journal+'</span></div>'
+ +'<div><span>A mark earned</span><span>'+D.bank.rates.mark+'</span></div>'
+ +'<div><span>An award conferred</span><span>'+D.bank.rates.award+'</span></div>'
+ +'<div><span>A season finished</span><span>'+D.bank.rates.season+'</span></div>'
+ +'<div><span>One address across the four channels</span><span>−'+D.bank.spentFloor+'</span></div>'
+ +'<div><span>A release run at the cap</span><span>−'+D.bank.runCap+'</span></div>'
+ +'</div>'
+ +'<p class="src">Paid for the record after the fact and never promised in advance '
+ +'for the act. Announcing it in advance measured 3.2 points of 1000 worse at day '
+ +'thirty: Deci, Koestner and Ryan 1999, 128 studies, d −0.40. Daily practice '
+ +'earns '+D.bank.weekDaily+' a week against a free allowance of '+D.bank.allowance
+ +' that banks, so a run at the cap every week and a bit without paying anything.</p></div>';
+
+/* ---------- the avatar, which is another seat's ---------- */
+var c4='<div class="slot"><p class="eye">The centrepiece, and it is not mine</p>'
+ +'<div class="box">The avatar goes here. DESIGN-avatar.md owns it. This is the '
+ +'shape the loop needs, not a proposal about what it looks like.</div>'
+ +'<ol><li><b>One frame that changes when a release lands,</b> visible without '
+ +'leaving the surface the release happened on. The loop pays out here or it does '
+ +'not pay out.</li>'
+ +'<li><b>Seven regions that map to the seven seats,</b> so an award at the solar '
+ +'changes the solar and nothing else. The seat colours are already fixed.</li>'
+ +'<li><b>A state that can only be read, never scored.</b> No bar, no percentage, '
+ +'no level. It may look better and it may not say how much better.</li>'
+ +'<li><b>A still frame for the 465 of 1000 who cannot release,</b> which shows '
+ +'holding rather than clearing, or half the panel watches an avatar that never moves.</li></ol>'
+ +'<div class="pts">'
+ +'<div class="pt"><b>8.9</b><span>points of 1000 at day thirty, the build today</span></div>'
+ +'<div class="pt"><b>19.9</b><span>points with this loop, measured</span></div>'
+ +'<div class="pt"><b>+11.0</b><span>points, against a target of ten</span></div>'
+ +'</div></div>';
+
+/* THE RUN CARD GOES IN COLUMN ONE, and this is a layout note rather than a
+   design one. The first cut put the journal and the imprints alone on the left
+   and six cards on the right, and at 1600 it left a third of the left column
+   empty under two short cards while the right ran past the fold. Columns are
+   balanced by what is in them, not by how many cards they hold. */
+document.getElementById('g').innerHTML=
+ '<div>'+c1+cRun+'</div><div>'+c2+c4+'</div><div>'+c3+'</div>';
+</script></body></html>

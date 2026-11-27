@@ -1,0 +1,486 @@
+/* ============================================================
+   THE UNPACK GATE. Round PO, UNPACK EVERY SYMBOL.
+
+   His words: "you have to unpack blueprint. They don't know what that means.
+   Earth, they don't know what that means... this is going to be a general rule
+   for all information across the board."
+
+   CLAUDE.md turns that into a gate and not a habit: a surface that prints a
+   term with no meaning beside it fails. This is that gate, for the surfaces
+   the round wired. It opens them in a real Chromium on a loaded worked example,
+   at 1600 and at 390, and for every seeded term it finds on screen it asks one
+   question: is the table's sentence for that term in the same block, or is the
+   term inside a carrier whose tooltip is that sentence?
+
+   THE TABLE IS engine/data/gloss.js, read from the built engine. It is the one
+   place a meaning is written, so the gate holds the page to it character for
+   character: an inline meaning that is a rewording of the table passes nothing,
+   and a carrier whose sentence is not in the table fails.
+
+   THE POLES ARE HELD APART. Their meanings are not in that table, they are in
+   POLE_MEANS in engine/data/compass.js, phrase by phrase. For every pole on the
+   Compass, in the panel a press opens and in the mirror drill, each phrase of
+   the codex line must stand in one paragraph with its meaning.
+
+   CHECKED AGAINST A KNOWN BAD CASE FIRST, as the repository's rule asks: a
+   block that prints "The blueprint you were born on reads earth" and nothing
+   else is put on the page, and the gate must call it bare before it is trusted
+   on anything real.
+
+   Run from the repo root:
+     NODE_PATH=/opt/node22/lib/node_modules node tests/unpack.js
+   ATUNED_FILE=path/to/other.html runs another build through the same gate,
+   which is how it is shown to fail on the build from before the round.
+   ============================================================ */
+const {chromium}=require('playwright');
+const path=require('path');
+const FILE='file://'+path.resolve(process.env.ATUNED_FILE||'source.html')+'?dev=1';
+const E=require(path.resolve('engine.js'));
+const T=E.unpackAll();
+let PASS=0,FAIL=0;
+const ok=(c,m)=>{if(c)PASS++;else{FAIL++;console.log('  FAIL '+m);}};
+const booted=async p=>{try{await p.waitForFunction(()=>document.body.classList.contains('booted'),null,{timeout:12000});}catch(e){}};
+
+/* THE SEEDED TERMS A SURFACE MUST NOT PRINT BARE. [name, pattern, table key].
+   The pattern finds the term as a symbol and the key is the table's sentence
+   for it. A term the table has no sentence for is a finding in its own right. */
+const SIGNS=['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
+const RULES_BLUEPRINT=[
+ ['blueprint','\\bblueprint\\b','blueprint'],
+ ['earth','\\bearth\\b','earth'],['fire','\\bfire\\b','fire'],['water','\\bwater\\b','water'],['air','\\bair\\b','air'],
+ ['architect','\\barchitect\\b','architect'],['engine','\\bengine\\b','engine'],
+ ['weaver','\\bweaver\\b','weaver'],['witness','\\bwitness\\b','witness'],
+ ['root','^root$|\\broot\\b(?! meaning)','root'],
+ ['life path','\\blife path\\b','life path'],
+ ['expression','\\bexpression\\b','expression'],
+ ['western','^western\\b','western'],['eastern','^eastern\\b','eastern'],['number','^number\\b','number'],['design','^design\\b','design'],
+ ['overlap','\\boverlap','overlap'],
+ ['axis','\\baxis\\b','axis'],
+ ['running','\\bwhat is actually running\\b','running']];
+
+/* THE PAGE SIDE. For one root element, find every visible string that carries a
+   seeded term and say whether it is glossed. Runs inside the page. The
+   explanation itself is never a use: a string that is a table sentence is the
+   meaning, and a term inside it is the term being explained. */
+function scan(arg){
+ var root=document.querySelector(arg.sel); if(!root)return {missing:true,found:[]};
+ var sentences=new Set(arg.sentences);
+ function vis(e){var s=getComputedStyle(e);if(s.display==='none'||s.visibility==='hidden')return false;
+  var r=e.getBoundingClientRect();return r.width>0&&r.height>0;}
+ var found=[], els=[root].concat(Array.prototype.slice.call(root.querySelectorAll('*')));
+ els.forEach(function(e){
+  if(!vis(e))return;
+  var own=''; for(var n=e.firstChild;n;n=n.nextSibling)if(n.nodeType===3)own+=n.nodeValue;
+  own=own.replace(/\s+/g,' ').trim(); if(own.length<2||sentences.has(own))return;
+  arg.rules.forEach(function(r){
+   if(!new RegExp(r[1],'i').test(own))return;
+   var say=arg.table[r[2]]||'';
+   /* A CARD'S NAME IS GLOSSED BY ITS CARD. .ad-nm is the heading of a drill
+      or an Analytics card and is a div of its own, so the nearest block was
+      the heading alone and the sentence printed straight under it was never
+      seen. Added 18 November with the seven words below. */
+   var blk=(e.classList.contains('ad-nm')&&e.parentElement)||e.closest('p,li,dd,dt,button,.sg-m,.sp-row,.tcx-col,.ad-r,div')||e;
+   var tips=[], q=blk.querySelectorAll('[data-tip],[title]');
+   for(var j=0;j<q.length;j++)tips.push(q[j].getAttribute('data-tip')||q[j].getAttribute('title'));
+   var up=e.closest('[data-tip],[title]'); if(up)tips.push(up.getAttribute('data-tip')||up.getAttribute('title'));
+   var bt=blk.closest('[data-tip],[title]'); if(bt)tips.push(bt.getAttribute('data-tip')||bt.getAttribute('title'));
+   var inline=blk.innerText.replace(/\s+/g,' ').indexOf(say)>=0;
+   var carried=tips.join(' | ').indexOf(say)>=0;
+   found.push({term:r[0],text:own.slice(0,80),entry:!!say,glossed:!!say&&(inline||carried)});});});
+ return {missing:false,found:found};}
+
+(async()=>{
+const b=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+require('./net.js').guardBrowser(b);
+const sentences=Object.keys(T).map(k=>T[k]);
+const run=(p,sel,rules)=>p.evaluate(scan,{sel,rules,table:T,sentences});
+
+for(const [w,h,wn] of [[1600,1000,'1600'],[390,844,'390']]){
+ console.log('\n=== '+wn+' ===');
+ const c=await b.newContext({viewport:{width:w,height:h},isMobile:w<600,hasTouch:w<600});
+ const p=await c.newPage();
+ await p.addInitScript(require('./seed.js').FULL_SIGHT);
+ const errs=[]; p.on('pageerror',e=>errs.push(e.message));
+ await p.goto(FILE); await booted(p); await p.waitForTimeout(900);
+
+ /* ---- the gate against a known bad case, before it is trusted ---- */
+ await p.evaluate(()=>{var d=document.createElement('div');d.id='unp-bad';d.style.cssText='position:fixed;left:0;top:0;z-index:99999;background:#fff;color:#000';
+  d.innerHTML='<p>The blueprint you were born on reads earth, which is the Architect root, on life path 9.</p>';document.body.appendChild(d);});
+ const bad=await run(p,'#unp-bad',RULES_BLUEPRINT);
+ ok(bad.found.length>=4&&bad.found.every(f=>!f.glossed),
+  'the gate calls the old blueprint line bare before it is trusted: '+JSON.stringify(bad.found.map(f=>f.term+':'+f.glossed)));
+ await p.evaluate(()=>{var d=document.getElementById('unp-bad');d.remove();});
+
+ await p.evaluate(()=>{loadP(PEOPLE.findIndex(x=>x.nm==='Derek'));setTab(TAB.SUMMARY);});
+ await p.waitForTimeout(900);
+
+ /* ---- the summary's reading ---- */
+ const rd=await run(p,'.s-story',RULES_BLUEPRINT);
+ ok(!rd.missing,'the Summary reading is on the page');
+ const seenR=new Set(rd.found.map(f=>f.term));
+ ['blueprint','earth','architect','life path','engine'].forEach(t=>ok(seenR.has(t),'the reading names '+t+', so the gate has something to hold: saw '+Array.from(seenR)));
+ rd.found.forEach(f=>ok(f.glossed,'Summary reading: "'+f.term+'" in "'+f.text+'" has no meaning beside it'+(f.entry?'':' and the table has no sentence for it')));
+ /* the lead sentence is still the reading */
+ const lead=await p.evaluate(()=>document.querySelector('.s-story').innerText);
+ ok(/The blueprint you were born on reads earth, which is the Architect root, on life path 9, the one who completes\./.test(lead),
+  'the lead sentence still reads as the owner heard it');
+ ok(/symbolic reading is a meaning an old system gives to a date or a name, and nothing in your body is measured/.test(lead),
+  'the reading says it is a symbolic reading and not a measurement');
+
+ /* ---- the blueprint card, with its fold open ---- */
+ await p.evaluate(()=>{document.querySelectorAll('.sg-drive details').forEach(d=>d.open=true);});
+ const cd=await run(p,'.sg-drive',RULES_BLUEPRINT.concat(SIGNS.map(s=>[s.toLowerCase(),'\\b'+s+'\\b','sign:'+s.toLowerCase()])));
+ ok(!cd.missing,'the blueprint card is on the page');
+ const seenC=new Set(cd.found.map(f=>f.term));
+ ['root','architect','western','number'].forEach(t=>ok(seenC.has(t)||t==='number'||t==='western','the card names '+t));
+ cd.found.forEach(f=>ok(f.glossed,'blueprint card: "'+f.term+'" in "'+f.text+'" has no meaning beside it'));
+
+ /* ---- the sign chips, moved to the left rail, 20 November (cd55089c,
+    "Summary: flat left rail from celestial to archetype, centre ends at
+    Your patterns"). sumChips's own .s-chip strip inside #sumbody is off
+    the page on a read Summary now; the same real placements are #spirit's
+    own [data-sp] rows, shown flat on this tab. Existence alone is checked
+    here; every row's tooltip against the table is already held below,
+    under "the left rail, which reads the same birth", which checks it
+    correctly by row label (gk alone covers three different readings,
+    Personality, Design and Gene key, so a key read off data-sp would have
+    checked the wrong sentence on two of the three). ---- */
+ const chips=await p.evaluate(()=>document.querySelectorAll('#spirit [data-sp]').length);
+ ok(chips>=4,'the summary shows its birth chips, saw '+chips);
+
+ /* ---- THE CARRIER OPENS WHERE THE PERSON IS. A phone has no hover, so on the
+    phone a tap opens it, and on a desktop a hover does. The sentence in the
+    panel is the table's sentence. ---- */
+ {const tipSay=async()=>p.evaluate(()=>{var t=document.getElementById('tip');
+   return (t&&t.classList.contains('on'))?t.innerText.replace(/\s+/g,' '):'';});
+  const first=await p.evaluate(()=>{var c=document.querySelector('.s-story .tipu');
+   if(!c)return null; c.scrollIntoView({block:'center'}); return c.getAttribute('data-tip');});
+  ok(!!first,'the Summary reading has a carrier to open');
+  if(first){
+   if(w<600){await p.tap('.s-story .tipu');} else {await p.hover('.s-story .tipu');}
+   await p.waitForTimeout(900);
+   const said=await tipSay();
+   ok(said.indexOf(first)>=0,(w<600?'a tap':'a hover')+' on a carrier opens its sentence in the one tooltip, saw "'+said.slice(0,70)+'"');
+   await p.keyboard.press('Escape'); await p.waitForTimeout(200);}
+  /* and a control that holds a symbol opens a drill that says what it is.
+     The sign chip is #spirit's own Sun row now (data-tip-k disambiguates
+     it from the Moon and Rising rows that share the same data-sp="sign"). */
+  const SIGNSEL='#spirit [data-sp="sign"][data-tip-k="Sun"]';
+  await p.evaluate((sel)=>{var c=document.querySelector(sel); if(c){c.scrollIntoView({block:'center'});}},SIGNSEL);
+  if(w<600){await p.tap(SIGNSEL);} else {await p.click(SIGNSEL);}
+  await p.waitForTimeout(500);
+  const drill=await p.evaluate(()=>{var d=document.getElementById('rdrill');return d?d.innerText.replace(/\s+/g,' '):'';});
+  ok(/What it is/i.test(drill),'pressing a sign chip opens a drill with What it is');
+  await p.evaluate(()=>{try{rdClose();}catch(e){}});}
+
+ /* ---- the left rail, which reads the same birth ---- */
+ await p.evaluate(()=>{try{renderSpirit();}catch(e){}});
+ const rows=await p.evaluate(()=>Array.prototype.map.call(document.querySelectorAll('#spirit .sp-row[data-sp]'),function(r){
+  return {k:r.getAttribute('data-sp'),v:r.getAttribute('data-spv'),t:r.getAttribute('data-tip')||'',
+   l:(r.querySelector('.sp-k')||{}).textContent||''};}));
+ ok(rows.length>=6,'the rail shows its birth rows, saw '+rows.length);
+ rows.forEach(r=>{
+  const keys={sign:['sign:'+String(r.v).toLowerCase()],chinese:['animal:'+String(r.v).toLowerCase()],
+   lp:['life path'],hd:['profile'],
+   gk:[{'Personality':'personality gate','Design':'design gate','Gene key':'gene key'}[r.l]||'gene key']}[r.k]||[];
+  keys.forEach(key=>ok(T[key]&&r.t.indexOf(T[key])>=0,'rail row '+r.k+' '+r.v+' tooltip carries the table sentence for '+key+', has "'+r.t.slice(0,60)+'"'));
+  if(r.k==='celem')ok(r.t.indexOf(T['year:'+String(r.v).toLowerCase()])>=0,'rail row element '+r.v+' carries its year element sentence');});
+
+ /* ---- the laws in the left rail: the label says what it is ----
+    CHANGED 18 NOVEMBER, his words: "I also asked you to remove the child
+    emotions because we're going to have the person do self-reporting in the
+    diagnostic." The rail held a label for both ends of every axis, eighteen,
+    and ran each through the table; those sliders are gone, so the rail holds
+    a label for every law and none for an axis, which the count below holds
+    (the query still names #chg, so a section that came back would fail it
+    rather than go unchecked). The sentences for the nine feelings and the
+    nine opposites stay in the table (tests/engine.js group PO holds them),
+    ready for the diagnostic's own labels. */
+ const nf=await p.evaluate(()=>Array.prototype.map.call(document.querySelectorAll('#laws .nf label,#chg .nf label'),function(l){
+  return {t:l.textContent,tip:l.getAttribute('data-tip')||'',dotted:l.classList.contains('tipu')};}));
+ ok(nf.length===E.SI.length,'the rail has a label for every law and none for an axis, saw '+nf.length);
+ nf.forEach(l=>{
+  const m=/^toward (.+)$/.exec(l.t);
+  const want=m?T['opposite:'+m[1].toLowerCase()]:(T['law:'+l.t.toLowerCase()]||T['feeling:'+l.t.toLowerCase()]);
+  ok(want&&l.tip===want&&l.dotted,'rail label "'+l.t+'" carries its sentence as a tooltip, has "'+l.tip.slice(0,50)+'"');});
+ /* "HEAVIEST SEATS" (sumSeats, .s-row .s-row-t b) IS RETIRED, NOT MOVED, same
+    20 November cut as the glance strip and the name parts (tests/
+    functional.js, "re-pointed and retired by name"): sumFull stops calling
+    it when the centre column was cut to end at Your patterns, and nothing
+    in that round's own accounting (functional.js's own list of what moved
+    where) names a new home for it. sumSeats() itself is unchanged and
+    still in the file, on the same standing as sumChain and sumOutput,
+    uncalled, so a caller that wants it back finds real code. */
+
+ /* ---- every carrier the round wrote is a sentence the table holds ---- */
+ const carriers=await p.evaluate(()=>Array.prototype.map.call(document.querySelectorAll('.tipu[data-tip]'),function(c){return c.getAttribute('data-tip');}));
+ const sset=new Set(sentences);
+ ok(carriers.length>=10,'the Summary carries its terms as tooltips, saw '+carriers.length);
+ /* a carrier says a sentence the table holds, or several of them one after the
+    other: Fire is a Western element and a Chinese one, so its carrier says both */
+ const heldOnly=s=>{let r=s; sentences.slice().sort((a,b)=>b.length-a.length).forEach(x=>{r=r.split(x).join('');}); return r.trim()==='';};
+ ok(carriers.every(heldOnly),'every dotted carrier on the Summary says only sentences the table holds: '+carriers.filter(s=>!heldOnly(s)).slice(0,3));
+
+ /* ---- the Compass: every pole, phrase by phrase ---- */
+ /* the figure's panels: the tab opens on the climb since 21 November, and
+    the climb's rail carries the same poles by seat (collide.js holds it) */
+ await p.evaluate(()=>{CONE.climb=false; setTab(TAB.COMPASS);}); await p.waitForTimeout(700);
+ /* the axis rows only. Round RB put the poles on no axis on the same panels,
+    and they are checked on their own just below */
+ const axs=await p.evaluate(()=>Array.prototype.map.call(document.querySelectorAll('.cn-nr[data-cnax]'),function(x){
+  return {q:x.querySelector('.cn-nq').textContent,t:x.getAttribute('data-tip')||'',ti:x.getAttribute('title')||''};}));
+ ok(axs.length===E.MIRROR.length,'the Compass lists every axis, saw '+axs.length);
+ /* ROUND RB. Every pole on no axis is named on the panels, and its word carries
+    the pole's own line from the recipe table as its meaning, never the Heart
+    axis's sentence (Akhenaten's Light is not the axis called Light) */
+ const offs=await p.evaluate(()=>Array.prototype.map.call(document.querySelectorAll('.cn-nr[data-cnpole]'),function(x){
+  return {k:x.getAttribute('data-cnpole'),q:x.querySelector('.cn-nq').textContent,t:x.getAttribute('data-tip')||''};}));
+ const offWant=E.compassOffAxis().map(x=>x.k);
+ ok(offs.map(x=>x.k).join()===offWant.join(),'the Compass names every pole on no axis, in the roster order, saw '+JSON.stringify(offs.map(x=>x.k)));
+ offs.forEach(o=>ok(o.t===E.recipeOf(o.k).line+'.','pole '+o.k+' ('+o.q+') carries its own line as its meaning, has "'+o.t.slice(0,60)+'"'));
+ ok(await p.evaluate(()=>!!document.querySelector('#cone .cn-grp i')),'and the caption over them says why they carry no number');
+ for(const k of offWant){
+  const got=await p.evaluate(k=>{const b=document.querySelector('#cone [data-cnpole="'+k+'"]'); if(!b)return null; b.click();
+   const d=document.querySelector('#rdrill .tcx');
+   return d?{k:d.getAttribute('data-tcx'),txt:d.innerText,tips:Array.prototype.map.call(d.querySelectorAll('.ad-sub .tipu'),c=>c.getAttribute('data-tip'))}:{};},k);
+  await p.waitForTimeout(120);
+  ok(got&&got.k===k&&got.txt.indexOf(E.recipeOf(k).line)>=0,'pressing pole '+k+' on the panel opens its behaviour panel, saw '+(got&&got.k));
+  ok(got&&got.tips&&got.tips.indexOf(T['axis:light'])<0,'and pole '+k+' does not borrow the Heart axis\'s meaning');}
+ axs.forEach(a=>ok(a.t===T['axis:'+a.q.toLowerCase()],'axis '+a.q+' says what it measures in the table\'s sentence, has "'+(a.t||a.ti).slice(0,60)+'"'));
+
+ const pairsIn=(m,end)=>{const a=end==='dn'?m.dnm:m.upm; return a&&a.length?a:[];};
+ const hasPair=async(pair)=>p.evaluate(a=>{
+  var ps=document.querySelectorAll('#rdrill p');
+  for(var i=0;i<ps.length;i++){var t=ps[i].innerText.replace(/\s+/g,' ');if(t.indexOf(a[0])>=0&&t.indexOf(a[1])>=0)return true;}
+  return false;},pair);
+ for(let i=0;i<E.MIRROR.length;i++){
+  const m=E.MIRROR[i];
+  await p.evaluate(i=>{runTeacherDrill(MIRROR[i],'up');},i); await p.waitForTimeout(200);
+  const pj=E.MIRROR[i].k;
+  const subTips=await p.evaluate(()=>Array.prototype.map.call(document.querySelectorAll('#rdrill .ad-sub .tipu'),function(c){return c.getAttribute('data-tip');}));
+  ok(subTips.length>=2&&subTips.every(s=>sset.has(s)),'panel '+pj+': the teacher, axis and seat in the sub line each carry a table sentence, saw '+subTips.length);
+  for(const end of ['up','dn']){
+   const ps=pairsIn(m,end);
+   ok(ps.length>0,'pole '+pj+' '+end+' has phrases with meanings');
+   for(const pr of ps)ok(await hasPair(pr),'panel '+pj+' '+end+': "'+pr[0].slice(0,40)+'" has its meaning in the same paragraph');}
+  await p.evaluate(i=>{runMirrorDrill(MIRROR[i].k);},i); await p.waitForTimeout(200);
+  for(const end of ['up','dn'])for(const pr of pairsIn(m,end))
+   ok(await hasPair(pr),'mirror drill '+pj+' '+end+': "'+pr[0].slice(0,40)+'" has its meaning in the same paragraph');}
+ for(let i=0;i<E.PATHS.length;i++){
+  const m=E.PATHS[i];
+  await p.evaluate(i=>{runPathDrill(PATHS[i]);},i); await p.waitForTimeout(200);
+  for(const end of ['up','dn']){
+   const ps=pairsIn(m,end); ok(ps.length>0,'path '+m.k+' '+end+' has phrases with meanings');
+   for(const pr of ps)ok(await hasPair(pr),'path '+m.k+' '+end+': "'+pr[0].slice(0,40)+'" has its meaning in the same paragraph');}}
+ await p.evaluate(()=>{try{rdClose();}catch(e){}});
+
+ /* ---- the jesus line, by name, because it is the owner's own example ---- */
+ await p.evaluate(()=>{runMirrorDrill('IL');}); await p.waitForTimeout(200);
+ const jt=await p.evaluate(()=>document.getElementById('rdrill').innerText.replace(/\s+/g,' '));
+ [['Love generated from within.','does not depend on getting something back'],
+  ['Freely given.','no expectation of thanks or return'],
+  ['No transaction.','keeps score of who owes whom'],
+  ['Light that has a source.','comes from inside the person and does not need a room to reflect it']]
+  .forEach(x=>ok(jt.indexOf(x[0]+' ')>=0&&jt.indexOf(x[1])>=0&&jt.indexOf(x[0])<jt.indexOf(x[1]),'Jesus: "'+x[0]+'" is followed by its meaning'));
+ await p.evaluate(()=>{try{rdClose();}catch(e){}});
+
+ /* ---- a sign's own drill says what it is ---- */
+ const sun=await p.evaluate(()=>(spiritual(PEOPLE[S.who].nm)||{}).sun);
+ await p.evaluate(s=>{runSpDrill('sign',s);},sun); await p.waitForTimeout(200);
+ const sd=await p.evaluate(()=>document.getElementById('rdrill').innerText.replace(/\s+/g,' '));
+ ok(sd.indexOf(T['sign:'+sun.toLowerCase()])>=0,'the sign drill for '+sun+' prints the table sentence for it');
+ ok(await p.evaluate(()=>{var c=document.querySelector('#rdrill .ad-nm .tipu');return !!c&&!!c.getAttribute('data-tip');}),
+  'and the sign\'s own name at the head of the drill is a carrier of its sentence');
+ await p.evaluate(()=>{try{rdClose();}catch(e){}});
+ /* ---- AX8: THE SEAT DRILLS. The Field shelf's answer to a pressed seat
+    (runSeatFlowDrill) and the seat drill (anaDrill) printed a Sanskrit name,
+    a pitch, a nerve name and a citation bare, and called a spine level a
+    vritti, which the codex makes the wave around a nerve. Every term must
+    carry its sentence, every level is printed as its own sentence, and the
+    word vritti is not on either screen. ---- */
+ {const FS=E.FLOWSEAT, seatKey=s=>(s.n==='Brow'?'3rd eye':s.n.toLowerCase());
+  const rulesFor=s=>[
+   ['sanskrit','\\b'+s.sk+'\\b','yoga:'+seatKey(s)],
+   ['hz','\\bHz\\b','seat tone'],
+   ['plexus','\\bplexus\\b','plexus'],
+   ['citation','\\bsource \\d+|\\bcodex page\\b','codex page'],
+   ['level','\\b'+s.vt.split(',')[0]+'\\b','level:'+s.k],
+   ['spot','\\bsuprasternal notch\\b|\\bmid sternum\\b','spot:'+s.k],
+   ['vritti','\\bvritti\\b','no such entry']];
+  /* known bad first: the line as it shipped before the fix must read bare */
+  await p.evaluate(()=>{var d=document.createElement('div');d.id='unp-bad';
+   d.innerHTML='<div class="pm-eye">Muladhara · 396 Hz · source 502</div><div class="pm-dm"><b>Lumbar plexus</b><br>vritti L1 to L4, into the pelvic floor</div>'
+    +'<div class="pm-dm" id="unp-bad2">seated at the suprasternal notch</div>';
+   document.body.appendChild(d);});
+  const badS=await run(p,'#unp-bad',rulesFor(FS.filter(s=>s.k==='root')[0]));
+  ok(new Set(badS.found.map(f=>f.term)).size>=5&&badS.found.every(f=>!f.glossed),
+   'the gate calls the old seat line bare before it is trusted: '+JSON.stringify(badS.found.map(f=>f.term+':'+f.glossed)));
+  const bad2=await run(p,'#unp-bad2',rulesFor(FS.filter(s=>s.k==='throat')[0]));
+  ok(bad2.found.length===1&&bad2.found[0].term==='spot'&&!bad2.found[0].glossed,
+   'and the old bare spot on the skin is called bare too: '+JSON.stringify(bad2.found.map(f=>f.term+':'+f.glossed)));
+  await p.evaluate(()=>{document.getElementById('unp-bad').remove();});
+  for(const s of FS){
+   for(const [how,sels] of [['shelf',['#rdrill .pm-eye','#rdrill .pm-dm']],['seat drill',['#rdrill .ad-sub','#rdrill .ad-p']]]){
+    await p.evaluate(a=>{try{rdClose();}catch(e){}
+     if(a.how==='shelf')runSeatFlowDrill(a.k);
+     else{ANA_PICK={k:'seat',nm:a.n};anaDrill();}},{how,k:s.k,n:s.n});
+    await p.waitForTimeout(120);
+    const seen=new Set();
+    for(const sel of sels){
+     const got=await run(p,sel,rulesFor(s));
+     ok(!got.missing,how+' '+s.k+': '+sel+' is on the page');
+     got.found.forEach(f=>{seen.add(f.term);
+      ok(f.glossed,how+' '+s.k+': "'+f.term+'" in "'+f.text+'" has no meaning beside it');});}
+    const want=(how==='shelf'?['sanskrit','hz','plexus','citation','level']:['sanskrit','hz','plexus','level'])
+     .concat(/notch|sternum/i.test(s.seat)?['spot']:[]);
+    /* the Hz wears its own seat's colour, ruled 25 September, TASKS.md AX8 */
+    const hzc=await p.evaluate(a=>{var c=[].slice.call(document.querySelectorAll('#rdrill .tipu')).filter(function(e){return /\bHz\b/.test(e.textContent);})[0];
+     if(!c||!c.parentElement)return null;var t=document.createElement('span');t.style.color=seatCol(K2B[a]);document.body.appendChild(t);
+     var want=getComputedStyle(t).color;t.remove();return {got:getComputedStyle(c.parentElement).color,want:want};},s.k);
+    ok(hzc&&hzc.got===hzc.want,how+' '+s.k+': the Hz is printed in its own seat\'s colour: '+JSON.stringify(hzc));
+    ok(want.every(t=>seen.has(t)),how+' '+s.k+' prints every term the gate holds, so it has something to hold: saw '+Array.from(seen));
+    const txt=await p.evaluate(()=>document.getElementById('rdrill').innerText);
+    ok(!/vritti/i.test(txt),how+' '+s.k+': the word vritti is not on the screen');}}
+  await p.evaluate(()=>{try{rdClose();}catch(e){}});}
+
+ /* ---- THE CORE DRILL'S RANGE, said only as far as the answers hold it. At
+    e9ca1ae, 1 law answered at 10 read "swings between 0 and 18. The figure is
+    the middle of that range" with CQ 5. A range is printed with what its ends
+    mean, and "the middle" only when it is. ---- */
+ {const core=(n,v)=>p.evaluate(a=>{try{rdClose();}catch(e){}
+   var q=blankProfile('range'); q.laws={}; SINAMES.slice(0,a.n).forEach(function(l){q.laws[l]=a.v;});
+   read(q); runCoreDrill(); var d=document.getElementById('rdrill');
+   var t=d?d.innerText.replace(/\s+/g,' '):''; try{rdClose();}catch(e){} return t;},{n,v});
+  const few=await core(1,10);
+  ok(/There are not enough answers yet to give a range\. 5% of the laws are answered\./.test(few),
+   'core drill, 1 law of 21: says there are not enough answers yet, with the percent, saw "'+few.slice(0,160)+'"');
+  ok(!/swings between|middle of that range/.test(few),'and draws no swing and no middle off one answer');
+  /* NAMED CHANGE, percent phase 2 slice 4: the core drill prints CQ and its
+     range as the registry's percents (engine/pct.js), so every figure below
+     carries its sign, and the middle sentence loses "not a mark out of a
+     hundred", which contradicted a figure printed as a percent. The same
+     meanings are checked. */
+  const half=await core(12,5);
+  ok(/With 57% of the laws answered, the finished figure lands between 29% and 71%\. It is 29% if every law still open is answered at nothing, and 71% if every one is answered at ten\./.test(half),
+   'core drill, 12 laws at 5: where the finished figure can land, each end with its meaning, saw "'+half.slice(0,220)+'"');
+  ok(!/middle of that range/.test(half),'and the figure, which is the low end, is never called the middle');
+  const all=await core(21,6);
+  ok(/The reading swings between \d+% and \d+%\. The figure is the middle of that range\./.test(all),
+   'core drill, every law in at 6: the swing, and the figure is its middle');
+  const top=await core(21,10);
+  ok(/swings between \d+% and 100%\. The figure sits near the top of that range, because the scale stops at 100%\./.test(top)&&!/middle of that range/.test(top),
+   'core drill, every law at 10: the band is cut off at a hundred, so it does not say middle, saw "'+top.slice(0,200)+'"');}
+
+ /* ---- THE SEVEN WORDS, 18 November. The owner read "Pull, Overshoot,
+    Installed and Self-read shadow have no definition yet" on the status board
+    and said he had no idea what any of it meant. Two defects, both held here.
+
+    THE FOUR READINGS. Their meanings were typed into ANA_MET in
+    ui/analytics.js and nowhere else, so the Analytics tile carried a sentence
+    the table did not hold, and the session card, the axis card, the pole
+    drill, the record's ledger and the Compass printed the same words bare.
+    Every place the word is printed as a word, and not as a verb inside a
+    sentence, must carry the table's sentence, character for character.
+
+    THE THREE WORDS WITH TWO MEANINGS. Mask and Saboteur opened on one
+    sentence in the Wisdom school and another in every tooltip, and Integrity
+    labelled a figure (r.Ig, the laws lifted by the poles and pulled down by
+    overshoot) beside a sentence that makes integrity the laws kept, which is
+    CQ, one line above at another figure. Each word has one sentence across
+    every carrier and the glossary, and no figure is called integrity.
+
+    A LABEL, NOT A VERB. The patterns match a string that IS the word, the way
+    a label prints it, so "It pulls on expression" is prose and not a use. ---- */
+ {const SEVEN=[['pull','^pull$','pull'],['overshoot','^overshoot$','overshoot'],
+   ['installed','^installed$','installed'],['self-read shadow','^self-read shadow$','self-read shadow']];
+  const TWO=[['mask','^masks?$'],['saboteur','^saboteurs?$'],['integrity','^integrity$']];
+  /* every carrier on the page for one of the seven, by its label */
+  const carriersOf=()=>p.evaluate(a=>{var out=[];
+   document.querySelectorAll('[data-tip]').forEach(function(c){
+    var lbl=(c.getAttribute('data-tip-k')||c.textContent||'').replace(/\s+/g,' ').trim();
+    a.forEach(function(w){if(new RegExp(w[1],'i').test(lbl))out.push({w:w[0],lbl:lbl,say:c.getAttribute('data-tip')});});});
+   return out;},SEVEN.map(x=>[x[0],x[1]]).concat(TWO));
+  const said={}; const seenW=new Set();
+  const hold=async(where,sel)=>{
+   const got=await run(p,sel,SEVEN);
+   ok(!got.missing,where+': '+sel+' is on the page');
+   got.found.forEach(f=>{seenW.add(f.term);
+    ok(f.glossed,where+': "'+f.term+'" in "'+f.text+'" has no meaning beside it');});
+   (await carriersOf()).forEach(c=>{(said[c.w]=said[c.w]||new Set()).add(c.say);});
+   return got;};
+
+  /* known bad first: a session row printed bare and a tile carrying a typed
+     sentence the table does not hold must both read bare */
+  await p.evaluate(()=>{var d=document.createElement('div');d.id='unp-bad';
+   d.innerHTML='<div class="ana-dl"><span>Overshoot</span><b>12%</b></div>'
+    +'<div class="ana-dl"><span data-tip="Pull is a sentence typed on the tile.">Pull</span></div>'
+    +'<p class="cone-p">Your integrity is <b>62%</b>.</p>';
+   document.body.appendChild(d);});
+  const bad7=await run(p,'#unp-bad',SEVEN);
+  ok(bad7.found.length===2&&bad7.found.every(f=>!f.glossed),
+   'the gate calls a bare Overshoot row and a Pull carrying a typed sentence bare before it is trusted: '+JSON.stringify(bad7.found.map(f=>f.term+':'+f.glossed)));
+  ok(await p.evaluate(()=>/\bintegrity\s+is\s+(<b>)?\s*\d+%/i.test(document.getElementById('unp-bad').innerText)),
+   'and the integrity probe sees "Your integrity is 62%" on the known bad line');
+  await p.evaluate(()=>{document.getElementById('unp-bad').remove();});
+
+  /* the Analytics tiles, and every reading card with its name */
+  await p.evaluate(()=>{try{rdClose();}catch(e){} ANA_PICK=null;ANA_TRAIL=[];setTab(TAB.ANALYTICS);});
+  await p.waitForTimeout(500);
+  await hold('Analytics readings','#ana .ana-tiles');
+  for(const k of ['lawsq','pull','ex','jq','pole']){
+   await p.evaluate(k=>{ANA_PICK=null;ANA_TRAIL=[];anaGo('met',k,true);},k); await p.waitForTimeout(200);
+   await hold('Analytics card '+k,'#ana');}
+  /* the session card, the axis card and a mask card */
+  await p.evaluate(()=>{ANA_PICK=null;ANA_TRAIL=[];anaGo('sess','0',true);}); await p.waitForTimeout(200);
+  const sess=await hold('session card','#ana');
+  ok(['overshoot','installed'].every(t=>sess.found.some(f=>f.term===t)),'the session card prints Overshoot and Installed, so the gate has something to hold: '+JSON.stringify(sess.found.map(f=>f.term)));
+  await p.evaluate(()=>{ANA_PICK=null;ANA_TRAIL=[];anaGo('axis',CHILD[0].nm,true);}); await p.waitForTimeout(200);
+  const ax=await hold('axis card','#ana');
+  ok(ax.found.some(f=>f.term==='installed'),'the axis card prints Installed');
+  await p.evaluate(()=>{var r=compute();ANA_PICK=null;ANA_TRAIL=[];
+   if(lockSees('mask')&&r.maskRing&&r.maskRing.length)anaGo('mask',r.maskRing[0].nm,true);}); await p.waitForTimeout(200);
+  (await carriersOf()).forEach(c=>{(said[c.w]=said[c.w]||new Set()).add(c.say);});
+  await p.evaluate(()=>{ANA_PICK=null;ANA_TRAIL=[];anaGo('rung','sab',true);}); await p.waitForTimeout(200);
+  (await carriersOf()).forEach(c=>{(said[c.w]=said[c.w]||new Set()).add(c.say);});
+  /* the pole drill, the energy drill and the Compass with its record */
+  await p.evaluate(()=>{ANA_PICK=null;ANA_TRAIL=[];setTab(TAB.FIELD);});
+  await p.waitForTimeout(400);
+  await p.evaluate(()=>{try{rdClose();}catch(e){} runQDrill('pole');}); await p.waitForTimeout(200);
+  const pd=await hold('pole drill','#rdrill');
+  ok(pd.found.some(f=>f.term==='installed'),'the pole drill prints Installed');
+  await p.evaluate(()=>{try{rdClose();}catch(e){} runXYZDrill();}); await p.waitForTimeout(200);
+  await hold('energy drill','#rdrill');
+  const will=await p.evaluate(()=>document.getElementById('rdrill').innerText.replace(/\s+/g,' '));
+  ok(!/\bintegrity\s+(is\s+)?\d+%/i.test(will),'the energy drill does not call the r.Ig figure integrity: '+(will.match(/.{0,40}integrity.{0,30}/i)||[''])[0]);
+  await p.evaluate(()=>{try{rdClose();}catch(e){} coneOpen(true);}); await p.waitForTimeout(300);
+  const cn=await hold('Compass reading and record','#rdrill');
+  const cnt=await p.evaluate(()=>document.getElementById('rdrill').innerText.replace(/\s+/g,' '));
+  ok(!/\bintegrity\s+(is\s+)?\d+%/i.test(cnt),'the Compass does not call the r.Ig figure integrity: '+(cnt.match(/.{0,40}integrity is.{0,20}/i)||[''])[0]);
+  ok(cnt.indexOf(T['integrity'])>=0,'the Compass still says what integrity is, in the table\'s sentence');
+  await p.evaluate(()=>{try{rdClose();}catch(e){}});
+  ['pull','overshoot','installed','self-read shadow'].forEach(t=>ok(seenW.has(t),'the walk finds '+t+' printed somewhere, so the gate has something to hold: saw '+Array.from(seenW)));
+
+  /* ONE SENTENCE EACH, across every carrier the walk opened */
+  SEVEN.map(x=>x[0]).concat(TWO.map(x=>x[0])).forEach(w=>{
+   const s=Array.from(said[w]||[]);
+   ok(s.length===0||(s.length===1&&s[0]===T[w]),'every carrier of "'+w+'" says the one table sentence, saw '+JSON.stringify(s.map(x=>String(x).slice(0,70))));});
+  ok((said['saboteur']||new Set()).size>=1&&(said['mask']||new Set()).size>=1,'the walk found a saboteur and a mask carrier to hold');
+
+  /* AND THE WISDOM SCHOOL OPENS ON THE SAME SENTENCE. Its glossary answers a
+     search, so the word is searched and the answer for it is read. */
+  await p.evaluate(()=>{setTab(TAB.KNOW);}); await p.waitForTimeout(400);
+  for(const [w] of TWO){
+   const gd=await p.evaluate(w=>{KB_Q=w;kbRender();
+    var g=[].slice.call(document.querySelectorAll('.kb-g')).filter(function(x){
+     return (x.querySelector('.kb-gt')||{}).textContent.toLowerCase()===w;})[0];
+    return g?g.querySelector('.kb-gd').textContent:null;},w);
+   ok(gd!==null&&gd.indexOf(T[w])===0,'the Wisdom school answers "'+w+'" with the tooltip\'s own sentence first, saw "'+String(gd).slice(0,80)+'"');}
+  await p.evaluate(()=>{KB_Q='';kbRender();});}
+
+ ok(errs.length===0,'no page errors: '+errs.slice(0,2));
+ await c.close();
+}
+await b.close();
+console.log('\n===== unpack gate: '+PASS+' passed, '+FAIL+' failed =====');
+process.exit(FAIL?1:0);
+})();

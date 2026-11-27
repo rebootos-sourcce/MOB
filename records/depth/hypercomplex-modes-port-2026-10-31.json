@@ -1,0 +1,152 @@
+{
+  "about": [
+    "PORT, NOT CANON, PENDING THE OWNER'S REVIEW. The six hyper complex modes, copied verbatim and mechanically from HYPERCOMPLEX_MODES in proto/knowledge/src/gen-data.js on MOB main d46be066, the one place outside the engine where these six already carry per record definition, behaviour, trigger, lived example, impact, practice and an inferred inverse. The audit (reviews/records-template-audit-2026-10-31.md, section 3) named this a port and not a write; this is the port.",
+    "Nothing was rewritten. Each field says where it came from in provenance. The generator stamped every one research-populated working record; canon/owner review required; not diagnosis, and that status stands. What the port does not supply, and the record therefore still lacks, is read off node tools/records.js --drafts records/depth --record hcx:Grandiosity: provenance classes, the payoff and cost split, a counterexample, recognition, disconfirmers, an evidence class and four research passes."
+  ],
+  "records": {
+    "hcx:Grandiosity": {
+      "reviewState": "draft",
+      "ownerApproved": false,
+      "d1": {
+        "definition": "A mode organized around an inflated or exceptional self-position, status protection, entitlement, and treating other people as less authoritative or less important.",
+        "provenance": [
+          {
+            "source": "MOB origin/main d46be066 proto/knowledge/src/gen-data.js HYPERCOMPLEX_MODES Grandiosity, verbatim",
+            "class": "editorial-hypothesis"
+          }
+        ]
+      },
+      "d2": {
+        "opposite": "An inferred counterpart emphasizing stable self-respect without superiority: equal human worth, realistic appraisal, openness to feedback, and respect for others’ agency."
+      },
+      "d3": {
+        "move": "May appear as superiority claims, status-seeking, special-rule expectations, dismissal of feedback, or using admiration to stabilize self-worth.",
+        "trigger": "Possible triggers include perceived disrespect, criticism, loss of status, shame, or a threat to the preferred self-image. This is a working formulation, not a universal cause.",
+        "scene": "After receiving corrective feedback, a person dismisses the source as inferior and insists ordinary standards do not apply to them.",
+        "payoff": "Can impair reciprocity, learning, trust, and accountability when the pattern dominates; assess observable behavior and context rather than assigning an identity.",
+        "inversion": "Describe the observable event without ranking people; identify the threatened need; invite disconfirming evidence; acknowledge one specific contribution or boundary from another person."
+      },
+      "nm": "Grandiosity"
+    },
+    "hcx:Predatory": {
+      "reviewState": "draft",
+      "ownerApproved": false,
+      "d1": {
+        "definition": "A mode organized around instrumental pursuit of a target or outcome while discounting the other party’s safety, autonomy, or suffering.",
+        "provenance": [
+          {
+            "source": "MOB origin/main d46be066 proto/knowledge/src/gen-data.js HYPERCOMPLEX_MODES Predatory, verbatim",
+            "class": "editorial-hypothesis"
+          }
+        ]
+      },
+      "d2": {
+        "opposite": "An inferred counterpart that pursues legitimate goals transparently while respecting consent, safety, rights, and the other party’s independent interests."
+      },
+      "d3": {
+        "move": "May include cold strategic pressure, exploitation, concealment of intent, treating people as obstacles, or planning actions without regard for harm.",
+        "trigger": "May be activated by a perceived obstacle, rival, threat, or desired gain. This describes a possible pattern, not a diagnosis or a claim about any person.",
+        "scene": "A person quietly plans how to remove a rival and evaluates only whether the plan will succeed, not the foreseeable harm.",
+        "payoff": "Can create significant relational or physical risk. Prioritize concrete behavior, boundaries, and safety; do not infer this mode from a label alone.",
+        "inversion": "Stop the harmful action; state the intended outcome and who could be affected; assess consent and foreseeable harm; choose a lawful, transparent alternative and seek appropriate support if safety is at risk."
+      },
+      "nm": "Predatory"
+    },
+    "hcx:Collapse": {
+      "reviewState": "draft",
+      "ownerApproved": false,
+      "d1": {
+        "definition": "A mode of marked contraction in agency, initiative, or perceived possibility, in which withdrawal or surrender can replace active engagement.",
+        "provenance": [
+          {
+            "source": "MOB origin/main d46be066 proto/knowledge/src/gen-data.js HYPERCOMPLEX_MODES Collapse, verbatim",
+            "class": "editorial-hypothesis"
+          }
+        ]
+      },
+      "d2": {
+        "opposite": "An inferred counterpart emphasizing grounded support, small feasible actions, restored choice, and realistic hope without denying pain or constraints."
+      },
+      "d3": {
+        "move": "May appear as shutdown, giving up, passivity, inability to initiate, or treating a difficult state as proof that no useful action is possible.",
+        "trigger": "Possible triggers include overwhelm, repeated perceived failure, threat, exhaustion, or loss. The label is a framework hypothesis and must not be used to infer a medical condition.",
+        "scene": "After a setback, a person stops seeking options and concludes that no action can change the outcome.",
+        "payoff": "May narrow problem-solving and access to support. Similar outward behavior can have many causes, so assess context and needs rather than pathologizing it.",
+        "inversion": "Reduce the task to one safe, observable next step; identify available support; distinguish present constraints from global conclusions; seek professional care when distress is severe or persistent."
+      },
+      "nm": "Collapse"
+    },
+    "hcx:Rigidity": {
+      "reviewState": "draft",
+      "ownerApproved": false,
+      "d1": {
+        "definition": "A mode organized around inflexible rules, certainty, and resistance to updating a response when context or evidence changes.",
+        "provenance": [
+          {
+            "source": "MOB origin/main d46be066 proto/knowledge/src/gen-data.js HYPERCOMPLEX_MODES Rigidity, verbatim",
+            "class": "editorial-hypothesis"
+          }
+        ]
+      },
+      "d2": {
+        "opposite": "An inferred counterpart that preserves values and accountability while adapting methods to evidence, context, and legitimate needs."
+      },
+      "d3": {
+        "move": "May appear as all-or-nothing standards, repeated insistence on one correct method, intolerance of ambiguity, or prioritizing control over adaptation.",
+        "trigger": "Possible triggers include uncertainty, perceived disorder, mistakes, or threat to predictability. These are hypotheses to test, not assumed causes.",
+        "scene": "A plan no longer fits the situation, but a person insists on following it because changing course feels unacceptable.",
+        "payoff": "Can impair adaptation, collaboration, and repair; structure itself is not the problem unless it overrides evidence, context, or people’s needs.",
+        "inversion": "Name the purpose behind the rule; list what has changed; generate two safe alternatives; retain the principle while adapting the method."
+      },
+      "nm": "Rigidity"
+    },
+    "hcx:Dysregulation": {
+      "reviewState": "draft",
+      "ownerApproved": false,
+      "d1": {
+        "definition": "A mode in which emotional or behavioral activation becomes difficult to modulate in proportion to the situation, reducing the ability to pause, integrate signals, and choose a response.",
+        "provenance": [
+          {
+            "source": "MOB origin/main d46be066 proto/knowledge/src/gen-data.js HYPERCOMPLEX_MODES Dysregulation, verbatim",
+            "class": "editorial-hypothesis"
+          }
+        ]
+      },
+      "d2": {
+        "opposite": "An inferred counterpart emphasizing awareness of activation, proportionate response, recovery, and deliberate choice without suppressing legitimate emotion."
+      },
+      "d3": {
+        "move": "May include rapid escalation, abrupt shifts, impulsive action, or difficulty returning to baseline after activation; record the actual observed behavior.",
+        "trigger": "Activation can be shaped by stress, unmet needs, threat, sleep, environment, and other factors. Do not assume a single cause or diagnosis.",
+        "scene": "During conflict, activation rises quickly and the person acts before checking the facts or considering consequences.",
+        "payoff": "Can strain relationships and decision-making. This record is a descriptive framework aid, not a substitute for assessment of medical or mental-health concerns.",
+        "inversion": "Pause when safe; orient to immediate facts; reduce stimulation; use a practiced grounding or regulation skill; revisit the decision after activation decreases."
+      },
+      "nm": "Dysregulation"
+    },
+    "hcx:Dissociation": {
+      "reviewState": "draft",
+      "ownerApproved": false,
+      "d1": {
+        "definition": "A mode characterized here as disconnection or compartmentalization in experience, with reduced integration between present cues, feeling, memory, or action.",
+        "provenance": [
+          {
+            "source": "MOB origin/main d46be066 proto/knowledge/src/gen-data.js HYPERCOMPLEX_MODES Dissociation, verbatim",
+            "class": "editorial-hypothesis"
+          }
+        ]
+      },
+      "d2": {
+        "opposite": "An inferred counterpart emphasizing safe contact with present experience, continuity between feeling and action, and paced integration without forcing or denying experience."
+      },
+      "d3": {
+        "move": "Possible signs can include feeling detached, emotionally distant, unreal, or disconnected from the present; these signs are nonspecific and should not be used to diagnose dissociation.",
+        "trigger": "Dissociative experiences can have multiple causes and require careful contextual assessment. Do not presume trauma, disorder, or a specific mechanism from this framework label.",
+        "scene": "In a stressful interaction, a person reports feeling distant from the situation and has difficulty staying connected to what is happening.",
+        "payoff": "May affect presence, communication, and recall. If symptoms are recurrent, distressing, or impairing, recommend assessment by a qualified health professional.",
+        "inversion": "Use a gentle present-orientation exercise if welcome and safe; invite the person to notice current surroundings and choices; avoid forcing recall or exposure; seek qualified support for persistent symptoms."
+      },
+      "nm": "Dissociation"
+    }
+  }
+}

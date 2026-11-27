@@ -1,0 +1,48 @@
+/* THE PICKER'S OWN PARTS, namespaced ar- so the merge page's classes are never
+   touched. What a pick says, the one press, and its ring. */
+.ar-dh{display:flex;gap:14px;align-items:center}
+.ar-dic{flex:none;width:52px;height:52px;border-radius:50%;display:grid;place-items:center;background:color-mix(in srgb,var(--c) 16%,var(--bg2))}
+.ar-dic svg{width:56%;height:56%;fill:none;stroke:var(--c);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.ar-eyb{margin:0;color:var(--dim);font-size:14px}
+.ar-eyb b{color:var(--c);font-weight:600}
+.ar-dh h3{margin:0;font-size:24px;line-height:1.15;font-weight:620}
+.ar-def{margin:14px 0 0;font-size:17px;line-height:1.5;max-width:60ch}
+.ar-imp{margin-top:16px;padding:12px 14px;border-radius:12px;background:var(--bg2);border-left:3px solid var(--s)}
+.ar-lbl{margin:0;font-size:14px;color:var(--dim)}
+.ar-impv{margin:2px 0 0;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}
+.ar-impv b{font-size:17px;font-weight:620}
+.ar-impv span{font-size:14px;color:var(--dim)}
+.ar-impc{margin:4px 0 0;font-size:15px;color:#CFCAC2;max-width:60ch}
+.ar-dr{font-size:14px;color:var(--dim);border-left:2px dashed var(--line);padding-left:10px;margin:12px 0 0}
+.ar-act{margin-top:18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.ar-hint{margin:8px 0 0;font-size:14px;color:var(--dim)}
+.ar-st{min-height:22px;margin:6px 0 0;font-size:15px}
+.ar-st.warn{color:#E8B27A}
+.ar-cmp{margin:10px 0 0;color:#CFCAC2;font-size:15px;max-width:60ch}
+
+/* THE ONE PRESS. The label never changes; the button carries the state, which
+   is the house rule that a slot keeps its label. Pressed, it fills with the
+   seat's colour and its ring closes on a check. A press rings once: one
+   circle goes out from the button like a struck bell, which is what the word
+   says and the only animation it has. */
+.ar-rt{position:relative;min-height:48px;display:inline-flex;align-items:center;gap:10px;padding:0 22px 0 14px;border-radius:999px;
+ border:1.5px solid var(--c);background:transparent;color:var(--ink);font-weight:620;font-size:16px;cursor:pointer;
+ transition:background .18s,box-shadow .18s}
+.ar-rt svg{width:22px;height:22px;fill:none;stroke:var(--c);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.ar-rt .ck{opacity:0;transition:opacity .15s}
+.ar-rt:hover{background:color-mix(in srgb,var(--c) 10%,transparent)}
+.ar-rt[aria-pressed="true"]{background:color-mix(in srgb,var(--c) 28%,var(--panel,#171922));box-shadow:0 0 0 1px var(--c),0 0 22px color-mix(in srgb,var(--c) 32%,transparent)}
+.ar-rt[aria-pressed="true"] .ck{opacity:1}
+.ar-rt::after{content:"";position:absolute;inset:-2px;border-radius:inherit;border:2px solid var(--c);opacity:0;pointer-events:none}
+.ar-rt.ar-hit::after{animation:arRing .7s ease-out}
+@keyframes arRing{from{opacity:.8;transform:scale(1)}to{opacity:0;transform:scale(1.35,1.7)}}
+
+/* an archetype's mark, as a button */
+.ar-mk{position:absolute;transform:translate(-50%,-50%);width:9.5cqw;height:9.5cqw;min-width:44px;min-height:44px;border-radius:50%;
+ border:1px solid rgba(255,255,255,.14);background:#0B0C11;display:grid;place-items:center;padding:0;color:var(--ink);transition:box-shadow .2s,border-color .2s}
+.ar-mk svg{width:52%;height:52%;fill:none;stroke:var(--c);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.ar-mk.dr{border-style:dashed}
+.ar-mk:hover{border-color:var(--c)}
+.ar-mk[aria-pressed="true"]{border:2px solid var(--c);box-shadow:0 0 0 3px color-mix(in srgb,var(--c) 25%,transparent)}
+.ar-mk.pk::after{content:"";position:absolute;right:-2px;top:-2px;width:12px;height:12px;border-radius:50%;background:var(--c);border:2px solid var(--bg)}
+@media (prefers-reduced-motion:reduce){.ar-rt.ar-hit::after{animation:none}}

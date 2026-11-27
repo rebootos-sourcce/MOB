@@ -1,0 +1,161 @@
+/* ============================================================
+   THE TRACE SUMMARY, WIRED INTO THE EXISTING DRILLS. Round of 2 November,
+   continuing PR #161 (the stack section on the left rail) and PR #158
+   (traceSummary(g,node), engine/tracesummary.js), on his own words after
+   seeing the rebuilt wheel: "the full cascade wiring of the Psyche stack
+   for the field... nerve to fetter, address, to saboteur, complex, hyper-
+   complex, super-complex."
+
+   WHAT WAS ALREADY REAL, CHECKED BEFORE ANYTHING WAS ADDED. A click on a
+   wheel bead already opens a real drill: runNodeDrill(n) for an address
+   (ui/drills.js, nodeDrillHtml) and runDrill(o) for a saboteur, complex,
+   hyper-complex or super-complex (ui/drills.js, runDrill), both wired from
+   hitPress in ui/ui.js, both already real and already shipped. The address
+   drill already shows what it "Feeds" upward (the saboteurs or complexes
+   built partly from it). The chain's own four rungs (runDrill) show only
+   what they are "Made of" downward; nothing on this product today shows a
+   saboteur, complex or hyper-complex what it itself feeds into, and
+   nothing on either drill blends the two directions into one read.
+
+   THE ONE REAL GAP THIS FILE CLOSES. traceSummary(g,node) already computes
+   exactly that: real parents (what a node feeds up into) and one narrated
+   paragraph, tested, never wired to a screen. This file is the one real
+   call site. tsBlockHtml(type,id) was appended to both existing drills,
+   never replacing what they already show, then went without a caller on
+   his ruling (see the note above tsBlockHtml below), because its last
+   line printed the narrated paragraph he struck.
+
+   THE SECOND GAP, CLOSED 21 NOVEMBER. tsBlockHtml, even with that line
+   cut, is still one hop: it shows an address's real saboteurs or a
+   saboteur's real complex, never the whole climb, so a reading that
+   reaches Psychopathy (the one named super-complex, TRACE_NAMED,
+   engine/trace.js) never showed it from the address four rungs down,
+   on any screen, because nothing walked that far up. tsChainUp(g,key)
+   below is that walk: one call to traceSummary per rung, stopping at
+   the chain's own floor or a part that has not compounded further,
+   never inventing a rung. chGraph() in ui/character.js is its real
+   caller, on the field's own trace card, climbing from the address
+   already shown there through saboteur, complex, hyper-complex and
+   super-complex with tsPartRow rendering every rung it actually finds.
+
+   THE GRAPH. The same one loopRead already builds (engine/loop.js:
+   traceFromRecord(p, practiceTraceIntents(p.practice), readSeenOf(p))),
+   rebuilt here rather than exposed from loopRead, because loopRead's own
+   contract (engine/loop.js) returns processed counts and never the graph
+   itself, and changing that return shape risks every caller and test that
+   already reads it. Memoised the same way loopOf memoises (ui/loopread.js,
+   LP), against the same two things a graph is built from: the record's own
+   signature and the reading it was handed. */
+var TSG={memo:null, sig:''};
+function tsSig(p,rd){
+ var es=(p&&p.story&&p.story.entries)||[];
+ try{return JSON.stringify([p&&p.id||null, es.map(function(e){return [e&&e.t,e&&e.text,e&&e.lex];}),
+  p&&p.practice||null, p&&p.trace||null, p&&p.soul||null, rd&&rd.CQ||null]);}
+ catch(e){return String(Math.random());}}
+function tsGraphFor(p){
+ if(!p||typeof p!=='object')return null;
+ var rd=null; try{rd=readSeenOf(p);}catch(e){rd=null;}
+ var s=tsSig(p,rd);
+ if(TSG.memo&&s===TSG.sig)return TSG.memo;
+ var P=(p.practice&&typeof p.practice==='object')?p.practice:null, g=null;
+ try{g=traceFromRecord(p,P?practiceTraceIntents(P):[],rd);}catch(e){g=null;}
+ TSG.memo=g; TSG.sig=s; return g;}
+function tsCurrentGraph(){ return tsGraphFor(typeof CURP!=='undefined'?CURP:null); }
+
+/* the human word for a graph node's type, fetter split out from pattern the
+   same way traceSummaryWord already does it (engine/tracesummary.js), kept
+   as its own small copy rather than reused directly: that function's own
+   TRACE_SUMMARY_WORD table is for a sentence's subject ("a fetter"), and a
+   drill's small kind tag wants the bare word, no article. */
+function tsWord(type,id){
+ if(type==='pattern'&&/^fetter:/.test(String(id)))return 'fetter';
+ if(type==='pattern')return 'address';
+ return {saboteur:'saboteur', complex:'complex', hyper_complex:'hyper-complex',
+  super_complex:'super-complex', mask:'mask', archetype:'archetype', domain:'domain',
+  character:'character'}[type]||type;}
+
+/* one resolved parent or child, as a row: its name, its kind, and its own
+   real content quoted exactly as traceSummaryCard reads it (coherent and
+   collapsed for an address, says/lived for a saboteur, the family line for
+   a hyper-complex), or, honestly, why it carries nothing further. */
+function tsPartRow(part){
+ var card=part.card||{}, nm=esc(card.label!=null?card.label:String(part.id)),
+  kind=esc(tsWord(part.type,part.id)),
+  own=card.found?traceSummaryOwnLine(card.fields):null;
+ return '<div class="ts-row"><b>'+nm+'</b> <span class="ts-kind">'+kind+'</span>'
+  +(own?'<div class="ts-line">'+esc(own)+'</div>'
+    :(card.why?'<div class="ts-why">'+esc(card.why)+'</div>':''))+'</div>';}
+
+/* THE FULL CLIMB, pattern up through saboteur, complex, hyper-complex and
+   super-complex, 21 November, the one real gap left after tsBlockHtml:
+   that block calls traceSummary once and stops at its immediate parents,
+   so an address could never show a complex two rungs up, let alone the
+   named super-complex, Psychopathy, four rungs up. This walks the same
+   real 'supports' edges traceSummaryParts already reads, one call to
+   traceSummary per rung, stopping the instant a rung has no real parent
+   (the chain's own floor, or a part that has not compounded with another
+   of its kind yet) rather than inventing one. seen guards the one real
+   loop risk on this graph: the named super-complex sits beside the
+   generic pairing by rank (TRACE_NAMED, trace.js) and could otherwise be
+   visited twice from two different hyper-complexes. Returns one array
+   per rung actually reached; each entry is the same decorated shape
+   traceSummary().parents already hands back (key, type, id, card), so
+   tsPartRow renders every row unchanged, real content or the honest why
+   it carries none. */
+function tsChainUp(g,key){
+ if(!traceIsGraph(g)||typeof key!=='string')return [];
+ var seen={}; seen[key]=true;
+ var levels=[], frontier=[key];
+ while(frontier.length){
+  var next=[], nextKeys={};
+  frontier.forEach(function(k){
+   var res=traceSummary(g,k);
+   if(!res.ok)return;
+   (res.parents||[]).forEach(function(pt){
+    if(seen[pt.key]||nextKeys[pt.key])return;
+    nextKeys[pt.key]=true; next.push(pt);});});
+  if(!next.length)break;
+  next.forEach(function(pt){seen[pt.key]=true;});
+  levels.push(next);
+  frontier=next.map(function(pt){return pt.key;});}
+ return levels;}
+
+/* THE BLOCK ITSELF, appended to an existing drill. type/id are the real
+   graph key (traceKey): 'pattern'/address-number for an address,
+   'pattern'/'fetter:X' for a fetter, 'saboteur'/'complex'/'hyper_complex'/
+   'super_complex' with the node's own real .nm for the chain's four
+   rungs, the exact id traceFromRecord itself keys them by
+   (engine/trace.js, TRACE_CHAIN_OF.forEach, node(row.type,x.nm,...)).
+
+   Silent and honest on an unread record, the same idiom renderGates and
+   loopPaint already use: a cold record shows the sentence that explains
+   why, never a blank box and never an invented reading.
+
+   HAD NO CALLER FROM 16 NOVEMBER TO 21 NOVEMBER. Its last line printed
+   traceSummary's narrated paragraph, the engine describing its own graph
+   to the person, which he struck on 4 November wherever a selection
+   summary is built ("That's a big no. We don't do that.", DECISIONS.md,
+   the selection summary reads from the real records). It came off
+   runDrill that day, was wired back onto the fetter drill on 11 November
+   because this function was still here, and came off the fetter and
+   address drills on 16 November. That one line (the Source AI paragraph
+   below the rows) is gone now, for good, not stripped at each call site;
+   everything above it was always real rows (tsPartRow) and stays. Its
+   real caller is chGraph() in ui/character.js, 21 November, which climbs
+   past this function's own one hop with tsChainUp above and renders every
+   rung with tsPartRow directly; this function itself still has no caller,
+   kept for a drill that wants one hop and not the whole climb. traceSummary
+   itself stays live either way: insightRead (engine/insight.js) reads the
+   same records through the chain and never its summary. */
+function tsBlockHtml(type,id){
+ var g=tsCurrentGraph();
+ if(!g)return '<div class="pm-eye">Feeds up</div>'
+  +'<p class="ad-p">Nothing read yet. Write a line in the Journal and this fills in from it.</p>';
+ var res=traceSummary(g,traceKey(type,id));
+ if(!res.ok)return '<div class="pm-eye">Feeds up</div>'
+  +'<p class="ad-p">'+esc(res.why)+'</p>';
+ var up=res.parents||[], h='';
+ h+='<div class="pm-eye">Feeds up'+(up.length?' ('+up.length+')':'')+'</div>';
+ if(up.length)h+='<div class="ts-rows">'+up.map(tsPartRow).join('')+'</div>';
+ else h+='<p class="ad-p">Nothing sits above it yet on this graph: either the chain stops here by design, or this one has not compounded with another of its kind yet.</p>';
+ return h;}

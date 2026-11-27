@@ -1,0 +1,351 @@
+arc90. Ninety days from the storyboard, for the ICPs.
+commit 1364e0e, 2026-09-27T20:53:13.327Z, clock wall
+dirty: engine.js false, atuned_src false, losssim.js false, loopsim.js false (read by nothing here)
+md5: engine.js 0ffab0adbd49c22ceda12aec29e9aa9d, losssim.js bae02cc2c3fa8b1539f3a10e8d6d3b5e, storyboard.html 886b343a45252b3d884ca873434b5551
+release lift guarded against ui/release.js: {"take":true,"install":true,"meter":true,"lawlift":true}, channels Llimit Rlimit Ltruth Rtruth
+
+============================================================
+A. ONBOARDING. Does the storyboard say what the tool is for.
+============================================================
+MEASURED. The person facing copy on each of the 12 storyboard frames, read out of
+proto/firstrun/storyboard.html (md5 886b343a45252b3d884ca873434b5551), tags and drawings stripped.
+
+  F0  Boot                "Atuned Powered by Source OS"
+  F1  Hello               "Hello, Sofia. First name Sofia Last name Alarcon Your name sets three of your numbers. Held in this browser. Go straight in from now on Next"
+  F2  The settle          "Leave A word arrives ten times. Think it as it lands. Keep some attention on your body. Move the marker to show what moved."
+  F3  Yes                 "Leave yes Move the marker."
+  F5  No                  "Leave no Move the marker."
+  F6  The two marks       "Leave A thought moved your body. Now write one down. Next"
+  T1  discover            "Leave discover Write one thing from this week that is still on you. My sister called again and I felt the old tightness in my chest. The same guilt, t ..."
+  T1b discover, committed "Leave discover Write one thing from this week that is still on you. What happened. Write it the way you would say it out loud. 12 found, all under the ..."
+  T2  play                "Leave play Your words landed here. Open one. Self-Silencing , at the throat. Under the line."
+  T3  flow                "Leave flow Run one release over it. Follow each line in thought. Practice. This one writes nothing to your field. Self-Silencing, at the throat one li ..."
+  T4  embody              "Leave embody Pick when you will come back to it. When after I put the kettle on before the first run of the day when I close the laptop my own words W ..."
+  T5  The Field           "Leave The wheel is your field. Left is what you are made of. Right is what it reads."
+
+Which of the clauses each frame carries (the matched word in brackets):
+  F0  none
+  F1  none
+  F2  where[body]
+  F3  none
+  F5  none
+  F6  where[body]
+  T1  none
+  T1b none
+  T2  where[landed here]
+  T3  where[throat]  release[release]
+  T4  ret[come back]
+  T5  none
+
+Q3 in the storyboard is the purpose question. Column A is what is drawn, column B is the
+alternative, "plus what it is for, one more line", and it is not drawn on any frame.
+  discover B: "It finds your story and the place in the body where it lives."
+  play     B: "It finds what that story is wired to, and what it costs you over time."
+  flow     B: "Release takes the charge off, one address at a time."
+  embody   B: "The ritual holds the change, one day at a time."
+
+The clauses, across the whole opening:
+  where the charge sits       as drawn: F2, F6, T2, T3        with column B: F2, F6, T2, T3, discover
+  what holding it costs       as drawn: NONE                  with column B: play
+  that a release takes it off as drawn: T3                    with column B: T3, flow
+  why come back               as drawn: T4                    with column B: T4, embody
+  that this has an end        as drawn: NONE                  with column B: NONE
+
+MEASURED. What discover (T1) and play (T2) would show each ICP. The storyboard's own T1 text
+lights 6 words and reads 12 imprints through the same sniffer, which is the known good case.
+Their first entry is the first line of their bank in sim/stories.js. The storyboard draws
+"12 found, all under the line" and faint addresses. It has no frame for an entry that finds nothing.
+who	first entry: lit	imprints	over the line	bank lines reading nothing	says line lit	storyboard frame they meet
+Angela	1	4	0	3 of 6	1	T1b and T2 as drawn: found, under the line, flow is practice
+Derek	0	0	0	2 of 6	0	NONE: nothing is read, T1b has nothing to count
+James	0	0	0	2 of 5	0	NONE: nothing is read, T1b has nothing to count
+Marcus	0	0	0	3 of 5	0	NONE: nothing is read, T1b has nothing to count
+Sofia	0	0	0	3 of 5	0	NONE: nothing is read, T1b has nothing to count
+Diane	0	0	0	2 of 6	0	NONE: nothing is read, T1b has nothing to count
+Ana	0	0	0	1 of 5	0	NONE: nothing is read, T1b has nothing to count
+Gordon	0	0	0	2 of 2	0	NONE: nothing is read, T1b has nothing to count
+Rosa	0	0	0	1 of 1	0	NONE: nothing is read, T1b has nothing to count
+
+Their first entries, verbatim, so a reader can judge whether they are fair:
+  Angela "Everything happens for a reason. I have said that at three funerals and I believed it each time."
+  Derek  "My last three sessions were slower and nothing in the data explains it."
+  James  "I make the call and I sleep fine. People find that cold. It is what they hired."
+  Marcus "I can see what is wrong with anything in four seconds. It has cost me two studios."
+  Sofia  "I hold the room for everyone. I have not been held in four years and I would not know how to ask."
+  Diane  "I worked until eleven again and I have nothing to show anyone for it."
+  Ana    "I am in the middle of something and I cannot see the far side of it."
+  Gordon "There is nothing wrong with me. Four people left in a year and each had their reasons."
+  Rosa   "Nothing in particular. Things do not sit on me the way they used to."
+
+JUDGEMENT. Each ICP's stated need, against the clauses the opening carries.
+  Angela "Will it finally tell me why the same thing keeps happening ... None of them told me where it lives." (s4)
+         needs: where the charge sits.  said as drawn: 1 of 1.  said with column B: 1 of 1.
+  Derek  "Name the one thing capping my output and where it sits." (s3)
+         needs: where the charge sits, what holding it costs.  said as drawn: 1 of 2.  said with column B: 2 of 2.
+  James  "Help implies a deficit. Ask me instead what it improves." (s4)
+         needs: what holding it costs.  said as drawn: 0 of 1.  said with column B: 1 of 1.
+  Marcus "Does it show me the mechanism. I do not need help, I need the schematic." (s4)
+         needs: where the charge sits, that a release takes it off.  said as drawn: 2 of 2.  said with column B: 2 of 2.
+  Sofia  "Tell me what to run and how long it takes." (s4)
+         needs: that a release takes it off, why come back.  said as drawn: 2 of 2.  said with column B: 2 of 2.
+  Diane  "A number and a cost ... what the 41 is costing me this quarter." (s3)
+         needs: what holding it costs.  said as drawn: 0 of 1.  said with column B: 1 of 1.
+  Ana    "Will it tell me this has an end. That is the only thing I am asking." (s4)
+         needs: that this has an end.  said as drawn: 0 of 1.  said with column B: 0 of 1.
+  Gordon "There is nothing wrong with me." (s1) Refuses at the ad.
+         needs: nothing the opening can give.  said as drawn: 0 of 0.  said with column B: 0 of 0.
+  Rosa   "Help with what." (s4) Correctly not the customer.
+         needs: nothing the opening can give.  said as drawn: 0 of 0.  said with column B: 0 of 0.
+
+============================================================
+B. THE RETENTION ARC. A MODEL, proto/ritual/losssim.js, unedited.
+============================================================
+losssim.js --validate, run now: 49 checks passed, 0 failed, exit 0.
+Every figure below is people of the thousand losssim.js deals, mean of 5 seeds.
+"built" is the build at this commit as losssim.js configures it. "final" is the designed loop,
+not built. Neither is an observed person: the curve is calibrated to reviews/simulation-quarter.md 6.3.
+
+BUILT, the product today. Share of each ICP row still active.
+who	of	d1	d2	d7	d14	d30	d60	d90
+Angela	150	65.2	51.9	24.8	13.2	6.0	2.4	0.0
+Derek	170	82.2	58.0	23.4	10.8	5.2	2.6	0.0
+James	100	51.0	38.0	20.4	12.0	8.0	4.0	0.0
+Marcus	160	72.4	63.3	39.4	23.9	13.3	5.0	3.4
+Sofia	140	89.6	80.1	57.6	35.3	15.4	6.0	3.6
+Diane	180	100.0	69.2	29.8	18.8	10.7	5.3	0.0
+Ana	50	86.0	72.4	51.2	35.6	23.2	14.8	12.4
+Gordon	35	27.4	26.9	0.0	0.0	0.0	0.0	0.0
+Rosa	15	36.0	28.0	17.3	16.0	0.0	0.0	0.0
+all	1000	76.8	60.2	32.3	19.2	9.9	4.5	1.7
+
+FINAL, the designed loop, not built. Share of each ICP row still active.
+who	of	d1	d2	d7	d14	d30	d60	d90
+Angela	150	77.9	69.2	37.5	24.1	14.1	9.1	0.0
+Derek	170	88.6	73.1	31.1	17.9	10.5	6.6	0.0
+James	100	62.8	53.0	29.0	19.8	15.4	9.8	0.0
+Marcus	160	82.5	77.4	53.5	41.6	30.4	22.0	19.9
+Sofia	140	95.3	90.3	70.6	53.4	37.3	27.4	24.7
+Diane	180	100.0	82.0	36.3	25.3	17.6	11.8	0.0
+Ana	50	93.2	85.2	63.2	44.0	33.2	25.2	21.2
+Gordon	35	36.0	35.4	0.6	0.0	0.0	0.0	0.0
+Rosa	15	46.7	41.3	25.3	21.3	0.0	0.0	0.0
+all	1000	84.2	74.0	42.3	29.9	20.3	14.2	7.7
+
+WHEN EACH ICP LEAVES, built. Share of the row leaving in each window, and how many of those
+exits had a broken run in them.
+who	day 1	day 2	days 3 to 7	days 8 to 14	days 15 to 30	days 31 to 60	days 61 to 90	still in at 90	broken run exits
+Angela	34.8	13.3	27.1	11.6	7.2	3.6	2.4	0.0	24.3
+Derek	17.8	24.2	34.6	12.6	5.6	2.6	2.6	0.0	20.6
+James	49.0	13.0	17.6	8.4	4.0	4.0	4.0	0.0	17.0
+Marcus	27.6	9.1	23.9	15.5	10.6	8.2	1.6	3.4	43.4
+Sofia	10.4	9.4	22.6	22.3	19.9	9.4	2.4	3.6	58.9
+Diane	0.0	30.8	39.4	11.0	8.1	5.3	5.3	0.0	25.4
+Ana	14.0	13.6	21.2	15.6	12.4	8.4	2.4	12.4	30.4
+Gordon	72.6	0.6	26.9	0.0	0.0	0.0	0.0	0.0	6.3
+Rosa	64.0	8.0	10.7	1.3	16.0	0.0	0.0	0.0	20.0
+
+WHERE THE CURVE FLATTENS, built. First day from which under 0.5 percent of the row leaves per day
+for seven days running, and how many of the row are still in on that day.
+  Angela day 30, with 6.0 percent of the row still in
+  Derek  day 21, with 6.8 percent of the row still in
+  James  day 15, with 11.8 percent of the row still in
+  Marcus day 40, with 8.5 percent of the row still in
+  Sofia  day 40, with 10.6 percent of the row still in
+  Diane  day 30, with 10.7 percent of the row still in
+  Ana    day 23, with 26.4 percent of the row still in
+  Gordon day 8, with 0.0 percent of the row still in
+  Rosa   day 31, with 0.0 percent of the row still in
+
+THE STORYBOARD'S MECHANICS, AS losssim.js PRICES THEM. People of 1000 at day 30, mean of seeds.
+  T1b, T2, T5: the first session ends by showing what landed
+      worth 65.6 at day 7, 30.0 at day 30, 7.4 at day 90.
+  T4: the When row, a when and a where
+      worth 36.8 at day 7, 56.4 at day 30, 36.2 at day 90.
+  The build today gives everybody the When row in losssim.js's "built" config. RESEARCH-firstrun.md
+  measured that nothing in the first run leads a stranger to it. So "built" credits a plan the build
+  does not help anybody make, and the when row line above is the size of that overstatement, read
+  at the designed loop. This is the model disagreeing with the walk, and the walk is the measurement.
+
+============================================================
+C. THE ENGINE ARC. engine.js md5 0ffab0adbd49c22ceda12aec29e9aa9d, driven day by day.
+============================================================
+Two walks per ICP. TRACE is losssim.js's longest walk for that ICP on "built", seed 20260920:
+the most engaged member of the row, the person the product has to serve at its fullest, and
+"how rare" says so. EVERY DAY is the ceiling: a turn of the loop on each of ninety days.
+Each walk twice: with no intake (every law unanswered, which is today's default), and with the
+person's reference laws answered on day one. A kept day is one turn: a story from their own
+bank (sim/stories.js in order, then their `says` line, cycling), a release over the three heaviest
+addresses above the line if any, and the practice ritFor calls for. That join is JUDGEMENT.
+
+CLOCK: wall. Every engine stamp and every budget read is the real present, so no simulated week can pass.
+THE DAY AFTER THE GIFT. A blank profile carries plan.base null. With 100 patterns opened the
+allowance reads "10 of 10 left this week", 10 left. With base unset it would read "10 of 10 left this week".
+Ten more opened in the first free week, read on day 3 of it: "0 left this week, banking toward a run of 4". The same count read
+on day 7, when the second week opens: "10 of 10 left this week". Whether the walk below ever reaches a second
+week is the clock's doing, which is why the clock is printed above.
+
+Angela. Practice called for: Box Breathing, 5 min. TRACE: 90 days in the model, 58 kept, left on day 90; 0 of 150 of this row are still in at day 90.
+    TRACE, no intake      turns 58  own lines read as nothing 24 of 58  first over the line day 11  releases 11  gift spent day 58  allowance first nought day 69  refused with load 4  headline 0 to 0  expression 0 to 0  marks 9, last new on day 42
+                          after the gift: 100 reached day 58 (meter.giftAt 2026-09-27)  day after reads "10 of 10 left this week"  refilled on 0 days  releases after 1  refused after 4  day 90 reads "0 left this week, banking toward a run of 4"
+    TRACE, intake         turns 58  own lines read as nothing 24 of 58  first over the line day 11  releases 11  gift spent day 58  allowance first nought day 69  refused with load 4  headline 64 to 65  expression 64 to 64  marks 10, last new on day 42
+                          after the gift: 100 reached day 58 (meter.giftAt 2026-09-27)  day after reads "10 of 10 left this week"  refilled on 0 days  releases after 1  refused after 4  day 90 reads "0 left this week, banking toward a run of 4"
+    EVERY DAY, no intake  turns 90  own lines read as nothing 39 of 90  first over the line day 7  releases 11  gift spent day 41  allowance first nought day 48  refused with load 36  headline 0 to 0  expression 0 to 0  marks 11, last new on day 90
+                          after the gift: 100 reached day 41 (meter.giftAt 2026-09-27)  day after reads "10 of 10 left this week"  refilled on 0 days  releases after 1  refused after 36  day 90 reads "0 left this week, banking toward a run of 4"
+    EVERY DAY, intake     turns 90  own lines read as nothing 39 of 90  first over the line day 7  releases 11  gift spent day 41  allowance first nought day 48  refused with load 36  headline 64 to 65  expression 64 to 64  marks 12, last new on day 90
+                          after the gift: 100 reached day 41 (meter.giftAt 2026-09-27)  day after reads "10 of 10 left this week"  refilled on 0 days  releases after 1  refused after 36  day 90 reads "0 left this week, banking toward a run of 4"
+Derek. Practice called for: The Somatic Truth Check, 2 min. TRACE: 90 days in the model, 69 kept, left on day 90; 0 of 170 of this row are still in at day 90.
+    TRACE, no intake      turns 69  own lines read as nothing 29 of 69  first over the line day 11  releases 11  gift spent day 31  allowance first nought day 32  refused with load 39  headline 0 to 0  expression 0 to 0  marks 8, last new on day 38
+                          after the gift: 100 reached day 31 (meter.giftAt 2026-09-27)  day after reads "0 left this week, banking toward a run of 4"  refilled on 0 days  releases after 1  refused after 39  day 90 reads "0 left this week, banking toward a run of 4"
+    TRACE, intake         turns 69  own lines read as nothing 29 of 69  first over the line day 11  releases 10  gift spent day 29  allowance first nought day 30  refused with load 44  headline 48 to 49  expression 48 to 40  marks 9, last new on day 38
+                          after the gift: 100 reached day 29 (meter.giftAt 2026-09-27)  day after reads "0 left this week, banking toward a run of 4"  refilled on 0 days  releases after 1  refused after 44  day 90 reads "0 left this week, banking toward a run of 4"
+    EVERY DAY, no intake  turns 90  own lines read as nothing 38 of 90  first over the line day 10  releases 11  gift spent day 26  allowance first nought day 27  refused with load 60  headline 0 to 0  expression 0 to 0  marks 10, last new on day 90
+                          after the gift: 100 reached day 26 (meter.giftAt 2026-09-27)  day after reads "0 left this week, banking toward a run of 4"  refilled on 0 days  releases after 1  refused after 60  day 90 reads "0 left this week, banking toward a run of 4"
+    EVERY DAY, intake     turns 90  own lines read as nothing 38 of 90  first over the line day 10  releases 10  gift spent day 24  allowance first nought day 25  refused with load 65  headline 48 to 49  expression 48 to 40  marks 11, last new on day 90
+                          after the gift: 100 reached day 24 (meter.giftAt 2026-09-27)  day after reads "0 left this week, banking toward a run of 4"  refilled on 0 days  releases after 1  refused after 65  day 90 reads "0 left this week, banking toward a run of 4"
+James. Practice called for: The Somatic Truth Check, 2 min. TRACE: 90 days in the model, 75 kept, left on day 90; 0 of 100 of this row are still in at day 90.
+    TRACE, no intake      turns 75  own lines read as nothing 38 of 75  first over the line day 10  releases 12  gift spent day 27  allowance first nought day 32  refused with load 48  headline 0 to 0  expression 0 to 0  marks 8, last new on day 36
+                          after the gift: 100 reached day 27 (meter.giftAt 2026-09-27)  day after reads "2 left this week, banking toward a run of 4"  refilled on 0 days  releases after 2  refused after 48  day 90 reads "0 left this week, banking toward a run of 4"
+    TRACE, intake         turns 75  own lines read as nothing 38 of 75  first over the line day 10  releases 12  gift spent day 26  allowance first nought day 27  refused with load 52  headline 42 to 43  expression 42 to 39  marks 10, last new on day 36
+                          after the gift: 100 reached day 26 (meter.giftAt 2026-09-27)  day after reads "0 left this week, banking toward a run of 4"  refilled on 0 days  releases after 1  refused after 52  day 90 reads "0 left this week, banking toward a run of 4"
+    EVERY DAY, no intake  turns 90  own lines read as nothing 45 of 90  first over the line day 9  releases 12  gift spent day 23  allowance first nought day 27  refused with load 63  headline 0 to 0  expression 0 to 0  marks 10, last new on day 90
+                          after the gift: 100 reached day 23 (meter.giftAt 2026-09-27)  day after reads "2 left this week, banking toward a run of 4"  refilled on 0 days  releases after 2  refused after 63  day 90 reads "0 left this week, banking toward a run of 4"
+    EVERY DAY, intake     turns 90  own lines read as nothing 45 of 90  first over the line day 9  releases 12  gift spent day 22  allowance first nought day 23  refused with load 67  headline 42 to 43  expression 42 to 39  marks 12, last new on day 90
+                          after the gift: 100 reached day 22 (meter.giftAt 2026-09-27)  day after reads "0 left this week, banking toward a run of 4"  refilled on 0 days  releases after 1  refused after 67  day 90 reads "0 left this week, banking toward a run of 4"
+Marcus. Practice called for: Active Listening, 10 min. TRACE: 90 days in the model, 65 kept, still in at 90; 3 of 160 of this row are still in at day 90.
+    TRACE, no intake      turns 65  own lines read as nothing 43 of 65  first over the line day 22  releases 9  gift spent no  allowance first nought never  refused with load 0  headline 0 to 0  expression 0 to 0  marks 9, last new on day 53
+    TRACE, intake         turns 65  own lines read as nothing 43 of 65  first over the line day 22  releases 8  gift spent no  allowance first nought never  refused with load 0  headline 62 to 62  expression 62 to 62  marks 10, last new on day 53
+    EVERY DAY, no intake  turns 90  own lines read as nothing 60 of 90  first over the line day 15  releases 9  gift spent no  allowance first nought never  refused with load 0  headline 0 to 0  expression 0 to 0  marks 11, last new on day 90
+    EVERY DAY, intake     turns 90  own lines read as nothing 60 of 90  first over the line day 15  releases 8  gift spent no  allowance first nought never  refused with load 0  headline 62 to 62  expression 62 to 62  marks 12, last new on day 90
+Sofia. Practice called for: Active Listening, 10 min. TRACE: 90 days in the model, 63 kept, still in at 90; 4 of 140 of this row are still in at day 90.
+    TRACE, no intake      turns 63  own lines read as nothing 43 of 63  first over the line day 11  releases 11  gift spent day 48  allowance first nought never  refused with load 0  headline 0 to 0  expression 0 to 0  marks 9, last new on day 48
+                          after the gift: 100 reached day 48 (meter.giftAt 2026-09-27)  day after reads "10 of 10 left this week"  refilled on 0 days  releases after 0  refused after 0  day 90 reads "10 of 10 left this week"
+    TRACE, intake         turns 63  own lines read as nothing 43 of 63  first over the line day 11  releases 10  gift spent day 39  allowance first nought day 40  refused with load 30  headline 73 to 73  expression 73 to 71  marks 10, last new on day 39
+                          after the gift: 100 reached day 39 (meter.giftAt 2026-09-27)  day after reads "0 left this week, banking toward a run of 4"  refilled on 0 days  releases after 1  refused after 30  day 90 reads "0 left this week, banking toward a run of 4"
+    EVERY DAY, no intake  turns 90  own lines read as nothing 60 of 90  first over the line day 10  releases 11  gift spent day 35  allowance first nought never  refused with load 0  headline 0 to 0  expression 0 to 0  marks 11, last new on day 90
+                          after the gift: 100 reached day 35 (meter.giftAt 2026-09-27)  day after reads "10 of 10 left this week"  refilled on 0 days  releases after 0  refused after 0  day 90 reads "10 of 10 left this week"
+    EVERY DAY, intake     turns 90  own lines read as nothing 60 of 90  first over the line day 10  releases 10  gift spent day 29  allowance first nought day 30  refused with load 57  headline 73 to 73  expression 73 to 71  marks 12, last new on day 90
+                          after the gift: 100 reached day 29 (meter.giftAt 2026-09-27)  day after reads "0 left this week, banking toward a run of 4"  refilled on 0 days  releases after 1  refused after 57  day 90 reads "0 left this week, banking toward a run of 4"
+Diane. Practice called for: The Somatic Truth Check, 2 min. TRACE: 90 days in the model, 71 kept, left on day 90; 0 of 180 of this row are still in at day 90.
+    TRACE, no intake      turns 71  own lines read as nothing 31 of 71  first over the line day 12  releases 11  gift spent day 28  allowance first nought day 29  refused with load 45  headline 0 to 0  expression 0 to 0  marks 8, last new on day 34
+                          after the gift: 100 reached day 28 (meter.giftAt 2026-09-27)  day after reads "0 left this week, banking toward a run of 4"  refilled on 0 days  releases after 1  refused after 45  day 90 reads "0 left this week, banking toward a run of 4"
+    TRACE, intake         turns 71  own lines read as nothing 31 of 71  first over the line day 7  releases 10  gift spent day 23  allowance first nought day 25  refused with load 48  headline 59 to 59  expression 59 to 52  marks 10, last new on day 34
+                          after the gift: 100 reached day 23 (meter.giftAt 2026-09-27)  day after reads "10 of 10 left this week"  refilled on 0 days  releases after 1  refused after 48  day 90 reads "0 left this week, banking toward a run of 4"
+    EVERY DAY, no intake  turns 90  own lines read as nothing 38 of 90  first over the line day 11  releases 11  gift spent day 25  allowance first nought day 26  refused with load 64  headline 0 to 0  expression 0 to 0  marks 10, last new on day 90
+                          after the gift: 100 reached day 25 (meter.giftAt 2026-09-27)  day after reads "0 left this week, banking toward a run of 4"  refilled on 0 days  releases after 1  refused after 64  day 90 reads "0 left this week, banking toward a run of 4"
+    EVERY DAY, intake     turns 90  own lines read as nothing 38 of 90  first over the line day 6  releases 10  gift spent day 21  allowance first nought day 22  refused with load 67  headline 59 to 59  expression 59 to 52  marks 12, last new on day 90
+                          after the gift: 100 reached day 21 (meter.giftAt 2026-09-27)  day after reads "0 left this week, banking toward a run of 4"  refilled on 0 days  releases after 1  refused after 67  day 90 reads "0 left this week, banking toward a run of 4"
+Ana. Practice called for: The Somatic Truth Check, 2 min. TRACE: 90 days in the model, 74 kept, still in at 90; 3 of 50 of this row are still in at day 90.
+    TRACE, no intake      turns 74  own lines read as nothing 25 of 74  first over the line day 5  releases 10  gift spent day 24  allowance first nought day 26  refused with load 54  headline 0 to 0  expression 0 to 0  marks 9, last new on day 36
+                          after the gift: 100 reached day 24 (meter.giftAt 2026-09-27)  day after reads "10 of 10 left this week"  refilled on 0 days  releases after 1  refused after 54  day 90 reads "0 left this week, banking toward a run of 4"
+    TRACE, intake         turns 74  own lines read as nothing 25 of 74  first over the line day 5  releases 10  gift spent day 22  allowance first nought day 26  refused with load 54  headline 41 to 42  expression 41 to 38  marks 10, last new on day 36
+                          after the gift: 100 reached day 22 (meter.giftAt 2026-09-27)  day after reads "10 of 10 left this week"  refilled on 0 days  releases after 1  refused after 54  day 90 reads "0 left this week, banking toward a run of 4"
+    EVERY DAY, no intake  turns 90  own lines read as nothing 30 of 90  first over the line day 5  releases 10  gift spent day 18  allowance first nought day 20  refused with load 70  headline 0 to 0  expression 0 to 0  marks 11, last new on day 90
+                          after the gift: 100 reached day 18 (meter.giftAt 2026-09-27)  day after reads "10 of 10 left this week"  refilled on 0 days  releases after 1  refused after 70  day 90 reads "0 left this week, banking toward a run of 4"
+    EVERY DAY, intake     turns 90  own lines read as nothing 30 of 90  first over the line day 5  releases 10  gift spent day 17  allowance first nought day 20  refused with load 70  headline 41 to 42  expression 41 to 38  marks 12, last new on day 90
+                          after the gift: 100 reached day 17 (meter.giftAt 2026-09-27)  day after reads "10 of 10 left this week"  refilled on 0 days  releases after 1  refused after 70  day 90 reads "0 left this week, banking toward a run of 4"
+Gordon. Practice called for: Active Listening, 10 min. TRACE: 7 days in the model, 6 kept, left on day 7; 0 of 35 of this row are still in at day 90.
+    TRACE, no intake      turns  6  own lines read as nothing 6 of 6  first over the line never  releases 0  gift spent no  allowance first nought never  refused with load 0  headline 0 to 0  expression 0 to 0  marks 3, last new on day 7
+    TRACE, intake         turns  6  own lines read as nothing 6 of 6  first over the line never  releases 0  gift spent no  allowance first nought never  refused with load 0  headline 18 to 18  expression 18 to 18  marks 4, last new on day 7
+    EVERY DAY, no intake  turns 90  own lines read as nothing 90 of 90  first over the line never  releases 0  gift spent no  allowance first nought never  refused with load 0  headline 0 to 0  expression 0 to 0  marks 8, last new on day 90
+    EVERY DAY, intake     turns 90  own lines read as nothing 90 of 90  first over the line never  releases 0  gift spent no  allowance first nought never  refused with load 0  headline 18 to 18  expression 18 to 18  marks 9, last new on day 90
+Rosa. Practice called for: Box Breathing, 5 min. TRACE: 24 days in the model, 17 kept, left on day 24; 0 of 15 of this row are still in at day 90.
+    TRACE, no intake      turns 17  own lines read as nothing 17 of 17  first over the line never  releases 0  gift spent no  allowance first nought never  refused with load 0  headline 0 to 0  expression 0 to 0  marks 6, last new on day 14
+    TRACE, intake         turns 17  own lines read as nothing 17 of 17  first over the line never  releases 0  gift spent no  allowance first nought never  refused with load 0  headline 97 to 97  expression 97 to 97  marks 7, last new on day 14
+    EVERY DAY, no intake  turns 90  own lines read as nothing 90 of 90  first over the line never  releases 0  gift spent no  allowance first nought never  refused with load 0  headline 0 to 0  expression 0 to 0  marks 8, last new on day 90
+    EVERY DAY, intake     turns 90  own lines read as nothing 90 of 90  first over the line never  releases 0  gift spent no  allowance first nought never  refused with load 0  headline 97 to 97  expression 97 to 97  marks 9, last new on day 90
+
+THE EVERY DAY WALK WITH THE INTAKE, at the days the model reports. Turns, headline CQ to two
+places, expression, load (DQ), addresses above the line, gift left, marks, best run.
+  Angela: d1 CQ 64.43 ex 64.4 dq 2.1 over 0 left 100 marks 3 | d2 CQ 64.43 ex 64.2 dq 3.6 over 0 left 100 marks 3 | d7 CQ 64.46 ex 64.1 dq 4.8 over 0 left 88 marks 5 | d14 CQ 64.54 ex 64.3 dq 4.0 over 0 left 52 marks 8 | d30 CQ 64.60 ex 64.3 dq 3.9 over 0 left 24 marks 11 | d60 CQ 64.67 ex 63.9 dq 4.2 over 3 left 0 marks 11 | d90 CQ 64.67 ex 63.9 dq 4.2 over 3 left 0 marks 12
+  Derek: d1 CQ 48.48 ex 48.5 dq 0.0 over 0 left 100 marks 3 | d2 CQ 48.48 ex 48.5 dq 0.0 over 0 left 100 marks 3 | d7 CQ 48.48 ex 48.3 dq 9.2 over 0 left 100 marks 4 | d14 CQ 48.63 ex 47.8 dq 12.8 over 0 left 68 marks 7 | d30 CQ 49.01 ex 45.6 dq 15.7 over 12 left 0 marks 10 | d60 CQ 49.01 ex 40.1 dq 22.4 over 26 left 0 marks 10 | d90 CQ 49.01 ex 40.1 dq 22.4 over 26 left 0 marks 11
+  James: d1 CQ 42.29 ex 42.3 dq 0.0 over 0 left 100 marks 3 | d2 CQ 42.29 ex 42.3 dq 0.0 over 0 left 100 marks 3 | d7 CQ 42.29 ex 42.1 dq 8.4 over 0 left 100 marks 4 | d14 CQ 42.48 ex 42.2 dq 9.4 over 0 left 60 marks 7 | d30 CQ 42.82 ex 39.2 dq 15.5 over 13 left 0 marks 11 | d60 CQ 42.82 ex 39.2 dq 15.5 over 13 left 0 marks 11 | d90 CQ 42.82 ex 39.2 dq 15.5 over 13 left 0 marks 12
+  Marcus: d1 CQ 62.10 ex 62.1 dq 0.0 over 0 left 100 marks 3 | d2 CQ 62.10 ex 62.1 dq 0.0 over 0 left 100 marks 3 | d7 CQ 62.10 ex 62.1 dq 2.6 over 0 left 100 marks 5 | d14 CQ 62.10 ex 61.7 dq 5.3 over 0 left 100 marks 7 | d30 CQ 62.27 ex 62.0 dq 3.5 over 0 left 44 marks 10 | d60 CQ 62.35 ex 61.9 dq 3.9 over 0 left 20 marks 11 | d90 CQ 62.35 ex 61.9 dq 3.9 over 0 left 20 marks 12
+  Sofia: d1 CQ 72.86 ex 72.9 dq 0.0 over 0 left 100 marks 3 | d2 CQ 72.86 ex 72.9 dq 0.0 over 0 left 100 marks 3 | d7 CQ 72.86 ex 72.7 dq 5.7 over 0 left 100 marks 5 | d14 CQ 72.97 ex 72.2 dq 7.3 over 0 left 76 marks 8 | d30 CQ 73.39 ex 73.1 dq 3.3 over 0 left 0 marks 11 | d60 CQ 73.39 ex 71.3 dq 6.1 over 6 left 0 marks 11 | d90 CQ 73.39 ex 71.3 dq 6.5 over 6 left 0 marks 12
+  Diane: d1 CQ 58.95 ex 59.0 dq 0.0 over 0 left 100 marks 3 | d2 CQ 58.95 ex 59.0 dq 0.0 over 0 left 100 marks 3 | d7 CQ 59.02 ex 58.8 dq 8.0 over 0 left 88 marks 5 | d14 CQ 59.19 ex 58.2 dq 12.3 over 0 left 52 marks 7 | d30 CQ 59.48 ex 53.7 dq 18.4 over 14 left 0 marks 11 | d60 CQ 59.48 ex 52.2 dq 20.4 over 19 left 0 marks 11 | d90 CQ 59.48 ex 52.2 dq 20.4 over 19 left 0 marks 12
+  Ana: d1 CQ 41.14 ex 41.1 dq 0.0 over 0 left 100 marks 3 | d2 CQ 41.14 ex 41.1 dq 2.1 over 0 left 100 marks 3 | d7 CQ 41.20 ex 41.0 dq 6.7 over 0 left 88 marks 5 | d14 CQ 41.49 ex 40.7 dq 7.9 over 3 left 28 marks 9 | d30 CQ 41.68 ex 38.0 dq 13.3 over 13 left 0 marks 11 | d60 CQ 41.68 ex 37.9 dq 14.3 over 13 left 0 marks 11 | d90 CQ 41.68 ex 37.6 dq 15.4 over 13 left 0 marks 12
+  Gordon: d1 CQ 17.52 ex 17.5 dq 0.0 over 0 left 100 marks 3 | d2 CQ 17.52 ex 17.5 dq 0.0 over 0 left 100 marks 3 | d7 CQ 17.52 ex 17.5 dq 0.0 over 0 left 100 marks 5 | d14 CQ 17.52 ex 17.5 dq 0.0 over 0 left 100 marks 7 | d30 CQ 17.52 ex 17.5 dq 0.0 over 0 left 100 marks 8 | d60 CQ 17.52 ex 17.5 dq 0.0 over 0 left 100 marks 8 | d90 CQ 17.52 ex 17.5 dq 0.0 over 0 left 100 marks 9
+  Rosa: d1 CQ 97.00 ex 97.0 dq 0.0 over 0 left 100 marks 3 | d2 CQ 97.00 ex 97.0 dq 0.0 over 0 left 100 marks 3 | d7 CQ 97.00 ex 97.0 dq 0.0 over 0 left 100 marks 4 | d14 CQ 97.00 ex 97.0 dq 0.0 over 0 left 100 marks 7 | d30 CQ 97.00 ex 97.0 dq 0.0 over 0 left 100 marks 8 | d60 CQ 97.00 ex 97.0 dq 0.0 over 0 left 100 marks 8 | d90 CQ 97.00 ex 97.0 dq 0.0 over 0 left 100 marks 9
+
+THE NEW MARKS, BY DAY, on the every day walk with the intake. The reward schedule as the
+shipped ladder deals it to somebody who never misses.
+  Angela d1 First run, First story, Laws measured; d7 Seven days, Ten addresses; d8 Ten snapshots; d10 Ten stories; d12 Sixty minutes; d15 Fifty addresses, First clearing; d30 Thirty days; d90 Ninety days
+  Derek  d1 First run, First story, Laws measured; d7 Seven days; d10 Ten stories, Ten snapshots; d11 Ten addresses; d18 Fifty addresses; d30 Thirty days, Sixty minutes; d90 Ninety days
+  James  d1 First run, First story, Laws measured; d7 Seven days; d9 Ten snapshots; d10 Ten addresses, Ten stories; d15 Fifty addresses; d23 First clearing; d30 Thirty days, Sixty minutes; d90 Ninety days
+  Marcus d1 First run, First story, Laws measured; d6 Sixty minutes; d7 Seven days; d10 Ten stories, Ten snapshots; d15 Ten addresses; d27 Fifty addresses; d30 Thirty days; d39 First clearing; d90 Ninety days
+  Sofia  d1 First run, First story, Laws measured; d6 Sixty minutes; d7 Seven days; d10 Ten addresses, Ten stories, Ten snapshots; d18 Fifty addresses; d29 First clearing; d30 Thirty days; d90 Ninety days
+  Diane  d1 First run, First story, Laws measured; d6 Ten addresses; d7 Seven days; d9 Ten snapshots; d10 Ten stories; d17 Fifty addresses; d21 First clearing; d30 Thirty days, Sixty minutes; d90 Ninety days
+  Ana    d1 First run, First story, Laws measured; d5 Ten addresses; d7 Seven days; d8 Ten snapshots; d10 Ten stories; d11 Fifty addresses; d14 First clearing; d30 Thirty days, Sixty minutes; d90 Ninety days
+  Gordon d1 First run, First story, Laws measured; d6 Sixty minutes; d7 Seven days; d10 Ten stories, Ten snapshots; d30 Thirty days; d90 Ninety days
+  Rosa   d1 First run, First story, Laws measured; d7 Seven days; d10 Ten stories, Ten snapshots; d12 Sixty minutes; d30 Thirty days; d90 Ninety days
+
+============================================================
+D. THE FIRST RUN, re-measured in real Chromium.
+============================================================
+from proto/ninety/walk-11830df.jsonl
+  boot to booted             5.5 s, 5.4 s
+  controls in view, landing  1600: 102 (26 Sept: 102)   390: 22 (26 Sept: 22)
+  first door on a phone      3216 px down (26 Sept: 3216)
+  after the first story      "Held 0 Seat Charge Saboteur Story Expression ⤢ You have committed 1 story and nothing reaches the line yet. An address s"
+  after the second story     "Held 3 Child 1 Seat Charge Saboteur Story Expression ⤢ Child Patterns across 1 seat Shame "
+  nine sentences, phone      opens at 2056 px on a 844 px screen (26 Sept: 2056)
+  page errors                0
+
+============================================================
+THE FRICTION LEDGER, day 0 to day 90.
+============================================================
+
+ 1. DAY 0, THE OPENING  [copy measured, need judged, section A]
+    The storyboard never says what holding it costs, or that this has an end. It shows an act on every frame and a purpose on none.
+    who: Derek, James, Diane, Ana
+
+ 2. DAY 0, DISCOVER  [measured, section A]
+    Their first entry is read as nothing, and the storyboard has no frame for that.
+    who: Derek, James, Marcus, Sofia, Diane, Ana, Gordon, Rosa
+
+ 3. DAY 0, FLOW  [measured, section A]
+    No first entry crosses the line. For the rest the release refuses, so flow can only be the practice run the storyboard proposes (Q10).
+    who: Angela, Derek, James, Marcus, Sofia, Diane, Ana, Gordon, Rosa
+
+ 4. EVERY SESSION  [measured, engine, section A]
+    Share of their own bank lines the sniffer reads as nothing, which recurs every time one is written.
+    who: Angela 3 of 6, Derek 2 of 6, James 2 of 5, Marcus 3 of 5, Sofia 3 of 5, Diane 2 of 6, Ana 1 of 5, Gordon 2 of 2, Rosa 1 of 1
+
+ 5. DAY 0, LANDING  [measured, Chromium, section D]
+    Controls in view on the landing: 102 at 1600, 22 at 390, first door 3216 px down on a phone.
+    who: everyone who is not led
+
+ 6. DAY 0, FIRST COMMIT  [measured, Chromium, section D]
+    "You have committed 1 story and nothing reaches the line yet. An addres" after a first story.
+    who: everyone who writes one
+
+ 7. DAYS 17 TO 41, EVERY DAY WALK  [measured, engine, section C]
+    The gift of 100 patterns is spent and the allowance never rises again inside the walk. The day after, it reads "10 of 10 left this week" or "0 left this week, banking toward a run of 4", and the release refuses on every later day with load on the wheel. [wall clock]
+    who: Angela gift d41, first nought d48, rose 0 times, ran 1, refused 36 after, day 90 "0 left this week, banking toward a run of 4"; Derek gift d24, first nought d25, rose 0 times, ran 1, refused 65 after, day 90 "0 left this week, banking toward a run of 4"; James gift d22, first nought d23, rose 0 times, ran 1, refused 67 after, day 90 "0 left this week, banking toward a run of 4"; Sofia gift d29, first nought d30, rose 0 times, ran 1, refused 57 after, day 90 "0 left this week, banking toward a run of 4"; Diane gift d21, first nought d22, rose 0 times, ran 1, refused 67 after, day 90 "0 left this week, banking toward a run of 4"; Ana gift d17, first nought d20, rose 0 times, ran 1, refused 70 after, day 90 "0 left this week, banking toward a run of 4"
+
+ 8. DAYS 1 TO 90, NO INTAKE  [measured, engine, section C]
+    The headline CQ reads the same whole number on day 90 as on day 1 whatever is done, because it is the laws alone and nothing was answered.
+    who: Angela, Derek, James, Marcus, Sofia, Diane, Ana, Gordon, Rosa
+
+ 9. DAYS 1 TO 90, WITH INTAKE  [measured, engine, section C]
+    With the laws answered, ninety days of daily release moves CQ by hundredths or a few tenths.
+    who: Angela 64.43 to 64.67, Derek 48.48 to 49.01, James 42.29 to 42.82, Marcus 62.10 to 62.35, Sofia 72.86 to 73.39, Diane 58.95 to 59.48, Ana 41.14 to 41.68, Gordon 17.52 to 17.52, Rosa 97.00 to 97.00
+
+10. WEEKS 2 TO 13, WITH INTAKE  [measured, engine, section C]
+    Expression ends lower than it started: telling the truth adds load faster than the release can take it off.
+    who: Angela 64.4 to 63.9, Derek 48.5 to 40.1, James 42.3 to 39.2, Sofia 72.9 to 71.3, Diane 59.0 to 52.2, Ana 41.1 to 37.6
+
+11. DAYS 30 TO 90  [measured, engine, section C]
+    The ladder goes quiet. For somebody who never misses, the longest stretch with no new mark runs from Thirty days to Ninety days.
+    who: Angela d30 to d90 (most engaged in the model: last new mark d42 of 90 days); Derek d30 to d90 (most engaged in the model: last new mark d38 of 90 days); James d30 to d90 (most engaged in the model: last new mark d36 of 90 days); Marcus d39 to d90 (most engaged in the model: last new mark d53 of 90 days); Sofia d30 to d90 (most engaged in the model: last new mark d39 of 90 days); Diane d30 to d90 (most engaged in the model: last new mark d34 of 90 days); Ana d30 to d90 (most engaged in the model: last new mark d36 of 90 days)
+
+12. WEEKS 1 AND 2  [measured, engine, section C]
+    The first address over the line takes more than two turns of their own writing.
+    who: Angela d7, Derek d10, James d9, Marcus d15, Sofia d10, Diane d11, Ana d5, Gordon never, Rosa never
+
+13. DAYS 1 AND 2  [model, losssim.js, section B]
+    The largest single loss in the model, before any friction after the first session can act.
+    who: Angela 48%, Derek 42%, James 62%, Marcus 37%, Sofia 20%, Diane 31%, Ana 28%, Gordon 73%, Rosa 72%
+
+WHAT THIS CANNOT SAY. Whether any of these people comes back on day 14 is retention psychology
+this project has not measured. Section B is a model of it, calibrated to an earlier simulation.
+Sections A, C and D are measurements of what the product would show them if they did.

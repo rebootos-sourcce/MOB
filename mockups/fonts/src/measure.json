@@ -1,0 +1,386 @@
+{
+ "inter": {
+  "hero44": 914.7,
+  "hero28": 589.41,
+  "create16": 117.13,
+  "mirror20": 384.92,
+  "seat13": 76.14,
+  "tabDefaultSpread": 14.75,
+  "tabTnumSpread": 0,
+  "cq": 63.73,
+  "uml14": {
+   "clusters": 2,
+   "dotH": 2,
+   "gap": 1,
+   "uTop": 52,
+   "umlTop": 49
+  },
+  "uml56": {
+   "clusters": 2,
+   "dotH": 7,
+   "gap": 4,
+   "uTop": 29,
+   "umlTop": 18
+  }
+ },
+ "geist": {
+  "hero44": 867.06,
+  "hero28": 559.48,
+  "create16": 114.52,
+  "mirror20": 369.33,
+  "seat13": 75.78,
+  "tabDefaultSpread": 19.48,
+  "tabTnumSpread": 0,
+  "cq": 60.02,
+  "uml14": {
+   "clusters": 1,
+   "dotH": 10,
+   "gap": 0,
+   "uTop": 52,
+   "umlTop": 50
+  },
+  "uml56": {
+   "clusters": 2,
+   "dotH": 6,
+   "gap": 4,
+   "uTop": 30,
+   "umlTop": 20
+  }
+ },
+ "manrope": {
+  "hero44": 872.36,
+  "hero28": 564.45,
+  "create16": 116.56,
+  "mirror20": 373.34,
+  "seat13": 74.19,
+  "tabDefaultSpread": 14.1,
+  "tabTnumSpread": 0,
+  "cq": 60.56,
+  "uml14": {
+   "clusters": 2,
+   "dotH": 1,
+   "gap": 1,
+   "uTop": 52,
+   "umlTop": 50
+  },
+  "uml56": {
+   "clusters": 2,
+   "dotH": 5,
+   "gap": 5,
+   "uTop": 30,
+   "umlTop": 20
+  }
+ },
+ "onest": {
+  "hero44": 909.44,
+  "hero28": 579.69,
+  "create16": 116.55,
+  "mirror20": 382.27,
+  "seat13": 74.34,
+  "tabDefaultSpread": 18.63,
+  "tabTnumSpread": 0,
+  "cq": 64.91,
+  "uml14": {
+   "clusters": 2,
+   "dotH": 2,
+   "gap": 1,
+   "uTop": 52,
+   "umlTop": 49
+  },
+  "uml56": {
+   "clusters": 2,
+   "dotH": 7,
+   "gap": 4,
+   "uTop": 30,
+   "umlTop": 19
+  }
+ },
+ "sora": {
+  "hero44": 957.3,
+  "hero28": 614.02,
+  "create16": 125.58,
+  "mirror20": 409.83,
+  "seat13": 80.81,
+  "tabDefaultSpread": 20.94,
+  "tabTnumSpread": 0,
+  "cq": 66.86,
+  "uml14": {
+   "clusters": 2,
+   "dotH": 2,
+   "gap": 1,
+   "uTop": 52,
+   "umlTop": 49
+  },
+  "uml56": {
+   "clusters": 2,
+   "dotH": 7,
+   "gap": 6,
+   "uTop": 30,
+   "umlTop": 17
+  }
+ },
+ "plus-jakarta-sans": {
+  "hero44": 885.91,
+  "hero28": 564.55,
+  "create16": 119.36,
+  "mirror20": 374.11,
+  "seat13": 74.72,
+  "tabDefaultSpread": 21.89,
+  "tabTnumSpread": 0,
+  "cq": 63.16,
+  "uml14": {
+   "clusters": 2,
+   "dotH": 2,
+   "gap": 1,
+   "uTop": 52,
+   "umlTop": 49
+  },
+  "uml56": {
+   "clusters": 2,
+   "dotH": 6,
+   "gap": 7,
+   "uTop": 30,
+   "umlTop": 17
+  }
+ },
+ "instrument-sans": {
+  "hero44": 881.5,
+  "hero28": 560.97,
+  "create16": 114.14,
+  "mirror20": 370.23,
+  "seat13": 72.89,
+  "tabDefaultSpread": 19.06,
+  "tabTnumSpread": 0,
+  "cq": 60.78,
+  "uml14": {
+   "clusters": 2,
+   "dotH": 1,
+   "gap": 2,
+   "uTop": 53,
+   "umlTop": 50
+  },
+  "uml56": {
+   "clusters": 2,
+   "dotH": 7,
+   "gap": 6,
+   "uTop": 32,
+   "umlTop": 19
+  }
+ },
+ "figtree": {
+  "hero44": 853.17,
+  "hero28": 548.86,
+  "create16": 111.89,
+  "mirror20": 363.66,
+  "seat13": 70.3,
+  "tabDefaultSpread": 14.53,
+  "tabTnumSpread": 0,
+  "cq": 61.53,
+  "uml14": {
+   "clusters": 2,
+   "dotH": 1,
+   "gap": 2,
+   "uTop": 53,
+   "umlTop": 50
+  },
+  "uml56": {
+   "clusters": 2,
+   "dotH": 5,
+   "gap": 7,
+   "uTop": 32,
+   "umlTop": 20
+  }
+ },
+ "space-grotesk": {
+  "hero44": 940.95,
+  "hero28": 599.31,
+  "create16": 119.3,
+  "mirror20": 396.81,
+  "seat13": 76.44,
+  "tabDefaultSpread": 13.44,
+  "tabTnumSpread": 0,
+  "cq": 59.31,
+  "uml14": {
+   "clusters": 2,
+   "dotH": 2,
+   "gap": 1,
+   "uTop": 53,
+   "umlTop": 50
+  },
+  "uml56": {
+   "clusters": 2,
+   "dotH": 8,
+   "gap": 4,
+   "uTop": 32,
+   "umlTop": 20
+  }
+ },
+ "red-hat-display": {
+  "hero44": 816.64,
+  "hero28": 538.81,
+  "create16": 109.77,
+  "mirror20": 354.89,
+  "seat13": 69.59,
+  "tabDefaultSpread": 23.43,
+  "tabTnumSpread": 0,
+  "cq": 60.45,
+  "uml14": {
+   "clusters": 2,
+   "dotH": 1,
+   "gap": 2,
+   "uTop": 53,
+   "umlTop": 50
+  },
+  "uml56": {
+   "clusters": 2,
+   "dotH": 5,
+   "gap": 6,
+   "uTop": 32,
+   "umlTop": 21
+  }
+ },
+ "outfit": {
+  "hero44": 845.69,
+  "hero28": 538.63,
+  "create16": 109.2,
+  "mirror20": 358.13,
+  "seat13": 69.41,
+  "tabDefaultSpread": 19.19,
+  "tabTnumSpread": 0,
+  "cq": 59.77,
+  "uml14": {
+   "clusters": 2,
+   "dotH": 2,
+   "gap": 1,
+   "uTop": 53,
+   "umlTop": 50
+  },
+  "uml56": {
+   "clusters": 2,
+   "dotH": 7,
+   "gap": 5,
+   "uTop": 33,
+   "umlTop": 21
+  }
+ },
+ "bricolage-grotesque": {
+  "hero44": 902.14,
+  "hero28": 581.25,
+  "create16": 116.34,
+  "mirror20": 383.73,
+  "seat13": 75.77,
+  "tabDefaultSpread": 21.61,
+  "tabTnumSpread": 0,
+  "cq": 58.64,
+  "uml14": {
+   "clusters": 2,
+   "dotH": 2,
+   "gap": 1,
+   "uTop": 52,
+   "umlTop": 49
+  },
+  "uml56": {
+   "clusters": 2,
+   "dotH": 6,
+   "gap": 6,
+   "uTop": 31,
+   "umlTop": 19
+  }
+ },
+ "geist-mono": {
+  "hero44": 1135.2,
+  "hero28": 722.41,
+  "create16": 134.41,
+  "mirror20": 492,
+  "seat13": 93.61,
+  "tabDefaultSpread": 0,
+  "tabTnumSpread": 0,
+  "cq": 67.2,
+  "uml14": {
+   "clusters": 1,
+   "dotH": 10,
+   "gap": 0,
+   "uTop": 52,
+   "umlTop": 50
+  },
+  "uml56": {
+   "clusters": 2,
+   "dotH": 6,
+   "gap": 4,
+   "uTop": 30,
+   "umlTop": 20
+  }
+ },
+ "jetbrains-mono": {
+  "hero44": 1135.2,
+  "hero28": 722.41,
+  "create16": 134.41,
+  "mirror20": 492,
+  "seat13": 93.61,
+  "tabDefaultSpread": 0,
+  "tabTnumSpread": 0,
+  "cq": 67.2,
+  "uml14": {
+   "clusters": 2,
+   "dotH": 1,
+   "gap": 1,
+   "uTop": 52,
+   "umlTop": 50
+  },
+  "uml56": {
+   "clusters": 2,
+   "dotH": 7,
+   "gap": 6,
+   "uTop": 30,
+   "umlTop": 17
+  }
+ },
+ "ibm-plex-mono": {
+  "hero44": 1135.2,
+  "hero28": 722.41,
+  "create16": 134.41,
+  "mirror20": 492,
+  "seat13": 93.61,
+  "tabDefaultSpread": 0,
+  "tabTnumSpread": 0,
+  "cq": 67.2,
+  "uml14": {
+   "clusters": 2,
+   "dotH": 2,
+   "gap": 1,
+   "uTop": 52,
+   "umlTop": 49
+  },
+  "uml56": {
+   "clusters": 2,
+   "dotH": 6,
+   "gap": 6,
+   "uTop": 31,
+   "umlTop": 19
+  }
+ },
+ "space-mono": {
+  "hero44": 1157.91,
+  "hero28": 736.86,
+  "create16": 137.09,
+  "mirror20": 501.84,
+  "seat13": 95.48,
+  "tabDefaultSpread": 0,
+  "tabTnumSpread": 0,
+  "cq": 68.55,
+  "uml14": {
+   "clusters": 2,
+   "dotH": 2,
+   "gap": 1,
+   "uTop": 53,
+   "umlTop": 50
+  },
+  "uml56": {
+   "clusters": 2,
+   "dotH": 8,
+   "gap": 4,
+   "uTop": 32,
+   "umlTop": 20
+  }
+ }
+}

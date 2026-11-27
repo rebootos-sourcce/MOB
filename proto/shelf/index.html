@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The shelf</title>
+<!-- Round CY. The overview beside the live prototype. Every picture on this
+     page is a real screenshot of proto/shelf/shelf.html or of the shipped
+     source.html, James loaded, taken by shoot.js and before.js. Every number
+     is read off measure.js and shoot.js, written to shots/*.json. -->
+<style>
+:root{--bg:#0C0D12;--panel:#1A1D26;--panel-2:#252833;--edge:rgba(255,255,255,.09);--edge-2:rgba(255,255,255,.14);
+ --ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;--accent:#7EB8D4;--root:#D6524C;--heart:#5FD5A6;--r:16px;--r-s:11px}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#E8E7E2;--panel:#fff;--panel-2:#F4F4F6;
+ --edge:rgba(20,22,28,.10);--edge-2:rgba(20,22,28,.18);--ink:#14161C;--mid:#4A4843;--dim:#6E6B65;--accent:#2F6E92}}
+:root[data-theme="dark"]{--bg:#0C0D12}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:1240px;margin:0 auto;padding:40px 16px 80px}
+h1{font-size:34px;line-height:1.15;margin:0 0 8px;font-weight:650}
+h2{font-size:22px;margin:56px 0 12px;font-weight:620}
+h3{font-size:17px;margin:26px 0 8px;font-weight:600}
+p,li{max-width:72ch;color:var(--mid)}
+p b,li b{color:var(--ink);font-weight:600}
+.lede{font-size:18px;color:var(--ink);max-width:66ch}
+a{color:var(--accent)}
+.go{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 0}
+.go a{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border-radius:var(--r-s);
+ border:1px solid var(--edge-2);background:var(--panel);text-decoration:none;color:var(--ink)}
+.go a:hover{border-color:var(--accent)}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0}
+.pair.ph{grid-template-columns:repeat(4,minmax(0,1fr))}
+figure{margin:0;background:var(--panel);border:1px solid var(--edge);border-radius:var(--r-s);padding:10px}
+figure img,figure video{width:100%;height:auto;display:block;border-radius:8px;background:#000}
+figcaption{font-size:14px;color:var(--mid);margin:8px 2px 2px;line-height:1.45}
+figcaption b{color:var(--ink)}
+.tag{display:inline-block;font-size:12px;padding:1px 8px;border-radius:20px;border:1px solid var(--edge-2);color:var(--dim);margin-right:6px}
+.tag.new{border-color:var(--accent);color:var(--accent)}
+table{border-collapse:collapse;width:100%;margin:10px 0;font-size:15px}
+th,td{text-align:left;vertical-align:top;padding:9px 10px;border-top:1px solid var(--edge)}
+th{color:var(--dim);font-weight:500;font-size:13px}
+td{color:var(--mid)} td b{color:var(--ink)}
+.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.wrap{overflow-x:auto}
+.q{background:var(--panel);border:1px solid var(--edge);border-radius:var(--r-s);padding:14px 16px;margin:12px 0}
+.q p{margin:6px 0}
+@media (max-width:820px){.pair,.pair.ph{grid-template-columns:1fr}h1{font-size:28px}}
+</style></head>
+<body><main>
+
+<h1>The shelf</h1>
+<p class="lede">The whole screen stays the picture. A press on anything opens one surface, the
+shelf, with the answer at its top. Close, save, bookmark, share. Round CY, built over the
+shipped build with real data: James, his five story lines committed.</p>
+<div class="go">
+ <a href="shelf.html">Open the live prototype on the Field</a>
+ <a href="shelf.html#body">Open it on Body</a>
+ <a href="../../source.html">The shipped build, for the before</a>
+</div>
+
+<h2>What the shelf is</h2>
+<p><b>It is the right rail, generalised, not a new thing beside it.</b> The product already
+has exactly one place every press answers. The drills file opens with it: "Every element that
+carries data opens one. Same panel for all of them, so there is one place to look." That panel
+is the Selection section of the right rail. Its recorded history is answers landing where
+nobody is looking: under a Reading 1,440 to 1,888 pixels tall on a desktop, and 4,661 pixels
+under the picture on a phone.</p>
+<p>The shelf keeps that panel and everything the rail holds, and changes three things:</p>
+<ul>
+ <li><b>Closed by default.</b> The picture gets the rail's width. The one line that was always
+ true at the top of the rail, coherence and its band, stays on screen as the shelf's tab, in the
+ upper right corner where it already sits.</li>
+ <li><b>A press opens straight to the answer, at the shelf's top.</b> The rest of the rail is
+ the shelf's page view: the table of what this page holds.</li>
+ <li><b>Desktop: a card over the stage's right lane. Phone: a sheet that rises from the bottom.</b>
+ One component, one set of states, anchored by width at the same 1180 pixel line where the
+ product already stacks its rails.</li>
+</ul>
+<p><b>Why a card over the lane and not a column that pushes.</b> The first cut pushed. The
+pictures showed the wheel recentre and shrink the instant an address was pressed, so the thing
+pressed moved out from under the pointer, and the dock wrapped onto two lines. Now the picture
+never rescales. If the open shelf would cover the pressed mark, the Field pans by exactly the
+overlap and gives it back on close.</p>
+<p><b>Why a sheet on a phone.</b> On a phone the rail sits under the picture. A press there
+answered 4,661 pixels down the page with nothing on screen changing, which reads as the tap
+doing nothing. The sheet rises to half height and the page moves the pressed thing into the
+half still showing, ringed.</p>
+
+<h2>Moving</h2>
+<p>Real presses, recorded. Each opens on the product's own three second boot sheet.</p>
+<div class="pair">
+ <figure><video src="rec/walk-field-1600.webm" controls muted loop playsinline preload="metadata"></video>
+ <figcaption><b>Field, 1600.</b> Press Escapism, press a saboteur (the item swaps, Escapism goes on the
+ trail), bookmark, share, back, save, back to the page view, close, expand.</figcaption></figure>
+ <figure><video src="rec/walk-body-1600.webm" controls muted loop playsinline preload="metadata"></video>
+ <figcaption><b>Body, 1600.</b> Press the Escapism mark at the hip. It answers as the address, the
+ same answer the Field gives. Back opens the page view, which leads with the figure's own list.</figcaption></figure>
+</div>
+<div class="pair">
+ <figure><video src="rec/walk-field-390.webm" controls muted loop playsinline preload="metadata"></video>
+ <figcaption><b>Field, 390.</b> The same walk on a phone.</figcaption></figure>
+ <figure><video src="rec/walk-body-390.webm" controls muted loop playsinline preload="metadata"></video>
+ <figcaption><b>Body, 390.</b> The same press on a phone.</figcaption></figure>
+</div>
+
+<h2>Before and after, the Field</h2>
+<div class="pair">
+ <figure><img src="shots/before-field-1600.png" alt="Shipped Field at 1600, right rail open">
+ <figcaption><span class="tag">before</span>Shipped. The stage is <b>922</b> wide. The right rail
+ holds Reading, Selection, Flow, Running, Moral integrity and Run a release.</figcaption></figure>
+ <figure><img src="shots/after-field-1-closed-1600.png" alt="Field at 1600 with the shelf closed">
+ <figcaption><span class="tag new">after</span>Shelf closed. The stage is <b>1,268</b> wide. The
+ rail's top line is the tab, upper right.</figcaption></figure>
+</div>
+<div class="pair">
+ <figure><img src="shots/before-field-1600-pressed.png" alt="Shipped Field at 1600, Escapism pressed">
+ <figcaption><span class="tag">before</span>Escapism pressed. The answer arrives in the rail. Nothing
+ on the wheel says which address it is about.</figcaption></figure>
+ <figure><img src="shots/after-field-2-address-1600.png" alt="Field at 1600, Escapism open in the shelf">
+ <figcaption><span class="tag new">after</span>Escapism pressed. The shelf opens with it at the top,
+ and the address is ringed in its seat's colour on the wheel.</figcaption></figure>
+</div>
+<div class="pair">
+ <figure><img src="shots/after-field-3-chain-1600.png" alt="A saboteur pressed while Escapism is open">
+ <figcaption><span class="tag new">after</span>A second press swaps the item. Back now reads
+ "Escapism", one step of trail.</figcaption></figure>
+ <figure><img src="shots/after-field-4-share-1600.png" alt="Share open on a saboteur">
+ <figcaption><span class="tag new">after</span>Share. Who has sight, what would go, what never goes.
+ The send is off and says why.</figcaption></figure>
+</div>
+<div class="pair">
+ <figure><img src="shots/after-field-6-page-1600.png" alt="The shelf page view on the Field">
+ <figcaption><span class="tag new">after</span>The page view, from the tab or from back: the band
+ line, the person's bookmarks and saved readings, then the rail's sections.</figcaption></figure>
+ <figure><img src="shots/after-field-7-full-1600.png" alt="The Field expanded to the whole screen">
+ <figcaption><span class="tag new">after</span>Expand, top left: the tools fold too and the picture
+ takes <b>1,580</b> of 1,600.</figcaption></figure>
+</div>
+<div class="pair ph">
+ <figure><img src="shots/before-field-390-pressed.png" alt="Shipped Field at 390, pressed, nothing visible changes">
+ <figcaption><span class="tag">before</span>Pressed. Nothing on screen changes. The answer is 4,661 px down.</figcaption></figure>
+ <figure><img src="shots/after-field-1-closed-390.png" alt="Field at 390, shelf closed">
+ <figcaption><span class="tag new">after</span>Closed: the tab is a bar along the foot.</figcaption></figure>
+ <figure><img src="shots/after-field-2-address-390.png" alt="Field at 390, shelf at half height">
+ <figcaption><span class="tag new">after</span>Pressed: half sheet, wheel moved into view, address ringed.</figcaption></figure>
+ <figure><img src="shots/after-field-6-page-390.png" alt="Field at 390, page view at full height">
+ <figcaption><span class="tag new">after</span>Page view: the sheet at full height.</figcaption></figure>
+</div>
+
+<h2>Before and after, Body</h2>
+<div class="pair">
+ <figure><img src="shots/before-body-1600-pressed.png" alt="Shipped Body at 1600 with an answer in the rail">
+ <figcaption><span class="tag">before</span>Shipped. A mark on the figure opens its seat, not itself.</figcaption></figure>
+ <figure><img src="shots/after-body-2-address-1600.png" alt="Body at 1600, Escapism open in the shelf">
+ <figcaption><span class="tag new">after</span>The Escapism mark answers as Escapism, ringed on the
+ figure. The figure does not move: it sits clear of the shelf at this width.</figcaption></figure>
+</div>
+<div class="pair ph">
+ <figure><img src="shots/before-body-390.png" alt="Shipped Body at 390">
+ <figcaption><span class="tag">before</span>Pressed on a phone, the answer is 4,414 px down.</figcaption></figure>
+ <figure><img src="shots/after-body-1-closed-390.png" alt="Body at 390, shelf closed">
+ <figcaption><span class="tag new">after</span>Closed.</figcaption></figure>
+ <figure><img src="shots/after-body-2-address-390.png" alt="Body at 390, Escapism in a half sheet">
+ <figcaption><span class="tag new">after</span>Pressed: the mark ringed above the sheet.</figcaption></figure>
+ <figure><img src="shots/after-body-3-page-390.png" alt="Body at 390, page view">
+ <figcaption><span class="tag new">after</span>Page view leads with the figure's own list of held addresses.</figcaption></figure>
+</div>
+
+<h2>States</h2>
+<div class="wrap"><table>
+<tr><th>State</th><th>Desktop</th><th>Phone</th><th>How you get there</th></tr>
+<tr><td><b>Closed</b></td><td>A tab, upper right of the stage: the coherence ring, the band word, "Shelf".</td>
+ <td>A bar along the foot, same three things.</td><td>Start. Close. Escape. Drag the sheet down.</td></tr>
+<tr><td><b>Opening</b></td><td>Fades and slides 24 px from the right, 320 ms, the product's surface timing.</td>
+ <td>Rises from the bottom, 320 ms.</td><td>No spinner: every answer computes in under 100 ms. Reduced motion is instant.</td></tr>
+<tr><td><b>Page</b></td><td colspan="2">The table of this page: the band line, Bookmarks and Saved when there are any, then the rail's sections. On Body the figure's list leads. Phone opens it full height.</td>
+ <td>The tab. Back from an item that was opened from the page.</td></tr>
+<tr><td><b>Item</b></td><td colspan="2">Head: back, the seat's ring colour, the name, close. Then Save, Bookmark, Share. Then the product's own answer for that thing, unchanged. The pressed mark is ringed on the picture. Phone opens it half height, draggable to full.</td>
+ <td>Any press on the picture, or a row in the page view.</td></tr>
+<tr><td><b>Second press</b></td><td colspan="2"><b>Swaps, never stacks.</b> The open item goes on the trail and back reads its name. Pressing the same thing again puts it down, the product's existing rule. Two items are compared by bookmarking both, not by two open panels.</td><td></td></tr>
+<tr><td><b>Empty press</b></td><td colspan="2">A press on empty stage does nothing to the shelf. It stays open until closed on purpose.</td><td></td></tr>
+</table></div>
+
+<h2>The four abilities</h2>
+<div class="wrap"><table>
+<tr><th>Ability</th><th>What it does</th><th>Today, with no accounts</th></tr>
+<tr><td><b>Close</b></td><td>Puts the shelf and the pick down. Escape does the same. Back goes one step, to the last item, then to the page.</td><td>Complete.</td></tr>
+<tr><td><b>Bookmark</b></td><td>Keeps a pointer to the thing. It reads live: the page view shows its value now. The slot keeps its label, the ring shows it is on.</td><td>Complete, kept on the device. On a worked example it is kept too, since exploring an example is what an example is for.</td></tr>
+<tr><td><b>Save</b></td><td>Keeps what the answer says right now, dated. Opening it shows it as it read then, beside the value now, with a way to open it as it reads now.</td><td>Complete, kept on the device. The product refuses a save on a worked example with its own sentence, "Nothing saved on a worked example." The prototype lets it through so the list can be seen.</td></tr>
+<tr><td><b>Share</b></td><td>Opens a pane in the shelf: who has sight, what this item would send, what never goes. The send is off, and says why.</td><td>The shelf's side only. The mechanism behind it is deferred, below.</td></tr>
+</table></div>
+<h3>What share knows, from what is already ruled</h3>
+<p>The owner's own rulings, on the tier ladder: a cohort lead sees "Fetters, saboteurs, complexes, hyper
+complexes, and their analytics. Not the spiritual material and not the story cloud." And the
+story is "stored, for recovery, never shared." So every item carries a class. Addresses,
+saboteurs, complexes, seats and the core would send. Archetypes and domains would not. A
+reference card has nothing of the person in it. <b>Laws of integrity are not named in the
+ruling</b>, so the pane says it is not settled rather than guessing.</p>
+<h3>What is deferred, and why</h3>
+<ul>
+ <li><b>The coach connection itself.</b> The ruling on the practitioner: either side
+ can start it, the person consents, access is by the person's key. That handshake, the list of
+ who has sight and revoking it need accounts, which are their own open work.</li>
+ <li><b>Whether a share is a copy or a pointer.</b> If a coach already has standing sight of the
+ record, Share is really "point your coach at this", with a note, and nothing is copied. If they
+ do not, a per item share is a second, narrower grant. That is a question for the owner, below.</li>
+ <li><b>Scope.</b> "Whether a practitioner sees all of it instead of the tier scope" is still
+ open in the rulings. The pane reads whatever is ruled.</li>
+</ul>
+
+<h2>What it replaces or absorbs</h2>
+<div class="wrap"><table>
+<tr><th>Today</th><th>With the shelf</th><th>Cost</th></tr>
+<tr><td><b>The right rail column</b>, 336 wide, every tab</td><td>Gone as a column. The stage takes its width.</td><td>None while closed. Open, the card covers the stage's right lane.</td></tr>
+<tr><td><b>Rail top line</b>, coherence and band</td><td>The shelf's tab, same corner, same ring.</td><td>Its one line definition moves into the page view.</td></tr>
+<tr><td><b>Reading</b></td><td>The Field's page view.</td><td>One press away instead of always showing.</td></tr>
+<tr><td><b>Selection</b>, the drill</td><td>The shelf's item view. This is the heart of it.</td><td>None. Its own back row and foot close fold into the shelf's head.</td></tr>
+<tr><td><b>Flow</b>, Body's list of held addresses</td><td>Leads Body's page view.</td><td>One press away.</td></tr>
+<tr><td><b>Running, Moral integrity</b></td><td>Sections of the page view, unchanged.</td><td>The law sliders are tools in an information surface. Question below.</td></tr>
+<tr><td><b>Run a release</b></td><td>Foot of the page view.</td><td>Measured today at 4,165 px down the rail's own scroll at 1600, so nothing it has now is lost.</td></tr>
+<tr><td><b>The Field's coherence compass</b>, right lane</td><td>Unchanged while closed.</td><td>Covered while the shelf is open on a desktop.</td></tr>
+<tr><td><b>Body, a press on an address</b></td><td>Answers as the address.</td><td>A change of behaviour: it opened the seat. The seat stays lit on the figure.</td></tr>
+</table></div>
+
+<h2>The count</h2>
+<div class="wrap"><table>
+<tr><th>Same press, Escapism, on James</th><th class="num">Before</th><th class="num">After</th></tr>
+<tr><td>Stage width, 1600</td><td class="num">922</td><td class="num">1,268, and 1,580 expanded</td></tr>
+<tr><td>Answer to a press on screen, 1600</td><td class="num">yes, y 314</td><td class="num">yes, y 197</td></tr>
+<tr><td>Answer to a press on screen, 390, Field</td><td class="num">no, 4,661 px down</td><td class="num">yes, y 395</td></tr>
+<tr><td>Answer to a press on screen, 390, Body</td><td class="num">no, 4,414 px down</td><td class="num">yes, y 395</td></tr>
+<tr><td>Visible controls, Field idle, 1600</td><td class="num">91</td><td class="num">82, and 34 expanded</td></tr>
+<tr><td>Visible controls, Body idle, 1600</td><td class="num">81</td><td class="num">73</td></tr>
+<tr><td>Which thing is open, marked on the picture</td><td class="num">no</td><td class="num">yes, ringed</td></tr>
+</table></div>
+<p><b>Read the control count honestly.</b> The shelf alone moves the desktop from 91 to 82,
+because 48 of those 91 visible controls are the left rail's tools. The shelf clears the
+right. The expand control clears the left, and that is where the count actually drops. Counted
+as visible, enabled, unobstructed controls in the viewport; the canvas's own marks are one
+element and are not in it, so both sides are floors.</p>
+
+<h2>Questions</h2>
+<div class="q"><p><b>1. Save and Bookmark, two things or one?</b> Built as two. Bookmark follows the
+thing and reads live. Save keeps what it said today, so a later look shows then beside now,
+which is the avatar improving made visible. The other way: one control that does both. Fewer
+choices, but you lose "then against now" as a separate list.</p></div>
+<div class="q"><p><b>2. "Share it with your profile person, your coach."</b> Read as one person: your
+coach. Or did "profile person" mean another profile on the same device, like a partner?</p></div>
+<div class="q"><p><b>3. A share is a copy, or a pointer?</b> If your coach already sees your record,
+share just points them at this item with a note, nothing copied. If they do not, share is a
+one off grant of this one item. The first is simpler and safer. The second lets a person share
+without opening the whole record.</p></div>
+<div class="q"><p><b>4. "A button to expand the overlay."</b> Built as the expand control, top left of
+the stage: the tools fold and the picture takes the screen. Is that the button you meant, or
+did you mean a control on the animation overlay itself?</p></div>
+<div class="q"><p><b>5. The left rail.</b> The shelf clears the right. Most of what competes on a
+desktop screen is the left rail's tools. Should the tools become a second shelf on the left,
+closed until wanted, or stay open with expand as the way to clear them?</p></div>
+<div class="q"><p><b>6. The law sliders.</b> Moral integrity has sliders, which are tools, inside an
+information surface. Move them to the left rail with the other tools, or leave them where people
+already find them?</p></div>
+<div class="q"><p><b>7. Body, a press on an address.</b> Answers as the address now, not its seat.
+Keep that?</p></div>
+
+<h2>How this was built</h2>
+<p><code>build.js</code> reads the shipped <code>source.html</code> and lays <code>shelf.css</code> and
+<code>shelf.js</code> over it. Nothing under <code>atuned_src/</code> is touched. Every answer in the
+shelf is the product's own drill, written by its own functions. <code>before.js</code>,
+<code>shoot.js</code>, <code>record.js</code> and <code>measure.js</code> drive it with real presses and
+write every picture and number on this page.</p>
+</main></body></html>

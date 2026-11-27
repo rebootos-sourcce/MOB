@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Knowledge prototype B, Deck</title>
+<!--CSS-->
+<style>
+.today{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,380px);gap:32px;align-items:start;margin-bottom:40px}
+.hand-h{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.hand-h h1{font-size:24px}
+.hand{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.hand .chip b{font-weight:600;color:var(--ink)}
+.stagecard{position:relative;border-radius:20px;border:1px solid var(--line);background:linear-gradient(180deg,#1C1F29,#161820);
+ padding:28px 32px 20px;min-height:420px;display:flex;flex-direction:column}
+.stagecard::before{content:"";position:absolute;inset:0;border-radius:20px;border-top:3px solid var(--c);pointer-events:none}
+.sc-top{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+.sc-top .sc-suit{font-size:14px;color:var(--dim)}
+.sc-top h2{font-size:28px;line-height:1.15}
+.sc-body{flex:1;max-width:64ch}
+.sc-body .eyebrow{font-size:14px;margin-bottom:8px;color:var(--c)}
+.sc-body p{font-size:20px;line-height:1.5;color:#E9E6DF}
+.sc-body p.say{font-size:22px}
+.sc-body .sub{font-size:16px;color:var(--mid);margin-top:14px}
+.sc-nav{display:flex;align-items:center;gap:10px;margin-top:22px}
+.dots{display:flex;gap:6px;margin:0 auto}
+.dots i{width:8px;height:8px;border-radius:50%;background:#3A3F50}
+.dots i.on{background:var(--c)}
+.side h3{font-size:15px;color:var(--dim);font-weight:500;margin:0 0 10px}
+.side .blk{border:1px solid var(--line);border-radius:14px;padding:14px;background:var(--panel);margin-bottom:14px}
+.side .f{display:flex;justify-content:space-between;align-items:baseline;padding:6px 0;border-bottom:1px solid #22252F}
+.side .f:last-child{border:0}
+.side .f span{color:var(--dim);font-size:14px}
+.side .f b{font-weight:600}
+.suits{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px}
+.suit{border:1px solid var(--line);border-radius:14px;padding:10px;background:var(--sunk);min-height:160px}
+.suit-h{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:15px}
+.suit-h svg{width:18px;height:18px;fill:none;stroke-width:1.6}
+.mini{display:flex;flex-direction:column;gap:2px;width:100%;text-align:left;padding:8px 10px;border-radius:10px;border:1px solid var(--line);
+ background:var(--panel);margin-bottom:6px;cursor:pointer;min-height:48px}
+.mini .n{font-size:15px;line-height:1.25;overflow-wrap:anywhere}
+.mini .d{font-size:13px;color:var(--dim)}
+.mini.known{border-color:rgba(126,184,212,.4)}
+.suit .none{font-size:14px;color:var(--dim)}
+.deck-h{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:0 0 12px}
+.deck-h h2{font-size:21px}
+.done{padding:28px;border:1px dashed var(--line);border-radius:20px;max-width:880px}
+.done h2{font-size:24px;margin-bottom:8px}
+.done p{color:var(--mid);margin-bottom:16px;max-width:60ch}
+@media (max-width:1100px){.suits{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media (max-width:760px){
+ .today{grid-template-columns:1fr;gap:20px}
+ .stagecard{padding:20px 18px 14px;min-height:380px}
+ .sc-body p{font-size:18px} .sc-body p.say{font-size:19px}
+ .sc-top h2{font-size:24px}
+ .suits{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+</style></head>
+<body>
+<main class="stage" id="stage"></main>
+<!--JS-->
+<script>
+/* ============================================================
+   B. THE DECK. One idea per card, dealt from what the person carries,
+   three a day, each hand closing on one question. A right answer makes
+   the entry Known and books it to come back; a wrong one brings it back
+   tomorrow. The whole library is still one press away.
+
+   Built on: Imprint and Duolingo's guidebook, one idea per card with
+   recall between; the testing effect (Roediger and Karpicke, 2006, 61
+   percent kept at a week against 40 for rereading); Duolingo's spaced
+   return, which lifted daily engagement 12 percent in their own study
+   (Settles and Meeder, 2016); and the Letting Go Deck already in the
+   shipped codex, whose suits are the seven seats.
+
+   What it does not copy from Duolingo: a streak that breaks, a guilt
+   notification, a cap that blocks. The day ends with an offer, not a wall.
+   ============================================================ */
+var esc=KB.esc, DAY=86400000, HAND=[], AT=0, STEP=0;
+KB_MSG={ok:'Known. It comes back in three days to hold.',no:'The marked answer is the one. It comes back tomorrow.'};
+KB.chrome('B','Deck','<b>Why this design.</b> One idea per card, dealt from what you carry, three a day, each hand closing on one question. '
+ +'Recall holds where rereading does not: 61 percent kept at a week against 40. '
+ +'A right answer books the entry to come back in three days, then seven, then thirty, which is the spaced return Duolingo measured at 12 percent more daily use. '
+ +'The suits are the seven seats, which is how the shipped Letting Go Deck already deals. Three is a hand, never a cap: the next card is one press away.');
+
+/* the pool a hand is dealt from. The person's own first, by weight, then
+   the foundation. A stranger is dealt the nine child emotions in order. */
+function pool(){
+ var p=KB.person(), E=KB.E;
+ var ax=E.filter(function(e){return e.kind==='axis';});
+ if(!p)return ax.concat(E.filter(function(e){return e.kind==='seat';}));
+ var sab=E.filter(function(e){return e.kind==='sab'&&p.sab[e.nm];});
+ var nd=E.filter(function(e){return e.kind==='node'&&KB.held(e);});
+ var all=ax.concat(sab,nd).sort(function(a,b){return (KB.pct(b)||0)-(KB.pct(a)||0);});
+ return all.concat(E.filter(function(e){return e.kind==='seat';}));}
+function due(id){var k=KB.rec().known[id]; if(!k)return false;
+ var n=KB.rec().n&&KB.rec().n[id]||1, gap=[3,7,30][Math.min(2,n-1)];
+ return Date.now()-k>=gap*DAY;}
+function deal(n){
+ var P=pool(), out=[];
+ P.forEach(function(e){if(out.length<n&&due(e.id)&&HAND.indexOf(e)<0)out.push(e);});
+ P.forEach(function(e){if(out.length<n&&!KB.known(e.id)&&!KB.seen(e.id)&&HAND.indexOf(e)<0&&out.indexOf(e)<0)out.push(e);});
+ P.forEach(function(e){if(out.length<n&&!KB.known(e.id)&&HAND.indexOf(e)<0&&out.indexOf(e)<0)out.push(e);});
+ return out;}
+
+/* the faces of one card. Each is one idea and says one thing. */
+function faces(e){
+ var y=KB.youLine(e), F=[];
+ F.push(['What it is',e.def,y]);
+ if(e.kind==='axis'){F.push(['Where it sits',e.where,e.card]); F.push(['What it says',e.says,'say']);
+  F.push(['The release line',e.out]); F.push(['What fills it',e.inst]);}
+ else if(e.kind==='sab'){if(e.trigger)F.push(['When it fires',e.trigger]); if(e.says)F.push(['What it says',e.says,'say']);
+  if(e.out)F.push(['The interrupt',e.out]);}
+ else if(e.kind==='node'){F.push(['Where it sits',e.where]); F.push(['What it governs',e.theme]);
+  F.push(['What it distorts into',e.distort]);}
+ else if(e.kind==='seat'){F.push(['How it runs',e.body]);}
+ F.push(['check']);
+ return F;}
+
+var SUITGLY=KBD.glyph;
+function render(){
+ var st=document.getElementById('stage'), h='';
+ var e=HAND[AT];
+ h+='<section class="today"><div>';
+ h+='<div class="hand-h"><h1>Today’s hand</h1><span class="eyebrow">'
+  +(KB.person()?'Dealt from what your reading carries, heaviest first.':'Nothing read yet, so the hand is dealt from the nine child emotions.')+'</span></div>';
+ h+='<div class="hand" role="tablist" aria-label="Cards in this hand">'+HAND.map(function(x,i){
+  return '<button type="button" role="tab" class="chip'+(i===AT?' on':'')+'" aria-selected="'+(i===AT)+'" data-at="'+i+'">'
+   +KB.ring(x,24,null)+'<b>'+esc(x.nm)+'</b>'+(KB.known(x.id)?' <span class="state known"><i></i></span>':'')+'</button>';}).join('')+'</div>';
+ if(e){
+  var F=faces(e), f=F[STEP], c=KB.col(e);
+  h+='<article class="stagecard" style="--c:'+c+'" aria-live="polite">'
+   +'<div class="sc-top">'+KB.ring(e,52,KB.pct(e))+'<div><div class="sc-suit">'+esc(KB.KIND[e.kind][0])+' · '+esc(e.seat||'')+' suit</div><h2>'+esc(e.nm)+'</h2></div></div>'
+   +'<div class="sc-body">'
+   +(f[0]==='check'?KB.checkHtml(e)
+     :'<div class="eyebrow">'+esc(f[0])+'</div><p'+(f[2]==='say'?' class="say"':'')+'>'+esc(f[1])+'</p>'
+      +(f[2]&&f[2]!=='say'?'<p class="sub">'+esc(f[2])+'</p>':''))
+   +'</div>'
+   +'<div class="sc-nav"><button type="button" class="btn" id="prev"'+(STEP?'':' disabled')+'>Back</button>'
+   +'<span class="dots" aria-hidden="true">'+F.map(function(_,i){return '<i class="'+(i===STEP?'on':'')+'"></i>';}).join('')+'</span>'
+   +(STEP<F.length-1?'<button type="button" class="btn pri" id="next">Next</button>'
+     :'<button type="button" class="btn pri" id="nextcard">'+(AT<HAND.length-1?'Next card':'Close the hand')+'</button>')
+   +'</div></article>';
+ } else {
+  h+='<div class="done"><h2>That is today’s hand.</h2><p>Anything you knew comes back when it is due. The rest of the deck is not rationed.</p>'
+   +'<button type="button" class="btn pri" id="more">Deal one more</button></div>';}
+ h+='</div><aside class="side">'+sideHtml()+'</aside></section>';
+ h+=deckHtml();
+ st.innerHTML=h;
+ wire(st);}
+
+function sideHtml(){var c=KB.counts(), R=KB.rec(), soon=[];
+ Object.keys(R.known).forEach(function(id){var n=R.n&&R.n[id]||1, gap=[3,7,30][Math.min(2,n-1)];
+  soon.push([id,R.known[id]+gap*DAY]);});
+ soon.sort(function(a,b){return a[1]-b[1];});
+ return '<div class="blk"><h3>Your record</h3>'
+  +'<div class="f"><span>Known</span><b>'+c.known+' '+(c.known===1?'card':'cards')+'</b></div>'
+  +'<div class="f"><span>Seen</span><b>'+c.seen+' '+(c.seen===1?'card':'cards')+'</b></div></div>'
+  +'<div class="blk"><h3>Coming back</h3>'+(soon.length?soon.slice(0,4).map(function(s){
+    return '<div class="f"><span>'+esc(KB.BY[s[0]].nm)+'</span><b>'+new Date(s[1]).toLocaleDateString(undefined,{weekday:'long'})+'</b></div>';}).join('')
+   :'<p class="dim" style="font-size:14px">Nothing is booked yet. A card you know comes back in three days.</p>')+'</div>'
+  +KB.award('a card held through its thirty day return');}
+
+function deckHtml(){
+ var R=KB.rec(), got=KB.E.filter(function(e){return R.seen[e.id];});
+ var h='<section><div class="deck-h"><h2>Your deck</h2><span class="eyebrow">Every card you have been dealt, by suit. Open any one to read it whole.</span>'
+  +'<button type="button" class="btn" id="lib" style="margin-left:auto">Open the whole library</button></div><div class="suits">';
+ KBD.bands.forEach(function(b){
+  var mine=got.filter(function(e){return e.seat===b;});
+  h+='<div class="suit"><div class="suit-h"><svg viewBox="0 0 24 24" stroke="'+KBD.pal[b]+'">'+SUITGLY[b]+'</svg>'+b+'</div>'
+   +(mine.length?mine.map(function(e){return '<button type="button" class="mini'+(KB.known(e.id)?' known':'')+'" data-open="'+esc(e.id)+'">'
+     +'<span class="n">'+esc(e.nm)+'</span><span class="d">'+(KB.known(e.id)?'Known':'Seen')+'</span></button>';}).join('')
+    :'<p class="none">No card from this seat yet.</p>')+'</div>';});
+ return h+'</div></section>';}
+
+/* an entry read whole, when the person leaves the hand for the library */
+var OPEN=null;
+function openSheet(id){var e=KB.BY[id]; KB.markSeen(id);
+ var st=document.getElementById('stage');
+ st.innerHTML='<button type="button" class="btn" id="back" style="margin-bottom:20px">Back to the hand</button>'+KB.sheet(e);
+ document.getElementById('back').onclick=function(){render();};
+ st.querySelectorAll('[data-open]').forEach(function(el){el.onclick=function(){openSheet(el.getAttribute('data-open'));};});
+ KB.wireCheck(st,booked); window.scrollTo(0,0);}
+function library(){
+ var st=document.getElementById('stage');
+ var g=['axis','seat','sab','mask','arch','dom','node','term'];
+ st.innerHTML='<button type="button" class="btn" id="back" style="margin-bottom:20px">Back to the hand</button>'
+  +g.map(function(k){var L=KB.E.filter(function(e){return e.kind===k;});
+   return '<section style="margin-bottom:24px"><h2 style="font-size:19px;margin-bottom:8px">'+KB.KIND[k][1]+'</h2><div class="hand">'
+    +L.map(function(e){return '<button type="button" class="chip" data-open="'+esc(e.id)+'">'+esc(e.nm)+'</button>';}).join('')+'</div></section>';}).join('');
+ document.getElementById('back').onclick=function(){render();};
+ st.querySelectorAll('[data-open]').forEach(function(el){el.onclick=function(){openSheet(el.getAttribute('data-open'));};});}
+
+/* a right answer counts how many times it has held, which sets the next gap */
+function booked(ok,id){var R=KB.rec(); R.n=R.n||{};
+ if(ok){R.n[id]=(R.n[id]||0)+1; R.known[id]=Date.now();}
+ try{localStorage.setItem('kbp-rec-'+(KB.who()||'stranger'),JSON.stringify(R));}catch(err){}
+ var s=document.querySelector('.side'); if(s)s.innerHTML=sideHtml();}
+
+function wire(st){
+ st.querySelectorAll('[data-at]').forEach(function(el){el.onclick=function(){AT=+el.getAttribute('data-at'); STEP=0; render();};});
+ var b;
+ if(b=document.getElementById('prev'))b.onclick=function(){STEP=Math.max(0,STEP-1); render();};
+ if(b=document.getElementById('next'))b.onclick=function(){if(HAND[AT])KB.markSeen(HAND[AT].id); STEP++; render();};
+ if(b=document.getElementById('nextcard'))b.onclick=function(){AT++; STEP=0; render();};
+ if(b=document.getElementById('more'))b.onclick=function(){HAND=HAND.concat(deal(1)); STEP=0; render();};
+ if(b=document.getElementById('lib'))b.onclick=library;
+ st.querySelectorAll('[data-open]').forEach(function(el){el.onclick=function(){openSheet(el.getAttribute('data-open'));};});
+ KB.wireCheck(st,function(ok,id){booked(ok,id);
+  var n=document.getElementById('nextcard'); if(n)n.focus();});}
+document.addEventListener('keydown',function(ev){
+ if(ev.target.tagName==='INPUT'||ev.target.tagName==='SELECT')return;
+ var F=HAND[AT]?faces(HAND[AT]):[];
+ if(ev.key==='ArrowRight'&&STEP<F.length-1){STEP++; render();}
+ if(ev.key==='ArrowLeft'&&STEP>0){STEP--; render();}});
+function reset(){HAND=deal(3); AT=0; STEP=0; render();}
+KB.on(reset); reset();
+</script>
+</body></html>

@@ -1,0 +1,19 @@
+{"W":1600,"bootedMs":5499}
+{"who":"landing","step":"1600","controls":102,"words":172,"doorsTop":[331,425,520,633]}
+{"who":"story1-typed","step":"1600","controls":106,"words":300,"doorsTop":[317,411,506,619]}
+{"W":1600,"story":1,"after":"Held 0 Seat Charge Saboteur Story Expression ⤢ You have committed 1 story and nothing reaches the line yet. An address shows here once it do"}
+{"who":"story1-field","step":"1600","controls":105,"words":125,"doorsTop":[]}
+{"who":"story2-typed","step":"1600","controls":107,"words":242,"doorsTop":[]}
+{"W":1600,"story":2,"after":"Held 3 Child 1 Seat Charge Saboteur Story Expression ⤢ Child Patterns across 1 seat Shame at the root, Shame 6.0 Root 2 held, 11.9 Shame 6.0"}
+{"who":"story2-field","step":"1600","controls":105,"words":120,"doorsTop":[]}
+{"W":1600,"errors":[]}
+{"W":390,"bootedMs":5365}
+{"who":"landing","step":"390","controls":22,"words":15,"doorsTop":[3216,3311,3406,3500]}
+{"who":"story1-typed","step":"390","controls":25,"words":81,"doorsTop":[3898,3993,4088,4182]}
+{"W":390,"story":1,"after":"Held 0 Seat Charge Saboteur Story Expression ⤢ You have committed 1 story and nothing reaches the line yet. An address shows here once it do"}
+{"who":"story1-field","step":"390","controls":22,"words":15,"doorsTop":[]}
+{"who":"story2-typed","step":"390","controls":26,"words":75,"doorsTop":[]}
+{"W":390,"story":2,"after":"Held 3 Child 1 Seat Charge Saboteur Story Expression ⤢ Child Patterns across 1 seat Shame at the root, Shame 6.0 Root 2 held, 11.9 Shame 6.0"}
+{"who":"story2-field","step":"390","controls":22,"words":15,"doorsTop":[]}
+{"W":390,"errors":[]}
+{"nineDoorTop":378,"drillTopAfterTap":2056,"viewport":844}

@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Body, the psyche stack</title>
+<!-- ============================================================
+     proto/flow-bc/body.html
+
+     BC3, built rather than argued. His words: "the body could be the
+     entire psyche stack, from fetters to ... anywhere you click updates
+     the main image, and then you can use our overlay items to overlay them
+     to get more data. And then the summary on the right side starts
+     stacking all that information up, to provide a clear picture of how
+     they all operate through you."
+
+     Stands alone, makes no outbound request. The engine is referenced at
+     ../../engine.js and never copied: the stack, the weights, the addresses,
+     the silhouette and the seat heights are the product's own tables read
+     at run time. Two small helpers are restated from the UI layer because
+     the engine build does not carry them, and each says where it came from.
+
+     Nothing in atuned_src is touched.
+
+     Left: the stack, largest at the top, fetters at the base.
+     Centre: the body. A press puts the thing on it. An eye puts several on
+     it at once, and an address two of them share is drawn as a knot.
+     Right: what you have picked, stacking, with the reading across all of
+     it on top.
+     ============================================================ -->
+<style>
+:root{
+ --bg:#0C0D12; --ground:#101010; --panel:#1A1D26; --panel-2:#252833; --sunk:#090A0E;
+ --edge:rgba(255,255,255,.09); --edge-2:rgba(255,255,255,.16);
+ --ink:#EFEDE8; --mid:#B4B0A8; --dim:#94908A;
+ --accent:#7EB8D4; --tap:44px;
+ --sans:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+ --num:ui-monospace,'SF Mono',Menlo,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+ font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.top{display:flex;align-items:center;gap:14px;padding:10px 16px;border-bottom:1px solid var(--edge)}
+.top h1{font-size:18px;margin:0;font-weight:600}
+.top .who{color:var(--mid);font-size:15px}
+.top select{background:var(--panel);color:var(--ink);border:1px solid var(--edge-2);border-radius:8px;
+ min-height:var(--tap);padding:0 10px;font:inherit;font-size:15px}
+.sub{display:flex;gap:6px;flex-wrap:wrap;align-items:center;padding:8px 16px;border-bottom:1px solid var(--edge)}
+.sub .lbl{color:var(--dim);font-size:14px;margin-right:4px}
+.lens{min-height:var(--tap);padding:0 14px;border-radius:10px;border:1px solid var(--edge-2);font-size:15px;color:var(--mid)}
+.lens[aria-pressed="true"]{color:var(--ink);background:var(--panel-2);border-color:rgba(126,184,212,.5)}
+.grid{display:grid;grid-template-columns:300px minmax(0,1fr) 360px;gap:12px;padding:12px;
+ height:calc(100vh - 128px);min-height:600px}
+.col{background:var(--panel);border:1px solid var(--edge);border-radius:14px;overflow:auto;padding:14px}
+.stage{background:var(--ground);border:1px solid var(--edge);border-radius:14px;position:relative;
+ display:flex;flex-direction:column;overflow:hidden}
+.eye{font-size:13px;letter-spacing:.02em;color:var(--dim);margin:0 0 8px}
+/* the stack */
+.lvl{border-top:1px solid var(--edge)}
+.lvl:first-of-type{border-top:0}
+.lvh{width:100%;display:flex;align-items:center;gap:10px;min-height:var(--tap);padding:6px 4px;text-align:left}
+.lvh .nm{flex:1;font-weight:600;font-size:15px}
+.lvh .n{font-family:var(--num);color:var(--mid);font-size:14px}
+.lvh .ch{width:12px;height:12px;transition:transform .15s}
+.lvl.open .lvh .ch{transform:rotate(180deg)}
+.lvl.none .lvh .nm,.lvl.none .lvh .n{color:var(--dim)}
+.rows{display:none;padding:0 0 8px}
+.lvl.open .rows{display:block}
+.row{width:100%;display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:8px;align-items:center;
+ min-height:var(--tap);padding:4px 6px;border-radius:9px;text-align:left}
+.row:hover{background:var(--panel-2)}
+.row .rn{font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .rw{font-family:var(--num);font-size:14px;color:var(--mid)}
+.row.on{background:rgba(126,184,212,.12);box-shadow:inset 0 0 0 1px rgba(126,184,212,.45)}
+.more{min-height:var(--tap);color:var(--accent);font-size:14px;padding:0 6px}
+.gl{width:22px;height:22px;display:block}
+/* the figure */
+.fig{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:8px}
+.fig svg{width:100%;height:100%;max-height:100%}
+.legend{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;padding:6px 12px 12px;
+ font-size:14px;color:var(--mid);min-height:38px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.hint{position:absolute;left:0;right:0;bottom:44px;text-align:center;color:var(--dim);font-size:14px}
+/* the stacking side */
+.syn{background:var(--sunk);border:1px solid var(--edge-2);border-radius:12px;padding:12px 14px;margin-bottom:12px}
+.syn h2{font-size:16px;margin:0 0 6px;font-weight:600}
+.syn p{margin:6px 0;font-size:15px;color:var(--mid)}
+.syn b{color:var(--ink);font-weight:600}
+.syn .start{margin-top:10px;padding-top:10px;border-top:1px solid var(--edge)}
+.btn{min-height:var(--tap);padding:0 14px;border-radius:10px;border:1px solid var(--edge-2);font-size:15px}
+.btn.pri{background:rgba(126,184,212,.16);border-color:rgba(126,184,212,.55)}
+.card{border:1px solid var(--edge);border-radius:12px;padding:12px 14px;margin-bottom:10px;background:var(--panel)}
+.card.new{animation:rise .32s cubic-bezier(.22,1,.36,1)}
+@keyframes rise{from{transform:translateY(8px);opacity:0}to{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.card.new{animation:none}}
+.chd{display:flex;align-items:flex-start;gap:10px}
+.chd .t{flex:1;min-width:0}
+.chd .k{font-size:13px;color:var(--dim)}
+.chd .nm{font-size:17px;font-weight:600;line-height:1.3}
+.chd .w{font-family:var(--num);font-size:15px;color:var(--mid)}
+.card p{margin:8px 0 0;font-size:15px;color:var(--mid)}
+.card .ln{margin-top:8px;font-size:15px}
+.card .ln .lk{color:var(--dim);font-size:13px;display:block}
+.link{color:var(--accent);min-height:var(--tap);padding:2px 0;text-align:left;font-size:15px;display:block}
+.ctl{display:flex;gap:4px}
+.ib{width:var(--tap);height:var(--tap);border-radius:10px;display:flex;align-items:center;justify-content:center;
+ border:1px solid var(--edge)}
+.ib[aria-pressed="true"]{border-color:rgba(126,184,212,.6);background:rgba(126,184,212,.14)}
+.ib svg{width:20px;height:20px}
+.card.min{padding:4px 6px 4px 12px}
+.card.min .chd{align-items:center}
+.card.min .nm{font-size:15px;font-weight:500}
+.empty{color:var(--dim);font-size:15px}
+.peek{display:none}
+@media (max-width:760px){
+ /* THE BODY LEADS ON A PHONE. The first cut stacked the rail first and put
+    the figure twelve hundred pixels down, which is the same answer off
+    screen this whole round is about. The picture, then the stack to pick
+    from, then what the picks add up to, with a bar that jumps to it. */
+ .grid{display:flex;flex-direction:column;height:auto;padding:10px}
+ .stage{order:1} .col.left{order:2} .col.right{order:3}
+ .top .who{display:none}
+ .col,.stage{margin-bottom:10px}
+ .stage{height:520px}
+ .col.left{max-height:none}
+ .peek{display:flex;position:sticky;bottom:0;left:0;right:0;gap:10px;align-items:center;
+  background:rgba(12,13,18,.96);border-top:1px solid var(--edge-2);padding:8px 14px;font-size:15px}
+ .peek .btn{margin-left:auto}
+}
+</style>
+</head>
+<body>
+<div class="top">
+ <h1>Body</h1><span class="who" id="who"></span>
+ <label for="psel" class="who" style="margin-left:auto">Profile</label>
+ <select id="psel"></select>
+</div>
+<div class="sub" aria-label="Lenses on the whole body">
+ <span class="lbl">Lenses</span>
+ <button class="lens" data-lens="heat" aria-pressed="true">Heat</button>
+ <button class="lens" data-lens="flow" aria-pressed="false">Flow</button>
+ <button class="lens" data-lens="seats" aria-pressed="true">Seats</button>
+</div>
+<div class="grid">
+ <nav class="col left" aria-label="The stack"><p class="eye">The stack, largest at the top</p><div id="stack"></div></nav>
+ <main class="stage"><div class="fig" id="fig"></div><div class="legend" id="legend"></div></main>
+ <aside class="col right" aria-label="What you have picked" id="side"></aside>
+</div>
+<div class="peek" id="peek"></div>
+<script src="../../engine.js"></script>
+<script>
+(function(){
+/* ============================================================
+   THE ENGINE, READ. engine.js declares these in the top level scope of a
+   classic script, so they resolve as bare names. Nothing here redeclares
+   one: everything this page owns lives inside this function.
+   ============================================================ */
+var HW=24.2, PMYP={}; PMBANDS.forEach(function(b){PMYP[b.k]=b.yp;});
+/* restated from atuned_src/ui/component.js:205. A three line traversal the
+   engine build does not carry. */
+function leaves(o){if(!o||!o.parts)return o?[o]:[];
+ var a=[],sn={};(function dig(x){if(x.parts)x.parts.forEach(dig);
+  else if(!sn[x.i]){sn[x.i]=1;a.push(x);}})(o);return a;}
+/* restated from atuned_src/ui/map.js:23, so an address sits exactly where
+   the product puts it. */
+var _pos={};
+function pmNode(id,k){
+ if(_pos[id])return _pos[id];
+ var baseY=(PMYP[k]!=null?PMYP[k]:30),n=0,s=String(id);
+ for(var i=0;i<s.length;i++)n=(n*31+s.charCodeAt(i))>>>0;
+ var q=(n*2654435761)%1000,ang=(q/1000)*Math.PI*2,rx=6.4+(q%7),ry=2.4+((q>>3)%4);
+ return (_pos[id]={x:Math.max(50-HW*0.9,Math.min(50+HW*0.9,50+Math.cos(ang)*rx)),
+                   y:Math.max(2,Math.min(97,baseY+Math.sin(ang)*ry))});}
+function seatKeyOf(n){
+ if(n.b==='Field-Above')return 'crown'; if(n.b==='Field-Below')return 'root';
+ return B2K[n.b]||'heart';}
+function colOf(b){return PAL[b]||PAL[(b==='Field-Above')?'Crown':'Root']||'#888';}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){
+ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+
+/* ============================================================
+   A REAL PROFILE, LOADED THE WAY THE GATES LOAD ONE, and every law marked
+   answered, because since 25 September CQ sums only answered laws and a
+   loader that forgets that reads a different CQ from the product. The
+   shots script checks Gordon against the product's own number.
+   ============================================================ */
+var R=null, WHO='Gordon';
+/* restated from atuned_src/ui/personas.js seedIntake. A reference profile's
+   laws reach the product through three intake answers each, not straight
+   off LAWSET, and the first cut of this page skipped that and read Gordon at
+   CQ 17.5 where the product prints 19.3. The shots script caught it. */
+function seedAnswers(p){
+ var LS=p.law||LAWSET[p.nm]||{_:LAW_DEFAULT}, base=(LS._!==undefined)?LS._:LAW_DEFAULT;
+ var bias=(p.nm||'').length%3, ans={};
+ SI.forEach(function(l,li){
+  var v=(LS[l.nm]!==undefined)?LS[l.nm]:base;
+  var split=Math.max(0,(9-v))*(0.62+bias*0.30); if(v<7)split=Math.max(split,3.4);
+  var L=clamp(v+split/2,0,10), Rr=clamp(v-split/2,0,10), N=clamp(v,0,10);
+  if(bias===1){var t=L;L=Rr;Rr=t;}
+  ans[li*3]=Math.round(L*10)/10; ans[li*3+1]=Math.round(Rr*10)/10; ans[li*3+2]=Math.round(N*10)/10;});
+ return ans;}
+function loadRoster(nm){
+ var p=null; PEOPLE.forEach(function(x){if(x.nm===nm)p=x;}); if(!p)return;
+ S.doms=p.doms?p.doms.slice():[p.dom]; S.arcs=p.arcs?p.arcs.slice():[p.a1,p.a2]; S.roots=[]; buildSoul();
+ CHARGES.forEach(function(c){S.charge[c]=(p.c&&p.c[c]!==undefined)?p.c[c]:0; S.replace[c]=(p.rep&&p.rep[c])||0;});
+ var LS=p.law||LAWSET[nm]||{_:LAW_DEFAULT};
+ SINAMES.forEach(function(l){S.law[l]=(LS[l]!==undefined)?LS[l]:(LS._!==undefined?LS._:LAW_DEFAULT);
+  LAW_UNSET[l]=false;});
+ var pr=blankProfile(nm); pr.intake.answers=seedAnswers(p); iqApply(pr);
+ WHO=nm; R=compute(); _pos={};}
+
+/* ============================================================
+   THE STACK. Largest at the top, the fetter at the base, which is the
+   order the knowledge menu takes too, so a person meets one order.
+   Every level is the engine's own list, heaviest first.
+   ============================================================ */
+var GLYPH={
+ mask:'M4 8 H20 V13 A8 8 0 0 1 4 13 Z',
+ sup:'M12 3 L14.5 9.5 L21 12 L14.5 14.5 L12 21 L9.5 14.5 L3 12 L9.5 9.5 Z',
+ hy:'M12 3 L20 8 V16 L12 21 L4 16 V8 Z',
+ cx:'M12 4 A8 8 0 1 0 12 20 A8 8 0 1 0 12 4 M12 8 A4 4 0 1 1 12 16 A4 4 0 1 1 12 8',
+ sab:'M12 4 L19 18 H5 Z',
+ axis:'M12 3 A9 9 0 1 0 12 21 A9 9 0 1 0 12 3 M12 8 V16 M8 12 H16',
+ fet:'M12 5 A7 7 0 1 0 12 19 A7 7 0 1 0 12 5 M12 10 A2 2 0 1 0 12 14 A2 2 0 1 0 12 10'};
+var KIND={mask:'Mask',sup:'Character layer',hy:'Hyper-complex',cx:'Complex',sab:'Saboteur',
+ axis:'Child emotion',fet:'Fetter'};
+var LVLS=[['mask','Masks'],['sup','Character layers'],['hy','Hyper-complexes'],
+ ['cx','Complexes'],['sab','Saboteurs'],['axis','Child emotions'],['fet','Fetters']];
+function items(k){
+ var r=R;
+ /* a mask with nothing under it is not worn, so it is not listed. On a blank
+    profile all six read 0 and the level says nothing held, which is the
+    AU10 defect the product's own Body still has. */
+ if(k==='mask')return r.maskRing.filter(function(m){return m.w>0;}).sort(function(a,b){return b.w-a.w;}).map(function(m){
+  var lv=W.filter(function(n){return m.bands.indexOf(n.b)>=0&&n.sq>=4;});
+  return {id:'mask:'+m.nm,k:k,nm:m.nm,w:m.w,lv:lv,bands:m.bands,o:m};});
+ if(k==='sup')return r.sups.map(function(o){return {id:'sup:'+o.nm,k:k,nm:o.nm,w:o.w,lv:leaves(o),o:o};});
+ if(k==='hy')return r.hys.map(function(o){return {id:'hy:'+o.nm,k:k,nm:o.nm,w:o.w,lv:leaves(o),o:o};});
+ if(k==='cx')return r.cxs.slice().sort(function(a,b){return b.w-a.w;})
+  .map(function(o){return {id:'cx:'+o.nm,k:k,nm:o.nm,w:o.w,lv:leaves(o),o:o};});
+ if(k==='sab')return r.sabs.map(function(o){return {id:'sab:'+o.nm,k:k,nm:o.nm,w:o.w,lv:leaves(o),o:o};});
+ if(k==='axis')return CHILD.map(function(c){
+  var lv=W.filter(function(n){return n.cf===c.nm&&n.sq>0;});
+  return {id:'axis:'+c.nm,k:k,nm:c.nm,w:S.charge[c.nm]||0,lv:lv,o:c};})
+  .filter(function(x){return x.lv.length;}).sort(function(a,b){return b.w-a.w;});
+ /* the product's own carrying list, so the count matches the Body button */
+ if(k==='fet')return (r.carrying||W.filter(function(n){return n.sq>0;})).slice().sort(function(a,b){return b.sq-a.sq;})
+  .map(function(n){return {id:'fet:'+n.i,k:k,nm:n.k,w:n.sq,lv:[n],o:n};});
+ return [];}
+var ALL={};
+function index(){ALL={}; LVLS.forEach(function(L){items(L[0]).forEach(function(x){ALL[x.id]=x;});});}
+
+/* the picks, newest first. eye is whether it is on the figure. */
+var PICKS=[], OPEN={sab:1}, SHOWALL={}, LENS={heat:1,flow:0,seats:1}, FRESH=null;
+function pick(id){
+ if(!ALL[id])return;
+ var at=-1; PICKS.forEach(function(p,i){if(p.id===id)at=i;});
+ var prev=at>=0?PICKS.splice(at,1)[0]:null;
+ PICKS.unshift({id:id,eye:true});
+ /* the figure carries the newest by default and whatever else has its eye
+    on. Four at once is the ceiling, the same working memory the product
+    measures every screen against, so the fifth eye turns the oldest off. */
+ PICKS.forEach(function(p,i){if(i>0&&!prev)p.eye=p.eye&&p.pinned;});
+ FRESH=id; draw();}
+function toggleEye(id){
+ PICKS.forEach(function(p){if(p.id===id){p.eye=!p.eye; p.pinned=p.eye;}});
+ var on=PICKS.filter(function(p){return p.eye;});
+ if(on.length>4){on[on.length-1].eye=false; on[on.length-1].pinned=false;}
+ FRESH=null; draw();}
+function drop(id){PICKS=PICKS.filter(function(p){return p.id!==id;}); FRESH=null; draw();}
+
+/* ============================================================
+   WHAT A SET OF PICKS SAYS TOGETHER. Computed, never written.
+   ============================================================ */
+function ownersOf(n){
+ return [].concat(R.sups,R.hys,R.cxs,R.sabs).filter(function(o){return leaves(o).indexOf(n)>=0;});}
+function contains(a,b){ /* is b inside a */
+ if(a.k==='axis'||b.k==='axis'||a.k==='mask'||b.k==='mask'||a.k==='fet')return false;
+ if(!a.o||!a.o.parts)return false;
+ var hit=false;(function dig(x){if(x===b.o)hit=true; if(x.parts)x.parts.forEach(dig);})(a.o);
+ return hit;}
+function synth(){
+ var P=PICKS.map(function(p){return ALL[p.id];}).filter(Boolean);
+ if(P.length<2)return null;
+ var cnt={}, where={}, on={};
+ P.forEach(function(x){var seen={};x.lv.forEach(function(n){if(seen[n.i])return;seen[n.i]=1;
+  cnt[n.i]=(cnt[n.i]||0)+1;});});
+ var union=[]; Object.keys(cnt).forEach(function(i){var n=BY[+i]; if(n)union.push(n);});
+ union.forEach(function(n){where[n.b]=(where[n.b]||0)+1; if(n.cf)on[n.cf]=(on[n.cf]||0)+1;});
+ var shared=union.filter(function(n){return cnt[n.i]>=2;})
+  .sort(function(a,b){return (cnt[b.i]-cnt[a.i])||(b.sq-a.sq);});
+ /* one chain: every pick nested inside the next larger one */
+ var bySize=P.slice().filter(function(x){return x.o&&(x.o.parts||x.k==='sab');})
+  .sort(function(a,b){return a.lv.length-b.lv.length;});
+ var chain=bySize.length>=2&&bySize.every(function(x,i){return i===0||contains(x,bySize[i-1]);});
+ /* where to start: the address under the most of what is picked, then under
+    the most of everything running, then the heaviest */
+ var start=union.slice().sort(function(a,b){
+  return (cnt[b.i]-cnt[a.i])||(ownersOf(b).length-ownersOf(a).length)||(b.sq-a.sq);})[0];
+ return {P:P,cnt:cnt,union:union,where:where,on:on,shared:shared,chain:chain?bySize:null,start:start};}
+
+/* ============================================================
+   DRAW
+   ============================================================ */
+function glyph(k,c,sz){return '<svg class="gl" viewBox="0 0 24 24" aria-hidden="true" style="width:'+(sz||22)+'px;height:'+(sz||22)+'px">'
+ +'<path d="'+GLYPH[k]+'" fill="none" stroke="'+(c||'currentColor')+'" stroke-width="1.8" stroke-linejoin="round"/></svg>';}
+var DASH=['','2.2 1.2','0.6 1.1','3.4 1.0 0.6 1.0'];
+function drawStack(){
+ var h='';
+ LVLS.forEach(function(L){
+  var list=items(L[0]), n=list.length, open=!!OPEN[L[0]];
+  h+='<div class="lvl'+(open?' open':'')+(n?'':' none')+'">'
+   +'<button class="lvh" data-lv="'+L[0]+'" aria-expanded="'+open+'">'
+   +glyph(L[0],'var(--mid)',20)+'<span class="nm">'+L[1]+'</span>'
+   +'<span class="n">'+(n?n:'nothing held')+'</span>'
+   +'<svg class="ch" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2"/></svg>'
+   +'</button><div class="rows">';
+  var show=SHOWALL[L[0]]?list:list.slice(0,6);
+  show.forEach(function(x){
+   var on=PICKS.some(function(p){return p.id===x.id;});
+   var seat=x.lv[0]?x.lv[0].b:'Heart';
+   h+='<button class="row'+(on?' on':'')+'" data-pick="'+esc(x.id)+'" title="'+esc(x.nm)+'">'
+    +glyph(L[0],colOf(x.k==='axis'?(x.o.seat||seat):seat))
+    +'<span class="rn">'+esc(x.nm)+'</span><span class="rw">'+x.w.toFixed(1)+'</span></button>';});
+  if(n>6&&!SHOWALL[L[0]])h+='<button class="more" data-all="'+L[0]+'">Show all '+n+'</button>';
+  h+='</div></div>';});
+ var el=document.getElementById('stack'); el.innerHTML=h;
+ el.querySelectorAll('[data-lv]').forEach(function(b){b.onclick=function(){
+  var k=b.getAttribute('data-lv'); OPEN[k]=!OPEN[k]; FRESH=null; drawStack();};});
+ el.querySelectorAll('[data-pick]').forEach(function(b){b.onclick=function(){pick(b.getAttribute('data-pick'));};});
+ el.querySelectorAll('[data-all]').forEach(function(b){b.onclick=function(){SHOWALL[b.getAttribute('data-all')]=1;drawStack();};});}
+
+function drawFig(){
+ var vis=PICKS.filter(function(p){return p.eye;}).map(function(p){return ALL[p.id];}).filter(Boolean);
+ var h='<svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" role="img" aria-label="The body, with what you picked drawn on it">'
+  +'<defs><clipPath id="clip"><path transform="translate('+PMTX+','+PMTY+') scale('+PMS+')" d="'+BODYPATH+'"/></clipPath>'
+  +'<filter id="blur" x="-25%" y="-25%" width="150%" height="150%"><feGaussianBlur stdDeviation="2.4"/></filter>';
+ /* the heat is the heat of what is picked, weighted the way map.js pmHeat
+    weights a pattern layer. With nothing picked it is the whole field. */
+ var by={}, any=0;
+ var src=vis.length?vis:[{w:10,lv:NODES.filter(function(n){return n.sq>=4;})}];
+ src.forEach(function(x){var w=Math.max(0.5,(x.w||0))/10;
+  x.lv.forEach(function(n){var k=seatKeyOf(n); by[k]=(by[k]||0)+w*Math.max(.15,Math.min(1,n.sq/10)); any=1;});});
+ var mx=0; Object.keys(by).forEach(function(k){if(by[k]>mx)mx=by[k];});
+ PMBANDS.forEach(function(b){var g=Math.sqrt(mx?(by[b.k]||0)/mx:0);
+  h+='<radialGradient id="h-'+b.k+'"><stop offset="0%" stop-color="'+b.c+'" stop-opacity="'+(0.05+g*0.62).toFixed(3)+'"/>'
+   +'<stop offset="45%" stop-color="'+b.c+'" stop-opacity="'+(0.03+g*0.30).toFixed(3)+'"/>'
+   +'<stop offset="100%" stop-color="'+b.c+'" stop-opacity="0"/></radialGradient>';});
+ h+='</defs>';
+ h+='<g transform="translate('+PMTX+','+PMTY+') scale('+PMS+')"><path d="'+BODYPATH+'" fill="rgba(150,152,160,.085)" '
+  +'stroke="#EFEDE8" stroke-opacity=".30" stroke-width="1.6" vector-effect="non-scaling-stroke"/></g>';
+ if(LENS.heat){
+  h+='<g style="mix-blend-mode:screen" filter="url(#blur)" clip-path="url(#clip)">';
+  PMBANDS.forEach(function(b){var g=Math.sqrt(mx?(by[b.k]||0)/mx:0), rr=(b.r/10)*(9.4+g*4.6);
+   h+='<ellipse cx="50" cy="'+b.yp+'" rx="'+(rr*0.92).toFixed(2)+'" ry="'+rr.toFixed(2)+'" fill="url(#h-'+b.k+')"/>';});
+  h+='</g>';}
+ /* the flow lens: the product's one channel, its width at each seat that
+    seat's own pass. Shown only when asked for, because it is a whole body
+    reading and the picks are not. */
+ if(LENS.flow){
+  var seats=FLOWSEAT.map(function(p){var b=K2B[p.k],seg=W.filter(function(n){return n.b===b;});
+   var hot=seg.filter(function(n){return n.sq>=4;}); var load=hot.reduce(function(a,n){return a+n.sq;},0)/Math.max(1,seg.length)/10;
+   return {k:p.k,y:PMYP[p.k],pass:Math.max(0,1-load*1.35),c:PAL[b]};}).sort(function(a,b){return a.y-b.y;});
+  var half=function(s){return 0.40+s.pass*1.25;};
+  var Lp=[],Rp=[]; seats.forEach(function(s){Lp.push([50-half(s),s.y]);Rp.push([50+half(s),s.y]);});
+  var d='M'+Lp.map(function(p){return p[0].toFixed(2)+','+p[1];}).join(' L')+' L'
+   +Rp.slice().reverse().map(function(p){return p[0].toFixed(2)+','+p[1];}).join(' L')+' Z';
+  h+='<path d="'+d+'" fill="rgba(126,184,212,.10)" stroke="#7EB8D4" stroke-opacity=".7" stroke-width=".35"/>';}
+ if(LENS.seats)PMBANDS.forEach(function(b){
+  h+='<circle cx="50" cy="'+b.yp+'" r="1.1" fill="none" stroke="'+b.c+'" stroke-width=".35" opacity=".8"/>';});
+ /* the addresses of what is on the figure. A knot where two share one. */
+ var cnt={}, first={};
+ vis.forEach(function(x,vi){var seen={}; x.lv.forEach(function(n){if(seen[n.i])return; seen[n.i]=1;
+  cnt[n.i]=(cnt[n.i]||0)+1; if(first[n.i]===undefined)first[n.i]=vi;});});
+ /* the patterns themselves, beside the body, with their arcs */
+ vis.forEach(function(x,vi){
+  if(x.k==='fet'||x.k==='axis'||x.k==='mask')return;
+  var ys=x.lv.map(function(n){return PMYP[seatKeyOf(n)];}).filter(function(v){return v!=null;});
+  if(!ys.length)return;
+  var my=ys.reduce(function(a,b){return a+b;},0)/ys.length;
+  var side=(vi%2)?1:-1, mxp=50+side*(21+(vi>>1)*4.8);
+  var sc=colOf(x.lv[0].b);
+  x.lv.slice(0,28).forEach(function(n){var p=pmNode(n.i,seatKeyOf(n));
+   var dx=p.x-mxp, dy=p.y-my, len=Math.sqrt(dx*dx+dy*dy)||1, bow=Math.min(8,len*0.28);
+   var cx2=(mxp+p.x)/2+(-dy/len)*bow*side*-1, cy2=(my+p.y)/2+(dx/len)*bow*side*-1;
+   h+='<path d="M'+mxp.toFixed(2)+','+my.toFixed(2)+' Q'+cx2.toFixed(2)+','+cy2.toFixed(2)+' '+p.x.toFixed(2)+','+p.y.toFixed(2)
+    +'" fill="none" stroke="'+colOf(n.b)+'" stroke-width=".28" stroke-dasharray="'+DASH[vi%4]+'" opacity="'+(vi?0.55:0.8)+'"/>';});
+  h+='<circle cx="'+mxp.toFixed(2)+'" cy="'+my.toFixed(2)+'" r="2.6" fill="#101010" stroke="'+sc+'" stroke-width=".5" stroke-dasharray="'+DASH[vi%4]+'"/>'
+   +'<g transform="translate('+(mxp-1.4).toFixed(2)+','+(my-1.4).toFixed(2)+') scale(.1167)"><path d="'+GLYPH[x.k]+'" fill="none" stroke="#EFEDE8" stroke-width="2" opacity=".9"/></g>';});
+ Object.keys(cnt).forEach(function(i){var n=BY[+i]; if(!n)return;
+  var p=pmNode(n.i,seatKeyOf(n)), c=colOf(n.b), k=cnt[i], v=Math.max(0,Math.min(1,n.sq/10));
+  var r0=0.9+v*1.3;
+  for(var j=0;j<k;j++)h+='<circle cx="'+p.x.toFixed(2)+'" cy="'+p.y.toFixed(2)+'" r="'+(r0+j*0.75).toFixed(2)
+   +'" fill="none" stroke="'+c+'" stroke-width="'+(j?0.26:0.36)+'" opacity="'+(0.55+v*0.4).toFixed(2)+'"/>';
+  h+='<circle cx="'+p.x.toFixed(2)+'" cy="'+p.y.toFixed(2)+'" r="'+(0.28+v*0.35+(k>1?0.25:0)).toFixed(2)+'" fill="'+c+'" opacity=".95"/>';});
+ h+='</svg>';
+ document.getElementById('fig').innerHTML=h;
+ /* the legend is about the tool, so it may sit under the figure */
+ var lg='';
+ vis.forEach(function(x,vi){
+  /* a line sample only for a thing that draws lines on the body */
+  var arcs=!(x.k==='fet'||x.k==='axis'||x.k==='mask');
+  lg+='<span>'+glyph(x.k,'var(--mid)',18)+(arcs?'<svg width="26" height="8" aria-hidden="true"><line x1="1" y1="4" x2="25" y2="4" stroke="#B4B0A8" stroke-width="1.6" stroke-dasharray="'
+   +(DASH[vi%4]?DASH[vi%4].split(' ').map(function(v){return (+v*4).toFixed(1);}).join(' '):'')+'"/></svg>':'')+esc(x.nm)+'</span>';});
+ if(Object.keys(cnt).some(function(i){return cnt[i]>1;}))
+  lg+='<span><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="4" fill="none" stroke="#B4B0A8"/><circle cx="9" cy="9" r="7" fill="none" stroke="#B4B0A8" stroke-width=".8"/></svg>a ring per pattern it feeds</span>';
+ if(!vis.length)lg='<span>Press anything in the stack. It goes on the body.</span>';
+ document.getElementById('legend').innerHTML=lg;}
+
+function seatWord(b){return String(b).replace('3rd Eye','third eye').toLowerCase();}
+function card(x,i,p){
+ var mini=i>=2&&x.id!==FRESH;
+ var seats=[]; x.lv.forEach(function(n){var s=n.b.indexOf('Field')===0?(n.b==='Field-Above'?'Crown':'Root'):n.b; if(seats.indexOf(s)<0)seats.push(s);});
+ var eyeI='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z M12 9a3 3 0 1 0 0 6a3 3 0 1 0 0-6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>';
+ var xI='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7L7 17" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>';
+ var h='<div class="card'+(mini?' min':'')+(x.id===FRESH?' new':'')+'">'
+  +'<div class="chd">'+glyph(x.k,colOf(seats[0]||'Heart'),22)+'<div class="t">'
+  +(mini?'':'<div class="k">'+KIND[x.k]+(x.o&&x.o.over?', overshot':'')+'</div>')
+  +'<div class="nm">'+esc(x.nm)+'</div></div>'
+  +'<span class="w">'+x.w.toFixed(1)+'</span>'
+  +'<div class="ctl"><button class="ib" data-eye="'+esc(x.id)+'" aria-pressed="'+p.eye+'" aria-label="'+(p.eye?'Take '+esc(x.nm)+' off the body':'Put '+esc(x.nm)+' on the body')+'" title="On the body">'+eyeI+'</button>'
+  +'<button class="ib" data-drop="'+esc(x.id)+'" aria-label="Remove '+esc(x.nm)+'" title="Remove">'+xI+'</button></div></div>';
+ if(mini)return h+'</div>';
+ /* one plain line of what it is, never the clinical correspondence */
+ var line='';
+ if(x.k==='hy')line=x.o.d?(x.o.d.charAt(0).toUpperCase()+x.o.d.slice(1)+'.'):'';
+ else if(x.k==='sab'){var def=(typeof SABDEF!=='undefined')?SABDEF[KB_KEY(x.o.nm)]:null;
+  line=def&&def.d?def.d:(x.o.named?'A named saboteur, matched on the charge it runs on.':'Inferred from where the charge sits. The library has no name for this cluster.');}
+ else if(x.k==='cx')line='Two saboteurs of one family, running together.';
+ else if(x.k==='sup')line='Two hyper-complexes compounded. It costs more than it looks like it should, because it is hard to see as separate from you.';
+ else if(x.k==='axis')line='Held at '+x.w.toFixed(1)+', moving toward '+esc(x.o.opp)+'.';
+ else if(x.k==='mask')line=x.o&&MASKS.filter(function(m){return m.nm===x.nm;})[0]?('It '+MASKS.filter(function(m){return m.nm===x.nm;})[0].v+'.'):'';
+ else if(x.k==='fet')line='One address, at the '+seatWord(x.o.b)+', running on '+esc(x.o.cf||'no axis')+'.';
+ if(line)h+='<p>'+esc(line)+'</p>';
+ h+='<div class="ln"><span class="lk">Sits at</span>'+seats.map(function(s){return '<span style="color:'+colOf(s)+'">'+seatWord(s)+'</span>';}).join(', ')+'</div>';
+ if(x.k!=='fet'&&x.k!=='axis'){
+  var lv=x.lv.slice().sort(function(a,b){return b.sq-a.sq;});
+  h+='<div class="ln"><span class="lk">Made of '+lv.length+' address'+(lv.length===1?'':'es')+'</span>'
+   +lv.slice(0,4).map(function(n){return esc(n.k)+' '+n.sq.toFixed(1);}).join(', ')+(lv.length>4?', and '+(lv.length-4)+' more':'')+'</div>';}
+ /* what it is part of, as doors. This is the path a person follows up the
+    stack without having to know the stack exists. */
+ if(x.o&&(x.k==='sab'||x.k==='cx'||x.k==='hy')){
+  var up=[];
+  R.cxs.forEach(function(c){if(c.parts.indexOf(x.o)>=0)up.push('cx:'+c.nm);});
+  R.hys.forEach(function(hh){if(hh.parts.indexOf(x.o)>=0||hh.parts.some(function(c){return c.parts&&c.parts.indexOf(x.o)>=0;}))up.push('hy:'+hh.nm);});
+  R.sups.forEach(function(s){if(s.parts.some(function(hh){return hh===x.o||(hh.parts||[]).some(function(c){return c===x.o||(c.parts||[]).indexOf(x.o)>=0;});}))up.push('sup:'+s.nm);});
+  if(up.length)h+='<div class="ln"><span class="lk">Part of</span>'+up.map(function(id){var y=ALL[id];
+   return y?'<button class="link" data-pick="'+esc(id)+'">'+esc(y.nm)+'</button>':'';}).join('<br>')+'</div>';}
+ if(x.k==='axis'){
+  var lva=x.lv.slice().sort(function(a,b){return b.sq-a.sq;}), up4=lva.filter(function(n){return n.sq>=4;}).length;
+  h+='<div class="ln"><span class="lk">Runs '+lva.length+' fetters'+(up4===lva.length?', every one above the line':(up4?', '+up4+' above the line':''))+'</span>'
+   +lva.slice(0,4).map(function(n){return esc(n.k)+' '+n.sq.toFixed(1);}).join(', ')+(lva.length>4?', and '+(lva.length-4)+' more':'')+'</div>';}
+ return h+'</div>';}
+function drawSide(){
+ var h='<p class="eye">What you have picked</p>';
+ if(!PICKS.length){h+='<p class="empty">Nothing picked yet. Press anything in the stack on the left and it goes on the body. Press more, and what they have in common builds up here.</p>';}
+ var s=synth();
+ if(s){
+  h+='<div class="syn"><h2>How these run through you</h2>';
+  if(s.chain){h+='<p><b>One chain.</b> '+s.chain.map(function(x){return esc(x.nm);}).join(', inside ')+'.</p>';}
+  if(s.shared.length){
+   h+='<p><b>Shared ground.</b> '+s.shared.slice(0,4).map(function(n){
+     return esc(n.k)+' <span style="color:'+colOf(n.b)+'">'+seatWord(n.b)+'</span> '+n.sq.toFixed(1);}).join(', ')
+    +(s.shared.length>4?', and '+(s.shared.length-4)+' more':'')+'. Each of these sits under more than one thing you picked.</p>';}
+  else h+='<p><b>No shared ground.</b> Nothing you picked stands on the same address. They run side by side.</p>';
+  var ws=Object.keys(s.where).sort(function(a,b){return s.where[b]-s.where[a];});
+  h+='<p><b>Where they sit.</b> '+ws.slice(0,4).map(function(b){return '<span style="color:'+colOf(b)+'">'+seatWord(b)+'</span> '+s.where[b];}).join(', ')+(ws.length>4?', and '+(ws.length-4)+' more seats':'')+'.</p>';
+  var os=Object.keys(s.on).sort(function(a,b){return s.on[b]-s.on[a];});
+  if(os.length)h+='<p><b>What they run on.</b> '+os.slice(0,3).map(function(c){return esc(c)+' '+s.on[c];}).join(', ')+(os.length>3?', and '+(os.length-3)+' more':'')+'.</p>';
+  if(s.start){var ow=ownersOf(s.start), own=ow.length;
+   /* when the address feeds more than one hyper-complex, that is the reason
+      it is the place to start, so the sentence says it: one release there
+      takes ground from two families at once */
+   var fams=ow.filter(function(o){return o.kind==='hy';}).map(function(o){return o.nm;});
+   h+='<div class="start"><p><b>Start here: '+esc(s.start.k)+'.</b> '+seatWord(s.start.b)+', '+esc(s.start.cf||'no axis')+', holding '+s.start.sq.toFixed(1)
+    +'. It sits under '+(s.cnt[s.start.i]===s.P.length?'everything':'most of what')+' you picked, and under '+own+' patterns running in all'
+    +(fams.length>=2?', across two hyper-complexes, '+esc(fams[0])+' and '+esc(fams[1]):'')+'.</p>'
+    +'<button class="btn pri" type="button" title="In the product this opens the release on this address">Run the protocol here</button></div>';}
+  h+='</div>';}
+ PICKS.forEach(function(p,i){var x=ALL[p.id]; if(x)h+=card(x,i,p);});
+ var el=document.getElementById('side'); el.innerHTML=h;
+ el.querySelectorAll('[data-eye]').forEach(function(b){b.onclick=function(){toggleEye(b.getAttribute('data-eye'));};});
+ el.querySelectorAll('[data-drop]').forEach(function(b){b.onclick=function(){drop(b.getAttribute('data-drop'));};});
+ el.querySelectorAll('[data-pick]').forEach(function(b){b.onclick=function(){pick(b.getAttribute('data-pick'));};});
+ var pk=document.getElementById('peek');
+ pk.innerHTML=PICKS.length?('<span>'+PICKS.length+' picked'+(s&&s.start?'. Start here: <b>'+esc(s.start.k)+'</b>':'')+'</span>'
+  +'<button class="btn" type="button" id="peekgo">Read it</button>'):'<span>Press anything in the stack</span>';
+ var pg=document.getElementById('peekgo'); if(pg)pg.onclick=function(){el.scrollIntoView({behavior:'smooth'});};}
+function draw(){
+ document.getElementById('who').textContent=WHO+', coherence '+Math.round(R.CQ)+', shadow weight '+Math.round(R.DQ);
+ drawStack(); drawFig(); drawSide();}
+
+/* lenses are toggles, several at once, because a lens is a way of looking
+   at the whole body and not a thing picked out of it */
+document.querySelectorAll('[data-lens]').forEach(function(b){b.onclick=function(){
+ var k=b.getAttribute('data-lens'); LENS[k]=!LENS[k]; b.setAttribute('aria-pressed',!!LENS[k]); FRESH=null; drawFig();};});
+var sel=document.getElementById('psel');
+PEOPLE.forEach(function(p){if(p.nm==='You')return; var o=document.createElement('option'); o.value=p.nm; o.textContent=p.nm; sel.appendChild(o);});
+sel.onchange=function(){loadRoster(sel.value); index(); PICKS=[]; draw();};
+
+/* THE WALK. #walk=N replays Gordon's first N moves so the shots can show
+   the right side after each one. Every move is a press a person makes on
+   this page: a row in the stack, or a door on a card. */
+var WALK=[
+ function(){OPEN={sab:1}; pick('sab:'+R.sabs[0].nm);},
+ function(){var c=R.cxs.filter(function(c){return c.parts.indexOf(R.sabs[0])>=0;})[0]; if(c)pick('cx:'+c.nm);},
+ function(){var c=R.cxs.filter(function(c){return c.parts.indexOf(R.sabs[0])>=0;})[0];
+  var hh=R.hys.filter(function(h){return h.parts.indexOf(c)>=0;})[0]; if(hh)pick('hy:'+hh.nm);},
+ function(){toggleEye('sab:'+R.sabs[0].nm);},
+ function(){OPEN.axis=1; pick('axis:Fear');}];
+var q=new URLSearchParams(location.search), hsh=new URLSearchParams(location.hash.slice(1));
+var who=q.get('who')||hsh.get('who')||'Gordon';
+loadRoster(who); sel.value=who; index();
+var n=+(hsh.get('walk')||0);
+for(var i=0;i<n&&i<WALK.length;i++)WALK[i]();
+draw();
+/* for the shots: what the engine said, so the script can check it against
+   the product before believing any picture */
+window.__bs={who:WHO,CQ:R.CQ,EX:R.EX,DQ:R.DQ,picks:PICKS.map(function(p){return p.id+(p.eye?'+':'');}),
+ syn:(function(){var s=synth(); return s?{start:s.start&&s.start.k,shared:s.shared.map(function(n){return n.k;}),chain:s.chain&&s.chain.map(function(x){return x.nm;})}:null;})()};
+})();
+</script>
+</body>
+</html>

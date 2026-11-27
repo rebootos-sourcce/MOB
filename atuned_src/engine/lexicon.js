@@ -1,0 +1,1485 @@
+/* ============================================================
+   THE LEXICON. word -> [seat, intensity].
+   The original declared several keys twice across two blocks, so the
+   later generic entries silently cancelled the newer specific ones , 
+   the opposite of the stated intent. Merged here, one entry per key.
+   ============================================================ */
+var LEX={
+ /* ============================================================
+    WHAT AN ORDINARY SENTENCE BRINGS, and the reason this block exists.
+
+    Measured against six plain sentences a person would actually type, four
+    returned nothing at all: a father dying, being exhausted, feeling alone,
+    and a panic attack. Those are not edge cases. They are the four most
+    common things somebody opens an instrument like this to say, and the core
+    loop of the product is that a story is read for charge.
+
+    The gap was not conceptual. Almost every one of these concepts was already
+    here in ONE inflection and missing in the others: lonely but not alone,
+    grieving but not grief or died, drained and depleted but not exhausted,
+    panicked but not panic. A person writes what happened in nouns and verbs,
+    and this table was written in adjectives.
+
+    So this is the same map widened, not a new theory: the event words and the
+    noun forms of concepts already seated here, at the weights their existing
+    neighbours carry. Seats follow the ones already in use: grief and
+    loneliness at the heart, exhaustion and rage at the solar plexus, panic
+    and survival at the root, shame and worth at the sacral, deceit and being
+    unheard at the throat, meaninglessness at the crown, rumination at the
+    third eye.
+    ============================================================ */
+ /* WHAT ANGER LOOKS LIKE WHEN SOMEBODY DESCRIBES IT. The table had furious
+    and angry, which are the words a person uses about themselves afterwards,
+    and none of the verbs they use about what happened. "He shouted at me and I
+    slammed the door" read as nothing at all. */
+ shouted:['solar',24],yelled:['solar',24],screamed:['solar',26],
+ slammed:['solar',22],snapped:['solar',22],'lashed out':['solar',26],
+ 'blew up':['solar',26],'lost it':['solar',24],'saw red':['solar',26],
+ /* and what being unheard looks like from the outside, at the throat */
+ 'talked over':['throat',22],interrupted:['throat',20],'shut me down':['throat',24],
+ 'would not listen':['throat',24],'wouldnt listen':['throat',24],
+ 'nobody listened':['throat',24],
+ /* and being judged, at the sacral, where shame already sits */
+ criticised:['sacral',22],criticized:['sacral',22],'told me off':['sacral',22],
+ 'made me feel small':['sacral',26],laughed:['sacral',20],
+ /* grief and loss. heartbroken and grieving were here; the event was not. */
+ died:['heart',28],death:['heart',26],dying:['heart',26],'passed away':['heart',28],
+ grief:['heart',26],mourning:['heart',24],mourn:['heart',24],bereaved:['heart',26],
+ loss:['heart',22],funeral:['heart',24],buried:['heart',22],widowed:['heart',26],
+ miscarriage:['heart',28],stillborn:['heart',28],
+ /* alone. lonely was here and alone was not, which is the commoner word. */
+ alone:['heart',24],loneliness:['heart',24],isolated:['heart',22],
+ unwanted:['heart',22],'nobody cares':['heart',26],'no one came':['heart',24],
+ /* exhaustion. drained and depleted were here, the plain word was not. */
+ exhausted:['solar',26,'Apathy'],exhaustion:['solar',26,'Apathy'],weary:['solar',22,'Apathy'],
+ fatigue:['solar',22,'Apathy'],'wiped out':['solar',24,'Apathy'],'no energy':['solar',24,'Apathy'],
+ 'running on empty':['solar',26,'Apathy'],'cannot keep going':['solar',28,'Apathy'],
+ 'can not keep going':['solar',28,'Apathy'],'cant keep going':['solar',28,'Apathy'],
+ /* panic. panicked was here, the noun and the event were not. */
+ panic:['root',28],'panic attack':['root',28],panicking:['root',28],
+ terror:['root',28],petrified:['root',26],
+ /* being lied to. the throat carries deceit and had no verb for it. */
+ lied:['throat',24],lying:['throat',22],lies:['throat',22],
+ betrayed:['throat',28],betrayal:['throat',28],cheated:['throat',26],
+ deceived:['throat',24],'went behind my back':['throat',26],
+ /* overwhelm */
+ overwhelmed:['solar',26],drowning:['solar',26],'too much':['solar',22],
+ 'cannot cope':['solar',26],'cant cope':['solar',26],
+ /* rage. furious was here; the noun and the held forms were not. */
+ rage:['solar',28],livid:['solar',26],seething:['solar',24],
+ resentment:['solar',24],resentful:['solar',24],bitter:['solar',22],
+ bitterness:['solar',22],
+ /* shame and worth. humiliated was here, the rest of the family was not. */
+ mortified:['sacral',26],disgraced:['sacral',26],exposed:['sacral',22],
+ unlovable:['sacral',26],disgusting:['sacral',24],'not good enough':['sacral',24],
+ /* meaninglessness. numb and empty were here, the statements were not. */
+ meaningless:['crown',24],'nothing matters':['crown',26],
+ 'what is the point':['crown',24],'whats the point':['crown',24],
+ disconnected:['crown',22],detached:['crown',20],hollow:['crown',22],
+ /* rumination */
+ overthinking:['eye',22],'cannot stop thinking':['eye',24],
+ 'cant stop thinking':['eye',24],'going over it':['eye',20],replaying:['eye',22],
+ /* what the body reports, which is where a somatic instrument should be
+    widest and was not. */
+ 'chest is tight':['heart',24],'chest tight':['heart',24],
+ 'cannot breathe':['root',26],'cant breathe':['root',26],'holding my breath':['root',22],
+ 'jaw is tight':['throat',22],'jaw clenched':['throat',22],
+ 'throat closed':['throat',24],'stomach knot':['sacral',22],
+ nauseous:['sacral',22],'sick to my stomach':['sacral',24],
+ trembling:['root',24],shaky:['root',20],'heavy in my chest':['heart',24],
+ /* and the things that read as clear, which keep the scale honest at the
+    other end. The coherent seat already carried calm, settled and grateful. */
+ rested:['coherent',-12],easeful:['coherent',-12],unhurried:['coherent',-12],
+ 'slept well':['coherent',-14],'let it go':['coherent',-14],
+ /* the burnout set. the resolver had no entry for any of these and read
+    four segments out of thirty-three. */
+ inadequacy:['throat',24],inadequate:['throat',22],misery:['heart',24],
+ miserable:['heart',22],remorse:['heart',20],remorseful:['heart',18],
+ burnout:['solar',28,'Apathy'],'burnt out':['solar',28,'Apathy'],'burned out':['solar',28,'Apathy'],
+ depleted:['solar',24,'Apathy'],drained:['solar',22,'Apathy'],evaporated:['solar',20,'Apathy'],
+ throbbing:['eye',18],throb:['eye',16],pounding:['eye',20],
+ tense:['throat',16],tension:['throat',16],tight:['throat',16],clenched:['throat',20],
+ crushed:['heart',26],humiliating:['throat',22],
+ dread:['root',24],dreading:['root',22],bracing:['root',14],
+ defeated:['heart',22],hopeless:['heart',26],pointless:['crown',22],
+ resigned:['heart',18],flattened:['heart',20],
+ grueling:['solar',18],relentless:['solar',18],
+ /* root */
+ nervous:['root',14],anxious:['root',16],scared:['root',18],afraid:['root',16],
+ frightened:['root',18],terrified:['root',26],panicked:['root',24],froze:['root',18],
+ frozen:['root',18],shaking:['root',20],unsafe:['root',20],
+ /* PARALYZED WAS NOT A WORD THE SCANNER KNEW, and it is one of the owner's two
+    anchors: "I'm a little tense is different than I'm paralyzed, it's orders
+    of magnitude different." Measured before this: "I am paralyzed" read
+    nothing at all (AZ6). Seated where frozen is, at the root, because it is
+    the freeze taken to its end, and at the top of the authored curve, 28,
+    where the desktop puts it at the top of its own (paralysis 30 of 30). */
+ paralyzed:['root',28],paralysed:['root',28],paralysis:['root',28],
+ /* sacral */
+ restless:['sacral',12],craving:['sacral',14],numb:['sacral',16],empty:['sacral',18],
+ hungry:['sacral',12],addicted:['sacral',22],distracted:['sacral',12],obsessed:['sacral',20],
+ /* solar */
+ /* THE SHAME FAMILY AT THE SOLAR PLEXUS STATES ITS FETTER, round GR. Measured
+    on 27 September: "I feel ashamed that I am relieved" came back as four
+    inferred Solar Anger imprints and the Story page printed "Anger +1.7" four
+    times. ADJ2CHG already says every one of these six words is shame, but that
+    only put Shame in wanted, and the solar plexus carries one Shame address of
+    sixteen, under the quarter rule, so the seat fell back to its modal fetter,
+    Anger. The third element is the same fact ADJ2CHG holds, written where the
+    stated fetter branch honours it, exactly as the exhaustion family does.
+    lexFamilyFloor already priced these six as Shame through ADJ2CHG, so the
+    family floor does not move. The SEAT is unchanged and is the owner's open
+    ruling (QUESTIONS.md 0l); only which fetter the seat resolves to moves.
+    The other words where ADJ2CHG and the reading disagree were measured and
+    left alone for a ruling: detached, disconnected and hollow at the crown,
+    unheard, voiceless, choked, tense and tensed at the throat, nervous and
+    anxious at the root. Key order is unchanged. */
+ angry:['solar',18],furious:['solar',24],ashamed:['solar',20,'Shame'],humiliated:['solar',24,'Shame'],
+ defensive:['solar',16],blamed:['solar',18],stupid:['solar',20,'Shame'],worthless:['solar',26,'Shame'],
+ embarrassed:['solar',16,'Shame'],guilty:['solar',18,'Shame'],
+ /* heart */
+ sad:['heart',16],lonely:['heart',20],grieving:['heart',22],hurt:['heart',18],
+ rejected:['heart',22],abandoned:['heart',26],unloved:['heart',24],heartbroken:['heart',26],
+ /* throat */
+ silent:['throat',14],unheard:['throat',18],voiceless:['throat',20],choked:['throat',18],
+ dismissed:['throat',18],ignored:['throat',18],
+ /* coherent. these subtract. */
+ grateful:['coherent',-14],content:['coherent',-12],calm:['coherent',-12],
+ steady:['coherent',-12],peaceful:['coherent',-14],settled:['coherent',-12],
+ /* THE HAPPY FAMILY, the other half of round PA/TC's feelings wheel, round
+    TD, 8 November. His own words, asked directly whether Happy should
+    score the way the painful families do: "Yeah, they should. The happy
+    word should." Held back in TC on the reading that a positive word might
+    not belong on the body at all; settled now, in the affirmative, and
+    read undiluted rather than softened, his own frame: "the 25 are part of
+    jouissance." Seated the same way grateful, content, calm, steady,
+    peaceful and settled already are, right above: coherent, a negative
+    amount, because a coherent reading subtracts rather than adds. */
+ thankful:['coherent',-14],joyful:['coherent',-14],hopeful:['coherent',-12],
+ optimistic:['coherent',-12],confident:['coherent',-12],proud:['coherent',-12],
+ successful:['coherent',-12],powerful:['coherent',-12],courageous:['coherent',-12],
+ creative:['coherent',-10],inspired:['coherent',-12],curious:['coherent',-10],
+ inquisitive:['coherent',-10],interested:['coherent',-10],playful:['coherent',-12],
+ free:['coherent',-12],accepted:['coherent',-12],respected:['coherent',-12],
+ valued:['coherent',-12],loving:['coherent',-14],trusting:['coherent',-12],
+ intimate:['coherent',-12],sensitive:['coherent',-10],aroused:['coherent',-10],
+ cheeky:['coherent',-10],
+ /* THE SNIFFER FINDS THE LIMITER, round SB, his own job description for the
+    mechanic: "if a person is describing their lack of value or self worth
+    or confidence or self respect, they're downgrading their solar plexus.
+    So the sniffer should find that." SB14 named the measurement before the
+    build: self worth, confidence, self respect and follow through, run
+    through the real sniffer first. Measured, round NO: all four returned
+    nothing. "I have no self worth. I feel like I have no confidence at
+    all" scored zero axes. "I just do not have any self respect anymore"
+    scored zero. Only the word worthless, already in this table, reached
+    anything, and it reached Shame at solar by itself. This is the coverage
+    hole SB13 named: "the lexicon already maps words to axes and seats, so
+    this is a coverage question rather than a new mechanism." Not a new
+    table, not a new scanner, an addition to this one, at the seat his own
+    words name and the fetter the family already seated here carries:
+    ashamed, humiliated, stupid, worthless, embarrassed and guilty are all
+    Shame at solar, round GR's own ruling, and a person naming no worth, no
+    confidence or no self respect is naming the same family in its own
+    words rather than its adjectives. */
+ 'no self worth':['solar',24,'Shame'],'lost my self worth':['solar',24,'Shame'],
+ 'no sense of self worth':['solar',24,'Shame'],'have no self worth':['solar',24,'Shame'],
+ 'feel no self worth':['solar',24,'Shame'],'not worth anything':['solar',22,'Shame'],
+ 'do not know my own worth':['solar',20,'Shame'],'dont know my own worth':['solar',20,'Shame'],
+ 'do not have any self worth':['solar',22,'Shame'],'dont have any self worth':['solar',22,'Shame'],
+ 'do not have self worth':['solar',22,'Shame'],'dont have self worth':['solar',22,'Shame'],
+ 'no confidence':['solar',22,'Shame'],'zero confidence':['solar',24,'Shame'],
+ 'no confidence in myself':['solar',24,'Shame'],'not confident in myself':['solar',22,'Shame'],
+ 'no self confidence':['solar',22,'Shame'],'lack the confidence':['solar',20,'Shame'],
+ 'lack confidence':['solar',20,'Shame'],'do not have any confidence':['solar',22,'Shame'],
+ 'dont have any confidence':['solar',22,'Shame'],'do not have the confidence':['solar',22,'Shame'],
+ 'dont have the confidence':['solar',22,'Shame'],
+ 'no self respect':['solar',22,'Shame'],'lost my self respect':['solar',22,'Shame'],
+ 'do not respect myself':['solar',20,'Shame'],'dont respect myself':['solar',20,'Shame'],
+ 'cannot respect myself':['solar',20,'Shame'],'cant respect myself':['solar',20,'Shame'],
+ 'do not have any self respect':['solar',22,'Shame'],'dont have any self respect':['solar',22,'Shame'],
+ 'do not have self respect':['solar',22,'Shame'],'dont have self respect':['solar',22,'Shame'],
+ /* FOLLOW THROUGH AND DISCIPLINE, the fourth term SB14 named, carries no
+    stated fetter. The quote seats discipline and follow through at the
+    solar plexus as POWER, the coherent direction: "if you're setting
+    rituals for discipline to follow through on the things you say you're
+    going to do, that's power, that's solar plexus." A person reporting the
+    absence of that is evidence the seat is known and not evidence of which
+    of the nine axes it is, so this is seated and left to the quarter rule
+    rather than guessing a fetter nothing here authors, the same posture the
+    exhaustion and overwhelm words above already take. */
+ 'no discipline':['solar',18],'no self discipline':['solar',18],
+ 'lack the discipline':['solar',18],'lack discipline':['solar',18],
+ 'never follow through':['solar',18],'do not follow through':['solar',18],
+ 'dont follow through':['solar',18],'cannot follow through':['solar',18],
+ 'cant follow through':['solar',18],'break my promises to myself':['solar',20],
+ 'let myself down again':['solar',18],'quit on myself':['solar',18],
+ /* ROUND NU, HIS OWN REPORT: "I was recording a voice session and I said
+    the word insecure and it didn't pick that up. It should have." Measured
+    before this: "I was insecure" and "I felt insecure about it" both read
+    nothing at all. The word was not missing a seat, it was missing
+    entirely: not in this table under any spelling, and "Insecurity" exists
+    only as one of Deflector's own three cue words in SAB33
+    (engine/data/canon.js), which the canon pass never reads into this
+    table, the same gap the ordinary-sentence block at the top of this file
+    exists to close for other common words. Seated with the family round NO
+    already built for exactly this register, low self worth and self doubt,
+    solar plexus, Shame: ashamed, humiliated, stupid, worthless,
+    embarrassed and guilty are already there. */
+ insecure:['solar',22,'Shame'],insecurity:['solar',22,'Shame'],
+ /* THE SAME MECHANIC, EXTENDED, not a new one. TASKS.md round RA (3 October)
+    and TA8, restated 8 November in his own words: "the sniffer needs to
+    sniff for limiters as well. A limiter are all the things that keep us
+    from doing things. Not performing well, not speaking well, not
+    communicating well. All the things where we say we're dumb, we're not
+    smart. I'm not as good as other people." Checked here before building
+    anything new, the way he asked: round SB/NO already built exactly this
+    mechanic for self worth, confidence, self respect and follow through,
+    at solar, Shame, right above. His new list is the same register, so it
+    is seated the same way and not a second table. */
+ 'im not smart':['solar',20,'Shame'],'i am not smart':['solar',20,'Shame'],
+ 'im not smart enough':['solar',22,'Shame'],'i am not smart enough':['solar',22,'Shame'],
+ 'im not as good as':['solar',20,'Shame'],'i am not as good as':['solar',20,'Shame'],
+ 'im not as good as other people':['solar',22,'Shame'],'i am not as good as other people':['solar',22,'Shame'],
+ 'im not good at this':['solar',18,'Shame'],'i am not good at this':['solar',18,'Shame'],
+ 'i cant do anything right':['solar',22,'Shame'],'i can not do anything right':['solar',22,'Shame'],
+ 'im bad at this':['solar',18,'Shame'],'i am bad at this':['solar',18,'Shame'],
+ 'i dont speak well':['solar',18,'Shame'],'i do not speak well':['solar',18,'Shame'],
+ 'i cant communicate well':['solar',18,'Shame'],'i can not communicate well':['solar',18,'Shame'],
+ 'im not performing well':['solar',16,'Shame'],'i am not performing well':['solar',16,'Shame'],
+ 'im so dumb':['solar',20,'Shame'],'i am so dumb':['solar',20,'Shame'],
+ 'im dumb':['solar',18,'Shame'],'i am dumb':['solar',18,'Shame'],
+ /* THE PAST TENSE, caught by the first team review of the left rail this
+    unlocks, 8 November: "my mother always told me I was not smart enough"
+    scored nothing, because every row above is present tense only, and a
+    pattern framed as handed down is told in the past tense almost by
+    definition, "I was", not "I am". Same rows, same seats, same weights,
+    "was" in place of "im"/"i am". */
+ 'i was not smart':['solar',20,'Shame'],'i was not smart enough':['solar',22,'Shame'],
+ 'i was not as good as':['solar',20,'Shame'],'i was not as good as other people':['solar',22,'Shame'],
+ 'i was not good at this':['solar',18,'Shame'],'i was not good enough':['solar',22,'Shame'],
+ 'i was bad at this':['solar',18,'Shame'],'i was not performing well':['solar',16,'Shame'],
+ 'i was so dumb':['solar',20,'Shame'],'i was dumb':['solar',18,'Shame'],
+ /* THE CONTRACTED FORM, 11 November. The seven rows above only typed out
+    in full: "I wasn't smart enough" scored nothing, "I was not smart
+    enough" scored 22. Same seats, same weights, "wasnt" in place of "was
+    not", the same reason the past tense rows above exist: a person
+    writing their own words contracts "was not" far more often than not. */
+ 'i wasnt smart':['solar',20,'Shame'],'i wasnt smart enough':['solar',22,'Shame'],
+ 'i wasnt as good as':['solar',20,'Shame'],'i wasnt as good as other people':['solar',22,'Shame'],
+ 'i wasnt good at this':['solar',18,'Shame'],'i wasnt good enough':['solar',22,'Shame'],
+ 'i wasnt performing well':['solar',16,'Shame']};
+var ADJ2CHG={
+ nervous:'anxiety',anxious:'anxiety',tense:'anxiety',
+ unheard:'silence',voiceless:'silence',choked:'silence',swallowed:'silence',
+ doubtful:'doubt',uncertain:'doubt',suspicious:'doubt',distrustful:'doubt',
+ numb:'apathy',flat:'apathy',blank:'apathy',indifferent:'apathy',hollow:'apathy',
+ unmoved:'apathy',detached:'apathy',uncaring:'apathy',
+ apart:'separation',disconnected:'separation',outside:'separation',adrift:'separation',
+ scared:'fear',afraid:'fear',frightened:'fear',terrified:'fear',panicked:'fear',
+ froze:'fear',frozen:'fear',paralyzed:'fear',paralysed:'fear',shaking:'fear',unsafe:'fear',dread:'fear',bracing:'fear',
+ angry:'anger',furious:'anger',defensive:'anger',blamed:'anger',
+ ashamed:'shame',humiliated:'shame',embarrassed:'shame',guilty:'shame',
+ stupid:'shame',worthless:'shame',inadequate:'shame',
+ sad:'sadness',lonely:'sadness',grieving:'sadness',hurt:'sadness',rejected:'sadness',
+ abandoned:'sadness',unloved:'sadness',heartbroken:'sadness',miserable:'sadness',
+ crushed:'sadness',hopeless:'sadness',defeated:'sadness',
+ restless:'joy',craving:'joy',empty:'joy',hungry:'joy',
+ addicted:'joy',distracted:'joy',obsessed:'joy',
+ silent:'shame',dismissed:'shame',
+ /* THE FEELINGS WHEEL, round PA (1 October), his own words: "the sniffer
+    needs to find the family of words, group it to the assemblage points
+    they relate to and it's just sniff for those as well." FEELINGS-WHEEL.md
+    is the wheel he sent: seven families, 123 words. Measured directly
+    against this table before adding anything, the way he asked: 75 of the
+    123 read nothing. Added here only where an existing charge bucket is
+    already a clean, unambiguous fit, each word a plain synonym of a word
+    already in that bucket above. Nothing new is invented: no new seat, no
+    new charge name, no new number. */
+ bored:'apathy',apathetic:'apathy',
+ busy:'anxiety',pressured:'anxiety',rushed:'anxiety',
+ threatened:'fear',persecuted:'fear',horrified:'fear',
+ inferior:'shame',weak:'shame',insignificant:'shame',vulnerable:'shame',fragile:'shame',
+ indignant:'anger',infuriated:'anger',provoked:'anger',aggressive:'anger',hostile:'anger',
+ distant:'separation',withdrawn:'separation',
+ critical:'doubt',skeptical:'doubt',dismissive:'doubt',hesitant:'doubt',
+ disappointed:'sadness',victimized:'sadness'};
+/* AND WHAT IS HELD BACK, named rather than silently skipped, SNIFFER_SPEC's
+   own discipline against guessing a number nobody ruled:
+   sleepy, unfocussed    no existing charge bucket is a clean fit; could be
+                         exhaustion (not yet its own charge name here) or
+                         apathy, and guessing is the thing this file warns
+                         against.
+   mad                   already refused bare, LEXSYN_NO above: British
+                         "keen" collides with it. Needs the same "so mad",
+                         "mad at" framing the refusal already names.
+   violated, jealous     carry at least two readings each (violated: anger
+                         at a boundary crossed, or shame at having had no
+                         boundary; jealous: a craving/comparison register
+                         this table does not model), and neither reading is
+                         obviously the right one to pick alone.
+   disapproving,
+   judgmental, appalled,
+   detestable, repelled  these are about someone or something OTHER than
+                         the writer. Every existing bucket here reads what
+                         the writer feels in their own body; none of them
+                         is "what I think of someone else," and inventing
+                         one is a new charge this file does not get to add.
+   the whole Surprised
+   family                Shock and Surprise are both named in HARM
+                         (engine/data/kb.js's harmonic elements, E67/E68)
+                         as "somatic address and coherent pole pending
+                         confirmation." Seating wheel words there before
+                         that confirmation exists would be the same
+                         unruled guess the rest of this held-back list is
+                         refusing to make.
+   All of the above are a TASKS.md item, not silently dropped.
+
+   THE HAPPY FAMILY WAS HELD BACK HERE, and no longer is: round TD (8
+   November) ruled it should score, read above, right after the existing
+   coherent words. This paragraph keeps the record of the question asked
+   and answered rather than deleting it. */
+
+/* THE WHEEL FAMILY. The other half of his round PA words: "find the family
+   of words, group it to the assemblage points." This is the grouping, read
+   mechanically off FEELINGS-WHEEL.md's own table (a script, not typed by
+   hand, so there is no transcription to get wrong), every one of its 123
+   words against the primary family it sits under. It groups; it does not
+   score. A word here that is not also in ADJ2CHG or LEX is read for its
+   family and nothing else, until the held-back list above is settled. Four
+   words the wheel itself prints under two families (its own line 54-55)
+   carry an array here instead of a bare string, read as "may carry both,"
+   never both at once by this table's own say. */
+var WHEEL_FAMILY={
+ abandoned:"Sad", accepted:"Happy", aggressive:"Angry", amazed:"Surprised", annoyed:"Angry",
+ anxious:"Fearful", apathetic:"Bad", appalled:"Disgusted", aroused:"Happy", ashamed:"Sad",
+ astonished:"Surprised", awe:"Surprised", awful:"Disgusted", betrayed:"Angry", bitter:"Angry",
+ bored:"Bad", busy:"Bad", cheeky:"Happy", confident:"Happy", confused:"Surprised",
+ content:"Happy", courageous:"Happy", creative:"Happy", critical:"Angry", curious:"Happy",
+ depressed:"Sad", despair:"Sad", detestable:"Disgusted", disappointed:["Disgusted","Sad"],
+ disapproving:"Disgusted", disillusioned:"Surprised", dismayed:"Surprised", dismissive:"Angry",
+ disrespected:"Angry", distant:"Angry", eager:"Surprised", embarrassed:["Disgusted","Sad"],
+ empty:"Sad", energetic:"Surprised", excited:"Surprised", excluded:"Fearful", exposed:"Fearful",
+ fragile:"Sad", free:"Happy", frightened:"Fearful", frustrated:"Angry", furious:"Angry",
+ grief:"Sad", guilty:"Sad", helpless:"Fearful", hesitant:"Disgusted", hopeful:"Happy",
+ horrified:"Disgusted", hostile:"Angry", humiliated:"Angry", hurt:"Sad", inadequate:"Fearful",
+ indifferent:"Bad", indignant:"Angry", inferior:["Fearful","Sad"], infuriated:"Angry",
+ inquisitive:"Happy", insecure:"Fearful", insignificant:"Fearful", inspired:"Happy",
+ interested:"Happy", intimate:"Happy", isolated:"Sad", jealous:"Angry", joyful:"Happy",
+ judgmental:"Disgusted", 'let down':"Angry", lonely:"Sad", loving:"Happy", mad:"Angry",
+ nauseated:"Disgusted", nervous:"Fearful", numb:"Angry", optimistic:"Happy",
+ 'out of control':"Bad", overwhelmed:["Bad","Fearful"], peaceful:"Happy", perplexed:"Surprised",
+ persecuted:"Fearful", playful:"Happy", powerful:"Happy", powerless:"Sad", pressured:"Bad",
+ proud:"Happy", provoked:"Angry", rejected:"Fearful", remorseful:"Sad", repelled:"Disgusted",
+ resentful:"Angry", respected:"Happy", revolted:"Disgusted", ridiculed:"Angry", rushed:"Bad",
+ scared:"Fearful", sensitive:"Happy", shocked:"Surprised", skeptical:"Angry", sleepy:"Bad",
+ startled:"Surprised", stressed:"Bad", successful:"Happy", thankful:"Happy",
+ threatened:"Fearful", tired:"Bad", trusting:"Happy", unfocussed:"Bad", valued:"Happy",
+ victimized:"Sad", violated:"Angry", vulnerable:"Sad", weak:"Fearful", withdrawn:"Angry",
+ worried:"Fearful", worthless:"Fearful"};
+
+/* the idioms. an idiom outranks its own words, because a statement can carry
+   no feeling word at all and still be a report. */
+/* ============================================================
+   HOW MUCH, SAID IN THE WORD BEFORE IT. AZ6: the scanner read "a little
+   tense", "tense" and "extremely tense" as the same 16, because a degree word
+   is not in LEX and scanStory skipped it. The owner's ruling is that these
+   differ by orders of magnitude, and the fitted bell can only pull harder on
+   weight the words actually put there.
+
+   Ported from the desktop's MOD table (atuned/src/30_lexicon, line 244), the
+   degree adverbs only, with its factors unchanged. Seven it carries from its
+   burnout entry are left out, barely, persistent, dull, constant,
+   catastrophic, total and crushing: they are words with a meaning of their
+   own rather than a degree, and "barely" at 1.5 would scale "barely anxious"
+   up. Entirely, from the same entry, is a degree and is kept.
+
+   Applied only when the degree word stands immediately before the hit, which
+   is narrower than the desktop's anywhere earlier in the segment: "so" is a
+   degree in "so tense" and a conjunction in "so I froze", and adjacency is
+   the one rule that tells them apart without a parser. A factor under 1 is
+   still a hit; the word was written. */
+var LEXMOD={slightly:0.6,'a little':0.6,'kind of':0.7,somewhat:0.7,fairly:0.9,
+ quite:1.2,so:1.35,really:1.4,very:1.4,deeply:1.6,totally:1.7,absolutely:1.7,
+ entirely:1.7,extremely:1.8,completely:1.8,utterly:1.8};
+var PHRASES=[
+ [['wrap myself in a blanket','pretend the world hit pause','pretend the world would stop',
+   'want to disappear','wish i could disappear','not be here','not exist',
+   'pull the covers over','stay in bed all day','never come out','hide from everyone',
+   'crawl into a hole','shut the door and not','be left alone forever'],
+   'heart',26,'wanting to disappear'],
+ [['the mountain just rolls right over','mountain rolled over me','i am tire tracks',
+   'definitely tire tracks','rolled right over me','flattened me','ran me over',
+   'what is the point of any of it','nothing i do matters','it never gets better',
+   'i cannot keep doing this','i have nothing left','there is nothing left of me',
+   'running on empty','i am done'],
+   'heart',28,'despair'],
+ [['i miss who i used to be','i do not recognise myself','i do not recognize myself',
+   'lost myself somewhere','the person i was is gone','grieving something',
+   'i will never get that back','it is too late for me'],
+   'heart',26,'grief'],
+ [['just want to get through','get through the day','one foot in front',
+   'going through the motions','on autopilot','like an automaton',
+   'nodded like','stared at his','stared at her','have the energy','no energy left'],
+   'crown',22,'resignation'],
+ [['could not stop','cant stop','can not stop','cannot stop','kept checking','keep checking'],
+   'sacral',18,'compulsion'],
+ [['stayed quiet','said nothing','kept my mouth','did not say','didnt say','bit my tongue'],'throat',20,'silenced'],
+ [['could not say no','couldnt say no','said yes when','agreed anyway'],'throat',22,'over-giving'],
+ [['do not trust','dont trust','cannot trust'],'eye',20,'distrust'],
+ [['nobody says what','nobody means','everyone is lying','no one is honest'],'eye',18,'suspicion'],
+ [['felt nothing','feel nothing','feeling nothing','numb to'],'crown',26,'frozen'],
+ [['cannot remember the last','cant remember what i want','do not know what i want'],'crown',22,'forgotten'],
+ [['held my position','would not back down','refused to admit','knew i was wrong'],'solar',20,'rigidity'],
+ [['put it off','putting it off','keep postponing','waiting to feel ready'],'root',18,'avoidance'],
+ [['is never finished','never finished','never good enough','still wrong','redid it',
+   'ever finished'],'sacral',20,'perfectionism'],
+ [['doing all of it alone','on my own','no one helps','carrying it alone'],'heart',22,'isolation'],
+ [['carried it home','took it home','could not leave it','carried her','carried his',
+   'home with me'],'heart',18,'over-merging'],
+ [['gave more than i had','gave more than','and then resented','resented it'],'solar',22,'resentment'],
+ [['have been dreading','been dreading','dreading it','dread it'],'root',22,'dread'],
+ [['have not slept','havent slept','not sleeping','cannot sleep'],'root',20,'hypervigilance'],
+ [['hated myself','disgusted with myself','ashamed of myself'],'throat',24,'self-attack'],
+ [['do not show anyone','dont show anyone','not until it is perfect'],'sacral',18,'concealment'],
+ [['find out i am','find out im','they will know','see through me'],'root',24,'exposure']];
+
+/* ============================================================
+   THE PLAIN IDIOM, P2-3 of the inference audit, 24 October. An idiom that
+   carries no feeling outranks its own words, by the rule PHRASES above
+   already follows, and then counts nowhere. Measured on d9ca4450 before
+   this: "I am afraid I cannot make it tonight" read fear at the root, "I am
+   dying to see the new film" read grief at the heart, and "I still cannot
+   stop crying" read the sacral compulsion phrase on top of the crying.
+
+   A row is [the idiom, the words that may follow it]. The idiom is plain
+   only when one of those follows straight after it, inside the same comma
+   group, so "I am afraid. Not now." and "I am afraid, not tired." keep
+   their fear. An empty list means any word may follow, and one must. A
+   plain idiom's own words are skipped by the phrase, word and adjective
+   passes in scanStory. The words after it are not: "cannot stop crying"
+   drops the compulsion and still reads the crying.
+
+   A third element, true, means the follower must also close its comma
+   group: nothing may come after it but a comma or the end of the
+   sentence.
+
+   THE APOLOGY IS ONLY THE WHOLE POLITE SENTENCE, and the first cut of
+   this row proved why. It took any "I cannot", "I have to", "I must", "I
+   need to", "not" or "so" after "I am afraid", and measured on that cut,
+   "I am afraid I have to leave him", "I am afraid I must be broken", "I
+   am afraid I need to hide", "I am afraid so much of the time", "I am
+   afraid not everyone likes me" and "I am afraid I cannot make it
+   through another night" all read nothing at all. Across every markdown,
+   text, JSON and script file in the repository, the fuzzy corpus and the
+   gates among them, "I am afraid" is fear in every line but the audit's
+   own example and the tests written from it. A false plain reading hides
+   a fear the person wrote and shows no mark to say so, where a false fear
+   is drawn on the word for them to see, so the row holds only sentences
+   whose whole clause is the apology. One that is not listed still reads
+   fear, as it did before. "I am so afraid I cannot sleep" has a degree
+   word between and is never this row. */
+var LEXPLAIN=[
+ [['i am afraid','im afraid'],['not','so',
+   'i cannot make it','i cant make it','i can not make it',
+   'i cannot make it tonight','i cant make it tonight','i can not make it tonight',
+   'i cannot make it today','i cant make it today','i can not make it today',
+   'i cannot make it tomorrow','i cant make it tomorrow','i can not make it tomorrow'],true],
+ [['dying to'],[]],
+ [['could not stop','cant stop','can not stop','cannot stop'],
+   ['crying','laughing','sobbing','weeping']]];
+
+/* ============================================================
+   WHAT AN ENTRY IS, WHERE IT CAME FROM, AND WHAT IT MAY ASSERT.
+
+   The three tables above were authored and nothing recorded their provenance,
+   so the repository could not answer the owner's own question: does the
+   sniffer have the logic supplied by the book. Measured, the answer was no in
+   two directions at once. Nine of the nine axes the instrument scores, and
+   seven of the seven cue words the thirty three saboteurs are defined by, were
+   not words the scanner could find: one of nine and zero of seven resolved.
+   And of the 192 authored words, 87 appear anywhere in the book and 105 do
+   not, so more than half the vocabulary had no stated source at all.
+
+   Neither of those is fixed by typing more words in. They are fixed by an
+   entry knowing what it is. So an entry now has a schema, a source, and a
+   validator that refuses rather than clamps, and every entry that is not hand
+   authored is DERIVED by a named pass from a table that already has an owner.
+
+   An entry is [seat, amount, fetter]. Positions are named below because a
+   table read by index is a table nobody can search.
+
+     seat     WHERE in the body the charge is held. One of LEX_SEATS. Always
+              asserted, because the scanner genuinely knows it: the table says
+              so and nothing was inferred to get there.
+     amount   HOW MUCH, on the authored 12 to 28 curve. Signed: a coherent
+              entry subtracts. parseStory divides by 3 and applyStory scales
+              by 0.35, so this number is not a charge and must never be read
+              as one.
+     fetter   WHICH of the nine axes, and it is OPTIONAL BY DESIGN. Present
+              means the word named the axis itself and the reading may say so.
+              Absent means the seat is known and the axis is not, and
+              parseStory will mark the imprint inferred. That flag is the
+              whole difference between evidence and an accusation, and the
+              product has already shipped the accusation once.
+
+   WHAT AN ENTRY MAY NEVER ASSERT: a saboteur, an architecture, a diagnosis, a
+   verdict, or a person. A word is evidence that a word was written. Every
+   claim past that is made downstream, by a named stage, and says which it is.
+   ============================================================ */
+var LEX_SEAT=0, LEX_AMT=1, LEX_FET=2;
+var LEX_SEATS=['root','sacral','solar','heart','throat','eye','crown','coherent'];
+/* WHERE AN ENTRY CAME FROM. This list is the spec, not a summary of one.
+   A source not on it is refused by name, including by whoever adds a helpful
+   one later, because the gate asserts the set exactly.
+     authored  hand written. the 192 above. no stated source and that is the
+               open question, not a defect to be hidden.
+     canon     derived from a canon table that already has an owner: the nine
+               axes, and the seats and fetters CHG2SEAT and CHG2FET already
+               assign them. No new number is invented by this pass.
+     fold      an ordinary surface form of a key already present, generated by
+               a stated rule and admitted only where a named corpus confirms
+               the form is real writing. */
+/* A FOURTH SOURCE, DECLARED. `composite` is a word whose reading is two
+   fetters rather than one, seated by the pass at the bottom of sniff.js off the
+   unanimous seat and family floor of the members already in the table. It is a
+   separate source from `canon` because its derivation is different and a
+   reviewer asking where an entry came from must get one answer rather than a
+   family of them. The validator refused every composite entry until this line
+   existed, which is the validator working: a new provenance is declared here or
+   it does not reach the table. */
+/* TWO MORE, round QZ follow on, for pass three, lexSyn. `synonym` is a
+   different word for a headword's own reading and `antonym` is the negation of
+   a word whose opposite a headword already is. Both copy the headword's seat,
+   amount, fetter and charge name exactly, and both name the headword in
+   `from`. They are two sources rather than one because the second carries a
+   frame and the first does not, and a reviewer asking why "not safe" is in
+   the table must be told it is a negation and not a synonym of safe. */
+var LEX_SRC=['authored','canon','fold','composite','synonym','antonym'];
+var LEX_AMT_MAX=30;
+/* key -> {src, from, rule, cite}. Covers LEX exactly, in both directions, and
+   the gate asserts that, because a provenance table with holes in it is worse
+   than none: it reads as though everything in it were sourced. */
+var LEXMETA={};
+Object.keys(LEX).forEach(function(k){
+ LEXMETA[k]={src:'authored',from:null,rule:null,cite:null};});
+var CHGMETA={};
+Object.keys(ADJ2CHG).forEach(function(k){
+ CHGMETA[k]={src:'authored',from:null,rule:null,cite:null};});
+
+/* THE BOUNDARY, in validateProfile's and obValidate's posture: refuse by name,
+   never clamp, never accept in silence. A clamped amount reads back as a
+   reading the author never wrote. */
+function lexKeyOk(k){
+ /* exactly the surface forms scanStory's normalisation can produce: lowercase
+    letters and single interior spaces. A key with a capital or a comma in it
+    can never match anything and is a dead row that looks live. An apostrophe
+    is refused too, since round QZ: normMap drops every apostrophe, so a key
+    carrying one could never be reached, which is the same dead row. */
+ return typeof k==='string' && /^[a-z]+( [a-z]+)*$/.test(k);}
+
+function lexRefuse(k,seat,amt,fet){
+ var errs=[];
+ if(!lexKeyOk(k)) errs.push('the key '+JSON.stringify(k)+' is not a form the scanner can ever match');
+ if(LEX_SEATS.indexOf(seat)<0) errs.push(k+' names the point '+seat+', which is not one of the '+LEX_SEATS.length);
+ if(typeof amt!=='number'||amt!==Math.round(amt)||amt===0||Math.abs(amt)>LEX_AMT_MAX)
+  errs.push(k+' carries the amount '+amt+', and an amount is a non zero integer no further than '+LEX_AMT_MAX+' from zero');
+ if((amt<0)!==(seat==='coherent'))
+  errs.push(k+' is seated at '+seat+' with amount '+amt+', and only a coherent entry subtracts');
+ if(fet!=null&&CHARGES.indexOf(fet)<0)
+  errs.push(k+' states the child emotion '+fet+', which is not one of the nine axes');
+ if(LEX[k]&&LEX[k][LEX_SEAT]!==seat)
+  errs.push(k+' is already seated at '+LEX[k][LEX_SEAT]+' and this would move it to '+seat);
+ return errs;}
+
+/* ONE ENTRY. Already present with the same seat is a no op and says so, so a
+   pass can be re-run without silently doubling the table. */
+function lexAdd(k,seat,amt,fet,meta){
+ var errs=lexRefuse(k,seat,amt,fet);
+ if(errs.length) return {ok:false,why:errs[0],errs:errs};
+ if(LEX_SRC.indexOf(meta&&meta.src)<0)
+  return {ok:false,why:'the source '+(meta&&meta.src)+' is not one of '+LEX_SRC.join(', '),errs:[]};
+ if(LEX[k]) return {ok:true,already:true};
+ LEX[k]=fet!=null?[seat,amt,fet]:[seat,amt];
+ LEXMETA[k]={src:meta.src,from:meta.from||null,rule:meta.rule||null,cite:meta.cite||null};
+ return {ok:true,already:false};}
+
+/* AND THE CHARGE NAME, which is the other half of the same entry.
+   ADJ2CHG is the surface form to axis name table. Its name says adjective and
+   its job is wider than that: it is what makes an imprint NAMED rather than
+   inferred, and a person writes the noun as often as the adjective. Renaming
+   it touches the export contract and two tools, so the rename is named and
+   deferred rather than done in the same pass as the vocabulary. Nothing may be
+   added to it except through here. */
+function chgAdd(k,chg,meta){
+ if(!lexKeyOk(k)) return {ok:false,why:'the key '+JSON.stringify(k)+' is not a matchable form'};
+ if(typeof chg!=='string'||!chg) return {ok:false,why:k+' names no charge'};
+ if(ADJ2CHG[k]&&ADJ2CHG[k]!==chg)
+  return {ok:false,why:k+' already names '+ADJ2CHG[k]+' and this would move it to '+chg};
+ if(LEX_SRC.indexOf(meta&&meta.src)<0)
+  return {ok:false,why:'the source '+(meta&&meta.src)+' is not one of '+LEX_SRC.join(', ')};
+ if(ADJ2CHG[k]) return {ok:true,already:true};
+ ADJ2CHG[k]=chg;
+ CHGMETA[k]={src:meta.src,from:meta.from||null,rule:meta.rule||null,cite:meta.cite||null};
+ return {ok:true,already:false};}
+
+/* ============================================================
+   PASS ONE, THE FOLD. And the reason it is a list and not a stemmer.
+
+   Measured. 29 of 63 ordinary inflections of words already in the table did
+   not resolve, so the table was written in one form and people write in
+   another. The obvious fix is a stemmer. It was prototyped and it is the wrong
+   instrument here, and the numbers are the argument:
+
+   The fourteen rules below, run over the 145 single word keys, generate 438
+   forms. Of those 438, thirty one are confirmed by a corpus this repository
+   actually holds. Seven percent. The other 407 are strings like ashams and
+   anxiousing: harmless, because they never occur, and corrosive, because a
+   lexicon nobody can read is a lexicon nobody can audit, and this product
+   shows a person why.
+
+   Worse, three of the thirty one confirmed forms are real English words with a
+   different meaning, and two of those three fold off COHERENT keys, which
+   subtract. A stemmer would have had the word contents lowering somebody's
+   reading. A false positive in a somatic reading costs more than a miss, so
+   the refusals are by name, in the table below, with the reason.
+
+   So: the rules stay in the engine, because they are pure and tiny and the
+   gate uses them to prove that every admitted form is reachable from a real
+   key. The corpus stays out, because the engine may not read a file. What
+   crosses the boundary is the confirmed list, and proto/sniffer/ holds the
+   tool that produced it and re-runs it when a corpus grows.
+
+   THE CORPUS, NAMED. index.html, the owner's own book, 117,716 words and
+   7,667 distinct surface forms, plus the fourteen persona voices the product
+   ships. A form neither confirms is not admitted, because admitting it is an
+   unmeasured claim. When the record store exists there will be a third and
+   much better corpus, and this list grows by re-running the tool rather than
+   by anybody's judgement about what a person might write.
+
+   A FOLD CHANGES THE SURFACE FORM AND NOTHING ELSE. Same seat, same amount,
+   same stated fetter, same charge name. The gate asserts all four, so a fold
+   can never be the back door through which a new reading arrives.
+   ============================================================ */
+var LEX_FOLD_RULES=[
+ ['s',   function(k){return !/(s|x|z|ch|sh|y)$/.test(k);},                   function(k){return k+'s';}],
+ ['es',  function(k){return /(s|x|z|ch|sh)$/.test(k);},                      function(k){return k+'es';}],
+ ['ies', function(k){return /[^aeiou]y$/.test(k);},                          function(k){return k.slice(0,-1)+'ies';}],
+ ['ed',  function(k){return /[^ey]$/.test(k)&&!/(ed|ing|ness)$/.test(k);},   function(k){return k+'ed';}],
+ ['d',   function(k){return /e$/.test(k);},                                  function(k){return k+'d';}],
+ ['ied', function(k){return /[^aeiou]y$/.test(k);},                          function(k){return k.slice(0,-1)+'ied';}],
+ ['ing', function(k){return /[^ey]$/.test(k)&&!/(ed|ing)$/.test(k);},        function(k){return k+'ing';}],
+ ['eing',function(k){return /e$/.test(k);},                                  function(k){return k.slice(0,-1)+'ing';}],
+ ['ped', function(k){return /[^aeiou][aeiou][pgmnt]$/.test(k);},             function(k){return k+k.slice(-1)+'ed';}],
+ ['ping',function(k){return /[^aeiou][aeiou][pgmnt]$/.test(k);},             function(k){return k+k.slice(-1)+'ing';}],
+ /* backward, off a past participle the table already holds */
+ ['V',   function(k){return /[a-z]{3}ed$/.test(k);},                         function(k){return k.slice(0,-2)+'ing';}],
+ ['Vs',  function(k){return /[a-z]{3}ed$/.test(k);},                         function(k){return k.slice(0,-2)+'s';}],
+ ['Vy',  function(k){return /[a-z]{2}ied$/.test(k);},                        function(k){return k.slice(0,-3)+'ying';}],
+ ['ness',function(k){return /[a-z]{4}$/.test(k)&&!/(ness|ion|ity|ing|ed|s)$/.test(k);},function(k){return k+'ness';}]];
+
+/* THE ALLOW LIST. Twenty seven forms. Every one is generated by a rule above
+   from a key above, and confirmed by the named corpus. The gate asserts both,
+   so a form hand typed in here with no reachable base is refused. */
+var LEX_FOLD_OK=['abandoning','betrays','calmed','calming','clenching','dismissing',
+ 'draining','drains','flattens','funerals','hurts','interrupting','interrupts',
+ 'isolating','losses','numbness','overwhelming','rejecting','rejects','resting',
+ 'screaming','settling','snapping','tensed','terrifying','tightness','yelling'];
+
+/* THE REFUSE LIST, and read this before adding to the one above. Each of these
+   IS generated by a rule and IS confirmed by the corpus, and each is refused
+   because the form is a different word in ordinary use. Two of the four fold
+   off coherent keys, where a false positive lowers a reading rather than
+   raising it, which is the more dangerous direction and the harder one to
+   notice. */
+var LEX_FOLD_NO={
+ contents:'the contents of a box, not the state of being content, and content subtracts',
+ laughing:'the person laughing, where laughed in this table means being laughed at',
+ rests:'it rests on the table, not the person resting, and rested subtracts',
+ tenses:'the tenses of a verb, not a body tensing'};
+
+/* ============================================================
+   THE DEAD ROWS, NAMED, because a row that matches nothing looks live.
+
+   Found by the gate that asserts every entry can actually be found by the
+   scanner, which is a check nothing had. Two of the 192 authored entries cannot
+   be reached, and they predate this pass:
+
+     cannot stop thinking   seated at the third eye, amount 24, rumination
+     cant stop thinking     the same
+
+   Both are eaten by the phrase cannot stop, which is seated at the sacral at
+   amount 18 and labelled compulsion. scanStory adds phrases first and then
+   suppresses any later match overlapping a hit already recorded, so the phrase
+   wins at that offset whatever its length. Measured: i cannot stop thinking
+   about it reads as {sacral:18}, compulsion, and the third eye rumination entry
+   never lands. A person ruminating is told they are compulsive, at a lower
+   amount, at the wrong seat.
+
+   THE STATED RULE IS NOT THE IMPLEMENTED RULE, and that is the actual defect. A
+   phrase outranks THE WORDS INSIDE IT, which is right and is why the rule
+   exists. Here the lexicon entry CONTAINS the phrase and is strictly longer and
+   strictly more specific, so the rule does not reach this case and the
+   implementation decided it by loop order.
+
+   NOT FIXED HERE, and that is deliberate. The fix is one clause in scanStory,
+   and which way that clause goes is a ruling rather than a repair: does the
+   longer specific entry beat the shorter idiom, or does an idiom always win.
+   Both are defensible and they read differently. So the two rows are named
+   here, with the reason, and the gate asserts the dead set is EXACTLY this
+   table in both directions. A third dead row fails the gate. This one cannot
+   quietly become three.
+   ============================================================ */
+var LEX_DEAD={
+ 'cannot stop thinking':'eaten by the phrase cannot stop, which is shorter, seated elsewhere and worth less',
+ 'cant stop thinking':'eaten by the phrase cant stop, the same way'};
+
+/* run the fold. keys are snapshotted first: the pass writes into the table it
+   reads from, and reading a table while growing it is how a generator quietly
+   folds its own output. */
+function lexFold(){
+ var base=Object.keys(LEX).filter(function(k){return k.indexOf(' ')<0;});
+ var made={}, out={added:0,already:0,refused:[],unreachable:[]};
+ base.forEach(function(k){
+  LEX_FOLD_RULES.forEach(function(r){
+   if(!r[1](k)) return;
+   var f=r[2](k);
+   if(LEX[f]||made[f]) return;
+   made[f]={from:k,rule:r[0]};});});
+ LEX_FOLD_OK.forEach(function(f){
+  if(LEX_FOLD_NO[f]){out.refused.push(f);return;}
+  if(!made[f]){out.unreachable.push(f);return;}
+  var k=made[f].from, e=LEX[k];
+  var a=lexAdd(f,e[LEX_SEAT],e[LEX_AMT],e[LEX_FET]!=null?e[LEX_FET]:null,
+   {src:'fold',from:k,rule:made[f].rule,cite:'corpus'});
+  if(a.ok&&!a.already)out.added++; else if(a.already)out.already++;
+  /* the charge name folds with the form. without this the folded word gets a
+     seat and no axis, so the imprint comes back inferred, and inferred is the
+     flag that decides what the product is allowed to say out loud. */
+  if(ADJ2CHG[k])chgAdd(f,ADJ2CHG[k],{src:'fold',from:k,rule:made[f].rule,cite:'corpus'});});
+ out.generated=Object.keys(made).length;
+ return out;}
+
+/* ============================================================
+   PASS THREE, THE OTHER WORDS. Round QZ follow on, the owner's own bug
+   report: "I'm able to talk about painful situations and the sniffer's not
+   picking up because the sniffer is too specific... it needs to be fuzzier.
+   The rules need to be looser."
+
+   MEASURED BEFORE ANYTHING MOVED, proto/sniffer/fuzzy-measure.js over
+   proto/sniffer/fuzzy-corpus.js, which was written and frozen first:
+     119 lines of painful writing in ordinary words   42 lit, 35.3 percent
+     80 quiet lines, plain, warm and trap             7 lit, every one of them
+                                                       by a word already here
+     the owner's book, 7881 sentences                 93.1 percent read nothing
+   The misses sort into three kinds, and each is answered by one mechanism
+   below. None of them is a new way of matching: every entry this pass writes
+   is an ordinary key, found by scanStory's own rule, longest first.
+
+   1. A DIFFERENT WORD FOR THE SAME READING. worried where the table holds
+      anxious, crying where it holds sad, worn out where it holds exhausted.
+      LEXSYN, keyed by a word already in the table.
+   2. THE OPPOSITE, SAID NOT. "I don't feel safe" names the reading unsafe
+      already carries, through a word, safe, that the table rightly does not
+      hold, because safe on its own is not charge. LEXANT, keyed the same way,
+      and written out through a small fixed set of negating frames.
+   3. A FAMILY MEMBER, NAMED. "My dad passed" and "we lost the baby". LEXKIN.
+   (And a fourth, which is not here: an apostrophe. Every key in this file
+   that a person writes with one, dont, cant, didnt, was unreachable when
+   they typed it, because normMap kept the apostrophe. That is a rule of the
+   normalisation and it is fixed there, in sniff.js.)
+
+   A SYNONYM CHANGES THE WORD AND NOTHING ELSE, the fold's own contract. It
+   takes its headword's seat, amount, stated fetter and charge name, exactly,
+   so the only judgement in a row is which headword it means, and the
+   headword is chosen for meaning AND for weight: worried takes anxious and
+   not terrified. No amount is typed anywhere in this pass. A headword that
+   is an idiom in PHRASES rather than a key in LEX takes its row instead, and
+   the synonym is added to that row's words, so it keeps the idiom's label.
+
+   WHERE THE LINE IS DRAWN, which is the whole question. Too narrow does not
+   answer him and too wide lights quiet text, and a false positive in a
+   somatic reading costs more than a miss. So:
+     a word goes in bare only when, written by a person about their own day,
+       its ordinary sense IS the feeling. worried, terrified, heartbroken.
+     a word with a common quiet sense goes in only inside a frame that fixes
+       the sense. tired is a hike as often as a life, so it is read as "so
+       tired", "tired of" and "i am tired", never bare. mad is keen in one
+       country and furious in another, so it is read as "mad at" and "so mad".
+     a word that cannot be fixed by a short frame is refused by name in
+       LEXSYN_NO with the reason, the way LEX_FOLD_NO refuses a fold. down,
+       stuck, lost, broken, dead and passed are there. The refusals are data
+       so the next seat can argue with a row instead of rediscovering it.
+   ============================================================ */
+var LEXSYN={
+ /* fear, at the root */
+ scared:['fearful','spooked','frightening','scares me','scared me'],
+ terrified:['scared to death','scared stiff','terrifies me'],
+ panicked:['freaked out','freaking out','freak out','freaks me out'],
+ 'panic attack':['panic attacks','anxiety attack','anxiety attacks'],
+ anxious:['anxiety','worried','worry','worrying','worried sick','stressed',
+  'stressed out','so much stress','under stress','stressful','uneasy','apprehensive'],
+ nervous:['on edge','jittery','jumpy'],
+ dread:['dreaded','filled with dread'],
+ froze:['flinch','flinched','flinching','froze up','freeze up'],
+ shaking:['i shake','i shook','shook me','shaken','shaken up'],
+ trembling:['trembled','trembles'],
+ 'cannot breathe':['short of breath','hyperventilating','hyperventilated','gasping for air',
+  'struggling to breathe'],
+ /* being hurt by someone, at the root, because what it breaks is safety. The
+    headword is unsafe, which names Fear, and not terrified: the sentence
+    reports what happened, not how frightened the person was, so it takes the
+    plain word and its plain weight. */
+ unsafe:['abused','abuse','abusive','assaulted','molested','raped','rape','hit me','hits me',
+  'beat me','beats me','beat me up','slapped me','punched me','kicked me',
+  'threatened me','threatens me','in danger'],
+ /* anger, at the solar plexus */
+ angry:['annoyed','irritated','frustrated','frustrating','frustration','pissed off',
+  'mad at','so mad','really mad','got mad','mad with','lost my temper','losing my temper'],
+ furious:['enraged','outraged','incensed','fuming','irate','raging'],
+ shouted:['shouting','shouts at','screamed at','screams at','yells at','swore at','swears at',
+  'raised his voice','raised her voice','raised their voice','raises his voice',
+  'raises her voice','raises their voice'],
+ snapped:['snap at','snaps at','snapped at'],
+ 'lashed out':['lash out','lashing out','lashes out'],
+ slammed:['punched the wall','smashed','threw things'],
+ blamed:['accused','scapegoated','not my fault'],
+ /* exhaustion and overwhelm, at the solar plexus, Apathy where the headword
+    states it, on the owner's exhaustion ruling */
+ exhausted:['worn out','knackered','run down','tired out','dead tired','sleep deprived','frazzled'],
+ weary:['so tired','tired of','sick of','sick and tired','fed up','im tired','i am tired',
+  'feel tired','feeling tired','always tired','tired all the time','lethargic','listless'],
+ 'no energy':['no motivation','unmotivated','cant be bothered','could not be bothered',
+  'couldnt be bothered'],
+ 'running on empty':['running on fumes'],
+ overwhelmed:['swamped','overloaded','snowed under','going under',
+  'falling apart','fell apart','meltdown','had a breakdown','nervous breakdown',
+  'mental breakdown','breaking point','out of control','cant keep up','cannot keep up',
+  'too much to handle'],
+ /* self worth, at the solar plexus, the round GR family, Shame stated */
+ ashamed:['shameful'],
+ embarrassed:['embarrassing','self conscious'],
+ humiliated:['humiliation','humiliating me'],
+ stupid:['such an idiot','like an idiot','im an idiot','i am an idiot','feel foolish','felt foolish',
+  'so foolish'],
+ worthless:['such a failure','like a failure','im a failure','i am a failure','a total failure',
+  'feel a failure','a burden',
+  'unworthy','good for nothing','im useless','i am useless','feel useless','felt useless',
+  'feeling useless','feel so useless','im pathetic','i am pathetic','feel pathetic',
+  'like im nothing','like i am nothing','like dirt','like rubbish','waste of space'],
+ guilty:['guilt','blame myself','blaming myself','my fault'],
+ /* being judged, at the sacral, where criticised and laughed already sit */
+ criticised:['feel judged','felt judged','feeling judged','being judged','judged by','judging me',
+  'put me down','puts me down','belittled',
+  'belittling','shamed','insulted'],
+ laughed:['laughed at','mocked','mocking me','ridiculed','teased','bullied','bully','bullying',
+  'made fun of','make fun of','makes fun of','picked on'],
+ disgust:['disgusted','repulsed','revolted','sickened','makes me sick','made me sick'],
+ addicted:['binge eat','binge ate','binge eating','binge drinking','drinking too much',
+  'drink too much','drank too much'],
+ nauseous:['nausea','nauseated','queasy','feel sick','felt sick','feeling sick','threw up',
+  'throwing up','vomited'],
+ 'stomach knot':['knot in my stomach','knots in my stomach','stomach in knots',
+  'stomach dropped','pit of my stomach'],
+ /* grief, loss, loneliness and rejection, at the heart */
+ sad:['unhappy','upset','sorrow','sorrowful','gloomy','tearful','teary','cried','crying',
+  'cry','sobbing','sobbed','weeping','wept','in tears','burst into tears','feel down',
+  'feeling down','felt down','so down','been down','heavy hearted','heart sank'],
+ miserable:['depressed','depression','wretched'],
+ hopeless:['despair','despairing','no hope','lost hope','no way out','feel trapped','felt trapped',
+  'feeling trapped','so trapped','im trapped','i am trapped','i was trapped'],
+ defeated:['helpless','powerless','feel stuck','feeling stuck','felt stuck'],
+ heartbroken:['heartbreak','heartbreaking','devastated','gutted','broken hearted','brokenhearted',
+  'heartache'],
+ hurt:['wounded','stung','hurting','hurtful','let me down','let down','letting me down'],
+ grieving:['grieve','grieved','miss him','miss her','miss them','missing him','missing her'],
+ loss:['divorce','divorced','breakup','broke up with','we broke up','split up'],
+ 'no one came':['nobody came'],
+ 'i do not recognise myself':['dont recognise myself','dont recognize myself',
+  'dont know who i am anymore','do not know who i am anymore'],
+ died:['killed himself','killed herself','took his own life','took her own life'],
+ miscarriage:['lost the baby','lost our baby','lost my baby'],
+ rejected:['dumped me','got dumped','ghosted','left me for','left out','excluded','shut me out',
+  'pushed me away','pushes me away','stopped speaking to me','stopped talking to me',
+  'not speaking to me','not talking to me','wont speak to me','wont talk to me'],
+ abandoned:['deserted','walked out on','neglected','neglect'],
+ lonely:['lonesome','nobody to talk to','no one to talk to','no friends','friendless'],
+ unloved:['nobody loves me','no one loves me','uncared for'],
+ remorse:['regret','regrets','regretted','regretting','wish i hadnt','wish i had not'],
+ /* not heard, lied to, betrayed, at the throat */
+ ignored:['feel invisible','felt invisible','feeling invisible','im invisible','i am invisible',
+  'feel unseen','felt unseen','feeling unseen'],
+ dismissed:['invalidated','patronised','patronized','condescending','brushed off',
+  'brushed aside','talked down to','not taken seriously','undervalued','unappreciated',
+  'disrespected'],
+ 'nobody listened':['nobody listens','no one listens','no one listened','never listens',
+  'doesnt listen','dont listen to me','wont listen'],
+ interrupted:['talks over','talking over','talked right over','talks right over',
+  'cut me off','cuts me off','never lets me finish','wont let me finish',
+  'doesnt let me finish','never let me finish','never lets me speak','wont let me speak'],
+ 'shut me down':['told me to shut up','tells me to shut up','shuts me down'],
+ 'stayed quiet':['kept quiet','stayed silent','held my tongue','kept it to myself',
+  'bottled it up','bottle it up','bottling it up','swallowed it'],
+ betrayed:['backstabbed','double crossed','sold me out'],
+ cheated:['cheated on me','cheating on me','been cheating','was cheating','an affair','unfaithful'],
+ deceived:['manipulated','gaslit','gaslighted','gaslighting','tricked','conned'],
+ choked:['lump in my throat'],
+ tense:['went stiff','goes stiff','go stiff'],
+ /* numbness, meaning and the mind that will not stop, at the crown and eye */
+ numb:['numbed','dead inside','emotionless'],
+ disconnected:['nothing feels real','feels unreal','behind glass',
+  'dissociated','dissociating','dissociate'],
+ pointless:['no point','see no point','dont see the point','cant see the point','no purpose',
+  'purposeless','aimless'],
+ overthinking:['ruminating','rumination','racing thoughts','thoughts racing','mind racing',
+  'mind is racing','cant switch off','cant switch my brain off','cant turn my brain off',
+  'cant shut my brain off','second guessing','second guess','spiralling','spiraling',
+  'keep thinking about'],
+ replaying:['i replay','reliving','relive','flashbacks','flashback',
+  'keep going over'],
+ /* the idioms, whose rows keep their labels */
+ 'hated myself':['hate myself','hating myself'],
+ 'cannot sleep':['cant sleep','couldnt sleep','could not sleep'],
+ 'cannot trust':['cant trust','couldnt trust','could not trust']};
+
+/* THE OPPOSITES, said not. headword -> {frame set: [the plain word]}. The
+   plain word is never added on its own: safe is not charge and calm already
+   subtracts. Only the negated frames are written, so "i do not feel safe"
+   reaches unsafe through "not feel safe", and the longer key outranks calm
+   inside "not calm" exactly the way a phrase outranks the words inside it.
+   That precedence is the reason this works with no new rule: "i was not calm"
+   had been SUBTRACTING charge, measured, and now it reads as the anxiety it
+   reports.
+
+   THE FRAME SET IS PART OF THE ROW, because the words do not all negate the
+   same way:
+     is    a state that is the person's own. "not safe", "never happy",
+           "no longer calm". The widest set.
+     been  a state somebody else gives. "never felt loved", "not wanted",
+           "wasnt valued". Not "never X", because "i never loved him" says
+           the opposite of unloved.
+     feel  only after a feeling verb. "dont feel heard" and never "not
+           heard", because "i have not heard back" is a plumber.
+     self  okay, fine, alright, said by the person about the person. "im not
+           okay" and never bare "not okay", which is often about somebody
+           else's conduct and is anger, not hurt.
+     can   a thing the person cannot do. "cant relax", "couldnt sleep". */
+var LEXANT_FRAMES={
+ is:['not X','never X','no longer X','wasnt X','isnt X','arent X','werent X','not very X',
+  'never been X','not been X','not feel X','not feeling X','not felt X','dont feel X',
+  'didnt feel X','doesnt feel X','never feel X','never felt X','havent felt X',
+  'no longer feel X'],
+ been:['not X','wasnt X','werent X','never been X','not been X','not feel X','not feeling X',
+  'not felt X','dont feel X','didnt feel X','doesnt feel X','never feel X','never felt X',
+  'havent felt X','no longer feel X'],
+ feel:['not feel X','not feeling X','not felt X','dont feel X','didnt feel X','doesnt feel X',
+  'never feel X','never felt X','havent felt X','no longer feel X'],
+ self:['im not X','i am not X','i was not X','i wasnt X','not feeling X','not feel X',
+  'dont feel X','didnt feel X','not doing X','havent been X','not been X'],
+ can:['cant X','cannot X','can not X','couldnt X','could not X','unable to X','not able to X']};
+var LEXANT={
+ unsafe:{is:['safe'], been:['protected'], feel:['secure']},
+ anxious:{is:['calm','relaxed','at ease'], can:['relax']},
+ sad:{is:['happy']},
+ hurt:{self:['okay','ok','alright','fine']},
+ unloved:{been:['loved','cared for']},
+ unwanted:{been:['wanted']},
+ unheard:{feel:['heard','listened to']},
+ ignored:{feel:['seen','noticed']},
+ dismissed:{been:['valued','respected','appreciated','taken seriously']},
+ isolated:{been:['supported']},
+ 'not good enough':{feel:['good enough']},
+ worthless:{is:['worthy']},
+ 'no confidence':{is:['confident']},
+ hopeless:{is:['hopeful']},
+ weary:{is:['rested']},
+ 'cannot cope':{can:['cope']},
+ 'cannot breathe':{can:['breathe']},
+ distracted:{can:['focus','concentrate']},
+ overwhelmed:{can:['think straight']},
+ 'no energy':{can:['get out of bed']},
+ 'cannot sleep':{can:['sleep']},
+ 'cannot trust':{can:['trust']}};
+
+/* THE FAMILY. A person names who died or left, and "my dad passed" carries
+   no feeling word at all. The kin words are a closed list and the frames fix
+   the sense: "lost my keys" is not here because keys is not kin. */
+var LEXKIN=['mum','mom','mother','dad','father','husband','wife','son','daughter','brother',
+ 'sister','grandmother','grandfather','grandma','grandpa','nan','gran','partner','baby',
+ 'best friend','boyfriend','girlfriend','fiance','fiancee'];
+var LEXKIN_FRAMES={died:['my K passed'], loss:['lost my K'], grieving:['miss my K','missing my K']};
+
+/* THE INHERITANCE. TASKS.md round RA (3 October) and TA8, restated 8
+   November in his own words: "Between the ego and the archetypes is the
+   superego, which I currently define as the behaviors who are taught to
+   you outside of you by an adult... These are the generational, ancestral,
+   parental... Those need to be wired into the sniffer. They need to look
+   for the stories." engine/data/kb.js's own GLOSS already defines Superego
+   as "the stories and rules an adult handed down to you" and Ego as "the
+   mind stuck to the body", so this does not invent a new layer. It tags a
+   hit the scanner already found as handed down rather than self made.
+   Not a LEX or PHRASES row and not a new feeling: sniff.js's originOf reads
+   these two closed lists the way sniffWho reads WHO_SUBJ and WHO_OPEN.
+   ORIGIN_VERB fires straight after a LEXKIN word, "my mother always said".
+   ORIGIN_GENERIC fires with no named relative at all, "in my family", "the
+   way I was raised". Both lists are closed, the same discipline SRC_NEG and
+   WHO_* already use, so a false hit is a row to remove rather than a model
+   to retrain. */
+var ORIGIN_VERB=['taught me','always told me','used to tell me','always said','used to say',
+ 'showed me','modeled that','raised me to believe','always did that','believed that',
+ 'drilled into me','passed down to me','made sure i knew'];
+var ORIGIN_GENERIC=['in my family','runs in my family','generations of my family',
+ 'the way i was raised','how i was raised','growing up i was taught','growing up i learned',
+ 'thats just how i was raised','that is just how i was raised'];
+
+/* THE REFUSALS, read this before adding to the tables above. Each is a word
+   that would have answered a line in the corpus and is refused because its
+   ordinary quiet sense is too common to read bare. A refused key never reaches
+   the table, and the gate asserts that. */
+var LEXSYN_NO={
+ tired:'a hike as often as a life. read only inside a frame: so tired, tired of, i am tired',
+ mad:'keen in one country and furious in another. read only as mad at, so mad',
+ useless:'the advice was useless says nothing about the writer. read only as i am useless and feel useless',
+ down:'down the road, down at the shops. read only as feel down, so down',
+ low:'low tide, low battery, a low price',
+ blue:'a colour first, and blue in the face is laughing',
+ stuck:'stuck in traffic. read only as feel stuck',
+ lost:'lost my keys, lost the match. read only as lost my and a family word, or lost hope',
+ passed:'passed the exam, passed the salt. read only as my and a family word and passed',
+ dead:'the battery is dead, dead tired. read only as dead inside',
+ broken:'the printer is broken. read only as broken hearted',
+ killed:'killed it at the gym, the cold killed the plants',
+ attacked:'felt attacked in an argument is defensive anger, not the root',
+ shattered:'exhausted in one country and devastated in another, two points',
+ sorry:'said a hundred times a day for nothing',
+ hate:'i hate mondays. read only as hate myself',
+ sick:'off sick, a sick day. read only as feel sick, sick of, makes me sick',
+ cross:'cross the road, a cross on a form',
+ 'not okay':'that is not okay is usually about somebody else and reads as anger. read only as im not okay',
+ 'not heard':'i have not heard back from the plumber',
+ 'not seen':'i have not seen that film',
+ 'not sure':'i am not sure what time the shop closes',
+ 'wound up':'excited children are wound up',
+ suicide:'a person writing about their own thoughts of it is not bereaved, and died would read it as grief at the heart. read only as took his own life and took her own life, which are a death',
+ worries:'no worries is a pleasantry',
+ stress:'i want to stress that, a stress test. read only as stressed and so much stress',
+ 'put down':'put down the phone. read only as put me down',
+ binge:'binge watch a series. read only as binge eating and binge drinking',
+ dumped:'dumped the rubbish. read only as dumped me',
+ overlooked:'the room overlooked the bay',
+ 'pushed me':'pushed me to do better',
+ 'grabbed me':'the book really grabbed me',
+ 'used me':'used me as a reference',
+ replay:'watched the replay, i replayed the video for my son. read only as i replay',
+ cheating:'cheating at cards, cheating on a diet. read only as cheating on me',
+ 'didnt listen':'i did not listen to the radio. read only as he never listens and nobody listens',
+ edgy:'an edgy haircut, an edgy film',
+ invisible:'the invisible hand, invisible ink, invisible to direct sensing. read only as feel invisible and i am invisible',
+ unseen:'an unseen force. read only as feel unseen',
+ 'a failure':'a failure of the system. read only as such a failure, like a failure, i am a failure',
+ judged:'someone i judged smarter is the writer judging. read only as feel judged and being judged',
+ foolish:'people do foolish things. read only as feel foolish',
+ betray:'is the writer betraying, and betrayed is the person betrayed, a different reading',
+ 'break up':'break up a fight, break up the ice. read only as broke up with and split up',
+ trapped:'signal trapped beneath the tissue, trapped in traffic. read only as feel trapped and i am trapped',
+ stiff:'a stiff drink, stiff inelastic scar. read only as went stiff and goes stiff',
+ 'over and over':'pressing a button over and over. read only as keep going over',
+ 'zoned out':'zoned out in a dull meeting is boredom, and disconnected reads it at the crown',
+ 'stabbed in the back':'carries back, which the place rule refuses to place, so the key could place a refused place',
+ ill:'is i will once the apostrophe is gone, so it can never be a key'};
+
+/* run the pass. Headwords are resolved against the table as it stands after
+   canon and fold, and nothing this pass writes can be a headword for it,
+   which is how a generator quietly chains its own output: a synonym of a
+   synonym drifts a little further from the word that was meant each time. */
+function lexSyn(places){
+ var out={added:0,phrase:0,already:0,refused:{},from:{},rows:[]};
+ var heads=Object.keys(LEX), phr={};
+ PHRASES.forEach(function(r,ri){r[0].forEach(function(w){phr[w]=ri;});});
+ var phrWords=Object.keys(phr);
+ function has(hay,w){return (' '+hay+' ').indexOf(' '+w+' ')>=0;}
+ function refuse(k,why){if(!out.refused[k])out.refused[k]=why;}
+ function add(k,head,src,how){
+  if(LEXSYN_NO[k]){refuse(k,'refused by name: '+LEXSYN_NO[k]);return;}
+  if(LEX_FOLD_NO[k]){refuse(k,'refused by the fold: '+LEX_FOLD_NO[k]);return;}
+  if(!lexKeyOk(k)){refuse(k,'not a form the scanner can produce');return;}
+  var inLex=heads.indexOf(head)>=0, ri=phr[head];
+  if(!inLex&&ri===undefined){refuse(k,'its headword '+head+' is in neither LEX nor PHRASES');return;}
+  if(LEX[k]||phr[k]!==undefined){out.already++;return;}
+  /* a phrase is matched before any key and blocks what it overlaps, so a key
+     with a phrase inside it is a dead row, and a phrase with a phrase inside
+     it, or inside another, is read twice. A phrase containing a key is only
+     the phrase outranking its own words, which is the rule working. */
+  var eat=phrWords.filter(function(p){return has(k,p)||(!inLex&&has(p,k));});
+  if(eat.length){refuse(k,'overlaps the phrase '+eat[0]);return;}
+  /* and a new phrase would eat every key that contains it */
+  var kill=inLex?[]:heads.filter(function(h){return has(h,k);});
+  if(kill.length){refuse(k,'would eat the key '+kill[0]);return;}
+  /* a word inside the key that names a charge of its own is still read by
+     the adjective pass, which nothing blocks, so it must name the same
+     charge as the headword or the reading splits. */
+  var hc=ADJ2CHG[head]||null;
+  var clash=hc?k.split(' ').filter(function(w){return ADJ2CHG[w]&&ADJ2CHG[w]!==hc;}):[];
+  if(k.indexOf(' ')>0&&clash.length){refuse(k,'carries '+clash[0]+', which names '+ADJ2CHG[clash[0]]+' and not '+hc);return;}
+  /* a body word inside a key seats that body word for the place rule, 20.H2,
+     so a key may only carry a place the table already seats where its
+     headword sits. Otherwise this pass would move where a sensation lands. */
+  var seat=inLex?LEX[head][LEX_SEAT]:PHRASES[ri][1];
+  var pw=(places&&places.words||[]).filter(function(w){return has(k,w);});
+  var badp=pw.filter(function(w){return places.seat[w]!==seat;});
+  if(badp.length){refuse(k,'names the place '+badp[0]+', which the table places at '+(places.seat[badp[0]]||'no point')+' and not '+seat);return;}
+  if(inLex){
+   /* through the same boundary as every other entry. It cannot refuse here:
+      the key was checked above and every other value is copied off an entry
+      that already passed it, and the gate asserts the refusal list is empty,
+      so a refusal that did happen would not be silent. */
+   var e=LEX[head], meta={src:src,from:head,rule:how,cite:'judgement'};
+   var a=lexAdd(k,e[LEX_SEAT],e[LEX_AMT],e[LEX_FET]!=null?e[LEX_FET]:null,meta);
+   if(!a.ok){refuse(k,a.why);return;}
+   if(ADJ2CHG[head])chgAdd(k,ADJ2CHG[head],meta);
+   out.added++;
+  } else {
+   PHRASES[ri][0].push(k); phr[k]=ri; phrWords.push(k); out.phrase++;}
+  out.from[k]={head:head,src:src,rule:how,table:inLex?'LEX':'PHRASES'};
+  out.rows.push(k);}
+ Object.keys(LEXSYN).forEach(function(h){LEXSYN[h].forEach(function(k){add(k,h,'synonym','same reading');});});
+ Object.keys(LEXANT).forEach(function(h){Object.keys(LEXANT[h]).forEach(function(set){
+  var fr=LEXANT_FRAMES[set];
+  if(!fr){refuse(h+' '+set,'names a frame set that does not exist');return;}
+  LEXANT[h][set].forEach(function(w){fr.forEach(function(f){
+   add(f.replace('X',w),h,'antonym','not '+w+', '+set);});});});});
+ Object.keys(LEXKIN_FRAMES).forEach(function(h){LEXKIN_FRAMES[h].forEach(function(f){
+  LEXKIN.forEach(function(kw){add(f.replace('K',kw),h,'synonym','family, '+f);});});});
+ return out;}
+/* lexFold is NOT run here, and the reason is load order. lexRefuse checks a
+   stated fetter against CHARGES, and CHARGES is declared in core.js, which
+   MANIFEST loads after this file. Touching it from here throws at parse, which
+   is the failure this repository's load order rule exists to prevent. So the
+   vocabulary, its schema, its validator and its rules live with the vocabulary,
+   and the passes are RUN at the top of sniff.js, which is the first module
+   where the canon tables are in scope and still before anything can scan. */
+
+/* ============================================================
+   THE LAW VIOLATION CUES · SNIFFER_SPEC.md section 6.
+
+   WHAT THIS IS FOR, in one sentence: the spec rules that CQ is the mean of the
+   21 laws, so a law violation is not decorative, it is the input to the
+   coherence number, and the sniffer is asked to detect where a law is being
+   violated in journal text.
+
+   THE PRIVACY RULING, CHECKED FIRST RATHER THAN LAST. Every cue below is
+   matched against text that is already in the person's own browser by a pure
+   function with no host access. No name, no record and nothing off a device is
+   read, and nothing is sent anywhere. The ruling permits this. It does not
+   permit the evaluation this table actually needs, which is written down under
+   WHAT CANNOT BE EVALUATED at the bottom of this block.
+
+   WHERE THE WORDS COME FROM, AND THE ADMISSION THAT MATTERS MOST. Section 13
+   of the spec names `reviews/elements.json` as "your lexicon" and says to load
+   it directly rather than retype it. IT IS NOT IN THIS REPOSITORY, along with
+   ENGINE.json, reviews/canon.json and handoff/ATUNED_SPEC.json. So there was
+   no lexicon to load and this table could not be built the way the spec says
+   to build it.
+
+   What was done instead, and its limit stated rather than hidden: every cue
+   below is derived from a string the spec itself prints in the section 6
+   violation column, plus that string's ordinary English inflections. Nothing
+   is invented from a clinical vocabulary and nothing is imported from another
+   instrument. The cost is recall: a violation column entry like "Opacity.
+   Energy diverted to concealment" yields perhaps four reachable words, so this
+   table is a floor on what the 21 laws can detect and not a serious attempt at
+   them. lawCoverage() reports the size of the hole rather than letting an
+   average hide it.
+
+   THE FOUR BIDIRECTIONAL LAWS ARE KEYED IN BOTH DIRECTIONS, on the spec's own
+   warning: "a sniffer that only looks for the obvious pole will miss half of
+   them, self-abandonment reads as virtue in a journal." Compassion, Humility,
+   Generosity and Accountability each carry two cue sets and the output names which
+   direction fired. A law read in the wrong direction is worse than a law not
+   read, because the product would praise the thing it is meant to surface.
+
+   PRECISION OVER RECALL, the same ruling the rest of this file runs on. A false
+   positive here tells a person their Truth is violated, which is an accusation.
+   So the phrases are specific and the single common words that would catch
+   everything are refused: `harm`, `pride`, `wrong` and `late` are not cues.
+   ============================================================ */
+var LAW_SELF='self', LAW_OTHER='other', LAW_ONE='single';
+/* [law, direction, [cues]]. direction is LAW_ONE unless the law is one of the
+   four the spec rules bidirectional. `e` is the spec's element number, carried
+   so the output contract can emit it and so a renumbering is a visible diff. */
+var LAWCUE=[
+ [29,'Truth',           LAW_ONE,  ['lied','i lied','told them i','made it up','not the whole truth',
+                                   'i said i had','pretended i','covered for','deceived','a white lie',
+                                   'lied to her','lied to him','lied to them','lied about']],
+ [30,'Transparency',    LAW_ONE,  ['did not tell','kept it from','they do not know','behind their back',
+                                   'nobody knows i','concealed','kept quiet about',
+                                   'hid it from','i hid it from','covered my tracks']],
+ [31,'Unity',           LAW_ONE,  ['us and them','those people','not one of us',
+                                   'people like that','cut them off','nothing to do with me',
+                                   'took sides against','picked a side against']],
+ [32,'Awareness',       LAW_ONE,  ['before i knew it','i just reacted','snapped at','lost it with',
+                                   'came out of nowhere','without thinking','i was triggered']],
+ [33,'Presence',        LAW_ONE,  ['going over it','kept replaying','could not be there',
+                                   'i was not there','in my head the whole',
+                                   'my mind was somewhere else','my head was somewhere else',
+                                   'kept rehearsing','rehearsing what i would say']],
+ [34,'Equanimity',      LAW_ONE,  ['depends on whether','ruined the whole','set me off',
+                                   'threw me','could not settle','on edge all']],
+ /* BIDIRECTIONAL. the spec: "Indifference OR self-abandonment, withheld in
+    either direction." withheld outward is indifference, withheld inward is
+    the one that reads as virtue. */
+ [35,'Compassion',      LAW_OTHER,['not my problem','they brought it on','deserved it','do not care what happens',
+                                   'their own fault','no sympathy for']],
+ [35,'Compassion',      LAW_SELF, ['i should be able to','no right to feel','others have it worse',
+                                   'i do not matter','put myself last','i will manage','no time for myself']],
+ [36,'Forgiveness',     LAW_ONE,  ['will never forgive','still owe me','after what they did','i want them to',
+                                   'holding it against','have not forgotten','they will pay',
+                                   /* "I'll never forgive" normalises to "ill never forgive"
+                                      (lawNorm drops apostrophes), which the generic
+                                      contraction list above refuses to produce on
+                                      purpose (bare "ill" collides with illness). Three
+                                      words bound to "forgive" never make that
+                                      collision, so it is named here instead. */
+                                   'ill never forgive']],
+ /* 'said nothing' MOVED TO THE GATED TABLE BELOW, 11 November, task #132's
+    item 4, found the same way as the Accountability false fires: run the
+    real sentence first. "I said nothing because he would hit me" is a
+    survival account, not an avoidance, and an ungated cue cannot tell the
+    two apart by the words alone any more than row 40's own ungated cues
+    could. */
+ [37,'Courage',         LAW_ONE,  ['put it off','did not bring it up','walked away from',
+                                   'changed the subject','could not face','kept avoiding','never said']],
+ [38,'Temperance',      LAW_ONE,  ['just one more','one more drink','one more glass','one more bet',
+                                   'again last night','more than i meant','could not stop at',
+                                   'takes more now','every night this week','went overboard']],
+ [39,'Duty',            LAW_ONE,  ['said i would and','let them down','did not show up','broke my word',
+                                   'promised and','backed out','went back on']],
+ /* BIDIRECTIONAL, 40 ACCOUNTABILITY ONLY: this element was keyed as
+    'Ownership' until 11 November, which is not one of the product's 21
+    laws (SI, engine/data/canon.js); Accountability is, and HARM (engine/
+    data/kb.js) gives this same element number the same text under that
+    name: "Accountability is ownership of cause and consequence in the
+    shared world." The spec's own line stays: "Victimhood inward,
+    justification outward. One move, two directions." The outward cues
+    below are ungated, each phrase naming who acted and that it was wrong
+    on its own; a second table, LAWCUE_GATED, carries the phrases that read
+    as deflection only once the harm/reported-speech gate (sniffLaws)
+    confirms nobody else's account is in the same entry. */
+ [40,'Accountability',  LAW_OTHER,['blamed it on','put the blame on','shifted the blame','passed the blame',
+                                   'passed the buck','pointed the finger at','pinned the blame on',
+                                   'made excuses when','made excuses for what i','made excuses instead of',
+                                   'never owned up','did not own up','never admitted it','would not admit it',
+                                   'would not admit i','never admitted i',
+                                   'let them take the blame','let him take the blame','let her take the blame',
+                                   'let them take the fall','let him take the fall','let her take the fall',
+                                   'even though i did it','even though it was me']],
+ [40,'Accountability',  LAW_SELF, ['all my fault','i ruined','i always do this','everything is my',
+                                   'i am the problem','i deserve this','no good at anything']],
+ [41,'Justice',         LAW_ONE,  ['they got away with','not fair that','wanted them punished',
+                                   'looked the other way','turned a blind eye','let it slide because']],
+ [42,'Non-Harm',        LAW_ONE,  ['i humiliated','made them cry','said it to hurt','wanted it to sting',
+                                   'did not care who got','i lashed out at','made her cry','made him cry']],
+ /* RE-KEYED TO 72, 11 November, its real number in HARM (E72 Wisdom). 43
+    now belongs to Responsibility, a real SI law this file carried no row
+    for at all; Wisdom is not one of the 21 (SI), so it stays unshown
+    exactly as it always has, by the same SINAMES filter, element number
+    aside. Cues untouched. */
+ [72,'Wisdom',          LAW_ONE,  ['sounded right','told myself that','easier to believe','convinced myself',
+                                   'justified it','knew better and','a good story about']],
+ /* NEW, 11 November, task #132. The canon gives this element no text of
+    its own (HARM's E43 entry is blank); the default here, pending the
+    owner's ruling (see CLAUDE.md), reads it off E40's own line, "ownership
+    of your own field, the patterns and the charge": not a single act owned
+    or disowned, but the pattern itself, left for someone else to carry.
+    Every cue names something that belongs to the writer, never an act
+    against another person, which is what keeps this row apart from 40. */
+ [43,'Responsibility',  LAW_ONE,  ['waiting for someone to fix me','waiting for someone else to fix me',
+                                   'waiting for someone to fix my','waiting for someone else to fix my',
+                                   'waiting for someone to sort out my','waiting for someone else to sort out my',
+                                   'expected my partner to fix how i','expected him to fix how i',
+                                   'expected her to fix how i','expected them to fix how i',
+                                   'it is his job to make me','it is her job to make me','it is their job to make me',
+                                   'keep blaming my childhood','keep blaming my parents','keep blaming my mum',
+                                   'keep blaming my mom','keep blaming my dad',
+                                   'never dealt with my','still have not dealt with my',
+                                   'that is just how i am and','that is just how i am so','that is just who i am and',
+                                   'just how i am take it or leave it']],
+ /* BIDIRECTIONAL. the spec: "Pride and grandiosity, OR the inverse
+    self-abasement." */
+ [44,'Humility',        LAW_OTHER,['nobody else could','above all this','they should be grateful',
+                                   'i am the only one who','beneath me','better than them at']],
+ [44,'Humility',        LAW_SELF, ['who am i to','not qualified to','i am nothing','worthless',
+                                   'do not deserve to','make myself small']],
+ /* BIDIRECTIONAL. the spec: "Circuit broken. Hoarding on giving, entitlement
+    on receiving." */
+ [45,'Generosity',      LAW_OTHER,['keeping it for','not sharing','what do i get','owe me',
+                                   'entitled to','my share first']],
+ [45,'Generosity',      LAW_SELF, ['could not accept','refused the help','did not let them',
+                                   'i do not need anyone','turned down the offer']],
+ [46,'Detachment',      LAW_ONE,  ['has to go my way','cannot let go of',
+                                   'kept checking his phone','kept checking her phone','kept checking their phone',
+                                   'kept checking whether they','kept checking if they',
+                                   'needed it to be','could not let them','clinging to','fixated on']],
+ [47,'Patience',        LAW_ONE,  ['forced it','pushed it through',
+                                   'should have happened by','sick of waiting','made it happen faster']],
+ [48,'Aesthetic Beauty',LAW_ONE,  ['living in a mess','piles of it everywhere','noise the whole','cluttered',
+                                   'could not think in','chaos in here']],
+ [49,'Nature',          LAW_ONE,  ['have not been outside','screens all','under strip lights',
+                                   'no daylight','four walls','not seen the sky']]];
+
+/* THE GATED TABLE, 11 November, task #132. Same shape as LAWCUE, [e,law,
+   direction,[cues]], but sniffLaws never counts a hit from here on its own:
+   each one also has to clear the harm/reported-speech gate (lawGateOpen,
+   below), because every phrase in it is the EXACT wording a real harm
+   account or somebody else's own words would also produce. "Not my fault,
+   I only yelled because they were late" is a deflection; "I had no choice,
+   he locked the door" and "I was told it was all my fault" are not, and a
+   matcher with no gate cannot tell them apart by the words alone. A missed
+   deflection costs nothing this product cannot absorb; calling a survivor
+   the cause is the one error it cannot. */
+/* 'they started it' DROPPED, 11 November, found behind the gate rather than
+   guessed at: "They started it, I was nine and they were fourteen" still
+   fired Accountability. The gate's own harm check reuses LEANFRAME.other
+   (verp.js), a closed phrase list, and no phrase there names a child's own
+   age against another child's, so this one sentence had nothing to close
+   the gate on. The plan's own rule for a cue that still misfires behind
+   the gate is to drop it rather than build a second mechanism around one
+   sentence, the same choice made below for the apology cues on the "never
+   apologised for leaving a job" probe. */
+/* THE APOLOGY CUES, DROPPED, the plan's own probe: "I never apologised for
+   leaving a job I hated" must stay dark, and the gate has nothing to close
+   on (no harm, nobody else's reported words), so 'never apologised' fired
+   behind it. Not apologising for a choice that hurt nobody but the writer
+   is not a deflection of accountability, and the gate cannot tell that
+   case apart from the one the cue was written for, so the cue is dropped
+   rather than tuned around, same ruling as 'they started it' above. */
+var LAWCUE_GATED=[
+ [40,'Accountability',  LAW_OTHER,['not my fault','anyone would have','forced me','if they had not',
+                                   'i did nothing wrong','i did not do anything wrong',
+                                   'the rest is on them']],
+ /* 'said nothing', out of Courage's own ungated row above, same cue, same
+    gate: "I said nothing because he would hit me" must clear the harm
+    check before it reads as an avoidance. */
+ [37,'Courage',         LAW_ONE,  ['said nothing']]];
+/* A MATCH HERE TAKES ITS PLACE IN THE SENTENCE AND IS THEN THROWN AWAY, the
+   same rule verp.js's LEANOUT runs on a different table. "I lied down for
+   a nap" matches the bare 'lied' cue on Truth (29 above); 'lied' has to
+   stay bare to catch "I lied to my boss" with no object, so the sentence
+   that follows it is excluded by name instead of narrowing the cue that
+   serves it. */
+var LAWCANCEL=['lied down','lie down'];
+
+/* THE FIVE EXPRESSION SHADOWS the spec names as high value for journal text:
+   Flow to Block, Curiosity to Apathy, Play to Rigidity, Purpose to
+   Driftlessness, Will to Resignation. Only these five, because the other five
+   of the ten and all 28 of nature and human nature need elements.json, which
+   is not here. The engine's own EXPR table carries six of the spec's ten names
+   and four it does not, and its shadow word differs on every one of these five,
+   so this is a separate table rather than an edit to EXPR: EXPR has other
+   callers and moving its strings would move surfaces this pass did not measure. */
+var EXPRCUE=[
+ [54,'Flow',     'Block',         ['could not get started','stuck on','staring at it','nothing came',
+                                   'kept stopping','blocked','no traction']],
+ [55,'Curiosity','Apathy',        ['do not care any more','what is the point','stopped wondering',
+                                   'all the same to me','not interested in anything']],
+ [56,'Play',     'Rigidity',      ['has to be done properly','no time for that','not funny',
+                                   'we do it this way','cannot just','there are rules']],
+ [57,'Purpose',  'Driftlessness', ['no idea what i am doing','going nowhere','drifting',
+                                   'why am i even','no direction','same thing every day']],
+ [58,'Will',     'Resignation',   ['gave up on','no use trying','it is what it is','nothing i can do',
+                                   'stopped fighting','accepted that i will never']]];
+
+/* DANTE, SECTION 9, AND ONLY WHERE IT IS ACTUALLY SNIFFABLE.
+
+   The spec gives nine circles with a pattern and a somatic address each, and
+   says of the eighth: "C8's test is the single most sniffable line in the whole
+   system. Performed warmth versus generated warmth is detectable in text:
+   praise that arrives with an audience, generosity narrated rather than done."
+   That is a test, so it is implemented as one.
+
+   The other eight are behavioural taxonomy without a phrase table, and no
+   elements.json to derive one from. Four have enough of a stated pattern to
+   reach with the spec's own words and are keyed thinly. Four are left empty and
+   REPORTED empty, because a circle scored off two guessed phrases would be a
+   depth reading of a person built on nothing, which is the worst thing in this
+   document to get wrong. depth returns null rather than a low confidence
+   guess: refusing to read is a legitimate answer and it is the right one here. */
+var DANTECUE=[
+ ['C1','Limbo',    'Disbelief, spiritual bypass through rationalism',
+  ['none of it is real','just brain chemistry','all in the mind','nothing means anything really']],
+ ['C2','Lust',     'Grandiose entitlement, self-appointed arbiter',[]],
+ ['C3','Gluttony', 'Consumption as substitution',
+  ['ate until','filled the gap with','instead of calling','something to take the edge']],
+ ['C4','Greed',    'Scarcity identity, worth measured in possession',
+  ['never enough','what i am worth','cannot afford to','they have more']],
+ ['C5','Wrath and Sloth','The same suppressed charge, out as attack or in as shutdown',
+  ['did not get out of bed','blew up at','could not move all','went off at']],
+ ['C6','Heresy',   'Doctrine as identity armor',[]],
+ ['C7','Violence', 'Against others, against self, against nature',[]],
+ /* the test, and it is a test rather than a word list: warmth that requires an
+    audience. a marker of display standing within range of a marker of giving. */
+ ['C8','Fraud',    'Performed warmth. Does it cost them anything, or require an audience',[]],
+ ['C9','Treachery','Complete inversion, stasis at terminal velocity',[]]];
+var C8_GIVE=['helped','gave','looked after','paid for','stayed with','covered for','supported'];
+var C8_AUDIENCE=['everyone saw','posted','in front of','made sure they knew','told everyone',
+ 'people noticed','on the group chat','announced'];
+var C8_WINDOW=12;      /* words. one sentence of reach, the same span the lean's
+                          negation rule uses for the same reason: wider and the
+                          marker belongs to a different sentence. */
+
+/* WHAT THIS TABLE CAN AND CANNOT REACH, reported rather than averaged. The
+   whole birth module once sat at zero coverage while the average read 92
+   percent, so this returns the unreached list and not only the number. */
+function lawCoverage(){
+ var laws={}, bidir={};
+ LAWCUE.forEach(function(r){
+  laws[r[1]]=(laws[r[1]]||0)+r[3].length;
+  if(r[2]!==LAW_ONE)bidir[r[1]]=(bidir[r[1]]||0)+1;});
+ var thin=Object.keys(laws).filter(function(l){return laws[l]<6;});
+ /* THE GATE USED TO COUNT ITSELF AND CALL IT WHOLE, 11 November. laws:21
+    meant twenty one rows in LAWCUE, not twenty one of the product's own 21
+    (SINAMES, engine/data/canon.js). Ownership and Wisdom filled two of
+    those rows while Responsibility and Accountability, both real SINAMES
+    entries, had none, so this returned laws:21 the whole time task #132 was
+    open. lawsMissing names a real law with no row to find it by; lawsExtra
+    names a row whose name is not one of the 21 at all (Wisdom stays one on
+    purpose, re-keyed to its own element number and never shown, so it
+    belongs here every time and is not a defect). Named apart from the
+    `missing` field below, which this function already used for something
+    else entirely (the spec files this whole pass has no access to); the
+    same word for two different things on one object is exactly the kind
+    of silent collision this repository keeps finding the expensive way. */
+ var rowNames=Object.keys(laws),
+  lawsMissing=(typeof SINAMES!=='undefined'?SINAMES:[]).filter(function(l){return rowNames.indexOf(l)<0;}),
+  lawsExtra=rowNames.filter(function(l){return (typeof SINAMES==='undefined')||SINAMES.indexOf(l)<0;});
+ return {laws:Object.keys(laws).length, cues:Object.keys(laws).reduce(function(a,l){return a+laws[l];},0),
+  bidirectional:Object.keys(bidir).sort(), thin:thin.sort(),
+  lawsMissing:lawsMissing.sort(), lawsExtra:lawsExtra.sort(),
+  expression:EXPRCUE.length, expressionAbsent:5,
+  circles:DANTECUE.length, circlesKeyed:DANTECUE.filter(function(c){return c[3].length;}).length,
+  nature:0, human:0,
+  missing:['reviews/elements.json','ENGINE.json','reviews/canon.json','handoff/ATUNED_SPEC.json']};}
+
+/* WHAT CANNOT BE EVALUATED, AND IT IS NOT A SMALL LIST.
+
+   There is no labelled set. Nobody has taken journal text and marked which of
+   the 21 laws it violates, so nothing below is validated and none of it may be
+   called accurate. What CAN be measured without labels, and is, in
+   tests/engine.js and proto/sniffer: that a cue fires where it should, that it
+   does not fire on the negation of itself, that the bidirectional four report a
+   direction, that the same text read twice gives the same answer, and that
+   nothing fires on empty input.
+
+   What it would take to evaluate this honestly, in order of cost:
+     1. a labelled set. 200 journal entries, two independent raters per entry
+        marking law and direction, agreement measured before the matcher is
+        scored against it. The raters may not be the author of this table.
+     2. a negation and subject audit. This table inherits no negation handling,
+        so "i did not lie to them" fires Truth. verp.js solved this for its own
+        lists with a three word lookback and that mechanism should be shared
+        rather than copied, which is a change to a file this seat does not own.
+     3. the privacy ruling on the set itself. A labelled corpus of journal text
+        is the most sensitive artefact this product could hold, and the ruling
+        that the story without the record is what refines the models is exactly
+        what makes it possible at all. It needs consent language and the owner's
+        ruling that it is allowed before a single entry is collected. */

@@ -1,0 +1,486 @@
+/* ============================================================
+   LOGIN. Round MH and MI. His words: "I need to be able to create a
+   login. So the login would be on the main tuned animation screen.
+   And when I hit enter, it completes the zoom animation. And then
+   takes me to onboarding." Corrected the same round: "the landing
+   page needs to be the funnel, where they create their account,"
+   which makes this screen the return door and not the front door;
+   the funnel is. And then, keeping it simple while the real flow is
+   designed: "let's keep it locally."
+
+   ROUND MP REDESIGNED THE FIELDS AND KEPT THE HONESTY. Email,
+   password, a suggested strong password and a forgot password link
+   are real controls, "the login needs the typical login stuff." Two
+   factor and OAuth are named in the same round and are not here:
+   each needs a real provider and a decision only he can make about
+   which ones, and two factor is his systems engineer's by round EZ,
+   so they are queued rather than built silently under cover of
+   "typical login stuff."
+
+   AND ON 30 SEPTEMBER IT SIGNS IN FOR REAL. This paragraph used to
+   say the reboot-os Worker had never deployed and so there was
+   nothing to sign in to. It deployed that night, and he ordered this
+   finished first: "finish the login first." Log in, Create account
+   and the forgotten password now go to it through ui/auth.js, the
+   one file that makes a request. Three things moved with that.
+
+   The username field is gone. The server keys an account on the
+   email and takes no username anywhere, so a field it ignores was a
+   question asked for nothing and an answer thrown away in silence.
+
+   Log in no longer lets anything through. A door that now checks
+   needs a way past it that does not, or a person with no network or
+   no account is locked out of an instrument that runs entirely on
+   their own device: Continue without an account is that way, and it
+   is exactly what pressing Log in used to do.
+
+   And a session that is already held skips the door, loginBoot
+   below. A login screen shown to somebody who is signed in asks for
+   a password the browser is already holding.
+
+   Nothing here syncs. A sign in names an account; every story and
+   reading stays in this browser, as before.
+
+   THE ONE SENTENCE THAT SAID SO OUT LOUD IS GONE, his own ruling:
+   "get rid of the text that says this is a local build, nothing
+   typed here is sent anywhere or checked against anything." The
+   honesty moved into the forgot password panel, which said there was
+   no account behind it yet, and that panel is real now as well. What
+   is left to be honest about is said by the result of each press, in
+   the card and on the status line, never before it.
+
+   THE SEQUENCE IS THE DEFAULT NOW, reversing OB_AUTO's own September
+   ruling, "let's turn off onboarding for now," for this one path
+   only: onboard.js's own automatic-open check stays exactly as
+   written, in case anything else ever reaches it, but the boot's own
+   step below no longer reads it. What reads it now is DEV_SKIP, and
+   the default is to show the door, his own words this round: "if
+   it's not pressed, then it goes to the sequence." */
+var LOGIN={open:false,reset:false,busy:false,signup:false};
+/* THE DEVELOPER SKIP. His words: "have a switch for that loading
+   screen to turn onboarding tutorial off, so I can just bypass
+   straight to the dashboard, just put it as a developer button, on
+   the upper right hand corner. And if it's pressed, it's just skips."
+
+   Two doors to the same flag, so a person testing this by hand and a
+   gate testing it by script use the one switch: the button in the
+   boot sheet's own corner, and ?dev=1 on the file's own URL, which is
+   how the gate suite reaches the instrument without meeting the door
+   first, the same way a developer's own press would. Read once, at
+   load, because the boot sheet the button lives on is gone within a
+   second of the page settling and nothing after that should still be
+   asking the URL. This flag alone still means "skip the door and the
+   sequence entirely," unchanged, and every browser gate still reaches
+   the instrument through it. */
+var DEV_SKIP=false;
+(function(){
+ try{ DEV_SKIP=/(?:^|[?&])dev=1(?:&|$)/.test(location.search||''); }catch(e){}
+})();
+/* THE SWITCH BEHIND THE DOOR, ROUND MP. His words: "the login screen
+   should give me the options, I want onboarding and tutorial, if they're
+   both off then it skips straight to dashboard, if one is on it plays one
+   versus the other." It only matters once DEV_SKIP above has already let
+   the login screen show; DEV_SKIP itself still bypasses it along with the
+   door.
+
+   ONE SWITCH, 23 October. The other was DEV_PLAY_TUTORIAL, for the Day One
+   tutorial (ui/tutorial.js), a second first run on the onboarding's own
+   stage. It defaulted off, and the panel that could turn it on was
+   deactivated at round RI, so no arrival ever met that sequence: its one
+   door was a replay button in Account. The owner: "I want that hidden one
+   completely removed. We're not doing that anymore." The tutorial, this
+   switch and that button are gone, which answers the question this
+   paragraph used to leave open, which of the two a stranger meets: the
+   onboarding, and only the onboarding. */
+/* BACK ON, 11 November. The 10 November hold above never got the
+   replacement it was waiting on; instead the owner asked for this same
+   sequence restyled to match that night's Journal rail/Dashboard round
+   (square beveled tiles, continuous-brightness fill, no pill buttons) and
+   wired back in, his own words: "go ahead and rebuild it and wire it in,
+   I'll see how it works during the flow when I test it, then we'll
+   determine whether to keep it." That restyle shipped the same round this
+   switch flipped (atuned_src/shell/head.html's .obx tile rules, this
+   file's own onboard.js markup). Flip it back off, the 10 November way,
+   if a real replacement supersedes it instead. */
+var DEV_PLAY_ONBOARDING=true;
+/* A PASSWORD SUGGESTION IS A LOCAL ONE. Sixteen characters, one from
+   each of four sets, the rest filled from all four combined and
+   shuffled, so every suggestion actually contains a lower case letter,
+   an upper case letter, a digit and a symbol rather than relying on
+   chance to include one. crypto.getRandomValues, not Math.random: a
+   suggested password is exactly the kind of value worth a real source
+   of randomness. */
+function loginSuggestPassword(){
+ var sets=['abcdefghijkmnpqrstuvwxyz','ABCDEFGHJKLMNPQRSTUVWXYZ','23456789','!@#$%^&*-_?'];
+ var all=sets.join(''), n=16, out=[];
+ var rnd=function(max){
+  try{ var a=new Uint32Array(1); crypto.getRandomValues(a); return a[0]%max; }
+  catch(e){ return Math.floor(Math.random()*max); } };
+ sets.forEach(function(s){ out.push(s[rnd(s.length)]); });
+ while(out.length<n) out.push(all[rnd(all.length)]);
+ for(var i=out.length-1;i>0;i--){ var j=rnd(i+1); var t=out[i]; out[i]=out[j]; out[j]=t; }
+ return out.join('');}
+/* The email a person typed is carried between the two cards, so going to the
+   forgotten password and back does not make them type it a second time. */
+function loginCard(mail){
+ /* A QUIZ-LINK ARRIVAL SEES CREATE ACCOUNT FIRST, 12 November. His own
+    flag for this exact landing (RECORD_LINK_LANDED, set by
+    recordLinkBoot() above, read and cleared once by loginDashOverride()
+    below) stays true for as long as this door is open, since it only
+    clears on the next successful sign in or sign up -- so it is safe to
+    read here, at render time, without racing the override that reads it
+    later. A person who was just promised an account has no password yet;
+    showing Log in as the default asked them to solve a problem they do
+    not have. An ordinary arrival, with no such landing, still opens on
+    Log in. */
+ /* "CREATE ACCOUNT DOESN'T DO ANYTHING", 12 November, reproduced before
+    fixing: the button submitted whatever was in the Log in fields on the
+    first press, so an empty card looked like a dead button. LOGIN.signup
+    is the press's own switch into this same quiz-link presentation,
+    first pressed to arrive here rather than only landed from a link. */
+ var landed=(typeof RECORD_LINK_LANDED!=='undefined'&&RECORD_LINK_LANDED)||LOGIN.signup;
+ return '<div class="ob-card login-card" role="dialog" aria-modal="true" aria-label="'+(landed?'Create account':'Log in')+'">'
+  +'<div class="ob-wash" aria-hidden="true"></div>'
+  +'<div class="ob-scroll">'
+  /* WELCOME IS THE HEADING, 16 November, his words on an annotated screenshot
+     of this card: "we just want welcome in large font, just like login." The
+     card said Welcome twice over, a small eyebrow and then "Log in" in large
+     type over a Log in button that already names the press, so the eyebrow
+     is gone and its word takes the heading's place. The Create account
+     heading is kept: it is the only thing above the fold that says the first
+     press of Create account changed the card, which is the 12 November "it
+     doesn't do anything" bug below, and his crossings were made on the Log
+     in card alone. */
+  +'<h2 class="ob-h">'+(landed?'Create account':'Welcome')+'</h2>'
+  +'<form id="loginform" novalidate>'
+  /* THE LABEL IS IN THE FIELD, the same ruling: "email and password you can
+     put inside the fields so that that's cleaned up." A placeholder vanishes
+     on the first keystroke and is not a name a screen reader can rely on, so
+     each field also carries aria-label with the same word. Two fields that
+     say what they are on an empty card is all a placeholder has to do here:
+     the email is carried between cards (loginCard(mail)), so a refilled field
+     shows its own value, which is its own label. */
+  +'<div class="login-row">'
+  +'<input type="email" id="loginmail" autocomplete="email" spellcheck="false" placeholder="Email" aria-label="Email" value="'+esc(mail||'')+'"></div>'
+  /* current-password, because the person pressing Log in has one: new-password
+     told a password manager to offer a fresh one instead of filling the saved
+     one, which was right for a card nothing checked and wrong for one that does.
+     Suggest still fills the field for somebody about to press Create account. */
+  +'<div class="login-row">'
+  +'<div class="login-pw"><input type="password" id="loginpass" autocomplete="current-password" placeholder="Password" aria-label="Password">'
+  +'<button type="button" class="login-pwsug" id="loginsug">Suggest</button></div>'
+  +'<span class="login-hint" id="loginpwhint" hidden></span></div>'
+  +'<button type="button" class="login-forgot" id="loginforgot">Forgot your password?</button>'
+  +'</form>'
+  +'<p class="login-msg" id="loginmsg"></p>'
+  +(landed
+   ?'<div class="ob-acts"><button type="button" class="btn pri" id="loginb-new">Create account</button>'
+    +'<button type="button" class="btn" id="loginb-go">Log in</button></div>'
+   :'<div class="ob-acts"><button type="button" class="btn pri" id="loginb-go">Log in</button>'
+    +'<button type="button" class="btn" id="loginb-new">Create account</button></div>')
+  /* IS THIS A CRISIS, 16 October: the first card a stranger meets carries the
+     button, under the two ways in (Guest removed 12 November, the owner's
+     own instruction) and never in front of them, so it is always there and
+     never the thing a person has to read past. The panel and the reason it
+     is its own layer are in ui/crisis.js. */
+  +'<p class="crx-line">'+crisisBtn()+'</p>'
+  /* THE DOOR'S LEGAL LINE, 16 October. The first place a person can make an
+     account, so the two pages that say what an account sends and keeps are
+     linked here (legalLink, ui/account.js). It is the card's foot and sits
+     under the crisis button, never between it and the two ways in: there
+     it would put two links ahead of the button in the tab order and a line
+     of text above it on a phone, and the button is the one control a person
+     in trouble should reach with the fewest presses after them.
+     tests/onboarding2.js holds the button on the first screen at 390.
+
+     THE TWO LINKS, NOT THE SENTENCE, 16 November. He crossed out "Read ...
+     and ... before you make an account." around the two words and kept the
+     words: "get rid of the text around, keep privacy in terms." The links
+     are the same two legalLink calls with the same addresses; the dot
+     between them is a separator a screen reader has no use for. */
+  +'<p class="login-legal">'+legalLink('privacy')
+  +'<span class="login-sep" aria-hidden="true">·</span>'+legalLink('terms')+'</p>'
+  +loginDevOptions()
+  +'</div></div>';}
+function loginResetCard(mail){
+ return '<div class="ob-card login-card" role="dialog" aria-modal="true" aria-label="Reset your password">'
+  +'<div class="ob-wash" aria-hidden="true"></div>'
+  +'<div class="ob-scroll">'
+  +'<span class="pm-eye">Password reset</span>'
+  +'<h2 class="ob-h">Reset your password</h2>'
+  +'<p class="ob-p">Enter the email the account uses. A link to set a new password goes there.</p>'
+  +'<form id="loginresetf" novalidate>'
+  +'<div class="login-row"><label class="login-l" for="loginrmail">Email</label>'
+  +'<input type="email" id="loginrmail" autocomplete="email" spellcheck="false" value="'+esc(mail||'')+'"></div>'
+  +'</form>'
+  +'<p class="login-msg" id="loginmsg"></p>'
+  +'<div class="ob-acts"><button type="button" class="btn pri" id="loginb-send">Send the link</button>'
+  +'<button type="button" class="btn" id="loginb-back">Back to log in</button></div>'
+  +'</div></div>';}
+/* SET A NEW PASSWORD, the screen the mailed link opens (open item M3, the
+   token is taken off the address by authResetTake in ui/auth.js). Before it
+   the link opened the Log in card above, which asks for the password the
+   person has just said they do not have. The same card as the two above, so
+   it reads as one door and not a third one. The token never enters this
+   markup: ui/auth.js holds it and hands it straight to the request.
+
+   Save is the form's own submit button, with the message line and the
+   actions inside the form, so Enter in either field saves. A form with two
+   fields and no submit button is never submitted by Enter, which is why the
+   Log in card's own onsubmit does not run; that card is left as it is.
+
+   The floor is said before it can be broken, off the one constant the check
+   reads, so the sentence and the refusal cannot disagree. */
+function loginNewCard(){
+ return '<div class="ob-card login-card" role="dialog" aria-modal="true" aria-label="Set a new password">'
+  +'<div class="ob-wash" aria-hidden="true"></div>'
+  +'<div class="ob-scroll">'
+  +'<span class="pm-eye">Password reset</span>'
+  +'<h2 class="ob-h">Set a new password</h2>'
+  +'<p class="ob-p">Type the new password twice. It needs at least '+AUTH_PW_MIN+' characters. '
+  +'Saving it signs you in here and signs you out on every other device.</p>'
+  +'<form id="loginnewf" novalidate>'
+  +'<div class="login-row"><label class="login-l" for="loginnpw">New password</label>'
+  +'<input type="password" id="loginnpw" autocomplete="new-password"></div>'
+  +'<div class="login-row"><label class="login-l" for="loginnpw2">New password again</label>'
+  +'<input type="password" id="loginnpw2" autocomplete="new-password"></div>'
+  +'<p class="login-msg" id="loginmsg"></p>'
+  +'<div class="ob-acts"><button type="submit" class="btn pri" id="loginb-save">Save</button>'
+  +'<button type="button" class="btn" id="loginb-back">Back to log in</button></div>'
+  +'</form>'
+  +'</div></div>';}
+/* The yes, held on the card until the person moves on. A line on the status
+   bar alone would sit under this full screen card and clear in seconds, so a
+   person who had just got back into their account could miss being told. */
+function loginNewDoneCard(who){
+ return '<div class="ob-card login-card" role="dialog" aria-modal="true" aria-label="New password saved">'
+  +'<div class="ob-wash" aria-hidden="true"></div>'
+  +'<div class="ob-scroll">'
+  +'<span class="pm-eye">Password reset</span>'
+  +'<h2 class="ob-h">New password saved</h2>'
+  +'<p class="ob-p">'+esc(who)+'</p>'
+  +'<div class="ob-acts"><button type="button" class="btn pri" id="loginb-on">Continue</button></div>'
+  +'</div></div>';}
+function loginNewOpen(){
+ var h=document.getElementById('login'); if(!h)return;
+ LOGIN.open=true; LOGIN.reset=false; h.style.display='flex'; h.innerHTML=loginNewCard();
+ var f=document.getElementById('loginnewf');
+ if(f)f.onsubmit=function(e){ e.preventDefault(); loginNewSave(); };
+ /* going back lets go of the token: the screen does not come back without
+    the link, and the link still works until it is used or its hour is up */
+ var back=document.getElementById('loginb-back');
+ if(back)back.onclick=function(){ authResetDrop(); h.innerHTML=loginCard(); loginWire(h); };
+ var p=document.getElementById('loginnpw'); if(p)p.focus();}
+/* One request per press, behind the same busy flag as Log in. The card stays
+   open on every no with both fields as they were typed, and changes only on
+   the server's yes, because a card that moved on first and refused after
+   would have claimed a password the server never took. */
+function loginNewSave(){
+ if(LOGIN.busy)return;
+ var a=document.getElementById('loginnpw'), b=document.getElementById('loginnpw2');
+ LOGIN.busy=true; loginBusy(true);
+ loginSay('Saving the new password.','',true);
+ authReset(a?a.value:'',b?b.value:'').then(function(r){
+  LOGIN.busy=false; loginBusy(false);
+  var h=document.getElementById('login');
+  if(!r.ok){ loginSay(r.say,'fail'); return; }
+  if(!r.signed){ if(h){ h.innerHTML=loginCard(r.email); loginWire(h); } loginSay(r.say,'ok'); return; }
+  if(h)h.innerHTML=loginNewDoneCard(r.who);
+  status(r.say,r.kept?'ok':'fail');
+  var on=document.getElementById('loginb-on');
+  if(on){ on.onclick=function(){ loginClose(); if(loginDashOverride())return; loginEnter(); }; on.focus(); } });}
+/* THE CARD SAYS IT, AND SO DOES STATUS. status() is the one writer every
+   result goes through, and it is the live region a screen reader hears; but
+   the status line sits in the top bar, under this card, which covers the
+   whole screen. A refusal written only there is a refusal nobody sighted can
+   see. So the card carries the same sentence on its own line, and the status
+   line is told too, which is also what is still on screen when the card
+   closes. A line that is only progress is the card's alone: nothing was
+   written, so there is nothing for the status line to report. */
+function loginSay(msg,kind,own){
+ var m=document.getElementById('loginmsg');
+ if(m){ m.textContent=msg||''; if(kind)m.setAttribute('data-kind',kind); else m.removeAttribute('data-kind'); }
+ if(!own&&typeof status==='function')status(msg,kind);}
+/* Every press in the card waits while a request is out, so a second press
+   never sends a second request under the first one's answer. */
+function loginBusy(on){
+ var h=document.getElementById('login'); if(!h)return;
+ h.querySelectorAll('.ob-acts .btn').forEach(function(b){ b.disabled=!!on; });}
+/* DEVELOPER OPTIONS, DEACTIVATED IN FULL, ROUND RI. His words: "let's
+   deactivate the developer option." Round RA first gated the panel behind a
+   console-only flag so a stranger never saw it; round RB then also opened it
+   for the owner's own signed in account (devOwner/DEV_OWNER, since removed
+   along with the rest of this mechanism); round RI goes further still and
+   removes the capability itself, not only its visibility, because a flag
+   that still grants a real tier four if anyone ever sets it (from a console,
+   or a stray value already sitting in an old browser's storage from before
+   this round) is still the thing the paywall seat warned against: "taking
+   money behind a lock the product unlocks itself." devSight() now always
+   reads false, so lockPlan() (ui/lock.js) never reads a free tier four from
+   this path again, whatever any browser's storage already holds.
+   loginDevOptions() always returns nothing: there is no panel left to
+   disclose, on the login card or on the owner's own account page
+   (ui/account.js, also cleaned up with this round). */
+function devSight(){ return false; }
+function loginDevOptions(){ return ''; }
+function loginOpen(){
+ var h=document.getElementById('login'); if(!h)return;
+ LOGIN.open=true; LOGIN.reset=false; LOGIN.signup=false; h.style.display='flex'; h.innerHTML=loginCard();
+ loginWire(h);}
+function loginWire(h){
+ var f=h.querySelector('input'); if(f)f.focus();
+ var go=document.getElementById('loginb-go'); if(go)go.onclick=loginGo;
+ var nw=document.getElementById('loginb-new'); if(nw)nw.onclick=function(){
+  /* FIRST PRESS SWITCHES THE CARD, SECOND PRESS SENDS IT. Not landed from
+     a quiz link and not already in this mode: the press itself is the
+     "I want an account" signal, so it earns the same heading and field
+     order a quiz-link arrival gets, with whatever email was already
+     typed carried across, rather than submitting a blank card and
+     reading as a button that does nothing.
+
+     THE PASSWORD HAS TO SURVIVE THE SWITCH TOO, 13 November, a real
+     second bug caught by tests/golden.js: loginCard(mail) only ever took
+     the email, so the re-render this branch calls left the password
+     field blank, and the second press this fix exists for then
+     submitted an empty password and still failed to make an account,
+     typing works. Read before the re-render, the input element itself
+     does not survive it, and set on the new one straight after, since
+     loginCard has no parameter for it and a typed password does not
+     belong baked into an HTML string the way the email already is. */
+  if(!LOGIN.signup){
+   var m=document.getElementById('loginmail'), p=document.getElementById('loginpass');
+   var pv=p?p.value:'';
+   LOGIN.signup=true;
+   h.innerHTML=loginCard(m?m.value.trim():''); loginWire(h);
+   var p2=document.getElementById('loginpass'); if(p2&&pv)p2.value=pv;
+   return;}
+  loginSubmit('signup'); };
+ var form=document.getElementById('loginform');
+ if(form)form.onsubmit=function(e){e.preventDefault(); loginGo();};
+ var sug=document.getElementById('loginsug');
+ if(sug)sug.onclick=function(){
+  var p=document.getElementById('loginpass'), hint=document.getElementById('loginpwhint');
+  if(!p)return; var pw=loginSuggestPassword();
+  p.value=pw; p.type='text';
+  if(hint){ hint.hidden=false; hint.textContent='Suggested: '+pw; } };
+ var forgot=document.getElementById('loginforgot');
+ if(forgot)forgot.onclick=function(){
+  var m=document.getElementById('loginmail');
+  LOGIN.reset=true; h.innerHTML=loginResetCard(m?m.value.trim():'');
+  var rm=document.getElementById('loginrmail');
+  var back=document.getElementById('loginb-back');
+  if(back)back.onclick=function(){ LOGIN.reset=false;
+   h.innerHTML=loginCard(rm?rm.value.trim():''); loginWire(h); };
+  var send=document.getElementById('loginb-send');
+  if(send)send.onclick=function(){ loginForgot(); };
+  var rf=document.getElementById('loginresetf');
+  if(rf)rf.onsubmit=function(e){ e.preventDefault(); loginForgot(); };
+  if(rm)rm.focus(); };}
+function loginClose(){
+ var h=document.getElementById('login'); if(!h)return;
+ LOGIN.open=false; h.style.display='none'; h.innerHTML='';}
+/* THE REAL SIGN IN. This was the fake one, "anything counts, including
+   nothing: there is no account to fail against yet," and there is one now.
+   The card stays open until the server has answered, and closes only on a
+   yes: a card that closed first and then reported a refusal would have
+   claimed a sign in it did not have, which is the one thing CLAUDE.md says a
+   control may never do. On a no, the card keeps what was typed, so the fix is
+   one field and not two. */
+function loginGo(){ loginSubmit('signin'); }
+/* THE FUNNEL/QUIZ LOGIN OVERRIDE, ruled 11-12 November (DECISIONS.md).
+   RECORD_LINK_LANDED (ui/panels.js recordLinkBoot) is true only once, for
+   the one device landing the funnel's own record link just produced; read
+   here and cleared the moment it is read, on whichever of signin or
+   signup succeeds first, so a later, ordinary sign in from Account never
+   meets it again and every other door into the app lands exactly as it
+   did before this ruling. */
+function loginDashOverride(){
+ if(typeof RECORD_LINK_LANDED==='undefined'||!RECORD_LINK_LANDED)return false;
+ RECORD_LINK_LANDED=false;
+ if(typeof setTab==='function')setTab(TAB.STORY);
+ if(typeof STV!=='undefined')STV.dash=true;
+ if(typeof render==='function')render();
+ return true;}
+function loginSubmit(route){
+ if(LOGIN.busy)return;
+ var m=document.getElementById('loginmail'), p=document.getElementById('loginpass');
+ LOGIN.busy=true; loginBusy(true);
+ loginSay(route==='signup'?'Creating the account.':'Checking with the server.','',true);
+ authEnter(route,m?m.value.trim():'',p?p.value:'').then(function(r){
+  LOGIN.busy=false; loginBusy(false);
+  if(!r.ok){ loginSay(r.say,'fail'); return; }
+  loginClose(); status(r.say,r.kept?'ok':'fail');
+  if(loginDashOverride())return;
+  loginEnter(); });}
+/* The forgotten password, with the one sentence authForgot returns for an
+   address with an account and for one without. 'ok', not 'fail', on the
+   status line: the request landed, which is all this press can know. */
+function loginForgot(){
+ if(LOGIN.busy)return;
+ var m=document.getElementById('loginrmail');
+ LOGIN.busy=true; loginBusy(true);
+ loginSay('Sending the request.','',true);
+ authForgot(m?m.value.trim():'').then(function(r){
+  LOGIN.busy=false; loginBusy(false);
+  loginSay(r.say,r.ok?'ok':'fail'); });}
+/* A HELD SESSION SKIPS THE DOOR, and the boot asks the server whether it is
+   still good (authCheck, ui/auth.js) whatever DEV_SKIP says, because the
+   check is about the account and not about the door. It makes no request
+   when nothing is held, so the gates, which never sign in, make none. */
+function loginBoot(){
+ if(typeof authCheck==='function')authCheck();
+ /* A RESET LINK GOES FIRST, ahead of the developer skip and a held session:
+    the person followed a link to set a password, and skipping the door or
+    walking them in as whoever this browser last held would leave that
+    request unanswered. The token is already off the address by now. */
+ if(typeof authResetHeld==='function'&&authResetHeld()){ loginNewOpen(); return; }
+ if(DEV_SKIP)return;
+ if(typeof authSession==='function'&&authSession()){ loginEnter(); return; }
+ loginOpen();}
+/* WHAT HAPPENS BEHIND THE DOOR, whichever way through it a person came:
+   a sign in, a new account, or continuing without one.
+
+   THE TWO SHEETS ARE HIDDEN, ruled 18 November: his words, "once you get
+   past the initial attuned intro, it goes straight to your dashboard...
+   we're just getting rid of the second tutorial stuff." Source's own
+   example read (ui/srcintro.js) and the 8 step Arrive tutorial
+   (ui/onboard.js) no longer open themselves behind the door. Neither file
+   is touched, deleted, or stripped of its mechanics; the boot/loading
+   animation above this (bootUni, ui/panels.js) is untouched by name per the
+   same ruling. The Settings/Account replay still opens the tutorial on
+   purpose (ui/account.js, #acob, obOpen(true)) and is unaffected: that call
+   never passes through here.
+
+   WHAT RUNS INSTEAD is the exact path a person already takes today leaving
+   the tutorial on its own first frame without writing a word (obClose,
+   ui/onboard.js: 'skip' on step 0 before anything is picked). Reused, not
+   reinvented: mark the profile onboarded the same guarded way, save it and
+   report a save failure the same way, land once on Summary via
+   tabLandFirst (ui/panels.js, idempotent and independent of the sheet), and
+   render. No journey log line is written here: obClose's own two lines
+   ('tutorial_started' and 'software_entered') are written only through
+   OB.rec, which a skipped sheet never sets, and nothing downstream reads
+   them (confirmed against the whole ui/ tree), so leaving them unwritten
+   changes no behavior a person or the product can see. */
+function loginEnter(){
+ var seen=false;
+ try{ seen=!!(CURP&&CURP.ui&&CURP.ui.onboarded); }catch(e){}
+ if(seen)return;
+ try{
+  if(CURP){ if(!CURP.ui||typeof CURP.ui!=='object')CURP.ui={};
+   CURP.ui.onboarded=true;
+   if(!pSave()&&typeof status==='function')
+    status('This browser would not save. The first run will open again.','fail'); }
+ }catch(e){
+  if(typeof status==='function')
+   status('This browser would not save. The first run will open again.','fail'); }
+ if(typeof tabLandFirst==='function')try{ tabLandFirst(); }catch(e){}
+ if(typeof render==='function')render();}
+/* THE BUTTON ITSELF ONLY NEEDS TO EXIST. ui/panels.js's own skip listener
+   sits on document with {capture:true} and stops every pointerdown from
+   ever reaching a listener registered on the button, on purpose, so a
+   press that skips the sheet can never also act on the tab strip under
+   it; a pointerdown handler wired here would never fire. What sets the
+   flag is that same listener in panels.js, reading e.target.id==='devskip'
+   for both a pointer press and a keyboard one, since it is the one place
+   already answering both. */

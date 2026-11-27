@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The five quotients</title>
+<!-- Rendered from DESIGN-quotients.md. One file, no stylesheet, no font,
+     no image, no request of any kind. Edit the markdown and rerun the
+     renderer; never edit this file. -->
+<style>
+:root{--bg:#0C0D12;--panel:#15171F;--sunk:#090A0E;--ink:#EFEDE8;--mid:#C6C2BA;
+ --dim:#918D86;--faint:#5E5B57;--accent:#7EB8D4;--au:#C2A063;--line:rgba(255,255,255,.09);
+ --f:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+ --m:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f);
+ font-size:16px;line-height:1.62;-webkit-font-smoothing:antialiased}
+.wrap{max-width:860px;margin:0 auto;padding:40px 20px 96px}
+h1{font-size:30px;font-weight:600;line-height:1.2;margin:0 0 6px;letter-spacing:-.01em}
+h2{font-size:22px;font-weight:600;margin:46px 0 10px;padding-top:18px;
+ border-top:1px solid var(--line);letter-spacing:-.005em}
+h3{font-size:17px;font-weight:600;margin:32px 0 8px;color:var(--ink)}
+h4{font-size:14.5px;font-weight:600;margin:24px 0 6px;color:var(--mid)}
+p{margin:0 0 15px;color:var(--mid)}
+strong{color:var(--ink);font-weight:600}
+em{color:var(--mid)}
+hr{border:0;border-top:1px solid var(--line);margin:40px 0}
+code{font-family:var(--m);font-size:.86em;background:var(--sunk);color:var(--accent);
+ border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+pre{font-family:var(--m);font-size:12.5px;line-height:1.55;color:var(--mid);
+ background:var(--sunk);border:1px solid var(--line);border-left:2px solid var(--accent);
+ border-radius:8px;padding:13px 15px;margin:0 0 16px;overflow-x:auto;white-space:pre}
+blockquote{margin:0 0 18px;padding:13px 16px;background:var(--panel);
+ border:1px solid var(--line);border-left:2px solid var(--au);border-radius:8px}
+blockquote p{margin:0 0 8px;color:var(--mid)}
+blockquote p:last-child{margin:0}
+blockquote strong{color:var(--au)}
+table{width:100%;border-collapse:collapse;margin:0 0 18px;font-size:13px;
+ font-variant-numeric:tabular-nums;display:block;overflow-x:auto}
+th,td{text-align:right;padding:6px 9px;border-bottom:1px solid var(--line);white-space:nowrap}
+th{color:var(--dim);font-size:10px;letter-spacing:.09em;text-transform:uppercase;font-weight:600}
+td{color:var(--mid)}
+th:first-child,td:first-child{text-align:left}
+tbody tr:hover td{background:rgba(126,184,212,.06)}
+ul,ol{margin:0 0 16px;padding-left:22px;color:var(--mid)}
+li{margin:0 0 5px}
+.sub{color:var(--dim);font-size:13.5px;margin:0 0 30px;font-family:var(--m)}
+@media (max-width:560px){
+ .wrap{padding:24px 16px 64px}
+ html,body{font-size:15px}
+ h1{font-size:24px} h2{font-size:19px} h3{font-size:16px}
+ pre{font-size:11px}}
+</style></head><body><div class="wrap">
+<h1>The five quotients</h1>
+<p>Ruled 21 September, twenty second pass, at <code>TASKS.md</code> QT1 to QT7 and PT1 to PT2. His words are kept verbatim wherever they are his.</p>
+<p>This is a model of the product and not a feature. One of the five is measured today. This document says, for each of the other four, how much is already in the arithmetic under a different name, how much is derivable from what is stored, and how much needs a field nobody collects. A quotient that needs a field nobody collects is a design and not a measurement, and it is labelled as one everywhere it appears.</p>
+<p>Everything below was measured against the real roster through the real engine. The numbers are read off the run at <code>proto/quotients/index.html</code> and <code>node proto/quotients/measure.js</code>, never typed into this file by hand except where a figure is quoted with its date beside it.</p>
+<hr>
+<h2>1. What the engine already computes, by name</h2>
+<h3>CQ, coherence. Measured today, and nothing here changes it.</h3>
+<pre>compute().CQ            0 to 100, (Intention x Integrity) / Resistance
+compute().tier          the name, off tierOf(CQ) in canon.js
+compute().unread        true when nothing has been entered
+cqCeiling()             what CQ reads once every charge is gone
+cqHeadroom(cqNow)       the gap a release still has in it</pre>
+<p>CQ is the laws. <code>Ig</code> is the mean of the twenty one, <code>It</code> is the mean of the seven band integrities, and resistance is the shadow weight and the gate multiplier. It has a ceiling a release cannot pass and the ceiling is already computed.</p>
+<h3>IQ, aperture. Not computed, and almost entirely present.</h3>
+<p>His argument is the right one and the engine proves it. <code>compute()</code> already writes an aperture at every address and calls it something else:</p>
+<pre>n.open = clamp(1 - n.sq/10 + n.pole/26, 0, 1.18)</pre>
+<p>That is one minus the held residue, plus a credit for the coherent opposite standing at the same address, clamped. It is an opening, per address, and it has been in the arithmetic since the rebuild. Nothing reads it as a reading.</p>
+<p>Beside it, the recognition half is also already built:</p>
+<pre>verpScan(text)          counts the six gate cues in a story
+VERPMULT                aware 0.70, ignorance 1.30, as a cost multiplier
+sniffGates(text)        aware against ignorant, and it refuses to compute
+                        the sump without both upstream readings
+VERPMIX / gatesLoad     the gate counts, persisted on the record</pre>
+<p>So IQ needs no new evidence and no new question. It needs an aggregation and a scale. Section 2 builds it.</p>
+<h3>EQ, transmuting. Not named, fully computed.</h3>
+<p>His words: EQ is transmuting, and it is also WQ, wisdom, because we are providing the opposite. Providing the opposite is not a thing to build. It is in the data.</p>
+<pre>CHILD[].opp             the coherent opposite of all nine axes, by name.
+                        fear to trust, anger to equanimity, shame to worth
+n.rep                   the opposite installed at an address
+n.held                  what is held at the same address
+n.pole                  the opposite minus the held state, floored at nought
+n.jq                    the opposite done past the point where it serves
+compute().poleMean      the installed side, meaned across the ring
+compute().JQ            overshoot, meaned
+compute().excess        the addresses past the point</pre>
+<p>Every part of EQ exists. What does not exist is a reading that says how much of what a person carries has turned over, as against how much opposite is standing in absolute terms. Section 3 builds the ratio and says why it is a ratio.</p>
+<h3>AQ, adversity. The fields exist, the readings do not.</h3>
+<p>His words: AQ is adversity, and it is the release mechanism.</p>
+<pre>snapshot(p)             writes cq, dq, sq, pole, jq, loaded, tier on a reading
+p.history               the readings, in order
+seriesRead(p,span)      none, one, or a line, and it already names the three
+p.meter.lines           release lines delivered
+p.meter.unique          the ground opened, which is what a tier buys
+cqHeadroom(cqNow)       what is left to release</pre>
+<p>Every field AQ needs is on the record and written by the engine. What is missing is a reading over them, and one structural fact: AQ is the only one of the five that cannot exist on a first session. That is a definition and not a gap. Adversity met is a thing you can only have after you have met it.</p>
+<h3>PQ, the physical. One quarter present, and the rest has no field.</h3>
+<p>His words: our nutrition, mindset, the patterns that we hold on to, growth, everything in the physical that needs to be navigated by the ego. Think about a boundary.</p>
+<p>What the engine holds:</p>
+<pre>PUR_EGO                 'With a body attached. Health, fitness, financial
+                        stability, wealth, family.' That is his physical
+                        list, in the engine, already
+purposeRead(p)          the two centres and what the line between them says
+boundaryCount(p)        commitments drawn, of thirty, and which sides are thin
+boundaryCross(text)     which of the six sides an entry names
+PUR_SIDES               partner, family, friends, community, coworkers, alone</pre>
+<p>What the engine does not hold, anywhere, in any field:</p>
+<pre>nutrition               no field
+sleep                   no field
+movement or training    no field
+growth over time        nothing beyond p.history, which is coherence
+mindset                 the closest is the twenty one laws, and a law is
+                        conduct rather than mindset</pre>
+<p>Four of his five have no field. Section 5 says what the smallest honest version is and refuses the rest by name.</p>
+<hr>
+<h2>2. The aperture, and it is the one he argued for</h2>
+<blockquote><p>"Fetters narrow awareness. We probably have a more realistic measure of awareness, of IQ, based off the fetters a person adds to their system."</p></blockquote>
+<h3>2.1 What was tested, and what each one did</h3>
+<p>Five candidate shapes, measured across the fifteen fields the roster loads.</p>
+<p><strong>A, the count of held addresses.</strong> One minus held over reachable, where held is an address at or above the line at sq 4.</p>
+<p>Broken, and broken in the way this repository already has a name for. Marcus carries ninety nine addresses with his heaviest at 2.51 and reads a perfectly open aperture. So do Sofia at fifty two and Angela at seventy four. Three of the six ICPs read fully aware while carrying real load, because an absolute cut at four on a quantity that is often spread thin says nothing is there. It is the same defect <code>compute()</code> already records at <code>carrying</code>.</p>
+<p><strong>B, the spread across seats.</strong> One minus the seats carrying, over seven.</p>
+<p>Worse. Eleven of the fifteen carry something in all seven seats, so eleven profiles read the same number and it separates nobody. The spread is not the scalar. Where it is narrow is a different question from how open it is, and the answer to that one is a seat and not a number, so the narrowest seat is drawn beside the figure instead.</p>
+<p><strong>C, the weight.</strong> One minus the mean sq over ten, across the addresses that can hold.</p>
+<p>Continuous, no cliff, and Marcus gets a real reading at 0.892. But it cannot tell an empty field from a field with the opposite installed: a blank profile, Rosa and Lance all read 1.000. Three different fields on one number.</p>
+<p><strong>D, the engine's own opening.</strong> The mean of <code>n.open</code> over the ceiling the clamp allows.</p>
+<p>Separates all of them, because <code>n.open</code> credits the installed pole. A blank profile reads 0.847 of the ceiling, Rosa and Lance reach it. Nothing is invented: this is the quantity <code>compute()</code> already writes.</p>
+<p><strong>E, the area of D.</strong> An opening admits in proportion to its area, and area goes as the square of the radius.</p>
+<p>Taken. It spreads the fifteen profiles over a mean rank gap of 0.061 against 0.044 for D, and it does it without clipping anybody. The alternative of clamping D at one instead of dividing by the ceiling flattened six of the fifteen against the top.</p>
+<h3>2.2 The shape that shipped</h3>
+<pre>radius    = mean(n.open across the addresses that can hold) / the clamp ceiling
+area      = radius squared
+factor    = 1 / (aware share x VERPMULT.aware + ignorant share x VERPMULT.ignore)
+aperture  = clamp(area x factor - overshoot/100, 0, 1) x 100</pre>
+<p>Four things about it, and each is a decision.</p>
+<p><strong>The denominator is measured, not typed.</strong> One address in the ring carries no child fetter, so no charge can ever land on it and its opening reads a flat one on every profile alive. Counting it lifts everybody by a fraction of the scale and puts the ceiling out of reach, which is a silent bias in favour of whoever is worst off. The address is <code>Root_08_Unnamed</code> and it is already on the owner's open list. When it is named it joins the denominator on its own, because the module reads the field rather than a number typed in it.</p>
+<p><strong>The clamp ceiling is measured, not typed.</strong> <code>1.18</code> is a literal inside <code>compute()</code>. The module runs one maximal field through <code>compute()</code> at load and reads the highest opening back. A change to the clamp moves the reading with it instead of leaving it stale. Read the count off the run.</p>
+<p><strong>The recognition weights are not chosen.</strong> <code>VERPMULT</code> already prices awareness at 0.70 and ignorance at 1.30 as a cost on everything held. An aperture is the inverse of a cost, so the factor is one over the gate mix: 1.43 fully aware, 0.77 fully ignorant, 1.00 on an even mix. With no gate cues it returns one and costs nothing, which is <code>verpFactor</code>'s own convention for the same problem and not a new one. The number does not change meaning when a story arrives. It gains a term that was inert.</p>
+<p><strong>Overshoot is subtracted, and that is the one term <code>n.open</code> does not carry.</strong> Reason in 2.4.</p>
+<h3>2.3 How it behaves across the roster</h3>
+<p>Measured 21 September, through <code>pImport</code>, on the fifteen fields the roster loads. Read the live version off <code>proto/quotients/index.html</code> rather than this table, which is dated on purpose.</p>
+<table><thead><tr><th>person</th><th>coherence</th><th>aperture</th><th>turn</th><th>tier</th><th>narrowest</th><th>carrying</th></tr></thead><tbody><tr><td>Nobody</td><td>unread</td><td>unread</td><td>unread</td><td>unread</td><td>flat</td><td>0</td></tr><tr><td>Gordon</td><td>0.8</td><td>14.7</td><td>0.0</td><td>Collapsed</td><td>Root</td><td>107</td></tr><tr><td>Tomas</td><td>2.0</td><td>15.3</td><td>0.0</td><td>Collapsed</td><td>Root</td><td>107</td></tr><tr><td>Nkem</td><td>10.0</td><td>27.9</td><td>0.0</td><td>Collapsed</td><td>Throat</td><td>107</td></tr><tr><td>Ana</td><td>7.6</td><td>28.3</td><td>10.8</td><td>Collapsed</td><td>Solar</td><td>107</td></tr><tr><td>James</td><td>12.0</td><td>38.1</td><td>8.2</td><td>Severe</td><td>Sacral</td><td>90</td></tr><tr><td>Derek</td><td>15.0</td><td>39.4</td><td>10.2</td><td>Severe</td><td>Solar</td><td>90</td></tr><tr><td>Diane</td><td>28.1</td><td>46.4</td><td>9.8</td><td>Corrupt</td><td>Solar</td><td>91</td></tr><tr><td>Marcus</td><td>39.2</td><td>57.7</td><td>5.3</td><td>Incoherent</td><td>Throat</td><td>99</td></tr><tr><td>Angela</td><td>40.9</td><td>64.4</td><td>20.0</td><td>Incoherent</td><td>Solar</td><td>74</td></tr><tr><td>Lance</td><td>87.7</td><td>70.3</td><td>67.2</td><td>Embodied</td><td>flat</td><td>0</td></tr><tr><td>Sofia</td><td>56.6</td><td>75.1</td><td>41.0</td><td>Even</td><td>Throat</td><td>52</td></tr><tr><td>Wren</td><td>92.0</td><td>80.3</td><td>54.5</td><td>Mastery</td><td>Throat</td><td>41</td></tr><tr><td>Abraham</td><td>98.3</td><td>89.4</td><td>77.3</td><td>Mastery</td><td>Throat</td><td>19</td></tr><tr><td>Rosa</td><td>100.0</td><td>100.0</td><td>99.3</td><td>Mastery</td><td>flat</td><td>0</td></tr></tbody></table>
+<p>The light end and the heavy end both read. Rosa, who carries nothing with the opposite standing everywhere, is at the ceiling. Gordon, who carries the maximum with nothing installed, is at 14.7.</p>
+<p><strong>It is not coherence restated, and the roster's own correlation of 0.952 does not say otherwise.</strong> Two ablations settle it, because a correlation across fourteen personas built to be coherent characters is a property of the roster.</p>
+<p>Laws held at six, charge swept from nought to ten:</p>
+<pre>charge     0     1     2     3     4     5     6     7     8     9    10
+coherence 36.0  36.0  36.0  36.0  36.0  35.2  26.6  22.6  19.9  17.1  15.0
+aperture  71.8  65.5  59.4  53.6  48.1  42.9  38.1  33.5  29.2  25.2  21.5</pre>
+<p>Coherence is flat across the whole lower half of the load range. It reads 36.0 at charge nought and 36.0 at charge four. The aperture moves twenty four points over the same span. That is not a second view of coherence, it is the reading coherence does not have.</p>
+<p>Charge held at four, laws swept from one to ten:</p>
+<pre>law        1     2     3     4     5     6     7     8     9    10
+coherence  1.0   3.9   8.8  16.0  25.0  36.0  49.0  64.0  81.0 100.0
+aperture  42.3  43.5  44.6  45.8  46.9  48.1  49.3  50.6  51.8  53.0</pre>
+<p>Coherence moves ninety nine points. The aperture moves eleven, and the eleven are principled: a closed law lets charge sit less deep through <code>bandIg</code>, so the opening widens a little. Coherence is the laws. The aperture is the load.</p>
+<p>And they dissociate on real people. Sofia and Wren read 75.1 and 80.3, five points apart, with coherence at 56.6 and 92.0, thirty five points apart.</p>
+<h3>2.4 The failure mode, named rather than avoided</h3>
+<blockquote><p>A measure that says the heaviest person is the least aware is either a true finding or a broken scale.</p></blockquote>
+<p>It is both, on two different people, and load alone cannot tell which.</p>
+<p>Gordon reads 14.7. He says there is nothing wrong with him and four people left in a year and each had their reasons. Maximum load, nothing installed, nothing recognised. Bottom of the scale is a <strong>true finding</strong>.</p>
+<p>Tomas reads 15.3. He says he used to drive nine hundred miles and feel nothing and now cannot get to the end of the street. He sees exactly what changed. He names it precisely. He cannot move. Six tenths of a point from Gordon is a <strong>broken scale</strong>.</p>
+<p>Load is necessary and it is not sufficient. Nothing else the engine stores separates them either: both have nothing installed, so the pole is nought for both, and neither has answered a law differently. The only thing that can tell them apart is what they write.</p>
+<p>Measured, with three gate cues in each of their own voices:</p>
+<table><thead><tr><th>person</th><th>opening</th><th>aperture, load only</th><th>cues</th><th>factor</th><th>aperture, with words</th></tr></thead><tbody><tr><td>Gordon</td><td>14.7</td><td>14.7</td><td>3</td><td>0.77</td><td>11.3</td></tr><tr><td>Tomas</td><td>15.3</td><td>15.3</td><td>3</td><td>1.43</td><td>21.9</td></tr></tbody></table>
+<p>Six tenths of a point becomes ten and a half, and Tomas reads nearly twice Gordon. That is the reason the recognition term is in the arithmetic from the first commit and not left for later, and it is the reason the page says <strong>unread</strong> and not <strong>nought</strong> until a story exists.</p>
+<p>It is also an argument for the journal being the centre of the product rather than a feature in it. The aperture's second term is only reachable through what a person writes.</p>
+<h3>2.5 The one term the aperture adds that <code>n.open</code> does not carry</h3>
+<p><code>n.open</code> credits the installed opposite with no ceiling on overdoing it, and the credit clamps. Measured on the rep sweep at charge four:</p>
+<pre>opposite         0     2     4     6     7     8     9    10
+coherence      36.0  36.7  41.6  47.7  48.2  40.7  33.8  27.6
+aperture, raw  48.1  67.7  81.7  92.5  97.6  99.4 100.0 100.0
+aperture       48.1  67.7  81.7  92.5  95.3  87.9  79.3  70.0
+overshoot       0.0   0.0   0.0   0.0   0.5   2.7   4.9   7.1</pre>
+<p>The raw row is the reading before overshoot is subtracted, and the gap between the two rows is the argument. The opposite at nine and the opposite at ten both read a raw aperture of 100.0 while coherence falls by six points between them. Two different fields on one number. On the roster it lands on real people: Rosa carries nothing with the opposite at six everywhere, Lance carries almost nothing with it at nine, and before the term was added both read 100.0 flat.</p>
+<p>Overshoot is therefore subtracted at the weight <code>compute()</code> already charges integrity for it, <code>JQ x 0.42</code> restated on the hundred scale as 4.2. It is not a new constant. Rosa stays at 100.0 and Lance reads 70.3, which tracks the fall in his coherence rather than running against it.</p>
+<p><strong>Whether <code>n.open</code> itself should carry the term is his call and not this document's.</strong> <code>compute()</code> is the arithmetic core and it keeps its bodies and signatures. Question 1 in section 7.</p>
+<hr>
+<h2>3. EQ, and why it is a ratio</h2>
+<pre>turn at an address = n.rep / (n.rep + n.held)
+EQ = mean of that across every address where either is present
+     minus JQ x 4.2, clamped</pre>
+<p><strong>It is a ratio and not a sum, and that is the whole decision.</strong> The installed side alone is already drawn on the Summary as the pole ring. Reporting it again under a second name is one quantity in two figures, which this product has a ruling against and has been bitten by once already, when malignancy turned out to be coherence doubled and <code>compute()</code> had to say so in a comment. The turn is how much of what sits at an address has turned over.</p>
+<p><strong>It uses <code>rep</code> and not <code>pole</code>.</strong> <code>pole</code> is the opposite minus the held state, floored at nought, so an opposite that is in but still under water reads as no transmutation at all. Ana has trust and joy installed at four and three under a field that swamps both. Reading her turn as nought says she has done nothing, which is false. The ratio says she has turned part of it and the residue is still on top, which is what her own sentence says.</p>
+<p><strong>An address with neither is not a nought, it is not part of the question.</strong> A blank profile has no address with anything on either side, so EQ is unread rather than nought. Tomas, Nkem and Gordon hold plenty and have installed nothing, so their EQ is a true nought. The two states are printed differently, because they say opposite things.</p>
+<p>Overshoot is folded at the engine's own weight and drawn as a mark on the figure as well, because the opposite done past the point where it serves is a threshold and not a tolerance.</p>
+<hr>
+<h2>4. AQ, and the ruling decides its denominator</h2>
+<blockquote><p>"Every condition is a pattern. It matters whether you believe it or not. It can be true, but the belief still creates a condition. Release the condition, you can still operate it as if you believe it, because it is true to you. You do not need the belief once you know it is true."</p></blockquote>
+<p>A release does not take anything away from a person. It takes the condition off the thing, and the thing survives.</p>
+<p><strong>So AQ cannot be a count of addresses cleared.</strong> A release does not remove an address. The address is still in the ring, still named, still where it was, and after a full release the person can still operate the thing. What comes off is the condition, and the engine's word for the condition's weight is shadow weight. If the arithmetic counted addresses it would be saying the thing had gone, which contradicts the ruling, and the arithmetic would be wrong.</p>
+<pre>met  = the highest shadow weight ever recorded on this record, and now
+AQ   = clamp((met - now) / met, 0, 1) x 100</pre>
+<p>Three states, and they are the ones <code>seriesRead</code> already names rather than a new set:</p>
+<pre>none    no reading on the record. work is a distance and there is no
+        second point to measure it from. unread.
+one     one reading. still unread, and the page says which.
+line    two or more. AQ reads.</pre>
+<p>And a fourth case that is not a state of the record but a fact about the person: <strong>nothing carried is not nought.</strong> Rosa has carried nothing inside the instrument, so there is nothing that could have been released, and AQ reads not applicable. Whatever she released she released before she arrived and this instrument cannot see it. That is a real limit and it is printed rather than papered over.</p>
+<p><strong>And AQ is the quotient that makes release worth running.</strong> <code>CLAUDE.md</code> already records the ceiling problem: three of the six ICPs can run every release the product will ever offer them and not move the number they were shown. Measured on Ana, with charge coming off her axes and <code>snapshot()</code> writing each reading:</p>
+<table><thead><tr><th>reading</th><th>coherence</th><th>tier</th><th>ceiling</th><th>headroom</th><th>aperture</th><th>turn</th><th>release</th><th>shadow weight</th></tr></thead><tbody><tr><td>first</td><td>7.6</td><td>Collapsed</td><td>17.9</td><td>10.3</td><td>28.3</td><td>10.8</td><td>unread</td><td>22.8</td></tr><tr><td>after run 1</td><td>11.8</td><td>Severe</td><td>17.9</td><td>6.1</td><td>40.0</td><td>12.4</td><td>66.0</td><td>7.8</td></tr><tr><td>after run 2</td><td>16.5</td><td>Severe</td><td>17.9</td><td>1.4</td><td>60.3</td><td>17.8</td><td>98.1</td><td>0.4</td></tr></tbody></table>
+<p>Coherence moves nine points and she is still near the bottom of the ladder. The aperture moves thirty two. The release reading says she has spent ninety eight of the hundred that was ever available to her. That is the credit the instrument was not giving her, and it is exactly the thing a person who has done the work needs to see.</p>
+<p><code>p.meter.lines</code> is reported beside AQ as the count of release lines delivered. It is the mechanism and not the reading, and it is never folded in.</p>
+<hr>
+<h2>5. PQ, and what this product will not invent</h2>
+<p>His five: nutrition, mindset, the patterns that we hold on to, growth, everything in the physical that needs to be navigated by the ego, and think about a boundary.</p>
+<p><strong>Four of the five have no field, and they should not be given one by this document.</strong> Nutrition, sleep, movement and growth are self reported daily quantities. A product with no backend, no accounts today and a ruling that storage is the person's own browser cannot collect them honestly, and a number built out of three tick boxes about food is worse than no number. The product already carries the rule: a clamped 9999 reads as a ten a person never entered.</p>
+<p><strong>The fifth is already in the engine, twice over.</strong> <code>PUR_EGO</code> in <code>avatar.js</code> defines the earthly purpose as health, fitness, financial stability, wealth and family, which is his physical list almost word for word, and the hexagon under it is the boundary: six sides, five commitments each, thirty in all, inside yours to protect and outside choice.</p>
+<p><strong>The smallest honest version of PQ is the boundary, and it is stated.</strong></p>
+<pre>PQ = boundaryCount(p.purpose).filled / 30 x 100</pre>
+<p>That is coverage of what a person typed. It is not a measurement and it is labelled <strong>stated</strong> everywhere it appears, for the same reason the cadence is labelled stated on the ladder prototype. <code>boundaryCross</code> is the measured half and it is thin: it reads which of the six sides an entry names, so a story can say which side the charge came through. It is drawn as a notch on that side of the rim and never folded into the figure, because two entries about a boss is not a reading of a boundary.</p>
+<p><strong>What would make PQ a measurement.</strong> Three fields, and all three are a schema change and therefore his:</p>
+<pre>p.physical.sleep        hours, nightly, one number
+p.physical.move         minutes, daily, one number
+p.physical.fuel         a three state day mark, not a food log</pre>
+<p>Even with those, PQ would be a coverage and adherence reading rather than a somatic one, and it would need its own ruling on what a missed day means. Until then PQ is a design, and the page says so in the word beside the figure.</p>
+<hr>
+<h2>6. Where they are drawn</h2>
+<blockquote><p>"That is good for the marketing team and the rest of the development team, because that sounds like it needs to be in the summary and measuring."</p></blockquote>
+<h3>6.1 Not five gauges, and the reason is a count</h3>
+<p>The Summary already carries a glance row of six rings: coherence, shadow weight, carried depth, pole, energy and identification, at <code>ui/summary.js:sumGlance</code>. Adding five quotient gauges makes eleven figures on one column, and two of the five are already in that row: <strong>coherence</strong> is the first ring and <strong>pole</strong> is EQ's raw material. Coherence is also already drawn as the core of the Field wheel. So five gauges would put one quantity in three drawings on two surfaces.</p>
+<p>A radar chart over five axes is the other obvious answer and it is worse. A radar's area is a function of the axis order, so reordering the five changes the shape of the reading. This product has a rule about exactly that: identity is one thing and display order is another, and a figure whose value moves when the display order moves has confused them.</p>
+<h3>6.2 One drawing: the aperture</h3>
+<p>One iris. Five quantities, and each is a different physical property of the same object, so nothing is drawn twice.</p>
+<pre>the rim         PQ, boundary. six arcs, one per side. the drawn part is
+                solid and the undrawn part is faint, so a boundary nobody
+                typed reads as an outline and not as a wall. a crossing is
+                a notch pointing in, on the side it came through. thinner
+                stroke than anything measured, because it is stated.
+
+the opening     IQ, aperture. the clear area in the middle, and it is AREA
+                true: the clear annulus area is the reading. a figure whose
+                area does not equal its own number is a figure that lies.
+
+the blades      EQ, turn. nine, one per axis, coloured by seat out of PAL.
+                they sit in the load ring and span it exactly. radial when
+                nothing has turned, swung to tangential when the opposite
+                is fully in. a blade past the point where the opposite
+                serves carries a ring at its tip.
+
+the sweep       AQ, release. a distance travelled around the track between
+                the load ring and the boundary, from the top, clockwise.
+                a distance, drawn as a distance.
+
+the centre      CQ, coherence. the number and the tier word. NOT a ring:
+                coherence already owns a drawing on the Field and drawing
+                it again here is the thing the rule forbids.</pre>
+<p>Seen side by side the figure does the work without the numbers. Gordon's iris is shut with nine radial blades. Rosa's is fully open with nine tangential stubs at the rim. Lance's is wide open with a ring on every blade tip.</p>
+<h3>6.3 What it replaces</h3>
+<p>It replaces the glance row rather than joining it. The six rings are what the five quotients are built from, so nothing is lost:</p>
+<pre>coherence       becomes the centre of the iris
+pole            becomes the blades, as a ratio rather than a bare mean
+carried depth   becomes the opening
+shadow weight   becomes the sweep, as work done against it
+energy          stays, as a line under the figure, or comes off
+identification  stays. it is how much of the person has been measured and
+                it is not a quotient</pre>
+<p>That also answers a defect already filed against that row. <code>ui/summary.js:82</code> records that the shadow weight ring clamps at ten so every profile past it draws an identical full ring, and says replacing the figure with the two facts it sums is the right answer and is the owner's call. This is that replacement.</p>
+<h3>6.4 What each one reads when nothing has been entered</h3>
+<p>The product already rules that both surfaces printing a reading silence themselves on <code>r.unread</code> and show the four doors. The figure follows it.</p>
+<pre>the rim         faint all the way round. nothing drawn.
+the opening     not drawn at all. not open, not shut. the load ring is a
+                dashed outline and the space inside it says nothing yet.
+the blades      nine, flat, dim.
+the sweep       absent.
+the centre      an en dash and the word unread, which is what sumUnread
+                already prints.</pre>
+<p>And each of the five reads its own state rather than a shared one:</p>
+<pre>CQ    unread. the arithmetic works and is not shown, because a number off
+      a default is a number about the default.
+IQ    unread. and note that a blank field computes to 71.8, which is ABOVE
+      most real readings, so a person's first entry moves the aperture
+      DOWN. That is honest under his own model, fetters narrow awareness
+      and an empty field has none, and it is the one place on this figure
+      where a person may feel penalised for being honest. Question 5.
+EQ    unread, and not nought. no address has either side, so there is
+      nothing to turn and nothing turned.
+AQ    unread, with the state named: none, one, or nothing carried.
+PQ    nought commitments drawn, and the word stated beside it.</pre>
+<hr>
+<h2>7. What is his</h2>
+<p>Each carries the four part snapshot, in the shape <code>TASKS.md</code> already uses.</p>
+<h3>Q1. Should the aperture close when the cure is overdone?</h3>
+<blockquote><p><strong>What it is.</strong> <code>n.open</code> credits the installed opposite and clamps, with no term for overdoing it. The aperture reading subtracts overshoot at the weight <code>compute()</code> already charges integrity, because without it the opposite at nine and the opposite at ten both read 100.0, and Rosa and Lance both read 100.0 on real fields. <strong>At stake.</strong> Whether the term belongs in <code>compute()</code> or only in the reading on top of it. If it belongs in <code>compute()</code>, <code>n.open</code> changes and every surface reading it changes with it, which is an arithmetic core change. <strong>Either way.</strong> Left where it is, the aperture and <code>n.open</code> disagree by the overshoot on any profile carrying it, and the disagreement is documented. Moved into <code>compute()</code>, the pileup closes everywhere at once and the port rule is broken for one line. <strong>Look at.</strong> <code>atuned_src/engine/compute.js</code> at <code>n.open</code>, and the rep sweep in section 2.5.</p></blockquote>
+<h3>Q2. Is WQ a sixth name or EQ's second face?</h3>
+<blockquote><p><strong>What it is.</strong> His words are that EQ is transmuting, and it is also WQ, wisdom, because we are providing the opposite. That reads as one quantity with two names, and this product's first rule is that a concept has one name. <strong>At stake.</strong> Whether the model is five or six, and whether the word a person sees on the figure is turn, or wisdom, or both. <strong>Either way.</strong> One name, and WQ is a line of copy about what the turn is for. Two names, and WQ needs its own arithmetic that is not the turn restated, and there is nothing in the engine today that would be it. <strong>Look at.</strong> <code>TASKS.md</code> QT4, and section 3 here.</p></blockquote>
+<h3>Q3. Does IQ take the <code>iq</code> prefix in the engine?</h3>
+<blockquote><p><strong>What it is.</strong> <code>iqScore</code>, <code>iqList</code>, <code>iqApply</code> and <code>IQ_STEM</code> already exist in <code>engine/intake.js</code> and they mean intake question, not intelligence quotient. <code>iqScore(p)</code> returns a per law self report score with a reliability flag. <strong>At stake.</strong> One prefix meaning two things in a reader's head. It is not a namespace collision today because the new reading is called <code>apertureRead</code>, so nothing breaks. It is a naming collision, and this product has been bitten by a rename that missed a table and shipped six broken questions. <strong>Either way.</strong> The quotient stays <code>aperture</code> in the engine and IQ only on the surface, which is additive and costs nothing. Or the intake's four are renamed, which is a rename with callers and a gate that reaches <code>IQ_STEM</code> by name. <strong>Look at.</strong> <code>atuned_src/engine/intake.js</code> and the export contract at <code>engine/export.js</code>.</p></blockquote>
+<h3>Q4. Does the quotient figure replace the glance row, or sit beside it?</h3>
+<blockquote><p><strong>What it is.</strong> Six rings on the Summary's right column today. The five quotients are built from five of the six. <strong>At stake.</strong> Whether the Summary gains a figure or trades six for one. The shadow weight ring is already filed as a defect that clamps and draws identically for every profile past ten. <strong>Either way.</strong> Replaced, and coherence stops being drawn twice on one page and the filed defect closes with it. Kept beside, and eleven figures sit in one column and two quantities appear in two drawings each. <strong>Look at.</strong> <code>atuned_src/ui/summary.js:70</code> and the comment at line 82.</p></blockquote>
+<h3>Q5. Is a first entry allowed to move the aperture down?</h3>
+<blockquote><p><strong>What it is.</strong> A blank field computes an aperture of 71.8. Almost every real profile reads lower. So the aperture falls when a person starts telling the truth, which is the opposite direction from coherence, which starts at 36.0 and rises. <strong>At stake.</strong> The first thing a person sees after their first entry. The arithmetic is right under his own model, because fetters narrow awareness and an empty field has none. Whether it is the right thing to show is a product question. <strong>Either way.</strong> Shown as it computes, and the recognition term is what earns it back, which is also the argument for writing. Held until a second reading, and the aperture inherits AQ's problem of not existing on day one. <strong>Look at.</strong> section 2.3, and <code>proto/quotients/index.html</code> on the Nobody record.</p></blockquote>
+<h3>Q6. Does PQ ship as a stated boundary, or wait for a field?</h3>
+<blockquote><p><strong>What it is.</strong> Four of his five physical items have no field anywhere in the schema. The fifth, the boundary, is already computed by <code>boundaryCount</code> and is a count of what a person typed. <strong>At stake.</strong> Whether a figure a person reads as a physical score is allowed to be a coverage count with a label on it. <strong>Either way.</strong> Shipped stated, and the model is five with one wearing a label. Held, and the model is four until <code>p.physical</code> exists, which is a schema change and a version question. <strong>Look at.</strong> <code>atuned_src/engine/avatar.js</code> at <code>boundaryCount</code> and <code>PUR_EGO</code>, and section 5 here.</p></blockquote>
+<hr>
+<h2>8. Schema</h2>
+<p>Nothing here needs a schema change. Every quotient reads fields that already exist: <code>p.axes</code>, <code>p.laws</code>, <code>p.gates.verp</code>, <code>p.history</code>, <code>p.meter</code> and <code>p.purpose</code>. A profile written by an older build reads exactly as it does today, because the four new readings are functions over the record rather than fields on it.</p>
+<p>The one change that would need a version is <code>p.physical</code> for PQ, and it is additive: a record without it reads PQ as stated boundary coverage, which is what every record reads today. Schema v2 is the owner's call and this does not force it.</p>
+<p><strong>What is derived and must never be stored.</strong> All five. Every one of them is a function of the record, and a stored quotient is a value that drifts when the model moves and then disagrees with the app about what a person is. The record keeps <code>p.history</code> snapshots, which already store <code>cq</code>, <code>dq</code>, <code>pole</code> and <code>jq</code>, and those four are enough to recompute every quotient at any past reading.</p>
+<hr>
+<h2>9. Where the code is</h2>
+<pre>proto/quotients/quotients.js   the five readings. no DOM, requireable.
+proto/quotients/roster.js      real profiles, through pImport
+proto/quotients/index.html     the live page, off ../../engine.js
+proto/quotients/measure.js     the headless run behind every table above</pre>
+<p>Nothing in <code>atuned_src/</code>, <code>tests/</code>, <code>source.html</code> or <code>engine.js</code> was touched.</p>
+<p class="sub">rendered from DESIGN-quotients.md. the numbers come off proto/quotients/measure.js.</p>
+</div></body></html>

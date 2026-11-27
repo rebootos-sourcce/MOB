@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="en" data-build="proto-story-redesign {{STAMP}}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Story page mockups</title>
+{{FONT}}
+<style>
+/* ============================================================
+   THE STORY PAGE, FOUR WAYS. Round HT in TASKS.md. A proposal, not a wire in.
+
+   Every token below is the product's own Dark lighting, read off
+   atuned_src/shell/head.html, so the only things that differ from the
+   shipped page are the things being proposed. --stage is the Field's own
+   ground. --proto is the proposal strip and appears nowhere else.
+   ============================================================ */
+:root{
+ --bg:#0C0D12; --panel:#1A1D26; --panel-2:#252833; --sunk:#090A0E; --stage:#101010;
+ --edge:rgba(255,255,255,.09); --edge-2:rgba(255,255,255,.14);
+ --ink:#EFEDE8; --mid:#B4B0A8; --dim:#94908A;
+ --root:#D6524C; --sacral:#D8924E; --solar:#DABF6A; --heart:#5FD5A6;
+ --throat:#5EBBDB; --eye:#7D93E0; --crown:#A77EDB;
+ --accent:#7EB8D4; --on-accent:#0B1418; --au:#C2A063; --proto:#D6A93B;
+ --ease-out:cubic-bezier(.22,1,.36,1); --ease-land:cubic-bezier(.34,1.56,.64,1);
+ --r-s:8px; --r-m:12px;
+ --sans:'Inter',system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+*{box-sizing:border-box}
+/* SEAT COLOUR AS TEXT IS LIFTED, AND ONLY AS TEXT. Measured: the product's own
+   Root, #D6524C, is 4.14 to 1 as small text on --panel and 4.28 as a journal
+   mark. A twelve percent lift toward white holds every seat over 4.5. Rings,
+   bars and spokes keep the token as it is. */
+*{--ct:color-mix(in srgb,var(--c,#7EB8D4) 88%,#fff)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink)}
+body{font:400 14.5px/1.5 var(--sans);-webkit-font-smoothing:antialiased;font-feature-settings:"tnum" 0}
+button{font:inherit;color:inherit}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+
+/* ---- the proposal frame, which is not part of any design ---- */
+.proto{position:sticky;top:0;z-index:30;background:var(--proto);color:#16130A;font-weight:600;
+ font-size:13px;padding:6px 16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.proto span{font-weight:500;opacity:.85}
+.mk{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:12px 16px 4px;max-width:1600px;margin:0 auto}
+.mk .grp{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.mk .lbl{font-size:12.5px;color:var(--dim);margin-right:2px}
+.mk button{font-size:13px;background:#171920;border:1px solid var(--edge-2);border-radius:999px;
+ padding:0 14px;min-height:44px;cursor:pointer;color:var(--mid)}
+.mk button[aria-pressed="true"]{border-color:var(--accent);color:var(--ink);background:#1B2229}
+.mk button b{font-weight:600;color:var(--ink);margin-right:6px}
+.mk .sp{flex:1 1 auto}
+.mkidea{max-width:1600px;margin:0 auto;padding:4px 16px 0;color:var(--mid);font-size:13.5px}
+.mkidea b{color:var(--ink);font-weight:600}
+
+/* ---- the page ---- */
+.app{display:grid;gap:16px;padding:12px 16px 20px;max-width:1600px;margin:0 auto;
+ grid-template-columns:minmax(0,1fr) 430px;align-items:start}
+.col{display:flex;flex-direction:column;gap:16px;min-width:0}
+#colm{display:none}
+body[data-v="d"] .app{grid-template-columns:minmax(0,1fr) 372px 372px}
+body[data-v="d"] #colm{display:flex}
+.panel{background:var(--panel);border:1px solid var(--edge);border-radius:var(--r-m);padding:16px 18px;position:relative}
+.eb{font-size:12px;font-weight:600;color:var(--dim);letter-spacing:.01em}
+.hd{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:24px}
+.tag{font-size:12px;color:var(--dim)}
+.ring{display:inline-block;width:12px;height:12px;border-radius:50%;border:1.6px solid var(--c,var(--accent));flex:0 0 auto}
+
+/* ---- the pips, the rung drawn and never printed. Shipped shape. ---- */
+.pips{display:inline-flex;gap:2px;vertical-align:middle}
+.pips i{width:5px;height:12px;border-radius:1px;border:1px solid var(--edge-2);transition:background .28s var(--ease-out),border-color .28s}
+.pips i.ask{border-color:var(--c)}
+.pips i.on{background:var(--c);border-color:var(--c)}
+
+/* ---- prompt engine ---- */
+.pe .pe-q{font-size:22px;line-height:1.32;font-weight:500;margin:8px 0 4px;color:var(--ink);max-width:40ch}
+.pe .pe-q.quiet{font-size:15px;font-weight:400;color:var(--dim)}
+.pe .pe-jog{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.pe .pe-jog li{font-size:14px;color:var(--mid);border:1px solid var(--edge-2);border-radius:999px;padding:6px 12px}
+.pe .pe-note{font-size:13px;color:var(--dim);margin:4px 0 0}
+.pe .pe-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:12px}
+.pe .pe-gauge{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--dim)}
+.pe .pe-gauge .sn{color:var(--ct);font-weight:600}
+.btn{background:var(--panel-2);border:1px solid var(--edge-2);border-radius:999px;min-height:44px;padding:0 16px;cursor:pointer;font-size:14px}
+.btn.pri{background:var(--accent);color:var(--on-accent);border-color:transparent;font-weight:600}
+.btn:disabled{opacity:.45;cursor:default}
+
+/* ---- journal ---- */
+.jr .ed{position:relative;display:flex;min-height:300px;font-family:var(--sans);font-size:16px;line-height:1.75;font-weight:300}
+.jr .ta,.jr .hl{flex:1 1 auto;min-height:300px;border:1px solid transparent;border-radius:var(--r-s);padding:18px 20px;
+ font:inherit;letter-spacing:normal;white-space:pre-wrap;word-break:break-word;overflow-wrap:break-word;margin:0}
+.jr .hl{position:absolute;inset:0;overflow:hidden;pointer-events:none;background:var(--sunk);border-color:var(--edge);color:var(--ink);z-index:0}
+.jr .ta{position:relative;z-index:1;resize:none;background:transparent;color:transparent;caret-color:var(--ink);outline:none;overflow:auto;width:100%}
+.jr .ta::placeholder{color:var(--dim)}
+.jr .ta::selection{background:color-mix(in srgb,var(--accent) 34%,transparent)}
+.jr .ed:focus-within .hl{border-color:var(--accent)}
+/* A MARK NEVER CHANGES WEIGHT. The shipped mark is 600 on a 300 layer while
+   the caret belongs to the 300 textarea above it: measured 12.8px of drift
+   after five marks on one line. Colour, tint and a rule carry it here. */
+.jr mark{color:var(--ct);background:color-mix(in srgb,var(--c) 15%,transparent);border-radius:3px;font-weight:inherit}
+.jr mark.neg{background:none;color:var(--dim);text-decoration:line-through;text-decoration-color:color-mix(in srgb,var(--c) 70%,transparent)}
+.jr mark.coh{--c:var(--accent)}
+.jr mark.new{animation:mk-in .6s var(--ease-out)}
+@keyframes mk-in{from{background:color-mix(in srgb,var(--c) 55%,transparent)}}
+.jr .bar{display:flex;align-items:center;gap:10px;margin-top:12px}
+.jr .ct{font-size:13px;color:var(--dim);flex:1 1 auto}
+
+/* ---- summary ---- */
+.sm .sm-rows{margin-top:6px}
+.sm .sm-row{display:grid;grid-template-columns:92px minmax(0,1fr) auto;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid var(--edge)}
+.sm .sm-seat{font-size:13px;font-weight:600;color:var(--ct)}
+.sm .sm-words{font-size:14px;line-height:1.45}
+.sm .sm-words q{quotes:"\201C" "\201D"}
+.sm .sm-er{display:block;font-size:12.5px;color:var(--dim)}
+.sm .sm-route{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:12px}
+.sm .sm-route div{border-top:2px solid var(--c,var(--edge-2));padding-top:6px}
+.sm .sm-route .eb{display:block}
+.sm .sm-route b{font-weight:500;font-size:14px;color:var(--ct)}
+.sm .sm-none{color:var(--dim);font-size:13.5px;margin:6px 0 0}
+
+/* ---- imprints and the perceiving stage ---- */
+.im .stage{position:relative;margin:10px -6px 0;border-radius:var(--r-s);background:var(--stage);overflow:hidden}
+.im canvas{display:block;width:100%}
+.im .strm{display:flex;flex-wrap:wrap;gap:4px 5px;margin:10px 0 0;min-height:24px;font-size:13px;line-height:1.35}
+.im .strm span{color:var(--dim);transition:color .3s}
+.im .strm span.hit{color:var(--ct);font-weight:500}
+.im .strm span.neg{color:var(--dim);text-decoration:line-through;text-decoration-color:var(--c)}
+.im .strm span.mod{color:var(--mid);font-style:italic}
+.im .strm span.mod sup{font-size:11px;font-style:normal;color:var(--dim)}
+.im .strm span.coh{color:var(--accent)}
+.im .strm span.last{border-bottom:1px solid var(--edge-2)}
+.im .ctr{font-size:12.5px;color:var(--dim);margin-top:6px}
+.im .grp{margin-top:12px}
+.im .ghd{display:flex;justify-content:space-between;align-items:baseline;font-size:12.5px;border-bottom:1px solid var(--edge);padding-bottom:4px}
+.im .ghd b{color:var(--ct);font-weight:600}
+.im .ghd em{font-style:normal;color:var(--dim)}
+.im .ghd em.warn{color:var(--mid)}
+.im .pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px}
+.im .pill{display:inline-flex;align-items:center;gap:7px;border:1px solid color-mix(in srgb,var(--c) 45%,transparent);border-radius:999px;
+ padding:5px 11px 5px 8px;font-size:13.5px;min-height:32px}
+.im .pill.inf{border-style:dashed}
+.im .pill small{color:var(--mid);font-size:12px}
+.im .pill.new{animation:pl-in .5s var(--ease-land)}
+@keyframes pl-in{from{transform:scale(.6);opacity:0}}
+#pv.alone .pv-hd{display:flex}
+.pv-hd{display:none}
+
+/* ---- the flight: a scored word travelling from the sentence to its seat ---- */
+.flt{position:fixed;left:0;top:0;z-index:40;pointer-events:none;font:500 13px/1 var(--sans);color:var(--ct);
+ background:color-mix(in srgb,var(--c) 18%,#0C0D12);border:1px solid color-mix(in srgb,var(--c) 50%,transparent);
+ border-radius:999px;padding:4px 8px;white-space:nowrap;will-change:transform,opacity}
+
+/* ---- release, the shared skeleton. Each mockup restyles it wholly. ---- */
+.rl{overflow:visible}
+.rl .rl-hd{display:flex;align-items:center;gap:9px}
+.rl .rl-hd h3{margin:0;font-size:17px;font-weight:600}
+.rl .rl-lead{font-size:13.5px;color:var(--mid);margin:6px 0 0;max-width:46ch}
+.rl .rl-opts{display:flex;flex-direction:column;gap:6px;margin-top:12px}
+.rl .rl-opt{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.rl .rl-opt .eb{width:72px}
+.rl .seg{min-height:36px;padding:0 12px;border-radius:999px;border:1px solid var(--edge-2);background:transparent;cursor:pointer;font-size:13px;color:var(--mid)}
+.rl .seg[aria-pressed="true"]{border-color:var(--rl-hi,var(--accent));color:var(--ink)}
+.rl .rl-q{list-style:none;margin:14px 0 0;padding:0}
+.rl .rq{display:grid;grid-template-columns:14px minmax(0,1fr) auto;gap:2px 10px;align-items:center;padding:9px 0;border-top:1px solid var(--edge)}
+.rl .rq .nm{font-size:14.5px;font-weight:500}
+.rl .rq .wt{font-size:13px;color:var(--mid);text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.rl .rq .wt b{color:var(--ink);font-weight:600}
+.rl .rq .sub{grid-column:2/4;font-size:12.5px;color:var(--dim);display:flex;justify-content:space-between;gap:8px}
+.rl .rq .br{grid-column:2/4;height:5px;border-radius:3px;background:rgba(255,255,255,.07);position:relative;overflow:hidden}
+.rl .rq .br i{position:absolute;top:0;bottom:0;left:0;background:var(--c);border-radius:3px}
+.rl .rq .br i.cut{background:repeating-linear-gradient(135deg,var(--c) 0 2px,transparent 2px 5px);opacity:.9}
+.rl .rq.new{animation:pl-in .5s var(--ease-land)}
+.rl .rl-first{margin-top:12px;font-size:14px;line-height:1.5}
+.rl .rl-first q{display:block;margin-top:3px;color:var(--ink);quotes:"\201C" "\201D"}
+.rl .rl-cost{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:14px 0 0}
+.rl .rl-cost div{display:flex;flex-direction:column}
+.rl .rl-cost b{font-size:17px;font-weight:600;font-variant-numeric:tabular-nums}
+.rl .rl-cost b small{font-size:12.5px;font-weight:400;color:var(--mid);margin-left:3px}
+.rl .rl-go{width:100%;margin-top:14px;min-height:52px;border-radius:12px;border:0;cursor:pointer;font-size:16px;font-weight:600;
+ background:var(--rl-go,var(--accent));color:var(--rl-on,var(--on-accent))}
+.rl .rl-go:disabled{opacity:.4;cursor:default}
+.rl .rl-none{color:var(--dim);font-size:13.5px;margin:12px 0 0}
+.rl .rl-run{margin-top:10px}
+.rl .rl-run .nd{font-size:22px;font-weight:600;color:var(--ct)}
+.rl .rl-run .ch{font-size:12.5px;color:var(--dim)}
+.rl .rl-run .ln{font-size:16px;line-height:1.5;margin:10px 0}
+.rl .rl-run .pg{height:4px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden}
+.rl .rl-run .pg i{display:block;height:100%;background:var(--c);transition:width .4s var(--ease-out)}
+.rl .rl-art{position:absolute;pointer-events:none}
+
+/* ============================================================
+   A. THE LISTENING RING. The Field, small, reading one entry.
+   ============================================================ */
+body[data-v="a"] .pe{background:transparent;border:0;border-top:1px solid var(--edge-2);border-radius:0;padding:14px 2px 4px}
+body[data-v="a"] .pe .pe-q{font-size:24px}
+body[data-v="a"] .jr{background:transparent;border:0;padding:0}
+body[data-v="a"] .jr .hl{background:var(--sunk);border-color:transparent;box-shadow:inset 0 1px 0 rgba(0,0,0,.6),inset 0 0 0 1px rgba(255,255,255,.04)}
+body[data-v="a"] .jr .ed{font-size:17px}
+body[data-v="a"] .jr mark{background:none;box-shadow:inset 0 -2px 0 color-mix(in srgb,var(--c) 75%,transparent);border-radius:0}
+body[data-v="a"] .jr mark.neg{box-shadow:none}
+body[data-v="a"] .sm{background:var(--panel-2);border-color:transparent}
+body[data-v="a"] .im{background:var(--panel)}
+/* the release sits on the Field's own stage with the Field's shells round it */
+body[data-v="a"] .rl{background:var(--stage);border:0;margin:26px 22px 22px;box-shadow:0 0 0 1px rgba(255,255,255,.05)}
+body[data-v="a"] .rl .rl-art{inset:-24px}
+body[data-v="a"] .rl .rq{border-top-color:rgba(255,255,255,.06)}
+
+/* ============================================================
+   B. THE ROUTE. The Field's dashed trajectory, drawn through the body.
+   ============================================================ */
+body[data-v="b"] .pe{background:var(--panel-2);border-color:transparent;border-radius:var(--r-m) var(--r-m) 4px 4px;margin-bottom:-12px;padding-bottom:18px}
+body[data-v="b"] .pe .pe-q{font-size:21px}
+body[data-v="b"] .jr{border-radius:4px 4px var(--r-m) var(--r-m);background:var(--stage);border-color:rgba(255,255,255,.06)}
+body[data-v="b"] .jr .hl{background:var(--stage);border-color:transparent}
+body[data-v="b"] .jr .ed:focus-within .hl{border-color:transparent;box-shadow:inset 3px 0 0 var(--accent)}
+body[data-v="b"] .sm{background:transparent;border:1px dashed var(--edge-2)}
+body[data-v="b"] .rl{border:0;--glow:var(--accent);
+ /* two lights. A strong one in the top 90px, where only the heading sits and
+    its ink measures 7.18 to 1 on forty percent of the seat colour. A weaker one
+    under the copy, capped where the copy still measures 5.7 to 1. */
+ background:radial-gradient(70% 90px at 50% 0,color-mix(in srgb,var(--glow) 40%,transparent),transparent),
+  radial-gradient(120% 70% at 50% 0%,color-mix(in srgb,var(--glow) calc(var(--lux,.3) * 60%),transparent),transparent 70%),#15171E;
+ box-shadow:0 0 0 1px color-mix(in srgb,var(--glow) 40%,transparent),0 18px 60px -18px color-mix(in srgb,var(--glow) 50%,transparent)}
+body[data-v="b"] .rl .rl-hd h3{font-size:20px}
+body[data-v="b"] .rl .rl-lead,body[data-v="b"] .rl .eb{color:var(--mid)}
+body[data-v="b"] .rl{--rl-go:var(--glow);--rl-on:#0B0C10;--rl-hi:var(--glow)}
+
+/* ============================================================
+   C. THE TRACE. An instrument's strip chart. The release is the one lit surface.
+   ============================================================ */
+body[data-v="c"] .pe{background:transparent;border:0;border-left:3px solid var(--accent);border-radius:0;padding:4px 0 4px 18px}
+body[data-v="c"] .pe .pe-q{font-size:28px;font-weight:300;line-height:1.25}
+body[data-v="c"] .pe .pe-q.quiet{font-size:16px}
+body[data-v="c"] .jr .hl{background:
+ repeating-linear-gradient(to bottom,transparent 0,transparent calc(1.75em - 1px),rgba(255,255,255,.055) calc(1.75em - 1px),rgba(255,255,255,.055) 1.75em) 0 18px/100% 100% no-repeat,var(--sunk)}
+body[data-v="c"] .jr mark{background:none;box-shadow:inset 0 -2px 0 var(--c);border-radius:0}
+body[data-v="c"] .jr mark.neg{box-shadow:none}
+body[data-v="c"] .sm .sm-row{grid-template-columns:92px minmax(0,1fr) auto}
+body[data-v="c"] .sm .sm-hdr{display:grid}
+.sm .sm-hdr{display:none;grid-template-columns:92px minmax(0,1fr) auto;gap:10px;padding:8px 0 4px;border-bottom:1px solid var(--edge-2)}
+body[data-v="c"] .rl{
+ --ink:#16171C;--mid:#4E4C48;--dim:#605E59;--edge:rgba(20,23,28,.11);--edge-2:rgba(20,23,28,.18);
+ --root:#9B4B47;--sacral:#8E6231;--solar:#7E6C29;--heart:#2A7A5C;--throat:#2C6F88;--eye:#4C5F9E;--crown:#6E5490;--accent:#2F6E92;
+ background:#EDEBE6;color:var(--ink);border:0;box-shadow:0 30px 80px -30px rgba(237,235,230,.35),0 0 0 1px rgba(255,255,255,.6) inset;
+ --rl-go:#16171C;--rl-on:#F3F2EE;--rl-hi:#16171C}
+body[data-v="c"] .rl .rq .br{background:rgba(20,23,28,.08)}
+body[data-v="c"] .rl *{--ct:var(--c)}
+body[data-v="c"] .rl .rl-run .pg{background:rgba(20,23,28,.1)}
+
+/* ============================================================
+   D. THE BINS. The words it caught, stacked where they landed. The release is a dial.
+   ============================================================ */
+body[data-v="d"] .pe{background:transparent;border:0;padding:6px 0 0 44px}
+body[data-v="d"] .pe::before{content:"";position:absolute;left:6px;top:14px;width:24px;height:24px;border-radius:50%;
+ border:1.8px solid var(--accent);box-shadow:0 0 0 5px rgba(126,184,212,.12)}
+body[data-v="d"] .jr{background:transparent;border:0;padding:0}
+body[data-v="d"] .jr .ed{font-size:19px;line-height:1.7}
+body[data-v="d"] .jr .hl{background:transparent;border-color:transparent;border-left:1px solid var(--edge-2);border-radius:0}
+body[data-v="d"] .jr .ed:focus-within .hl{border-color:transparent;border-left-color:var(--accent)}
+body[data-v="d"] .jr mark{background:none;border-radius:0}
+body[data-v="d"] .sm{background:transparent;border:0;border-top:1px solid var(--edge-2);border-radius:0;padding:14px 2px}
+body[data-v="d"] .rl{
+ --edge:rgba(194,160,99,.16);--edge-2:rgba(194,160,99,.3);
+ background:radial-gradient(90% 60% at 50% 30%,#241A0E,#17110A 70%);border:1px solid rgba(194,160,99,.42);
+ box-shadow:inset 0 0 0 4px #17110A,inset 0 0 0 5px rgba(194,160,99,.18);
+ --rl-go:var(--au);--rl-on:#15120E;--rl-hi:var(--au)}
+body[data-v="d"] .rl .rl-hd h3{color:#E8D7B3}
+body[data-v="d"] .rl .dial{display:flex;justify-content:center;margin:10px 0 2px}
+.bins{display:flex;gap:4px;height:280px;margin-top:10px;align-items:stretch}
+.bin{flex:0 0 14px;display:flex;flex-direction:column;border-radius:6px;background:rgba(255,255,255,.025);position:relative;
+ transition:flex-grow .45s var(--ease-out),flex-basis .45s var(--ease-out);min-width:0;overflow:hidden}
+.bin.on{flex:1 1 60px}
+.bin .bhd{font-size:12px;font-weight:600;color:var(--ct);padding:6px 6px 0;white-space:nowrap;overflow:hidden;text-overflow:clip}
+.bin:not(.on) .bhd{writing-mode:vertical-rl;transform:rotate(180deg);padding:8px 0;align-self:center;opacity:.8}
+.bin .bp{padding:4px 6px 0}
+.bin .stk{flex:1 1 auto;display:flex;flex-direction:column-reverse;gap:4px;padding:6px;position:relative}
+.bin .ch{font-size:12.5px;line-height:1.2;padding:5px 7px;border-radius:6px;color:var(--ct);
+ background:color-mix(in srgb,var(--c) 14%,transparent);border:1px solid color-mix(in srgb,var(--c) 38%,transparent);
+ overflow-wrap:anywhere}
+.bin .ch.er{background:transparent;border-style:dashed;color:var(--dim)}
+.bin .ch.new{animation:pl-in .45s var(--ease-land)}
+.bin .askl{position:absolute;left:0;right:0;border-top:1px dashed color-mix(in srgb,var(--c) 70%,transparent)}
+.bin::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--c);opacity:.5}
+.notc{margin-top:10px;font-size:12.5px;color:var(--dim);display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.notc s{color:var(--mid);text-decoration-color:var(--c)}
+.cohb{margin-top:6px;font-size:12.5px;color:var(--dim)}
+.cohb span{color:var(--accent)}
+
+/* ---- notes ---- */
+.notes{max-width:1600px;margin:4px auto 40px;padding:0 16px;color:var(--mid);font-size:13.5px}
+.notes h2{font-size:16px;color:var(--ink);margin:18px 0 6px;font-weight:600}
+.notes p{max-width:92ch;margin:6px 0}
+.notes table{border-collapse:collapse;width:100%;max-width:1100px;margin-top:6px}
+.notes th,.notes td{text-align:left;padding:6px 10px 6px 0;border-bottom:1px solid var(--edge);vertical-align:top;font-size:13px}
+.notes th{color:var(--dim);font-weight:600}
+.notes td:first-child{color:var(--ink);white-space:nowrap}
+.notes code{font-size:12.5px;color:var(--ink)}
+.notes table{table-layout:fixed}
+.notes td,.notes th{overflow-wrap:anywhere}
+.notes th:nth-child(1){width:26%}.notes th:nth-child(3){width:26%}
+/* THE JOURNAL STAYS WITH YOU while the eye goes down the rail. Only where the
+   column fits the window, or its foot could never be reached. */
+@media (min-width:761px) and (min-height:900px){#coll{position:sticky;top:40px}}
+
+@media (max-width:1180px){
+ body[data-v="d"] .app{grid-template-columns:minmax(0,1fr) 340px}
+ body[data-v="d"] #colm{grid-column:2;grid-row:1}
+ body[data-v="d"] #colr{grid-column:1 / -1}
+}
+@media (max-width:760px){
+ .notes table,.notes tbody,.notes tr,.notes td,.notes th{display:block;width:auto!important}
+ .notes tr:first-child{display:none}
+ .notes tr{padding:8px 0;border-bottom:1px solid var(--edge)}
+ .notes td{border:0;padding:1px 0}
+ .app{grid-template-columns:minmax(0,1fr)!important;gap:14px;padding:10px 16px 18px}
+ .col,#colm,body[data-v="d"] #colm{display:contents}
+ #pe{order:1} #jr{order:2} #pv{order:3} #sm{order:4} #imp{order:5} #rl{order:6}
+ .panel{padding:14px}
+ .pe .pe-q{font-size:20px!important}
+ .jr .ed,.jr .ta,.jr .hl{min-height:220px}
+ .mk button{padding:0 11px}
+ .sm .sm-row{grid-template-columns:74px minmax(0,1fr) auto}
+ body[data-v="a"] .rl{margin:24px 22px 20px}
+ body[data-v="d"] .pe{padding-left:40px}
+ body[data-v="d"] .jr .ed{font-size:18px}
+ .bins{height:240px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+body.still *{animation:none!important;transition:none!important}
+</style>
+</head>
+<body data-v="a">
+<div class="proto">Proposal for round HT <span>Four mockups of the Story page. Nothing here is wired into the product, and nothing leaves this page.</span></div>
+<div class="mk" role="toolbar" aria-label="Mockups">
+ <div class="grp" id="mkv">
+  <span class="lbl">Mockup</span>
+  <button data-v="a"><b>A</b>Ring</button>
+  <button data-v="b"><b>B</b>Route</button>
+  <button data-v="c"><b>C</b>Trace</button>
+  <button data-v="d"><b>D</b>Bins</button>
+ </div>
+ <span class="sp"></span>
+ <div class="grp">
+  <button id="demo">Type the example</button>
+  <button id="clr">Clear</button>
+  <button id="prior" aria-pressed="false">Two earlier entries</button>
+  <button id="still" aria-pressed="false">Still</button>
+ </div>
+</div>
+<p class="mkidea" id="idea"></p>
+<div class="app">
+ <section class="col" id="coll">
+  <div class="panel pe" id="pe" aria-label="Source AI prompt"></div>
+  <div class="panel jr" id="jr">
+   <div class="hd" style="margin-bottom:8px"><span class="eb">The day</span><span class="tag">Typing does not leave this device.</span></div>
+   <div class="ed"><textarea id="ta" class="ta" spellcheck="false" aria-label="The day"
+    placeholder="What happened. Write it the way you would say it out loud."></textarea><div class="hl" id="hl" aria-hidden="true"></div></div>
+   <div class="bar"><span class="ct" id="ct">0 words</span><button class="btn" id="jclr">Clear</button><button class="btn pri" id="commit" disabled>Commit 0</button></div>
+  </div>
+  <div class="panel sm" id="sm" aria-label="Source AI summary"></div>
+ </section>
+ <section class="col" id="colm"></section>
+ <section class="col" id="colr">
+  <div class="panel im" id="imp">
+   <div class="hd"><span class="eb">Imprints</span><span class="tag" id="pend">Pending 0</span></div>
+   <div id="pv">
+    <div class="hd pv-hd"><span class="eb">Reading</span><span class="tag">as you write</span></div>
+    <div id="stage"></div>
+    <div class="strm" id="strm" aria-hidden="true"></div>
+    <div class="ctr" id="ctr"></div>
+   </div>
+   <div id="imps"></div>
+  </div>
+  <div class="panel rl" id="rl" aria-label="Release"></div>
+ </section>
+</div>
+<p class="vh" id="say" aria-live="polite"></p>
+<section class="notes" id="notes"></section>
+<script>
+{{ENGINE}}
+</script>
+<script>
+var PROTO_STAMP={{STAMPJSON}};
+{{SHARED}}
+</script>
+</body>
+</html>

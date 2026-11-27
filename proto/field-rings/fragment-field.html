@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Field, fragment field</title>
+<meta name="viewport" content="width=1600">
+<link rel="stylesheet" href="inter.css"><link rel="stylesheet" href="kit.css">
+<script src="data-james.js"></script><script src="kit.js"></script>
+</head><body>
+<script>
+/* FRAGMENT FIELD. After the owner's field notes, sheets 18 and 19
+   (docs/field-notes/18-field-awareness-problem.jpg and
+    docs/field-notes/19-field-awareness-integration.jpg).
+
+   "This is your awareness, a field of consciousness." One boundary, drawn
+   once, fitted to the stage, and it does not move: in the notes the outline
+   holds from the empty field to the full one, and only what is inside it
+   changes. "Bias creates a polarity, in the form of a fragment." Every
+   address that holds charge sends a fragment in from the boundary, and the
+   fragment wavers harder the more it holds. "Enough polarities create
+   personas and illusions, creating the illusion of ego." The fragments meet
+   at the patterns they build, the patterns compound through the chain rings,
+   and the character layer is the knot they tighten into, round the centre.
+   The number in the middle is coherence, in the one clear place the knot
+   leaves.
+
+   One ink for the line work, because density is the reading and a single hue
+   is the only one that adds up; seven hues crossing only tangle. The seat is
+   carried by the dot where each fragment starts. The rings are there, faint,
+   from the boundary in: they are where the knots sit. */
+(function(){
+const M=K.mount({name:'Fragment field'}), F=K.F, w=M.win, cx=w.cx, cy=w.cy, TAU=K.TAU;
+const Rc=60, NB=2.25;
+const orbit=u=>K.Ring(cx,cy,K.lerp(w.a-6,Rc,u),K.lerp(w.b-6,Rc,u),K.lerp(NB,2,u));
+const bnd=orbit(0); K.useLoop(bnd);
+const U={pat:.36,cx:.52,hy:.64,sup:.75,law:.86};
+const CH=[236,232,224];                        /* the chalk. warm, low, one ink */
+/* a stable waver per fragment, so the drawing is the same every time */
+const hash=n=>{let x=Math.sin(n*127.1+311.7)*43758.5453;return x-Math.floor(x);};
+
+/* a fragment: a line from a to b that bows toward the centre and wavers
+   along its length. amp is the waver, wl its wavelength, and both come off
+   the charge, so a heavy fragment is visibly more tangled than a light one */
+function frag(a,b,amp,wl,pull,seed){
+ const mx=(a.x+b.x)/2,my=(a.y+b.y)/2,qx=mx+(cx-mx)*pull,qy=my+(cy-my)*pull;
+ const L=Math.hypot(b.x-a.x,b.y-a.y),n=Math.max(10,Math.round(L/3)),ph=seed*TAU,pts=[];
+ for(let i=0;i<=n;i++){const s=i/n,u=1-s;
+  const x=u*u*a.x+2*u*s*qx+s*s*b.x, y=u*u*a.y+2*u*s*qy+s*s*b.y;
+  let dx=2*u*(qx-a.x)+2*s*(b.x-qx), dy=2*u*(qy-a.y)+2*s*(b.y-qy);const m=Math.hypot(dx,dy)||1;dx/=m;dy/=m;
+  const off=amp*Math.sin(s*L/wl*TAU+ph)*Math.sin(Math.PI*s);
+  pts.push([x-dy*off,y+dx*off]);}
+ return K.polyD(pts);}
+
+/* ---- shadow. the field filling, hatched in the one ink at DQ's density ---- */
+{const id='hatch',pt=K.el('pattern',{id:id,width:7,height:7,patternUnits:'userSpaceOnUse',patternTransform:'rotate(38)'},M.defs);
+ K.el('line',{x1:0,y1:0,x2:0,y2:7,stroke:K.rgb(CH),'stroke-width':1},pt);
+ const cp=K.el('clipPath',{id:'inside'},M.defs);K.el('path',{d:bnd.d()},cp);
+ K.el('rect',{x:0,y:0,width:M.W,height:M.H,fill:'url(#'+id+')',opacity:(.02+.16*K.clamp(F.DQ/100,0,1)).toFixed(3),'clip-path':'url(#inside)'},M.L.shadow);}
+
+/* ---- the rings, faint, where the knots sit ---- */
+[U.pat,U.cx,U.hy,U.sup].forEach(u=>{K.el('path',{d:orbit(u).d(),fill:'none',stroke:K.rgba(CH,.07),'stroke-width':1,'stroke-dasharray':'1 5','stroke-linecap':'round'},M.L.ground);});
+
+/* ---- domains. nineteen marks on the boundary's outside ---- */
+{const g=M.L.domains,tg=M.T.domains,o=orbit(-.012);
+ F.domains.forEach((dm,k)=>{const c=K.hx(F.rootCol[dm.r]),t0=k/19+.006,t1=(k+1)/19-.006;
+  K.title(K.el('path',{d:K.polyD(o.seg(K.th(t0),K.th(t1))),fill:'none',stroke:K.rgba(c,dm.sel?.95:.14+dm.v*.45),
+   'stroke-width':dm.sel?2.6:1.6,'stroke-linecap':'round'},g),dm.nm+'. '+dm.r+' root.'+(dm.sel?' Your selection.':''));
+  if(dm.sel){const q=orbit(.03).at(K.th(dm.t));K.glyph(tg,dm.ic,q.x,q.y,12,K.rgb(c),1.7);}});}
+
+/* ---- the boundary ---- */
+K.el('path',{d:bnd.d(),fill:'none',stroke:K.rgba(CH,.30),'stroke-width':1.4},M.L.ground);
+
+/* ---- the knots: patterns, then the chain rings, placed first so the
+   fragments know where they end ---- */
+const at={sab:[],cx:[],hy:[],sup:[]};
+F.sabs.forEach((s,k)=>{at.sab[k]=orbit(U.pat).at(K.th(s.t));});
+F.cxs.forEach((o,k)=>{at.cx[k]=orbit(U.cx).at(K.th(o.t));});
+F.hys.forEach((o,k)=>{at.hy[k]=orbit(U.hy).at(K.th(o.t));});
+F.sups.forEach((o,k)=>{at.sup[k]=orbit(U.sup).at(K.th(o.t));});
+/* which patterns each address builds */
+const builds={};F.sabs.forEach((s,k)=>s.parts.forEach(j=>{(builds[j]=builds[j]||[]).push(k);}));
+
+/* ---- addresses: a dot on the boundary for each of the 112, and a fragment
+   in from every one that holds anything ---- */
+const rim={};
+{const g=M.L.addresses,gd=K.el('g',{},g),gl=K.el('g',{},g);g.insertBefore(gl,gd);
+ K.slots.forEach(s=>{const p=bnd.at(K.th(s.t));rim[s.s]=p;
+  if(s.field){K.title(K.el('circle',{cx:p.x,cy:p.y,r:3.4,fill:K.rgb(K.GROUND),stroke:K.rgba(CH,.7),'stroke-width':1.2},gd),s.k+'. '+s.a+', outside the body.');return;}
+  const sq=s.sq,ld=K.clamp(sq/10,0,1),c=K.nodeCol(s.b,sq),j=s.s-2;
+  /* the waver is a hand's squiggle, a few bends, never a sawtooth: the first
+     cut ran a ten pixel wavelength at full charge and read as noise */
+  if(sq>0){const amp=1.2+sq*.5,wl=28+(10-sq)*3,al=.14+ld*.34,wd=(.7+ld*.8).toFixed(2);
+   const ends=(builds[j]||[]).map(k=>at.sab[k]);
+   if(ends.length)ends.forEach((e,i)=>K.el('path',{d:frag(p,e,amp,wl,K.sag(j,.12),hash(j*7+i)),fill:'none',stroke:K.rgba(CH,al),'stroke-width':wd,'stroke-linecap':'round'},gl));
+   else{/* charge that has not compounded into anything: a loose fragment, as long as it is heavy */
+    const len=14+ld*90,e={x:p.x+p.nx*len,y:p.y+p.ny*len};
+    K.el('path',{d:frag(p,e,amp,wl,0,hash(j)),fill:'none',stroke:K.rgba(CH,al),'stroke-width':wd,'stroke-linecap':'round'},gl);}}
+  const r=1.6+ld*3.2;
+  const dot=K.el('circle',{cx:p.x,cy:p.y,r:r,fill:K.rgba(c,sq>=4?1:sq>0?.7:.35)},gd);
+  if(sq>=9)K.el('circle',{cx:p.x,cy:p.y,r:r+2.6,fill:'none',stroke:K.rgb(K.ALARM),'stroke-width':1.3},gd);
+  K.title(dot,s.k+'. '+s.b+', '+s.cf+'. Held at '+sq.toFixed(1)+'.');});
+ /* the seats, each by its glyph just inside the boundary. No word: Law 8 */
+ K.SEATS.forEach(b=>{const S=K.sector[b],c=K.seat(b),q=orbit(.075).at(K.th(S.tm));
+  K.el('path',{d:K.polyD(orbit(-.004).seg(K.th(S.t0+.003),K.th(S.t1-.003))),fill:'none',stroke:K.rgba(c,.75),'stroke-width':2,'stroke-linecap':'round'},g);
+  K.el('circle',{cx:q.x,cy:q.y,r:13,fill:K.rgb(K.GROUND)},M.T.seats);
+  K.seatGlyph(M.T.seats,b,q.x,q.y,16);});}
+
+/* ---- stories. a short mark outside the boundary for each one that landed ---- */
+{const g=M.L.stories;
+ Object.keys(F.atoms).forEach(j=>{const s=K.slots[+j+2];if(!s)return;
+  F.atoms[j].forEach(a=>{const p=rim[s.s],l=7+a.amt*2.2,c=K.mix(K.seat(s.b),K.INK,.4);
+   K.el('line',{x1:p.x-p.nx*5,y1:p.y-p.ny*5,x2:p.x-p.nx*l,y2:p.y-p.ny*l,stroke:K.rgba(c,.85),'stroke-width':1.2,'stroke-linecap':'round'},g);
+   K.title(K.el('circle',{cx:p.x-p.nx*l,cy:p.y-p.ny*l,r:1.9,fill:K.rgb(c)},g),'"'+F.entries[a.ei]+'" Put '+a.amt.toFixed(1)+' on '+s.k+'.');});});}
+
+/* ---- masks and archetypes: the personas, two faint rings of weight ---- */
+{const g=M.L.masks,r=orbit(.17),warm=[224,214,186];
+ F.masks.forEach((m,k)=>{const v=K.clamp(m.w/10,0,1),t0=k/6+.01,t1=(k+1)/6-.01;
+  K.title(K.el('path',{d:K.polyD(r.seg(K.th(t0),K.th(t1))),fill:'none',stroke:K.rgba(warm,.08+v*.45),'stroke-width':1+v*3.5,'stroke-linecap':'round'},g),m.nm+' mask. Weight '+m.w.toFixed(1)+'.');});}
+{const g=M.L.archetypes,tg=M.T.archetypes,r=orbit(.215),gc=K.ACCENT;
+ K.SEATS.forEach(b=>{const mine=F.arch.filter(a=>a.b===b),S=K.sector[b],span=(S.t1-S.t0)/mine.length;
+  mine.forEach((a,k)=>{const j=F.arch.indexOf(a),lead=j===F.pi,sec=j===F.si,t0=S.t0+k*span+.006,t1=S.t0+(k+1)*span-.006;
+   K.title(K.el('path',{d:K.polyD(r.seg(K.th(t0),K.th(t1))),fill:'none',stroke:K.rgba(gc,lead?.62:sec?.4:.08+a.aff*.26),
+    'stroke-width':lead?2.4:sec?1.8:1+a.aff*1.2,'stroke-linecap':'round'},g),a.nm+'. Runs through '+b+'.'+(lead?' Your first.':sec?' Your second.':''));
+   if(lead||sec){const q=orbit(.245).at(K.th(a.t));K.glyph(tg,a.ic,q.x,q.y,11,K.rgba(gc,lead?1:.75),1.8);}});});}
+
+/* ---- the knots themselves. a pattern is a small knot; the chain rings
+   are knots of knots, and the character layer is the tightest, next to
+   the centre ---- */
+function knot(g,p,r,al,dash){
+ K.el('circle',{cx:p.x,cy:p.y,r:r+2.2,fill:K.rgb(K.GROUND)},g);
+ K.el('circle',{cx:p.x,cy:p.y,r:r,fill:K.rgba(CH,al*.22),stroke:K.rgba(CH,al),'stroke-width':1.3,'stroke-dasharray':dash?'2 2':null},g);
+ if(r>4)K.el('circle',{cx:p.x,cy:p.y,r:r*.45,fill:K.rgba(CH,al)},g);}
+{const g=M.L.patterns;
+ F.sabs.forEach((s,k)=>{const kk=K.clamp((s.w-3.5)/3,0,1);
+  const e=K.el('g',{},g);knot(e,at.sab[k],2.6+kk*3,.42+kk*.3,s.unnamed);
+  K.title(e,s.nm+(s.unnamed?', inferred':'')+'. Weight '+s.w.toFixed(1)+', built from '+s.parts.length+' address'+(s.parts.length===1?'':'es')+'.');});}
+{const g=M.L.chains,gl=K.el('g',{},g),gk=K.el('g',{},g);
+ const tiers=[['cx',F.cxs,at.sab,4.2,.20],['hy',F.hys,at.cx,6,.28],['sup',F.sups,at.hy,8.5,.36]];
+ tiers.forEach(T=>{const [key,list,from,rb,pull]=T;
+  list.forEach((o,k)=>{const p=at[key][k],kk=K.clamp((o.w-3.5)/3,0,1);
+   o.parts.forEach((pi,i)=>{const q=from[pi];if(!q)return;
+    K.el('path',{d:frag(q,p,1+kk*1.8,34,pull,hash(k*13+i+rb)),fill:'none',stroke:K.rgba(CH,.20+kk*.30),'stroke-width':(1+kk*1.2).toFixed(2),'stroke-linecap':'round'},gl);});
+   const e=K.el('g',{},gk);knot(e,p,rb+kk*2,.52+kk*.24,false);
+   K.title(e,o.nm+'. Weight '+o.w.toFixed(1)+'.');});});
+ /* the knot of the character layer is not captioned: Law 8. Its name is in
+    its tooltip and in the rail. */}
+
+/* ---- laws, the light round the centre: each a short stroke in its seat,
+   as long as its score. This is what the number is made of ---- */
+{const g=M.L.laws,r=orbit(U.law);
+ F.laws.forEach(l=>{const p=r.at(K.th(l.t)),c=K.seat(l.b),v=K.clamp(l.v/10,0,1),len=3+v*18;
+  K.el('line',{x1:p.x,y1:p.y,x2:p.x-p.nx*21,y2:p.y-p.ny*21,stroke:K.rgba(K.INK,.05),'stroke-width':3.2,'stroke-linecap':'round'},g);
+  K.title(K.el('line',{x1:p.x,y1:p.y,x2:p.x-p.nx*len,y2:p.y-p.ny*len,stroke:K.rgba(c,.45+v*.55),'stroke-width':3.2,'stroke-linecap':'round'},g),
+   l.nm+'. '+l.b+'. '+l.v.toFixed(1)+' of 10.');});}
+
+/* ---- the eye of the knot, and the number in it ---- */
+K.core(M.L.core,cx,cy,Rc-8,{w:4.5,fs:50});
+{const hi=F.gates.filter(v=>v.side==='higher'),lo=F.gates.filter(v=>v.side==='lower'),g=M.L.gates;
+ const put=(list,up)=>list.forEach((v,i)=>{const a=(up?-Math.PI/2:Math.PI/2)+(i-(list.length-1)/2)*.62;
+  const p=orbit(.93).at(a);K.gate(g,p.x,p.y,v,11,{bg:K.GROUND});});
+ put(hi,true);put(lo,false);}
+})();
+</script>
+</body></html>

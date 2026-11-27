@@ -1,0 +1,4840 @@
+{
+ "pin": {
+  "root": "/home/user/MOB/sim/pin",
+  "src": "5f2180b2b64fb30b6d484f364535d29e",
+  "engine": "315e3ced4119eef2770f64534b10a68f",
+  "worktreeSrc": "945ee233949433d56f60ea8e663346ba",
+  "stampSrc": "5f2180b2b64fb30b6d484f364535d29e",
+  "stampCommit": "41b07e4"
+ },
+ "rows": [
+  {
+   "runs": 15,
+   "settledAt": 15,
+   "grade": 39,
+   "letter": "F",
+   "gradeSd": 0.33,
+   "lo": 38.4,
+   "hi": 39.5,
+   "rows": [
+    {
+     "k": "ICP alignment",
+     "v": 2.433,
+     "sd": 0.105
+    },
+    {
+     "k": "First touch",
+     "v": 6.2,
+     "sd": 0
+    },
+    {
+     "k": "Core loop",
+     "v": 0.32,
+     "sd": 0.056
+    },
+    {
+     "k": "Emotional",
+     "v": 5.513,
+     "sd": 0.113
+    },
+    {
+     "k": "Behavioral flow",
+     "v": 2.3,
+     "sd": 0
+    },
+    {
+     "k": "Visual and kinetic",
+     "v": 8,
+     "sd": 0
+    },
+    {
+     "k": "Technical",
+     "v": 8,
+     "sd": 0
+    },
+    {
+     "k": "Monetization",
+     "v": 0,
+     "sd": 0
+    },
+    {
+     "k": "Retention",
+     "v": 3.233,
+     "sd": 0.219
+    },
+    {
+     "k": "Referral",
+     "v": 3,
+     "sd": 0
+    }
+   ],
+   "sat": 11.5,
+   "satRows": [
+    {
+     "k": "ICP alignment",
+     "v": 2.433
+    },
+    {
+     "k": "Core loop",
+     "v": 0.32
+    },
+    {
+     "k": "Emotional",
+     "v": 5.513
+    },
+    {
+     "k": "Retention",
+     "v": 3.233
+    }
+   ],
+   "d7": 0.64447,
+   "d30": 0.03853,
+   "d90": 0.00087,
+   "loopEver": 0.0438,
+   "readShare": 0.5253,
+   "inferShare": 0.408,
+   "keptShare": 0.5423,
+   "stories": 1020.2,
+   "releases": 134.9,
+   "minutes": 15815,
+   "cohortDelta": -6.39,
+   "survDelta": -2.3,
+   "lostTop": [
+    {
+     "k": "DRIFT",
+     "n": 270
+    },
+    {
+     "k": "F4",
+     "n": 123
+    },
+    {
+     "k": "F3",
+     "n": 93
+    },
+    {
+     "k": "F1",
+     "n": 71
+    }
+   ],
+   "icp": {
+    "Diane": {
+     "d30": 0.013,
+     "sessions": 1.314,
+     "stories": 0.395,
+     "releases": 0.003,
+     "loopEver": 0,
+     "exitDelta": -1.573,
+     "survDelta": -0.489
+    },
+    "Derek": {
+     "d30": 0.03,
+     "sessions": 2.271,
+     "stories": 0.833,
+     "releases": 0.041,
+     "loopEver": 0.021,
+     "exitDelta": -14.571,
+     "survDelta": -1.162
+    },
+    "Marcus": {
+     "d30": 0.075,
+     "sessions": 1.73,
+     "stories": 0.584,
+     "releases": 0.007,
+     "loopEver": 0.001,
+     "exitDelta": -7.338,
+     "survDelta": -3.075
+    },
+    "Angela": {
+     "d30": 0.02,
+     "sessions": 1.207,
+     "stories": 0.919,
+     "releases": 0.015,
+     "loopEver": 0.004,
+     "exitDelta": -4.785,
+     "survDelta": -2.348
+    },
+    "Sofia": {
+     "d30": 0.086,
+     "sessions": 3.29,
+     "stories": 3.015,
+     "releases": 0.534,
+     "loopEver": 0.198,
+     "exitDelta": -5.995,
+     "survDelta": -2.409
+    },
+    "James": {
+     "d30": 0.003,
+     "sessions": 0.399,
+     "stories": 0.141,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": -1.71,
+     "survDelta": 0
+    },
+    "Ana": {
+     "d30": 0.073,
+     "sessions": 3.036,
+     "stories": 2.781,
+     "releases": 1.003,
+     "loopEver": 0.233,
+     "exitDelta": -14.053,
+     "survDelta": 0
+    },
+    "Gordon": {
+     "d30": 0,
+     "sessions": 0.035,
+     "stories": 0.01,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": -0.856,
+     "survDelta": 0
+    },
+    "Rosa": {
+     "d30": 0,
+     "sessions": 0.146,
+     "stories": 0.049,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": 0.321,
+     "survDelta": 0
+    }
+   },
+   "ids": [
+    "C1"
+   ],
+   "soft": false,
+   "label": "C1",
+   "n": 1,
+   "clash": [],
+   "ceiling": {
+    "none": {
+     "cq0": 42.25,
+     "cq90": 42.52,
+     "move": 0.27,
+     "best": 42.7,
+     "worst": 37.46,
+     "clear": 3,
+     "ground": 307,
+     "band": "Oscillating",
+     "marks": 11,
+     "accuracy": 21.7,
+     "ceiling": 51
+    },
+    "low": {
+     "cq0": 9,
+     "cq90": 9.59,
+     "move": 0.59,
+     "best": 9.74,
+     "worst": 8.15,
+     "clear": 4,
+     "ground": 569,
+     "band": "Collapsed",
+     "marks": 13,
+     "accuracy": 15.4,
+     "ceiling": 15.4
+    },
+    "mid": {
+     "cq0": 25,
+     "cq90": 25.54,
+     "move": 0.54,
+     "best": 25.72,
+     "worst": 22.06,
+     "clear": 4,
+     "ground": 444,
+     "band": "Corrupt",
+     "marks": 13,
+     "accuracy": 19,
+     "ceiling": 33.4
+    },
+    "high": {
+     "cq0": 49,
+     "cq90": 49.33,
+     "move": 0.33,
+     "best": 49.52,
+     "worst": 44.39,
+     "clear": 3,
+     "ground": 363,
+     "band": "Oscillating",
+     "marks": 12,
+     "accuracy": 22.6,
+     "ceiling": 57.9
+    },
+    "move": 0.54
+   },
+   "seconds": 19,
+   "knobs": {
+    "storyCost": 0.8,
+    "relTake": 0.21,
+    "relInstall": 0.62,
+    "relCompound": false,
+    "relStick": false,
+    "carrying": false,
+    "costLine": false,
+    "lex": false,
+    "inferAsk": false,
+    "push": false,
+    "nudge": 0,
+    "record": false,
+    "refer": false,
+    "money": false,
+    "enforce": false,
+    "doneFlag": false,
+    "bandFix": false,
+    "tapFloor": false,
+    "menu": false,
+    "foldRails": false,
+    "foldTop": false
+   },
+   "checkAgainstNinety": {
+    "want": 39,
+    "got": 39,
+    "same": true
+   }
+  },
+  {
+   "runs": 22,
+   "settledAt": 22,
+   "grade": 38.79,
+   "letter": "F",
+   "gradeSd": 0.452,
+   "lo": 37.9,
+   "hi": 39.4,
+   "rows": [
+    {
+     "k": "ICP alignment",
+     "v": 2.395,
+     "sd": 0.153
+    },
+    {
+     "k": "First touch",
+     "v": 6.2,
+     "sd": 0
+    },
+    {
+     "k": "Core loop",
+     "v": 0.286,
+     "sd": 0.056
+    },
+    {
+     "k": "Emotional",
+     "v": 5.518,
+     "sd": 0.126
+    },
+    {
+     "k": "Behavioral flow",
+     "v": 2.3,
+     "sd": 0
+    },
+    {
+     "k": "Visual and kinetic",
+     "v": 8,
+     "sd": 0
+    },
+    {
+     "k": "Technical",
+     "v": 8,
+     "sd": 0
+    },
+    {
+     "k": "Monetization",
+     "v": 0,
+     "sd": 0
+    },
+    {
+     "k": "Retention",
+     "v": 3.091,
+     "sd": 0.324
+    },
+    {
+     "k": "Referral",
+     "v": 3,
+     "sd": 0
+    }
+   ],
+   "sat": 11.29,
+   "satRows": [
+    {
+     "k": "ICP alignment",
+     "v": 2.395
+    },
+    {
+     "k": "Core loop",
+     "v": 0.286
+    },
+    {
+     "k": "Emotional",
+     "v": 5.518
+    },
+    {
+     "k": "Retention",
+     "v": 3.091
+    }
+   ],
+   "d7": 0.64373,
+   "d30": 0.03636,
+   "d90": 0.00132,
+   "loopEver": 0.0408,
+   "readShare": 0.5125,
+   "inferShare": 0.3907,
+   "keptShare": 0.5429,
+   "stories": 858.1,
+   "releases": 70.8,
+   "minutes": 15356,
+   "cohortDelta": -6.381,
+   "survDelta": -2.499,
+   "lostTop": [
+    {
+     "k": "DRIFT",
+     "n": 283
+    },
+    {
+     "k": "F4",
+     "n": 110
+    },
+    {
+     "k": "F3",
+     "n": 95
+    },
+    {
+     "k": "F1",
+     "n": 70
+    }
+   ],
+   "icp": {
+    "Diane": {
+     "d30": 0.016,
+     "sessions": 1.324,
+     "stories": 0,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": -1.518,
+     "survDelta": -1.031
+    },
+    "Derek": {
+     "d30": 0.025,
+     "sessions": 2.175,
+     "stories": 0.771,
+     "releases": 0.024,
+     "loopEver": 0.019,
+     "exitDelta": -14.498,
+     "survDelta": -4.144
+    },
+    "Marcus": {
+     "d30": 0.075,
+     "sessions": 1.804,
+     "stories": 0.49,
+     "releases": 0.003,
+     "loopEver": 0,
+     "exitDelta": -7.379,
+     "survDelta": -4.892
+    },
+    "Angela": {
+     "d30": 0.018,
+     "sessions": 1.231,
+     "stories": 0.89,
+     "releases": 0.01,
+     "loopEver": 0.003,
+     "exitDelta": -4.73,
+     "survDelta": -1.991
+    },
+    "Sofia": {
+     "d30": 0.088,
+     "sessions": 3.198,
+     "stories": 2.824,
+     "releases": 0.319,
+     "loopEver": 0.188,
+     "exitDelta": -6.125,
+     "survDelta": -0.885
+    },
+    "James": {
+     "d30": 0.002,
+     "sessions": 0.367,
+     "stories": 0.024,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": -1.714,
+     "survDelta": 0
+    },
+    "Ana": {
+     "d30": 0.039,
+     "sessions": 2.628,
+     "stories": 2.338,
+     "releases": 0.405,
+     "loopEver": 0.216,
+     "exitDelta": -14.146,
+     "survDelta": 0
+    },
+    "Gordon": {
+     "d30": 0,
+     "sessions": 0.049,
+     "stories": 0,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": -0.903,
+     "survDelta": 0
+    },
+    "Rosa": {
+     "d30": 0.012,
+     "sessions": 0.14,
+     "stories": 0.022,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": 0.961,
+     "survDelta": 0
+    }
+   },
+   "ids": [
+    "C2a"
+   ],
+   "soft": false,
+   "label": "C2a",
+   "n": 1,
+   "clash": [],
+   "ceiling": {
+    "none": {
+     "cq0": 42.25,
+     "cq90": 43.26,
+     "move": 1.01,
+     "best": 43.57,
+     "worst": 42.25,
+     "clear": 3,
+     "ground": 112,
+     "band": "Oscillating",
+     "marks": 11,
+     "accuracy": 21.7,
+     "ceiling": 52.7
+    },
+    "low": {
+     "cq0": 9,
+     "cq90": 9.41,
+     "move": 0.41,
+     "best": 10.3,
+     "worst": 9,
+     "clear": 5,
+     "ground": 245,
+     "band": "Collapsed",
+     "marks": 14,
+     "accuracy": 15.4,
+     "ceiling": 15.5
+    },
+    "mid": {
+     "cq0": 25,
+     "cq90": 26.19,
+     "move": 1.19,
+     "best": 26.72,
+     "worst": 25,
+     "clear": 4,
+     "ground": 192,
+     "band": "Corrupt",
+     "marks": 13,
+     "accuracy": 19,
+     "ceiling": 34.8
+    },
+    "high": {
+     "cq0": 49,
+     "cq90": 49.53,
+     "move": 0.53,
+     "best": 50.15,
+     "worst": 49,
+     "clear": 2,
+     "ground": 162,
+     "band": "Oscillating",
+     "marks": 12,
+     "accuracy": 22.6,
+     "ceiling": 58.5
+    },
+    "move": 1.19
+   },
+   "seconds": 21,
+   "knobs": {
+    "storyCost": null,
+    "relTake": 0.21,
+    "relInstall": 0.62,
+    "relCompound": true,
+    "relStick": false,
+    "carrying": false,
+    "costLine": false,
+    "lex": false,
+    "inferAsk": false,
+    "push": false,
+    "nudge": 0,
+    "record": false,
+    "refer": false,
+    "money": false,
+    "enforce": false,
+    "doneFlag": false,
+    "bandFix": false,
+    "tapFloor": false,
+    "menu": false,
+    "foldRails": false,
+    "foldTop": false
+   },
+   "checkAgainstNinety": {
+    "want": 38.79,
+    "got": 38.79,
+    "same": true
+   }
+  },
+  {
+   "runs": 15,
+   "settledAt": 15,
+   "grade": 38.85,
+   "letter": "F",
+   "gradeSd": 0.383,
+   "lo": 38.2,
+   "hi": 39.4,
+   "rows": [
+    {
+     "k": "ICP alignment",
+     "v": 2.42,
+     "sd": 0.132
+    },
+    {
+     "k": "First touch",
+     "v": 6.2,
+     "sd": 0
+    },
+    {
+     "k": "Core loop",
+     "v": 0.293,
+     "sd": 0.046
+    },
+    {
+     "k": "Emotional",
+     "v": 5.507,
+     "sd": 0.133
+    },
+    {
+     "k": "Behavioral flow",
+     "v": 2.3,
+     "sd": 0
+    },
+    {
+     "k": "Visual and kinetic",
+     "v": 8,
+     "sd": 0
+    },
+    {
+     "k": "Technical",
+     "v": 8,
+     "sd": 0
+    },
+    {
+     "k": "Monetization",
+     "v": 0,
+     "sd": 0
+    },
+    {
+     "k": "Retention",
+     "v": 3.133,
+     "sd": 0.294
+    },
+    {
+     "k": "Referral",
+     "v": 3,
+     "sd": 0
+    }
+   ],
+   "sat": 11.35,
+   "satRows": [
+    {
+     "k": "ICP alignment",
+     "v": 2.42
+    },
+    {
+     "k": "Core loop",
+     "v": 0.293
+    },
+    {
+     "k": "Emotional",
+     "v": 5.507
+    },
+    {
+     "k": "Retention",
+     "v": 3.133
+    }
+   ],
+   "d7": 0.6434,
+   "d30": 0.03673,
+   "d90": 0.00113,
+   "loopEver": 0.0421,
+   "readShare": 0.5205,
+   "inferShare": 0.4053,
+   "keptShare": 0.5374,
+   "stories": 877.9,
+   "releases": 102.7,
+   "minutes": 15636,
+   "cohortDelta": -6.33,
+   "survDelta": -3.024,
+   "lostTop": [
+    {
+     "k": "DRIFT",
+     "n": 284
+    },
+    {
+     "k": "F4",
+     "n": 110
+    },
+    {
+     "k": "F3",
+     "n": 92
+    },
+    {
+     "k": "F1",
+     "n": 68
+    }
+   ],
+   "icp": {
+    "Diane": {
+     "d30": 0.016,
+     "sessions": 1.317,
+     "stories": 0,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": -1.506,
+     "survDelta": -0.895
+    },
+    "Derek": {
+     "d30": 0.027,
+     "sessions": 2.162,
+     "stories": 0.768,
+     "releases": 0.025,
+     "loopEver": 0.018,
+     "exitDelta": -14.303,
+     "survDelta": -6.078
+    },
+    "Marcus": {
+     "d30": 0.073,
+     "sessions": 1.781,
+     "stories": 0.48,
+     "releases": 0.004,
+     "loopEver": 0,
+     "exitDelta": -7.503,
+     "survDelta": -6.877
+    },
+    "Angela": {
+     "d30": 0.014,
+     "sessions": 1.207,
+     "stories": 0.882,
+     "releases": 0.012,
+     "loopEver": 0.002,
+     "exitDelta": -4.614,
+     "survDelta": -2.271
+    },
+    "Sofia": {
+     "d30": 0.086,
+     "sessions": 3.179,
+     "stories": 2.817,
+     "releases": 0.403,
+     "loopEver": 0.18,
+     "exitDelta": -5.927,
+     "survDelta": 0
+    },
+    "James": {
+     "d30": 0.003,
+     "sessions": 0.36,
+     "stories": 0.025,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": -1.84,
+     "survDelta": 0
+    },
+    "Ana": {
+     "d30": 0.061,
+     "sessions": 3.135,
+     "stories": 2.821,
+     "releases": 0.8,
+     "loopEver": 0.268,
+     "exitDelta": -14.074,
+     "survDelta": -1.793
+    },
+    "Gordon": {
+     "d30": 0,
+     "sessions": 0.03,
+     "stories": 0,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": -1.01,
+     "survDelta": 0
+    },
+    "Rosa": {
+     "d30": 0,
+     "sessions": 0.137,
+     "stories": 0.009,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": 1.189,
+     "survDelta": 0
+    }
+   },
+   "ids": [
+    "C2b"
+   ],
+   "soft": false,
+   "label": "C2b",
+   "n": 1,
+   "clash": [],
+   "ceiling": {
+    "none": {
+     "cq0": 42.25,
+     "cq90": 42.63,
+     "move": 0.38,
+     "best": 42.79,
+     "worst": 41.41,
+     "clear": 3,
+     "ground": 193,
+     "band": "Oscillating",
+     "marks": 11,
+     "accuracy": 21.7,
+     "ceiling": 51.4
+    },
+    "low": {
+     "cq0": 9,
+     "cq90": 9.56,
+     "move": 0.56,
+     "best": 9.7,
+     "worst": 8.81,
+     "clear": 4,
+     "ground": 384,
+     "band": "Collapsed",
+     "marks": 13,
+     "accuracy": 15.4,
+     "ceiling": 15.7
+    },
+    "mid": {
+     "cq0": 25,
+     "cq90": 25.6,
+     "move": 0.6,
+     "best": 25.79,
+     "worst": 25,
+     "clear": 4,
+     "ground": 264,
+     "band": "Corrupt",
+     "marks": 13,
+     "accuracy": 19,
+     "ceiling": 34
+    },
+    "high": {
+     "cq0": 49,
+     "cq90": 49.54,
+     "move": 0.54,
+     "best": 49.68,
+     "worst": 46.38,
+     "clear": 3,
+     "ground": 244,
+     "band": "Oscillating",
+     "marks": 12,
+     "accuracy": 22.6,
+     "ceiling": 59.1
+    },
+    "move": 0.6
+   },
+   "seconds": 15,
+   "knobs": {
+    "storyCost": null,
+    "relTake": 0.21,
+    "relInstall": 1,
+    "relCompound": false,
+    "relStick": false,
+    "carrying": false,
+    "costLine": false,
+    "lex": false,
+    "inferAsk": false,
+    "push": false,
+    "nudge": 0,
+    "record": false,
+    "refer": false,
+    "money": false,
+    "enforce": false,
+    "doneFlag": false,
+    "bandFix": false,
+    "tapFloor": false,
+    "menu": false,
+    "foldRails": false,
+    "foldTop": false
+   },
+   "checkAgainstNinety": {
+    "want": 38.85,
+    "got": 38.85,
+    "same": true
+   }
+  },
+  {
+   "runs": 19,
+   "settledAt": 19,
+   "grade": 38.91,
+   "letter": "F",
+   "gradeSd": 0.407,
+   "lo": 38,
+   "hi": 39.6,
+   "rows": [
+    {
+     "k": "ICP alignment",
+     "v": 2.405,
+     "sd": 0.139
+    },
+    {
+     "k": "First touch",
+     "v": 6.2,
+     "sd": 0
+    },
+    {
+     "k": "Core loop",
+     "v": 0.295,
+     "sd": 0.052
+    },
+    {
+     "k": "Emotional",
+     "v": 5.474,
+     "sd": 0.105
+    },
+    {
+     "k": "Behavioral flow",
+     "v": 2.3,
+     "sd": 0
+    },
+    {
+     "k": "Visual and kinetic",
+     "v": 8,
+     "sd": 0
+    },
+    {
+     "k": "Technical",
+     "v": 8,
+     "sd": 0
+    },
+    {
+     "k": "Monetization",
+     "v": 0,
+     "sd": 0
+    },
+    {
+     "k": "Retention",
+     "v": 3.237,
+     "sd": 0.291
+    },
+    {
+     "k": "Referral",
+     "v": 3,
+     "sd": 0
+    }
+   ],
+   "sat": 11.41,
+   "satRows": [
+    {
+     "k": "ICP alignment",
+     "v": 2.405
+    },
+    {
+     "k": "Core loop",
+     "v": 0.295
+    },
+    {
+     "k": "Emotional",
+     "v": 5.474
+    },
+    {
+     "k": "Retention",
+     "v": 3.237
+    }
+   ],
+   "d7": 0.64611,
+   "d30": 0.03858,
+   "d90": 0.00126,
+   "loopEver": 0.0404,
+   "readShare": 0.5164,
+   "inferShare": 0.4041,
+   "keptShare": 0.5392,
+   "stories": 886.7,
+   "releases": 121.9,
+   "minutes": 15796,
+   "cohortDelta": -6.412,
+   "survDelta": -2.984,
+   "lostTop": [
+    {
+     "k": "DRIFT",
+     "n": 288
+    },
+    {
+     "k": "F4",
+     "n": 110
+    },
+    {
+     "k": "F3",
+     "n": 89
+    },
+    {
+     "k": "F1",
+     "n": 68
+    }
+   ],
+   "icp": {
+    "Diane": {
+     "d30": 0.016,
+     "sessions": 1.318,
+     "stories": 0,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": -1.511,
+     "survDelta": -0.984
+    },
+    "Derek": {
+     "d30": 0.027,
+     "sessions": 2.154,
+     "stories": 0.759,
+     "releases": 0.028,
+     "loopEver": 0.017,
+     "exitDelta": -14.464,
+     "survDelta": -4.798
+    },
+    "Marcus": {
+     "d30": 0.075,
+     "sessions": 1.819,
+     "stories": 0.485,
+     "releases": 0.005,
+     "loopEver": 0,
+     "exitDelta": -7.551,
+     "survDelta": -5.814
+    },
+    "Angela": {
+     "d30": 0.016,
+     "sessions": 1.218,
+     "stories": 0.884,
+     "releases": 0.01,
+     "loopEver": 0.002,
+     "exitDelta": -4.695,
+     "survDelta": -1.793
+    },
+    "Sofia": {
+     "d30": 0.089,
+     "sessions": 3.258,
+     "stories": 2.895,
+     "releases": 0.474,
+     "loopEver": 0.182,
+     "exitDelta": -6.023,
+     "survDelta": -0.676
+    },
+    "James": {
+     "d30": 0.004,
+     "sessions": 0.408,
+     "stories": 0.023,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": -2.163,
+     "survDelta": 0
+    },
+    "Ana": {
+     "d30": 0.076,
+     "sessions": 3.094,
+     "stories": 2.792,
+     "releases": 0.977,
+     "loopEver": 0.235,
+     "exitDelta": -14.328,
+     "survDelta": -1.273
+    },
+    "Gordon": {
+     "d30": 0,
+     "sessions": 0.058,
+     "stories": 0,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": -0.511,
+     "survDelta": 0
+    },
+    "Rosa": {
+     "d30": 0,
+     "sessions": 0.137,
+     "stories": 0.007,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": 1.638,
+     "survDelta": 0
+    }
+   },
+   "ids": [
+    "C2c"
+   ],
+   "soft": false,
+   "label": "C2c",
+   "n": 1,
+   "clash": [],
+   "ceiling": {
+    "none": {
+     "cq0": 42.25,
+     "cq90": 42.52,
+     "move": 0.27,
+     "best": 42.7,
+     "worst": 37.46,
+     "clear": 3,
+     "ground": 307,
+     "band": "Oscillating",
+     "marks": 11,
+     "accuracy": 21.7,
+     "ceiling": 51
+    },
+    "low": {
+     "cq0": 9,
+     "cq90": 9.59,
+     "move": 0.59,
+     "best": 9.74,
+     "worst": 8.15,
+     "clear": 4,
+     "ground": 569,
+     "band": "Collapsed",
+     "marks": 13,
+     "accuracy": 15.4,
+     "ceiling": 15.4
+    },
+    "mid": {
+     "cq0": 25,
+     "cq90": 25.54,
+     "move": 0.54,
+     "best": 25.72,
+     "worst": 22.06,
+     "clear": 4,
+     "ground": 444,
+     "band": "Corrupt",
+     "marks": 13,
+     "accuracy": 19,
+     "ceiling": 33.4
+    },
+    "high": {
+     "cq0": 49,
+     "cq90": 49.33,
+     "move": 0.33,
+     "best": 49.52,
+     "worst": 44.39,
+     "clear": 3,
+     "ground": 363,
+     "band": "Oscillating",
+     "marks": 12,
+     "accuracy": 22.6,
+     "ceiling": 57.9
+    },
+    "move": 0.54
+   },
+   "seconds": 19,
+   "knobs": {
+    "storyCost": null,
+    "relTake": 0.21,
+    "relInstall": 0.62,
+    "relCompound": false,
+    "relStick": true,
+    "carrying": false,
+    "costLine": false,
+    "lex": false,
+    "inferAsk": false,
+    "push": false,
+    "nudge": 0,
+    "record": false,
+    "refer": false,
+    "money": false,
+    "enforce": false,
+    "doneFlag": false,
+    "bandFix": false,
+    "tapFloor": false,
+    "menu": false,
+    "foldRails": false,
+    "foldTop": false
+   },
+   "checkAgainstNinety": {
+    "want": 38.91,
+    "got": 38.91,
+    "same": true
+   }
+  },
+  {
+   "runs": 27,
+   "settledAt": 27,
+   "grade": 43.98,
+   "letter": "D-",
+   "gradeSd": 0.595,
+   "lo": 42.9,
+   "hi": 45.3,
+   "rows": [
+    {
+     "k": "ICP alignment",
+     "v": 3.259,
+     "sd": 0.137
+    },
+    {
+     "k": "First touch",
+     "v": 6.2,
+     "sd": 0
+    },
+    {
+     "k": "Core loop",
+     "v": 1.515,
+     "sd": 0.103
+    },
+    {
+     "k": "Emotional",
+     "v": 5.589,
+     "sd": 0.105
+    },
+    {
+     "k": "Behavioral flow",
+     "v": 2.3,
+     "sd": 0
+    },
+    {
+     "k": "Visual and kinetic",
+     "v": 8,
+     "sd": 0
+    },
+    {
+     "k": "Technical",
+     "v": 8,
+     "sd": 0
+    },
+    {
+     "k": "Monetization",
+     "v": 0.678,
+     "sd": 0.08
+    },
+    {
+     "k": "Retention",
+     "v": 5.441,
+     "sd": 0.362
+    },
+    {
+     "k": "Referral",
+     "v": 3,
+     "sd": 0
+    }
+   ],
+   "sat": 15.8,
+   "satRows": [
+    {
+     "k": "ICP alignment",
+     "v": 3.259
+    },
+    {
+     "k": "Core loop",
+     "v": 1.515
+    },
+    {
+     "k": "Emotional",
+     "v": 5.589
+    },
+    {
+     "k": "Retention",
+     "v": 5.441
+    }
+   ],
+   "d7": 0.64404,
+   "d30": 0.08767,
+   "d90": 0.0023,
+   "loopEver": 0.17,
+   "readShare": 0.5365,
+   "inferShare": 0.4056,
+   "keptShare": 0.5898,
+   "stories": 1866.4,
+   "releases": 1838.7,
+   "minutes": 31325,
+   "cohortDelta": -8.156,
+   "survDelta": -3.146,
+   "lostTop": [
+    {
+     "k": "DRIFT",
+     "n": 313
+    },
+    {
+     "k": "F4",
+     "n": 126
+    },
+    {
+     "k": "F1",
+     "n": 71
+    },
+    {
+     "k": "F7",
+     "n": 38
+    }
+   ],
+   "icp": {
+    "Diane": {
+     "d30": 0.016,
+     "sessions": 1.326,
+     "stories": 0,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": -1.536,
+     "survDelta": -1.358
+    },
+    "Derek": {
+     "d30": 0.099,
+     "sessions": 4.433,
+     "stories": 1.703,
+     "releases": 2.645,
+     "loopEver": 0.317,
+     "exitDelta": -19.277,
+     "survDelta": -1.273
+    },
+    "Marcus": {
+     "d30": 0.094,
+     "sessions": 2.277,
+     "stories": 0.62,
+     "releases": 0.641,
+     "loopEver": 0.036,
+     "exitDelta": -8.511,
+     "survDelta": -6.046
+    },
+    "Angela": {
+     "d30": 0.036,
+     "sessions": 1.729,
+     "stories": 1.27,
+     "releases": 0.862,
+     "loopEver": 0.117,
+     "exitDelta": -6.413,
+     "survDelta": -2.838
+    },
+    "Sofia": {
+     "d30": 0.234,
+     "sessions": 6.764,
+     "stories": 6.321,
+     "releases": 5.464,
+     "loopEver": 0.461,
+     "exitDelta": -7.37,
+     "survDelta": -3.086
+    },
+    "James": {
+     "d30": 0.005,
+     "sessions": 0.367,
+     "stories": 0.022,
+     "releases": 0.001,
+     "loopEver": 0,
+     "exitDelta": -1.915,
+     "survDelta": 0
+    },
+    "Ana": {
+     "d30": 0.287,
+     "sessions": 8.447,
+     "stories": 7.995,
+     "releases": 7.845,
+     "loopEver": 0.564,
+     "exitDelta": -20.976,
+     "survDelta": -2.746
+    },
+    "Gordon": {
+     "d30": 0,
+     "sessions": 0.043,
+     "stories": 0,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": -0.86,
+     "survDelta": 0
+    },
+    "Rosa": {
+     "d30": 0.002,
+     "sessions": 0.131,
+     "stories": 0.03,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": 1.566,
+     "survDelta": 0
+    }
+   },
+   "ids": [
+    "C3"
+   ],
+   "soft": false,
+   "label": "C3",
+   "n": 1,
+   "clash": [],
+   "ceiling": {
+    "none": {
+     "cq0": 42.25,
+     "cq90": 42.52,
+     "move": 0.27,
+     "best": 42.7,
+     "worst": 37.46,
+     "clear": 3,
+     "ground": 307,
+     "band": "Oscillating",
+     "marks": 11,
+     "accuracy": 21.7,
+     "ceiling": 51
+    },
+    "low": {
+     "cq0": 9,
+     "cq90": 9.59,
+     "move": 0.59,
+     "best": 9.74,
+     "worst": 8.15,
+     "clear": 4,
+     "ground": 569,
+     "band": "Collapsed",
+     "marks": 13,
+     "accuracy": 15.4,
+     "ceiling": 15.4
+    },
+    "mid": {
+     "cq0": 25,
+     "cq90": 25.54,
+     "move": 0.54,
+     "best": 25.72,
+     "worst": 22.06,
+     "clear": 4,
+     "ground": 444,
+     "band": "Corrupt",
+     "marks": 13,
+     "accuracy": 19,
+     "ceiling": 33.4
+    },
+    "high": {
+     "cq0": 49,
+     "cq90": 49.33,
+     "move": 0.33,
+     "best": 49.52,
+     "worst": 44.39,
+     "clear": 3,
+     "ground": 363,
+     "band": "Oscillating",
+     "marks": 12,
+     "accuracy": 22.6,
+     "ceiling": 57.9
+    },
+    "move": 0.54
+   },
+   "seconds": 58,
+   "knobs": {
+    "storyCost": null,
+    "relTake": 0.21,
+    "relInstall": 0.62,
+    "relCompound": false,
+    "relStick": false,
+    "carrying": true,
+    "costLine": false,
+    "lex": false,
+    "inferAsk": false,
+    "push": false,
+    "nudge": 0,
+    "record": false,
+    "refer": false,
+    "money": false,
+    "enforce": false,
+    "doneFlag": false,
+    "bandFix": false,
+    "tapFloor": false,
+    "menu": false,
+    "foldRails": false,
+    "foldTop": false
+   },
+   "checkAgainstNinety": {
+    "want": 43.98,
+    "got": 43.98,
+    "same": true
+   }
+  },
+  {
+   "runs": 21,
+   "settledAt": 21,
+   "grade": 40.42,
+   "letter": "D-",
+   "gradeSd": 0.557,
+   "lo": 39.6,
+   "hi": 41.8,
+   "rows": [
+    {
+     "k": "ICP alignment",
+     "v": 2.648,
+     "sd": 0.15
+    },
+    {
+     "k": "First touch",
+     "v": 6.2,
+     "sd": 0
+    },
+    {
+     "k": "Core loop",
+     "v": 0.476,
+     "sd": 0.062
+    },
+    {
+     "k": "Emotional",
+     "v": 5.481,
+     "sd": 0.117
+    },
+    {
+     "k": "Behavioral flow",
+     "v": 2.3,
+     "sd": 0
+    },
+    {
+     "k": "Visual and kinetic",
+     "v": 8,
+     "sd": 0
+    },
+    {
+     "k": "Technical",
+     "v": 8,
+     "sd": 0
+    },
+    {
+     "k": "Monetization",
+     "v": 0,
+     "sd": 0
+    },
+    {
+     "k": "Retention",
+     "v": 4.319,
+     "sd": 0.383
+    },
+    {
+     "k": "Referral",
+     "v": 3,
+     "sd": 0
+    }
+   ],
+   "sat": 12.92,
+   "satRows": [
+    {
+     "k": "ICP alignment",
+     "v": 2.648
+    },
+    {
+     "k": "Core loop",
+     "v": 0.476
+    },
+    {
+     "k": "Emotional",
+     "v": 5.481
+    },
+    {
+     "k": "Retention",
+     "v": 4.319
+    }
+   ],
+   "d7": 0.64505,
+   "d30": 0.06252,
+   "d90": 0.00233,
+   "loopEver": 0.0625,
+   "readShare": 0.4949,
+   "inferShare": 0.3729,
+   "keptShare": 0.543,
+   "stories": 1220.1,
+   "releases": 203.4,
+   "minutes": 21441,
+   "cohortDelta": -7.678,
+   "survDelta": -4.955,
+   "lostTop": [
+    {
+     "k": "DRIFT",
+     "n": 292
+    },
+    {
+     "k": "F4",
+     "n": 109
+    },
+    {
+     "k": "F3",
+     "n": 91
+    },
+    {
+     "k": "F1",
+     "n": 71
+    }
+   ],
+   "icp": {
+    "Diane": {
+     "d30": 0.021,
+     "sessions": 1.496,
+     "stories": 0,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": -1.729,
+     "survDelta": -1.642
+    },
+    "Derek": {
+     "d30": 0.045,
+     "sessions": 3.089,
+     "stories": 1.119,
+     "releases": 0.09,
+     "loopEver": 0.049,
+     "exitDelta": -17.666,
+     "survDelta": 0
+    },
+    "Marcus": {
+     "d30": 0.135,
+     "sessions": 2.867,
+     "stories": 0.795,
+     "releases": 0.016,
+     "loopEver": 0.005,
+     "exitDelta": -10.161,
+     "survDelta": -11.583
+    },
+    "Angela": {
+     "d30": 0.019,
+     "sessions": 1.326,
+     "stories": 0.959,
+     "releases": 0.014,
+     "loopEver": 0.004,
+     "exitDelta": -5.06,
+     "survDelta": -3.825
+    },
+    "Sofia": {
+     "d30": 0.157,
+     "sessions": 4.826,
+     "stories": 4.384,
+     "releases": 0.973,
+     "loopEver": 0.293,
+     "exitDelta": -7.2,
+     "survDelta": -1.101
+    },
+    "James": {
+     "d30": 0.009,
+     "sessions": 0.39,
+     "stories": 0.027,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": -2.003,
+     "survDelta": 0
+    },
+    "Ana": {
+     "d30": 0.073,
+     "sessions": 3.15,
+     "stories": 2.833,
+     "releases": 0.949,
+     "loopEver": 0.236,
+     "exitDelta": -14.991,
+     "survDelta": 0
+    },
+    "Gordon": {
+     "d30": 0,
+     "sessions": 0.056,
+     "stories": 0,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": -1,
+     "survDelta": 0
+    },
+    "Rosa": {
+     "d30": 0.013,
+     "sessions": 0.162,
+     "stories": 0.023,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": 0.938,
+     "survDelta": 0
+    }
+   },
+   "ids": [
+    "C4"
+   ],
+   "soft": false,
+   "label": "C4",
+   "n": 1,
+   "clash": [],
+   "ceiling": {
+    "none": {
+     "cq0": 42.25,
+     "cq90": 42.52,
+     "move": 0.27,
+     "best": 42.7,
+     "worst": 37.46,
+     "clear": 3,
+     "ground": 307,
+     "band": "Oscillating",
+     "marks": 11,
+     "accuracy": 21.7,
+     "ceiling": 51
+    },
+    "low": {
+     "cq0": 9,
+     "cq90": 9.59,
+     "move": 0.59,
+     "best": 9.74,
+     "worst": 8.15,
+     "clear": 4,
+     "ground": 569,
+     "band": "Collapsed",
+     "marks": 13,
+     "accuracy": 15.4,
+     "ceiling": 15.4
+    },
+    "mid": {
+     "cq0": 25,
+     "cq90": 25.54,
+     "move": 0.54,
+     "best": 25.72,
+     "worst": 22.06,
+     "clear": 4,
+     "ground": 444,
+     "band": "Corrupt",
+     "marks": 13,
+     "accuracy": 19,
+     "ceiling": 33.4
+    },
+    "high": {
+     "cq0": 49,
+     "cq90": 49.33,
+     "move": 0.33,
+     "best": 49.52,
+     "worst": 44.39,
+     "clear": 3,
+     "ground": 363,
+     "band": "Oscillating",
+     "marks": 12,
+     "accuracy": 22.6,
+     "ceiling": 57.9
+    },
+    "move": 0.54
+   },
+   "seconds": 34,
+   "knobs": {
+    "storyCost": null,
+    "relTake": 0.21,
+    "relInstall": 0.62,
+    "relCompound": false,
+    "relStick": false,
+    "carrying": false,
+    "costLine": true,
+    "lex": false,
+    "inferAsk": false,
+    "push": false,
+    "nudge": 0,
+    "record": false,
+    "refer": false,
+    "money": false,
+    "enforce": false,
+    "doneFlag": false,
+    "bandFix": false,
+    "tapFloor": false,
+    "menu": false,
+    "foldRails": false,
+    "foldTop": false
+   },
+   "checkAgainstNinety": {
+    "want": 40.42,
+    "got": 40.42,
+    "same": true
+   }
+  },
+  {
+   "runs": 18,
+   "settledAt": 18,
+   "grade": 46.56,
+   "letter": "D",
+   "gradeSd": 0.405,
+   "lo": 45.9,
+   "hi": 47.3,
+   "rows": [
+    {
+     "k": "ICP alignment",
+     "v": 3.217,
+     "sd": 0.071
+    },
+    {
+     "k": "First touch",
+     "v": 6.2,
+     "sd": 0
+    },
+    {
+     "k": "Core loop",
+     "v": 0.961,
+     "sd": 0.085
+    },
+    {
+     "k": "Emotional",
+     "v": 9.9,
+     "sd": 0
+    },
+    {
+     "k": "Behavioral flow",
+     "v": 2.3,
+     "sd": 0
+    },
+    {
+     "k": "Visual and kinetic",
+     "v": 8,
+     "sd": 0
+    },
+    {
+     "k": "Technical",
+     "v": 8,
+     "sd": 0
+    },
+    {
+     "k": "Monetization",
+     "v": 0.328,
+     "sd": 0.067
+    },
+    {
+     "k": "Retention",
+     "v": 4.656,
+     "sd": 0.297
+    },
+    {
+     "k": "Referral",
+     "v": 3,
+     "sd": 0
+    }
+   ],
+   "sat": 18.73,
+   "satRows": [
+    {
+     "k": "ICP alignment",
+     "v": 3.217
+    },
+    {
+     "k": "Core loop",
+     "v": 0.961
+    },
+    {
+     "k": "Emotional",
+     "v": 9.9
+    },
+    {
+     "k": "Retention",
+     "v": 4.656
+    }
+   ],
+   "d7": 0.64167,
+   "d30": 0.07028,
+   "d90": 0.00211,
+   "loopEver": 0.1101,
+   "readShare": 1,
+   "inferShare": 0.0171,
+   "keptShare": 0.5725,
+   "stories": 1575.9,
+   "releases": 883.6,
+   "minutes": 26019,
+   "cohortDelta": -7.432,
+   "survDelta": -3.662,
+   "lostTop": [
+    {
+     "k": "DRIFT",
+     "n": 298
+    },
+    {
+     "k": "F3",
+     "n": 124
+    },
+    {
+     "k": "F4",
+     "n": 111
+    },
+    {
+     "k": "F7",
+     "n": 40
+    }
+   ],
+   "icp": {
+    "Diane": {
+     "d30": 0.016,
+     "sessions": 1.321,
+     "stories": 0,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": -1.508,
+     "survDelta": -1.038
+    },
+    "Derek": {
+     "d30": 0.034,
+     "sessions": 2.469,
+     "stories": 0.909,
+     "releases": 0.25,
+     "loopEver": 0.104,
+     "exitDelta": -15.466,
+     "survDelta": -0.983
+    },
+    "Marcus": {
+     "d30": 0.098,
+     "sessions": 2.291,
+     "stories": 0.634,
+     "releases": 0.248,
+     "loopEver": 0.033,
+     "exitDelta": -9.05,
+     "survDelta": -9.088
+    },
+    "Angela": {
+     "d30": 0.023,
+     "sessions": 1.544,
+     "stories": 1.135,
+     "releases": 0.11,
+     "loopEver": 0.028,
+     "exitDelta": -5.783,
+     "survDelta": -5.048
+    },
+    "Sofia": {
+     "d30": 0.234,
+     "sessions": 6.627,
+     "stories": 6.173,
+     "releases": 4.206,
+     "loopEver": 0.457,
+     "exitDelta": -7.948,
+     "survDelta": -3.798
+    },
+    "James": {
+     "d30": 0.004,
+     "sessions": 0.379,
+     "stories": 0.019,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": -2.044,
+     "survDelta": -0.076
+    },
+    "Ana": {
+     "d30": 0.188,
+     "sessions": 6.014,
+     "stories": 5.672,
+     "releases": 3.916,
+     "loopEver": 0.38,
+     "exitDelta": -17.874,
+     "survDelta": 0
+    },
+    "Gordon": {
+     "d30": 0,
+     "sessions": 0.046,
+     "stories": 0,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": -0.847,
+     "survDelta": 0
+    },
+    "Rosa": {
+     "d30": 0,
+     "sessions": 0.108,
+     "stories": 0,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": 1.659,
+     "survDelta": 0
+    }
+   },
+   "ids": [
+    "C5"
+   ],
+   "soft": false,
+   "label": "C5",
+   "n": 1,
+   "clash": [],
+   "ceiling": {
+    "none": {
+     "cq0": 42.25,
+     "cq90": 42.79,
+     "move": 0.54,
+     "best": 43.09,
+     "worst": 37.98,
+     "clear": 4,
+     "ground": 448,
+     "band": "Oscillating",
+     "marks": 12,
+     "accuracy": 21.7,
+     "ceiling": 53.9
+    },
+    "low": {
+     "cq0": 9,
+     "cq90": 9.78,
+     "move": 0.78,
+     "best": 9.96,
+     "worst": 8.17,
+     "clear": 5,
+     "ground": 648,
+     "band": "Collapsed",
+     "marks": 14,
+     "accuracy": 15.4,
+     "ceiling": 17.6
+    },
+    "mid": {
+     "cq0": 25,
+     "cq90": 25.76,
+     "move": 0.76,
+     "best": 25.84,
+     "worst": 22.74,
+     "clear": 5,
+     "ground": 559,
+     "band": "Corrupt",
+     "marks": 14,
+     "accuracy": 19,
+     "ceiling": 36
+    },
+    "high": {
+     "cq0": 49,
+     "cq90": 49.61,
+     "move": 0.61,
+     "best": 49.66,
+     "worst": 44.13,
+     "clear": 4,
+     "ground": 448,
+     "band": "Oscillating",
+     "marks": 13,
+     "accuracy": 22.6,
+     "ceiling": 60.7
+    },
+    "move": 0.76
+   },
+   "seconds": 34,
+   "knobs": {
+    "storyCost": null,
+    "relTake": 0.21,
+    "relInstall": 0.62,
+    "relCompound": false,
+    "relStick": false,
+    "carrying": false,
+    "costLine": false,
+    "lex": true,
+    "inferAsk": false,
+    "push": false,
+    "nudge": 0,
+    "record": false,
+    "refer": false,
+    "money": false,
+    "enforce": false,
+    "doneFlag": false,
+    "bandFix": false,
+    "tapFloor": false,
+    "menu": false,
+    "foldRails": false,
+    "foldTop": false
+   },
+   "checkAgainstNinety": {
+    "want": 46.56,
+    "got": 46.56,
+    "same": true
+   }
+  },
+  {
+   "runs": 19,
+   "settledAt": 19,
+   "grade": 39.01,
+   "letter": "F",
+   "gradeSd": 0.381,
+   "lo": 38.2,
+   "hi": 39.7,
+   "rows": [
+    {
+     "k": "ICP alignment",
+     "v": 2.442,
+     "sd": 0.122
+    },
+    {
+     "k": "First touch",
+     "v": 6.2,
+     "sd": 0
+    },
+    {
+     "k": "Core loop",
+     "v": 0.311,
+     "sd": 0.046
+    },
+    {
+     "k": "Emotional",
+     "v": 5.405,
+     "sd": 0.118
+    },
+    {
+     "k": "Behavioral flow",
+     "v": 2.3,
+     "sd": 0
+    },
+    {
+     "k": "Visual and kinetic",
+     "v": 8,
+     "sd": 0
+    },
+    {
+     "k": "Technical",
+     "v": 8,
+     "sd": 0
+    },
+    {
+     "k": "Monetization",
+     "v": 0,
+     "sd": 0
+    },
+    {
+     "k": "Retention",
+     "v": 3.347,
+     "sd": 0.239
+    },
+    {
+     "k": "Referral",
+     "v": 3,
+     "sd": 0
+    }
+   ],
+   "sat": 11.51,
+   "satRows": [
+    {
+     "k": "ICP alignment",
+     "v": 2.442
+    },
+    {
+     "k": "Core loop",
+     "v": 0.311
+    },
+    {
+     "k": "Emotional",
+     "v": 5.405
+    },
+    {
+     "k": "Retention",
+     "v": 3.347
+    }
+   ],
+   "d7": 0.64479,
+   "d30": 0.04116,
+   "d90": 0.00121,
+   "loopEver": 0.0444,
+   "readShare": 0.5232,
+   "inferShare": 0.4333,
+   "keptShare": 0.5329,
+   "stories": 944.2,
+   "releases": 148,
+   "minutes": 16713,
+   "cohortDelta": -6.587,
+   "survDelta": -2.795,
+   "lostTop": [
+    {
+     "k": "DRIFT",
+     "n": 286
+    },
+    {
+     "k": "F4",
+     "n": 109
+    },
+    {
+     "k": "F3",
+     "n": 93
+    },
+    {
+     "k": "F1",
+     "n": 72
+    }
+   ],
+   "icp": {
+    "Diane": {
+     "d30": 0.016,
+     "sessions": 1.318,
+     "stories": 0,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": -1.511,
+     "survDelta": -0.984
+    },
+    "Derek": {
+     "d30": 0.022,
+     "sessions": 2.168,
+     "stories": 0.766,
+     "releases": 0.029,
+     "loopEver": 0.018,
+     "exitDelta": -14.457,
+     "survDelta": -4.579
+    },
+    "Marcus": {
+     "d30": 0.081,
+     "sessions": 1.929,
+     "stories": 0.521,
+     "releases": 0.005,
+     "loopEver": 0.001,
+     "exitDelta": -7.952,
+     "survDelta": -3.984
+    },
+    "Angela": {
+     "d30": 0.021,
+     "sessions": 1.281,
+     "stories": 0.931,
+     "releases": 0.012,
+     "loopEver": 0.004,
+     "exitDelta": -4.862,
+     "survDelta": -3.042
+    },
+    "Sofia": {
+     "d30": 0.089,
+     "sessions": 3.24,
+     "stories": 2.879,
+     "releases": 0.462,
+     "loopEver": 0.181,
+     "exitDelta": -6.061,
+     "survDelta": -0.676
+    },
+    "James": {
+     "d30": 0.004,
+     "sessions": 0.39,
+     "stories": 0.025,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": -1.939,
+     "survDelta": 0
+    },
+    "Ana": {
+     "d30": 0.111,
+     "sessions": 4.048,
+     "stories": 3.701,
+     "releases": 1.519,
+     "loopEver": 0.305,
+     "exitDelta": -16.418,
+     "survDelta": -4.152
+    },
+    "Gordon": {
+     "d30": 0,
+     "sessions": 0.047,
+     "stories": 0,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": -0.698,
+     "survDelta": 0
+    },
+    "Rosa": {
+     "d30": 0,
+     "sessions": 0.148,
+     "stories": 0.018,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": 2.093,
+     "survDelta": 0
+    }
+   },
+   "ids": [
+    "C5b"
+   ],
+   "soft": false,
+   "label": "C5b",
+   "n": 1,
+   "clash": [],
+   "ceiling": {
+    "none": {
+     "cq0": 42.25,
+     "cq90": 42.52,
+     "move": 0.27,
+     "best": 42.7,
+     "worst": 37.46,
+     "clear": 3,
+     "ground": 307,
+     "band": "Oscillating",
+     "marks": 11,
+     "accuracy": 21.7,
+     "ceiling": 51
+    },
+    "low": {
+     "cq0": 9,
+     "cq90": 9.59,
+     "move": 0.59,
+     "best": 9.74,
+     "worst": 8.15,
+     "clear": 4,
+     "ground": 569,
+     "band": "Collapsed",
+     "marks": 13,
+     "accuracy": 15.4,
+     "ceiling": 15.4
+    },
+    "mid": {
+     "cq0": 25,
+     "cq90": 25.54,
+     "move": 0.54,
+     "best": 25.72,
+     "worst": 22.06,
+     "clear": 4,
+     "ground": 444,
+     "band": "Corrupt",
+     "marks": 13,
+     "accuracy": 19,
+     "ceiling": 33.4
+    },
+    "high": {
+     "cq0": 49,
+     "cq90": 49.33,
+     "move": 0.33,
+     "best": 49.52,
+     "worst": 44.39,
+     "clear": 3,
+     "ground": 363,
+     "band": "Oscillating",
+     "marks": 12,
+     "accuracy": 22.6,
+     "ceiling": 57.9
+    },
+    "move": 0.54
+   },
+   "seconds": 22,
+   "knobs": {
+    "storyCost": null,
+    "relTake": 0.21,
+    "relInstall": 0.62,
+    "relCompound": false,
+    "relStick": false,
+    "carrying": false,
+    "costLine": false,
+    "lex": false,
+    "inferAsk": true,
+    "push": false,
+    "nudge": 0,
+    "record": false,
+    "refer": false,
+    "money": false,
+    "enforce": false,
+    "doneFlag": false,
+    "bandFix": false,
+    "tapFloor": false,
+    "menu": false,
+    "foldRails": false,
+    "foldTop": false
+   },
+   "checkAgainstNinety": {
+    "want": 39.01,
+    "got": 39.01,
+    "same": true
+   }
+  },
+  {
+   "runs": 16,
+   "settledAt": 16,
+   "grade": 39.18,
+   "letter": "F",
+   "gradeSd": 0.442,
+   "lo": 38.2,
+   "hi": 39.7,
+   "rows": [
+    {
+     "k": "ICP alignment",
+     "v": 2.456,
+     "sd": 0.115
+    },
+    {
+     "k": "First touch",
+     "v": 6.2,
+     "sd": 0
+    },
+    {
+     "k": "Core loop",
+     "v": 0.294,
+     "sd": 0.025
+    },
+    {
+     "k": "Emotional",
+     "v": 5.569,
+     "sd": 0.114
+    },
+    {
+     "k": "Behavioral flow",
+     "v": 2.3,
+     "sd": 0
+    },
+    {
+     "k": "Visual and kinetic",
+     "v": 8,
+     "sd": 0
+    },
+    {
+     "k": "Technical",
+     "v": 8,
+     "sd": 0
+    },
+    {
+     "k": "Monetization",
+     "v": 0,
+     "sd": 0
+    },
+    {
+     "k": "Retention",
+     "v": 3.362,
+     "sd": 0.352
+    },
+    {
+     "k": "Referral",
+     "v": 3,
+     "sd": 0
+    }
+   ],
+   "sat": 11.68,
+   "satRows": [
+    {
+     "k": "ICP alignment",
+     "v": 2.456
+    },
+    {
+     "k": "Core loop",
+     "v": 0.294
+    },
+    {
+     "k": "Emotional",
+     "v": 5.569
+    },
+    {
+     "k": "Retention",
+     "v": 3.362
+    }
+   ],
+   "d7": 0.64831,
+   "d30": 0.0415,
+   "d90": 0.001,
+   "loopEver": 0.0424,
+   "readShare": 0.5195,
+   "inferShare": 0.3875,
+   "keptShare": 0.5503,
+   "stories": 928.4,
+   "releases": 127.1,
+   "minutes": 16504,
+   "cohortDelta": -6.578,
+   "survDelta": -1.827,
+   "lostTop": [
+    {
+     "k": "DRIFT",
+     "n": 286
+    },
+    {
+     "k": "F4",
+     "n": 112
+    },
+    {
+     "k": "F3",
+     "n": 92
+    },
+    {
+     "k": "F1",
+     "n": 69
+    }
+   ],
+   "icp": {
+    "Diane": {
+     "d30": 0.02,
+     "sessions": 1.328,
+     "stories": 0,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": -1.563,
+     "survDelta": -1.043
+    },
+    "Derek": {
+     "d30": 0.025,
+     "sessions": 2.37,
+     "stories": 0.849,
+     "releases": 0.039,
+     "loopEver": 0.019,
+     "exitDelta": -14.763,
+     "survDelta": -0.749
+    },
+    "Marcus": {
+     "d30": 0.083,
+     "sessions": 1.921,
+     "stories": 0.521,
+     "releases": 0.006,
+     "loopEver": 0.002,
+     "exitDelta": -7.654,
+     "survDelta": -2.321
+    },
+    "Angela": {
+     "d30": 0.018,
+     "sessions": 1.295,
+     "stories": 0.959,
+     "releases": 0.016,
+     "loopEver": 0.004,
+     "exitDelta": -4.801,
+     "survDelta": -2.701
+    },
+    "Sofia": {
+     "d30": 0.098,
+     "sessions": 3.356,
+     "stories": 2.994,
+     "releases": 0.541,
+     "loopEver": 0.199,
+     "exitDelta": -6.255,
+     "survDelta": -1.234
+    },
+    "James": {
+     "d30": 0.007,
+     "sessions": 0.402,
+     "stories": 0.022,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": -2.052,
+     "survDelta": -0.275
+    },
+    "Ana": {
+     "d30": 0.061,
+     "sessions": 3.021,
+     "stories": 2.697,
+     "releases": 0.839,
+     "loopEver": 0.21,
+     "exitDelta": -14.942,
+     "survDelta": 0
+    },
+    "Gordon": {
+     "d30": 0.002,
+     "sessions": 0.054,
+     "stories": 0,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": -0.811,
+     "survDelta": 0
+    },
+    "Rosa": {
+     "d30": 0.004,
+     "sessions": 0.174,
+     "stories": 0.013,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": 0.916,
+     "survDelta": 0
+    }
+   },
+   "ids": [
+    "C6"
+   ],
+   "soft": false,
+   "label": "C6",
+   "n": 1,
+   "clash": [],
+   "ceiling": {
+    "none": {
+     "cq0": 42.25,
+     "cq90": 42.52,
+     "move": 0.27,
+     "best": 42.7,
+     "worst": 37.46,
+     "clear": 3,
+     "ground": 307,
+     "band": "Oscillating",
+     "marks": 11,
+     "accuracy": 21.7,
+     "ceiling": 51
+    },
+    "low": {
+     "cq0": 9,
+     "cq90": 9.59,
+     "move": 0.59,
+     "best": 9.74,
+     "worst": 8.15,
+     "clear": 4,
+     "ground": 569,
+     "band": "Collapsed",
+     "marks": 13,
+     "accuracy": 15.4,
+     "ceiling": 15.4
+    },
+    "mid": {
+     "cq0": 25,
+     "cq90": 25.54,
+     "move": 0.54,
+     "best": 25.72,
+     "worst": 22.06,
+     "clear": 4,
+     "ground": 444,
+     "band": "Corrupt",
+     "marks": 13,
+     "accuracy": 19,
+     "ceiling": 33.4
+    },
+    "high": {
+     "cq0": 49,
+     "cq90": 49.33,
+     "move": 0.33,
+     "best": 49.52,
+     "worst": 44.39,
+     "clear": 3,
+     "ground": 363,
+     "band": "Oscillating",
+     "marks": 12,
+     "accuracy": 22.6,
+     "ceiling": 57.9
+    },
+    "move": 0.54
+   },
+   "seconds": 19,
+   "knobs": {
+    "storyCost": null,
+    "relTake": 0.21,
+    "relInstall": 0.62,
+    "relCompound": false,
+    "relStick": false,
+    "carrying": false,
+    "costLine": false,
+    "lex": false,
+    "inferAsk": false,
+    "push": true,
+    "nudge": 0,
+    "record": false,
+    "refer": false,
+    "money": false,
+    "enforce": false,
+    "doneFlag": false,
+    "bandFix": false,
+    "tapFloor": false,
+    "menu": false,
+    "foldRails": false,
+    "foldTop": false
+   },
+   "checkAgainstNinety": {
+    "want": 39.18,
+    "got": 39.18,
+    "same": true
+   }
+  },
+  {
+   "runs": 19,
+   "settledAt": 19,
+   "grade": 39.92,
+   "letter": "F",
+   "gradeSd": 0.482,
+   "lo": 39.1,
+   "hi": 40.8,
+   "rows": [
+    {
+     "k": "ICP alignment",
+     "v": 2.542,
+     "sd": 0.126
+    },
+    {
+     "k": "First touch",
+     "v": 6.2,
+     "sd": 0
+    },
+    {
+     "k": "Core loop",
+     "v": 0.363,
+     "sd": 0.06
+    },
+    {
+     "k": "Emotional",
+     "v": 5.521,
+     "sd": 0.085
+    },
+    {
+     "k": "Behavioral flow",
+     "v": 2.3,
+     "sd": 0
+    },
+    {
+     "k": "Visual and kinetic",
+     "v": 8,
+     "sd": 0
+    },
+    {
+     "k": "Technical",
+     "v": 8,
+     "sd": 0
+    },
+    {
+     "k": "Monetization",
+     "v": 0,
+     "sd": 0
+    },
+    {
+     "k": "Retention",
+     "v": 3.989,
+     "sd": 0.375
+    },
+    {
+     "k": "Referral",
+     "v": 3,
+     "sd": 0
+    }
+   ],
+   "sat": 12.41,
+   "satRows": [
+    {
+     "k": "ICP alignment",
+     "v": 2.542
+    },
+    {
+     "k": "Core loop",
+     "v": 0.363
+    },
+    {
+     "k": "Emotional",
+     "v": 5.521
+    },
+    {
+     "k": "Retention",
+     "v": 3.989
+    }
+   ],
+   "d7": 0.64253,
+   "d30": 0.05511,
+   "d90": 0.00016,
+   "loopEver": 0.0496,
+   "readShare": 0.5122,
+   "inferShare": 0.3866,
+   "keptShare": 0.5404,
+   "stories": 1055.1,
+   "releases": 154.5,
+   "minutes": 18808,
+   "cohortDelta": -7.741,
+   "survDelta": -2.299,
+   "lostTop": [
+    {
+     "k": "DRIFT",
+     "n": 165
+    },
+    {
+     "k": "F4",
+     "n": 157
+    },
+    {
+     "k": "F3",
+     "n": 102
+    },
+    {
+     "k": "F1",
+     "n": 90
+    }
+   ],
+   "icp": {
+    "Diane": {
+     "d30": 0.053,
+     "sessions": 1.906,
+     "stories": 0,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": -2.294,
+     "survDelta": -0.308
+    },
+    "Derek": {
+     "d30": 0.025,
+     "sessions": 2.508,
+     "stories": 0.894,
+     "releases": 0.046,
+     "loopEver": 0.027,
+     "exitDelta": -15.999,
+     "survDelta": 0
+    },
+    "Marcus": {
+     "d30": 0.101,
+     "sessions": 2.426,
+     "stories": 0.661,
+     "releases": 0.004,
+     "loopEver": 0.002,
+     "exitDelta": -10.231,
+     "survDelta": -1.422
+    },
+    "Angela": {
+     "d30": 0.032,
+     "sessions": 1.576,
+     "stories": 1.14,
+     "releases": 0.019,
+     "loopEver": 0.006,
+     "exitDelta": -6.235,
+     "survDelta": 0
+    },
+    "Sofia": {
+     "d30": 0.104,
+     "sessions": 3.816,
+     "stories": 3.392,
+     "releases": 0.646,
+     "loopEver": 0.235,
+     "exitDelta": -6.947,
+     "survDelta": -0.569
+    },
+    "James": {
+     "d30": 0.02,
+     "sessions": 0.568,
+     "stories": 0.034,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": -2.684,
+     "survDelta": 0
+    },
+    "Ana": {
+     "d30": 0.075,
+     "sessions": 3.26,
+     "stories": 2.951,
+     "releases": 1.055,
+     "loopEver": 0.22,
+     "exitDelta": -15.118,
+     "survDelta": 0
+    },
+    "Gordon": {
+     "d30": 0.005,
+     "sessions": 0.082,
+     "stories": 0,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": -1.602,
+     "survDelta": 0
+    },
+    "Rosa": {
+     "d30": 0,
+     "sessions": 0.12,
+     "stories": 0.022,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": 1.145,
+     "survDelta": 0
+    }
+   },
+   "ids": [
+    "C6n"
+   ],
+   "soft": false,
+   "label": "C6n",
+   "n": 1,
+   "clash": [],
+   "ceiling": {
+    "none": {
+     "cq0": 42.25,
+     "cq90": 42.52,
+     "move": 0.27,
+     "best": 42.7,
+     "worst": 37.46,
+     "clear": 3,
+     "ground": 307,
+     "band": "Oscillating",
+     "marks": 11,
+     "accuracy": 21.7,
+     "ceiling": 51
+    },
+    "low": {
+     "cq0": 9,
+     "cq90": 9.59,
+     "move": 0.59,
+     "best": 9.74,
+     "worst": 8.15,
+     "clear": 4,
+     "ground": 569,
+     "band": "Collapsed",
+     "marks": 13,
+     "accuracy": 15.4,
+     "ceiling": 15.4
+    },
+    "mid": {
+     "cq0": 25,
+     "cq90": 25.54,
+     "move": 0.54,
+     "best": 25.72,
+     "worst": 22.06,
+     "clear": 4,
+     "ground": 444,
+     "band": "Corrupt",
+     "marks": 13,
+     "accuracy": 19,
+     "ceiling": 33.4
+    },
+    "high": {
+     "cq0": 49,
+     "cq90": 49.33,
+     "move": 0.33,
+     "best": 49.52,
+     "worst": 44.39,
+     "clear": 3,
+     "ground": 363,
+     "band": "Oscillating",
+     "marks": 12,
+     "accuracy": 22.6,
+     "ceiling": 57.9
+    },
+    "move": 0.54
+   },
+   "seconds": 27,
+   "knobs": {
+    "storyCost": null,
+    "relTake": 0.21,
+    "relInstall": 0.62,
+    "relCompound": false,
+    "relStick": false,
+    "carrying": false,
+    "costLine": false,
+    "lex": false,
+    "inferAsk": false,
+    "push": true,
+    "nudge": 0.12,
+    "record": false,
+    "refer": false,
+    "money": false,
+    "enforce": false,
+    "doneFlag": false,
+    "bandFix": false,
+    "tapFloor": false,
+    "menu": false,
+    "foldRails": false,
+    "foldTop": false
+   },
+   "checkAgainstNinety": {
+    "want": 39.92,
+    "got": 39.92,
+    "same": true
+   }
+  },
+  {
+   "runs": 19,
+   "settledAt": 19,
+   "grade": 40.96,
+   "letter": "D-",
+   "gradeSd": 0.344,
+   "lo": 40.4,
+   "hi": 41.5,
+   "rows": [
+    {
+     "k": "ICP alignment",
+     "v": 2.379,
+     "sd": 0.14
+    },
+    {
+     "k": "First touch",
+     "v": 7.8,
+     "sd": 0
+    },
+    {
+     "k": "Core loop",
+     "v": 0.326,
+     "sd": 0.045
+    },
+    {
+     "k": "Emotional",
+     "v": 5.474,
+     "sd": 0.119
+    },
+    {
+     "k": "Behavioral flow",
+     "v": 2.7,
+     "sd": 0
+    },
+    {
+     "k": "Visual and kinetic",
+     "v": 8,
+     "sd": 0
+    },
+    {
+     "k": "Technical",
+     "v": 8,
+     "sd": 0
+    },
+    {
+     "k": "Monetization",
+     "v": 0,
+     "sd": 0
+    },
+    {
+     "k": "Retention",
+     "v": 3.284,
+     "sd": 0.269
+    },
+    {
+     "k": "Referral",
+     "v": 3,
+     "sd": 0
+    }
+   ],
+   "sat": 11.46,
+   "satRows": [
+    {
+     "k": "ICP alignment",
+     "v": 2.379
+    },
+    {
+     "k": "Core loop",
+     "v": 0.326
+    },
+    {
+     "k": "Emotional",
+     "v": 5.474
+    },
+    {
+     "k": "Retention",
+     "v": 3.284
+    }
+   ],
+   "d7": 0.64163,
+   "d30": 0.03958,
+   "d90": 0.00105,
+   "loopEver": 0.0424,
+   "readShare": 0.5251,
+   "inferShare": 0.4171,
+   "keptShare": 0.5367,
+   "stories": 933.1,
+   "releases": 140.1,
+   "minutes": 16377,
+   "cohortDelta": -6.503,
+   "survDelta": -2.809,
+   "lostTop": [
+    {
+     "k": "DRIFT",
+     "n": 280
+    },
+    {
+     "k": "F4",
+     "n": 110
+    },
+    {
+     "k": "F3",
+     "n": 91
+    },
+    {
+     "k": "F1",
+     "n": 72
+    }
+   ],
+   "icp": {
+    "Diane": {
+     "d30": 0.016,
+     "sessions": 1.318,
+     "stories": 0,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": -1.511,
+     "survDelta": -0.984
+    },
+    "Derek": {
+     "d30": 0.027,
+     "sessions": 2.154,
+     "stories": 0.759,
+     "releases": 0.028,
+     "loopEver": 0.017,
+     "exitDelta": -14.464,
+     "survDelta": -4.798
+    },
+    "Marcus": {
+     "d30": 0.075,
+     "sessions": 1.819,
+     "stories": 0.485,
+     "releases": 0.005,
+     "loopEver": 0,
+     "exitDelta": -7.551,
+     "survDelta": -5.814
+    },
+    "Angela": {
+     "d30": 0.021,
+     "sessions": 1.396,
+     "stories": 1.027,
+     "releases": 0.016,
+     "loopEver": 0.008,
+     "exitDelta": -5.115,
+     "survDelta": -0.704
+    },
+    "Sofia": {
+     "d30": 0.089,
+     "sessions": 3.219,
+     "stories": 2.855,
+     "releases": 0.467,
+     "loopEver": 0.18,
+     "exitDelta": -6.012,
+     "survDelta": -1.349
+    },
+    "James": {
+     "d30": 0.003,
+     "sessions": 0.399,
+     "stories": 0.028,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": -1.902,
+     "survDelta": 0
+    },
+    "Ana": {
+     "d30": 0.085,
+     "sessions": 3.716,
+     "stories": 3.388,
+     "releases": 1.342,
+     "loopEver": 0.261,
+     "exitDelta": -14.853,
+     "survDelta": 0
+    },
+    "Gordon": {
+     "d30": 0,
+     "sessions": 0.056,
+     "stories": 0,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": -1.201,
+     "survDelta": 0
+    },
+    "Rosa": {
+     "d30": 0,
+     "sessions": 0.138,
+     "stories": 0.015,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": 1.29,
+     "survDelta": 0
+    }
+   },
+   "ids": [
+    "C7"
+   ],
+   "soft": false,
+   "label": "C7",
+   "n": 1,
+   "clash": [],
+   "ceiling": {
+    "none": {
+     "cq0": 42.25,
+     "cq90": 42.52,
+     "move": 0.27,
+     "best": 42.7,
+     "worst": 37.46,
+     "clear": 3,
+     "ground": 307,
+     "band": "Oscillating",
+     "marks": 11,
+     "accuracy": 21.7,
+     "ceiling": 51
+    },
+    "low": {
+     "cq0": 9,
+     "cq90": 9.59,
+     "move": 0.59,
+     "best": 9.74,
+     "worst": 8.15,
+     "clear": 4,
+     "ground": 569,
+     "band": "Collapsed",
+     "marks": 13,
+     "accuracy": 15.4,
+     "ceiling": 15.4
+    },
+    "mid": {
+     "cq0": 25,
+     "cq90": 25.54,
+     "move": 0.54,
+     "best": 25.72,
+     "worst": 22.06,
+     "clear": 4,
+     "ground": 444,
+     "band": "Corrupt",
+     "marks": 13,
+     "accuracy": 19,
+     "ceiling": 33.4
+    },
+    "high": {
+     "cq0": 49,
+     "cq90": 49.33,
+     "move": 0.33,
+     "best": 49.52,
+     "worst": 44.39,
+     "clear": 3,
+     "ground": 363,
+     "band": "Oscillating",
+     "marks": 12,
+     "accuracy": 22.6,
+     "ceiling": 57.9
+    },
+    "move": 0.54
+   },
+   "seconds": 20,
+   "knobs": {
+    "storyCost": null,
+    "relTake": 0.21,
+    "relInstall": 0.62,
+    "relCompound": false,
+    "relStick": false,
+    "carrying": false,
+    "costLine": false,
+    "lex": false,
+    "inferAsk": false,
+    "push": false,
+    "nudge": 0,
+    "record": false,
+    "refer": false,
+    "money": false,
+    "enforce": false,
+    "doneFlag": false,
+    "bandFix": false,
+    "tapFloor": false,
+    "menu": true,
+    "foldRails": false,
+    "foldTop": false
+   },
+   "checkAgainstNinety": {
+    "want": 40.96,
+    "got": 40.96,
+    "same": true
+   }
+  },
+  {
+   "runs": 15,
+   "settledAt": 15,
+   "grade": 41.15,
+   "letter": "D-",
+   "gradeSd": 0.366,
+   "lo": 40.6,
+   "hi": 41.7,
+   "rows": [
+    {
+     "k": "ICP alignment",
+     "v": 2.433,
+     "sd": 0.118
+    },
+    {
+     "k": "First touch",
+     "v": 6.3,
+     "sd": 0
+    },
+    {
+     "k": "Core loop",
+     "v": 0.293,
+     "sd": 0.046
+    },
+    {
+     "k": "Emotional",
+     "v": 5.48,
+     "sd": 0.094
+    },
+    {
+     "k": "Behavioral flow",
+     "v": 4.3,
+     "sd": 0
+    },
+    {
+     "k": "Visual and kinetic",
+     "v": 8,
+     "sd": 0
+    },
+    {
+     "k": "Technical",
+     "v": 8,
+     "sd": 0
+    },
+    {
+     "k": "Monetization",
+     "v": 0,
+     "sd": 0
+    },
+    {
+     "k": "Retention",
+     "v": 3.34,
+     "sd": 0.267
+    },
+    {
+     "k": "Referral",
+     "v": 3,
+     "sd": 0
+    }
+   ],
+   "sat": 11.55,
+   "satRows": [
+    {
+     "k": "ICP alignment",
+     "v": 2.433
+    },
+    {
+     "k": "Core loop",
+     "v": 0.293
+    },
+    {
+     "k": "Emotional",
+     "v": 5.48
+    },
+    {
+     "k": "Retention",
+     "v": 3.34
+    }
+   ],
+   "d7": 0.6422,
+   "d30": 0.041,
+   "d90": 0.00127,
+   "loopEver": 0.0411,
+   "readShare": 0.5114,
+   "inferShare": 0.3994,
+   "keptShare": 0.5436,
+   "stories": 919.1,
+   "releases": 127.5,
+   "minutes": 16319,
+   "cohortDelta": -6.432,
+   "survDelta": -3.574,
+   "lostTop": [
+    {
+     "k": "DRIFT",
+     "n": 289
+    },
+    {
+     "k": "F4",
+     "n": 109
+    },
+    {
+     "k": "F3",
+     "n": 92
+    },
+    {
+     "k": "F1",
+     "n": 70
+    }
+   ],
+   "icp": {
+    "Diane": {
+     "d30": 0.014,
+     "sessions": 1.362,
+     "stories": 0,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": -1.575,
+     "survDelta": -0.903
+    },
+    "Derek": {
+     "d30": 0.03,
+     "sessions": 2.319,
+     "stories": 0.825,
+     "releases": 0.039,
+     "loopEver": 0.02,
+     "exitDelta": -14.53,
+     "survDelta": -3.043
+    },
+    "Marcus": {
+     "d30": 0.081,
+     "sessions": 1.947,
+     "stories": 0.544,
+     "releases": 0.007,
+     "loopEver": 0.001,
+     "exitDelta": -7.893,
+     "survDelta": -9.371
+    },
+    "Angela": {
+     "d30": 0.018,
+     "sessions": 1.211,
+     "stories": 0.884,
+     "releases": 0.013,
+     "loopEver": 0.003,
+     "exitDelta": -4.54,
+     "survDelta": -2.407
+    },
+    "Sofia": {
+     "d30": 0.097,
+     "sessions": 3.405,
+     "stories": 3.032,
+     "releases": 0.512,
+     "loopEver": 0.187,
+     "exitDelta": -6.241,
+     "survDelta": -0.857
+    },
+    "James": {
+     "d30": 0.005,
+     "sessions": 0.373,
+     "stories": 0.022,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": -1.937,
+     "survDelta": 0
+    },
+    "Ana": {
+     "d30": 0.072,
+     "sessions": 2.929,
+     "stories": 2.644,
+     "releases": 0.925,
+     "loopEver": 0.219,
+     "exitDelta": -13.499,
+     "survDelta": -1.682
+    },
+    "Gordon": {
+     "d30": 0,
+     "sessions": 0.03,
+     "stories": 0,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": -0.289,
+     "survDelta": 0
+    },
+    "Rosa": {
+     "d30": 0.004,
+     "sessions": 0.173,
+     "stories": 0.022,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": 1.185,
+     "survDelta": 0
+    }
+   },
+   "ids": [
+    "C8"
+   ],
+   "soft": false,
+   "label": "C8",
+   "n": 1,
+   "clash": [],
+   "ceiling": {
+    "none": {
+     "cq0": 42.25,
+     "cq90": 42.52,
+     "move": 0.27,
+     "best": 42.7,
+     "worst": 37.46,
+     "clear": 3,
+     "ground": 307,
+     "band": "Oscillating",
+     "marks": 11,
+     "accuracy": 21.7,
+     "ceiling": 51
+    },
+    "low": {
+     "cq0": 9,
+     "cq90": 9.59,
+     "move": 0.59,
+     "best": 9.74,
+     "worst": 8.15,
+     "clear": 4,
+     "ground": 569,
+     "band": "Collapsed",
+     "marks": 13,
+     "accuracy": 15.4,
+     "ceiling": 15.4
+    },
+    "mid": {
+     "cq0": 25,
+     "cq90": 25.54,
+     "move": 0.54,
+     "best": 25.72,
+     "worst": 22.06,
+     "clear": 4,
+     "ground": 444,
+     "band": "Corrupt",
+     "marks": 13,
+     "accuracy": 19,
+     "ceiling": 33.4
+    },
+    "high": {
+     "cq0": 49,
+     "cq90": 49.33,
+     "move": 0.33,
+     "best": 49.52,
+     "worst": 44.39,
+     "clear": 3,
+     "ground": 363,
+     "band": "Oscillating",
+     "marks": 12,
+     "accuracy": 22.6,
+     "ceiling": 57.9
+    },
+    "move": 0.54
+   },
+   "seconds": 17,
+   "knobs": {
+    "storyCost": null,
+    "relTake": 0.21,
+    "relInstall": 0.62,
+    "relCompound": false,
+    "relStick": false,
+    "carrying": false,
+    "costLine": false,
+    "lex": false,
+    "inferAsk": false,
+    "push": false,
+    "nudge": 0,
+    "record": false,
+    "refer": false,
+    "money": false,
+    "enforce": false,
+    "doneFlag": false,
+    "bandFix": false,
+    "tapFloor": false,
+    "menu": false,
+    "foldRails": true,
+    "foldTop": false
+   },
+   "checkAgainstNinety": {
+    "want": 41.15,
+    "got": 41.15,
+    "same": true
+   }
+  },
+  {
+   "runs": 19,
+   "settledAt": 19,
+   "grade": 39.83,
+   "letter": "F",
+   "gradeSd": 0.351,
+   "lo": 39.1,
+   "hi": 40.5,
+   "rows": [
+    {
+     "k": "ICP alignment",
+     "v": 2.374,
+     "sd": 0.152
+    },
+    {
+     "k": "First touch",
+     "v": 6.7,
+     "sd": 0
+    },
+    {
+     "k": "Core loop",
+     "v": 0.295,
+     "sd": 0.04
+    },
+    {
+     "k": "Emotional",
+     "v": 5.463,
+     "sd": 0.076
+    },
+    {
+     "k": "Behavioral flow",
+     "v": 2.8,
+     "sd": 0
+    },
+    {
+     "k": "Visual and kinetic",
+     "v": 8,
+     "sd": 0
+    },
+    {
+     "k": "Technical",
+     "v": 8,
+     "sd": 0
+    },
+    {
+     "k": "Monetization",
+     "v": 0,
+     "sd": 0
+    },
+    {
+     "k": "Retention",
+     "v": 3.2,
+     "sd": 0.267
+    },
+    {
+     "k": "Referral",
+     "v": 3,
+     "sd": 0
+    }
+   ],
+   "sat": 11.33,
+   "satRows": [
+    {
+     "k": "ICP alignment",
+     "v": 2.374
+    },
+    {
+     "k": "Core loop",
+     "v": 0.295
+    },
+    {
+     "k": "Emotional",
+     "v": 5.463
+    },
+    {
+     "k": "Retention",
+     "v": 3.2
+    }
+   ],
+   "d7": 0.64284,
+   "d30": 0.03795,
+   "d90": 0.00126,
+   "loopEver": 0.0398,
+   "readShare": 0.5133,
+   "inferShare": 0.4046,
+   "keptShare": 0.5394,
+   "stories": 879.1,
+   "releases": 118.8,
+   "minutes": 15614,
+   "cohortDelta": -6.399,
+   "survDelta": -2.89,
+   "lostTop": [
+    {
+     "k": "DRIFT",
+     "n": 288
+    },
+    {
+     "k": "F4",
+     "n": 110
+    },
+    {
+     "k": "F3",
+     "n": 88
+    },
+    {
+     "k": "F1",
+     "n": 67
+    }
+   ],
+   "icp": {
+    "Diane": {
+     "d30": 0.016,
+     "sessions": 1.318,
+     "stories": 0,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": -1.511,
+     "survDelta": -0.984
+    },
+    "Derek": {
+     "d30": 0.027,
+     "sessions": 2.154,
+     "stories": 0.759,
+     "releases": 0.028,
+     "loopEver": 0.017,
+     "exitDelta": -14.464,
+     "survDelta": -4.798
+    },
+    "Marcus": {
+     "d30": 0.075,
+     "sessions": 1.819,
+     "stories": 0.485,
+     "releases": 0.005,
+     "loopEver": 0,
+     "exitDelta": -7.551,
+     "survDelta": -5.814
+    },
+    "Angela": {
+     "d30": 0.014,
+     "sessions": 1.227,
+     "stories": 0.896,
+     "releases": 0.012,
+     "loopEver": 0.003,
+     "exitDelta": -4.681,
+     "survDelta": -1.378
+    },
+    "Sofia": {
+     "d30": 0.087,
+     "sessions": 3.218,
+     "stories": 2.855,
+     "releases": 0.464,
+     "loopEver": 0.18,
+     "exitDelta": -5.987,
+     "survDelta": -0.676
+    },
+    "James": {
+     "d30": 0.005,
+     "sessions": 0.387,
+     "stories": 0.024,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": -1.988,
+     "survDelta": 0
+    },
+    "Ana": {
+     "d30": 0.073,
+     "sessions": 3.011,
+     "stories": 2.709,
+     "releases": 0.937,
+     "loopEver": 0.225,
+     "exitDelta": -14.419,
+     "survDelta": 0
+    },
+    "Gordon": {
+     "d30": 0,
+     "sessions": 0.05,
+     "stories": 0,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": -0.476,
+     "survDelta": 0
+    },
+    "Rosa": {
+     "d30": 0,
+     "sessions": 0.099,
+     "stories": 0.011,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": 1.1,
+     "survDelta": 0
+    }
+   },
+   "ids": [
+    "C8b"
+   ],
+   "soft": false,
+   "label": "C8b",
+   "n": 1,
+   "clash": [],
+   "ceiling": {
+    "none": {
+     "cq0": 42.25,
+     "cq90": 42.52,
+     "move": 0.27,
+     "best": 42.7,
+     "worst": 37.46,
+     "clear": 3,
+     "ground": 307,
+     "band": "Oscillating",
+     "marks": 11,
+     "accuracy": 21.7,
+     "ceiling": 51
+    },
+    "low": {
+     "cq0": 9,
+     "cq90": 9.59,
+     "move": 0.59,
+     "best": 9.74,
+     "worst": 8.15,
+     "clear": 4,
+     "ground": 569,
+     "band": "Collapsed",
+     "marks": 13,
+     "accuracy": 15.4,
+     "ceiling": 15.4
+    },
+    "mid": {
+     "cq0": 25,
+     "cq90": 25.54,
+     "move": 0.54,
+     "best": 25.72,
+     "worst": 22.06,
+     "clear": 4,
+     "ground": 444,
+     "band": "Corrupt",
+     "marks": 13,
+     "accuracy": 19,
+     "ceiling": 33.4
+    },
+    "high": {
+     "cq0": 49,
+     "cq90": 49.33,
+     "move": 0.33,
+     "best": 49.52,
+     "worst": 44.39,
+     "clear": 3,
+     "ground": 363,
+     "band": "Oscillating",
+     "marks": 12,
+     "accuracy": 22.6,
+     "ceiling": 57.9
+    },
+    "move": 0.54
+   },
+   "seconds": 22,
+   "knobs": {
+    "storyCost": null,
+    "relTake": 0.21,
+    "relInstall": 0.62,
+    "relCompound": false,
+    "relStick": false,
+    "carrying": false,
+    "costLine": false,
+    "lex": false,
+    "inferAsk": false,
+    "push": false,
+    "nudge": 0,
+    "record": false,
+    "refer": false,
+    "money": false,
+    "enforce": false,
+    "doneFlag": false,
+    "bandFix": false,
+    "tapFloor": false,
+    "menu": false,
+    "foldRails": false,
+    "foldTop": true
+   },
+   "checkAgainstNinety": {
+    "want": 39.83,
+    "got": 39.83,
+    "same": true
+   }
+  },
+  {
+   "runs": 17,
+   "settledAt": 17,
+   "grade": 46.66,
+   "letter": "D",
+   "gradeSd": 0.36,
+   "lo": 46.1,
+   "hi": 47.3,
+   "rows": [
+    {
+     "k": "ICP alignment",
+     "v": 2.659,
+     "sd": 0.094
+    },
+    {
+     "k": "First touch",
+     "v": 6.2,
+     "sd": 0
+    },
+    {
+     "k": "Core loop",
+     "v": 0.353,
+     "sd": 0.051
+    },
+    {
+     "k": "Emotional",
+     "v": 5.529,
+     "sd": 0.161
+    },
+    {
+     "k": "Behavioral flow",
+     "v": 2.3,
+     "sd": 0
+    },
+    {
+     "k": "Visual and kinetic",
+     "v": 8,
+     "sd": 0
+    },
+    {
+     "k": "Technical",
+     "v": 8,
+     "sd": 0
+    },
+    {
+     "k": "Monetization",
+     "v": 2,
+     "sd": 0
+    },
+    {
+     "k": "Retention",
+     "v": 3.624,
+     "sd": 0.236
+    },
+    {
+     "k": "Referral",
+     "v": 8,
+     "sd": 0
+    }
+   ],
+   "sat": 12.17,
+   "satRows": [
+    {
+     "k": "ICP alignment",
+     "v": 2.659
+    },
+    {
+     "k": "Core loop",
+     "v": 0.353
+    },
+    {
+     "k": "Emotional",
+     "v": 5.529
+    },
+    {
+     "k": "Retention",
+     "v": 3.624
+    }
+   ],
+   "d7": 0.63553,
+   "d30": 0.04676,
+   "d90": 0.00118,
+   "loopEver": 0.0472,
+   "readShare": 0.5031,
+   "inferShare": 0.3732,
+   "keptShare": 0.5319,
+   "stories": 967.4,
+   "releases": 139,
+   "minutes": 16986,
+   "cohortDelta": -6.566,
+   "survDelta": -3.739,
+   "lostTop": [
+    {
+     "k": "DRIFT",
+     "n": 287
+    },
+    {
+     "k": "F4",
+     "n": 110
+    },
+    {
+     "k": "F1",
+     "n": 92
+    },
+    {
+     "k": "F3",
+     "n": 89
+    }
+   ],
+   "icp": {
+    "Diane": {
+     "d30": 0.015,
+     "sessions": 1.319,
+     "stories": 0,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": -1.515,
+     "survDelta": -0.984
+    },
+    "Derek": {
+     "d30": 0.027,
+     "sessions": 2.156,
+     "stories": 0.762,
+     "releases": 0.027,
+     "loopEver": 0.017,
+     "exitDelta": -14.412,
+     "survDelta": -5.363
+    },
+    "Marcus": {
+     "d30": 0.094,
+     "sessions": 2.139,
+     "stories": 0.581,
+     "releases": 0.008,
+     "loopEver": 0.003,
+     "exitDelta": -8.216,
+     "survDelta": -9.011
+    },
+    "Angela": {
+     "d30": 0.02,
+     "sessions": 1.325,
+     "stories": 0.973,
+     "releases": 0.016,
+     "loopEver": 0.007,
+     "exitDelta": -4.931,
+     "survDelta": -1.881
+    },
+    "Sofia": {
+     "d30": 0.129,
+     "sessions": 3.785,
+     "stories": 3.388,
+     "releases": 0.648,
+     "loopEver": 0.23,
+     "exitDelta": -6.521,
+     "survDelta": -0.703
+    },
+    "James": {
+     "d30": 0.005,
+     "sessions": 0.391,
+     "stories": 0.019,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": -2.092,
+     "survDelta": 0
+    },
+    "Ana": {
+     "d30": 0.055,
+     "sessions": 2.732,
+     "stories": 2.454,
+     "releases": 0.802,
+     "loopEver": 0.212,
+     "exitDelta": -13.486,
+     "survDelta": -2.991
+    },
+    "Gordon": {
+     "d30": 0,
+     "sessions": 0.035,
+     "stories": 0,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": -0.532,
+     "survDelta": 0
+    },
+    "Rosa": {
+     "d30": 0.004,
+     "sessions": 0.113,
+     "stories": 0.008,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": 1.732,
+     "survDelta": 0
+    }
+   },
+   "ids": [
+    "C9"
+   ],
+   "soft": false,
+   "label": "C9",
+   "n": 1,
+   "clash": [],
+   "ceiling": {
+    "none": {
+     "cq0": 42.25,
+     "cq90": 42.52,
+     "move": 0.27,
+     "best": 42.7,
+     "worst": 37.46,
+     "clear": 3,
+     "ground": 307,
+     "band": "Oscillating",
+     "marks": 11,
+     "accuracy": 21.7,
+     "ceiling": 51
+    },
+    "low": {
+     "cq0": 9,
+     "cq90": 9.59,
+     "move": 0.59,
+     "best": 9.74,
+     "worst": 8.15,
+     "clear": 4,
+     "ground": 569,
+     "band": "Collapsed",
+     "marks": 13,
+     "accuracy": 15.4,
+     "ceiling": 15.4
+    },
+    "mid": {
+     "cq0": 25,
+     "cq90": 25.54,
+     "move": 0.54,
+     "best": 25.72,
+     "worst": 22.06,
+     "clear": 4,
+     "ground": 444,
+     "band": "Corrupt",
+     "marks": 13,
+     "accuracy": 19,
+     "ceiling": 33.4
+    },
+    "high": {
+     "cq0": 49,
+     "cq90": 49.33,
+     "move": 0.33,
+     "best": 49.52,
+     "worst": 44.39,
+     "clear": 3,
+     "ground": 363,
+     "band": "Oscillating",
+     "marks": 12,
+     "accuracy": 22.6,
+     "ceiling": 57.9
+    },
+    "move": 0.54
+   },
+   "seconds": 20,
+   "knobs": {
+    "storyCost": null,
+    "relTake": 0.21,
+    "relInstall": 0.62,
+    "relCompound": false,
+    "relStick": false,
+    "carrying": false,
+    "costLine": false,
+    "lex": false,
+    "inferAsk": false,
+    "push": false,
+    "nudge": 0,
+    "record": false,
+    "refer": true,
+    "money": false,
+    "enforce": false,
+    "doneFlag": false,
+    "bandFix": false,
+    "tapFloor": false,
+    "menu": false,
+    "foldRails": false,
+    "foldTop": false
+   },
+   "checkAgainstNinety": {
+    "want": 46.66,
+    "got": 46.66,
+    "same": true
+   }
+  },
+  {
+   "runs": 19,
+   "settledAt": 19,
+   "grade": 44.92,
+   "letter": "D-",
+   "gradeSd": 0.4,
+   "lo": 44.1,
+   "hi": 45.5,
+   "rows": [
+    {
+     "k": "ICP alignment",
+     "v": 2.405,
+     "sd": 0.139
+    },
+    {
+     "k": "First touch",
+     "v": 6.2,
+     "sd": 0
+    },
+    {
+     "k": "Core loop",
+     "v": 0.3,
+     "sd": 0.047
+    },
+    {
+     "k": "Emotional",
+     "v": 5.474,
+     "sd": 0.105
+    },
+    {
+     "k": "Behavioral flow",
+     "v": 2.3,
+     "sd": 0
+    },
+    {
+     "k": "Visual and kinetic",
+     "v": 8,
+     "sd": 0
+    },
+    {
+     "k": "Technical",
+     "v": 8,
+     "sd": 0
+    },
+    {
+     "k": "Monetization",
+     "v": 6,
+     "sd": 0
+    },
+    {
+     "k": "Retention",
+     "v": 3.237,
+     "sd": 0.293
+    },
+    {
+     "k": "Referral",
+     "v": 3,
+     "sd": 0
+    }
+   ],
+   "sat": 11.42,
+   "satRows": [
+    {
+     "k": "ICP alignment",
+     "v": 2.405
+    },
+    {
+     "k": "Core loop",
+     "v": 0.3
+    },
+    {
+     "k": "Emotional",
+     "v": 5.474
+    },
+    {
+     "k": "Retention",
+     "v": 3.237
+    }
+   ],
+   "d7": 0.64637,
+   "d30": 0.03863,
+   "d90": 0.00126,
+   "loopEver": 0.0405,
+   "readShare": 0.5164,
+   "inferShare": 0.4043,
+   "keptShare": 0.5396,
+   "stories": 888.3,
+   "releases": 122.6,
+   "minutes": 15815,
+   "cohortDelta": -6.417,
+   "survDelta": -2.984,
+   "lostTop": [
+    {
+     "k": "DRIFT",
+     "n": 288
+    },
+    {
+     "k": "F4",
+     "n": 110
+    },
+    {
+     "k": "F3",
+     "n": 89
+    },
+    {
+     "k": "F1",
+     "n": 68
+    }
+   ],
+   "icp": {
+    "Diane": {
+     "d30": 0.016,
+     "sessions": 1.318,
+     "stories": 0,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": -1.511,
+     "survDelta": -0.984
+    },
+    "Derek": {
+     "d30": 0.027,
+     "sessions": 2.154,
+     "stories": 0.759,
+     "releases": 0.028,
+     "loopEver": 0.017,
+     "exitDelta": -14.464,
+     "survDelta": -4.798
+    },
+    "Marcus": {
+     "d30": 0.075,
+     "sessions": 1.819,
+     "stories": 0.485,
+     "releases": 0.005,
+     "loopEver": 0,
+     "exitDelta": -7.551,
+     "survDelta": -5.814
+    },
+    "Angela": {
+     "d30": 0.016,
+     "sessions": 1.218,
+     "stories": 0.884,
+     "releases": 0.01,
+     "loopEver": 0.002,
+     "exitDelta": -4.695,
+     "survDelta": -1.793
+    },
+    "Sofia": {
+     "d30": 0.09,
+     "sessions": 3.261,
+     "stories": 2.898,
+     "releases": 0.476,
+     "loopEver": 0.182,
+     "exitDelta": -6.024,
+     "survDelta": -0.676
+    },
+    "James": {
+     "d30": 0.004,
+     "sessions": 0.41,
+     "stories": 0.024,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": -2.172,
+     "survDelta": 0
+    },
+    "Ana": {
+     "d30": 0.075,
+     "sessions": 3.105,
+     "stories": 2.814,
+     "releases": 0.983,
+     "loopEver": 0.236,
+     "exitDelta": -14.183,
+     "survDelta": -1.273
+    },
+    "Gordon": {
+     "d30": 0,
+     "sessions": 0.063,
+     "stories": 0,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": -0.772,
+     "survDelta": 0
+    },
+    "Rosa": {
+     "d30": 0.004,
+     "sessions": 0.108,
+     "stories": 0.004,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": 1.518,
+     "survDelta": 0
+    }
+   },
+   "ids": [
+    "C10"
+   ],
+   "soft": false,
+   "label": "C10",
+   "n": 1,
+   "clash": [],
+   "ceiling": {
+    "none": {
+     "cq0": 42.25,
+     "cq90": 42.52,
+     "move": 0.27,
+     "best": 42.7,
+     "worst": 37.46,
+     "clear": 3,
+     "ground": 307,
+     "band": "Oscillating",
+     "marks": 11,
+     "accuracy": 21.7,
+     "ceiling": 51
+    },
+    "low": {
+     "cq0": 9,
+     "cq90": 9.59,
+     "move": 0.59,
+     "best": 9.74,
+     "worst": 8.15,
+     "clear": 4,
+     "ground": 569,
+     "band": "Collapsed",
+     "marks": 13,
+     "accuracy": 15.4,
+     "ceiling": 15.4
+    },
+    "mid": {
+     "cq0": 25,
+     "cq90": 25.54,
+     "move": 0.54,
+     "best": 25.72,
+     "worst": 22.06,
+     "clear": 4,
+     "ground": 444,
+     "band": "Corrupt",
+     "marks": 13,
+     "accuracy": 19,
+     "ceiling": 33.4
+    },
+    "high": {
+     "cq0": 49,
+     "cq90": 49.33,
+     "move": 0.33,
+     "best": 49.52,
+     "worst": 44.39,
+     "clear": 3,
+     "ground": 363,
+     "band": "Oscillating",
+     "marks": 12,
+     "accuracy": 22.6,
+     "ceiling": 57.9
+    },
+    "move": 0.54
+   },
+   "seconds": 21,
+   "knobs": {
+    "storyCost": null,
+    "relTake": 0.21,
+    "relInstall": 0.62,
+    "relCompound": false,
+    "relStick": false,
+    "carrying": false,
+    "costLine": false,
+    "lex": false,
+    "inferAsk": false,
+    "push": false,
+    "nudge": 0,
+    "record": false,
+    "refer": false,
+    "money": true,
+    "enforce": true,
+    "doneFlag": false,
+    "bandFix": false,
+    "tapFloor": false,
+    "menu": false,
+    "foldRails": false,
+    "foldTop": false
+   },
+   "checkAgainstNinety": {
+    "want": 44.92,
+    "got": 44.92,
+    "same": true
+   }
+  },
+  {
+   "runs": 19,
+   "settledAt": 19,
+   "grade": 39.03,
+   "letter": "F",
+   "gradeSd": 0.581,
+   "lo": 38.1,
+   "hi": 40.1,
+   "rows": [
+    {
+     "k": "ICP alignment",
+     "v": 2.311,
+     "sd": 0.115
+    },
+    {
+     "k": "First touch",
+     "v": 7.5,
+     "sd": 0
+    },
+    {
+     "k": "Core loop",
+     "v": 0.232,
+     "sd": 0.048
+    },
+    {
+     "k": "Emotional",
+     "v": 5.505,
+     "sd": 0.108
+    },
+    {
+     "k": "Behavioral flow",
+     "v": 2.3,
+     "sd": 0
+    },
+    {
+     "k": "Visual and kinetic",
+     "v": 8,
+     "sd": 0
+    },
+    {
+     "k": "Technical",
+     "v": 8,
+     "sd": 0
+    },
+    {
+     "k": "Monetization",
+     "v": 0,
+     "sd": 0
+    },
+    {
+     "k": "Retention",
+     "v": 2.184,
+     "sd": 0.443
+    },
+    {
+     "k": "Referral",
+     "v": 3,
+     "sd": 0
+    }
+   ],
+   "sat": 10.23,
+   "satRows": [
+    {
+     "k": "ICP alignment",
+     "v": 2.311
+    },
+    {
+     "k": "Core loop",
+     "v": 0.232
+    },
+    {
+     "k": "Emotional",
+     "v": 5.505
+    },
+    {
+     "k": "Retention",
+     "v": 2.184
+    }
+   ],
+   "d7": 0.64389,
+   "d30": 0.02416,
+   "d90": 0.00089,
+   "loopEver": 0.0323,
+   "readShare": 0.5251,
+   "inferShare": 0.4107,
+   "keptShare": 0.5342,
+   "stories": 840.1,
+   "releases": 93.8,
+   "minutes": 12527,
+   "cohortDelta": -0.003,
+   "survDelta": 0,
+   "lostTop": [
+    {
+     "k": "DRIFT",
+     "n": 299
+    },
+    {
+     "k": "F4",
+     "n": 152
+    },
+    {
+     "k": "F3",
+     "n": 98
+    },
+    {
+     "k": "F1",
+     "n": 73
+    }
+   ],
+   "icp": {
+    "Diane": {
+     "d30": 0.011,
+     "sessions": 1.434,
+     "stories": 0,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": 0,
+     "survDelta": 0
+    },
+    "Derek": {
+     "d30": 0.012,
+     "sessions": 1.728,
+     "stories": 0.796,
+     "releases": 0.032,
+     "loopEver": 0.013,
+     "exitDelta": -0.001,
+     "survDelta": 0
+    },
+    "Marcus": {
+     "d30": 0.048,
+     "sessions": 1.41,
+     "stories": 0.505,
+     "releases": 0.001,
+     "loopEver": 0,
+     "exitDelta": 0,
+     "survDelta": 0
+    },
+    "Angela": {
+     "d30": 0.011,
+     "sessions": 1.105,
+     "stories": 1.069,
+     "releases": 0.012,
+     "loopEver": 0.005,
+     "exitDelta": -0.004,
+     "survDelta": 0
+    },
+    "Sofia": {
+     "d30": 0.052,
+     "sessions": 2.351,
+     "stories": 2.351,
+     "releases": 0.338,
+     "loopEver": 0.139,
+     "exitDelta": -0.01,
+     "survDelta": 0
+    },
+    "James": {
+     "d30": 0.005,
+     "sessions": 0.367,
+     "stories": 0.035,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": 0,
+     "survDelta": 0
+    },
+    "Ana": {
+     "d30": 0.06,
+     "sessions": 2.615,
+     "stories": 2.615,
+     "releases": 0.787,
+     "loopEver": 0.199,
+     "exitDelta": -0.025,
+     "survDelta": 0
+    },
+    "Gordon": {
+     "d30": 0,
+     "sessions": 0.055,
+     "stories": 0,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": 0,
+     "survDelta": 0
+    },
+    "Rosa": {
+     "d30": 0,
+     "sessions": 0.102,
+     "stories": 0.011,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": 0,
+     "survDelta": 0
+    }
+   },
+   "ids": [
+    "C11"
+   ],
+   "soft": false,
+   "label": "C11",
+   "n": 1,
+   "clash": [],
+   "ceiling": {
+    "none": {
+     "cq0": 42.25,
+     "cq90": 42.52,
+     "move": 0.27,
+     "best": 42.7,
+     "worst": 37.46,
+     "clear": 3,
+     "ground": 307,
+     "band": "Oscillating",
+     "marks": 11,
+     "accuracy": 21.7,
+     "ceiling": 51
+    },
+    "low": {
+     "cq0": 9,
+     "cq90": 9.59,
+     "move": 0.59,
+     "best": 9.74,
+     "worst": 8.15,
+     "clear": 4,
+     "ground": 569,
+     "band": "Collapsed",
+     "marks": 13,
+     "accuracy": 15.4,
+     "ceiling": 15.4
+    },
+    "mid": {
+     "cq0": 25,
+     "cq90": 25.54,
+     "move": 0.54,
+     "best": 25.72,
+     "worst": 22.06,
+     "clear": 4,
+     "ground": 444,
+     "band": "Corrupt",
+     "marks": 13,
+     "accuracy": 19,
+     "ceiling": 33.4
+    },
+    "high": {
+     "cq0": 49,
+     "cq90": 49.33,
+     "move": 0.33,
+     "best": 49.52,
+     "worst": 44.39,
+     "clear": 3,
+     "ground": 363,
+     "band": "Oscillating",
+     "marks": 12,
+     "accuracy": 22.6,
+     "ceiling": 57.9
+    },
+    "move": 0.54
+   },
+   "seconds": 17,
+   "knobs": {
+    "storyCost": null,
+    "relTake": 0.21,
+    "relInstall": 0.62,
+    "relCompound": false,
+    "relStick": false,
+    "carrying": false,
+    "costLine": false,
+    "lex": false,
+    "inferAsk": false,
+    "push": false,
+    "nudge": 0,
+    "record": true,
+    "refer": false,
+    "money": false,
+    "enforce": false,
+    "doneFlag": false,
+    "bandFix": false,
+    "tapFloor": false,
+    "menu": false,
+    "foldRails": false,
+    "foldTop": false
+   },
+   "checkAgainstNinety": {
+    "want": 39.03,
+    "got": 39.03,
+    "same": true
+   }
+  },
+  {
+   "runs": 15,
+   "settledAt": 15,
+   "grade": 41.11,
+   "letter": "D-",
+   "gradeSd": 0.425,
+   "lo": 40.5,
+   "hi": 42.2,
+   "rows": [
+    {
+     "k": "ICP alignment",
+     "v": 2.407,
+     "sd": 0.11
+    },
+    {
+     "k": "First touch",
+     "v": 6.2,
+     "sd": 0
+    },
+    {
+     "k": "Core loop",
+     "v": 0.3,
+     "sd": 0.038
+    },
+    {
+     "k": "Emotional",
+     "v": 5.487,
+     "sd": 0.113
+    },
+    {
+     "k": "Behavioral flow",
+     "v": 2.3,
+     "sd": 0
+    },
+    {
+     "k": "Visual and kinetic",
+     "v": 8,
+     "sd": 0
+    },
+    {
+     "k": "Technical",
+     "v": 10,
+     "sd": 0
+    },
+    {
+     "k": "Monetization",
+     "v": 0,
+     "sd": 0
+    },
+    {
+     "k": "Retention",
+     "v": 3.413,
+     "sd": 0.311
+    },
+    {
+     "k": "Referral",
+     "v": 3,
+     "sd": 0
+    }
+   ],
+   "sat": 11.61,
+   "satRows": [
+    {
+     "k": "ICP alignment",
+     "v": 2.407
+    },
+    {
+     "k": "Core loop",
+     "v": 0.3
+    },
+    {
+     "k": "Emotional",
+     "v": 5.487
+    },
+    {
+     "k": "Retention",
+     "v": 3.413
+    }
+   ],
+   "d7": 0.64307,
+   "d30": 0.04227,
+   "d90": 0.00133,
+   "loopEver": 0.0401,
+   "readShare": 0.5077,
+   "inferShare": 0.392,
+   "keptShare": 0.538,
+   "stories": 900.3,
+   "releases": 126.1,
+   "minutes": 15986,
+   "cohortDelta": -6.308,
+   "survDelta": -3.088,
+   "lostTop": [
+    {
+     "k": "DRIFT",
+     "n": 287
+    },
+    {
+     "k": "F4",
+     "n": 110
+    },
+    {
+     "k": "F3",
+     "n": 88
+    },
+    {
+     "k": "F1",
+     "n": 71
+    }
+   ],
+   "icp": {
+    "Diane": {
+     "d30": 0.016,
+     "sessions": 1.328,
+     "stories": 0,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": -1.514,
+     "survDelta": -0.895
+    },
+    "Derek": {
+     "d30": 0.029,
+     "sessions": 2.179,
+     "stories": 0.769,
+     "releases": 0.027,
+     "loopEver": 0.016,
+     "exitDelta": -14.047,
+     "survDelta": -5.037
+    },
+    "Marcus": {
+     "d30": 0.092,
+     "sessions": 1.932,
+     "stories": 0.52,
+     "releases": 0.006,
+     "loopEver": 0.001,
+     "exitDelta": -7.741,
+     "survDelta": -5.338
+    },
+    "Angela": {
+     "d30": 0.014,
+     "sessions": 1.203,
+     "stories": 0.885,
+     "releases": 0.007,
+     "loopEver": 0.002,
+     "exitDelta": -4.635,
+     "survDelta": -3.685
+    },
+    "Sofia": {
+     "d30": 0.1,
+     "sessions": 3.363,
+     "stories": 3.001,
+     "releases": 0.544,
+     "loopEver": 0.191,
+     "exitDelta": -6.003,
+     "survDelta": -0.857
+    },
+    "James": {
+     "d30": 0.005,
+     "sessions": 0.386,
+     "stories": 0.025,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": -2.129,
+     "survDelta": -0.931
+    },
+    "Ana": {
+     "d30": 0.064,
+     "sessions": 2.897,
+     "stories": 2.612,
+     "releases": 0.879,
+     "loopEver": 0.207,
+     "exitDelta": -13.398,
+     "survDelta": -3.411
+    },
+    "Gordon": {
+     "d30": 0,
+     "sessions": 0.038,
+     "stories": 0,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": -0.167,
+     "survDelta": 0
+    },
+    "Rosa": {
+     "d30": 0.009,
+     "sessions": 0.133,
+     "stories": 0.028,
+     "releases": 0,
+     "loopEver": 0,
+     "exitDelta": 1.011,
+     "survDelta": 0
+    }
+   },
+   "ids": [
+    "C12"
+   ],
+   "soft": false,
+   "label": "C12",
+   "n": 1,
+   "clash": [],
+   "ceiling": {
+    "none": {
+     "cq0": 42.25,
+     "cq90": 42.52,
+     "move": 0.27,
+     "best": 42.7,
+     "worst": 37.46,
+     "clear": 3,
+     "ground": 307,
+     "band": "Oscillating",
+     "marks": 11,
+     "accuracy": 21.7,
+     "ceiling": 51
+    },
+    "low": {
+     "cq0": 9,
+     "cq90": 9.59,
+     "move": 0.59,
+     "best": 9.74,
+     "worst": 8.15,
+     "clear": 4,
+     "ground": 569,
+     "band": "Collapsed",
+     "marks": 13,
+     "accuracy": 15.4,
+     "ceiling": 15.4
+    },
+    "mid": {
+     "cq0": 25,
+     "cq90": 25.54,
+     "move": 0.54,
+     "best": 25.72,
+     "worst": 22.06,
+     "clear": 4,
+     "ground": 444,
+     "band": "Corrupt",
+     "marks": 13,
+     "accuracy": 19,
+     "ceiling": 33.4
+    },
+    "high": {
+     "cq0": 49,
+     "cq90": 49.33,
+     "move": 0.33,
+     "best": 49.52,
+     "worst": 44.39,
+     "clear": 3,
+     "ground": 363,
+     "band": "Oscillating",
+     "marks": 12,
+     "accuracy": 22.6,
+     "ceiling": 57.9
+    },
+    "move": 0.54
+   },
+   "seconds": 18,
+   "knobs": {
+    "storyCost": null,
+    "relTake": 0.21,
+    "relInstall": 0.62,
+    "relCompound": false,
+    "relStick": false,
+    "carrying": false,
+    "costLine": false,
+    "lex": false,
+    "inferAsk": false,
+    "push": false,
+    "nudge": 0,
+    "record": false,
+    "refer": false,
+    "money": false,
+    "enforce": false,
+    "doneFlag": true,
+    "bandFix": true,
+    "tapFloor": true,
+    "menu": false,
+    "foldRails": false,
+    "foldTop": false
+   },
+   "checkAgainstNinety": {
+    "want": 41.11,
+    "got": 41.11,
+    "same": true
+   }
+  }
+ ]
+}

@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Field hover looks compared</title>
+<!-- The five hover looks and the reduced motion still, side by side, on one
+     clock and the same two lines, so the only thing that differs between
+     panels is the look. Every panel is zoomed onto the two lines, and says
+     so. One pointer cannot hover six pictures at once, so the hover here is
+     set by the page on all six together; hover.html is where a real pointer
+     drives it. -->
+<style>
+:root{--ground:#0b0b0d;--edge:rgba(255,255,255,.09);--edge-2:rgba(255,255,255,.16);
+ --ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;--accent:#7EB8D4;
+ --ease-out:cubic-bezier(.22,1,.36,1);--t-micro:.12s;
+ --sans:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+*{box-sizing:border-box}
+html,body{background:var(--ground)}
+body{margin:0;color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.45}
+.bar{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--edge)}
+.bar h1{font-size:15px;font-weight:600;margin:0 8px 0 0}
+.grp{display:flex;gap:4px;align-items:center;flex-wrap:wrap}
+.grp span{color:var(--dim);font-size:12.5px;margin-right:4px}
+.bar button{background:transparent;border:1px solid var(--edge);border-radius:8px;color:var(--mid);
+ font:inherit;font-size:13px;padding:6px 11px;min-height:34px;cursor:pointer;
+ transition:border-color var(--t-micro) var(--ease-out),color var(--t-micro) var(--ease-out)}
+.xl{color:var(--accent);font-size:13px;text-underline-offset:3px}
+.bar button:hover{border-color:var(--edge-2);color:var(--ink)}
+.bar button[aria-pressed=true]{color:var(--accent);border-color:rgba(126,184,212,.45)}
+.row{display:grid;grid-template-columns:repeat(auto-fill,minmax(var(--pw),1fr));gap:14px;padding:14px 16px;max-width:calc(3*var(--pw) + 64px)}
+.col{min-width:0}
+.col h2{font-size:14px;font-weight:600;margin:0 0 4px}
+.view{position:relative;overflow:hidden;border-radius:12px;border:1px solid var(--edge)}
+.plate{position:absolute;left:0;top:0;transform-origin:0 0}
+.plate img{position:absolute;left:0;top:0;display:block;pointer-events:none}
+.plate canvas{position:absolute;pointer-events:none}
+.cap{margin:6px 0 0;color:var(--dim);font-size:12.5px;font-variant-numeric:tabular-nums}
+.head{padding:10px 16px 0;color:var(--mid);font-size:13px;max-width:1120px}
+</style>
+</head>
+<body>
+<div class="bar">
+ <h1>Hover looks, side by side</h1>
+ <div class="grp" id="g-who"><span>Profile</span></div>
+ <div class="grp" id="g-go"><span>Hover</span></div>
+ <a class="xl" href="hover.html">Try it with your own pointer</a>
+</div>
+<p class="head" id="head"></p>
+<div class="row" id="row"></div>
+<script src="data-sofia.js"></script>
+<script src="data-james.js"></script>
+<script src="data-gordon.js"></script>
+<script src="overlay.js"></script>
+<script src="hover.js"></script>
+<script>
+(function(){
+var LOOKS=[{k:'trace',nm:'Trace and hum'},{k:'coil',nm:'1. Coil'},{k:'current',nm:'2. Current'},
+ {k:'stitch',nm:'3. Stitch'},{k:'pressure',nm:'4. Pressure'},{k:'trace',nm:'Reduced motion, every look',rm:true}];
+var q=new URLSearchParams(location.search);
+var st={who:q.get('who')||'James'};
+var REC=q.get('rec')==='1';
+var clock=REC?{t:0,now:function(){return this.t;}}:{now:function(){return performance.now();}};
+var $=function(id){return document.getElementById(id);},P=[],G=null,HOT=null,COOL=null;
+function btn(g,lab,fn){var b=document.createElement('button');b.type='button';b.textContent=lab;b.addEventListener('click',fn);$(g).appendChild(b);return b;}
+['Sofia','James','Gordon'].forEach(function(w){btn('g-who',w,function(){st.who=w;mount();}).dataset.v=w;});
+btn('g-go','The hot line',function(){hover(HOT);});
+btn('g-go','The cool line',function(){hover(COOL);});
+btn('g-go','Let go',function(){hover(null);});
+function hover(l,ms){var now=ms==null?clock.now():ms;P.forEach(function(x){x.ov.hover(l,now);});}
+function pct(x){return Math.round(x*10)+'%';}
+/* the two lines: the heaviest on the profile, and the lightest charged line
+   within 160px of it, so one zoom holds both. Chosen by their numbers. */
+function pick(){var mid=function(l){return OVL_LIB.at(l.S,.5);};
+ var hot=G.links.slice().sort(function(a,b){return b.load-a.load;})[0],hm=mid(hot);
+ var near=G.links.filter(function(l){var m=mid(l);return l.load>0&&l!==hot&&Math.hypot(m[0]-hm[0],m[1]-hm[1])<160;})
+  .sort(function(a,b){return a.load-b.load;});
+ if(q.get('hot'))hot=G.links[+q.get('hot')];
+ return {hot:hot,cool:q.get('cool')?G.links[+q.get('cool')]:near[0]};}
+function mount(){
+ $('g-who').querySelectorAll('button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.v===st.who));});
+ G=window.OV[st.who].sizes[1600];OVL_HOVER_N.prep(G);var two=pick();HOT=two.hot;COOL=two.cool;
+ var xs=[],ys=[];[HOT,COOL].forEach(function(l){l.S.pts.forEach(function(p){xs.push(p[0]);ys.push(p[1]);});});
+ var x0=Math.min.apply(0,xs),x1=Math.max.apply(0,xs),y0=Math.min.apply(0,ys),y1=Math.max.apply(0,ys);
+ var side=Math.max(x1-x0,y1-y0)+72,cx=(x0+x1)/2+G.cv.x,cy=(y0+y1)/2+G.cv.y;
+ var pw=+(q.get('pw')||Math.floor(Math.min(420,Math.max(300,(window.innerWidth-64)/3)))),k=pw/side;
+ document.documentElement.style.setProperty('--pw',pw+'px');
+ var vx=cx-side/2,vy=cy-side/2,tag=st.who.toLowerCase()+'-1600',row=$('row');row.innerHTML='';P=[];
+ $('head').textContent='Zoomed '+k.toFixed(2)+' times onto two lines. The hot line: '+HOT.nm+', charge '+pct(HOT.load)
+  +', its chain '+pct(HOT.chain.W)+'. The cool line: '+COOL.nm+', charge '+pct(COOL.load)+', its chain '+pct(COOL.chain.W)+'.';
+ LOOKS.forEach(function(L){
+  var col=document.createElement('div');col.className='col';
+  col.innerHTML='<h2>'+L.nm+'</h2><div class="view" style="width:'+pw+'px;height:'+pw+'px">'
+   +'<div class="plate" style="width:1600px;height:1000px;transform:scale('+k+') translate('+(-vx)+'px,'+(-vy)+'px)">'
+   +'<img src="plates/'+tag+'-ship.png" alt=""><img class="dim" src="plates/'+tag+'-dim.png" alt="" style="opacity:0">'
+   +'<canvas style="left:'+G.cv.x+'px;top:'+G.cv.y+'px"></canvas></div></div><p class="cap">-</p>';
+  row.appendChild(col);
+  var cv=col.querySelector('canvas'),ov=new OVL_Hover({canvas:cv,G:G,look:L.k,reduced:!!L.rm,dpr:Math.max(1,k)});
+  ov.size(G.cv.w,G.cv.h);P.push({ov:ov,dim:col.querySelector('.dim'),cap:col.querySelector('.cap')});});}
+function paint(now){P.forEach(function(x){var s=x.ov.frame(now);x.dim.style.opacity=s.dim.toFixed(3);
+ if(!REC&&s.probe)x.cap.textContent=s.probe.nm.split(' into ')[0]+' '+pct(s.probe.load)+', swing '+s.probe.A.toFixed(1)+'px, opacity '+s.probe.alpha.toFixed(2);});}
+mount();
+if(REC){window.__rec={at:function(ms){clock.t=ms;paint(ms);},hover:function(which,ms){hover(which==='hot'?HOT:which==='cool'?COOL:null,ms);},
+ lines:function(){return {hot:HOT.nm,cool:COOL.nm};}};}
+else (function loop(){paint(clock.now());requestAnimationFrame(loop);})();
+})();
+</script>
+</body>
+</html>

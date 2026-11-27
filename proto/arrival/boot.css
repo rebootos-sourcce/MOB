@@ -1,0 +1,183 @@
+/* ============================================================
+   THE BOOT, REDRAWN IN THE FIELD'S OWN VOCABULARY. Prototype, round EQ.
+
+   Graded D: "it feels blocked in, not visually interesting." Measured
+   against the shipped one, three things make it blocked in, and each has a
+   named answer here.
+
+   IT IS SMALL AND ALONE ON BLACK. The figure was min(42vmin, 300px), a
+   stick in a box, and nothing on the screen reached past it. Here the
+   figure is the Field's own ring at up to 600 pixels, and behind it the
+   seven seats' light spreads two and a half figures wide, so the colour
+   reaches the edges of the screen rather than stopping at a frame.
+
+   IT IS ONE PLANE. Every mark sat on the same flat layer. Here there are
+   three depths, and they move at three rates on the way out, which is what
+   depth is to an eye: the light behind, the ring, and a glass lens at the
+   centre with the glass bar's own material, blur 14, saturate 1.4, the
+   picture showing through it.
+
+   IT DOES NOT GO ANYWHERE. It assembled, stood, and was cut. Here the body
+   becomes the Field and then the camera goes through the ring into the
+   instrument, which is where the app opens.
+
+   THE STORY, IN ORDER, one thing at a time:
+     0.00  black. The opening beat, ruled, kept exactly.
+     0.70  the spine rises root to crown, the seven seats land on it, 90ms
+           apart with the ruled overshoot. The shipped figure, as the first
+           pose, so a returning person recognises it.
+     1.62  the column unfurls. Each seat draws back a few degrees and then
+           travels an arc out to its own sector on the ring, all turning the
+           same way, root first, 60ms apart. The spine fades behind them.
+     2.04  as each seat lands, its arc grows out of the point it landed on,
+           from the middle, the way the Seven Seats ring and the gates fill.
+     2.20  the 108 addresses sweep round from twelve, each peaking and
+           settling to a length shaped by its seat.
+     2.34  the centre draws in and releases as a glass lens. Anticipation,
+           kept from the ruled core, uniform scale, no squash.
+     2.62  the lens's ring fills clockwise from twelve, the glass bar's own
+           ring: track at ink 16 percent, round cap, ease out.
+     2.90  the gold halo closes the figure, a hairline clockwise from twelve.
+     3.20  the wordmark lands, verbatim, ruled to the pixel.
+     4.50  the push. Figure, lens and light go out at three rates.
+     4.86  black again, the closing beat, ruled.
+     5.00  the sheet's own ruled fade, .24s eased both ends. Gone at 5.24.
+
+   5.24 SITS UNDER THE PRODUCT'S OWN FLOOR. panels.js removes the sheet at
+   5450ms whatever the CSS says, and the shipped sheet's fade is set for
+   7.02s, so today the fade never plays: the sheet is cut from opaque black
+   to the app in one frame. Measured at 5673ms after navigation. --hold adds
+   the ruled two seconds back, and needs the floor moved with it.
+
+   CURVES are the product's three, and one in out already in this sheet:
+     ease out  .22,1,.36,1     arriving
+     ease in   .4,0,1,1        leaving
+     land      .34,1.56,.64,1  landing, overshoot
+     in out    .4,0,.2,1       the sheet's fade, ruled
+   ============================================================ */
+.boot.bx{--hold:0s;--S:min(86vw,58vh,600px);overflow:hidden;gap:22px;
+ animation:bootOut .24s cubic-bezier(.4,0,.2,1) calc(5.00s + var(--hold)) forwards}
+.bx-stage{position:relative;width:var(--S);height:var(--S);flex:0 0 auto}
+.bx-fig{position:absolute;inset:0;
+ animation:bxPush .36s cubic-bezier(.4,0,1,1) calc(4.50s + var(--hold)) forwards}
+@keyframes bxPush{from{opacity:1;scale:1}to{opacity:0;scale:1.45}}
+
+/* THE LIGHT. Seven pools of the seats' own colour on their own bearings, and
+   one of the accent at the centre for the lens to frost. It blooms in from
+   further away than it lands, and drifts a quarter turn slower than anything
+   else and decelerating, so the ground is alive while the figure stands. */
+.bx-wash{position:absolute;left:50%;top:50%;width:calc(var(--S)*2.6);height:calc(var(--S)*2.6);
+ translate:-50% -50%;pointer-events:none;opacity:0;
+ animation:bxWash 2.1s cubic-bezier(.22,1,.36,1) .50s both,
+  bxDrift 4.5s cubic-bezier(.22,1,.36,1) .50s both,
+  bxWashOut .36s cubic-bezier(.4,0,1,1) calc(4.50s + var(--hold)) forwards}
+@keyframes bxWash{from{opacity:0;scale:1.3}to{opacity:1;scale:1}}
+@keyframes bxDrift{from{rotate:-24deg}to{rotate:0deg}}
+@keyframes bxWashOut{from{opacity:1;scale:1}to{opacity:0;scale:1.12}}
+
+.bx-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;fill:none;stroke-linecap:round}
+
+/* THE SPINE, the shipped figure's first move, quicker. */
+.bx-spine{stroke:var(--edge-2);stroke-width:1.2;stroke-dasharray:100 100;stroke-dashoffset:100;
+ animation:bxSpine .5s cubic-bezier(.22,1,.36,1) .70s forwards,
+  bxOut .32s cubic-bezier(.4,0,1,1) 1.62s forwards}
+@keyframes bxSpine{to{stroke-dashoffset:0}}
+@keyframes bxOut{to{opacity:0}}
+
+/* THE SEVEN. They are still .b-seat and still PAL, so design gate 11 reads
+   them as it reads the shipped ones. Each lands on the spine with the ruled
+   overshoot, then leaves on an arc: the group turns and the seat reaches, two
+   properties on two curves, so the path is a spiral and not a straight line.
+   The turn draws back six degrees first, the reach draws in, and the reach
+   lands past its radius and settles. Anticipation, arcs, follow through. */
+.bx .b-seat{opacity:0;transform-origin:100px 100px;translate:0 calc(var(--r0) * -1px);
+ animation:bxPop .38s cubic-bezier(.34,1.56,.64,1) both,bxReach .64s both}
+@keyframes bxPop{0%{opacity:0;scale:.2}60%{opacity:1;scale:1.5}100%{opacity:1;scale:1}}
+@keyframes bxReach{
+ 0%{translate:0 calc(var(--r0) * -1px);animation-timing-function:cubic-bezier(.4,0,.6,1)}
+ 20%{translate:0 calc(var(--r0) * -.86px);animation-timing-function:cubic-bezier(.34,1.56,.64,1)}
+ 100%{translate:0 calc(var(--r1) * -1px)}}
+.bx-sa{transform-origin:100px 100px;rotate:var(--a0);animation:bxTurn .64s both}
+@keyframes bxTurn{
+ 0%{rotate:var(--a0);animation-timing-function:cubic-bezier(.4,0,.6,1)}
+ 20%{rotate:calc(var(--a0) + 6deg);animation-timing-function:cubic-bezier(.22,1,.36,1)}
+ 100%{rotate:var(--a1)}}
+
+/* THE RING. The track comes up first, faint, the way the glass bar's track
+   is there before its value. Then each seat's arc grows from its middle. */
+.bx-trk{stroke-width:3.2;stroke-opacity:0;animation:bxTrk .22s cubic-bezier(.22,1,.36,1) 1.90s forwards}
+@keyframes bxTrk{to{stroke-opacity:.16}}
+.bx-arc{stroke-width:3.2;stroke-linecap:round;stroke-dasharray:0 100;stroke-dashoffset:-50;opacity:0;
+ animation:bxGrow .52s cubic-bezier(.22,1,.36,1) both}
+@keyframes bxGrow{
+ 0%{opacity:0;stroke-dasharray:0 100;stroke-dashoffset:-50}
+ 6%{opacity:.9}
+ 100%{opacity:.9;stroke-dasharray:100 100;stroke-dashoffset:0}}
+
+/* THE ADDRESSES. Still .b-addr, still counted by gate 11. A sweep, not a
+   list: six milliseconds apart, which is under fifty, so the eye reads one
+   event travelling round rather than 108 arrivals. */
+.bx .b-addr line{stroke-width:1.1;opacity:0;stroke-dasharray:0 100;
+ animation:bxTick .46s both}
+@keyframes bxTick{
+ 0%{opacity:0;stroke-dasharray:0 100;animation-timing-function:cubic-bezier(.22,1,.36,1)}
+ 55%{opacity:.95;stroke-dasharray:var(--pk) 100;animation-timing-function:cubic-bezier(.4,0,.2,1)}
+ 100%{opacity:.6;stroke-dasharray:var(--rs) 100}}
+
+/* THE CENTRE. A point of the accent under the lens, so through the glass it
+   reads as light rather than as a dot. */
+.bx .b-core{fill:var(--accent);opacity:0;transform-origin:100px 100px;
+ animation:bxDot .3s cubic-bezier(.22,1,.36,1) 2.40s both}
+@keyframes bxDot{from{opacity:0;scale:0}to{opacity:1;scale:1}}
+.bx-pr{stroke-width:7;stroke-linecap:butt}
+/* SOFTENED AT THE SOURCE, NOT ONLY BY THE GLASS. Measured: under the lens's
+   backdrop blur the seven segments still came through nearly sharp in
+   Chromium, a pinwheel rather than light, because whether a backdrop filter
+   sees an SVG sibling depends on the engine's backdrop root. A blur on the
+   prism itself looks the same in every engine. */
+.bx-prism{filter:blur(2.4px)}
+.bx-prism{opacity:0;transform-origin:100px 100px;
+ animation:bxPrism .62s cubic-bezier(.22,1,.36,1) 2.30s both}
+@keyframes bxPrism{from{opacity:0;scale:.2;rotate:-40deg}to{opacity:.85;scale:1;rotate:0deg}}
+.bx-lens{position:absolute;left:50%;top:50%;width:calc(var(--S)*.19);height:calc(var(--S)*.19);
+ margin:calc(var(--S)*-.095) 0 0 calc(var(--S)*-.095);border-radius:50%;
+ background:rgba(22,24,32,.40);
+ -webkit-backdrop-filter:blur(14px) saturate(1.4);backdrop-filter:blur(14px) saturate(1.4);
+ border:1px solid rgba(255,255,255,.14);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 10px 28px rgba(0,0,0,.28);
+ overflow:hidden;
+ opacity:0;scale:.3;
+ animation:bxLens .62s 2.34s both,
+  bxLensOut .36s cubic-bezier(.4,0,1,1) calc(4.50s + var(--hold)) forwards}
+@keyframes bxLens{
+ 0%{opacity:0;scale:.3;animation-timing-function:cubic-bezier(.4,0,.6,1)}
+ 22%{opacity:1;scale:.2;animation-timing-function:cubic-bezier(.34,1.56,.64,1)}
+ 100%{opacity:1;scale:1}}
+@keyframes bxLensOut{from{scale:1}to{scale:1.5}}
+/* the specular: one soft highlight high on the rim, where a light above
+   the screen would catch a disc of glass */
+.bx-lens::after{content:'';position:absolute;inset:0;border-radius:50%;
+ background:radial-gradient(120% 90% at 32% 14%,rgba(255,255,255,.18),rgba(255,255,255,0) 46%)}
+.bx-ctrk{stroke:rgba(239,237,232,.16);stroke-width:2.2;opacity:0;
+ animation:bxFade .3s cubic-bezier(.22,1,.36,1) 2.55s forwards}
+@keyframes bxFade{to{opacity:1}}
+.bx-cval{stroke:var(--accent);stroke-width:2.2;stroke-dasharray:0 100;opacity:0;
+ transform-origin:100px 100px;rotate:-90deg;
+ animation:bxFill .9s cubic-bezier(.22,1,.36,1) 2.62s both}
+@keyframes bxFill{0%{opacity:0;stroke-dasharray:0 100}4%{opacity:1}100%{opacity:1;stroke-dasharray:100 100}}
+/* THE HALO, gold as ruled, round the whole figure rather than over a head */
+.bx-halo{stroke:var(--au);stroke-width:.8;stroke-dasharray:0 100;opacity:0;
+ transform-origin:100px 100px;rotate:-90deg;
+ animation:bxHalo .8s cubic-bezier(.22,1,.36,1) 2.90s both}
+@keyframes bxHalo{0%{opacity:0;stroke-dasharray:0 100}4%{opacity:.7}100%{opacity:.7;stroke-dasharray:100 100}}
+
+/* THE WORDMARK. The shipped landing, untouched, and a leaving added. */
+.bx .boot-wm{animation:bootWm .92s cubic-bezier(.22,1,.36,1) 3.20s both,
+ bxWmOut .24s cubic-bezier(.4,0,1,1) calc(4.50s + var(--hold)) forwards}
+@keyframes bxWmOut{from{opacity:1}to{opacity:0;transform:translateY(-6px)}}
+
+/* REDUCED MOTION GETS THE END STATE, which for a boot is the instrument. The
+   shipped rule already hides .boot and panels.js clears it at once; this
+   only stops the more specific rule above from starting a fade nobody sees. */
+@media (prefers-reduced-motion:reduce){
+ .boot.bx,.bx *{animation:none!important}}

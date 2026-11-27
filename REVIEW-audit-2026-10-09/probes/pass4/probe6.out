@@ -1,0 +1,5 @@
+(a) commit with a refusing store, double tap: entries in memory 1 saveState {"ok":false,"err":"Error"} messages [": Committed. 4 imprints written to the field."]
+(b) release finished with a refusing store: meter in memory lines 12 unique 12 saveState {"ok":false,"err":"Error"} messages [": Not saved. Error."] status line now ""
+(c) answer with a refusing store: evidence in memory 3 RUN.said not_sure messages ["fail: This browser would not save. Your answer is on this card and not on your record."]
+(d) after the store recovers and the page reloads: entries 0 meter lines 0 evidence 0 (all three lost if zero)
+page errors 0 []

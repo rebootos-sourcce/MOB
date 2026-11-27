@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dual readings, graded</title>
+<style>
+:root{--bg:#0C0D12;--panel:#1A1D26;--panel-2:#252833;--ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;--line:rgba(239,237,232,.12);color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,'Segoe UI',sans-serif;line-height:1.5;overflow-x:hidden}
+main{max-width:1500px;margin:0 auto;padding:28px 48px 64px}
+h1{font-size:24px;margin:0 0 6px;font-weight:600}
+h2{font-size:16px;margin:32px 0 10px;font-weight:600}
+p,li{color:var(--mid);font-size:14px;max-width:880px}
+b{color:var(--ink)}
+.four{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px;margin-top:16px}
+.four figure{margin:0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px}
+.four img{width:100%;display:block;border-radius:8px}
+.four figcaption{margin-top:10px;font-size:13px;color:var(--mid)}
+.four figcaption a{color:var(--ink);font-weight:600;text-decoration:none}
+.g{display:inline-block;font-size:20px;font-weight:600;color:var(--ink);margin-right:8px}
+.pick{border:1px solid var(--ink)!important}
+table{border-collapse:collapse;width:100%;max-width:1100px;font-size:13px}
+td,th{border-top:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top;color:var(--mid)}
+th{color:var(--ink);font-weight:600}
+@media (max-width:900px){main{padding:20px 16px 48px}.four{grid-template-columns:repeat(2,minmax(0,1fr))}table{font-size:12px}}
+</style></head><body><main>
+<h1>Dual readings, four ways, graded</h1>
+<p>His brief, 27 October: the pairs need a centre line at 50 and one mark for where the person leans. The amounts run from none to all. Flow shows expressed, collapsed and where it is blocked, awareness reads as an aperture, will as willpower. Symmetrical, evenly spaced, colours and values that make sense, readable at a glance. Each mockup was reviewed three times by the art director, the UI UX architect, the technical director and the animation director, with the creative director deciding. The rounds are written on each page.</p>
+
+<h2>Diane, phone width, the current rail first</h2>
+<div class="four">
+<figure><img src="shots/baseline-current-diane.png" alt="The current rail for Diane"><figcaption><span class="g">C+</span><b>Shipped today.</b> One drawing for two families. CQ and DQ press in toward each other as though they were one figure, and they are not. No centre line.</figcaption></figure>
+<figure><a href="r1-level.html"><img src="shots/r1-390-diane-panel.png" alt="r1 for Diane"></a><figcaption><span class="g">B+</span><a href="r1-level.html">r1 The level</a>. The same rail on one grammar. Cheapest, and it meets every constraint. Tidy, not striking.</figcaption></figure>
+<figure><a href="r2-instruments.html"><img src="shots/r2-390-diane-panel.png" alt="r2 for Diane"></a><figcaption><span class="g">B</span><a href="r2-instruments.html">r2 The instruments</a>. The best symbols: a real aperture, a real willpower gauge, the wave. Breaks round RB and is the least precise for a pair. The shortest of the four.</figcaption></figure>
+<figure><a href="r3-axis.html"><img src="shots/r3-390-diane-panel.png" alt="r3 for Diane"></a><figcaption><span class="g">B+</span><a href="r3-axis.html">r3 The common axis</a>. The most truthful, least ink. The clearest flow chart. The quietest page.</figcaption></figure>
+<figure class="pick"><a href="r4-mirror.html"><img src="shots/r4-390-diane-panel.png" alt="r4 for Diane"></a><figcaption><span class="g">A-</span><a href="r4-mirror.html">r4 The mirror</a>, <b>the lead</b>. Shape alone tells the two families apart, and flow is drawn on the body's own axis.</figcaption></figure>
+</div>
+
+<h2>Tomas, the heaviest profile in the sample</h2>
+<div class="four">
+<figure><img src="shots/baseline-current-tomas.png" alt="The current rail for Tomas"><figcaption>Current</figcaption></figure>
+<figure><img src="shots/r1-390-tomas-panel.png" alt="r1 for Tomas"><figcaption>r1</figcaption></figure>
+<figure><img src="shots/r2-390-tomas-panel.png" alt="r2 for Tomas"><figcaption>r2</figcaption></figure>
+<figure><img src="shots/r3-390-tomas-panel.png" alt="r3 for Tomas"><figcaption>r3</figcaption></figure>
+<figure class="pick"><img src="shots/r4-390-tomas-panel.png" alt="r4 for Tomas"><figcaption>r4</figcaption></figure>
+</div>
+
+<h2>Why r4 leads</h2>
+<ul>
+<li><b>The finding.</b> The rail draws a lean and an amount with the same shape, so the eye cannot tell "which way" from "how much" without reading the words.</li>
+<li><b>The cause.</b> Not the bars. One component, rbPair, was stretched over pairs that sum to 100 (Orientation, Balance) and a pair that does not (CQ and DQ), and the fill grammar of the amounts was borrowed for both.</li>
+<li><b>The move.</b> r4. Off the midline means a lean, the same on both sides means an amount, and the midline becomes the flow channel, root to crown, pinched at the held seat. In the code it is a new rbPair and rbRow drawing in ui/component.js and the rail block in ui/ui.js around render's pair and bar calls. No arithmetic changes. rbPairSet's tween and rbDrift carry over.</li>
+<li><b>The cost.</b> Two to three days, including design.js floors, collide.js and monitor.js baselines for the rail. It is the tallest of the four. Measured 27 October at phone width for Diane: today's rail 431 pixels, r1 676, r2 624, r3 720, r4 777, cut from 851 in round 3. It is the largest cost here. The centred amounts also take one sentence to learn.</li>
+<li><b>The grade.</b> The rail goes from C+ to A-. r1 is the fallback at about a day for B+.</li>
+<li><b>Sample.</b> All 16 people in PEOPLE, read at HEAD 87dd2cdf. Ten of the 16 read 100% positive, so every design had to hold a mark pinned at the end, and all four do.</li></ul>
+
+<h2>What each concept keeps and breaks</h2>
+<table>
+<tr><th>Ruling</th><th>r1</th><th>r2</th><th>r3</th><th>r4</th></tr>
+<tr><td>RB / PC, two colours pressing in from the ends</td><td>replaced by his words today</td><td>replaced</td><td>replaced</td><td>replaced</td></tr>
+<tr><td>RB, every row one bar, "every element looks completely different" was the complaint</td><td>kept, one bar</td><td><b>broken</b></td><td>kept, one line</td><td>kept, one beam</td></tr>
+<tr><td>OG, words inside the fill</td><td>words above</td><td>words above</td><td>words beside</td><td>words above</td></tr>
+<tr><td>OX, the swing range as the edge</td><td>kept, as a band</td><td>kept, on the arc</td><td>kept, as a band</td><td>kept, as a band</td></tr>
+<tr><td>OM, Flow as a sine wave</td><td>replaced by cells</td><td>kept, ported whole</td><td>replaced by a step line</td><td>replaced by the channel</td></tr>
+<tr><td>OT colours, halo and pitchfork; OV words CQ and DQ; 25 October Positive and Negative</td><td colspan="4">kept in all four</td></tr>
+<tr><td>CQ and DQ on one bar (OT, RB)</td><td colspan="4"><b>changed in all four</b>: CQ is drawn against its own self-read shadow, and DQ is an amount. See the open question below.</td></tr>
+</table>
+
+<h2>Open, and his</h2>
+<ul>
+<li><b>CQ and DQ.</b> He said the pairs "would belong under CQ, DQ". Read here as: they are the same family as CQ and DQ. The engine does not make CQ and DQ add to 100, so a line at 50 between them would be invented. All four draw CQ against its own complement, the self-read shadow, and move DQ under How much. If he wants CQ and DQ as one pair with a centre, that needs a new figure the engine does not compute, for example CQ's share of CQ plus DQ, and it is his to rule.</li>
+<li><b>The word.</b> He said benign and malignant today. On 25 October he ruled "we're changing from benign and malignant to positive and negative". The mockups keep Positive and Negative.</li>
+<li><b>Orientation carries nothing of its own yet.</b> No one in the roster has a story cue that lands, so for all 16 Orientation is a function of CQ alone: 100% positive at CQ 50 and over. Two rows are saying one thing until stories land.</li></ul>
+</main></body></html>

@@ -1,0 +1,844 @@
+{
+ "sofia-1600": {
+  "reading": {
+   "who": "Sofia",
+   "i": 1,
+   "lines": 5,
+   "CQ": 73.2,
+   "DQ": 5,
+   "SQ": null,
+   "tier": "Compounding",
+   "unread": false,
+   "held": 52,
+   "heavy": 0,
+   "top": {
+    "i": 30,
+    "k": "Guilt Of Pleasure",
+    "seat": "Sacral",
+    "sq": 3.1
+   },
+   "top3": [
+    "Guilt Of Pleasure 3.1 Sacral",
+    "Addiction 2.7 Sacral",
+    "Lust 2.7 Sacral"
+   ]
+  },
+  "shelf": {
+   "state": "item",
+   "title": "Guilt Of Pleasure",
+   "ringOn": true,
+   "words": 257,
+   "nums": 47,
+   "firstScreenWords": 60,
+   "text": "Field\nSacral\nGuilt Of Pleasure\nSave\nBookmark\nShare\nSacral Outflow · axis Joy\nHow it runs through you\nHeld 3.1, opposite installed 0.0, net SQ 3.1. Distorts as Self-denial.\nThe Opposite\nThis sits on the Apathy toward Vitality axis, at the shoulder girdle and throat. Vitality is what fills this address once it is emptied.\nFeeds 1\nJudge 3.3\nRun the protocol here\nGuilt Of Pleasure, Apathy toward Vitality. Four channels, twenty five lines.\n73%\nCompounding\nEach cleared address makes the next one cheaper. The gains are stacking.\nReading\nSofia\n41, somatic practitioner\nI hold the room for everyone. I have not been held in four years and I would not know how to ask.\nArchetypes\nFirst\n17%\nSecond\n15%\nThird\n14%\nDomains\nFirst\n100%\nField\nCarrying\nnothing yet\n52 sitting under the line\nFilled in\n47 addresses\nHeaviest\nSacral\n1.6\nMost shut\nDetachment\nat the sacral\nChild emotions\n9\nSaboteurs\n7\nComplexes\n3\nHyper\n1\nCharacter\nNine axes, two ends each. Held is the state you are carrying. Opposite is the coherent quality on the far side of it. Release empties the first, replace fills the second.\nheld\nopposite\n1.5\nFear\nTrust\n5.0\n4.8\nAnger\nEquanimity\n8.6\n2.2\nShame\nWorth\n0.0\n1.0\nDisgust\nAcceptance\n0.0\n4.0\nApathy\nVitality\n0.0\n1.0\nShock\nGroundedness\n0.0\n2.5\nSad\nJoy\n6.0\n1.0\nSurprise\nReadiness\n0.0\n2.0\nAnticipation\nPresence\n0.0\nInstruments\nintegrity 7.6 of 10\nintention 7.3 of 10\npole in 2.54 of 10\novershoot 1.2"
+  },
+  "dial": {
+   "box": [
+    451,
+    158,
+    1010,
+    763
+   ],
+   "labels": 15,
+   "sample": [
+    "73",
+    "CQ",
+    "5DQ",
+    "–",
+    "–",
+    "–",
+    "–",
+    "–",
+    "–",
+    "Explorer",
+    "First archetype",
+    "Heart Striker overshot",
+    "Heaviest pattern. Weight 5.3",
+    "Detachment",
+    "Most shut law. 2.9 of 10"
+   ],
+   "stageNumbers": 19
+  },
+  "dialPress": {
+   "state": "item",
+   "title": "Guilt Of Pleasure",
+   "ringOn": false,
+   "words": 257,
+   "nums": 47,
+   "firstScreenWords": 60,
+   "text": "Field\nSacral\nGuilt Of Pleasure\nSave\nBookmark\nShare\nSacral Outflow · axis Joy\nHow it runs through you\nHeld 3.1, opposite installed 0.0, net SQ 3.1. Distorts as Self-denial.\nThe Opposite\nThis sits on the Apathy toward Vitality axis, at the shoulder girdle and throat. Vitality is what fills this address once it is emptied.\nFeeds 1\nJudge 3.3\nRun the protocol here\nGuilt Of Pleasure, Apathy toward Vitality. Four channels, twenty five lines.\n73%\nCompounding\nEach cleared address makes the next one cheaper. The gains are stacking.\nReading\nSofia\n41, somatic practitioner\nI hold the room for everyone. I have not been held in four years and I would not know how to ask.\nArchetypes\nFirst\n17%\nSecond\n15%\nThird\n14%\nDomains\nFirst\n100%\nField\nCarrying\nnothing yet\n52 sitting under the line\nFilled in\n47 addresses\nHeaviest\nSacral\n1.6\nMost shut\nDetachment\nat the sacral\nChild emotions\n9\nSaboteurs\n7\nComplexes\n3\nHyper\n1\nCharacter\nNine axes, two ends each. Held is the state you are carrying. Opposite is the coherent quality on the far side of it. Release empties the first, replace fills the second.\nheld\nopposite\n1.5\nFear\nTrust\n5.0\n4.8\nAnger\nEquanimity\n8.6\n2.2\nShame\nWorth\n0.0\n1.0\nDisgust\nAcceptance\n0.0\n4.0\nApathy\nVitality\n0.0\n1.0\nShock\nGroundedness\n0.0\n2.5\nSad\nJoy\n6.0\n1.0\nSurprise\nReadiness\n0.0\n2.0\nAnticipation\nPresence\n0.0\nInstruments\nintegrity 7.6 of 10\nintention 7.3 of 10\npole in 2.54 of 10\novershoot 1.2"
+  }
+ },
+ "diane-1600": {
+  "reading": {
+   "who": "Diane",
+   "i": 2,
+   "lines": 6,
+   "CQ": 59.4,
+   "DQ": 27.1,
+   "SQ": null,
+   "tier": "Even",
+   "unread": false,
+   "held": 91,
+   "heavy": 26,
+   "top": {
+    "i": 36,
+    "k": "Anger",
+    "seat": "Solar",
+    "sq": 6.7
+   },
+   "top3": [
+    "Anger 6.7 Solar",
+    "Judgment 6.7 Solar",
+    "Entitlement 6.7 Solar"
+   ]
+  },
+  "shelf": {
+   "state": "item",
+   "title": "Anger",
+   "ringOn": true,
+   "words": 265,
+   "nums": 55,
+   "firstScreenWords": 75,
+   "text": "Field\nSolar\nAnger\nSave\nBookmark\nShare\nCeliac Plexus · axis Power misused\nHow it runs through you\nHeld 6.7, opposite installed 0.0, net SQ 6.7. Distorts as Attack.\nThe Opposite\nThis sits on the Anger toward Equanimity axis, at the celiac plexus. Equanimity is what fills this address once it is emptied.\nFeeds 9\nPredatory 6.0\nRigidity 5.1\nAggressor + Manipulator 7.5\nAggressor + Heart Striker 5.8\nJudge + Controller 6.1\nAggressor 7.5\nManipulator 7.5\nAggressor 6.4\nRun the protocol here\nAnger, Anger toward Equanimity. Four channels, twenty five lines.\n59%\nEven\nThe field breaks even and sits just above the line.\nReading\nDiane\n46, founder, second company\nI work until the work is done and the work is never done. Rest feels like a moral failure.\nArchetypes\nFirst\n22%\nSecond\n19%\nThird\n14%\nDomains\nFirst\n100%\nField\nCarrying\n26 addresses\nFilled in\n9 addresses\nHeaviest\nSolar\n5.3\nMost shut\nTemperance\nat the sacral\nChild emotions\n9\nSaboteurs\n26\nComplexes\n11\nHyper\n4\nCharacter\n1\nNine axes, two ends each. Held is the state you are carrying. Opposite is the coherent quality on the far side of it. Release empties the first, replace fills the second.\nheld\nopposite\n9.4\nFear\nTrust\n0.0\n7.5\nAnger\nEquanimity\n0.0\n5.0\nShame\nWorth\n0.0\n5.5\nDisgust\nAcceptance\n0.0\n7.1\nApathy\nVitality\n9.2\n4.0\nShock\nGroundedness\n0.0\n3.0\nSad\nJoy\n0.0\n3.0\nSurprise\nReadiness\n0.0\n8.0\nAnticipation\nPresence\n8.8\nInstruments\nintegrity 5.9 o"
+  },
+  "dial": {
+   "box": [
+    451,
+    158,
+    1010,
+    763
+   ],
+   "labels": 21,
+   "sample": [
+    "59",
+    "CQ",
+    "27DQ",
+    "–",
+    "–",
+    "–",
+    "–",
+    "–",
+    "–",
+    "Anger",
+    "Solar. SQ 6.7",
+    "Judgment",
+    "Solar. SQ 6.7",
+    "Creator",
+    "First archetype",
+    "Controller",
+    "Heaviest pattern. Weight 8.5",
+    "Dysregulation / Dissociation",
+    "Character layer",
+    "Temperance",
+    "Most shut law. 2.8 of 10"
+   ],
+   "stageNumbers": 19
+  },
+  "dialPress": {
+   "state": "item",
+   "title": "Anger",
+   "ringOn": false,
+   "words": 265,
+   "nums": 55,
+   "firstScreenWords": 75,
+   "text": "Field\nSolar\nAnger\nSave\nBookmark\nShare\nCeliac Plexus · axis Power misused\nHow it runs through you\nHeld 6.7, opposite installed 0.0, net SQ 6.7. Distorts as Attack.\nThe Opposite\nThis sits on the Anger toward Equanimity axis, at the celiac plexus. Equanimity is what fills this address once it is emptied.\nFeeds 9\nPredatory 6.0\nRigidity 5.1\nAggressor + Manipulator 7.5\nAggressor + Heart Striker 5.8\nJudge + Controller 6.1\nAggressor 7.5\nManipulator 7.5\nAggressor 6.4\nRun the protocol here\nAnger, Anger toward Equanimity. Four channels, twenty five lines.\n59%\nEven\nThe field breaks even and sits just above the line.\nReading\nDiane\n46, founder, second company\nI work until the work is done and the work is never done. Rest feels like a moral failure.\nArchetypes\nFirst\n22%\nSecond\n19%\nThird\n14%\nDomains\nFirst\n100%\nField\nCarrying\n26 addresses\nFilled in\n9 addresses\nHeaviest\nSolar\n5.3\nMost shut\nTemperance\nat the sacral\nChild emotions\n9\nSaboteurs\n26\nComplexes\n11\nHyper\n4\nCharacter\n1\nNine axes, two ends each. Held is the state you are carrying. Opposite is the coherent quality on the far side of it. Release empties the first, replace fills the second.\nheld\nopposite\n9.4\nFear\nTrust\n0.0\n7.5\nAnger\nEquanimity\n0.0\n5.0\nShame\nWorth\n0.0\n5.5\nDisgust\nAcceptance\n0.0\n7.1\nApathy\nVitality\n9.2\n4.0\nShock\nGroundedness\n0.0\n3.0\nSad\nJoy\n0.0\n3.0\nSurprise\nReadiness\n0.0\n8.0\nAnticipation\nPresence\n8.8\nInstruments\nintegrity 5.9 o"
+  }
+ },
+ "marcus-1600": {
+  "reading": {
+   "who": "Marcus",
+   "i": 3,
+   "lines": 5,
+   "CQ": 62.1,
+   "DQ": 14.9,
+   "SQ": null,
+   "tier": "Gaining",
+   "unread": false,
+   "held": 99,
+   "heavy": 3,
+   "top": {
+    "i": 21,
+    "k": "Co-Dependency",
+    "seat": "Sacral",
+    "sq": 4.3
+   },
+   "top3": [
+    "Co-Dependency 4.3 Sacral",
+    "False Love 4.1 Heart",
+    "Need To Be Needed 4.1 Heart"
+   ]
+  },
+  "shelf": {
+   "state": "item",
+   "title": "Co-Dependency",
+   "ringOn": true,
+   "words": 265,
+   "nums": 54,
+   "firstScreenWords": 66,
+   "text": "Field\nSacral\nCo-Dependency\nSave\nBookmark\nShare\nPelvic Splanchnic Nerves · axis Neediness\nHow it runs through you\nHeld 4.3, opposite installed 0.0, net SQ 4.3. Distorts as Self-abandonment.\nThe Opposite\nThis sits on the Disgust toward Acceptance axis, at the sacral and dermis. Acceptance is what fills this address once it is emptied.\nFeeds 9\nRigidity 5.2\nPerfectionist + Stickler 6.5\nJudge + Skeptic 4.8\nDiffuse Recoiler + Heart Recoiler 4.2\nPerfectionist 6.5\nStickler 6.5\nJudge 5.0\nSkeptic 4.5\nRun the protocol here\nCo-Dependency, Disgust toward Acceptance. Four channels, twenty five lines.\n62%\nGaining\nThe field builds more than it spends, and the margin is thin.\nReading\nMarcus\n44, creative director\nI can see what is wrong with anything in four seconds. It has cost me two studios.\nArchetypes\nFirst\n20%\nSecond\n19%\nThird\n13%\nDomains\nFirst\n100%\nField\nCarrying\n3 addresses\nFilled in\n8 addresses\nHeaviest\nThroat\n1.9\nMost shut\nForgiveness\nat the heart\nChild emotions\n9\nSaboteurs\n9\nComplexes\n3\nHyper\n1\nCharacter\nNine axes, two ends each. Held is the state you are carrying. Opposite is the coherent quality on the far side of it. Release empties the first, replace fills the second.\nheld\nopposite\n2.0\nFear\nTrust\n0.0\n5.9\nAnger\nEquanimity\n0.0\n2.3\nShame\nWorth\n0.0\n6.8\nDisgust\nAcceptance\n0.0\n1.5\nApathy\nVitality\n0.0\n1.5\nShock\nGroundedness\n0.0\n1.5\nSad\nJoy\n0.0\n1.0\nSurprise\nReadiness\n8.9\n3.0\nAnticipation\nP"
+  },
+  "dial": {
+   "box": [
+    451,
+    158,
+    1010,
+    763
+   ],
+   "labels": 21,
+   "sample": [
+    "62",
+    "CQ",
+    "15DQ",
+    "–",
+    "–",
+    "–",
+    "–",
+    "–",
+    "–",
+    "Co-Dependency",
+    "Sacral. SQ 4.3",
+    "False Love",
+    "Heart. SQ 4.1",
+    "Need To Be Needed",
+    "Heart. SQ 4.1",
+    "Warrior",
+    "First archetype",
+    "Perfectionist",
+    "Heaviest pattern. Weight 6.5",
+    "Forgiveness",
+    "Most shut law. 2.4 of 10"
+   ],
+   "stageNumbers": 19
+  },
+  "dialPress": {
+   "state": "item",
+   "title": "Co-Dependency",
+   "ringOn": false,
+   "words": 265,
+   "nums": 54,
+   "firstScreenWords": 66,
+   "text": "Field\nSacral\nCo-Dependency\nSave\nBookmark\nShare\nPelvic Splanchnic Nerves · axis Neediness\nHow it runs through you\nHeld 4.3, opposite installed 0.0, net SQ 4.3. Distorts as Self-abandonment.\nThe Opposite\nThis sits on the Disgust toward Acceptance axis, at the sacral and dermis. Acceptance is what fills this address once it is emptied.\nFeeds 9\nRigidity 5.2\nPerfectionist + Stickler 6.5\nJudge + Skeptic 4.8\nDiffuse Recoiler + Heart Recoiler 4.2\nPerfectionist 6.5\nStickler 6.5\nJudge 5.0\nSkeptic 4.5\nRun the protocol here\nCo-Dependency, Disgust toward Acceptance. Four channels, twenty five lines.\n62%\nGaining\nThe field builds more than it spends, and the margin is thin.\nReading\nMarcus\n44, creative director\nI can see what is wrong with anything in four seconds. It has cost me two studios.\nArchetypes\nFirst\n20%\nSecond\n19%\nThird\n13%\nDomains\nFirst\n100%\nField\nCarrying\n3 addresses\nFilled in\n8 addresses\nHeaviest\nThroat\n1.9\nMost shut\nForgiveness\nat the heart\nChild emotions\n9\nSaboteurs\n9\nComplexes\n3\nHyper\n1\nCharacter\nNine axes, two ends each. Held is the state you are carrying. Opposite is the coherent quality on the far side of it. Release empties the first, replace fills the second.\nheld\nopposite\n2.0\nFear\nTrust\n0.0\n5.9\nAnger\nEquanimity\n0.0\n2.3\nShame\nWorth\n0.0\n6.8\nDisgust\nAcceptance\n0.0\n1.5\nApathy\nVitality\n0.0\n1.5\nShock\nGroundedness\n0.0\n1.5\nSad\nJoy\n0.0\n1.0\nSurprise\nReadiness\n8.9\n3.0\nAnticipation\nP"
+  }
+ },
+ "angela-1600": {
+  "reading": {
+   "who": "Angela",
+   "i": 4,
+   "lines": 6,
+   "CQ": 64.4,
+   "DQ": 6.7,
+   "SQ": null,
+   "tier": "Gaining",
+   "unread": false,
+   "held": 74,
+   "heavy": 0,
+   "top": {
+    "i": 1,
+    "k": "Fear",
+    "seat": "Root",
+    "sq": 3.1
+   },
+   "top3": [
+    "Fear 3.1 Root",
+    "Control 3.1 Root",
+    "Insecurity 3.1 Root"
+   ]
+  },
+  "shelf": {
+   "state": "item",
+   "title": "Fear",
+   "ringOn": true,
+   "words": 257,
+   "nums": 51,
+   "firstScreenWords": 63,
+   "text": "Field\nRoot\nFear\nSave\nBookmark\nShare\nLumbar Plexus · axis Instinct, threat\nHow it runs through you\nHeld 3.1, opposite installed 0.0, net SQ 3.1. Distorts as Avoidance.\nThe Opposite\nThis sits on the Fear toward Trust axis, at the lumbar plexus. Trust is what fills this address once it is emptied.\nFeeds 3\nInnocent + Negotiator 3.5\nInnocent 4.0\nNegotiator 3.0\nRun the protocol here\nFear, Fear toward Trust. Four channels, twenty five lines.\n64%\nGaining\nThe field builds more than it spends, and the margin is thin.\nReading\nAngela\n36, seeker, six modalities\nEverything happens for a reason. I have said that at three funerals and I believed it each time.\nArchetypes\nFirst\n21%\nSecond\n19%\nThird\n13%\nDomains\nFirst\n100%\nField\nCarrying\nnothing yet\n74 sitting under the line\nFilled in\n30 addresses\nHeaviest\nRoot\n1.2\nMost shut\nHumility\nat the 3rd eye\nChild emotions\n9\nSaboteurs\n12\nComplexes\n5\nHyper\n2\nCharacter\n1\nNine axes, two ends each. Held is the state you are carrying. Opposite is the coherent quality on the far side of it. Release empties the first, replace fills the second.\nheld\nopposite\n4.1\nFear\nTrust\n0.0\n1.0\nAnger\nEquanimity\n0.0\n2.5\nShame\nWorth\n0.0\n1.0\nDisgust\nAcceptance\n9.1\n2.0\nApathy\nVitality\n0.0\n2.0\nShock\nGroundedness\n0.0\n7.9\nSad\nJoy\n9.4\n1.5\nSurprise\nReadiness\n0.0\n2.0\nAnticipation\nPresence\n0.0\nInstruments\nintegrity 6.2 of 10\nintention 6.3 of 10\npole in 1.86 of 10\novershoot 1.83 of 10, 33 o"
+  },
+  "dial": {
+   "box": [
+    451,
+    158,
+    1010,
+    763
+   ],
+   "labels": 17,
+   "sample": [
+    "64",
+    "CQ",
+    "7DQ",
+    "–",
+    "–",
+    "–",
+    "–",
+    "–",
+    "–",
+    "Innocent",
+    "First archetype",
+    "Crown Mourner overshot",
+    "Heaviest pattern. Weight 7.2",
+    "Mania / Indiscriminate",
+    "Character layer",
+    "Humility",
+    "Most shut law. 2.1 of 10"
+   ],
+   "stageNumbers": 19
+  },
+  "dialPress": {
+   "state": "item",
+   "title": "Fear",
+   "ringOn": false,
+   "words": 257,
+   "nums": 51,
+   "firstScreenWords": 63,
+   "text": "Field\nRoot\nFear\nSave\nBookmark\nShare\nLumbar Plexus · axis Instinct, threat\nHow it runs through you\nHeld 3.1, opposite installed 0.0, net SQ 3.1. Distorts as Avoidance.\nThe Opposite\nThis sits on the Fear toward Trust axis, at the lumbar plexus. Trust is what fills this address once it is emptied.\nFeeds 3\nInnocent + Negotiator 3.5\nInnocent 4.0\nNegotiator 3.0\nRun the protocol here\nFear, Fear toward Trust. Four channels, twenty five lines.\n64%\nGaining\nThe field builds more than it spends, and the margin is thin.\nReading\nAngela\n36, seeker, six modalities\nEverything happens for a reason. I have said that at three funerals and I believed it each time.\nArchetypes\nFirst\n21%\nSecond\n19%\nThird\n13%\nDomains\nFirst\n100%\nField\nCarrying\nnothing yet\n74 sitting under the line\nFilled in\n30 addresses\nHeaviest\nRoot\n1.2\nMost shut\nHumility\nat the 3rd eye\nChild emotions\n9\nSaboteurs\n12\nComplexes\n5\nHyper\n2\nCharacter\n1\nNine axes, two ends each. Held is the state you are carrying. Opposite is the coherent quality on the far side of it. Release empties the first, replace fills the second.\nheld\nopposite\n4.1\nFear\nTrust\n0.0\n1.0\nAnger\nEquanimity\n0.0\n2.5\nShame\nWorth\n0.0\n1.0\nDisgust\nAcceptance\n9.1\n2.0\nApathy\nVitality\n0.0\n2.0\nShock\nGroundedness\n0.0\n7.9\nSad\nJoy\n9.4\n1.5\nSurprise\nReadiness\n0.0\n2.0\nAnticipation\nPresence\n0.0\nInstruments\nintegrity 6.2 of 10\nintention 6.3 of 10\npole in 1.86 of 10\novershoot 1.83 of 10, 33 o"
+  }
+ },
+ "derek-1600": {
+  "reading": {
+   "who": "Derek",
+   "i": 5,
+   "lines": 6,
+   "CQ": 49.1,
+   "DQ": 35.8,
+   "SQ": null,
+   "tier": "Oscillating",
+   "unread": false,
+   "held": 90,
+   "heavy": 46,
+   "top": {
+    "i": 25,
+    "k": "Manipulation Through Emotion",
+    "seat": "Sacral",
+    "sq": 9.5
+   },
+   "top3": [
+    "Manipulation Through Emotion 9.5 Sacral",
+    "Pride 8.8 Solar",
+    "Arrogance 8.8 Solar"
+   ]
+  },
+  "shelf": {
+   "state": "item",
+   "title": "Manipulation Through Emotion",
+   "ringOn": true,
+   "words": 281,
+   "nums": 55,
+   "firstScreenWords": 72,
+   "text": "Field\nSacral\nManipulation Through Emotion\nSave\nBookmark\nShare\nUterovaginal Plexus · axis Control\nHow it runs through you\nHeld 9.5, opposite installed 0.0, net SQ 9.5. Distorts as Emotional blackmail.\nThe Opposite\nThis sits on the Anger toward Equanimity axis, at the celiac plexus. Equanimity is what fills this address once it is emptied.\nFeeds 8\nGrandiosity / Predatory 6.8\nDysregulation / Collapse 5.8\nPredatory 6.6\nCollapse 5.6\nSacral Striker + Throat Striker 7.8\nVictim + Imposter 6.8\nSacral Striker 7.9\nImposter 6.5\nRun the protocol here\nManipulation Through Emotion, Anger toward Equanimity. Four channels, twenty five lines.\n49%\nOscillating\nThe median range is forty to sixty and fifty is the centre of the line. The field crosses it in both directions.\nReading\nDerek\n39, high performer, endurance\nPain is information. I have raced on a stress fracture. I would do it again.\nArchetypes\nFirst\n17%\nSecond\n14%\nThird\n11%\nDomains\nFirst\n100%\nField\nCarrying\n46 addresses\nFilled in\n11 addresses\nHeaviest\nSolar\n5.8\nMost shut\nTemperance\nat the sacral\nChild emotions\n9\nSaboteurs\n37\nComplexes\n17\nHyper\n5\nCharacter\n2\nNine axes, two ends each. Held is the state you are carrying. Opposite is the coherent quality on the far side of it. Release empties the first, replace fills the second.\nheld\nopposite\n7.4\nFear\nTrust\n0.0\n9.8\nAnger\nEquanimity\n0.0\n6.0\nShame\nWorth\n0.0\n4.0\nDisgust\nAcceptance\n0.0\n4.1\nApathy\nV"
+  },
+  "dial": {
+   "box": [
+    451,
+    158,
+    1010,
+    763
+   ],
+   "labels": 25,
+   "sample": [
+    "49",
+    "CQ",
+    "36DQ",
+    "–",
+    "–",
+    "–",
+    "–",
+    "–",
+    "–",
+    "Manipulation Through Emotion",
+    "Sacral. SQ 9.5",
+    "Pride",
+    "Solar. SQ 8.8",
+    "Arrogance",
+    "Solar. SQ 8.8",
+    "Caregiver",
+    "First archetype",
+    "Control Freak",
+    "Heaviest pattern. Weight 8.0",
+    "Grandiosity / Predatory",
+    "Character layer",
+    "Dysregulation / Collapse",
+    "Character layer",
+    "Temperance",
+    "Most shut law. 2.7 of 10"
+   ],
+   "stageNumbers": 19
+  },
+  "dialPress": {
+   "state": "item",
+   "title": "Manipulation Through Emotion",
+   "ringOn": false,
+   "words": 281,
+   "nums": 55,
+   "firstScreenWords": 72,
+   "text": "Field\nSacral\nManipulation Through Emotion\nSave\nBookmark\nShare\nUterovaginal Plexus · axis Control\nHow it runs through you\nHeld 9.5, opposite installed 0.0, net SQ 9.5. Distorts as Emotional blackmail.\nThe Opposite\nThis sits on the Anger toward Equanimity axis, at the celiac plexus. Equanimity is what fills this address once it is emptied.\nFeeds 8\nGrandiosity / Predatory 6.8\nDysregulation / Collapse 5.8\nPredatory 6.6\nCollapse 5.6\nSacral Striker + Throat Striker 7.8\nVictim + Imposter 6.8\nSacral Striker 7.9\nImposter 6.5\nRun the protocol here\nManipulation Through Emotion, Anger toward Equanimity. Four channels, twenty five lines.\n49%\nOscillating\nThe median range is forty to sixty and fifty is the centre of the line. The field crosses it in both directions.\nReading\nDerek\n39, high performer, endurance\nPain is information. I have raced on a stress fracture. I would do it again.\nArchetypes\nFirst\n17%\nSecond\n14%\nThird\n11%\nDomains\nFirst\n100%\nField\nCarrying\n46 addresses\nFilled in\n11 addresses\nHeaviest\nSolar\n5.8\nMost shut\nTemperance\nat the sacral\nChild emotions\n9\nSaboteurs\n37\nComplexes\n17\nHyper\n5\nCharacter\n2\nNine axes, two ends each. Held is the state you are carrying. Opposite is the coherent quality on the far side of it. Release empties the first, replace fills the second.\nheld\nopposite\n7.4\nFear\nTrust\n0.0\n9.8\nAnger\nEquanimity\n0.0\n6.0\nShame\nWorth\n0.0\n4.0\nDisgust\nAcceptance\n0.0\n4.1\nApathy\nV"
+  }
+ },
+ "james-1600": {
+  "reading": {
+   "who": "James",
+   "i": 6,
+   "lines": 5,
+   "CQ": 43.7,
+   "DQ": 34.5,
+   "SQ": null,
+   "tier": "Oscillating",
+   "unread": false,
+   "held": 90,
+   "heavy": 37,
+   "top": {
+    "i": 14,
+    "k": "Escapism",
+    "seat": "Root",
+    "sq": 9.3
+   },
+   "top3": [
+    "Escapism 9.3 Root",
+    "Addiction 9.3 Sacral",
+    "Lust 9.3 Sacral"
+   ]
+  },
+  "shelf": {
+   "state": "item",
+   "title": "Escapism",
+   "ringOn": true,
+   "words": 279,
+   "nums": 55,
+   "firstScreenWords": 67,
+   "text": "Field\nRoot\nEscapism\nSave\nBookmark\nShare\nSciatic Nerve · axis Facing pain\nHow it runs through you\nHeld 9.3, opposite installed 0.0, net SQ 9.3. Distorts as Running.\nThe Opposite\nThis sits on the Apathy toward Vitality axis, at the shoulder girdle and throat. Vitality is what fills this address once it is emptied.\nFeeds 8\nDysregulation / Collapse 6.5\nDissociation / Predatory 6.0\nDysregulation 6.8\nDissociation 6.1\nDramatizer + Overthinker 6.8\nAvoider + Diffuse Drifter 4.9\nOverthinker 6.5\nAvoider 5.5\nRun the protocol here\nEscapism, Apathy toward Vitality. Four channels, twenty five lines.\n44%\nOscillating\nThe median range is forty to sixty and fifty is the centre of the line. The field crosses it in both directions.\nReading\nJames\n57, C-suite, third turnaround\nI make the call and I sleep fine. People find that cold. It is what they hired.\nArchetypes\nFirst\n20%\nSecond\n16%\nThird\n14%\nDomains\nFirst\n100%\nField\nCarrying\n37 addresses\nFilled in\n6 addresses\nHeaviest\nSacral\n5.5\nMost shut\nCompassion\nat the heart\nChild emotions\n9\nSaboteurs\n29\nComplexes\n13\nHyper\n5\nCharacter\n2\nNine axes, two ends each. Held is the state you are carrying. Opposite is the coherent quality on the far side of it. Release empties the first, replace fills the second.\nheld\nopposite\n6.0\nFear\nTrust\n0.0\n10.0\nAnger\nEquanimity\n0.0\n7.0\nShame\nWorth\n8.4\n7.0\nDisgust\nAcceptance\n0.0\n8.8\nApathy\nVitality\n0.0\n7.0\nShock\nGroundedness\n9.3"
+  },
+  "dial": {
+   "box": [
+    451,
+    158,
+    1010,
+    763
+   ],
+   "labels": 25,
+   "sample": [
+    "44",
+    "CQ",
+    "35DQ",
+    "–",
+    "–",
+    "–",
+    "–",
+    "–",
+    "–",
+    "Escapism",
+    "Root. SQ 9.3",
+    "Addiction",
+    "Sacral. SQ 9.3",
+    "Lust",
+    "Sacral. SQ 9.3",
+    "Sage",
+    "First archetype",
+    "Martyr",
+    "Heaviest pattern. Weight 7.7",
+    "Dysregulation / Collapse",
+    "Character layer",
+    "Dissociation / Predatory",
+    "Character layer",
+    "Compassion",
+    "Most shut law. 2.6 of 10"
+   ],
+   "stageNumbers": 19
+  },
+  "dialPress": {
+   "state": "item",
+   "title": "Escapism",
+   "ringOn": false,
+   "words": 279,
+   "nums": 55,
+   "firstScreenWords": 67,
+   "text": "Field\nRoot\nEscapism\nSave\nBookmark\nShare\nSciatic Nerve · axis Facing pain\nHow it runs through you\nHeld 9.3, opposite installed 0.0, net SQ 9.3. Distorts as Running.\nThe Opposite\nThis sits on the Apathy toward Vitality axis, at the shoulder girdle and throat. Vitality is what fills this address once it is emptied.\nFeeds 8\nDysregulation / Collapse 6.5\nDissociation / Predatory 6.0\nDysregulation 6.8\nDissociation 6.1\nDramatizer + Overthinker 6.8\nAvoider + Diffuse Drifter 4.9\nOverthinker 6.5\nAvoider 5.5\nRun the protocol here\nEscapism, Apathy toward Vitality. Four channels, twenty five lines.\n44%\nOscillating\nThe median range is forty to sixty and fifty is the centre of the line. The field crosses it in both directions.\nReading\nJames\n57, C-suite, third turnaround\nI make the call and I sleep fine. People find that cold. It is what they hired.\nArchetypes\nFirst\n20%\nSecond\n16%\nThird\n14%\nDomains\nFirst\n100%\nField\nCarrying\n37 addresses\nFilled in\n6 addresses\nHeaviest\nSacral\n5.5\nMost shut\nCompassion\nat the heart\nChild emotions\n9\nSaboteurs\n29\nComplexes\n13\nHyper\n5\nCharacter\n2\nNine axes, two ends each. Held is the state you are carrying. Opposite is the coherent quality on the far side of it. Release empties the first, replace fills the second.\nheld\nopposite\n6.0\nFear\nTrust\n0.0\n10.0\nAnger\nEquanimity\n0.0\n7.0\nShame\nWorth\n8.4\n7.0\nDisgust\nAcceptance\n0.0\n8.8\nApathy\nVitality\n0.0\n7.0\nShock\nGroundedness\n9.3"
+  }
+ },
+ "sofia-390": {
+  "reading": {
+   "who": "Sofia",
+   "i": 1,
+   "lines": 5,
+   "CQ": 73.2,
+   "DQ": 5,
+   "SQ": null,
+   "tier": "Compounding",
+   "unread": false,
+   "held": 52,
+   "heavy": 0,
+   "top": {
+    "i": 30,
+    "k": "Guilt Of Pleasure",
+    "seat": "Sacral",
+    "sq": 3.1
+   },
+   "top3": [
+    "Guilt Of Pleasure 3.1 Sacral",
+    "Addiction 2.7 Sacral",
+    "Lust 2.7 Sacral"
+   ]
+  },
+  "shelf": {
+   "state": "item",
+   "title": "Guilt Of Pleasure",
+   "ringOn": true,
+   "words": 257,
+   "nums": 47,
+   "firstScreenWords": 30,
+   "text": "Field\nSacral\nGuilt Of Pleasure\nSave\nBookmark\nShare\nSacral Outflow · axis Joy\nHow it runs through you\nHeld 3.1, opposite installed 0.0, net SQ 3.1. Distorts as Self-denial.\nThe Opposite\nThis sits on the Apathy toward Vitality axis, at the shoulder girdle and throat. Vitality is what fills this address once it is emptied.\nFeeds 1\nJudge 3.3\nRun the protocol here\nGuilt Of Pleasure, Apathy toward Vitality. Four channels, twenty five lines.\n73%\nCompounding\nEach cleared address makes the next one cheaper. The gains are stacking.\nReading\nSofia\n41, somatic practitioner\nI hold the room for everyone. I have not been held in four years and I would not know how to ask.\nArchetypes\nFirst\n17%\nSecond\n15%\nThird\n14%\nDomains\nFirst\n100%\nField\nCarrying\nnothing yet\n52 sitting under the line\nFilled in\n47 addresses\nHeaviest\nSacral\n1.6\nMost shut\nDetachment\nat the sacral\nChild emotions\n9\nSaboteurs\n7\nComplexes\n3\nHyper\n1\nCharacter\nNine axes, two ends each. Held is the state you are carrying. Opposite is the coherent quality on the far side of it. Release empties the first, replace fills the second.\nheld\nopposite\n1.5\nFear\nTrust\n5.0\n4.8\nAnger\nEquanimity\n8.6\n2.2\nShame\nWorth\n0.0\n1.0\nDisgust\nAcceptance\n0.0\n4.0\nApathy\nVitality\n0.0\n1.0\nShock\nGroundedness\n0.0\n2.5\nSad\nJoy\n6.0\n1.0\nSurprise\nReadiness\n0.0\n2.0\nAnticipation\nPresence\n0.0\nInstruments\nintegrity 7.6 of 10\nintention 7.3 of 10\npole in 2.54 of 10\novershoot 1.2"
+  },
+  "dial": {
+   "box": [
+    8,
+    421,
+    374,
+    335
+   ],
+   "labels": 10,
+   "sample": [
+    "73CQ",
+    "5DQ",
+    "–",
+    "–",
+    "–",
+    "–",
+    "–",
+    "–",
+    "Detachment",
+    "Most shut law. 2.9 of 10"
+   ],
+   "stageNumbers": 10
+  },
+  "dialPress": {
+   "state": "item",
+   "title": "Guilt Of Pleasure",
+   "ringOn": false,
+   "words": 257,
+   "nums": 47,
+   "firstScreenWords": 30,
+   "text": "Field\nSacral\nGuilt Of Pleasure\nSave\nBookmark\nShare\nSacral Outflow · axis Joy\nHow it runs through you\nHeld 3.1, opposite installed 0.0, net SQ 3.1. Distorts as Self-denial.\nThe Opposite\nThis sits on the Apathy toward Vitality axis, at the shoulder girdle and throat. Vitality is what fills this address once it is emptied.\nFeeds 1\nJudge 3.3\nRun the protocol here\nGuilt Of Pleasure, Apathy toward Vitality. Four channels, twenty five lines.\n73%\nCompounding\nEach cleared address makes the next one cheaper. The gains are stacking.\nReading\nSofia\n41, somatic practitioner\nI hold the room for everyone. I have not been held in four years and I would not know how to ask.\nArchetypes\nFirst\n17%\nSecond\n15%\nThird\n14%\nDomains\nFirst\n100%\nField\nCarrying\nnothing yet\n52 sitting under the line\nFilled in\n47 addresses\nHeaviest\nSacral\n1.6\nMost shut\nDetachment\nat the sacral\nChild emotions\n9\nSaboteurs\n7\nComplexes\n3\nHyper\n1\nCharacter\nNine axes, two ends each. Held is the state you are carrying. Opposite is the coherent quality on the far side of it. Release empties the first, replace fills the second.\nheld\nopposite\n1.5\nFear\nTrust\n5.0\n4.8\nAnger\nEquanimity\n8.6\n2.2\nShame\nWorth\n0.0\n1.0\nDisgust\nAcceptance\n0.0\n4.0\nApathy\nVitality\n0.0\n1.0\nShock\nGroundedness\n0.0\n2.5\nSad\nJoy\n6.0\n1.0\nSurprise\nReadiness\n0.0\n2.0\nAnticipation\nPresence\n0.0\nInstruments\nintegrity 7.6 of 10\nintention 7.3 of 10\npole in 2.54 of 10\novershoot 1.2"
+  }
+ },
+ "diane-390": {
+  "reading": {
+   "who": "Diane",
+   "i": 2,
+   "lines": 6,
+   "CQ": 59.4,
+   "DQ": 27.1,
+   "SQ": null,
+   "tier": "Even",
+   "unread": false,
+   "held": 91,
+   "heavy": 26,
+   "top": {
+    "i": 36,
+    "k": "Anger",
+    "seat": "Solar",
+    "sq": 6.7
+   },
+   "top3": [
+    "Anger 6.7 Solar",
+    "Judgment 6.7 Solar",
+    "Entitlement 6.7 Solar"
+   ]
+  },
+  "shelf": {
+   "state": "item",
+   "title": "Anger",
+   "ringOn": true,
+   "words": 265,
+   "nums": 55,
+   "firstScreenWords": 35,
+   "text": "Field\nSolar\nAnger\nSave\nBookmark\nShare\nCeliac Plexus · axis Power misused\nHow it runs through you\nHeld 6.7, opposite installed 0.0, net SQ 6.7. Distorts as Attack.\nThe Opposite\nThis sits on the Anger toward Equanimity axis, at the celiac plexus. Equanimity is what fills this address once it is emptied.\nFeeds 9\nPredatory 6.0\nRigidity 5.1\nAggressor + Manipulator 7.5\nAggressor + Heart Striker 5.8\nJudge + Controller 6.1\nAggressor 7.5\nManipulator 7.5\nAggressor 6.4\nRun the protocol here\nAnger, Anger toward Equanimity. Four channels, twenty five lines.\n59%\nEven\nThe field breaks even and sits just above the line.\nReading\nDiane\n46, founder, second company\nI work until the work is done and the work is never done. Rest feels like a moral failure.\nArchetypes\nFirst\n22%\nSecond\n19%\nThird\n14%\nDomains\nFirst\n100%\nField\nCarrying\n26 addresses\nFilled in\n9 addresses\nHeaviest\nSolar\n5.3\nMost shut\nTemperance\nat the sacral\nChild emotions\n9\nSaboteurs\n26\nComplexes\n11\nHyper\n4\nCharacter\n1\nNine axes, two ends each. Held is the state you are carrying. Opposite is the coherent quality on the far side of it. Release empties the first, replace fills the second.\nheld\nopposite\n9.4\nFear\nTrust\n0.0\n7.5\nAnger\nEquanimity\n0.0\n5.0\nShame\nWorth\n0.0\n5.5\nDisgust\nAcceptance\n0.0\n7.1\nApathy\nVitality\n9.2\n4.0\nShock\nGroundedness\n0.0\n3.0\nSad\nJoy\n0.0\n3.0\nSurprise\nReadiness\n0.0\n8.0\nAnticipation\nPresence\n8.8\nInstruments\nintegrity 5.9 o"
+  },
+  "dial": {
+   "box": [
+    8,
+    421,
+    374,
+    335
+   ],
+   "labels": 10,
+   "sample": [
+    "59CQ",
+    "27DQ",
+    "–",
+    "–",
+    "–",
+    "–",
+    "–",
+    "–",
+    "Anger",
+    "Solar. SQ 6.7"
+   ],
+   "stageNumbers": 10
+  },
+  "dialPress": {
+   "state": "item",
+   "title": "Anger",
+   "ringOn": false,
+   "words": 265,
+   "nums": 55,
+   "firstScreenWords": 35,
+   "text": "Field\nSolar\nAnger\nSave\nBookmark\nShare\nCeliac Plexus · axis Power misused\nHow it runs through you\nHeld 6.7, opposite installed 0.0, net SQ 6.7. Distorts as Attack.\nThe Opposite\nThis sits on the Anger toward Equanimity axis, at the celiac plexus. Equanimity is what fills this address once it is emptied.\nFeeds 9\nPredatory 6.0\nRigidity 5.1\nAggressor + Manipulator 7.5\nAggressor + Heart Striker 5.8\nJudge + Controller 6.1\nAggressor 7.5\nManipulator 7.5\nAggressor 6.4\nRun the protocol here\nAnger, Anger toward Equanimity. Four channels, twenty five lines.\n59%\nEven\nThe field breaks even and sits just above the line.\nReading\nDiane\n46, founder, second company\nI work until the work is done and the work is never done. Rest feels like a moral failure.\nArchetypes\nFirst\n22%\nSecond\n19%\nThird\n14%\nDomains\nFirst\n100%\nField\nCarrying\n26 addresses\nFilled in\n9 addresses\nHeaviest\nSolar\n5.3\nMost shut\nTemperance\nat the sacral\nChild emotions\n9\nSaboteurs\n26\nComplexes\n11\nHyper\n4\nCharacter\n1\nNine axes, two ends each. Held is the state you are carrying. Opposite is the coherent quality on the far side of it. Release empties the first, replace fills the second.\nheld\nopposite\n9.4\nFear\nTrust\n0.0\n7.5\nAnger\nEquanimity\n0.0\n5.0\nShame\nWorth\n0.0\n5.5\nDisgust\nAcceptance\n0.0\n7.1\nApathy\nVitality\n9.2\n4.0\nShock\nGroundedness\n0.0\n3.0\nSad\nJoy\n0.0\n3.0\nSurprise\nReadiness\n0.0\n8.0\nAnticipation\nPresence\n8.8\nInstruments\nintegrity 5.9 o"
+  }
+ },
+ "marcus-390": {
+  "reading": {
+   "who": "Marcus",
+   "i": 3,
+   "lines": 5,
+   "CQ": 62.1,
+   "DQ": 14.9,
+   "SQ": null,
+   "tier": "Gaining",
+   "unread": false,
+   "held": 99,
+   "heavy": 3,
+   "top": {
+    "i": 21,
+    "k": "Co-Dependency",
+    "seat": "Sacral",
+    "sq": 4.3
+   },
+   "top3": [
+    "Co-Dependency 4.3 Sacral",
+    "False Love 4.1 Heart",
+    "Need To Be Needed 4.1 Heart"
+   ]
+  },
+  "shelf": {
+   "state": "item",
+   "title": "Co-Dependency",
+   "ringOn": true,
+   "words": 265,
+   "nums": 54,
+   "firstScreenWords": 37,
+   "text": "Field\nSacral\nCo-Dependency\nSave\nBookmark\nShare\nPelvic Splanchnic Nerves · axis Neediness\nHow it runs through you\nHeld 4.3, opposite installed 0.0, net SQ 4.3. Distorts as Self-abandonment.\nThe Opposite\nThis sits on the Disgust toward Acceptance axis, at the sacral and dermis. Acceptance is what fills this address once it is emptied.\nFeeds 9\nRigidity 5.2\nPerfectionist + Stickler 6.5\nJudge + Skeptic 4.8\nDiffuse Recoiler + Heart Recoiler 4.2\nPerfectionist 6.5\nStickler 6.5\nJudge 5.0\nSkeptic 4.5\nRun the protocol here\nCo-Dependency, Disgust toward Acceptance. Four channels, twenty five lines.\n62%\nGaining\nThe field builds more than it spends, and the margin is thin.\nReading\nMarcus\n44, creative director\nI can see what is wrong with anything in four seconds. It has cost me two studios.\nArchetypes\nFirst\n20%\nSecond\n19%\nThird\n13%\nDomains\nFirst\n100%\nField\nCarrying\n3 addresses\nFilled in\n8 addresses\nHeaviest\nThroat\n1.9\nMost shut\nForgiveness\nat the heart\nChild emotions\n9\nSaboteurs\n9\nComplexes\n3\nHyper\n1\nCharacter\nNine axes, two ends each. Held is the state you are carrying. Opposite is the coherent quality on the far side of it. Release empties the first, replace fills the second.\nheld\nopposite\n2.0\nFear\nTrust\n0.0\n5.9\nAnger\nEquanimity\n0.0\n2.3\nShame\nWorth\n0.0\n6.8\nDisgust\nAcceptance\n0.0\n1.5\nApathy\nVitality\n0.0\n1.5\nShock\nGroundedness\n0.0\n1.5\nSad\nJoy\n0.0\n1.0\nSurprise\nReadiness\n8.9\n3.0\nAnticipation\nP"
+  },
+  "dial": {
+   "box": [
+    8,
+    421,
+    374,
+    335
+   ],
+   "labels": 12,
+   "sample": [
+    "62CQ",
+    "15DQ",
+    "–",
+    "–",
+    "–",
+    "–",
+    "–",
+    "–",
+    "False Love",
+    "Heart. SQ 4.1",
+    "Warrior",
+    "First archetype"
+   ],
+   "stageNumbers": 10
+  },
+  "dialPress": {
+   "state": "item",
+   "title": "Co-Dependency",
+   "ringOn": false,
+   "words": 265,
+   "nums": 54,
+   "firstScreenWords": 37,
+   "text": "Field\nSacral\nCo-Dependency\nSave\nBookmark\nShare\nPelvic Splanchnic Nerves · axis Neediness\nHow it runs through you\nHeld 4.3, opposite installed 0.0, net SQ 4.3. Distorts as Self-abandonment.\nThe Opposite\nThis sits on the Disgust toward Acceptance axis, at the sacral and dermis. Acceptance is what fills this address once it is emptied.\nFeeds 9\nRigidity 5.2\nPerfectionist + Stickler 6.5\nJudge + Skeptic 4.8\nDiffuse Recoiler + Heart Recoiler 4.2\nPerfectionist 6.5\nStickler 6.5\nJudge 5.0\nSkeptic 4.5\nRun the protocol here\nCo-Dependency, Disgust toward Acceptance. Four channels, twenty five lines.\n62%\nGaining\nThe field builds more than it spends, and the margin is thin.\nReading\nMarcus\n44, creative director\nI can see what is wrong with anything in four seconds. It has cost me two studios.\nArchetypes\nFirst\n20%\nSecond\n19%\nThird\n13%\nDomains\nFirst\n100%\nField\nCarrying\n3 addresses\nFilled in\n8 addresses\nHeaviest\nThroat\n1.9\nMost shut\nForgiveness\nat the heart\nChild emotions\n9\nSaboteurs\n9\nComplexes\n3\nHyper\n1\nCharacter\nNine axes, two ends each. Held is the state you are carrying. Opposite is the coherent quality on the far side of it. Release empties the first, replace fills the second.\nheld\nopposite\n2.0\nFear\nTrust\n0.0\n5.9\nAnger\nEquanimity\n0.0\n2.3\nShame\nWorth\n0.0\n6.8\nDisgust\nAcceptance\n0.0\n1.5\nApathy\nVitality\n0.0\n1.5\nShock\nGroundedness\n0.0\n1.5\nSad\nJoy\n0.0\n1.0\nSurprise\nReadiness\n8.9\n3.0\nAnticipation\nP"
+  }
+ },
+ "angela-390": {
+  "reading": {
+   "who": "Angela",
+   "i": 4,
+   "lines": 6,
+   "CQ": 64.4,
+   "DQ": 6.7,
+   "SQ": null,
+   "tier": "Gaining",
+   "unread": false,
+   "held": 74,
+   "heavy": 0,
+   "top": {
+    "i": 1,
+    "k": "Fear",
+    "seat": "Root",
+    "sq": 3.1
+   },
+   "top3": [
+    "Fear 3.1 Root",
+    "Control 3.1 Root",
+    "Insecurity 3.1 Root"
+   ]
+  },
+  "shelf": {
+   "state": "item",
+   "title": "Fear",
+   "ringOn": true,
+   "words": 257,
+   "nums": 51,
+   "firstScreenWords": 35,
+   "text": "Field\nRoot\nFear\nSave\nBookmark\nShare\nLumbar Plexus · axis Instinct, threat\nHow it runs through you\nHeld 3.1, opposite installed 0.0, net SQ 3.1. Distorts as Avoidance.\nThe Opposite\nThis sits on the Fear toward Trust axis, at the lumbar plexus. Trust is what fills this address once it is emptied.\nFeeds 3\nInnocent + Negotiator 3.5\nInnocent 4.0\nNegotiator 3.0\nRun the protocol here\nFear, Fear toward Trust. Four channels, twenty five lines.\n64%\nGaining\nThe field builds more than it spends, and the margin is thin.\nReading\nAngela\n36, seeker, six modalities\nEverything happens for a reason. I have said that at three funerals and I believed it each time.\nArchetypes\nFirst\n21%\nSecond\n19%\nThird\n13%\nDomains\nFirst\n100%\nField\nCarrying\nnothing yet\n74 sitting under the line\nFilled in\n30 addresses\nHeaviest\nRoot\n1.2\nMost shut\nHumility\nat the 3rd eye\nChild emotions\n9\nSaboteurs\n12\nComplexes\n5\nHyper\n2\nCharacter\n1\nNine axes, two ends each. Held is the state you are carrying. Opposite is the coherent quality on the far side of it. Release empties the first, replace fills the second.\nheld\nopposite\n4.1\nFear\nTrust\n0.0\n1.0\nAnger\nEquanimity\n0.0\n2.5\nShame\nWorth\n0.0\n1.0\nDisgust\nAcceptance\n9.1\n2.0\nApathy\nVitality\n0.0\n2.0\nShock\nGroundedness\n0.0\n7.9\nSad\nJoy\n9.4\n1.5\nSurprise\nReadiness\n0.0\n2.0\nAnticipation\nPresence\n0.0\nInstruments\nintegrity 6.2 of 10\nintention 6.3 of 10\npole in 1.86 of 10\novershoot 1.83 of 10, 33 o"
+  },
+  "dial": {
+   "box": [
+    8,
+    421,
+    374,
+    335
+   ],
+   "labels": 12,
+   "sample": [
+    "64CQ",
+    "7DQ",
+    "–",
+    "–",
+    "–",
+    "–",
+    "–",
+    "–",
+    "Innocent",
+    "First archetype",
+    "Humility",
+    "Most shut law. 2.1 of 10"
+   ],
+   "stageNumbers": 10
+  },
+  "dialPress": {
+   "state": "item",
+   "title": "Fear",
+   "ringOn": false,
+   "words": 257,
+   "nums": 51,
+   "firstScreenWords": 35,
+   "text": "Field\nRoot\nFear\nSave\nBookmark\nShare\nLumbar Plexus · axis Instinct, threat\nHow it runs through you\nHeld 3.1, opposite installed 0.0, net SQ 3.1. Distorts as Avoidance.\nThe Opposite\nThis sits on the Fear toward Trust axis, at the lumbar plexus. Trust is what fills this address once it is emptied.\nFeeds 3\nInnocent + Negotiator 3.5\nInnocent 4.0\nNegotiator 3.0\nRun the protocol here\nFear, Fear toward Trust. Four channels, twenty five lines.\n64%\nGaining\nThe field builds more than it spends, and the margin is thin.\nReading\nAngela\n36, seeker, six modalities\nEverything happens for a reason. I have said that at three funerals and I believed it each time.\nArchetypes\nFirst\n21%\nSecond\n19%\nThird\n13%\nDomains\nFirst\n100%\nField\nCarrying\nnothing yet\n74 sitting under the line\nFilled in\n30 addresses\nHeaviest\nRoot\n1.2\nMost shut\nHumility\nat the 3rd eye\nChild emotions\n9\nSaboteurs\n12\nComplexes\n5\nHyper\n2\nCharacter\n1\nNine axes, two ends each. Held is the state you are carrying. Opposite is the coherent quality on the far side of it. Release empties the first, replace fills the second.\nheld\nopposite\n4.1\nFear\nTrust\n0.0\n1.0\nAnger\nEquanimity\n0.0\n2.5\nShame\nWorth\n0.0\n1.0\nDisgust\nAcceptance\n9.1\n2.0\nApathy\nVitality\n0.0\n2.0\nShock\nGroundedness\n0.0\n7.9\nSad\nJoy\n9.4\n1.5\nSurprise\nReadiness\n0.0\n2.0\nAnticipation\nPresence\n0.0\nInstruments\nintegrity 6.2 of 10\nintention 6.3 of 10\npole in 1.86 of 10\novershoot 1.83 of 10, 33 o"
+  }
+ },
+ "derek-390": {
+  "reading": {
+   "who": "Derek",
+   "i": 5,
+   "lines": 6,
+   "CQ": 49.1,
+   "DQ": 35.8,
+   "SQ": null,
+   "tier": "Oscillating",
+   "unread": false,
+   "held": 90,
+   "heavy": 46,
+   "top": {
+    "i": 25,
+    "k": "Manipulation Through Emotion",
+    "seat": "Sacral",
+    "sq": 9.5
+   },
+   "top3": [
+    "Manipulation Through Emotion 9.5 Sacral",
+    "Pride 8.8 Solar",
+    "Arrogance 8.8 Solar"
+   ]
+  },
+  "shelf": {
+   "missed": "no hit point found for Manipulation Through Emotion"
+  },
+  "dial": {
+   "box": [
+    8,
+    421,
+    374,
+    335
+   ],
+   "labels": 10,
+   "sample": [
+    "49CQ",
+    "36DQ",
+    "–",
+    "–",
+    "–",
+    "–",
+    "–",
+    "–",
+    "Caregiver",
+    "First archetype"
+   ],
+   "stageNumbers": 10
+  },
+  "dialPress": {
+   "state": "item",
+   "title": "Manipulation Through Emotion",
+   "ringOn": false,
+   "words": 281,
+   "nums": 55,
+   "firstScreenWords": 38,
+   "text": "Field\nSacral\nManipulation Through Emotion\nSave\nBookmark\nShare\nUterovaginal Plexus · axis Control\nHow it runs through you\nHeld 9.5, opposite installed 0.0, net SQ 9.5. Distorts as Emotional blackmail.\nThe Opposite\nThis sits on the Anger toward Equanimity axis, at the celiac plexus. Equanimity is what fills this address once it is emptied.\nFeeds 8\nGrandiosity / Predatory 6.8\nDysregulation / Collapse 5.8\nPredatory 6.6\nCollapse 5.6\nSacral Striker + Throat Striker 7.8\nVictim + Imposter 6.8\nSacral Striker 7.9\nImposter 6.5\nRun the protocol here\nManipulation Through Emotion, Anger toward Equanimity. Four channels, twenty five lines.\n49%\nOscillating\nThe median range is forty to sixty and fifty is the centre of the line. The field crosses it in both directions.\nReading\nDerek\n39, high performer, endurance\nPain is information. I have raced on a stress fracture. I would do it again.\nArchetypes\nFirst\n17%\nSecond\n14%\nThird\n11%\nDomains\nFirst\n100%\nField\nCarrying\n46 addresses\nFilled in\n11 addresses\nHeaviest\nSolar\n5.8\nMost shut\nTemperance\nat the sacral\nChild emotions\n9\nSaboteurs\n37\nComplexes\n17\nHyper\n5\nCharacter\n2\nNine axes, two ends each. Held is the state you are carrying. Opposite is the coherent quality on the far side of it. Release empties the first, replace fills the second.\nheld\nopposite\n7.4\nFear\nTrust\n0.0\n9.8\nAnger\nEquanimity\n0.0\n6.0\nShame\nWorth\n0.0\n4.0\nDisgust\nAcceptance\n0.0\n4.1\nApathy\nV"
+  }
+ },
+ "james-390": {
+  "reading": {
+   "who": "James",
+   "i": 6,
+   "lines": 5,
+   "CQ": 43.7,
+   "DQ": 34.5,
+   "SQ": null,
+   "tier": "Oscillating",
+   "unread": false,
+   "held": 90,
+   "heavy": 37,
+   "top": {
+    "i": 14,
+    "k": "Escapism",
+    "seat": "Root",
+    "sq": 9.3
+   },
+   "top3": [
+    "Escapism 9.3 Root",
+    "Addiction 9.3 Sacral",
+    "Lust 9.3 Sacral"
+   ]
+  },
+  "shelf": {
+   "state": "item",
+   "title": "Escapism",
+   "ringOn": true,
+   "words": 279,
+   "nums": 55,
+   "firstScreenWords": 37,
+   "text": "Field\nRoot\nEscapism\nSave\nBookmark\nShare\nSciatic Nerve · axis Facing pain\nHow it runs through you\nHeld 9.3, opposite installed 0.0, net SQ 9.3. Distorts as Running.\nThe Opposite\nThis sits on the Apathy toward Vitality axis, at the shoulder girdle and throat. Vitality is what fills this address once it is emptied.\nFeeds 8\nDysregulation / Collapse 6.5\nDissociation / Predatory 6.0\nDysregulation 6.8\nDissociation 6.1\nDramatizer + Overthinker 6.8\nAvoider + Diffuse Drifter 4.9\nOverthinker 6.5\nAvoider 5.5\nRun the protocol here\nEscapism, Apathy toward Vitality. Four channels, twenty five lines.\n44%\nOscillating\nThe median range is forty to sixty and fifty is the centre of the line. The field crosses it in both directions.\nReading\nJames\n57, C-suite, third turnaround\nI make the call and I sleep fine. People find that cold. It is what they hired.\nArchetypes\nFirst\n20%\nSecond\n16%\nThird\n14%\nDomains\nFirst\n100%\nField\nCarrying\n37 addresses\nFilled in\n6 addresses\nHeaviest\nSacral\n5.5\nMost shut\nCompassion\nat the heart\nChild emotions\n9\nSaboteurs\n29\nComplexes\n13\nHyper\n5\nCharacter\n2\nNine axes, two ends each. Held is the state you are carrying. Opposite is the coherent quality on the far side of it. Release empties the first, replace fills the second.\nheld\nopposite\n6.0\nFear\nTrust\n0.0\n10.0\nAnger\nEquanimity\n0.0\n7.0\nShame\nWorth\n8.4\n7.0\nDisgust\nAcceptance\n0.0\n8.8\nApathy\nVitality\n0.0\n7.0\nShock\nGroundedness\n9.3"
+  },
+  "dial": {
+   "box": [
+    8,
+    421,
+    374,
+    335
+   ],
+   "labels": 10,
+   "sample": [
+    "44CQ",
+    "35DQ",
+    "–",
+    "–",
+    "–",
+    "–",
+    "–",
+    "–",
+    "Addiction",
+    "Sacral. SQ 9.3"
+   ],
+   "stageNumbers": 10
+  },
+  "dialPress": {
+   "state": "item",
+   "title": "Addiction",
+   "ringOn": false,
+   "words": 280,
+   "nums": 55,
+   "firstScreenWords": 36,
+   "text": "Field\nSacral\nAddiction\nSave\nBookmark\nShare\nSacral Plexus · axis Craving\nHow it runs through you\nHeld 9.3, opposite installed 0.0, net SQ 9.3. Distorts as Obsession.\nThe Opposite\nThis sits on the Apathy toward Vitality axis, at the shoulder girdle and throat. Vitality is what fills this address once it is emptied.\nFeeds 12\nDysregulation / Collapse 6.5\nDissociation / Predatory 6.0\nCollapse 6.2\nDissociation 6.1\nRigidity 5.4\nImposter + Pessimist 6.5\nNihilist + Cynic 7.0\nAvoider + Sacral Drifter 7.4\nRun the protocol here\nAddiction, Apathy toward Vitality. Four channels, twenty five lines.\n44%\nOscillating\nThe median range is forty to sixty and fifty is the centre of the line. The field crosses it in both directions.\nReading\nJames\n57, C-suite, third turnaround\nI make the call and I sleep fine. People find that cold. It is what they hired.\nArchetypes\nFirst\n20%\nSecond\n16%\nThird\n14%\nDomains\nFirst\n100%\nField\nCarrying\n37 addresses\nFilled in\n6 addresses\nHeaviest\nSacral\n5.5\nMost shut\nCompassion\nat the heart\nChild emotions\n9\nSaboteurs\n29\nComplexes\n13\nHyper\n5\nCharacter\n2\nNine axes, two ends each. Held is the state you are carrying. Opposite is the coherent quality on the far side of it. Release empties the first, replace fills the second.\nheld\nopposite\n6.0\nFear\nTrust\n0.0\n10.0\nAnger\nEquanimity\n0.0\n7.0\nShame\nWorth\n8.4\n7.0\nDisgust\nAcceptance\n0.0\n8.8\nApathy\nVitality\n0.0\n7.0\nShock\nGroundedness\n9.3\n"
+  }
+ }
+}

@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Feathers, fanned to centred</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="inter.css">
+<script src="data-james.js"></script><script src="kit.js"></script>
+<script src="data-feathers.js"></script><script src="feathers-core.js"></script>
+<style>
+/* the product's Dark tokens, as kit.css lifts them from shell/head.html. This
+   sheet does not take kit.css itself, because that file pins the body to the
+   1600 stage and this page has to lay out at 390 as well. */
+:root{
+ --bg:#0C0D12; --panel:#1A1D26; --sunk:#090A0E; --stage:#101010;
+ --edge:rgba(255,255,255,.09); --edge-2:rgba(255,255,255,.14);
+ --ink:#EFEDE8; --mid:#B4B0A8; --dim:#94908A; --accent:#7EB8D4; --on-accent:#0B1418;
+ --sans:'Inter',system-ui,sans-serif; --r:16px; --r-xs:8px; --tap:44px;
+ --ease-out:cubic-bezier(.22,1,.36,1);
+}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+body{padding:28px 24px 40px}
+.wrap{max-width:1552px;margin:0 auto}
+.eye{font-size:11px;line-height:16px;color:var(--dim);letter-spacing:.02em}
+h1{font-size:22px;line-height:30px;font-weight:500;margin:2px 0 8px}
+h2{font-size:15px;line-height:22px;font-weight:600;margin:0}
+.lede{font-size:13px;line-height:20px;color:var(--mid);max-width:780px;margin:0}
+.sub{font-size:12px;line-height:18px;color:var(--dim);margin:2px 0 12px;max-width:780px}
+section{margin-top:30px}
+.row{display:grid;grid-template-columns:repeat(4,380px);gap:14px}
+.card{background:var(--stage);border:1px solid var(--edge);border-radius:var(--r);overflow:hidden}
+.card svg{display:block;margin:0 auto}
+.cap{padding:0 16px 14px}
+.cap .nm{font-size:13px;line-height:18px;font-weight:600;color:var(--ink)}
+.cap .ro{font-size:12px;line-height:17px;color:var(--dim)}
+.cap .fo{font-size:12px;line-height:17px;color:var(--mid);margin-top:6px}
+.proj{display:grid;grid-template-columns:380px 1fr;gap:14px;align-items:stretch}
+.side{background:var(--stage);border:1px solid var(--edge);border-radius:var(--r);padding:16px 18px;display:flex;flex-direction:column;gap:12px}
+.fig-l{font-size:11px;line-height:14px;font-weight:600;color:var(--dim)}
+.fig-v{font-size:22px;line-height:28px;font-weight:500;font-variant-numeric:tabular-nums;color:var(--ink)}
+.ctl{display:flex;align-items:center;gap:12px}
+.ctl input[type=range]{flex:1 1 auto;min-width:0;height:var(--tap);accent-color:var(--accent);margin:0}
+.btn{min-height:var(--tap);min-width:88px;padding:0 16px;border-radius:var(--r-xs);border:1px solid var(--edge-2);
+ background:transparent;color:var(--ink);font:inherit;font-size:13px;font-weight:500;cursor:pointer}
+.btn:hover{background:var(--sunk)}
+.btn:focus-visible,.ctl input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.note{font-size:12px;line-height:18px;color:var(--mid);max-width:620px;margin:0}
+.note b{color:var(--ink);font-weight:600}
+.stops{display:flex;gap:8px;flex-wrap:wrap}
+.stops .btn{min-width:0;font-size:12px}
+@media (max-width:700px){
+ body{padding:20px 16px 32px}
+ h1{font-size:19px;line-height:26px}
+ .row{grid-template-columns:1fr 1fr;gap:10px}
+ .proj{grid-template-columns:1fr}
+ .cap{padding:0 10px 10px}
+}
+</style>
+</head><body><div class="wrap">
+<div class="eye">Proto, feathers. Mockup</div>
+<h1>The feathers, fanned out to centred</h1>
+<p class="lede">Each of the twenty one laws is a feather. Its length is how far the law sits off centre, and it points at the seat the law is seated at. The zero is the ring round the number. A law held at ten folds down to a seed on that ring, so no reading can reach the number.</p>
+
+<section>
+<h2>Four people, one scale</h2>
+<p class="sub" id="s1sub">Reference profiles off the live build, drawn at the stage's own size. Four different people. The product keeps a history of the number and none of the laws, so no one person's feathers can be shown shrinking yet.</p>
+<div class="row" id="ladder"></div>
+</section>
+
+<section>
+<h2>One person, projected forward</h2>
+<p class="sub">James, from where he reads today. Each release closes 0.077 per cent of what is left between every law at its seat and ten. The rate was ruled on 25 September. Releases are spread the way the body is built. The arithmetic, run forward. Nobody's record is behind it.</p>
+<div class="proj">
+ <div class="card" id="projfig"></div>
+ <div class="side">
+  <div><div class="fig-l">Releases</div><div class="fig-v" id="relv">0</div></div>
+  <div class="ctl"><input type="range" id="rel" min="0" max="15000" step="50" value="0" aria-label="Releases, from none to fifteen thousand"><button class="btn" id="play" type="button">Play</button></div>
+  <div class="stops" id="stops"></div>
+  <p class="note">A single release moves a feather by less than a tenth of a pixel, so on the day nothing visibly moves. Fifteen thousand is the number the owner gave for his own releases, and it takes James from 44 to about 89. <b>A release shrinks the figure. Only a new answer to the questions changes its shape.</b></p>
+ </div>
+</div>
+</section>
+
+<section>
+<h2>Not read yet</h2>
+<p class="sub">Built for this sheet: the blank profile taken seven laws into the sixty three questions, through the intake's own path. Coherence counts an unanswered law as nought, so the arithmetic puts it all the way out. Drawn hollow, it says not read yet.</p>
+<div class="row" id="mid"></div>
+</section>
+</div>
+<script>
+(function(){
+const K=window.K, FT=window.FEATHER, FD=window.FEATHERS, F=K.F;
+const phone=()=>window.matchMedia('(max-width:700px)').matches;
+/* the scale. At 1600 the stage's own. At a phone's width, the size the core
+   gets if the whole 922 wide stage shrinks to 376, which is 0.41 */
+const S=()=>phone()?376/922:1;
+const TIER=[[91,'Mastery'],[81,'Embodied'],[71,'Compounding'],[61,'Gaining'],[51,'Even'],[41,'Oscillating'],
+ [31,'Incoherent'],[21,'Corrupt'],[11,'Severe'],[0,'Collapsed']];
+const tierOf=cq=>{for(const t of TIER)if(cq>=t[0])return t[1];return 'Collapsed';};
+const rangeOf=cq=>{cq=K.clamp(cq,0,100);const sw=1-cq/100,bp=2.5+sw*sw*26;return {lo:Math.max(0,cq-bp/2),hi:Math.min(100,cq+bp/2)};};
+const bear=FT.bearings();
+const row=nm=>FD.rows.find(r=>r.nm===nm);
+/* James as the stage has him, so the sheet and the stage are one James */
+const jamesStage=()=>{const J=row('James');return Object.assign({},J,{CQ:F.CQ,tierCol:F.tierCol,range:F.range});};
+
+function drawInto(host,prof,s,titles){
+ host.innerHTML='';
+ /* sized to hold the seat glyphs and nothing more: at 1600 that is 376, inside
+    the 380 card. The first cut was 396 and cut the sacral glyph off every card */
+ const lim=FT.limit(FT.G), gsz=Math.max(10,13*s), gr=lim*s+gsz*.5+3*s+1, R=gr+gsz*.5+1, W=Math.ceil(2*R+4), H=W;
+ const svg=K.el('svg',{width:W,height:H,viewBox:'0 0 '+W+' '+H,role:'img',
+  'aria-label':prof.nm+', coherence '+Math.round(prof.CQ)+', twenty one laws as feathers'},null);
+ host.appendChild(svg);
+ const defs=K.el('defs',{},svg), cx=W/2, cy=H/2;
+ const fig=FT.figure(svg,cx,cy,prof,{s:s,bear:bear,defs:defs});
+ /* each fan names its direction with its seat's glyph, just past the limit,
+    the way the ring's own glyphs name it on the stage. no word. */
+ K.SEATS.forEach(b=>{const th=bear[b];K.seatGlyph(svg,b,cx+Math.cos(th)*gr,cy+Math.sin(th)*gr,gsz);});
+ if(titles)fig.marks.forEach(m=>{const l=m.l;K.title(m.g,l.nm+'. Seated at the '+l.b.toLowerCase()+'. '
+  +(l.in?'Reads '+l.v.toFixed(1)+', off centre '+FT.gap(l).toFixed(1)+'.':'Not read yet.'));});
+ return fig;}
+
+function card(host,prof,cap){
+ const c=document.createElement('div');c.className='card';host.appendChild(c);
+ const f=document.createElement('div');c.appendChild(f);
+ drawInto(f,prof,S(),true);
+ const t=document.createElement('div');t.className='cap';
+ const fo=FT.furthest(prof.laws);
+ t.innerHTML='<div class="nm">'+prof.nm+'</div><div class="ro">'+(prof.role||'')+'</div>'
+  +'<div class="fo">'+(cap||('Furthest out at the '+fo.b.toLowerCase()+'.'))+'</div>';
+ c.appendChild(t);return c;}
+
+/* the ladder: the lowest reading in the roster, the stage's own, the ICP who
+   leans hardest in one seat, and the owner's own profile */
+const who=['Gordon','James','Sofia','Lance'];
+const checks=[];
+function ladder(){const h=document.getElementById('ladder');h.innerHTML='';
+ who.forEach(nm=>{const p=nm==='James'?jamesStage():row(nm);card(h,p);checks.push(Object.assign({nm:nm},FT.check(p.laws,p.CQ)));});}
+function mid(){const h=document.getElementById('mid');h.innerHTML='';
+ const m=FD.mid;card(h,m,'Seven read, fourteen not read yet.');checks.push(Object.assign({nm:m.nm},FT.check(m.laws,m.CQ)));}
+
+/* THE PROJECTION. The ruled lift on James's own laws. */
+const J0=jamesStage();
+const pf=document.getElementById('projfig'), rel=document.getElementById('rel'), relv=document.getElementById('relv');
+function project(N){
+ const p=FT.project(J0,N,FD.seatN,FD.liftR);
+ p.tierCol=F.tiercol[tierOf(p.CQ)]; p.range=rangeOf(p.CQ);
+ p.nm='James'; p.role='projected, '+N.toLocaleString('en-GB')+' releases';
+ pf.innerHTML='';const f=document.createElement('div');pf.appendChild(f);drawInto(f,p,S(),true);
+ relv.textContent=N.toLocaleString('en-GB');
+ window.__proj={N:N,CQ:p.CQ,tier:tierOf(p.CQ),check:FT.check(p.laws,p.CQ)};}
+rel.addEventListener('input',()=>project(+rel.value));
+/* stops, so the states can be compared without scrubbing */
+[0,1000,5000,15000].forEach(n=>{const b=document.createElement('button');b.className='btn';b.type='button';
+ b.textContent=n.toLocaleString('en-GB');b.addEventListener('click',()=>{rel.value=n;project(n);});
+ document.getElementById('stops').appendChild(b);});
+/* PLAY. The motion seat's to set for the product; this is a scrub so the
+   shrink can be watched. Six seconds, eased out, no overshoot, because an
+   overshoot would show a reading the arithmetic never reaches. Reduced motion
+   lands on the end state. */
+let raf=0;
+document.getElementById('play').addEventListener('click',()=>{
+ cancelAnimationFrame(raf);
+ if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){rel.value=15000;project(15000);return;}
+ const t0=performance.now(),T=6000;
+ const step=t=>{const u=K.clamp((t-t0)/T,0,1),e=1-Math.pow(1-u,3),N=Math.round(e*15000/50)*50;
+  rel.value=N;project(N);if(u<1)raf=requestAnimationFrame(step);};
+ raf=requestAnimationFrame(step);});
+
+function all(){checks.length=0;ladder();mid();project(+rel.value);
+ const sub=document.getElementById('s1sub');
+ if(phone())sub.textContent="Drawn at 0.41 of the stage, the size the core gets if the nested frames shrink to a phone's width. Four different people. The product keeps a history of the number and none of the laws.";
+ window.__checks=checks.slice();}
+all();
+let last=phone();window.addEventListener('resize',()=>{if(phone()!==last){last=phone();all();}});
+})();
+</script>
+</body></html>

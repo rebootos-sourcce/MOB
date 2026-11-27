@@ -1,0 +1,738 @@
+/* ============================================================
+   SOURCE AI, THE LISTENING HALF. Ruled 27 September, round GO in TASKS.md.
+
+   The owner, verbatim: "it doesn't use definitions, it's discerning the
+   energy behind the story. It's able to probe questions from a scale of zero
+   to 10 that are just seven, eight, nine, and 10. Looking for the root which
+   is usually a 10." And: "it's their job to lead ... if they want to move on,
+   source's job isn't to dig deeper, it's just to go cool."
+
+   The whole specification is reviews/SPEC-source-ai.md. This file is the
+   part that is arithmetic, and it is kept here, host free and pure, so the
+   same reading can run in a browser, in node under tests/engine.js, and
+   behind the sign in seam if a model is ever put there.
+
+   WHAT THE ZERO TO TEN MEASURES, AND WHY IT IS NOT THE SNIFFER'S OWN.
+
+   parseStory already puts a zero to ten on every seat an entry touches,
+   min(10, sum/3). It is the obvious scale and it cannot carry this ruling.
+   Measured on the shipped lexicon: the median single word reads 7.33 on its
+   own, and 149 of 219 words clear seven alone, so "ask only at seven and
+   over" on that number would ask about 68 percent of every story bank line
+   the sniffer reads at all. That number measures how hot a word is. It does
+   not measure a pattern, and the owner asked for pattern.
+
+   So this scale is evidence of return. A pattern is something that comes
+   back, and the rung counts how much of that the text actually shows:
+
+     0      nothing read at that seat, or every mention of it negated
+     1..6   heard once in this entry. The sniffer's own reading, capped at
+            six, so one word is heard and never questioned however hot it is
+     7      the entry comes back to the same seat a second time
+     8      a third time or more
+     9      an earlier committed entry touched this seat too
+     10     it comes back across entries and again inside this one, or in two
+            or more earlier entries. The root candidate.
+
+   Every rung is a count a person could check by reading their own words,
+   which is the explainability duty: Source AI can always say why it asked.
+
+   WHAT IT READS, AND WHAT IT MAY NOT.
+
+   The entry's text, and the seat keys earlier commits already stored on the
+   person's own record (CURP.story.entries[].bands). Not the text of earlier
+   entries and not the name. Nothing here leaves the device and nothing here
+   can, because the engine has no host. Whether Source AI may read earlier
+   entries at all is DESIGN-sniffer.md question 12 and is the owner's; with
+   no prior passed in, rungs 9 and 10 cannot occur and the rest still work.
+
+   WHAT IT NEVER DOES.
+
+   It never names an address, a fetter or a saboteur to the person, because
+   those are definitions and the ruling is that it does not use them. It
+   never says why about the person. One because is allowed, ruled 27
+   September in TASKS.md round JX, and it is about the body, never the
+   person: `ui/storyui.js`'s `srcWhy` names the seat's nerve place and the
+   mechanism the product already states as its own definition of Charge.
+   Source AI still never answers the why it asks about the person; the
+   person still finds that root themselves.
+   ============================================================ */
+
+/* the owner's own two numbers. asked at seven and over, the root at ten. */
+var SRC_ASK=7, SRC_ROOT=10;
+/* one mention is heard and never questioned, whatever the word weighs. */
+var SRC_ONCE=6;
+
+/* NEGATION. This was "NEGATION, WHICH THE SNIFFER DOES NOT READ": "I was not
+   angry" and "I was angry" parsed to the same seat and the same amount, and
+   Source AI was the one reader that set the first aside. Since S1 of
+   REVIEW-sniffer-audit-2026-10-09.md the sniffer reads it with this same
+   call: sniffDeny in engine/sniff.js asks srcNegated, flags the hit, and
+   parseStory counts it nowhere. srcHear reads that flag and no longer asks
+   here itself, so the question and the score cannot disagree. Asking somebody
+   why they are angry after they wrote that they are not is the false
+   positive this seat was told costs more than a miss. So a mention counts
+   only when neither of the two words before it is a negation.
+
+   The window is two words and not the three the laws use, and "did" is not in
+   the list. Measured on the owner's book: the three word window dropped
+   "could not stop" because "not choose and" sat before it, across a
+   conjunction, and "did" would mute "I did cry". Measured on the story bank:
+   this drops nothing, because the lexicon's own negative phrases, "not told
+   anyone", carry the negation inside the match. */
+var SRC_NEG=['not','no','never','nobody','none','cannot','cant','didnt','dont',
+ 'doesnt','wont','wasnt','werent','isnt','arent','havent','hasnt','couldnt','wouldnt'];
+var SRC_NEG_W=2;
+/* THE SENTENCE BOUNDARY, round NQ, AUDIT-source-tdd-v3.md's own finding:
+   "the core parse path itself reads no negation at all," and this is the
+   one piece of it srcHear does read. Measured before this fix: "I am not
+   afraid. Afraid now." read both mentions negated, the second sentence
+   voided by the first one's own "not". floor is sniff.js's own
+   clauseFloor, the normalised offset of the nearest sentence end before
+   at, or -1 when there is none to find; srcHear passes it, and nothing
+   else does, so every existing caller and the gate's own direct call,
+   srcNegated(' i did cry ',6), is unaffected: floor undefined reads as no
+   boundary, the exact width and word list this was measured against
+   stand exactly as they were. */
+/* AND IT READS BACK FROM at, NOT FORWARD FROM f, SZA9 of round SZ. With no
+   sentence end in the text, which is the ordinary shape of dictated speech,
+   f is 0, so every mention sliced and split the whole entry up to itself to
+   keep two words, and the parse grew with the square of the entry: 16,000
+   unpunctuated characters took 193 ms where the same words punctuated took
+   37. The window now starts 32 characters back and doubles until it holds
+   one word more than the run needs, or reaches f. Its first word may be cut
+   in half, and that is why it needs one more: the cut word is never in the
+   run, so the run is the same words the whole slice would have given, and
+   when the window reaches f it is the whole slice. */
+function srcNegated(src,at,floor){
+ var f=(typeof floor==='number'&&floor>=0)?floor+1:0;
+ var s=String(src), w=32, lo, before;
+ for(;;){
+  lo=Math.max(f,at-w);
+  before=s.slice(lo,at).trim().split(' ');
+  if(lo===f||before.length>SRC_NEG_W)break;
+  w*=2;}
+ var run=before.slice(Math.max(0,before.length-SRC_NEG_W));
+ return run.some(function(w){return SRC_NEG.indexOf(w)>=0;});}
+
+/* how many earlier committed entries touched each seat. Reads only the seat
+   keys a commit already stored, never the text. */
+function srcPrior(entries){
+ var out={};
+ (entries||[]).forEach(function(e){
+  Object.keys((e&&e.bands)||{}).forEach(function(k){
+   if(K2BAND[k]&&(e.bands[k]||0)>0)out[k]=(out[k]||0)+1;});});
+ return out;}
+
+/* the rung for one seat, from the three counts, and now a fourth: whether
+   the seat sits inside a hyper complex the person's own charge is actually
+   driving right now. Round of 27 October, his words: the sniffer hears a
+   seat once and stops, but the field already knows that seat is load
+   bearing for a pattern running across several addresses at once, the
+   engine's own hy.parts chain, and Source AI should recognise that the same
+   way it recognises a seat it has heard before. Structural evidence reaches
+   the same rung a real earlier commit would (9), never the top rung (10,
+   reserved for a real repeated mention), and never on its own: a seat
+   nobody has said anything about this entry is never asked about, mentions
+   stays the gate at the top of this function. This was built once already,
+   27 October, and was lost before it reached main; rebuilt the same day
+   after it turned out not to be running. */
+function srcRung(mentions,earlier,reading,structural){
+ if(!mentions)return 0;
+ if(earlier>=2||(earlier>=1&&mentions>=2))return 10;
+ if(earlier>=1||structural)return 9;
+ if(mentions>=3)return 8;
+ if(mentions>=2)return 7;
+ return Math.max(1,Math.min(SRC_ONCE,Math.round(reading||0)));}
+
+/* WHICH SEATS A DRIVEN HYPER COMPLEX ACTUALLY SITS ON. Walks the engine's
+   own chain, hy.parts (complexes) to cx.parts (two saboteurs each) to
+   sab.parts (the real addresses), and collects the seat (band) each address
+   belongs to. Returns a lowercase-keyed set matching srcPrior's own key
+   space, {root:true, solar:true, ...}, never a complex's name: this module's
+   standing rule is it never names a definition to the person, only ever
+   acts on what it recognises, and a seat code is not a name. r is a real
+   compute() result; r.hys is the engine's own hyper complex list. */
+var SRC_B2K=null;
+function srcHyperSeats(r){
+ if(!SRC_B2K){SRC_B2K={};Object.keys(K2BAND).forEach(function(k){SRC_B2K[K2BAND[k]]=k;});}
+ var out={};
+ ((r&&r.hys)||[]).forEach(function(hy){
+  (hy.parts||[]).forEach(function(cx){
+   (cx.parts||[]).forEach(function(sab){
+    (sab.parts||[]).forEach(function(n){
+     var k=n&&n.b&&SRC_B2K[n.b];
+     if(k)out[k]=true;});});});});
+ return out;}
+
+/* HEAR AN ENTRY. text is what the person typed. prior is srcPrior of their
+   own earlier entries, or nothing. Returns every seat heard, heaviest rung
+   first, with the person's own words for each, which is what Source AI says
+   back instead of a definition. */
+function srcHear(text,prior,active){
+ var t=String(text||'');
+ var out={unread:true, seats:[], top:null, root:null, asks:false};
+ if(!t.trim())return out;
+ /* an entry srcSafe stops (engine/safe.js) is heard as nothing, which
+    parseStory already gives, and says so, so srcTurn asks nothing and the
+    page puts the crisis door where the question was. In memory only. */
+ if(srcSafe(t)){out.safe=true;return out;}
+ var p=parseStory(t), nm=normMap(t), by={}, den={}, oth={};
+ /* THE ENGINE'S OWN FLAG, S1. Every word read, counted or said with a no,
+    walked in order; a step the parse denied is counted as negated and never
+    heard, which is the rule this always ran, now asked once in sniffDeny.
+    A word about someone else, S2, is not the writer's and is not walked at
+    all: no question is asked of a person about another person's anger. */
+ (p.denied||[]).forEach(function(h){den[h.at]=1;});
+ (p.others||[]).forEach(function(h){oth[h.at]=1;});
+ pathOf(storyHits(p)).steps.forEach(function(s){
+  if(!s.seat||s.coherent||oth[s.at])return;
+  var o=by[s.seat]=by[s.seat]||{seat:s.seat, band:K2BAND[s.seat],
+   reading:Math.min(10,(p.bands[s.seat]||0)/3), mentions:0, negated:0, words:[]};
+  if(den[s.at]){o.negated++;return;}
+  o.mentions++;
+  /* the person's own letters, through the same map marksOf uses, so what is
+     quoted back is what they typed and not the lowercased copy. */
+  var a=s.at+1, b=s.at+String(s.word).length;
+  var w=(a<nm.map.length&&b<nm.map.length)?t.slice(nm.map[a],nm.map[b]+1):s.word;
+  /* the same word in two cases is one word said twice, not two words:
+     "Afraid" then "afraid" was quoted back as “Afraid” and “afraid” */
+  if(!o.words.some(function(x){return x.toLowerCase()===String(w).toLowerCase();}))o.words.push(w);});
+ var P=prior||{};
+ var A=active||{};
+ out.seats=Object.keys(by).map(function(k){var o=by[k];
+  o.earlier=P[k]||0;
+  o.structural=!!A[k];
+  o.rung=srcRung(o.mentions,o.earlier,o.reading,o.structural);
+  o.reading=Math.round(o.reading*10)/10;
+  return o;})
+  .filter(function(o){return o.rung>0;})
+  /* heaviest rung first, then the sniffer's own reading, then the seat key so
+     the order is a property of the text and never of object key order. */
+  .sort(function(a,b){return b.rung-a.rung||b.reading-a.reading||(a.seat<b.seat?-1:1);});
+ out.unread=!out.seats.length;
+ out.top=out.seats[0]||null;
+ out.asks=!!(out.top&&out.top.rung>=SRC_ASK);
+ out.root=(out.top&&out.top.rung>=SRC_ROOT)?out.top:null;
+ return out;}
+
+/* WHAT SOURCE AI DOES NEXT. One of four moves, and the person's own choices
+   decide it, never the depth of what was found.
+
+     open    nothing written yet. The opening question.
+     listen  something written, nothing read, or nothing at seven or over.
+             It says back what it heard, and asks nothing.
+     ask     a seat at seven or over that the person has not moved on from.
+             One question. Never two at once.
+     pass    the person pressed Move on. It says so and asks nothing more
+             in this entry, however much more it hears.
+
+   state.passed is set by the page when the person moves on. It is per entry:
+   the page clears it on commit and on clear. There is no rule anywhere in
+   here that asks again, raises the depth, or follows up, because the ruling
+   is that the person leads. */
+function srcTurn(heard,state){
+ var st=state||{};
+ /* safe, ahead of every other move, 17 October: an entry srcSafe stops is
+    asked nothing at all, not the opener, not a why, and Move on has nothing
+    to move on from. The page draws the crisis door in its place. */
+ if(heard&&heard.safe)return {move:'safe'};
+ if(!heard||(heard.unread&&!st.typed))return {move:'open'};
+ if(st.passed)return {move:'pass'};
+ if(!heard.asks)return {move:'listen'};
+ var s=heard.top;
+ return {move:'ask', seat:s.seat, band:s.band, rung:s.rung,
+  why:s.rung>=SRC_ROOT?'root':(s.earlier?'earlier':'again'),
+  mentions:s.mentions, earlier:s.earlier};}
+
+/* ============================================================
+   WHICH QUESTION, 20.H1. SOURCE-TDD-impression-excavation.md: "It selects
+   the smallest useful question based on uncertainty reduction." The page's
+   second button, "A question from what you wrote", walked four questions by
+   how many times it had been pressed. It asked "What happened in the minute
+   before?" of somebody who had just written what happened in the minute
+   before. This reads which of the document's dimensions the entry already
+   answers and asks about one it has not.
+
+   WHAT DOES NOT CHANGE. When Source AI asks on its own (SRC_ASK, the rung
+   at seven), the why it asks, Move on, and the person leading: all exactly
+   as ruled at round GO. This chooses only which question the button asks.
+
+   READ AS PRESENT OR ABSENT, NEVER NEGATED. "I did not say anything" answers
+   what the person did as fully as "I said it", so nothing here reads "not",
+   and PRIORITY.md's worry that these cues become a fourth negation handler
+   does not arise. A cue matches whole words on normMap's own copy.
+
+   THE PRECEDENCE, AND WHY IT IS AN ORDER AND NOT A SCORE. The document names
+   eight scoring factors and gives no weight for any of them, and there is
+   no labelled set to fit one against. A weighted sum here would be eight
+   magic numbers. So the factors become a stated order, each step one a
+   person could check:
+
+     1  uncertainty      a dimension the entry already answers is not asked.
+     2  the chain        among the rest, the document's own order. Its
+                         excavation chain runs trigger, contact, feel,
+                         locate, sense, behaviour, predict, believe,
+                         meaning. Its failure test's "correct progression"
+                         runs trigger, feel, expect, do, meaning, which puts
+                         the prediction before the behaviour. The failure
+                         test is the one place the document says what a
+                         correct order is for a real sentence, so it wins
+                         that one swap, and the gate holds it to it. Goal
+                         is not on the chain and goes last.
+     3  novelty          a dimension already asked in this entry waits
+                         behind one that has not been.
+     4  signal           the question is about a seat the entry was heard
+                         at and quotes the person's own word for it, the way
+                         the button always did.
+
+   Not used, and named: contradiction (19.D5 is not built), verification
+   (20.H4 is not built), and user effort and emotional load, which nothing
+   measures; one question at a time is the only form of them here.
+   ============================================================ */
+var SRC_DIM_ORDER=['trigger','contact','feeling','body','prediction','behaviour',
+ 'belief','meaning','goal'];
+/* the cues, by dimension. feeling and body are read off the sniffer as well,
+   below, because the lexicon already knows more of those than a list can. */
+var SRC_DIM_CUE={
+ trigger:['when','after','because','as soon as','the moment','right before','just before'],
+ contact:['he','she','they','him','her','them','his','their','someone','somebody',
+  'everyone','everybody','nobody','people','boss','manager','colleague','partner',
+  'husband','wife','boyfriend','girlfriend','mother','father','mum','mom','dad',
+  'parents','son','daughter','brother','sister','friend','friends','family','kids',
+  'child','children','teacher','client'],
+ /* WRITTEN WITHOUT APOSTROPHES since round QZ, because normMap drops them
+    and a cue with one could never be found. won't was already here as wont.
+    i'll comes back as ill, which is also the word for sick, so it is read
+    only before the verbs a prediction takes. */
+ prediction:['will','wont','theyll','itll','ill be','ill never','ill end up','ill lose',
+  'ill have to','ill always','going to','gonna',
+  'expect','expected','expecting','what if','would happen','bound to'],
+ belief:['i believe','i must','i have to','i should','if i','i always','i never',
+  'people always','nobody ever'],
+ meaning:['means','meant','mean that','says about me','proves','which means','what it means'],
+ goal:['i want','i wanted','i wish','i need','i needed','i hope','i would like','id like',
+  'trying to']};
+/* WHAT A PERSON DID, ported rather than written. VERPCUE already carries the
+   engine's approach, avoidance and attachment cues (engine/verp.js), and the
+   idioms already label what is a behaviour. The one thing added is the
+   plainest report of all, "I" and a doing verb, from a stated list, because
+   "I froze" and "I left" are the document's own examples of an impression. */
+var SRC_DO=['left','leave','walked','ran','hid','froze','freeze','stopped','stop',
+ 'avoided','avoid','said','told','asked','shouted','yelled','screamed','snapped',
+ 'slammed','cried','went','stayed','keep','kept','quit','called','texted','apologised',
+ 'apologized','agreed','nodded','smiled','drank','ate','scrolled','checked',
+ 'shut','pretended','ignored','did'];
+var SRC_DO_IDIOM=['silenced','over-giving','avoidance','compulsion','concealment','rigidity'];
+/* after a feel verb, these say the feeling has not been named yet: "I felt
+   tight" is the body, "I felt like" is a thought on its way. Degree words
+   are stepped over, so "I felt so tight" reads the same. */
+var SRC_FEEL_V=['felt','feel','feeling','feels'];
+var SRC_BODY_NOT=['back','hand','hands','face','head','arm','arms'];
+var SRC_FEEL_NOT=['like','that','as','in','at','on','for','about','when','if','it',
+ 'my','a','an','the','this'];
+function srcCue(src,c){return src.indexOf(' '+c+' ')>=0;}
+
+/* ============================================================
+   WHAT A PERSON DOES, READ AS BEHAVIOUR AND NEVER AS A SEAT. TASKS.md SK3,
+   the signal extractor. Measured on the 4 October document's own section 40
+   session before this, five turns: "I keep avoiding things lately", "I put
+   things off, then I feel guilty", "That I'm lazy". The lexicon is a
+   feelings table, so "avoiding", "put things off" and "lazy" read at no
+   seat, which is right, and as no evidence either, which is the gap: only
+   "I keep" and "when" survived, as srcDims cues. The document is built on
+   behaviour coming before labels, and the behaviours it is built on were
+   the one thing the instrument could not hear.
+
+   SIX KINDS, the six TASKS.md names, and a stated list for each, so a person
+   and a reviewer can both see why a row fired. Whole words on normMap's own
+   copy, written without apostrophes the way SRC_DIM_CUE is.
+
+     avoidance         not going near the thing
+     withdrawal        taking yourself away from people
+     inhibited_speech  the words that were not said
+     loss_of_control   the thing that went off
+     delay             going near it later
+     self_judgement    the verdict the person gives themselves
+
+   NEVER A SEAT, AND THAT IS STRUCTURAL, NOT A PROMISE. A row is never put
+   into parseStory's hits, so pathOf, the bands, srcHear and the field
+   cannot see it. Some of these words do also read at a seat, by the
+   lexicon's own rows: "snapped" at the solar plexus, "said nothing" at the
+   throat, "put it off" at the root. Those reads are the feeling channel's
+   and are untouched here; this is a second channel beside it, and the gate
+   holds parseStory identical whatever this table says.
+
+   PUT OFF IS DELAY HERE, AND THE OLDER TABLES CALL IT AVOIDANCE. PHRASES in
+   engine/lexicon.js labels "put it off" avoidance and VERPCUE files it under
+   averse. The section 40 session writes "avoiding" and "put things off" as
+   two observations in two turns, and TASKS.md names avoidance and delay as
+   two behaviours, so here the one is not going near it and the other is
+   going near it later. The PHRASES label was not renamed to match: PHRASES
+   is inside LEX_VERSION's hash (engine/sniff.js), so a relabel would restamp
+   every stored entry as read by a different lexicon for a word that moves
+   no seat. Named so nobody has to find it.
+
+   NOT IN LEX_VERSION, on purpose. That hash covers the tables a match, an
+   amount or a seat is read from. This moves none of the three, and nothing
+   it returns is stored: the ledger is derived on every read.
+
+   SELF JUDGEMENT IS A FRAME AND A WORD. "lazy" alone is a word about anyone;
+   "I'm lazy" is a verdict. So it is read only after a first person frame,
+   SRC_JUDGE_FRAME, with degree words and an article stepped over the way
+   srcDims steps them after a feel verb, so "I'm so lazy" and "I am such a
+   failure" read and "she called me lazy" does not. "not" and "never" may be
+   stepped over too, and then the row is the person's no and is said so.
+   ============================================================ */
+var SRC_BEHAVE_ORDER=['avoidance','withdrawal','inhibited_speech','loss_of_control','delay','self_judgement'];
+var SRC_BEHAVE={
+ avoidance:['avoid','avoids','avoided','avoiding','stay away from','stayed away from','staying away from',
+  'steer clear','steered clear','steering clear','dodge','dodged','dodging','went around it','go around it',
+  'changed the subject','change the subject','made an excuse','made excuses','make excuses','making excuses',
+  'got out of it','get out of it','dont want to deal','didnt want to deal','did not want to deal',
+  'not dealing with','pretend it is not','pretended it was not','pretend its not','pretended it wasnt'],
+ withdrawal:['withdrawn','withdrew from','withdraw from','withdrawing from','pulled away',
+  'pull away','pulling away','pulled back from','shut myself away','shut myself in','shut everyone out',
+  'shut people out','i shut down','i just shut down',
+  'isolated myself','isolate myself','isolating myself','isolating','kept to myself','keep to myself',
+  'keeping to myself','retreated','retreat into','retreating','hid in','hide in','hiding in','hid away',
+  'hide away','hiding away','hide from','hid from','hiding from','stayed in bed','stay in bed','staying in bed',
+  'stayed in my room','stayed home','stay home','cancelled plans','canceled plans','cancel plans',
+  'cancelled on','canceled on','want to disappear','wanted to disappear','wish i could disappear',
+  'just disappear','disappear into','i disappeared','i disappear','stopped answering','stopped replying',
+  'stopped calling','stopped going','turned my phone off','went off the grid','ghosted'],
+ inhibited_speech:['said nothing','say nothing','didnt say','did not say','didnt tell','did not tell',
+  'never told','never said','couldnt say','could not say','couldnt speak','could not speak','cannot speak',
+  'cant speak','couldnt get the words out','could not get the words out','kept quiet','keep quiet',
+  'stayed quiet','stay quiet','went quiet','went silent','kept my mouth shut','kept my mouth','bit my tongue',
+  'held my tongue','swallowed my words','held it in','holding it in','kept it in','kept it inside',
+  'bottled it up','bottle it up','bottling it up','held back from','holding back from',
+  'didnt speak up','did not speak up','never speak up','never spoke up','couldnt speak up',
+  'could not speak up','afraid to say','scared to say','afraid to speak','scared to speak',
+  'too afraid to ask','too scared to ask'],
+ loss_of_control:['lost control','lose control','losing control','out of control','lost it','lose it',
+  'losing it','lost my temper','lose my temper','losing my temper','snapped','snap at','snapping at',
+  'blew up','blow up','blowing up','i exploded','i just exploded','flipped out','freaked out','had a meltdown','melted down',
+  'could not stop','couldnt stop','cannot stop','cant stop','could not control','couldnt control',
+  'cant control','cannot control','could not help myself','couldnt help myself','lashed out','lash out',
+  'went off at','went off on','screamed at','yelled at','shouted at','slammed the door','i broke down','broke down crying','broke down in tears',
+  'spiralled','spiraled','spiralling','spiraling','overreacted','got carried away','binged'],
+ delay:['put it off','put that off','put things off','put everything off','puts it off','puts things off',
+  'putting it off','putting that off','putting things off','putting everything off','putting off',
+  /* "postponed" alone is left out: it is mostly passive, "the meeting got
+     postponed by them", and whoOf reads only backward, so the agent after
+     the verb is never seen and the delay landed on the writer. Measured. */
+  'i put off','keep postponing','postpone','i postponed','postponing','procrastinate','procrastinated',
+  'procrastinating','procrastination','i stalled','kept stalling','keep stalling','left it too late',
+  'leave it too late','left it until','leave it until','leaving it until','left it to the last minute',
+  'leave it to the last minute','leaving it to the last minute','waited too long','wait too long',
+  'kept waiting until','keep waiting until','waiting to feel ready','still havent','never got around to',
+  'never get around to','havent got around to','keep meaning to','kept meaning to','been meaning to',
+  'missed the deadline','miss the deadline','i was late again','im late again','running late again'],
+ self_judgement:['hate myself','hated myself','blame myself','blamed myself','beat myself up',
+  'beating myself up','my fault','my own fault','should have known','should have known better',
+  'whats wrong with me','what is wrong with me','disappointed in myself','ashamed of myself',
+  'disgusted with myself','i ruin everything','i ruined everything','i always mess','i always screw',
+  'cant do anything right','cannot do anything right','never do anything right','never get anything right']};
+/* the frame and the words of a verdict, see the header. */
+var SRC_JUDGE_FRAME=['im','i am','i was','i feel','i felt','i must be','im being','i am being','i was being'];
+var SRC_JUDGE=['lazy','stupid','useless','worthless','pathetic','failure','idiot','loser','weak','dumb',
+ 'selfish','hopeless','burden','mess','fraud','disappointment','incompetent','embarrassment','coward',
+ 'not good enough','never good enough'];
+/* stepped over between a frame and a verdict: the degree words, an article,
+   and the two words of a no, which then mark the row the person's no */
+var SRC_JUDGE_STEP=['such','a','an','just','too','being','bit','total','complete','not','never'];
+/* which of srcDims's dimensions each kind answers. Five say what the person
+   did. A verdict on yourself is a rule held about yourself, which is what
+   srcDims's own belief cues already read ("i should", "i always", "i
+   never"), so it answers belief and leaves "What did you do?" open. */
+var SRC_BEHAVE_DIM={avoidance:'behaviour', withdrawal:'behaviour', inhibited_speech:'behaviour',
+ loss_of_control:'behaviour', delay:'behaviour', self_judgement:'belief'};
+/* THE SIX REFRAMES, ONE PER BEHAVIOUR ABOVE, 21 November. The table the
+   ritual week plan (section B5, source 2) held back: "a new table of six rows
+   turns a behaviour you described into its opposite, as a short reframe plus
+   one existing practice. For example, avoidance becomes Make the Call." He
+   corrected the board on it the same day: "you haven't produced them, so I
+   don't know why this is red." So they are produced, here, and his to change.
+
+   ONE ROW PER KIND IN SRC_BEHAVE_ORDER, keyed by it, and never a seventh: a
+   reframe for a behaviour this reader cannot see would be offered on
+   nothing. The practice is the one whose own how text in
+   engine/data/practice.js is the opposite act, read off the text and not off
+   its track, the rule RIT_KIND_OF keeps: avoidance is Make the Call, the call
+   held still done before it is rehearsed; withdrawal is Tell One Person;
+   inhibited speech is The Plain Word; loss of control is Ten Minutes, the
+   room left and come back to; delay is The Small Version, which the practice
+   itself names as the honest part on a day the whole cannot be done; and a
+   verdict on yourself is Name It, a feeling named in one word where the name
+   for yourself went.
+
+   to is the opposite as a short name, the face of a card. line is the
+   reframe, a physical act in the present tense, and it is the name's meaning
+   in the same place, the unpack rule. Each line went through the voice gate
+   one at a time with no hard failure.
+
+   NOT DRAWN YET, AND THAT IS THE PLAN'S ORDER AND NOT A GAP. The plan shows a
+   behaviour card only where the evidence is at least supported, the reading
+   having found it more than once (EV_NAMEABLE, engine/evidence.js), never on
+   one mention, and holds the source back until he has seen the six. Nothing
+   reads this table but tests/ritweek.js RW12, which fails on a behaviour with
+   no row, a row for no behaviour, and a practice the library lacks. */
+var SRC_REFRAME={
+ avoidance:{to:'Go toward it', pr:'fl_call',
+  line:'You do the thing you were going around, before you rehearse it.'},
+ withdrawal:{to:'Stay in reach', pr:'tr_tell',
+  line:'You let one person hear from you today, in two sentences.'},
+ inhibited_speech:{to:'Say it once', pr:'tu_plain',
+  line:'You say the true sentence out loud and stop where it ends.'},
+ loss_of_control:{to:'Leave, then come back', pr:'ch_ten',
+  line:'When the heat rises at somebody, you leave the room for ten minutes and come back.'},
+ delay:{to:'Do the small version', pr:'po_small',
+  line:'You do the smallest honest part of it today, ready or not.'},
+ self_judgement:{to:'Name the feeling', pr:'pe_name',
+  line:'When you start calling yourself a name, you name what you feel in one word.'}};
+/* EVERY BEHAVIOUR IN AN ENTRY, in the order written. Each row is
+   {behave, dim, cue, at, s, e, said, who?, unclear?}: at is the leading space
+   in normMap's copy, which is what a sniffer hit's at is, s to e the raw
+   letters, so text.slice(s,e) is what was typed, and said is one of the
+   three words a mark already uses. Pure, reads only the text.
+
+   ONE MATCHER RULE, THE SNIFFER'S: a longer phrase outranks the words inside
+   it, so "could not stop" is one row and "stop" inside it is not a second.
+   Longest first, then earliest, a span already taken is skipped.
+
+   THREE READERS, ALL PORTED, NONE WRITTEN HERE. The rows are handed to
+   sniffDeny, sniffTense and sniffWho (engine/sniff.js) exactly as a feeling
+   word's hit is, because each of them takes a list of {at, t} on this same
+   copy and flags it. So "I never avoid it" is denied by srcNegated's own
+   window, "If I lost control I would hate it" by the conditional, and "she
+   keeps avoiding me" is someone else's by whoOf's backward scan. A phrase
+   that carries its own no, "didnt say", keeps it: the window reads only the
+   words before a row's first word, which is the rule "cant sleep" already
+   has. A verdict whose frame stepped over a no is denied here, because the
+   no sits inside the row where no window looks. */
+function srcBehave(text,nm){
+ var t=String(text||''); nm=nm||normMap(t);
+ var src=nm.s, found=[];
+ if(!src.trim())return [];
+ SRC_BEHAVE_ORDER.forEach(function(k){
+  SRC_BEHAVE[k].forEach(function(c){
+   var needle=' '+c+' ', from=0, i;
+   while((i=src.indexOf(needle,from))>=0){from=i+1; found.push({behave:k, cue:c, at:i, len:c.length});}});});
+ /* the verdicts: a frame, then any of the step words, then a verdict word */
+ SRC_JUDGE_FRAME.forEach(function(f){
+  var needle=' '+f+' ', from=0, i;
+  while((i=src.indexOf(needle,from))>=0){from=i+1;
+   /* a verdict is tried at each word BEFORE that word is stepped over,
+      because "not good enough" is itself a verdict: stepping "not" first
+      read "I'm not good enough" as the person's no to one. */
+   var j=i+needle.length, no=false, hit=null;
+   while(!hit){
+    for(var q=0;q<SRC_JUDGE.length&&!hit;q++)if(src.indexOf(SRC_JUDGE[q]+' ',j)===j)hit=SRC_JUDGE[q];
+    if(hit)break;
+    var nx=src.indexOf(' ',j); if(nx<0)break;
+    var w=src.slice(j,nx);
+    if(SRC_JUDGE_STEP.indexOf(w)<0&&LEXMOD[w]===undefined)break;
+    if(SRC_NEG.indexOf(w)>=0)no=true;
+    j=nx+1;}
+   if(!hit)continue;
+   var len=j+hit.length-(i+1);
+   found.push({behave:'self_judgement', cue:src.slice(i+1,i+1+len), at:i, len:len, no:no});}});
+ found.sort(function(a,b){return (b.len-a.len)||(a.at-b.at);});
+ var taken=[], rows=[];
+ found.forEach(function(h){
+  var a=h.at, b=h.at+1+h.len;
+  if(taken.some(function(x){return a<x[1]&&x[0]<b;}))return;
+  taken.push([a,b]);
+  rows.push({behave:h.behave, dim:SRC_BEHAVE_DIM[h.behave], cue:h.cue, at:h.at, t:h.cue, no:!!h.no,
+   s:nm.map[h.at+1], e:nm.map[h.at+h.len]+1});});
+ rows.sort(function(a,b){return a.at-b.at;});
+ /* the sniffer's own readers, in parseStory's order: the no, then the
+    tense, then whose. Each writes neg or other onto the row it is handed. */
+ sniffDeny(t,nm,rows);
+ sniffTense(t,nm,rows);
+ sniffWho(t,nm,rows);
+ return rows.map(function(h){
+  var r={behave:h.behave, dim:h.dim, cue:h.cue, at:h.at, s:h.s, e:h.e,
+   said:(h.neg||h.no)?'denied':(h.other?'other':'said')};
+  if(h.other&&h.who)r.who=h.who;
+  if(h.unclear)r.unclear=true;
+  return r;});}
+/* WHICH DIMENSIONS AN ENTRY ANSWERS. Returns each answered dimension with
+   the cue that answered it, which is the because, and the open ones in the
+   order above. Pure, and reads nothing but the text. */
+function srcDims(text){
+ var t=String(text||''), nm=normMap(t), src=nm.s, p=parseStory(t);
+ var by={}, place=SOMA_PLACE_WORDS, sense=SOMA_PLACE.sense;
+ function say(k,why){var l=by[k]=by[k]||[]; if(l.indexOf(why)<0)l.push(why);}
+ Object.keys(SRC_DIM_CUE).forEach(function(k){
+  SRC_DIM_CUE[k].forEach(function(c){if(srcCue(src,c))say(k,c);});});
+ /* the body. a sensation word or a place word, but not the place words
+    ordinary sentences use for something else: "she came back", "on the
+    other hand", "face it", "head home". Those still stop a sensation moving
+    in scanStory, where a wrong move is the cost; here a wrong read would
+    only skip a question, but it would skip it on every entry that uses one
+    of these words in its ordinary sense. */
+ sense.concat(place).forEach(function(w){
+  if(SRC_BODY_NOT.indexOf(w)<0&&srcCue(src,w))say('body',w);});
+ /* the feeling. Any hit the sniffer read that is not a sensation or a body
+    phrase names a feeling, including a coherent one: "calm" answers how a
+    person felt. Biased this way on purpose: counting a dimension as answered
+    when it was not costs one question not asked, and counting it open when
+    it was answered is the over-questioning the document's failure tests
+    name. Every word read, storyHits, and not only what counts: "I was not
+    angry" says how a person felt, and since S1 the parse keeps that word
+    in denied rather than in hits, so reading hits alone would ask a person
+    how they felt straight after they said. */
+ storyHits(p).forEach(function(h){
+  if(sense.indexOf(h.t)>=0)return;
+  if(place.some(function(w){return (' '+h.t+' ').indexOf(' '+w+' ')>=0;}))return;
+  say('feeling',h.t);});
+ var ws=src.trim().split(' ');
+ ws.forEach(function(w,i){
+  if(SRC_FEEL_V.indexOf(w)<0)return;
+  var j=i+1;
+  while(j<ws.length&&LEXMOD[ws[j]]!==undefined)j++;
+  var n=ws[j]; if(!n)return;
+  if(SRC_FEEL_NOT.indexOf(n)>=0||sense.indexOf(n)>=0||place.indexOf(n)>=0)return;
+  say('feeling',w+' '+n);});
+ /* what the person did */
+ ['intent','averse','attach'].forEach(function(g){
+  (VERPCUE[g]||[]).forEach(function(c){if(srcCue(src,c))say('behaviour',c);});});
+ storyHits(p).forEach(function(h){
+  if(h.kind==='phrase'&&SRC_DO_IDIOM.indexOf(h.label)>=0)say('behaviour',h.t);});
+ ws.forEach(function(w,i){
+  if(w!=='i')return;
+  var n=ws[i+1]==='just'||ws[i+1]==='then'?ws[i+2]:ws[i+1];
+  if(SRC_DO.indexOf(n)>=0)say('behaviour','i '+n);});
+ /* the behaviours srcBehave reads, SK3, each answering the dimension
+    SRC_BEHAVE_DIM gives it. A row with a no still answers, by the rule at
+    the head of this block: "I did not avoid it" says what the person did.
+    Someone else's does not: "she kept avoiding me" says nothing about what
+    the writer did, and counting it would skip "What did you do?" for a
+    person who has not said. The cue is the row's own words on normMap's
+    copy, so the ledger can find the span it came from. */
+ srcBehave(t,nm).forEach(function(r){if(r.said!=='other')say(r.dim,r.cue);});
+ var open=SRC_DIM_ORDER.filter(function(k){return !by[k];});
+ /* safe says srcNext may not ask, see srcTurn: a person who wrote about
+    ending their life is not asked what their body did */
+ var out={answered:by, open:open, words:ws.filter(Boolean).length};
+ if(srcSafe(t))out.safe=true;
+ return out;}
+
+/* ============================================================
+   THE ONE THING IT CAN SAY BACK WHEN NO SEAT IS FOUND, 18 November. The
+   owner: "it keeps repeating... it's acting more like an algorithm." A turn
+   that lands on no seat was answered from four fixed lines whatever it said:
+   "my boss gave my idea to someone else" and "I froze" and "my sister
+   called" each got "I'm listening". The engine does hold something in those
+   turns, srcDims reads who was in it and srcBehave reads what the person did,
+   and nothing said it.
+
+   WHAT IT RETURNS. The person's own letters for the first thing of two
+   kinds, in the order they were written, or null: a person in the story, one
+   of a closed list of nouns (boss, sister, mother), with the word that
+   claims them ("my", "his", "their") when one stands before it; and a
+   thing the person did, "I" and a doing verb from SRC_SPOT_DO, "I froze",
+   "I just left". Never a pronoun, because "You said “he”" is a lexicon dump
+   and not a listener, and never one of srcBehave's phrase spans, because
+   "did not say" and "keep thinking about" read as a table being cited.
+   Never a sentence: only words the engine itself recognised, so what comes
+   back is what it read and not a clause the person happened to say, which
+   keeps what is spoken aloud to the same small kind of word it has always
+   been.
+
+   {kind:'who'|'did', words}. Pure, reads only the turn. */
+var SRC_SPOT_WHO=['boss','manager','colleague','coworker','partner','husband','wife','boyfriend','girlfriend',
+ 'mother','father','mum','mom','dad','parents','son','daughter','brother','sister','friend','friends',
+ 'family','kids','child','children','teacher','client','ex','neighbour','neighbor'];
+var SRC_SPOT_OWN=['my','his','her','their','our','your'];
+/* the doing verbs worth saying back: a word that says what happened. "I did",
+   "I said" and "I went" are in SRC_DO because they answer the question what
+   did you do, and said back they are filler. */
+var SRC_SPOT_DO=['left','leave','walked','ran','hid','froze','freeze','stopped','avoided','shouted','yelled',
+ 'screamed','snapped','slammed','cried','quit','ignored','pretended','apologised','apologized','shut','hung'];
+function srcSpot(text){
+ var t=String(text||''), nm=normMap(t), src=nm.s, found=[];
+ if(!src.trim()||srcSafe(t))return null;
+ function raw(from,len){return t.slice(nm.map[from+1],nm.map[from+len]+1);}
+ SRC_SPOT_WHO.forEach(function(c){
+  var needle=' '+c+' ', i=src.indexOf(needle);
+  if(i<0)return;
+  var from=i, len=c.length, pw=src.slice(0,i).split(' ').pop();
+  if(SRC_SPOT_OWN.indexOf(pw)>=0){from=i-pw.length-1; len=c.length+pw.length+1;}
+  found.push({at:from, kind:'who', words:raw(from,len)});});
+ var ws=src.trim().split(' '), off=0;
+ ws.forEach(function(w,k){
+  /* off is the leading space of this word in normMap's copy, the position
+     a hit's at is */
+  var at=off; off+=w.length+1;
+  if(w!=='i')return;
+  var n=ws[k+1]; if(n==='just'||n==='then')n=ws[k+2];
+  if(SRC_SPOT_DO.indexOf(n)<0)return;
+  var span=ws[k+1]===n?w+' '+n:w+' '+ws[k+1]+' '+n;
+  found.push({at:at, kind:'did', words:raw(at,span.length)});});
+ found=found.filter(function(f){return f.words&&f.words.trim();});
+ if(!found.length)return null;
+ found.sort(function(a,b){return a.at-b.at;});
+ return {kind:found[0].kind, words:found[0].words.trim()};}
+
+/* THE NEXT DIMENSION TO ASK, by the precedence above. dims is srcDims's
+   result, asked the kinds already asked in this entry in the order they
+   were asked, askable the dimensions the page has a question for. Returns a
+   kind, or null when there is nothing it can ask. When every askable
+   dimension is answered the person still pressed for a question, so it
+   walks them all in the same order rather than saying nothing. */
+function srcNext(dims,asked,askable){
+ if(dims&&dims.safe)return null;
+ var can=SRC_DIM_ORDER.filter(function(k){return (askable||[]).indexOf(k)>=0;});
+ if(!can.length)return null;
+ var open=can.filter(function(k){return dims&&dims.open.indexOf(k)>=0;});
+ var pool=open.length?open:can, a=asked||[];
+ var fresh=pool.filter(function(k){return a.indexOf(k)<0;});
+ if(fresh.length)return fresh[0];
+ /* everything here has been asked once: the one asked longest ago */
+ return pool.slice().sort(function(x,y){return a.lastIndexOf(x)-a.lastIndexOf(y);})[0];}
+
+/* ============================================================
+   WHAT SOURCE AI ASKED, KEPT WITH THE ENTRY, 20.H5. Every Source AI state
+   was page memory and went at commit, so nothing could ever say what was
+   asked about which entry, or whether the person moved on from it.
+
+   PRIVACY, CHECKED FIRST. It stays on the device, on the entry it was asked
+   about, and it stores a question KIND and a SEAT KEY. Never the words of
+   the question and never anything the person wrote in answer: the entry's
+   own text already holds what they wrote, and a second copy of a question
+   with their words quoted in it would be a second copy of their words.
+   This is inside the narrow version of DESIGN-sniffer.md question 12 that
+   round GO built.
+
+   THE KINDS. The document's dimensions the button can ask, the three whys
+   the ask move asks (again, earlier, root, see srcTurn), and the two the
+   button asks off earlier entries when this one has nothing heard.
+
+   THE OUTCOMES, and only the three this page can actually observe:
+     moved   the person pressed Move on while it was showing
+     wrote   they wrote more after it was asked, and did not move on
+     left    neither: committed with nothing added after it
+   "Answered" would claim the instrument knows that what was written is an
+   answer, and it does not, so it says wrote. "Refused" has no control on the
+   page today; that is 20.H4 and S6, and a state nothing can produce is not
+   offered. */
+var SRC_KINDS=SRC_DIM_ORDER.concat(['again','earlier','root','since','back']);
+var SRC_OUTCOMES=['moved','wrote','left'];
+/* log is the page's own list, one row per question shown: {k, seat, at, moved},
+   where at is the length of the text when it was first shown. Returns what
+   the entry keeps. A kind or seat it does not know is dropped here rather
+   than written, so the boundary never sees one. */
+function srcAsked(log,len){
+ var out=[], seen={};
+ (log||[]).forEach(function(r){
+  if(!r||SRC_KINDS.indexOf(r.k)<0)return;
+  var seat=(r.seat&&K2BAND[r.seat])?r.seat:null, key=r.k+'|'+seat;
+  if(seen[key])return; seen[key]=1;
+  out.push({k:r.k, seat:seat,
+   a:r.moved?'moved':((+len||0)>(+r.at||0)?'wrote':'left')});});
+ return out;}
+/* the most an entry can carry: every kind at every seat and at none. */
+function srcAskedMax(){return SRC_KINDS.length*(Object.keys(K2BAND).length+1);}

@@ -1,0 +1,9 @@
+proto/dials/index.html, every request both widths.
+run 2026-09-21T00:25:51.566Z
+
+1600  GET  file:///home/user/MOB/proto/dials/index.html
+1600  GET  file:///home/user/MOB/engine.js
+390  GET  file:///home/user/MOB/proto/dials/index.html
+390  GET  file:///home/user/MOB/engine.js
+
+outbound http or https requests: 0
