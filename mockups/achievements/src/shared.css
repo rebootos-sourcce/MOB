@@ -1,0 +1,128 @@
+/* ---- tokens. Primitive values copied from atuned_src/shell/head.html, Dark lighting,
+   under their real names. The semantic layer below them is the one this round adds,
+   and it adds no colour: every --ach token points at a token that already exists. ---- */
+:root{
+ --bg:#0C0D12; --panel:#1A1D26; --panel-2:#252833; --sunk:#090A0E;
+ --edge:rgba(255,255,255,.09); --edge-2:rgba(255,255,255,.14);
+ --ink:#EFEDE8; --mid:#B4B0A8; --dim:#94908A;
+ --root:#D6524C; --sacral:#D8924E; --solar:#DABF6A;
+ --heart:#5FD5A6; --throat:#5EBBDB; --eye:#7D93E0; --crown:#A77EDB;
+ --accent:#7EB8D4;
+ --sec-discover:#D398C6; --sec-play:#9FC56E; --sec-flow:#52AA9C; --sec-embody:#B87A68;
+ --sans:'Inter','Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;
+ --ease-out:cubic-bezier(.22,1,.36,1); --ease-in:cubic-bezier(.4,0,1,1);
+ --r-s:11px; --r-xs:8px;
+ /* semantic, achievements */
+ --ach-flow:var(--sec-flow);      /* a place released, a nerve in flow. the only thing that gives off light */
+ --ach-kept:var(--sec-embody);    /* a practice kept for good: recipes, ritual days, runs, passing it on */
+ --ach-q-discover:var(--sec-discover); --ach-q-play:var(--sec-play);
+ --ach-q-flow:var(--sec-flow); --ach-q-embody:var(--sec-embody);
+ --ach-warm:#D19255;              /* the charge wash in the replay: BMRAMP's middle stop, ui/map.js:1546 */
+ --ach-body:var(--dim);           /* the figure's outline */
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 var(--sans);-webkit-font-smoothing:antialiased;
+ font-feature-settings:'tnum' 0;min-height:100vh}
+button{font:inherit;color:inherit}
+a{color:inherit}
+.num{font-variant-numeric:tabular-nums}
+
+/* ---- the demo bar. Not the product: it says so, and it is the only place controls for the demo live ---- */
+.demo{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;padding:8px 24px;background:var(--sunk);
+ border-bottom:1px solid var(--edge);font-size:13px;color:var(--mid)}
+.demo .dl{color:var(--dim)}
+.demo .dl b{color:var(--mid);font-weight:500}
+.demo nav{display:flex;gap:4px;flex-wrap:wrap}
+.demo nav a{display:inline-flex;align-items:center;min-height:36px;padding:0 10px;border-radius:18px;text-decoration:none;color:var(--dim)}
+.demo nav a:hover{color:var(--ink)}
+.demo nav a[aria-current]{color:var(--ink);box-shadow:inset 0 0 0 1px var(--edge-2)}
+.demo .grp{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.demo .sp{flex:1}
+.dctl{display:contents}
+.demo .dtog{display:none}
+.chip{min-height:44px;padding:0 14px;border-radius:22px;border:1px solid var(--edge-2);background:transparent;color:var(--mid);
+ cursor:pointer;font-size:13px;display:inline-flex;align-items:center;gap:8px}
+.chip:hover{color:var(--ink)}
+.chip[aria-pressed="true"]{color:var(--ink);border-color:var(--mid)}
+.chip:focus-visible,.demo a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.chip svg{width:18px;height:18px}
+
+/* ---- a slim copy of the product's bar: the wordmark and the four loop sections in their own colours.
+   Shown so the turn ring's four colours can be checked against the nav they come from. ---- */
+.appbar{display:flex;align-items:center;gap:22px;padding:12px 24px;border-bottom:1px solid var(--edge)}
+.wm{font-size:20px;font-weight:500;letter-spacing:-.01em;color:var(--accent)}
+.secs{display:flex;gap:18px}
+.sec{display:inline-flex;align-items:center;gap:7px;font-size:14px;color:var(--dim)}
+.sec svg{width:21px;height:21px;fill:none;stroke:var(--c);stroke-width:1.45;stroke-linecap:round;stroke-linejoin:round}
+.appbar .pg{margin-left:auto;font-size:13px;color:var(--dim)}
+
+/* ---- type, three levels ---- */
+h1{font-size:24px;line-height:1.25;font-weight:600;letter-spacing:-.01em;margin:0}
+.lede{font-size:15px;color:var(--mid);margin:4px 0 0;max-width:46ch}
+.small{font-size:13px;color:var(--dim)}
+
+/* ---- the body ---- */
+.bodysvg{display:block;overflow:visible}
+.bodysvg .fig{fill:url(#figLight);stroke:var(--ach-body);stroke-width:1.25;vector-effect:non-scaling-stroke}
+.ar .r{fill:none;stroke:var(--ach-flow);stroke-width:var(--rw,1.5px)}
+.ar .g{fill:none;stroke:var(--ach-flow);stroke-width:var(--gw,4px);opacity:.35;filter:url(#soft)}
+.ar.hot .r{stroke-width:calc(var(--rw,1.5px)*1.6)}
+.ar .w{fill:url(#warm);opacity:0}
+.hit{cursor:pointer}
+
+/* ---- the tooltip on a ring ---- */
+.tip{position:fixed;z-index:20;pointer-events:none;max-width:260px;padding:8px 12px;border-radius:var(--r-xs);background:var(--panel-2);
+ border:1px solid var(--edge-2);font-size:13px;line-height:1.4;color:var(--mid);opacity:0;transition:opacity .12s}
+.tip b{display:block;color:var(--ink);font-weight:500}
+.tip.on{opacity:1}
+
+/* ---- the ledger tiles ---- */
+.tile{display:grid;grid-template-columns:28px minmax(0,1fr);gap:4px 12px;padding:14px 16px;border-radius:var(--r-s);
+ background:var(--panel);border:1px solid var(--edge);align-content:start}
+.tile .ic{grid-row:1/4;width:28px;height:28px}
+.tile .ic svg{width:28px;height:28px;fill:none;stroke:var(--c);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.tile h3{margin:0;font-size:15px;font-weight:500;line-height:1.35;color:var(--ink)}
+.tile p{margin:0;font-size:13px;line-height:1.45;color:var(--mid)}
+.tile .lt{font-size:13px;color:var(--dim)}
+.tile .lt b{font-weight:400;color:var(--mid)}
+.tile.on{border-color:var(--edge-2);background:var(--panel-2)}
+.tile[data-ids]{cursor:pointer}
+.tile:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.buy{font-size:17px;line-height:26px;color:var(--ink);margin:0}
+
+/* ---- the horizon block ---- */
+.hz{display:flex;gap:16px;align-items:center}
+.hz svg{flex:none;overflow:visible}
+.hz .fig{font-size:28px;font-weight:600;letter-spacing:-.01em;line-height:1.1}
+.hz .fig small{font-size:15px;font-weight:400;color:var(--mid);letter-spacing:0}
+.hz p{margin:4px 0 0;font-size:13px;color:var(--mid);max-width:34ch}
+.hz .wf{color:var(--dim)}
+details.how{margin-top:8px;font-size:13px;color:var(--dim)}
+details.how summary{cursor:pointer;min-height:44px;display:flex;align-items:center;color:var(--mid);list-style:none}
+details.how summary::-webkit-details-marker{display:none}
+details.how summary:before{content:"";width:6px;height:6px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(-45deg);margin-right:10px;transition:transform .2s}
+details.how[open] summary:before{transform:rotate(45deg)}
+details.how p{margin:0 0 8px;max-width:52ch}
+
+/* the turn ring's key: the four steps, in their own colours, only the ones lit */
+.tk{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px;color:var(--mid)}
+.tk span{display:inline-flex;align-items:center;gap:6px}
+.tk svg{width:16px;height:16px;fill:none;stroke:var(--c);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+
+@media (max-width:700px){
+ .demo{padding:6px 16px;gap:6px 10px;flex-wrap:nowrap}
+ .demo .dl{flex:1;font-size:12px;line-height:1.35}
+ .demo .dtog{display:inline-flex;flex:none;font-size:12.5px;padding:0 12px}
+ .dctl{display:none}
+ .demo.open{flex-wrap:wrap}
+ .demo.open .dctl{display:flex;flex-wrap:wrap;gap:6px 10px;width:100%}
+ #demo-status:empty{display:none}
+ .demo nav a{min-height:44px;padding:0 9px}
+ .demo .sp{display:none}
+ .appbar{padding:10px 16px;gap:14px}
+ .sec span{display:none}
+ .secs{gap:14px}
+ h1{font-size:21px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
