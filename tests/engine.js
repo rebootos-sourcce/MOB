@@ -11250,7 +11250,17 @@ g('RC · a code for every row of the ported registers, and the door reads each o
   ok(am.address===37,'and the amplifier says the address it stands on, '+JSON.stringify(am));
   const en=is('Entitlement',{kind:'amplifier'},'AM01','canon.json\'s amplifier Entitlement');
   ok(en.address===8,'stands on address 8, where NODES\'s own Entitlement is 38, '+JSON.stringify(en));
-  is('Justification',null,'AM06','Justification is an amplifier and nothing else here');
+  const ju=is('Justification',null,'AM06','Justification is an amplifier and nothing else here');
+  /* RULING 5 IS CLOSED, 27 October, and this row said inferred for a month
+     after, because the copy vendored on 21 November came from a branch cut
+     before the closure. regDiff holds the tag to the file; this holds the
+     file to the closure, so a copy taken from that branch again fails here
+     by name and not as one tag among the registers. */
+  {const C=JSON.parse(require('fs').readFileSync(require('path').resolve('vendor/reboot-os/canon.json'),'utf8'));
+   const op=(C.open_rulings||[]).filter(r=>r.id===5), rs=(C.resolved_rulings||[]).filter(r=>r.id===5);
+   ok(op.length===0&&rs.length===1&&rs[0].ruled_by==='Lance Powell','canon.json files ruling 5 as resolved by him and not as open, open '+op.length+', resolved '+rs.length);
+   ok(ju.address===34&&ju.tag==='R','and Justification stands on address 34, ruled and not inferred, '+JSON.stringify(ju));
+   ok(E.BY[34]&&E.BY[34].k==='Arrogance','and address 34 keeps the name Arrogance: he put the two together, he did not rename it, '+JSON.stringify(E.BY[34]&&E.BY[34].k));}
   is('Right-Front',null,'BQ01','a body quadrant');
   is('right front',null,'BQ01','spelled with a space');
   is('Dermis',null,'OG10','an organ');

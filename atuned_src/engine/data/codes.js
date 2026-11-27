@@ -101,10 +101,20 @@
    21 November at md5 8961dd1f, reboot-os a18cc55d, which adds
    registers.complexDeep and changes nothing else in the file, so every row
    read at 79951697 reads the same here and the version is still 1.0.1.
+
+   AND RE-VENDORED 27 November at md5 4c83cf8c, because a18cc55d branched
+   from before his closure of ruling 5 and reboot-os main (8c3aeea, the last
+   commit to touch the file) has the closure and no complexDeep. No single
+   reboot-os commit holds both, so this copy is main's file with
+   registers.complexDeep taken from a18cc55d, in the same place, written in
+   the vendored file's own layout. Every other part is main's, compared part
+   by part when it was made. What that moves: open ruling 5 leaves
+   open_rulings for a new resolved_rulings, and the Justification amplifier's
+   tag goes from I to R. Nothing else, so the version is still 1.0.1.
    ============================================================ */
 const CODE_SOURCES=[
  ['mob','this repository: its own tables, SNIFFER_SPEC.md and DESCENT'],
- ['canon','reboot-os atuned/data/canon.json, SOURCE OS CANON 1.0.1, issued 8 September by the owner, amended 27 October (The Performer, Borderline-Sociopath), complexDeep added 15 November, md5 8961dd1f, the copy held at vendor/reboot-os/canon.json'],
+ ['canon','reboot-os atuned/data/canon.json, SOURCE OS CANON 1.0.1, issued 8 September by the owner, amended 27 October (The Performer, Borderline-Sociopath), complexDeep added 15 November, ruling 5 closed 27 October, md5 4c83cf8c, the copy held at vendor/reboot-os/canon.json'],
  ['book','The Mechanics of Being v192, reboot-os atuned/data/corpus/MOB_Complete_v192.txt, md5 3d2671d9'],
  ['app','the reboot-os app tables, atuned/data/canon_tables: SAB33, SABAUTH, HYPER, NODEREG'],
  ['nodes112','reboot-os atuned/data/nodes_112.json'],

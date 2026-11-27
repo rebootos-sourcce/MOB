@@ -126,7 +126,7 @@ The audit of 23 October (the schema, graph and index lane, findings SG-01 to SG-
 | canon.json part | Where it lives here | This round | Next | Blocked by |
 |---|---|---|---|---|
 | ladders | `CHARGE_LADDER` | ported, coded LD01 to LD08, words by rule | his ruling on the roster | its ruling 1 |
-| amplifiers | `AMPLIFIER` | ported, coded AM01 to AM06, nerve read off `NODES` | place Justification, then wire | its ruling 5 |
+| amplifiers | `AMPLIFIER` | ported, coded AM01 to AM06, nerve read off `NODES`; Justification ruled at 34, 27 November | wire | none: ruling 5 closed by him 27 October |
 | quadrants | `BODY_QUADRANT` | ported, coded BQ01 to BQ04 | a surface, once the routing is ruled | ruling 2, for any use |
 | organs | `ORGAN` | ported, coded OG01 to OG10, Dermis held | his word on the Dermis row | none to hold it |
 | charge_routing | `CHARGE_QUADRANT` | ported | his eight decisions | its ruling 2 |

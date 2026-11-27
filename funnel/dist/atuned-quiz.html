@@ -9551,17 +9551,30 @@ const CHARGE_LADDER=[
 
    Two of the names are not the name NODES gives the address. Entitlement is
    at address 8, which NODES holds unnamed as Root_08_Unnamed, the owner's
-   call; NODES's own Entitlement is address 38. Justification is inferred at
-   address 34, which NODES and canon.json's own nodes register both name
-   Arrogance. canon.json's open ruling 5: "Justification has no node.
-   Component two of four in narcissism. Inferred candidate: node 034." */
+   call; NODES's own Entitlement is address 38. Justification is at address
+   34, which NODES and canon.json's own nodes register both name Arrogance.
+
+   It was inferred there, tag I, under canon.json's open ruling 5,
+   "Justification has no node. Component two of four in narcissism. Inferred
+   candidate: node 034." He closed it on 27 October, reboot-os fb80f085, and
+   this row still said I a month later, because the copy vendored here on 21
+   November was cut from a branch that added complexDeep on top of the file
+   from before the closure, while reboot-os main had moved on without
+   complexDeep. Neither copy had both. His words, now in canon.json's
+   resolved_rulings: "Justification and arrogance in many ways share similar
+   features. Justification is rejection of accountability. Arrogance is using
+   intimidation to avoid accountability. So they share a trait. I would put
+   them together." So the tag is R and the address does not move. Address 34
+   keeps the name Arrogance in NODES: he put the two together, he did not
+   rename the address, and renaming it would change every reading that
+   prints it. */
 const AMPLIFIER=[
  {c:"AM01",nm:"Entitlement",i:8,tag:"R"},
  {c:"AM02",nm:"Obsession",i:29,tag:"R"},
  {c:"AM03",nm:"Judgment",i:37,tag:"R"},
  {c:"AM04",nm:"Perfectionism",i:40,tag:"R"},
  {c:"AM05",nm:"Comparison",i:69,tag:"R"},
- {c:"AM06",nm:"Justification",i:34,tag:"I"}];
+ {c:"AM06",nm:"Justification",i:34,tag:"R"}];
 
 /* QUADRANTS, canon.json registers.quadrants. The body in four, right and left
    by front and back. Not the Compass's quadrant() (engine/data/compass.js),
@@ -10328,10 +10341,20 @@ const CX_DEEP_AMEND=[
    21 November at md5 8961dd1f, reboot-os a18cc55d, which adds
    registers.complexDeep and changes nothing else in the file, so every row
    read at 79951697 reads the same here and the version is still 1.0.1.
+
+   AND RE-VENDORED 27 November at md5 4c83cf8c, because a18cc55d branched
+   from before his closure of ruling 5 and reboot-os main (8c3aeea, the last
+   commit to touch the file) has the closure and no complexDeep. No single
+   reboot-os commit holds both, so this copy is main's file with
+   registers.complexDeep taken from a18cc55d, in the same place, written in
+   the vendored file's own layout. Every other part is main's, compared part
+   by part when it was made. What that moves: open ruling 5 leaves
+   open_rulings for a new resolved_rulings, and the Justification amplifier's
+   tag goes from I to R. Nothing else, so the version is still 1.0.1.
    ============================================================ */
 const CODE_SOURCES=[
  ['mob','this repository: its own tables, SNIFFER_SPEC.md and DESCENT'],
- ['canon','reboot-os atuned/data/canon.json, SOURCE OS CANON 1.0.1, issued 8 September by the owner, amended 27 October (The Performer, Borderline-Sociopath), complexDeep added 15 November, md5 8961dd1f, the copy held at vendor/reboot-os/canon.json'],
+ ['canon','reboot-os atuned/data/canon.json, SOURCE OS CANON 1.0.1, issued 8 September by the owner, amended 27 October (The Performer, Borderline-Sociopath), complexDeep added 15 November, ruling 5 closed 27 October, md5 4c83cf8c, the copy held at vendor/reboot-os/canon.json'],
  ['book','The Mechanics of Being v192, reboot-os atuned/data/corpus/MOB_Complete_v192.txt, md5 3d2671d9'],
  ['app','the reboot-os app tables, atuned/data/canon_tables: SAB33, SABAUTH, HYPER, NODEREG'],
  ['nodes112','reboot-os atuned/data/nodes_112.json'],
@@ -34753,7 +34776,8 @@ const REG_MAP=[
  ['time_axis','held',[],'how a release settles over the days after it. Nothing here models it, and the rebound days were taken off the release screen by his ruling of 27 September'],
  ['evidence','held',[],'trial and practice figures about the method. Not product data'],
  ['contraindications','held',[],'when a release should not be run, or should be paced. The release screens hold the product\'s own wording'],
- ['open_rulings','held',[],'the owner\'s open questions in that file, carried into CANON-MERGE-PLAN.md']];
+ ['open_rulings','held',[],'the owner\'s open questions in that file, carried into CANON-MERGE-PLAN.md'],
+ ['resolved_rulings','held',['AMPLIFIER'],'the open questions he has closed, his words and the day. Each one is applied to the table it names and regDiff holds that table, so the record itself is not carried a second time']];
 
 /* the ported tables, by register, as regDiff reads them */
 function regDiff(canon){

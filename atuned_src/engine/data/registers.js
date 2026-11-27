@@ -79,17 +79,30 @@ const CHARGE_LADDER=[
 
    Two of the names are not the name NODES gives the address. Entitlement is
    at address 8, which NODES holds unnamed as Root_08_Unnamed, the owner's
-   call; NODES's own Entitlement is address 38. Justification is inferred at
-   address 34, which NODES and canon.json's own nodes register both name
-   Arrogance. canon.json's open ruling 5: "Justification has no node.
-   Component two of four in narcissism. Inferred candidate: node 034." */
+   call; NODES's own Entitlement is address 38. Justification is at address
+   34, which NODES and canon.json's own nodes register both name Arrogance.
+
+   It was inferred there, tag I, under canon.json's open ruling 5,
+   "Justification has no node. Component two of four in narcissism. Inferred
+   candidate: node 034." He closed it on 27 October, reboot-os fb80f085, and
+   this row still said I a month later, because the copy vendored here on 21
+   November was cut from a branch that added complexDeep on top of the file
+   from before the closure, while reboot-os main had moved on without
+   complexDeep. Neither copy had both. His words, now in canon.json's
+   resolved_rulings: "Justification and arrogance in many ways share similar
+   features. Justification is rejection of accountability. Arrogance is using
+   intimidation to avoid accountability. So they share a trait. I would put
+   them together." So the tag is R and the address does not move. Address 34
+   keeps the name Arrogance in NODES: he put the two together, he did not
+   rename the address, and renaming it would change every reading that
+   prints it. */
 const AMPLIFIER=[
  {c:"AM01",nm:"Entitlement",i:8,tag:"R"},
  {c:"AM02",nm:"Obsession",i:29,tag:"R"},
  {c:"AM03",nm:"Judgment",i:37,tag:"R"},
  {c:"AM04",nm:"Perfectionism",i:40,tag:"R"},
  {c:"AM05",nm:"Comparison",i:69,tag:"R"},
- {c:"AM06",nm:"Justification",i:34,tag:"I"}];
+ {c:"AM06",nm:"Justification",i:34,tag:"R"}];
 
 /* QUADRANTS, canon.json registers.quadrants. The body in four, right and left
    by front and back. Not the Compass's quadrant() (engine/data/compass.js),
