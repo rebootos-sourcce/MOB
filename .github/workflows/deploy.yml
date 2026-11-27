@@ -188,6 +188,8 @@ jobs:
           for f in $FUNNEL_PAGES; do
             test -s "funnel/dist/$f.html" || { echo "funnel/dist/$f.html missing or empty"; exit 1; }
           done
+      - name: Deep Psyche registry and public evidence contract
+        run: node tests/deep-psyche-app.js
       - name: engine gate
         run: node tests/engine.js 2>&1 | tee "$RUNNER_TEMP/gates/engine.log"
       # Inventory and record provenance ledger are part of the architecture

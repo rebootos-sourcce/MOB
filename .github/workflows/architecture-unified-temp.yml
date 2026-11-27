@@ -1,0 +1,90 @@
+name: Architecture unified build and diagnostics
+on:
+  push:
+    branches: [integration/architecture-unified-knowledge-20261126]
+permissions:
+  contents: read
+jobs:
+  build:
+    permissions:
+      contents: write
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: |
+          npm install --no-audit --no-fund --no-save typescript@5.9.3
+          python3 -m pip install --disable-pip-version-check pyyaml==6.0.2
+      - name: Build and verify source contracts
+        run: |
+          set -euo pipefail
+          ./atuned_src/BUILD-engine.sh && ./atuned_src/BUILD.sh && ./funnel/BUILD-single.sh
+          mkdir -p "$RUNNER_TEMP/gates"
+          node tests/deep-psyche-app.js
+          node tests/source-voice-intelligence.js
+          node tests/source-evidence-bus.js
+          node tools/records.js --gate 2>&1 | tee "$RUNNER_TEMP/gates/records.log"
+          node tests/plan-selfgrant.js 2>&1 | tee "$RUNNER_TEMP/gates/plan-selfgrant.log"
+          node tools/floors.js records plan-selfgrant
+          python3 tools/workflow-lint.py && python3 tools/workflow-lint.py --self-test
+          python3 .claude/skills/atuned-voice/check.py --objections
+      - name: Same-runner synthetic engine benchmark
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/architecture-benchmark"
+          git show 3e216d78d79ee738cb4ef8c388fa94cbc24e8878:engine.js > "$RUNNER_TEMP/architecture-benchmark/baseline-engine.js"
+          node tools/architecture-benchmark.js "$RUNNER_TEMP/architecture-benchmark/baseline-engine.js" | tee "$RUNNER_TEMP/architecture-benchmark/baseline.json"
+          node tools/architecture-benchmark.js engine.js | tee "$RUNNER_TEMP/architecture-benchmark/candidate.json"
+          rm "$RUNNER_TEMP/architecture-benchmark/baseline-engine.js"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: architecture-benchmark
+          path: ${{ runner.temp }}/architecture-benchmark/*.json
+          if-no-files-found: warn
+      - name: Commit only verified candidate products
+        if: success() && github.ref == 'refs/heads/integration/architecture-unified-knowledge-20261126'
+        run: |
+          set -euo pipefail
+          test "$(git ls-remote origin "refs/heads/integration/architecture-unified-knowledge-20261126" | cut -f1)" = "$GITHUB_SHA"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- atuned_src/engine/data/deep_psyche.js engine.js source.html atuned-packed.html funnel/tokens.css funnel/dist/
+          git rm .github/workflows/architecture-unified-temp.yml
+          git commit -m 'build: regenerate unified knowledge and foundation products'
+          node tools/products.js --self-test && node tools/products.js
+          git push origin HEAD:refs/heads/integration/architecture-unified-knowledge-20261126
+  release-reload:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - run: |
+          npm install --no-audit --no-fund --no-save typescript@5.9.3
+          npm install -g --no-audit --no-fund playwright@1.56.1
+          npx playwright install --with-deps chromium
+          root="$(npm root -g)"
+          chrome="$(NODE_PATH="$root" node -e "console.log(require('playwright').chromium.executablePath())")"
+          test -x "$chrome"
+          echo "NODE_PATH=$root" >> "$GITHUB_ENV"
+          echo "CHROME=$chrome" >> "$GITHUB_ENV"
+      - run: ./atuned_src/BUILD-engine.sh && ./atuned_src/BUILD.sh && ./funnel/BUILD-single.sh
+      - name: Full Release Chain and navigation lifecycle diagnostic
+        run: |
+          set -eo pipefail
+          mkdir -p "$RUNNER_TEMP/gates"
+          node tests/releasechain.js 2>&1 | tee "$RUNNER_TEMP/gates/releasechain.log"
+          node tools/floors.js releasechain
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: release-reload-diagnostic
+          path: ${{ runner.temp }}/gates/releasechain.log
+          if-no-files-found: warn

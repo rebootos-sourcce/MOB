@@ -1,4 +1,7 @@
 # ATÜNED MVP Alpha, Canonical Record Owner Audit
+
+> **Current implementation status, 26 November 2026:** This document preserves the historical model-3 proposal and its unresolved input mapping. It is not a statement of the running formula. At main revision 8132b51f3064349830c04b879df93e0fd208112c, `atuned_src/engine/compute.js` explicitly defines `CQ_MODEL=2` and `CQ=cqSum()` (lines 84 and 657), and records the owner ruling and rejected model-3 simulation at lines 623-657. See `docs/briefs/cq-unified.md` for the fixed 21-law denominator and separate action-linked Intention reading. The historical claims below about current model 3 are superseded; do not change live scoring on the basis of this document. Remaining semantic reconciliation is tracked in issue #244.
+
 Version: 1.1
 Date: 2026-10-21
 Status: **P0 contract complete.** Runtime integration is a downstream P1/P2 task and is not claimed complete.

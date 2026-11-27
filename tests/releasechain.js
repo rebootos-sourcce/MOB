@@ -91,9 +91,22 @@ const booted = async p => {
 };
 // The persisted-record assertions need the new app to finish booting.
 const reloadBooted = async page => {
-  await page.reload({ waitUntil: 'commit' });
-  await page.waitForFunction(() => document.documentElement.getAttribute('data-boot') === 'ok', null, { timeout: 30000 });
-  await booted(page);
+  const events=[];
+  const req=r=>{if(r.isNavigationRequest())events.push(['request',r.method()]);};
+  const fail=r=>{if(r.isNavigationRequest())events.push(['failed',r.failure()?.errorText]);};
+  const frame=f=>{if(f===page.mainFrame())events.push(['committed']);};
+  const crash=()=>events.push(['crash']),close=()=>events.push(['close']);
+  const listeners=[['request',req],['requestfailed',fail],['framenavigated',frame],['crash',crash],['close',close]];
+  listeners.forEach(([name,fn])=>page.on(name,fn));
+  const start=Date.now();
+  try {
+    await page.reload({ waitUntil: 'commit' });
+    await page.waitForFunction(() => document.documentElement.getAttribute('data-boot') === 'ok', null, { timeout: 30000 });
+    await booted(page);
+  } catch(e) {
+    console.log('RELOAD_DIAGNOSTIC '+J({elapsedMs:Date.now()-start,closed:page.isClosed(),events}));
+    throw e;
+  } finally {listeners.forEach(([name,fn])=>page.off(name,fn));}
 };
 /* a read that throws on a build missing what it reads reports as a failed
    check rather than ending the run, so a known bad build names every miss */
