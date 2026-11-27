@@ -1,0 +1,570 @@
+{
+  "schema_version": "0.1.0",
+  "status": "experimental_source_crosswalk_not_validated_behavioral_classifier",
+  "source_url": "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/reboot_os_v29.html",
+  "source_section": "V22_SABOTEUR_DETAIL",
+  "canonical_source_url": "https://github.com/rebootos-sourcce/MOB/blob/main/SNIFFER_SPEC.md",
+  "notes": [
+    "Source fields are trigger, interrupt, and formation descriptions; they are not validated positive/negative behavioral indicators.",
+    "Do not infer hidden intent from a trigger description alone.",
+    "Victim / Judge source entry is shared and is not eligible for individual candidate scoring.",
+    "Missing entries remain unscored behaviorally; never synthesize definitions."
+  ],
+  "records": [
+    {
+      "id": "negotiator",
+      "name": "Negotiator",
+      "behavior_status": "source_backed",
+      "source_repo": "rebootos-sourcce/Reboot-OS",
+      "source_path": "reboot_os_v29.html",
+      "source_section": "V22_SABOTEUR_DETAIL",
+      "source_name": "Negotiator",
+      "origin": "SoulCraft original",
+      "mapping_status": "exact",
+      "behavior": {
+        "trigger": "Cost of commitment appearing.",
+        "interrupt": "Say the full yes or the full no. No bargains with the universe.",
+        "forms": "Bargaining at the cost of integrity. Middle ground as escape from the binary. Forms when full commitment was punished."
+      },
+      "scoring_eligible": true
+    },
+    {
+      "id": "micromanager",
+      "name": "Micromanager",
+      "behavior_status": "source_backed",
+      "source_repo": "rebootos-sourcce/Reboot-OS",
+      "source_path": "reboot_os_v29.html",
+      "source_section": "V22_SABOTEUR_DETAIL",
+      "source_name": "Controller",
+      "origin": "Positive Intelligence",
+      "mapping_status": "legacy_alias_controller",
+      "behavior": {
+        "trigger": "Uncertainty. Lack of visible outcome path.",
+        "interrupt": "Release grip for 3 breaths. Observe what happens without intervention. The field holds.",
+        "forms": "Solar plexus charge from early powerlessness. The child who could not influence outcome over-corrects as adult. Forms when care turns to command."
+      },
+      "scoring_eligible": true
+    },
+    {
+      "id": "victim",
+      "name": "Victim",
+      "behavior_status": "shared_ambiguous",
+      "source_repo": "rebootos-sourcce/Reboot-OS",
+      "source_path": "reboot_os_v29.html",
+      "source_section": "V22_SABOTEUR_DETAIL",
+      "source_name": "Victim / Judge",
+      "origin": "Positive Intelligence",
+      "mapping_status": "shared_ambiguous_source",
+      "behavior": {
+        "trigger": "Outcome not going the way it should. Others' behavior disappointing.",
+        "interrupt": "Take the mirror. Where in me is this exact pattern operating? Claim that first.",
+        "forms": "Shadow pairing. The judge protects the victim by externalizing responsibility. Forms when accountability was punished instead of supported."
+      },
+      "scoring_eligible": false
+    },
+    {
+      "id": "perfectionist",
+      "name": "Perfectionist",
+      "behavior_status": "source_backed",
+      "source_repo": "rebootos-sourcce/Reboot-OS",
+      "source_path": "reboot_os_v29.html",
+      "source_section": "V22_SABOTEUR_DETAIL",
+      "source_name": "Perfectionist",
+      "origin": "SoulCraft original",
+      "mapping_status": "exact",
+      "behavior": {
+        "trigger": "Anything less than ideal output.",
+        "interrupt": "Ship at 85%. Watch the nervous system not die.",
+        "forms": "Variant of Stickler + Hyper-Achiever. Flawless output as defense against criticism at the self-level. Forms when mistakes meant loss of worth."
+      },
+      "scoring_eligible": true
+    },
+    {
+      "id": "pleaser",
+      "name": "Pleaser",
+      "behavior_status": "source_backed",
+      "source_repo": "rebootos-sourcce/Reboot-OS",
+      "source_path": "reboot_os_v29.html",
+      "source_section": "V22_SABOTEUR_DETAIL",
+      "source_name": "Pleaser",
+      "origin": "Positive Intelligence",
+      "mapping_status": "exact",
+      "behavior": {
+        "trigger": "Someone else's disappointment, need, or displeasure.",
+        "interrupt": "Pause before yes. Ask: whose need am I solving right now?",
+        "forms": "Heart-sacral entanglement. Approval became a survival strategy. Forms when boundaries were punished."
+      },
+      "scoring_eligible": true
+    },
+    {
+      "id": "hyper-achiever",
+      "name": "Hyper-Achiever",
+      "behavior_status": "source_backed",
+      "source_repo": "rebootos-sourcce/Reboot-OS",
+      "source_path": "reboot_os_v29.html",
+      "source_section": "V22_SABOTEUR_DETAIL",
+      "source_name": "Hyper-Achiever",
+      "origin": "Positive Intelligence",
+      "mapping_status": "exact",
+      "behavior": {
+        "trigger": "Rest. Presence. Unscheduled time.",
+        "interrupt": "Sit down with empty hands. Five minutes. No metric. Observe the resistance that rises.",
+        "forms": "Solar plexus compensation for root-level worthlessness. Performance becomes proof of right to exist. Forms when love was conditional on output."
+      },
+      "scoring_eligible": true
+    },
+    {
+      "id": "hyper-rational",
+      "name": "Hyper-Rational",
+      "behavior_status": "source_backed",
+      "source_repo": "rebootos-sourcce/Reboot-OS",
+      "source_path": "reboot_os_v29.html",
+      "source_section": "V22_SABOTEUR_DETAIL",
+      "source_name": "Hyper-Rational",
+      "origin": "Positive Intelligence",
+      "mapping_status": "exact",
+      "behavior": {
+        "trigger": "Emotional signal in self or others.",
+        "interrupt": "Drop from head into body. Name the sensation before naming the analysis. Let the feeling be data.",
+        "forms": "Third eye over-activation to escape heart-level overwhelm. The body left the felt sense when felt sense was too much. Forms in children who had to manage adult emotional environments."
+      },
+      "scoring_eligible": true
+    },
+    {
+      "id": "hyper-vigilant",
+      "name": "Hyper-Vigilant",
+      "behavior_status": "source_backed",
+      "source_repo": "rebootos-sourcce/Reboot-OS",
+      "source_path": "reboot_os_v29.html",
+      "source_section": "V22_SABOTEUR_DETAIL",
+      "source_name": "Hyper-Vigilant",
+      "origin": "Positive Intelligence",
+      "mapping_status": "exact",
+      "behavior": {
+        "trigger": "Novelty. Environment shifting. Others' moods changing.",
+        "interrupt": "Anchor to one breath at a time. Name what is actually present. Separate actual threat from pattern-match.",
+        "forms": "Amygdala wiring set in early environment where threat was unpredictable. The nervous system never stood down. Forms when safety was intermittent."
+      },
+      "scoring_eligible": true
+    },
+    {
+      "id": "restless",
+      "name": "Restless",
+      "behavior_status": "source_backed",
+      "source_repo": "rebootos-sourcce/Reboot-OS",
+      "source_path": "reboot_os_v29.html",
+      "source_section": "V22_SABOTEUR_DETAIL",
+      "source_name": "Restless",
+      "origin": "Positive Intelligence",
+      "mapping_status": "exact",
+      "behavior": {
+        "trigger": "Stillness. Completion. Success.",
+        "interrupt": "Stay with the discomfort of arrival. The body will try to launch the next project. Do not.",
+        "forms": "Root-level unsafety with the present moment. Motion was the escape hatch from being felt. Forms when being still meant being seen."
+      },
+      "scoring_eligible": true
+    },
+    {
+      "id": "stickler",
+      "name": "Stickler",
+      "behavior_status": "source_backed",
+      "source_repo": "rebootos-sourcce/Reboot-OS",
+      "source_path": "reboot_os_v29.html",
+      "source_section": "V22_SABOTEUR_DETAIL",
+      "source_name": "Stickler",
+      "origin": "Positive Intelligence",
+      "mapping_status": "exact",
+      "behavior": {
+        "trigger": "Imperfection. Process deviation. Rule break.",
+        "interrupt": "Ask: is this a structural fault or a preference? Release what is preference.",
+        "forms": "Rigidity as armor against early chaos. Order was safety when order was scarce. Forms when unpredictability was threat."
+      },
+      "scoring_eligible": true
+    },
+    {
+      "id": "judge",
+      "name": "Judge",
+      "behavior_status": "shared_ambiguous",
+      "source_repo": "rebootos-sourcce/Reboot-OS",
+      "source_path": "reboot_os_v29.html",
+      "source_section": "V22_SABOTEUR_DETAIL",
+      "source_name": "Victim / Judge",
+      "origin": "Positive Intelligence",
+      "mapping_status": "shared_ambiguous_source",
+      "behavior": {
+        "trigger": "Outcome not going the way it should. Others' behavior disappointing.",
+        "interrupt": "Take the mirror. Where in me is this exact pattern operating? Claim that first.",
+        "forms": "Shadow pairing. The judge protects the victim by externalizing responsibility. Forms when accountability was punished instead of supported."
+      },
+      "scoring_eligible": false
+    },
+    {
+      "id": "deflector",
+      "name": "Deflector",
+      "behavior_status": "source_backed",
+      "source_repo": "rebootos-sourcce/Reboot-OS",
+      "source_path": "reboot_os_v29.html",
+      "source_section": "V22_SABOTEUR_DETAIL",
+      "source_name": "Deflector",
+      "origin": "SoulCraft original",
+      "mapping_status": "exact",
+      "behavior": {
+        "trigger": "Own material surfacing.",
+        "interrupt": "Stay with what was said about you before redirecting. Thirty seconds.",
+        "forms": "Heart-throat shield. Redirect attention off of self at the moment of exposure. Forms when accountability came with attack."
+      },
+      "scoring_eligible": true
+    },
+    {
+      "id": "dramatizer",
+      "name": "Dramatizer",
+      "behavior_status": "source_backed",
+      "source_repo": "rebootos-sourcce/Reboot-OS",
+      "source_path": "reboot_os_v29.html",
+      "source_section": "V22_SABOTEUR_DETAIL",
+      "source_name": "Dramatizer",
+      "origin": "SoulCraft original",
+      "mapping_status": "exact",
+      "behavior": {
+        "trigger": "Feeling unseen or invisible.",
+        "interrupt": "Signal at true amplitude. If signal is small, deliver it small. The audience can handle it.",
+        "forms": "Sacral-throat amplification. Volume became the only reliable way to be registered. Forms when the measured voice was ignored."
+      },
+      "scoring_eligible": true
+    },
+    {
+      "id": "worrywart",
+      "name": "Worrywart",
+      "behavior_status": "source_backed",
+      "source_repo": "rebootos-sourcce/Reboot-OS",
+      "source_path": "reboot_os_v29.html",
+      "source_section": "V22_SABOTEUR_DETAIL",
+      "source_name": "Worrywart",
+      "origin": "SoulCraft original",
+      "mapping_status": "exact",
+      "behavior": {
+        "trigger": "Unknown outcomes ahead.",
+        "interrupt": "Play the feared outcome fully to its end. The body discovers it survives there.",
+        "forms": "Anticipatory rehearsal of pain as attempt to control the uncontrollable. Forms when sudden bad news was a pattern."
+      },
+      "scoring_eligible": true
+    },
+    {
+      "id": "loner",
+      "name": "Loner",
+      "behavior_status": "source_backed",
+      "source_repo": "rebootos-sourcce/Reboot-OS",
+      "source_path": "reboot_os_v29.html",
+      "source_section": "V22_SABOTEUR_DETAIL",
+      "source_name": "Loner",
+      "origin": "SoulCraft original",
+      "mapping_status": "exact",
+      "behavior": {
+        "trigger": "Intimacy approaching.",
+        "interrupt": "Stay in one relational moment past your usual exit point.",
+        "forms": "Sacral-heart contraction. Isolation as safety after relational harm. Forms when being close meant being hurt."
+      },
+      "scoring_eligible": true
+    },
+    {
+      "id": "people-pleaser",
+      "name": "People-Pleaser",
+      "behavior_status": "source_backed",
+      "source_repo": "rebootos-sourcce/Reboot-OS",
+      "source_path": "reboot_os_v29.html",
+      "source_section": "V22_SABOTEUR_DETAIL",
+      "source_name": "People-Pleaser",
+      "origin": "SoulCraft original",
+      "mapping_status": "exact",
+      "behavior": {
+        "trigger": "Group, audience, or authority present.",
+        "interrupt": "Speak one true thing that risks disapproval. Small. Specific.",
+        "forms": "Pleaser at performance level. Approval through visible accomplishment rather than accommodation. Forms when attention was food."
+      },
+      "scoring_eligible": true
+    },
+    {
+      "id": "skeptic",
+      "name": "Skeptic",
+      "behavior_status": "source_backed",
+      "source_repo": "rebootos-sourcce/Reboot-OS",
+      "source_path": "reboot_os_v29.html",
+      "source_section": "V22_SABOTEUR_DETAIL",
+      "source_name": "Sceptic",
+      "origin": "SoulCraft original",
+      "mapping_status": "spelling_alias_sceptic",
+      "behavior": {
+        "trigger": "New idea. Offered trust.",
+        "interrupt": "Test the smallest version first. Let the evidence arrive. Withhold the closure.",
+        "forms": "Third eye compensating for early betrayal at the heart level. Disbelief as armor against being fooled again."
+      },
+      "scoring_eligible": true
+    },
+    {
+      "id": "dreamer",
+      "name": "Dreamer",
+      "behavior_status": "source_backed",
+      "source_repo": "rebootos-sourcce/Reboot-OS",
+      "source_path": "reboot_os_v29.html",
+      "source_section": "V22_SABOTEUR_DETAIL",
+      "source_name": "Dreamer",
+      "origin": "SoulCraft original",
+      "mapping_status": "exact",
+      "behavior": {
+        "trigger": "Current reality insufficient.",
+        "interrupt": "One small action in the present that takes you toward the dream. Not the plan. The action.",
+        "forms": "Crown-sacral escape into projected future. Present becomes the thing to survive until the future arrives. Forms when the present was consistently unsatisfying."
+      },
+      "scoring_eligible": true
+    },
+    {
+      "id": "procrastinator",
+      "name": "Procrastinator",
+      "behavior_status": "source_backed",
+      "source_repo": "rebootos-sourcce/Reboot-OS",
+      "source_path": "reboot_os_v29.html",
+      "source_section": "V22_SABOTEUR_DETAIL",
+      "source_name": "Procrastinator",
+      "origin": "SoulCraft original",
+      "mapping_status": "exact",
+      "behavior": {
+        "trigger": "Important task requiring commitment.",
+        "interrupt": "Start for 5 minutes with no obligation to continue. Usually the body keeps going.",
+        "forms": "Fear of the outcome test. Better to not do than to do and fail. Forms when effort was measured and rejected."
+      },
+      "scoring_eligible": true
+    },
+    {
+      "id": "imposter",
+      "name": "Imposter",
+      "behavior_status": "source_backed",
+      "source_repo": "rebootos-sourcce/Reboot-OS",
+      "source_path": "reboot_os_v29.html",
+      "source_section": "V22_SABOTEUR_DETAIL",
+      "source_name": "Imposter",
+      "origin": "SoulCraft original",
+      "mapping_status": "exact",
+      "behavior": {
+        "trigger": "Recognition. Earned position. Public competence.",
+        "interrupt": "Name three pieces of evidence for your competence out loud. Let the facts land.",
+        "forms": "Crown-heart disconnect. Self-concept lagging behind actual capability. Forms when competence was dismissed or undervalued early."
+      },
+      "scoring_eligible": true
+    },
+    {
+      "id": "aggressor",
+      "name": "Aggressor",
+      "behavior_status": "source_backed",
+      "source_repo": "rebootos-sourcce/Reboot-OS",
+      "source_path": "reboot_os_v29.html",
+      "source_section": "V22_SABOTEUR_DETAIL",
+      "source_name": "Aggressor",
+      "origin": "SoulCraft original",
+      "mapping_status": "exact",
+      "behavior": {
+        "trigger": "Perceived threat. Feeling cornered.",
+        "interrupt": "Step back half a foot physically. Lower the voice. Let the charge settle in the body first.",
+        "forms": "Solar plexus pre-emptive strike. Attack before being attacked. Forms when defense was required early and often."
+      },
+      "scoring_eligible": true
+    },
+    {
+      "id": "martyr",
+      "name": "Martyr",
+      "behavior_status": "source_backed",
+      "source_repo": "rebootos-sourcce/Reboot-OS",
+      "source_path": "reboot_os_v29.html",
+      "source_section": "V22_SABOTEUR_DETAIL",
+      "source_name": "Martyr",
+      "origin": "SoulCraft original",
+      "mapping_status": "exact",
+      "behavior": {
+        "trigger": "Opportunity to suffer visibly.",
+        "interrupt": "Receive help offered. Let someone else carry their part. Feel the cost of being supported.",
+        "forms": "Sacrifice as claim to moral authority. Pain becomes identity currency. Forms when only suffering earned recognition."
+      },
+      "scoring_eligible": true
+    },
+    {
+      "id": "cynic",
+      "name": "Cynic",
+      "behavior_status": "source_backed",
+      "source_repo": "rebootos-sourcce/Reboot-OS",
+      "source_path": "reboot_os_v29.html",
+      "source_section": "V22_SABOTEUR_DETAIL",
+      "source_name": "Cynic",
+      "origin": "SoulCraft original",
+      "mapping_status": "exact",
+      "behavior": {
+        "trigger": "Earnestness. Someone taking something seriously.",
+        "interrupt": "Let them be earnest without commentary. Observe what the cynic was protecting.",
+        "forms": "Contempt as armor around a caring that was wounded. The seeker who stopped seeking. Forms after repeated disillusionment."
+      },
+      "scoring_eligible": true
+    },
+    {
+      "id": "manipulator",
+      "name": "Manipulator",
+      "behavior_status": "source_backed",
+      "source_repo": "rebootos-sourcce/Reboot-OS",
+      "source_path": "reboot_os_v29.html",
+      "source_section": "V22_SABOTEUR_DETAIL",
+      "source_name": "Manipulator",
+      "origin": "SoulCraft original",
+      "mapping_status": "exact",
+      "behavior": {
+        "trigger": "Needing an outcome.",
+        "interrupt": "Ask directly. Risk a no. Let the other person have their actual response.",
+        "forms": "Root-solar strategy from early environment where direct ask was blocked. Indirection became the only channel. Forms when straightforward need was punished."
+      },
+      "scoring_eligible": true
+    },
+    {
+      "id": "overthinker",
+      "name": "Overthinker",
+      "behavior_status": "source_backed",
+      "source_repo": "rebootos-sourcce/Reboot-OS",
+      "source_path": "reboot_os_v29.html",
+      "source_section": "V22_SABOTEUR_DETAIL",
+      "source_name": "Overthinker",
+      "origin": "SoulCraft original",
+      "mapping_status": "exact",
+      "behavior": {
+        "trigger": "Decision point.",
+        "interrupt": "Decide in the body. Body votes with a weight or a lightness. Go with the body.",
+        "forms": "Third eye over-activation as substitute for decisive action. Analysis fills the void where the trusted body-read should be. Forms when body signals were trained to be ignored."
+      },
+      "scoring_eligible": true
+    },
+    {
+      "id": "escapist",
+      "name": "Escapist",
+      "behavior_status": "source_backed",
+      "source_repo": "rebootos-sourcce/Reboot-OS",
+      "source_path": "reboot_os_v29.html",
+      "source_section": "V22_SABOTEUR_DETAIL",
+      "source_name": "Escapist",
+      "origin": "SoulCraft original",
+      "mapping_status": "exact",
+      "behavior": {
+        "trigger": "Present reality uncomfortable.",
+        "interrupt": "Stay in the room. Stay in the body. Breathe once. Look at one actual object in the space.",
+        "forms": "Dissociation as survival. Crown-level exit when body-level presence was not safe. Forms with trauma that could not be fought."
+      },
+      "scoring_eligible": true
+    },
+    {
+      "id": "nihilist",
+      "name": "Nihilist",
+      "behavior_status": "source_backed",
+      "source_repo": "rebootos-sourcce/Reboot-OS",
+      "source_path": "reboot_os_v29.html",
+      "source_section": "V22_SABOTEUR_DETAIL",
+      "source_name": "Nihilist",
+      "origin": "SoulCraft original",
+      "mapping_status": "exact",
+      "behavior": {
+        "trigger": "Meaning requested. Purpose asserted.",
+        "interrupt": "Name one thing you would mourn losing. That is meaning. You already have it.",
+        "forms": "Meaninglessness as shield against caring being wounded again. Forms after repeated disillusionment with promised meaning."
+      },
+      "scoring_eligible": true
+    },
+    {
+      "id": "innocent",
+      "name": "Innocent",
+      "behavior_status": "missing_source",
+      "source_repo": "rebootos-sourcce/Reboot-OS",
+      "source_path": "reboot_os_v29.html",
+      "source_section": "V22_SABOTEUR_DETAIL",
+      "mapping_status": "unmapped",
+      "behavior": {
+        "trigger": null,
+        "interrupt": null,
+        "forms": null
+      },
+      "scoring_eligible": false
+    },
+    {
+      "id": "pessimist",
+      "name": "Pessimist",
+      "behavior_status": "source_backed",
+      "source_repo": "rebootos-sourcce/Reboot-OS",
+      "source_path": "reboot_os_v29.html",
+      "source_section": "V22_SABOTEUR_DETAIL",
+      "source_name": "Pessimist",
+      "origin": "SoulCraft original",
+      "mapping_status": "exact",
+      "behavior": {
+        "trigger": "Possibility. Someone else's hope.",
+        "interrupt": "Name what you would lose if the hoped-for thing actually happened. Often the fear lives there.",
+        "forms": "Pre-emptive disappointment. Lowering expectation as armor against letdown. Forms when hope was reliably broken."
+      },
+      "scoring_eligible": true
+    },
+    {
+      "id": "catastrophizer",
+      "name": "Catastrophizer",
+      "behavior_status": "source_backed",
+      "source_repo": "rebootos-sourcce/Reboot-OS",
+      "source_path": "reboot_os_v29.html",
+      "source_section": "V22_SABOTEUR_DETAIL",
+      "source_name": "Catastrophizer",
+      "origin": "SoulCraft original",
+      "mapping_status": "exact",
+      "behavior": {
+        "trigger": "Small ambiguous signal.",
+        "interrupt": "Run the scale: on a 1-10, what is this actually? Ground in proportion.",
+        "forms": "Solar plexus runaway amplification. Survival software over-firing on noise. Forms when small signals preceded actual catastrophe repeatedly."
+      },
+      "scoring_eligible": true
+    },
+    {
+      "id": "enabler",
+      "name": "Enabler",
+      "behavior_status": "missing_source",
+      "source_repo": "rebootos-sourcce/Reboot-OS",
+      "source_path": "reboot_os_v29.html",
+      "source_section": "V22_SABOTEUR_DETAIL",
+      "mapping_status": "unmapped",
+      "behavior": {
+        "trigger": null,
+        "interrupt": null,
+        "forms": null
+      },
+      "scoring_eligible": false
+    },
+    {
+      "id": "control-freak",
+      "name": "Control Freak",
+      "behavior_status": "missing_source",
+      "source_repo": "rebootos-sourcce/Reboot-OS",
+      "source_path": "reboot_os_v29.html",
+      "source_section": "V22_SABOTEUR_DETAIL",
+      "mapping_status": "unmapped",
+      "behavior": {
+        "trigger": null,
+        "interrupt": null,
+        "forms": null
+      },
+      "scoring_eligible": false
+    },
+    {
+      "id": "avoider",
+      "name": "Avoider",
+      "behavior_status": "source_backed",
+      "source_repo": "rebootos-sourcce/Reboot-OS",
+      "source_path": "reboot_os_v29.html",
+      "source_section": "V22_SABOTEUR_DETAIL",
+      "source_name": "Avoider",
+      "origin": "Positive Intelligence",
+      "mapping_status": "exact",
+      "behavior": {
+        "trigger": "Conflict approaching or difficult task surfacing.",
+        "interrupt": "Name the task, break it to the smallest next action, move that action within 60 seconds.",
+        "forms": "Fear fetters at the root activate. The body prefers flight. Becomes a character when flight is rewarded by environment repeatedly."
+      },
+      "scoring_eligible": true
+    }
+  ]
+}
