@@ -3578,33 +3578,33 @@ console.log('\n=== practitioner mode: the switch, the fifth section and the sket
   const sn=$q('#secbar .secb[data-sec="practitioner"] .sn').getBoundingClientRect();
   const tn=$q('#tabbar .tabtop[data-tabk="'+TAB.PRACTITIONER+'"] .n').getBoundingClientRect();
   o.below=tn.top>=sn.bottom; o.dx=Math.round((tn.left-sn.left)*10)/10;
-  const host=$q('#prac'), hr=host.getBoundingClientRect();
-  /* round PT replaced the three row sketch with the client list, the reading
-     and notes, built on the example roster (PR1 to PR4, PRACTITIONER-STORY.md).
-     No client is open yet at this point in the walk, so the centre and right
-     columns still show their own honest empty state and carry no .ac-stub;
-     the one stub this page can print (who else can see an open client) only
-     appears once a client is selected, which a later block covers. A design
-     review round PT2 found "the grant model" and "the six ICPs" reaching
-     the person as internal shorthand the 25 September no-shorthand ruling
-     already forbids, so the honest check here reads the plain words that
-     replaced them and not the old research label. */
-  o.host={w:Math.round(hr.width),h:Math.round(hr.height),len:host.innerHTML.length,
-   clients:host.querySelectorAll('.pr-client').length,
-   buttons:[...host.querySelectorAll('button')].map(b=>b.id).filter(Boolean),
-   /* ROUND PS, 26 November: the sentence this read, "no way yet to let a
-      practitioner see a record on another device", stopped being true when
-      sharing was wired (ui/praclive.js). The honest state signed out, which
-      is how this gate runs, is that the real list fills once signed in. */
-   honest:/example/i.test(host.textContent)&&/fills once you are signed in/i.test(host.textContent)};
-  /* round QB: the right rail comes back carrying Selection alone, where a
-     press on a client's figure, day, pattern or seat is answered. The left
-     rail, the practitioner's own field, stays shut. */
+  const lhost=$q('#prlist'), chost=$q('#prac'), cr=chost.getBoundingClientRect();
+  /* ROUND [PHASE 1]: THE LEFT RAIL CARRIES THE CLIENT LIST AGAIN, his own
+     ruling, "bring back the left rail, and move the clients there." #prac
+     is the centre now, name and body figure only, and auto-opens the first
+     row by Attention so it is never empty (pracAutoOpen, ui/practitioner.
+     js). Signed out, as this gate runs, there is no live roster, so the
+     honest check here is the left rail's own "Sign in" button, replacing
+     the old "nobody yet, send a link" copy this file used to read before
+     sharing moved the empty state onto the rail's own button. */
+  o.list={w:Math.round(lhost.getBoundingClientRect().width), len:lhost.innerHTML.length,
+   clients:lhost.querySelectorAll('.pr-client').length,
+   headings:[...lhost.querySelectorAll('.pr-rail-h span:first-child')].map(e=>e.textContent),
+   signin:/Sign in/.test((lhost.querySelector('[data-pr="signin"]')||{}).textContent||'')};
+  o.centre={w:Math.round(cr.width),h:Math.round(cr.height),
+   named:!!chost.querySelector('.pr-centre h2'), figure:!!chost.querySelector('[data-prcv]')};
+  /* THE RIGHT RAIL NOW CARRIES THREE SECTIONS, What is running in front of
+     Selection and Notes behind it, his words: "the right rail is our system
+     information window." The left rail shows only its own Clients section,
+     opened first: the left column starts shut on his own ruling (GO,
+     ui/ui.js colFold), the same as every other tab, so this reads it after
+     its own fold control rather than assuming it arrives open. */
   o.rails=[...document.querySelectorAll('.mid .col')].filter(c=>c.offsetParent).map(c=>c.id).join(',');
+  if($q('body').classList.contains('lshut'))$q('#lfold').click();
+  o.leftSecs=[...document.querySelectorAll('#lpanel>.lsec')].filter(e=>getComputedStyle(e).display!=='none')
+   .map(e=>e.getAttribute('data-sec')).join(',');
   o.railSecs=[...document.querySelectorAll('#rpanel>.lsec')].filter(e=>getComputedStyle(e).display!=='none')
    .map(e=>e.getAttribute('data-sec')).join(',');
-  $q('#pracacc').click(); await wait();
-  o.back=S.tab===TAB.SETTINGS&&ACC_OPEN==='account'&&!!$q('#acprac');
   return o;});
  ok(JSON.stringify(off0)==='["discover","play","flow","embody"]'&&o.grpOff==='none',
   'a new profile opens with practitioner mode off: four sections and the practitioner group shut, '+JSON.stringify(off0)+' '+o.grpOff);
@@ -3618,12 +3618,15 @@ console.log('\n=== practitioner mode: the switch, the fifth section and the sket
   'pressing it opens Clients, shows only its own tab and presses it alone, row '+JSON.stringify(o.row)+' pressed '+JSON.stringify(o.pressed));
  ok(o.below&&Math.abs(o.dx)<=1,
   'and Clients sits in the row below it, its word starting under Practitioner\'s first letter, off by '+o.dx+'px');
- ok(o.host.w>300&&o.host.h>300&&o.host.len>1200&&o.host.honest&&o.host.clients>=10,
-  'the page behind it renders a real client list on the example roster, honestly labelled, '+JSON.stringify(o.host));
- ok(o.host.buttons.indexOf('pracacc')>=0&&o.host.buttons.filter(b=>b==='pracacc').length===1,
-  'the way back to the switch is still on the page among the client rows, '+JSON.stringify(o.host.buttons));
- ok(o.rails==='rcol'&&o.railSecs==='sel','the left rail leaves and the right one stays, carrying Selection alone, '
-  +o.rails+' showing, sections '+o.railSecs);
+ ok(o.list.w>200&&o.list.len>1200&&o.list.signin&&o.list.clients>=10,
+  'the left rail renders a real example list and, signed out, a Sign in button rather than a fabricated "nobody yet", '+JSON.stringify(o.list));
+ ok(JSON.stringify(o.list.headings)==='["Clients","Examples"]',
+  'the rail headings are exactly Clients and Examples, no "Worked" and no "Your", got '+JSON.stringify(o.list.headings));
+ ok(o.centre.w>200&&o.centre.h>100&&o.centre.named&&o.centre.figure,
+  'the centre is never empty: it auto opens the first row and draws a named figure, '+JSON.stringify(o.centre));
+ ok(o.rails==='lcol,rcol','both rails stand, the left carrying Clients and the right its own three sections, '+o.rails);
+ ok(o.leftSecs==='prlist','the left rail shows only its own Clients section, got '+o.leftSecs);
+ ok(o.railSecs==='prrun,sel,prnotes','the right rail shows What is running, Selection and Notes, in that order, got '+o.railSecs);
  ok(o.back,'Open Account goes back to the switch');
  /* ACROSS A RELOAD. applyUiPrefs never ran at start up, so this is the check
     that the door reads the stored switch on the way in. */
@@ -3659,9 +3662,13 @@ console.log('\n=== practitioner mode: the switch, the fifth section and the sket
   o.secOff=document.querySelector('.top').getAttribute('data-sec');
   pracSwitch(true); await wait();
   /* and shut by the switch, having come to Account from the page, which is
-     the route that leaves the bar pointing at the section that just went */
+     the route that leaves the bar pointing at the section that just went.
+     Round [Phase 1] deleted pracModeGroup, the in-page "Open account" row
+     (the switch is already one tap away in the profile menu, the gate
+     above this one walks that route by name), so this goes to Account the
+     plain way the person always could, through Settings. */
   setTab(TAB.PRACTITIONER); await wait();
-  $q('#pracacc').click(); await wait();
+  ACC_OPEN='account'; setTab(TAB.SETTINGS); await wait();
   $q('#acprac').click(); await wait();
   o.swOff=$q('#acprac').getAttribute('aria-checked');
   o.stored=pracOn();

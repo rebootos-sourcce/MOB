@@ -57,12 +57,15 @@ function worker(){
  console.log('P1: the practitioner makes a link');
  await pr.pg.evaluate(()=>{pracSwitch(true); setTab(TAB.PRACTITIONER); render&&render(); renderPrac();});
  await wait(900);
+ /* round [Phase 1]: P1 and P2 moved off their own rail cards into a sheet
+    the Clients heading's own Invite button opens */
+ await pr.pg.click('[data-pr="invite"]'); await wait(400);
  await pr.pg.fill('#pllabel','Dana Okafor');
  await pr.pg.click('#plinvform button[type=submit]'); await wait(900);
  const link=await pr.pg.inputValue('#pllink').catch(()=>'');
  ok(/#prac=[A-Za-z0-9_-]{40,}$/.test(link),'a one-time link is shown: '+link.slice(0,60)+'...');
- const p2=await pr.pg.evaluate(()=>document.querySelector('#prac').innerText);
- ok(/Pending/.test(p2)&&/Not used yet/.test(p2),'P2: Pending lists the open link');
+ const p2=await pr.pg.evaluate(()=>document.querySelector('#sheet-card').innerText);
+ ok(/Pending/.test(p2)&&/Not used yet/.test(p2),'P2: Pending lists the open link, in the same sheet');
  await pr.pg.screenshot({path:OUT+'/p1-invite.png'});
 
  console.log('C1: the client opens the link and answers');
@@ -82,27 +85,46 @@ function worker(){
  ok(st.mine&&st.mine[0][0]==='active'&&st.mine[0][1].body===true&&st.mine[0][1].field===false,'C1: live with Summary and Body '+JSON.stringify(st.mine));
  ok(st.pub>0,'the client device published its snapshot (own record '+st.own+')');
 
- console.log('P3, P4: the practitioner sees the client by key, Summary and Body, Field locked');
+ console.log('P3, P4: the practitioner sees the client by key, the figure from the shared Body, Field not shared');
  await pr.pg.evaluate(async()=>{await pracLiveRead(); renderPrac();}); await wait(500);
  const row=await pr.pg.evaluate(()=>{const e=document.querySelector('[data-plo]');return e?e.innerText:'';});
  ok(/^Client [A-Z0-9]{6}/.test(row)&&/Summary/.test(row)&&/Body/.test(row),'P3: the row is a key with the grant level: '+row.replace(/\n/g,' | '));
  ok(!/wren@/i.test(await pr.pg.evaluate(()=>document.body.innerText)),'the client\'s email appears nowhere on the practitioner page');
  await pr.pg.screenshot({path:OUT+'/p3-roster.png'});
  await pr.pg.click('[data-plo]'); await wait(1200);
- const sum=await pr.pg.evaluate(()=>document.querySelector('#prmid').innerText);
- ok(/The reading/i.test(sum)&&/Computed on their device/.test(sum),'P4 Summary: the reading card from the published snapshot');
- await pr.pg.screenshot({path:OUT+'/p4-summary.png'});
- await pr.pg.click('[data-plt="body"]'); await wait(400);
- const body=await pr.pg.evaluate(()=>document.querySelector('#prmid').innerText);
- ok(/body, by seat/.test(body)||/Nothing is carrying/.test(body),'P4 Body: shared, so it reads');
- await pr.pg.screenshot({path:OUT+'/p4-body.png'});
- await pr.pg.click('[data-plt="field"]'); await wait(400);
- const field=await pr.pg.evaluate(()=>document.querySelector('#prmid').innerText);
- ok(/has not shared this/.test(field)&&!/Ask/.test(field),'P4 Field: locked, with no button that asks');
- await pr.pg.screenshot({path:OUT+'/p4-field-locked.png'});
+ /* P4, round [Phase 1]: the Summary/Body/Field tab switcher and plRingCard/
+    plBodyCard this used to read (#prmid) are gone; the centre is the name
+    and the body figure now, built off the shared Body (plCentreData,
+    ui/praclive.js), found by selector rather than by a tab press, the way
+    every other check in this file was already told to move. */
+ const centre=await pr.pg.evaluate(()=>{
+  const h2=document.querySelector('#prac .pr-centre h2'), cv=document.querySelector('#prac canvas[data-prcv]');
+  return {h2:h2?h2.textContent:'', cv:!!cv, w:cv?cv.width:0, h:cv?cv.height:0};});
+ ok(!!centre.h2&&centre.cv&&centre.w>50&&centre.h>20,
+  'P4: the centre draws a named figure off the shared Body, '+JSON.stringify(centre));
+ await pr.pg.screenshot({path:OUT+'/p4-figure.png'});
+ /* and again at 390, where the figure drops to one view with a Front/Back
+    toggle rather than drawing both at a width that has no room for them */
+ await pr.pg.setViewportSize({width:390,height:844}); await wait(400);
+ const reduced=await pr.pg.evaluate(()=>{
+  const cv=document.querySelector('#prac canvas[data-prcv]'), face=document.querySelector('#prac .pr-face');
+  return {cv:!!cv, w:cv?cv.width:0, faceShown:!!face&&getComputedStyle(face).display!=='none',
+   pills:face?face.querySelectorAll('button').length:0};});
+ ok(reduced.cv&&reduced.w>50&&reduced.faceShown&&reduced.pills===2,
+  'P4 at 390: the figure is still drawn, reduced to one view with its Front/Back toggle, '+JSON.stringify(reduced));
+ await pr.pg.screenshot({path:OUT+'/p4-figure-390.png'});
+ await pr.pg.setViewportSize({width:1600,height:1000}); await wait(400);
+ /* Field was left off in C1 below, so What is running reads the one value
+    CLAUDE.md's symbol-first rule asks for rather than a sentence, and the
+    top addresses at or above the display line, since that much is read
+    off the shared Body even with Field off. */
+ const run=await pr.pg.evaluate(()=>document.querySelector('#prrun').innerText);
+ ok(/Field, not shared/.test(run),'P4: What is running reads "Field, not shared" since Field is off, got "'+run.slice(0,160)+'"');
+ await pr.pg.screenshot({path:OUT+'/p4-run.png'});
 
  console.log('P5, C3: a ritual proposed, then accepted through the client\'s own writer');
- await pr.pg.click('[data-plt="rit"]'); await wait(400);
+ /* round [Phase 1]: the writer has no tab of its own any more, it is always
+    part of What is running (#prrun), under the client's own rituals */
  await pr.pg.click('[data-pl="write"]'); await wait(300);
  const k=await pr.pg.evaluate(()=>PRACTICE[0].k);
  await pr.pg.selectOption('#plwk',k);
@@ -111,7 +133,7 @@ function worker(){
  await pr.pg.fill('#plwy','Ten minutes before you go in.');
  await pr.pg.screenshot({path:OUT+'/p5-writer.png'});
  await pr.pg.click('[data-pl="send"]'); await wait(1500);
- const sent=await pr.pg.evaluate(()=>document.querySelector('#prmid').innerText);
+ const sent=await pr.pg.evaluate(()=>document.querySelector('#prrun').innerText);
  ok(/Sent/.test(sent)&&/Withdraw/.test(sent),'P5: the sent ritual is listed with Withdraw');
  await pr.pg.screenshot({path:OUT+'/p5-sent.png'});
  const before=await cl.pg.evaluate(()=>(CURP.practice&&CURP.practice.plans||[]).length);
@@ -123,8 +145,8 @@ function worker(){
  const after=await cl.pg.evaluate((k)=>({n:(CURP.practice&&CURP.practice.plans||[]).length, has:(CURP.practice.plans||[]).some(p=>p.steps.join()===k&&p.band==='Heart'&&String(p.on)==='0,2'), left:PL.mine.proposals.length}),k);
  ok(after.n===before+1&&after.has,'C3: the ritual is on the client\'s own record, through ritStartPlan '+JSON.stringify(after));
  ok(after.left===0,'and it leaves the suggestions');
- await pr.pg.evaluate(async()=>{const g=PL.sel; await plOpen(g); PL.tab='rit'; renderPrac();}); await wait(800);
- ok(/Accepted/.test(await pr.pg.evaluate(()=>document.querySelector('#prmid').innerText)),'the practitioner reads Accepted');
+ await pr.pg.evaluate(async()=>{const g=PL.sel; await plOpen(g); renderPrac();}); await wait(800);
+ ok(/Accepted/.test(await pr.pg.evaluate(()=>document.querySelector('#prrun').innerText)),'the practitioner reads Accepted');
 
  console.log('C2: the client turns Body off, and the practitioner loses it at once');
  await cl.pg.evaluate(()=>{ACC_OPEN='privacy'; setTab(TAB.SETTINGS); render&&render(); renderAccount();}); await wait(800);
@@ -146,8 +168,15 @@ function worker(){
  ok(/was ended by you/.test(c4),'C4 client: the ended notice');
  await cl.pg.screenshot({path:OUT+'/c4-client.png'});
  await pr.pg.evaluate(async()=>{PL.sel=null; await pracLiveRead(); renderPrac();}); await wait(600);
- const p4=await pr.pg.evaluate(()=>document.querySelector('#prac').innerText);
- ok(/Ended by them/.test(p4)&&/Nothing of this record is visible/.test(p4),'C4 practitioner: the roster says it ended and who ended it');
+ /* round [Phase 1]: a row carries one value and no sentence any more, so an
+    ended connection reads "ended" on its own disabled row in the rail
+    rather than the old explanatory paragraph (CLAUDE.md, "no third tier
+    text"); found by selector on #prlist, not on #prac, which holds nothing
+    once PL.sel is cleared. */
+ const p4=await pr.pg.evaluate(()=>{
+  const row=[].find.call(document.querySelectorAll('#prlist .pr-client[aria-disabled]'),r=>/Dana|Client/i.test(r.textContent));
+  return row?row.textContent:'';});
+ ok(/ended/i.test(p4),'C4 practitioner: the ended row reads "ended", got "'+p4+'"');
  await pr.pg.screenshot({path:OUT+'/c4-practitioner.png'});
 
  ok(!pr.errs.length&&!cl.errs.length,'no page errors '+JSON.stringify(pr.errs.concat(cl.errs)).slice(0,300));

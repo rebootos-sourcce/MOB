@@ -381,7 +381,7 @@ async function gate(browser,file,ok){
  ok(rel.opened&&rel.phase!=='run'&&rel.queue>0,'RELEASE: it opens the release for what is selected and starts nothing, '+JSON.stringify({o:rel.opened,p:rel.phase,q:rel.queue}));
 
  /* THE REPEAT BLOCKS ARE GONE FROM EVERY SURFACE, and nothing renders after Selection */
- const surf=await pg.evaluate(async()=>{
+ const surfR=await pg.evaluate(async()=>{
   const out=[]; const tabs=TABDEF.map(t=>t.k).concat(Object.keys(TABEXTRA||{}).map(k=>TABEXTRA[k].k));
   const dupe=(a)=>a.filter((x,i)=>a.indexOf(x)===i);
   for(const k of dupe(tabs)){
@@ -393,10 +393,19 @@ async function gate(browser,file,ok){
    const after=kids.slice(selI+1).filter(e=>e.getBoundingClientRect().height>0&&getComputedStyle(e).display!=='none'&&!e.classList.contains('rfold'));
    out.push({k,selI,after:after.map(e=>e.id||e.getAttribute('data-sec')||e.className),
     bad:!!rp.querySelector('#eshelf,#run,#fire,[data-sec="flow"],[data-sec="running"],[data-sec="laws"]')});}
-  return out;});
- ok(surf.length>=8&&surf.every(s=>s.selI>=0&&s.after.length===0&&!s.bad),
-  'AFTER: on every surface nothing renders after Selection and Flow, Seats, Running now and the Laws are not on the rail, '
-  +JSON.stringify(surf.filter(s=>s.selI<0||s.after.length||s.bad).slice(0,3))+' of '+surf.length);
+  return {rows:out, prac:TAB.PRACTITIONER};});
+ /* THE PRACTITIONER PAGE IS THE ONE NAMED EXCEPTION, round [Phase 1], his own
+    words quoted in CLAUDE.md: "the right rail is our system information
+    window," What is running in front of Selection and Notes behind it, in
+    that order, on that one tab. Everywhere else the 18 November rule still
+    holds exactly as before: nothing at all after Selection. TAB only exists
+    inside the page, so its own value for Practitioner rides out with the
+    rows rather than being read a second time out here, where it is not
+    defined at all. */
+ const surf=surfR.rows, afterOk=s=>s.k===surfR.prac?JSON.stringify(s.after)==='["prnotes"]':s.after.length===0;
+ ok(surf.length>=8&&surf.every(s=>s.selI>=0&&afterOk(s)&&!s.bad),
+  'AFTER: on every surface nothing renders after Selection, Practitioner excepted for Notes, and Flow, Seats, Running now and the Laws are not on the rail, '
+  +JSON.stringify(surf.filter(s=>s.selI<0||!afterOk(s)||s.bad).slice(0,3))+' of '+surf.length);
  const laws=await pg.evaluate(()=>({n:document.querySelectorAll('#laws .nf').length,all:!!document.getElementById('allLaw'),
   inRail:!!document.querySelector('#rpanel #laws,#rpanel #allLaw'),hand:!!document.querySelector('#iqhand')}));
  ok(laws.n===21&&laws.all&&!laws.inRail&&laws.hand,'LAWS: the 21 law boxes and the all slider moved to the Intake fold, not lost, '+JSON.stringify(laws));

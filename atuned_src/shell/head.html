@@ -2740,6 +2740,15 @@ body.punch .rt-cell{box-shadow:none;background:var(--panel-2)}
 .lp-st{flex:0 0 auto;font-size:12px;font-weight:600;padding:3px 9px;border-radius:999px;
  border:1px solid var(--edge-2);color:var(--dim)}
 .lp-st.lp-confirmed{border-color:var(--accent);color:var(--accent)}
+/* UNANSWERED HAD NO RULE OF ITS OWN, confirmed and declined did (the line
+   above, and .lp-declined in ui/practitioner.js, which draws it dashed),
+   so a pattern waiting for an answer fell back to the bare .lp-st look
+   with no mark saying which state that was. Caught by tests/design.js
+   gate 3 once the Practitioner page started auto opening its first client
+   (round [Phase 1]) and actually rendered one on every sweep; the gap is
+   older than that change, not caused by it. Dotted, between confirmed's
+   solid accent and declined's dashed: waiting is neither yet. */
+.lp-st.lp-unanswered{border-style:dotted}
 .lp-chain{list-style:none;margin:0;padding:2px 12px 12px 12px;display:flex;flex-direction:column}
 .lp-chain li{position:relative;display:grid;grid-template-columns:78px minmax(0,1fr);gap:8px;
  padding:5px 0 5px 18px;font-size:13px;line-height:1.5}

@@ -135,66 +135,12 @@ function pracLiveGrants(){return (PL.roster&&PL.roster.grants)||[];}
 function pracLiveActive(){return pracLiveGrants().filter(function(g){return g.status==='active';});}
 
 function plLevel(g){var t='Summary'; if(g.sight.body)t+=' +Body'; if(g.sight.field)t+=' +Field'; return t;}
-/* P3, the roster. Each row is the client's key or the practitioner's own
-   name for it, the grant level, and the mini ring off its Summary. */
-function plClientsGrp(){
- if(!plSignedIn())return accGroup('Your clients',accRow('People who let you see their record','nobody yet'),
-  'Clients connect to an account, so this list fills once you are signed in. Account, at the top, signs you in.');
- if(!PL.roster)return accGroup('Your clients',accRow('People who let you see their record','reading'),'');
- if(PL.roster.err)return accGroup('Your clients',accRow('People who let you see their record',PL.roster.off?'nobody yet':'could not read'),esc(PL.roster.err));
- var live=pracLiveActive(), ended=pracLiveGrants().filter(function(g){return g.ended_by;});
- var rows=live.map(function(g){var on=PL.sel===g.id, sm=g.summary&&g.summary.sum;
-  return '<button type="button" class="pr-client'+(on?' on':'')+'" data-plo="'+esc(g.id)+'" aria-pressed="'+on+'">'
-   +'<span class="pr-av">'+(sm?pracMiniRing(sm):plGl(PL_IC.link,'var(--dim)'))+'</span>'
-   +'<span class="pr-cinfo"><span class="pr-cnm">'+esc(plNameOf(g))+'</span>'
-   +'<span class="pr-cst">'+(!sm?'Nothing published yet. ':sm.unread||!sm.tier?'Nothing read yet. ':'Reads '+unp(pracTierWord(sm),null,'tier')+'. ')
-   +'Since '+esc(plDate(g.accepted_at))+'</span>'+plTags(g.sight)+'</span></button>';}).join('');
- var gone=ended.map(function(g){
-  return '<div class="pr-client" aria-disabled="true" style="cursor:default;color:var(--mid)"><span class="pr-av">'+plGl(PL_IC.unlink,'var(--dim)')+'</span>'
-   +'<span class="pr-cinfo"><span class="pr-cnm">'+esc(plNameOf(g))+'</span>'
-   +'<span class="pr-cst">'+(g.ended_by==='expired'?'Not answered in time, ':'Ended by '+(g.ended_by==='client'?'them':'you')+', ')
-   +esc(plDate(g.ended_at))+'. Nothing of this record is visible.</span></span></div>';}).join('');
- return '<div class="ac-grp"><div class="ac-gh">Your clients</div>'
-  +(rows||'<div class="pr-empty">Nobody yet. Send a link from Invite.</div>')
-  +(gone?'<div class="ac-gh" style="border-top:1px solid var(--edge)">Ended</div>'+gone:'')
-  +'<div class="ac-gf">A person says yes on their own device before you see anything of theirs, and can take it back with one press.</div></div>';}
-/* P1, a link for one person. The token is shown once, the moment it is
-   made, because only its hash is kept anywhere. */
-function plInviteGrp(){
- var m=PL.made;
- var made=m?'<div class="pl-code"><span class="ac-rl">The link for this person. It works once and stops after fourteen days. It is shown once.</span>'
-   +'<input type="text" id="pllink" readonly value="'+esc(plLinkOf(m.token))+'" aria-label="The link">'
-   +'<span class="pf-act"><button class="btn pri" type="button" data-pl="copy">Copy link</button></span></div>':'';
- return '<div class="ac-grp"><div class="ac-gh">Invite</div>'+made
-  +'<form class="ac-row ac-edit pf-edit" id="plinvform"><label class="ac-rl" for="pllabel">Your name, as your client reads it</label>'
-  +'<span class="pf-act"><input type="text" id="pllabel" maxlength="60" autocomplete="name" spellcheck="false" value="'+esc(devGet('pracLiveLabel')||'')+'">'
-  +'<button class="btn'+(m?'':' pri')+'" type="submit">'+(m?'Another link':'Make a link')+'</button></span></form>'
-  +'<form class="ac-row ac-edit pf-edit" id="plredform"><label class="ac-rl" for="plcode">Have a link from a client? Paste it</label>'
-  +'<span class="pf-act"><input type="text" id="plcode" autocomplete="off" spellcheck="false"><button class="btn" type="submit">Connect</button></span></form></div>';}
-/* P2, codes still open and connections waiting for the client's yes */
-function plPendingGrp(){
- var inv=((PL.roster&&PL.roster.invites)||[]).filter(function(i){return i.status==='open';});
- var wait=pracLiveGrants().filter(function(g){return g.status==='pending';});
- var rows=inv.map(function(i){
-  return '<div class="ac-row"><span class="ac-rl pl-rl">'+plGl(RIT_IC.arrow,seatCol('Throat'))
-   +'<span>'+(i.side==='client'?'A link you made as a client':'Link made '+esc(plDate(i.created_at)))
-   +'<em>Not used yet. Stops '+esc(plDate(i.expires_at))+'.</em></span></span>'
-   +'<span class="pf-act"><button class="btn" type="button" data-plre="'+esc(i.id)+'"'+plTip('New link','Stops this link at once and makes a fresh one in its place.')+'>New link</button>'
-   +'<button class="btn" type="button" data-plrv="'+esc(i.id)+'">Turn off</button></span></div>';}).join('')
-  +wait.map(function(g){
-  return '<div class="ac-row"><span class="ac-rl pl-rl">'+plGl(RIT_IC.clock,seatCol('Solar'))
-   +'<span>'+esc(plNameOf(g))+'<em>Used '+esc(plDate(g.created_at))+'. Waiting for their yes.</em></span></span>'
-   +'<button class="btn" type="button" data-plend="'+esc(g.id)+'">Cancel</button></div>';}).join('');
- return accGroup('Pending',rows||accRow('Links and answers waiting','none'),
-  'A link no one answers stops working after fourteen days.');}
 
-/* P4, one client. Summary always; Body and Field as tabs that read
-   locked while the client has not switched them on, and no button that asks */
+/* P4, one client. Summary always; Body and Field read locked while the
+   client has not switched them on, and no button that asks. */
 function plSnapOf(gid){return PL.snap[gid]||null;}
-/* keep: stay on the tab already open. A send or a withdraw reads the client
-   again and must leave the practitioner where they pressed, not on Summary */
 function plOpen(gid,keep){
- PL.sel=gid; if(!keep)PL.tab='sum'; PL.write=false; renderPrac();
+ PL.sel=gid; PL.write=false; renderPrac();
  return Promise.all([
   plCall('GET','/v1/prac/grants/'+encodeURIComponent(gid)+'/snapshot').then(function(r){
    if(!r.ok||!r.body){PL.snap[gid]={err:plWhy(r)}; return;}
@@ -204,77 +150,147 @@ function plOpen(gid,keep){
   plCall('GET','/v1/prac/grants/'+encodeURIComponent(gid)+'/proposals').then(function(r){
    PL.props[gid]=(r.ok&&r.body)?r.body.proposals:{err:plWhy(r)};})
  ]).then(function(){if(PL.sel===gid)renderPrac();});}
-/* A READ ONLY COPY OF A CARD. The cards below are the example page's own
-   (pracSayCard, pracFigs, pracDaysCard, pracPatsCard), and every figure in
-   them is a press that opens a drill on PEOPLE[PRAC_SEL]. A live client is
-   not a row of PEOPLE, so each press would be a control that does nothing,
-   which is the one thing a control here may not be. The press is taken off,
-   the markup is otherwise theirs. */
+/* A READ ONLY COPY OF A CARD. The cards this draws are the example page's
+   own bare bodies (pracFigsBody, pracDaysBody, pracPatsBody, ui/practitioner.
+   js), and every figure in them is normally a press that opens a drill on
+   PEOPLE[PRAC_SEL]. A live client is not a row of PEOPLE, so each press
+   would be a control that does nothing, which is the one thing a control
+   here may not be. The press is taken off, the markup is otherwise theirs. */
 function plRO(h){
  return '<div class="pl-ro">'+String(h).replace(/<button type="button" class="([^"]*)" data-pr[a-z]+="[^"]*"([^>]*)>/g,'<div class="$1"$2>')
   .replace(/<\/button>/g,'</div>')+'</div>';}
-function plRingCard(nm,s){
- var now=pracTierWord(s), tierWord=s.tierDef?unp(now,null,'tier'):esc(now);
- var n=s.loaded.length, heavy=n?s.loaded[0]:s.heaviest;
- var sent=n?'<b>'+n+'</b> address'+(n===1?' is':'es are')+' carrying. The heaviest: '+esc(heavy.k)
-  :heavy?'Nothing is above the line. The heaviest, under it: '+esc(heavy.k):'Nothing is carrying.';
- return accGroup('The reading','<div class="pr-ringwrap"><svg viewBox="0 0 200 200" class="pr-ringsvg">'
-   +pracArcs(s.loaded,100,100,74,18,0.05,false)+'</svg><div class="pr-ringmid"><div class="pr-ringtier">'+tierWord+'</div></div></div>'
-   +(s.tierDef?'<p class="ac-lead" style="margin:14px 15px 0">'+esc(s.tierDef)+'</p>':'')
-   +'<p class="ac-lead" style="margin:10px 15px 15px">'+sent+'</p>',
-  'One ring, seven assemblage points. A brighter arc holds more charge at that point. Computed on '
-  +esc(nm)+'’s own device and never from their own words, which are never shared.');}
 function plLocked(nm,k){
  return '<div class="ac-grp pl-span"><div class="ac-gh">'+plLay()[k].nm+'</div><div class="pl-locked">'
   +plGl(ACC_SECS.filter(function(x){return x.k==='privacy';})[0].ic,'var(--dim)')
   +'<b>'+esc(nm)+' has not shared this</b><span class="ac-rv">Only '+esc(nm)+' can turn it on, on their own device.</span></div></div>';}
-/* BODY, AS ITS ADDRESSES. The body figure (bmRender, ui/map.js) draws the
-   loaded profile's own field and is not built to draw a second person's from
-   a list of numbers, so this is the same data as rows by seat: the places,
-   the nerve at each, the weight. Named as not done in the hand back. */
-function plBodyCard(nm,b){
- var by={}; b.addrs.forEach(function(a){(by[a.b]=by[a.b]||[]).push(a);});
- var rows=BANDS.filter(function(s){return by[s];}).map(function(s){
-  return '<div class="ac-gh" style="--c:'+seatCol(s)+'">'+esc(s)+'</div>'+by[s].map(function(a){
-   return accRow(a.k+(a.n?', '+a.n:''),String(a.sq),{num:true});}).join('');}).join('');
- return '<div class="ac-grp pl-span"><div class="ac-gh">'+esc(nm)+'’s body, by seat</div>'
-  +(rows||'<div class="pr-empty">Nothing is carrying.</div>')
-  +'<div class="ac-gf">Every address carrying charge, heaviest first in each seat, as '+esc(nm)+'’s device read it.</div></div>';}
 function plFieldR(f){return {loop:{patterns:f.loop.patterns, confirmed:f.loop.confirmed, unanswered:f.loop.unanswered,
  declined:f.loop.declined, practice:{events:f.loop.practised}, misses:f.loop.misses}, days:f.days};}
-function plDetail(){
- var g=pracLiveGrants().filter(function(x){return x.id===PL.sel;})[0];
- if(!g)return '';
- var nm=plNameOf(g), o=plSnapOf(g.id), L=plLay();
- var tab=function(k,lab,on){return '<button type="button" data-plt="'+k+'" aria-pressed="'+(PL.tab===k)+'">'
-  +(on?'':'<svg viewBox="0 0 24 24" class="rv-ic" aria-hidden="true" style="width:14px;height:14px">'+ACC_SECS.filter(function(x){return x.k==='privacy';})[0].ic+'</svg>')+lab+'</button>';};
- var head='<div class="ac-grp pr-head"><div class="ac-hd" style="padding:13px 15px 0;display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center">'
-  +'<h2 class="kb-h plain">'+esc(nm)+'</h2>'+plTags(g.sight)+'</div>'
+
+/* ============================================================
+   THE CENTRE, FOR A LIVE CLIENT: name, the connection button (the layer
+   tags, pressable, opening plConnOpen below) and the body figure. Round
+   [Phase 1], replacing the ring card, the Body card and the Summary/Body/
+   Field tab switcher this file used to carry on its own page (plDetail):
+   the figure is now the one reading, built the same way the example's is
+   (ui/practitioner.js, pracFig), off a {i,sq} list this function resolves.
+
+   THE RESOLUTION IS NAMED, NOT HIDDEN. What a client's device shares for
+   Body is {k,b,n,sq} rows with no address index (engine/pracshare.js,
+   pracShareAddr, on purpose: an index is this build's own and not a fact
+   about the person). The figure needs an index to place a point on the
+   body and to answer a press, so plAddrIdxOf below looks the row's own k
+   and b back up against BY, the same table every other address fact on
+   this page already reads off. A name that has drifted from the engine's
+   own wording (an older client's device, a changed canon.js) fails this
+   lookup silently rather than guessing, which is the right failure: a
+   dropped point is a gap in the figure, never a point drawn in the wrong
+   place. */
+function plAddrIdxOf(a){
+ for(var i in BY){if(BY[i].k===a.k&&BY[i].b===a.b)return +i;}
+ return null;}
+var PL_CARRY={};
+function plLiveCarry(gid){
+ var o=plSnapOf(gid), s=o&&o.snap; if(!s||!s.body)return [];
+ var key=gid+'|'+s.published_at;
+ if(PL_CARRY[key])return PL_CARRY[key];
+ var out=[];
+ s.body.addrs.forEach(function(a){var i=plAddrIdxOf(a); if(i!=null)out.push({i:i,sq:a.sq});});
+ return (PL_CARRY[key]=out);}
+/* a single address's charge, read off the carry list first and the bare
+   Summary loaded list second: a client sharing only Summary has no body
+   list at all, and the top-four fallback in plRunHtml below still needs a
+   value for the row it is drawing (pracOpen, ui/practitioner.js, round
+   [Phase 1] point 9). */
+function plLiveAddrRow(gid,idx){
+ var c=plLiveCarry(gid).filter(function(x){return x.i===idx;})[0]; if(c)return c;
+ var o=plSnapOf(gid), s=o&&o.snap; if(!s)return null;
+ var n=BY[idx]; if(!n)return null;
+ var row=((s.sum&&s.sum.loaded)||[]).filter(function(a){return a.k===n.k&&a.b===n.b;})[0];
+ return row?{i:idx,sq:row.sq}:null;}
+function plLiveLoop(gid){
+ var o=plSnapOf(gid), s=o&&o.snap; if(!s||!s.field)return null;
+ return plFieldR(s.field).loop;}
+function pracLiveOpenGrant(){
+ if(!PL.sel)return null;
+ return pracLiveGrants().filter(function(g){return g.id===PL.sel;})[0]||null;}
+/* THE CONNECTION BUTTON, round [Phase 1] point 6: the layer tags, now a
+   press, opening a small sheet with the practitioner's own name for this
+   client, the same tags read-only and Disconnect, reusing the rename and
+   end-connection code this file already had on the old centre header
+   rather than building a second copy of either. */
+function plConnBtn(g){
+ return '<button type="button" class="pr-conn" data-plconn="'+esc(g.id)+'">'+plTags(g.sight)+'</button>';}
+function plConnOpen(g){
+ plCss();
+ sheetOpen('<div class="pl-sheet"><div class="pl-shead">'+plGl(ACC_SECS[0].ic,seatCol('Throat'))
+  +'<div><h3 class="sh-h">'+esc(plNameOf(g))+'</h3><p class="sh-p dim">Connected since '+esc(plDate(g.accepted_at))+'</p></div></div>'
   +'<form class="ac-row ac-edit pf-edit" id="plnameform"><label class="ac-rl" for="plname">Your name for them, on this device only</label>'
   +'<span class="pf-act"><input type="text" id="plname" maxlength="60" value="'+esc(plNames()[g.id]||'')+'"><button class="btn" type="submit">Save</button></span></form>'
-  +'<div class="pr-sort pl-ctabs">'+tab('sum','Summary',1)+tab('body','Body',g.sight.body)+tab('field','Field',g.sight.field)+tab('rit','Rituals',1)+'</div></div>';
- var body;
- if(!o)body='<div class="ac-grp pl-span"><div class="pr-empty">Reading.</div></div>';
- else if(o.err)body='<div class="ac-grp pl-span"><div class="pr-empty">'+esc(o.err)+'</div></div>';
- else if(!o.snap)body='<div class="ac-grp pl-span"><div class="pr-empty">'+esc(nm)+'’s device has not published a reading yet. It does the next time they open the app.</div></div>';
- else{var s=o.snap;
-  if(PL.tab==='sum')body='<div class="pr-stack">'+plRingCard(nm,s.sum)+'</div><div class="pr-stack">'
-   +accGroup('Published',accRow('Computed on their device',new Date(s.published_at).toLocaleString()),
-    s.current?'':'They changed what is shared since this was computed, so only Summary shows until their device publishes again.')+'</div>';
-  else if(PL.tab==='body')body=!g.sight.body?plLocked(nm,'body'):s.body?plBodyCard(nm,s.body)
-   :'<div class="ac-grp pl-span"><div class="pr-empty">Shared, and not published yet at the new setting.</div></div>';
-  else if(PL.tab==='field'){var R=s.field?plFieldR(s.field):null;
-   body=!g.sight.field?plLocked(nm,'field'):R?'<div class="pr-stack">'+plRO(pracSayCard({nm:nm},R)+pracFigs(R)+pracDaysCard(R))+'</div><div class="pr-stack">'+plRO(pracPatsCard(R))+'</div>'
-    :'<div class="ac-grp pl-span"><div class="pr-empty">Shared, and not published yet at the new setting.</div></div>';}
-  else body=plRitPane(g,nm,s);}
- if(PL.tab==='rit'&&(!o||!o.snap))body=plRitPane(g,nm,null);
- return '<div class="pr-mid" id="prmid">'+head+body
-  +'<div class="pr-stack pl-span">'+accGroup('This connection','<div class="ac-row ac-act"><span class="ac-rl">Ends it at once. '+esc(nm)+' is told it ended, not why.</span>'
-   +'<button class="btn dgr" type="button" data-plend="'+esc(g.id)+'">Disconnect</button></div>')+'</div></div>';}
+  +'<div class="ac-row"><span class="ac-rl">What they share</span>'+plTags(g.sight)+'</div>'
+  +'<p class="sh-p dim">Only '+esc(plNameOf(g))+' can change this, on their own device.</p>'
+  +'<div class="sh-act"><button class="btn dgr" type="button" data-plend="'+esc(g.id)+'">Disconnect</button></div></div>');
+ var c=$('sheet-card'); if(!c)return;
+ var nf=c.querySelector('#plnameform');
+ if(nf)nf.onsubmit=function(e){e.preventDefault(); plNameSet(g.id,($('plname')||{}).value); sheetShut(); renderPrac();};
+ var end=c.querySelector('[data-plend]');
+ if(end)end.onclick=function(){plBusy(end,true);
+  plCall('POST','/v1/prac/grants/'+encodeURIComponent(g.id)+'/end').then(function(r){
+   if(r.ok&&PL.sel===g.id)PL.sel=null;
+   if(r.ok)sheetShut();
+   return plThen(end,r,'Ended. They are told it ended, and nothing of the record is visible.',function(){return pracLiveRead().then(renderPrac);});});};}
+function plCentreData(g){
+ var o=plSnapOf(g.id), tags=plConnBtn(g);
+ if(!o)return {nm:plNameOf(g), unread:true, sub2:'Reading.', carry:[], tags:tags};
+ if(o.err)return {nm:plNameOf(g), unread:true, sub2:esc(o.err), carry:[], tags:tags};
+ if(!o.snap)return {nm:plNameOf(g), unread:true,
+  sub2:esc(plNameOf(g))+'’s device has not published a reading yet. It does the next time they open the app.', carry:[], tags:tags};
+ if(!g.sight.body)return {nm:plNameOf(g), unread:true,
+  sub2:'Body is not shared. '+esc(plNameOf(g))+' can turn it on, on their own device.', carry:[], tags:tags};
+ if(!o.snap.body)return {nm:plNameOf(g), unread:true, sub2:'Shared, and not published yet at the new setting.', carry:[], tags:tags};
+ return {nm:plNameOf(g), unread:false, carry:plLiveCarry(g.id), tags:tags};}
+
+/* ============================================================
+   "WHAT IS RUNNING", FOR A LIVE CLIENT, round [Phase 1] point 8: the same
+   plain-words, figures, days and patterns cards the example page already
+   draws (ui/practitioner.js), read only, when Field is shared; a bare
+   "Field, not shared" row when it is not, which is the value CLAUDE.md's
+   own "symbol first" rule asks for rather than a sentence explaining why;
+   and, for a client sharing Summary alone, the top addresses at or above
+   the display line as pressable rows, because that much is always true of
+   a live connection and a blank card would read as broken rather than
+   simply not asked for yet. Rituals, running and sent, follow underneath,
+   and the writer (P5, already built, pre-dating this rebuild) stays
+   reachable at the foot: Phase 2's own new proposal buttons are a
+   different, not-yet-built control and this is not one of them.
+   ============================================================ */
+function plRunHtml(g){
+ var nm=plNameOf(g), o=plSnapOf(g.id);
+ if(!o)return '<p class="pr-empty">Reading.</p>';
+ if(o.err)return '<p class="pr-empty">'+esc(o.err)+'</p>';
+ if(!o.snap)return '<p class="pr-empty">'+esc(nm)+'’s device has not published a reading yet.</p>';
+ var s=o.snap, out='';
+ if(g.sight.field&&s.field){
+  var R=plFieldR(s.field);
+  out='<div class="pr-run-sub">In plain words</div><div class="pr-say">'
+   +pracSay({nm:nm},R).map(function(t){return '<p>'+t+'</p>';}).join('')+'</div>'
+   +'<div class="pr-run-sub">Patterns and practice</div>'+plRO(pracFigsBody(R))
+   +'<div class="pr-run-sub">Practice, the last '+PRAC_WINDOW_WORD+'</div>'+plRO(pracDaysBody(R))
+   +'<div class="pr-run-sub">Patterns</div>'+plRO(pracPatsBody(R));}
+ else if(g.sight.field)out='<div class="pr-run-sub">Field</div><p class="pr-empty">Shared, and not published yet at the new setting.</p>';
+ else{
+  out='<div class="pr-run-sub">Field</div><p class="pr-empty">Field, not shared</p>';
+  var loaded=(s.sum&&s.sum.loaded)||[];
+  if(loaded.length)out+='<div class="pr-run-sub">Heaviest</div><div class="pr-pats">'+loaded.slice(0,4).map(function(a){
+   var i=plAddrIdxOf(a); return pracRowBtn(i!=null?'addr:'+i:'addr:-1',a.k,a.b);}).join('')+'</div>';}
+ out+=plRitBody(g,nm,s);
+ return out;}
 /* P5. What the client is running, when Field is shared, the rituals sent,
    and a writer. The writer is this page's own: the Ritual page's builder
    (ritBuildHtml) writes into the practitioner's own RIT state, and a ritual
-   drafted for somebody else must never land in your own builder. */
+   drafted for somebody else must never land in your own builder. Built
+   before this rebuild and relocated here (#prrun) rather than rebuilt: the
+   new "Add a ritual" control the full redesign names is a different,
+   not-yet-built proposal flow (Phase 2), and this is the existing one. */
 var PL_ST={sent:['Sent',RIT_IC.arrow,'It is on their Ritual page as a suggestion from you.'],
  accepted:['Accepted','<path d="M5 12.5l4.5 4.5L19 7"/>','They added it to their practice. It is theirs now.'],
  declined:['Declined',RIT_IC.x,'They said no. You see that, and nothing else about it.'],
@@ -285,7 +301,7 @@ function plRitRow(p,tail){
  return '<div class="ac-row"><span class="ac-rl pl-rl">'+plGl(SEATGLYPH[p.band]||SEATGLYPH._,p.band?seatCol(p.band):'var(--mid)')
   +'<span>'+esc(ritName(p.steps)||p.steps.join(', '))+'<em>'+esc(ritOften(p.on))+', '+(p.tm||ritMin(p.steps))+' min'
   +(p.why?'. “'+esc(p.why)+'”':'')+'</em></span></span>'+(tail||'')+'</div>';}
-function plRitPane(g,nm,s){
+function plRitBody(g,nm,s){
  var run=(s&&s.field&&s.field.rituals)?s.field.rituals.filter(function(x){return x.active;}):null;
  var own=!g.sight.field?accRow('What they are running','shared with Field')
   :run?(run.map(function(x){return plRitRow(x);}).join('')||accRow('What they are running','nothing'))
@@ -294,31 +310,88 @@ function plRitPane(g,nm,s){
    return plRitRow({steps:x.steps||[],on:x.on,tm:x.tm,band:x.band,why:x.why},
     '<span class="pf-act">'+plStChip(p.status)+(p.status==='sent'?'<button class="btn" type="button" data-plw="'+esc(p.id)+'">Withdraw</button>':'')+'</span>');}).join('')
   :P&&P.err?accRow('Sent by you',P.err):'';
- var list=accGroup(nm+'’s rituals',own,'Read only. You cannot mark a day or start a timer for them.')
-  +accGroup('Suggested by you',sent||accRow('Rituals you sent','none'),
-   'Nothing is added unless '+esc(nm)+' says yes on their own Ritual page.');
- return '<div class="pr-stack">'+list+'</div><div class="pr-stack">'+plWriter(nm)+'</div>';}
+ return '<div class="pr-run-sub">Rituals</div>'+own
+  +'<div class="pr-run-sub">Sent by you</div>'+(sent||accRow('Rituals you sent','none'))
+  +plWriter(nm);}
 var PLW={k:'',on:null,tm:null,band:''};
 function plWriter(nm){
- if(!PL.write)return accGroup('A new ritual','<div class="ac-row ac-act"><span class="ac-rl">Written for '+esc(nm)
-  +'. It shows on their Ritual page as a suggestion from you.</span><button class="btn pri" type="button" data-pl="write">New ritual</button></div>');
+ if(!PL.write)return '<div class="ac-row ac-act"><span class="ac-rl">Written for '+esc(nm)
+  +'. It shows on their Ritual page as a suggestion from you.</span><button class="btn pri" type="button" data-pl="write">New ritual</button></div>';
  var opts=PRACTICE.map(function(p){return '<option value="'+esc(p.k)+'"'+(PLW.k===p.k?' selected':'')+'>'+esc(p.nm)+', '+p.min+' min</option>';}).join('');
  var wd=RIT_WCOL.map(function(d){var on=!!(PLW.on&&PLW.on.indexOf(d)>=0);
   return '<button type="button" class="btn" data-plwd="'+d+'" aria-pressed="'+on+'">'+RIT_WDN[d]+'</button>';}).join('');
- return '<div class="ac-grp"><div class="ac-gh">New, for '+esc(nm)+'</div>'
-  +'<div class="ac-row ac-edit"><label class="ac-rl" for="plwk">Practice</label><select id="plwk"><option value="">Choose one</option>'+opts+'</select></div>'
+ return '<div class="ac-row ac-edit"><label class="ac-rl" for="plwk">Practice</label><select id="plwk"><option value="">Choose one</option>'+opts+'</select></div>'
   +'<div class="ac-row"><span class="ac-rl">Days<em>None picked is every day</em></span><span class="pl-wd">'+wd+'</span></div>'
   +'<div class="ac-row ac-edit"><label class="ac-rl" for="plwb">Seat</label><select id="plwb"><option value="">None</option>'
   +BANDS.map(function(b){return '<option'+(PLW.band===b?' selected':'')+'>'+esc(b)+'</option>';}).join('')+'</select></div>'
   +'<div class="pl-why"><label class="ac-rl" for="plwy">Why, in your words</label><textarea class="pr-note-ta" id="plwy" maxlength="600"></textarea></div>'
   +'<div class="pl-acts"><button class="btn" type="button" data-pl="discard">Discard</button>'
-  +'<button class="btn pri" type="button" data-pl="send">Send to '+esc(nm)+'</button></div></div>';}
+  +'<button class="btn pri" type="button" data-pl="send">Send to '+esc(nm)+'</button></div>';}
 
-/* the right hand column with nobody open: Invite above Pending */
-function pracLiveSide(){
- if(!plSignedIn()||(PL.roster&&PL.roster.off))return '';
- return '<div class="pr-mid pl-inv" id="prmid"><div class="pr-stack">'+plInviteGrp()+'</div><div class="pr-stack">'+plPendingGrp()+'</div></div>';}
-function pracLiveDetail(){return PL.sel?plDetail():'';}
+/* THE INVITE SHEET, round [Phase 1] point 4: P1 and P2, a code for one
+   person and the links and answers waiting on it, moved off their own rail
+   cards into a sheet the Clients heading's own button opens, captions cut
+   (the honest-empty "Nobody yet" line now lives on the rail row itself,
+   ui/practitioner.js pracListHtml, and "A person says yes on their own
+   device" was pure filler the rail's own tags already show as fact). */
+function plInviteSheetHtml(){
+ var m=PL.made;
+ var made=m?'<div class="pl-code"><span class="ac-rl">The link for this person. It works once and stops after fourteen days. It is shown once.</span>'
+   +'<input type="text" id="pllink" readonly value="'+esc(plLinkOf(m.token))+'" aria-label="The link">'
+   +'<span class="pf-act"><button class="btn pri" type="button" data-pl="copy">Copy link</button></span></div>':'';
+ var inv=((PL.roster&&PL.roster.invites)||[]).filter(function(i){return i.status==='open';});
+ var wait=pracLiveGrants().filter(function(g){return g.status==='pending';});
+ var pend=inv.map(function(i){
+   return '<div class="ac-row"><span class="ac-rl pl-rl">'+plGl(RIT_IC.arrow,seatCol('Throat'))
+    +'<span>'+(i.side==='client'?'A link you made as a client':'Link made '+esc(plDate(i.created_at)))
+    +'<em>Not used yet. Stops '+esc(plDate(i.expires_at))+'.</em></span></span>'
+    +'<span class="pf-act"><button class="btn" type="button" data-plre="'+esc(i.id)+'"'+plTip('New link','Stops this link at once and makes a fresh one in its place.')+'>New link</button>'
+    +'<button class="btn" type="button" data-plrv="'+esc(i.id)+'">Turn off</button></span></div>';}).join('')
+  +wait.map(function(g){
+   return '<div class="ac-row"><span class="ac-rl pl-rl">'+plGl(RIT_IC.clock,seatCol('Solar'))
+    +'<span>'+esc(plNameOf(g))+'<em>Used '+esc(plDate(g.created_at))+'. Waiting for their yes.</em></span></span>'
+    +'<button class="btn" type="button" data-plend="'+esc(g.id)+'">Cancel</button></div>';}).join('');
+ return '<div class="pl-sheet"><div class="pl-shead">'+plGl(PL_IC.link,seatCol('Throat'))
+  +'<div><h3 class="sh-h">Invite a client</h3></div></div>'+made
+  +'<form class="ac-row ac-edit pf-edit" id="plinvform"><label class="ac-rl" for="pllabel">Your name, as your client reads it</label>'
+  +'<span class="pf-act"><input type="text" id="pllabel" maxlength="60" autocomplete="name" spellcheck="false" value="'+esc(devGet('pracLiveLabel')||'')+'">'
+  +'<button class="btn'+(m?'':' pri')+'" type="submit">'+(m?'Another link':'Make a link')+'</button></span></form>'
+  +'<form class="ac-row ac-edit pf-edit" id="plredform"><label class="ac-rl" for="plcode">Have a link from a client? Paste it</label>'
+  +'<span class="pf-act"><input type="text" id="plcode" autocomplete="off" spellcheck="false"><button class="btn" type="submit">Connect</button></span></form>'
+  +(pend?'<div class="ac-gh" style="border-top:1px solid var(--edge)">Pending</div>'+pend:'')+'</div>';}
+function plInviteWire(){
+ var c=$('sheet-card'); if(!c)return;
+ var inv=c.querySelector('#plinvform');
+ if(inv)inv.onsubmit=function(e){e.preventDefault(); var b=inv.querySelector('button'), lb=($('pllabel')||{}).value||'';
+  devSet('pracLiveLabel',lb.trim()); plBusy(b,true);
+  plCall('POST','/v1/prac/invites',{side:'prac',label:lb.trim()}).then(function(r){
+   if(r.ok)PL.made={token:r.body.token, invite:r.body.invite};
+   return plThen(b,r,'A link is made. Copy it and send it to one person.',function(){return pracLiveRead().then(plInviteOpen);});});};
+ var cp=c.querySelector('[data-pl="copy"]');
+ if(cp)cp.onclick=function(){var t=$('pllink'); if(!t)return; t.select();
+  var done=function(ok){status(ok?'Copied.':'Copy did not work here. The link is selected, so copy it by hand.',ok?'ok':'fail');};
+  try{if(navigator.clipboard)navigator.clipboard.writeText(t.value).then(function(){done(true);},function(){done(false);}); else done(document.execCommand('copy'));}catch(e){done(false);}};
+ var red=c.querySelector('#plredform');
+ if(red)red.onsubmit=function(e){e.preventDefault(); var b=red.querySelector('button');
+  var tok=plTokenOf(($('plcode')||{}).value); if(!tok){status('That is not a link or a code from a client.','fail'); return;}
+  plBusy(b,true);
+  plCall('POST','/v1/prac/redeem',{token:tok, label:(devGet('pracLiveLabel')||'').trim()||null}).then(function(r){
+   return plThen(b,r,'Connected. It goes live when your client says yes on their device.',function(){return pracLiveRead().then(plInviteOpen);});});};
+ c.querySelectorAll('[data-plrv]').forEach(function(b){b.onclick=function(){plBusy(b,true);
+  plCall('DELETE','/v1/prac/invites/'+encodeURIComponent(b.getAttribute('data-plrv'))).then(function(r){
+   return plThen(b,r,'That link is off. Nobody can use it.',function(){return pracLiveRead().then(plInviteOpen);});});};});
+ c.querySelectorAll('[data-plre]').forEach(function(b){b.onclick=function(){plBusy(b,true);
+  plCall('POST','/v1/prac/invites/'+encodeURIComponent(b.getAttribute('data-plre'))+'/reissue').then(function(r){
+   if(r.ok)PL.made={token:r.body.token, invite:r.body.invite};
+   return plThen(b,r,'The old link stopped. A new one is made above.',function(){return pracLiveRead().then(plInviteOpen);});});};});
+ c.querySelectorAll('[data-plend]').forEach(function(b){b.onclick=function(){plBusy(b,true);
+  plCall('POST','/v1/prac/grants/'+encodeURIComponent(b.getAttribute('data-plend'))+'/end').then(function(r){
+   return plThen(b,r,'Cancelled.',function(){return pracLiveRead().then(plInviteOpen);});});};});}
+function plInviteOpen(){
+ plCss(); plEnsure('roster');
+ sheetOpen(plInviteSheetHtml());
+ plInviteWire();}
+
 function pracLiveOpen(){return !!PL.sel;}
 /* A SURFACE THAT DRAWS BEFORE ITS LIST HAS BEEN READ ASKS FOR IT ONCE, and
    repaints when it lands. The flag is what stops a repaint asking again. */
@@ -327,7 +400,6 @@ function plEnsure(which){
  if(which==='roster'?PL.roster:PL.mine)return;
  PL['reading_'+which]=true;
  (which==='roster'?pracLiveRead():pracMineRead()).then(function(){PL['reading_'+which]=false; plRepaint();});}
-function pracLiveList(){plCss(); plEnsure('roster'); return plClientsGrp();}
 function pracLiveClear(){PL.sel=null;}
 
 function plBusy(b,on){if(b){b.disabled=!!on; b.setAttribute('aria-busy',on?'true':'false');}}
@@ -335,57 +407,38 @@ function plThen(b,r,ok,after){
  plBusy(b,false);
  if(r.ok){if(ok)status(ok,'ok');} else status(plWhy(r),'fail');
  return (after?after(r):Promise.resolve()).then(function(){return r;});}
-function pracLiveWire(host){
- var q=function(s){return host.querySelectorAll(s);};
- q('[data-plo]').forEach(function(b){b.onclick=function(){if(typeof pracDrillClear==='function')pracDrillClear(); PRAC_SEL=null; plOpen(b.getAttribute('data-plo'));};});
- q('[data-plt]').forEach(function(b){b.onclick=function(){PL.tab=b.getAttribute('data-plt'); renderPrac();};});
- var inv=host.querySelector('#plinvform');
- if(inv)inv.onsubmit=function(e){e.preventDefault(); var b=inv.querySelector('button'), lb=($('pllabel')||{}).value||'';
-  devSet('pracLiveLabel',lb.trim()); plBusy(b,true);
-  plCall('POST','/v1/prac/invites',{side:'prac',label:lb.trim()}).then(function(r){
-   if(r.ok)PL.made={token:r.body.token, invite:r.body.invite};
-   return plThen(b,r,'A link is made. Copy it and send it to one person.',function(){return pracLiveRead().then(renderPrac);});});};
- var cp=host.querySelector('[data-pl="copy"]');
- if(cp)cp.onclick=function(){var t=$('pllink'); if(!t)return; t.select();
-  var done=function(ok){status(ok?'Copied.':'Copy did not work here. The link is selected, so copy it by hand.',ok?'ok':'fail');};
-  try{if(navigator.clipboard)navigator.clipboard.writeText(t.value).then(function(){done(true);},function(){done(false);}); else done(document.execCommand('copy'));}catch(e){done(false);}};
- var red=host.querySelector('#plredform');
- if(red)red.onsubmit=function(e){e.preventDefault(); var b=red.querySelector('button');
-  var tok=plTokenOf(($('plcode')||{}).value); if(!tok){status('That is not a link or a code from a client.','fail'); return;}
-  plBusy(b,true);
-  plCall('POST','/v1/prac/redeem',{token:tok, label:(devGet('pracLiveLabel')||'').trim()||null}).then(function(r){
-   return plThen(b,r,'Connected. It goes live when your client says yes on their device.',function(){return pracLiveRead().then(renderPrac);});});};
- q('[data-plrv]').forEach(function(b){b.onclick=function(){plBusy(b,true);
-  plCall('DELETE','/v1/prac/invites/'+encodeURIComponent(b.getAttribute('data-plrv'))).then(function(r){
-   return plThen(b,r,'That link is off. Nobody can use it.',function(){return pracLiveRead().then(renderPrac);});});};});
- q('[data-plre]').forEach(function(b){b.onclick=function(){plBusy(b,true);
-  plCall('POST','/v1/prac/invites/'+encodeURIComponent(b.getAttribute('data-plre'))+'/reissue').then(function(r){
-   if(r.ok)PL.made={token:r.body.token, invite:r.body.invite};
-   return plThen(b,r,'The old link stopped. A new one is made above.',function(){return pracLiveRead().then(renderPrac);});});};});
- q('[data-plend]').forEach(function(b){b.onclick=function(){plBusy(b,true);
-  plCall('POST','/v1/prac/grants/'+encodeURIComponent(b.getAttribute('data-plend'))+'/end').then(function(r){
-   if(r.ok&&PL.sel===b.getAttribute('data-plend'))PL.sel=null;
-   return plThen(b,r,'Ended. They are told it ended, and nothing of the record is visible.',function(){return pracLiveRead().then(renderPrac);});});};});
- var nf=host.querySelector('#plnameform');
- if(nf)nf.onsubmit=function(e){e.preventDefault(); plNameSet(PL.sel,($('plname')||{}).value); renderPrac();};
- var w=host.querySelector('[data-pl="write"]'); if(w)w.onclick=function(){PL.write=true; PLW={k:'',on:null,tm:null,band:''}; renderPrac();};
- var dz=host.querySelector('[data-pl="discard"]'); if(dz)dz.onclick=function(){PL.write=false; renderPrac();};
- var wk=host.querySelector('#plwk'); if(wk)wk.onchange=function(){PLW.k=wk.value;};
- var wb=host.querySelector('#plwb'); if(wb)wb.onchange=function(){PLW.band=wb.value;};
- q('[data-plwd]').forEach(function(b){b.onclick=function(){var d=+b.getAttribute('data-plwd'), on=PLW.on||[];
-  var i=on.indexOf(d); if(i>=0)on.splice(i,1); else on.push(d); PLW.on=on.length?on.sort():null;
-  b.setAttribute('aria-pressed',i<0?'true':'false');};});
- var sd=host.querySelector('[data-pl="send"]');
- if(sd)sd.onclick=function(){
-  var p={steps:PLW.k?[PLW.k]:[], on:PLW.on&&PLW.on.length<7?PLW.on.slice():null, tm:null, days:0, band:PLW.band||'', why:(($('plwy')||{}).value||'').trim()};
-  var e=pracPropCheck(p); if(e.length){status(PLW.k?'Not sent: '+e.join('; ')+'.':'Choose a practice first.','fail'); return;}
-  var gid=PL.sel; plBusy(sd,true);
-  plCall('POST','/v1/prac/grants/'+encodeURIComponent(gid)+'/proposals',{kind:'ritual', payload:p}).then(function(r){
-   if(r.ok)PL.write=false;
-   return plThen(sd,r,'Sent. It is on their Ritual page as a suggestion from you.',function(){return plOpen(gid,true);});});};
- q('[data-plw]').forEach(function(b){b.onclick=function(){var gid=PL.sel; plBusy(b,true);
-  plCall('POST','/v1/prac/proposals/'+encodeURIComponent(b.getAttribute('data-plw'))+'/withdraw').then(function(r){
-   return plThen(b,r,'Withdrawn. It is off their Ritual page.',function(){return plOpen(gid,true);});});};});}
+/* ACROSS EVERY HOST THIS PAGE'S OWN ROWS AND CONTROLS CAN LAND IN, since
+   the three column rebuild (ui/practitioner.js) means a live client's own
+   markup is split across #prlist, #prac and #prrun rather than one page
+   host; no explicit host argument is taken any more, the way pracWire
+   itself stopped taking one. */
+function pracLiveWire(){
+ var lhost=$('prlist');
+ if(lhost)lhost.querySelectorAll('[data-plo]').forEach(function(b){
+  b.onclick=function(){if(typeof pracDrillClear==='function')pracDrillClear(); PRAC_SEL=null; plOpen(b.getAttribute('data-plo'));};});
+ var chost=$('prac');
+ if(chost)chost.querySelectorAll('[data-plconn]').forEach(function(b){
+  b.onclick=function(){var g=pracLiveGrants().filter(function(x){return x.id===b.getAttribute('data-plconn');})[0]; if(g)plConnOpen(g);};});
+ var rhost=$('prrun');
+ if(rhost){
+  var w=rhost.querySelector('[data-pl="write"]'); if(w)w.onclick=function(){PL.write=true; PLW={k:'',on:null,tm:null,band:''}; renderPrac();};
+  var dz=rhost.querySelector('[data-pl="discard"]'); if(dz)dz.onclick=function(){PL.write=false; renderPrac();};
+  var wk=rhost.querySelector('#plwk'); if(wk)wk.onchange=function(){PLW.k=wk.value;};
+  var wb=rhost.querySelector('#plwb'); if(wb)wb.onchange=function(){PLW.band=wb.value;};
+  rhost.querySelectorAll('[data-plwd]').forEach(function(b){b.onclick=function(){var d=+b.getAttribute('data-plwd'), on=PLW.on||[];
+   var i=on.indexOf(d); if(i>=0)on.splice(i,1); else on.push(d); PLW.on=on.length?on.sort():null;
+   b.setAttribute('aria-pressed',i<0?'true':'false');};});
+  var sd=rhost.querySelector('[data-pl="send"]');
+  if(sd)sd.onclick=function(){
+   var p={steps:PLW.k?[PLW.k]:[], on:PLW.on&&PLW.on.length<7?PLW.on.slice():null, tm:null, days:0, band:PLW.band||'', why:(($('plwy')||{}).value||'').trim()};
+   var e=pracPropCheck(p); if(e.length){status(PLW.k?'Not sent: '+e.join('; ')+'.':'Choose a practice first.','fail'); return;}
+   var gid=PL.sel; plBusy(sd,true);
+   plCall('POST','/v1/prac/grants/'+encodeURIComponent(gid)+'/proposals',{kind:'ritual', payload:p}).then(function(r){
+    if(r.ok)PL.write=false;
+    return plThen(sd,r,'Sent. It is on their Ritual page as a suggestion from you.',function(){return plOpen(gid,true);});});};
+  rhost.querySelectorAll('[data-plw]').forEach(function(b){b.onclick=function(){var gid=PL.sel; plBusy(b,true);
+   plCall('POST','/v1/prac/proposals/'+encodeURIComponent(b.getAttribute('data-plw'))+'/withdraw').then(function(r){
+    return plThen(b,r,'Withdrawn. It is off their Ritual page.',function(){return plOpen(gid,true);});});};});}}
 
 /* ============================================================
    THE CLIENT'S SIDE, C1 to C4

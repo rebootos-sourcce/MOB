@@ -1848,6 +1848,57 @@ function bmChargeTop(){
   if(n&&(n.sq||0)>0&&(!top||n.sq>top.sq))top=n;});});
  return top;}
 
+/* THE PRACTITIONER'S BORROWED HEAT, Phase 1 of the Practitioner rebuild. The
+   real Body page shows one field, the loaded profile's, because bmChargeTop
+   and bmChargeRebuild both read charge off BY, which is the shared state the
+   whole app is loaded against (CLAUDE.md, the impure core). A practitioner's
+   figure needs the same gradient for somebody who is not the loaded profile,
+   and writing a second heat function off a list of numbers would drift from
+   the real one the day either changed, the same reasoning pracRead already
+   gives for calling compute() rather than copying its arithmetic.
+
+   So this borrows BY itself. list is [{i,sq}], the addresses this one
+   client's own structure carries. Every one is a node pracRead's caller took
+   off W, and W[i]===BY[i]: W is built in core.js by filtering NODES into SOM
+   with no clone and pushing those same objects into band order, and BY maps
+   NODES by .i the same way, so a write through either name reaches the one
+   object bmChargeRebuild reads with BY[id].sq. The old value is saved before
+   the write and put back after the draw, inside this one call, with no
+   await and no frame between: the real Body page, mid paint, must never
+   read somebody else's charge as the loaded profile's own, which is exactly
+   the failure a borrow left open across an await would be.
+
+   THE DRAW ITSELF IS THE REAL ONE, lifted rather than re-approximated: the
+   same clip (G.body[v], the figure's own silhouette, built in the same
+   world units BMXA/BMYA/BMU already grid) and the same rectangle bmRender
+   draws G.cheat[v] into on the real page (BMXA+bmVX(v), BMYA, BMCOLS*BMU,
+   BMROWS*BMU). What is missing on purpose, for Phase 1: no camera, no panel,
+   no paint layer, no masks and no flow, because this card asks one question,
+   where does the charge sit, and the full Body page answers a dozen others
+   this one does not carry. views is the list of 0/1 to draw, [0] for front
+   alone (the narrow layout's toggle), [0,1] for both at once; the canvas is
+   sized off its own CSS width each call, so a column that resizes is read
+   fresh rather than kept at whatever width it opened at. */
+function bmPracHeat(cv,list,views){
+ if(!BMG)bmInit();
+ var G=BMG, old=[];
+ (list||[]).forEach(function(x){var n=BY[x.i]; if(n){old.push([n,n.sq]); n.sq=x.sq;}});
+ bmChargeRebuild();
+ views=(views&&views.length)?views:[0,1];
+ var one=views.length<2, vx0=one?bmVX(views[0]):0;
+ var ww=one?BMCOLS*BMU:BMOX+BMCOLS*BMU, hh=BMROWS*BMU;
+ var dpr=Math.min(2,window.devicePixelRatio||1), cssW=cv.clientWidth||ww*4;
+ cv.width=Math.max(1,Math.round(cssW*dpr)); cv.height=Math.max(1,Math.round(cssW*(hh/ww)*dpr));
+ var g=cv.getContext('2d'), kx=cv.width/ww, ky=cv.height/hh;
+ g.setTransform(kx,0,0,ky,-(BMXA+vx0)*kx,-BMYA*ky);
+ views.forEach(function(v){
+  g.save();g.clip(G.body[v]);g.imageSmoothingEnabled=true;g.imageSmoothingQuality='high';
+  g.drawImage(G.cheat[v],BMXA+bmVX(v),BMYA,BMCOLS*BMU,BMROWS*BMU);g.restore();});
+ old.forEach(function(p){p[0].sq=p[1];});
+ /* the real page's own next paint must not skip a rebuild because this left
+    the signature looking like the field it just borrowed */
+ BMCH.sig='';}
+
 /* ---------- the six masks, as pixels on the figure ----------
    CH in TASKS.md, his words: "the masks are what block the character, and
    all our light is behind the masks. It may be as a person's telling their

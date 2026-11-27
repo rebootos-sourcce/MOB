@@ -411,6 +411,22 @@ async function lockGate(browser,FILE,ok,booted){
   ok(!/\b(level|rank|better|worse|behind|lower|beginner|advanced|mastery|upgrade now|only|miss|missing out)\b/i.test(words)&&!/\u2014/.test(words),
    tag+'no lock says a locked tier is a lower person, and none pressures: the view is part of a tier, payment is not mastery, '+words.slice(0,160));
   ok(err.length===0,tag+'no page errors, '+err.slice(0,2).join(' | '));
+
+  /* ---- 13 · THE PRACTITIONER'S OWN FIGURE CARRIES NO LOCK ---- */
+  /* round [Phase 1]: the body figure reads a client's own structure, never
+     the practitioner's plan, so a tier that cannot see its own Body still
+     reads every client's figure in full. SIGHT has no row for this page at
+     all; this checks that readSeenOf's own lock never reaches it by way of
+     some shared selector, on the tier that would feel it first if it did. */
+  await as('free');
+  await pg.evaluate(()=>{pracSwitch(true); setTab(TAB.PRACTITIONER);});
+  await pg.waitForTimeout(400);
+  const figLock=await pg.evaluate(()=>{
+   const host=document.getElementById('prac');
+   return {n:host?host.querySelectorAll('[data-lock]').length:-1,
+    rings:host?host.querySelectorAll('.pr-fig-hit').length:0};});
+  ok(figLock.n===0,tag+'no [data-lock] lands on the practitioner figure on the lowest tier, got '+figLock.n);
+  ok(figLock.rings>0,tag+'the figure still draws its own pressable rings, got '+figLock.rings);
   await pg.close();}}
 
 module.exports={lockGate};

@@ -877,6 +877,18 @@
     <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
      <rect x="3.5" y="4.5" width="17" height="15" rx="2.5"/><path d="M9 4.5v15"/>
      <path class="lf-ch" d="M15.6 9.4L13 12l2.6 2.6"/></svg></button>
+   <!-- THE LEFT RAIL COMES BACK FOR PRACTITIONER, round [Phase 1]. His words:
+        "Bring back the left rail, and move the clients there." pracCss hides
+        every other .lsec on this tab the way the rest of this column already
+        hides its own strangers (data-sec with no CSS line shows every group
+        at once, the rule the fold comment above names), so this is the one
+        section the left rail shows while Practitioner is open. renderPrac
+        (ui/practitioner.js) writes its own innerHTML and nothing else in
+        this file ever does, the same ownership rule #sumrun and #avrel keep. -->
+   <div class="lsec open" data-rail="left" data-sec="prlist">
+    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="7.2" r="3"/><circle cx="16" cy="8.4" r="2.5"/><path d="M4 18c.5-3.4 2.7-5.2 5-5.2s4.5 1.8 5 5.2M14.2 18c.3-2.4 1.6-3.8 3.1-3.8"/></svg>Clients</span><i></i></button>
+    <div class="lsec-bd"><div id="prlist"></div></div>
+   </div>
    <!-- THE FLOW INPUT MENU. Ruled round QF, 2 October, his words: "Left menu
         will be for inputting new." So on the Ritual page this column is the
         one place a person starts or changes a ritual: closed it is one press
@@ -1513,12 +1525,30 @@
     <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19.5V5.5M6 11l6-6 6 6"/></svg>Become</span><i></i></button>
     <div class="lsec-bd"><div id="avbec"></div></div>
    </div>
+   <!-- "THE RIGHT RAIL IS OUR SYSTEM INFORMATION WINDOW," his words, round
+        [Phase 1]: what is running for the open client, in front of Selection
+        rather than behind it, because a practitioner presses a figure or a
+        pattern to send something to Selection and reads what is already
+        true above it without pressing anything. pracRunPaint owns this id
+        the way sumRunPaint owns #sumrun; nothing else in this file writes
+        to it. -->
+   <div class="lsec open" data-rail="right" data-sec="prrun">
+    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.4"/><path d="M8.4 12h7.2M12.8 9l2.8 3-2.8 3"/></svg>What is running</span><i></i></button>
+    <div class="lsec-bd"><div id="prrun"></div></div>
+   </div>
    <div class="lsec" data-rail="right" data-sec="sel">
     <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.8l12 7.4-5.4 1.4 3.2 6.2-2.6 1.4-3.2-6.2L6 18z"/></svg>Selection</span><i></i></button>
     <div class="lsec-bd">
      <div id="rdrill" style="display:none"></div>
      <div id="rdrill-none" class="rel-note"><b>Nothing selected.</b><span>Pick an address, a pattern or a row above to read it here.</span></div>
     </div>
+   </div>
+   <!-- NOTES, LAST, round [Phase 1]: a practitioner's own private line on the
+        open client, never sent anywhere, the device-only store pracNotesAll
+        already kept before this rebuild moved it off the centre page. -->
+   <div class="lsec" data-rail="right" data-sec="prnotes">
+    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h8l3 3v13H7z"/><path d="M10 10h5M10 13.5h5M10 17h3"/></svg>Notes</span><i></i></button>
+    <div class="lsec-bd"><div id="prnotes"></div></div>
    </div>
 
    <!-- FLOW, SEATS, RUNNING NOW, THE LAWS AND THE OLD FOOT BUTTON LEFT THIS

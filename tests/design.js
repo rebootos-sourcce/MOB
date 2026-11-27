@@ -378,6 +378,44 @@ console.log('\n=== 8 \u00b7 the tap floor. 44 by 44, every interactive element. 
  await page3.close();
 }
 
+console.log('\n=== 8b · the Practitioner page\'s own targets, gate 8 cannot see ===');
+/* GATE 8 WALKS button,select,input,textarea,[role=tab], and a place ring on
+   the body figure (ui/practitioner.js, pracFig) is none of those: it is an
+   svg circle with role="button", because a 112-address figure drawn as a
+   grid of real <button>s would break the figure's own geometry. Its hit
+   target is a disk, not a button box, so this reads its radius rather than
+   a bounding rect: the plan's own floor is 22px of radius, measured against
+   the figure's narrowest rendered width, a 390px phone showing one view. */
+{
+ const page3b=await browser.newPage({viewport:{width:390,height:844}});
+ await page3b.goto(FILE,{waitUntil:'load'}); await booted(page3b); await page3b.waitForTimeout(900);
+ const rings=await page3b.evaluate(async()=>{
+  pracSwitch(true); setTab(TAB.PRACTITIONER); await new Promise(r=>setTimeout(r,250));
+  /* the left column starts shut on his own ruling (GO, ui/ui.js colFold),
+     so its own pills are opened here or offsetParent would filter every
+     one of them out and the check below would pass on nothing to check */
+  if(document.body.classList.contains('lshut'))document.getElementById('lfold').click();
+  await new Promise(r=>setTimeout(r,150));
+  const hits=[...document.querySelectorAll('#prac .pr-fig-hit')];
+  if(!hits.length)return {n:0,bad:[],pills:0,days:0};
+  const svg=document.querySelector('#prac svg.pr-fig-ov');
+  const sr=svg.getBoundingClientRect(), vb=svg.viewBox.baseVal;
+  const px=sr.width/vb.width;
+  const bad=hits.filter(h=>+h.getAttribute('r')*px<22)
+   .map(h=>Math.round(+h.getAttribute('r')*px));
+  const pills=[...document.querySelectorAll('#lpanel .pr-sort button,#lpanel .pr-rail-h button')]
+   .filter(b=>b.offsetParent).map(b=>b.getBoundingClientRect())
+   .filter(r=>r.width<44||r.height<44).length;
+  const days=[...document.querySelectorAll('#prrun .pr-day')].filter(b=>b.offsetParent)
+   .map(b=>b.getBoundingClientRect()).filter(r=>r.width<44||r.height<44).length;
+  return {n:hits.length,bad:bad,pills:pills,days:days};});
+ ok(rings.n>0,'the figure draws at least one pressable place ring at 390, got '+rings.n);
+ ok(rings.bad.length===0,rings.bad.length+' place rings read under 22px of radius at 390, '+rings.bad.join(','));
+ ok(rings.pills===0,rings.pills+' left-rail pills (Attention/Name/Clients/Examples) are under the 44px tap floor');
+ ok(rings.days===0,rings.days+' day cells in What is running are under the 44px tap floor');
+ await page3b.close();
+}
+
 console.log('\n=== 9 \u00b7 four lightings, each its own ===');
 /* A lighting is not a skin. Each has to resolve its own tokens and produce its
    own ground, and nothing checked that: snow was asserted by the shots tool and

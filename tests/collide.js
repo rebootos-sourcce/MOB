@@ -531,6 +531,48 @@ for(const w of [[1600,1000],[390,844]]){
    +Math.round(r.card.title)+' under the bar at '+Math.round(r.card.bar));}}
 await p.setViewportSize({width:1680,height:1020});await p.waitForTimeout(160);
 
+/* ============================================================
+   THE PRACTITIONER PAGE, round [Phase 1]: three columns now instead of one,
+   the client list in the left rail, the name and body figure in the centre,
+   What is running, Selection and Notes stacked in the right rail. Checked
+   with a client open (the page never opens on nothing, pracAutoOpen) and
+   with a drill open in Selection, the same stress Discover's own bank-open
+   pass puts on its rail, using the same "every visible control takes a
+   press at its centre" probe rather than a second collision method.
+   ============================================================ */
+console.log('\n=== the practitioner page: every visible control takes a press, both rails up ===');
+for(const w of [[1600,1000],[390,844]]){
+ await p.setViewportSize({width:w[0],height:w[1]});await p.waitForTimeout(200);
+ await p.evaluate(()=>{pracSwitch(true); setTab(TAB.PRACTITIONER);});
+ await p.waitForTimeout(300);
+ /* THE LEFT COLUMN STARTS SHUT ON HIS OWN RULING (GO, ui/ui.js colFold),
+    the same default every tab keeps, so Clients is opened here or none of
+    its own pills and rows would be on screen for this probe to measure. */
+ await p.evaluate(()=>{if(document.body.classList.contains('lshut'))document.getElementById('lfold').click();});
+ await p.waitForTimeout(200);
+ /* a figure's own ring, pressed, puts a real drill in Selection, so the
+    stacked rail is measured full rather than on its own empty note */
+ await p.evaluate(()=>{const r=document.querySelector('#prac .pr-fig-hit'); if(r)r.dispatchEvent(new MouseEvent('click',{bubbles:true}));});
+ await p.waitForTimeout(250);
+ const r=await p.evaluate(()=>{
+  const vw=innerWidth,vh=innerHeight,out={n:0,bad:[]};
+  const clipped=(el,x,y)=>{for(let a=el.parentElement;a&&a!==document.documentElement;a=a.parentElement){
+   const cs=getComputedStyle(a);if(cs.overflowX==='visible'&&cs.overflowY==='visible')continue;
+   const q=a.getBoundingClientRect();if(x<q.left||x>q.right||y<q.top||y>q.bottom)return true;}return false;};
+  document.querySelectorAll('button,a[href],input,select,textarea,[role=button]').forEach(el=>{
+   const cs=getComputedStyle(el);if(cs.visibility==='hidden'||cs.pointerEvents==='none'||cs.display==='none')return;
+   const q=el.getBoundingClientRect();if(q.width<1||q.height<1)return;
+   const x=q.left+q.width/2,y=q.top+q.height/2;
+   if(x<0||y<0||x>=vw||y>=vh||clipped(el,x,y))return;
+   out.n++;
+   const h=document.elementFromPoint(x,y);
+   if(h!==el&&!el.contains(h)&&!(h&&h.contains&&h.contains(el)))out.bad.push((el.id?'#'+el.id:el.tagName.toLowerCase()+'.'+String(el.className).split(' ')[0])
+    +' "'+(el.textContent||el.value||'').trim().slice(0,18)+'" at '+Math.round(y)+'px under '+(h?(h.id?'#'+h.id:h.tagName.toLowerCase()):'nothing'));});
+  return out;});
+ ok(r.n>0&&r.bad.length===0,'the practitioner page at '+w[0]+' by '+w[1]+': each of '+r.n+' visible controls takes a press at its centre'
+  +(r.bad.length?': '+r.bad.join('; '):''));}
+await p.setViewportSize({width:1680,height:1020});await p.waitForTimeout(160);
+
 await b.close();
 console.log('\n===== '+PASS+' passed, '+FAIL+' failed =====');
 process.exit(FAIL?1:0);})();

@@ -132,6 +132,25 @@ const FLOOR_CANVAS=60;
     const bad=!r||r.markup<(/ \d+x\d+$/.test(r.host)?FLOOR_CANVAS:FLOOR);
     rows.push([wn,who,nm,bad?'EMPTY':'ok',r?r.markup:0,r?r.text:0,r?r.host:'-']);
     if(bad)fails.push(wn+'/'+who+'/'+nm+' rendered '+(r?r.markup:0)+' characters');
+    /* THE PRACTITIONER'S OWN CANVAS, THE SAME GAP THIS FILE ALREADY NAMES FOR
+       THE FIELD, round [Phase 1]. #prac is a div now, name and body figure,
+       and a div's markup stays well clear of FLOOR whether or not the canvas
+       inside it ever drew anything: the outline svg's path string and the
+       overlay rings are non-trivial text regardless. So a dead bmPracHeat
+       would pass the generic check above while drawing nothing, exactly the
+       silent failure the canvas lesson at the top of this file is about. */
+    if(hid==='prac'){
+     const cv=await p.evaluate(()=>{
+      var c=document.querySelector('#prac canvas[data-prcv]'); if(!c)return null;
+      var w=c.width,h=c.height; if(!w||!h)return {w:0,h:0,lit:0};
+      var cx=c.getContext('2d'), d=null;
+      try{ d=cx.getImageData(0,0,w,h).data; }catch(e){ d=null; }
+      if(!d)return {w:w,h:h,lit:-1};
+      var lit=0; for(var i=3;i<d.length;i+=4*29)if(d[i]>8)lit++;
+      return {w:w,h:h,lit:lit};});
+     const cvBad=!cv||cv.lit<FLOOR_CANVAS;
+     rows.push([wn,who,'practitioner figure',cvBad?'EMPTY':'ok',cv?cv.lit:0,0,cv?cv.w+'x'+cv.h:'no canvas']);
+     if(cvBad)fails.push(wn+'/'+who+'/practitioner figure canvas lit '+(cv?cv.lit:0)+' sampled pixels, floor '+FLOOR_CANVAS);}
     /* AND THE RAILS, WHICH NOTHING WAS WATCHING. The centre column is one
        host per surface and this walked it from the first day. The rails are
        not: they hold many hosts, they are shared across surfaces, and each
