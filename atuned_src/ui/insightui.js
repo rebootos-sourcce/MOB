@@ -149,7 +149,9 @@ function insGlyphFor(sel){
  return INS_PLAINGLYPH;}
 function insColFor(sel,r){
  try{
-  if(INS_LIST[sel.kind]){var o=insFind(r,sel.kind,sel.nm); return seatCol((leaves(o)[0]||{}).b||'Heart');}
+  /* the seat its charge sits in, patSeat in engine/insight.js, and never its
+     first address, which drew Root's red on patterns Root barely held */
+  if(INS_LIST[sel.kind]){var o=insFind(r,sel.kind,sel.nm), ob=patSeat(o); return ob?seatCol(ob):'var(--accent)';}
   if(sel.kind==='fet'){var c=CHILD.filter(function(x){return x.nm===sel.nm;})[0]; return c?seatCol(c.seat):'var(--accent)';}
   if(sel.kind==='addr'){var n=BY[sel.i]; return n?seatCol(n.b):'var(--accent)';}
   /* a mask or an archetype takes its own seat's colour, the same lookup
@@ -307,10 +309,10 @@ function stkSelKey(sel){
    because rbRow brings a button of its own. The run glyph is a second button
    beside it, never inside it. */
 function stkAmount(o,nm,f){
- var lv=leaves(o), b=(lv[0]||{}).b||'Heart', p=Math.max(0,Math.min(100,pct('chain',o.w)||0));
+ var b=patSeat(o), p=Math.max(0,Math.min(100,pct('chain',o.w)||0));
  return '<span class="rb-row"><span class="rb-n"><span class="stk-nm">'+esc(nm)+'</span>'
   +(o.unnamed?'<em>inferred</em>':'')+'</span><span class="rb-v">'+esc(f)+'</span></span>'
-  +'<span class="rb-t" aria-hidden="true" style="--c:'+seatCol(b)+'"><s style="left:25%"></s><s style="left:50%"></s><s style="left:75%"></s>'
+  +'<span class="rb-t" aria-hidden="true" style="--c:'+(b?seatCol(b):'var(--accent)')+'"><s style="left:25%"></s><s style="left:50%"></s><s style="left:75%"></s>'
   +'<i class="rb-f" style="width:'+p.toFixed(2)+'%"></i></span>';}
 /* a child emotion's bar is the polar pair the Balance bar is drawn with, fetBar
    in ui/component.js: the held pole at one end, the installed opposite at the
@@ -356,12 +358,12 @@ function stkHeldRep(o){
  return {h:lv.reduce(function(a,n){return a+(n.held||0);},0)/lv.length,
   p:lv.reduce(function(a,n){return a+(n.rep||0);},0)/lv.length};}
 function stkPolar(o,nm,f,pole){
- var b=(leaves(o)[0]||{}).b||'Heart', hr=stkHeldRep(o), read=hr.h>0||hr.p>0;
+ var b=patSeat(o), hr=stkHeldRep(o), read=hr.h>0||hr.p>0;
  var lean=clamp(50+(hr.h-hr.p)*5,0,100), side=!read?0:Math.round(lean)>50?-1:Math.round(lean)<50?1:0;
  var ic='<path d="'+CHAINGLYPH[o.kind]+'"/>';
  return rbPair('stkp-'+o.kind+'-'+KB_KEY(o.nm),{read:read, whole:true,
   fig:!read?'–':side>0?fmtPct('installed',hr.p):f,
-  L:{nm:nm,ic:ic,c:seatCol(b),v:lean}, R:{nm:pole.nm,ic:ic,c:'var(--accent)',v:100-lean}});}
+  L:{nm:nm,ic:ic,c:b?seatCol(b):'var(--mid)',v:lean}, R:{nm:pole.nm,ic:ic,c:'var(--accent)',v:100-lean}});}
 /* the run glyph: a ring at the bar's right end. Not drawn (the slot is kept so
    every bar ends at the same place) when a release has nothing to open here.
    In Pick several it is the pick ring instead, in the same slot, so the two

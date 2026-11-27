@@ -47,7 +47,7 @@ if(typeof module!=='undefined'&&module.exports){
                  SRC_RESTATE:SRC_RESTATE, srcRestate:srcRestate,
   /* insight */  insightRead:insightRead, insightRelease:insightRelease, insightResolve:insightResolve,
                  insightText:insightText, INS_HEAD:INS_HEAD, INS_MAX:INS_MAX, INS_LIST:INS_LIST, INS_REG:INS_REG,
-                 INS_WORD:INS_WORD, INS_CAP:INS_CAP, patFam:patFam,
+                 INS_WORD:INS_WORD, INS_CAP:INS_CAP, patFam:patFam, patSeat:patSeat, leaves:leaves,
   /* undo */     undoPush:undoPush, undoPop:undoPop, undoDepth:undoDepth,
                  redoPop:redoPop, redoDepth:redoDepth, redoPeek:redoPeek,
                   undoPeek:undoPeek, undoClear:undoClear, UNDO_MAX:UNDO_MAX,

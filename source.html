@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v3525 9c21b624 2026-11-27 02:49"><head><meta charset="utf-8">
+<html lang="en" data-build="v3529 bead7294 2026-11-27 17:06"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -30571,6 +30571,24 @@ try{window.__at&&window.__at('engine/tracesummary.js');}catch(e){}
 function leaves(o){if(!o||!o.parts)return o?[o]:[];
  var a=[],sn={};(function dig(x){if(x.parts)x.parts.forEach(dig);
   else if(!sn[x.i]){sn[x.i]=1;a.push(x);}})(o);return a;}
+/* THE SEAT A PATTERN'S CHARGE SITS IN, 27 November. His words on the live
+   rail: "the insight panel has red, but there's nothing in it that's red."
+   The rail coloured a pattern by its first address, (leaves(o)[0]).b, and the
+   first address is the lowest numbered one, which is a Root address whenever
+   the pattern touches Root at all, because the Root addresses are numbered
+   first. So a pattern drew Root's red when Root held a sliver of it (Gordon's
+   Micromanager + Solar Striker: one Root address, eight Solar, painted red),
+   or none of it (an overshot pattern carries no held charge at its addresses
+   and still painted red). The same first-is-dominant default the face's
+   centre glow had (ui/srcface.js, DOM=-1). This answers the seat carrying the
+   most charge over the pattern's own addresses, summed by seat, and null when
+   none of them carries any: a pattern with no charge has no seat colour to
+   claim, and the caller draws it neutral, never Root. */
+function patSeat(o){
+ var by={},best=null,bv=0;
+ leaves(o).forEach(function(n){var v=+n.sq||0; if(n&&n.b&&v>0)by[n.b]=(by[n.b]||0)+v;});
+ BANDS.forEach(function(b){if((by[b]||0)>bv){bv=by[b];best=b;}});
+ return best;}
 /* THE FAMILY A PATTERN BELONGS TO, AND ITS RECORD. 4 November, his live
    reaction to the pattern drill: the words must come "from the records", and
    "built from 5 held addresses" is "a big no". A saboteur and a complex name
@@ -47268,7 +47286,7 @@ if(typeof module!=='undefined'&&module.exports){
                  SRC_RESTATE:SRC_RESTATE, srcRestate:srcRestate,
   /* insight */  insightRead:insightRead, insightRelease:insightRelease, insightResolve:insightResolve,
                  insightText:insightText, INS_HEAD:INS_HEAD, INS_MAX:INS_MAX, INS_LIST:INS_LIST, INS_REG:INS_REG,
-                 INS_WORD:INS_WORD, INS_CAP:INS_CAP, patFam:patFam,
+                 INS_WORD:INS_WORD, INS_CAP:INS_CAP, patFam:patFam, patSeat:patSeat, leaves:leaves,
   /* undo */     undoPush:undoPush, undoPop:undoPop, undoDepth:undoDepth,
                  redoPop:redoPop, redoDepth:redoDepth, redoPeek:redoPeek,
                   undoPeek:undoPeek, undoClear:undoClear, UNDO_MAX:UNDO_MAX,
@@ -115358,7 +115376,9 @@ function insGlyphFor(sel){
  return INS_PLAINGLYPH;}
 function insColFor(sel,r){
  try{
-  if(INS_LIST[sel.kind]){var o=insFind(r,sel.kind,sel.nm); return seatCol((leaves(o)[0]||{}).b||'Heart');}
+  /* the seat its charge sits in, patSeat in engine/insight.js, and never its
+     first address, which drew Root's red on patterns Root barely held */
+  if(INS_LIST[sel.kind]){var o=insFind(r,sel.kind,sel.nm), ob=patSeat(o); return ob?seatCol(ob):'var(--accent)';}
   if(sel.kind==='fet'){var c=CHILD.filter(function(x){return x.nm===sel.nm;})[0]; return c?seatCol(c.seat):'var(--accent)';}
   if(sel.kind==='addr'){var n=BY[sel.i]; return n?seatCol(n.b):'var(--accent)';}
   /* a mask or an archetype takes its own seat's colour, the same lookup
@@ -115516,10 +115536,10 @@ function stkSelKey(sel){
    because rbRow brings a button of its own. The run glyph is a second button
    beside it, never inside it. */
 function stkAmount(o,nm,f){
- var lv=leaves(o), b=(lv[0]||{}).b||'Heart', p=Math.max(0,Math.min(100,pct('chain',o.w)||0));
+ var b=patSeat(o), p=Math.max(0,Math.min(100,pct('chain',o.w)||0));
  return '<span class="rb-row"><span class="rb-n"><span class="stk-nm">'+esc(nm)+'</span>'
   +(o.unnamed?'<em>inferred</em>':'')+'</span><span class="rb-v">'+esc(f)+'</span></span>'
-  +'<span class="rb-t" aria-hidden="true" style="--c:'+seatCol(b)+'"><s style="left:25%"></s><s style="left:50%"></s><s style="left:75%"></s>'
+  +'<span class="rb-t" aria-hidden="true" style="--c:'+(b?seatCol(b):'var(--accent)')+'"><s style="left:25%"></s><s style="left:50%"></s><s style="left:75%"></s>'
   +'<i class="rb-f" style="width:'+p.toFixed(2)+'%"></i></span>';}
 /* a child emotion's bar is the polar pair the Balance bar is drawn with, fetBar
    in ui/component.js: the held pole at one end, the installed opposite at the
@@ -115565,12 +115585,12 @@ function stkHeldRep(o){
  return {h:lv.reduce(function(a,n){return a+(n.held||0);},0)/lv.length,
   p:lv.reduce(function(a,n){return a+(n.rep||0);},0)/lv.length};}
 function stkPolar(o,nm,f,pole){
- var b=(leaves(o)[0]||{}).b||'Heart', hr=stkHeldRep(o), read=hr.h>0||hr.p>0;
+ var b=patSeat(o), hr=stkHeldRep(o), read=hr.h>0||hr.p>0;
  var lean=clamp(50+(hr.h-hr.p)*5,0,100), side=!read?0:Math.round(lean)>50?-1:Math.round(lean)<50?1:0;
  var ic='<path d="'+CHAINGLYPH[o.kind]+'"/>';
  return rbPair('stkp-'+o.kind+'-'+KB_KEY(o.nm),{read:read, whole:true,
   fig:!read?'–':side>0?fmtPct('installed',hr.p):f,
-  L:{nm:nm,ic:ic,c:seatCol(b),v:lean}, R:{nm:pole.nm,ic:ic,c:'var(--accent)',v:100-lean}});}
+  L:{nm:nm,ic:ic,c:b?seatCol(b):'var(--mid)',v:lean}, R:{nm:pole.nm,ic:ic,c:'var(--accent)',v:100-lean}});}
 /* the run glyph: a ring at the bar's right end. Not drawn (the slot is kept so
    every bar ends at the same place) when a release has nothing to open here.
    In Pick several it is the pick ring instead, in the same slot, so the two
@@ -118066,5 +118086,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="008618629"></div>
+<div id="eof" hidden data-len="008620012"></div>
 </body></html>

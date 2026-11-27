@@ -111,7 +111,8 @@
     "Raised 26 November: dailyui 68 to 69, read off a clean local run on 3541a346 (69 passed, 0 failed). dashavatar left at 73: the same build reads 73 passed, 0 failed, exactly its floor, so the board item calling it stale was already closed. Both pass the nightly repeat, 3 solo and 4 at once, on run 45886220916.",
     "Added 27 November: pracshare 22, read off a clean local run of tests/pracshare.js on 87fcb1a7 (22 passed, 0 failed). It landed in 0ce41adf run by no job, which tools/orphans.js caught on run 45912157094; it runs report only first, in gates-report. tests/praclive.js gets no floor: it needs a reboot-os checkout no job has, and is listed in MANUAL in tools/orphans.js with that reason.",
     "Raised 27 November: srcintro 112 to 122, left behind when 5405e260 ('hold the face for two frames after the hand over, whatever order the timers run') added real headless regression checks to tests/srcintro.js without raising this floor. gates-browser (srcintro) tripped on 87fcb1a7 and 161eef09 as drift, 10 above the floor, more than the 6 it may drift; the gate itself was green. Read off two clean local runs on 161eef09, 122 passed, 0 failed each, and tools/floors.js reproduced the CI failure on the first of them before this edit.",
-    "Raised 27 November: insightread 304 to 327, read off CI run 45930829128 job 140282801767 on commit c2ac6e9a. The new real readers for laws, points and the six remaining Insight kinds added 23 real checks."
+    "Raised 27 November: insightread 304 to 327, read off CI run 45930829128 job 140282801767 on commit c2ac6e9a. The new real readers for laws, points and the six remaining Insight kinds added 23 real checks.",
+    "Raised 27 November: insightread 327 to 332 and insightrail 51 to 52, the owner's \"the insight panel has red, but there's nothing in it that's red.\" The rail drew a pattern in its first address's seat, which is Root whenever it touches Root; patSeat (engine/insight.js) now reads the seat its charge sits in. IN9 in tests/insightread.js adds 5 headless checks and TINT in tests/insightrail.js adds 1 browser check, read off clean local runs: insightread 332 passed 0 failed, insightrail 52 passed 0 failed three runs in a row. TINT fails by name on the build before the fix (133 rows and rings painted a seat their charge is not in) and both TINT mutants are caught."
   ],
   "expected_red_max": {
     "engine": 0,
@@ -172,8 +173,8 @@
     "avatarpurpose": 55,
     "ownbirth": 24,
     "lightmenu": 4564,
-    "insightread": 327,
-    "insightrail": 51,
+    "insightread": 332,
+    "insightrail": 52,
     "affirm": 74,
     "exampleprofiles": 334,
     "psychepanel": 201,

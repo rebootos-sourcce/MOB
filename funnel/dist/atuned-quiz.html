@@ -18619,6 +18619,24 @@ function traceSummary(g,node){
 function leaves(o){if(!o||!o.parts)return o?[o]:[];
  var a=[],sn={};(function dig(x){if(x.parts)x.parts.forEach(dig);
   else if(!sn[x.i]){sn[x.i]=1;a.push(x);}})(o);return a;}
+/* THE SEAT A PATTERN'S CHARGE SITS IN, 27 November. His words on the live
+   rail: "the insight panel has red, but there's nothing in it that's red."
+   The rail coloured a pattern by its first address, (leaves(o)[0]).b, and the
+   first address is the lowest numbered one, which is a Root address whenever
+   the pattern touches Root at all, because the Root addresses are numbered
+   first. So a pattern drew Root's red when Root held a sliver of it (Gordon's
+   Micromanager + Solar Striker: one Root address, eight Solar, painted red),
+   or none of it (an overshot pattern carries no held charge at its addresses
+   and still painted red). The same first-is-dominant default the face's
+   centre glow had (ui/srcface.js, DOM=-1). This answers the seat carrying the
+   most charge over the pattern's own addresses, summed by seat, and null when
+   none of them carries any: a pattern with no charge has no seat colour to
+   claim, and the caller draws it neutral, never Root. */
+function patSeat(o){
+ var by={},best=null,bv=0;
+ leaves(o).forEach(function(n){var v=+n.sq||0; if(n&&n.b&&v>0)by[n.b]=(by[n.b]||0)+v;});
+ BANDS.forEach(function(b){if((by[b]||0)>bv){bv=by[b];best=b;}});
+ return best;}
 /* THE FAMILY A PATTERN BELONGS TO, AND ITS RECORD. 4 November, his live
    reaction to the pattern drill: the words must come "from the records", and
    "built from 5 held addresses" is "a big no". A saboteur and a complex name
@@ -35248,7 +35266,7 @@ if(typeof module!=='undefined'&&module.exports){
                  SRC_RESTATE:SRC_RESTATE, srcRestate:srcRestate,
   /* insight */  insightRead:insightRead, insightRelease:insightRelease, insightResolve:insightResolve,
                  insightText:insightText, INS_HEAD:INS_HEAD, INS_MAX:INS_MAX, INS_LIST:INS_LIST, INS_REG:INS_REG,
-                 INS_WORD:INS_WORD, INS_CAP:INS_CAP, patFam:patFam,
+                 INS_WORD:INS_WORD, INS_CAP:INS_CAP, patFam:patFam, patSeat:patSeat, leaves:leaves,
   /* undo */     undoPush:undoPush, undoPop:undoPop, undoDepth:undoDepth,
                  redoPop:redoPop, redoDepth:redoDepth, redoPeek:redoPeek,
                   undoPeek:undoPeek, undoClear:undoClear, UNDO_MAX:UNDO_MAX,

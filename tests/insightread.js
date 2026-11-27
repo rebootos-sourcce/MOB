@@ -412,5 +412,27 @@ g('IN7 · no broken phrase in any reading, across the whole roster');
  ok(hit.length===0,'no page has a broken phrase: '+hit.join(' | '));
 }
 
+/* THE SEAT A PATTERN IS DRAWN IN, 27 November. "the insight panel has red, but
+   there's nothing in it that's red": the rail drew a pattern in its first
+   address's seat, and the first address is a Root one whenever the pattern
+   touches Root. patSeat answers the seat its charge sits in, and nothing when
+   it carries none. The browser half is TINT in tests/insightrail.js. */
+g('IN9 · a pattern takes the seat its charge sits in');
+{
+ const {patSeat,leaves,BANDS}=E;
+ const mk=(...ns)=>({parts:ns.map(([i,b,sq])=>({i,b,sq}))});
+ ok(patSeat(mk([1,'Root',0.5],[40,'Solar',6],[41,'Solar',5]))==='Solar','a Root sliver first and the charge in Solar reads Solar, got '+patSeat(mk([1,'Root',0.5],[40,'Solar',6],[41,'Solar',5])));
+ ok(patSeat(mk([1,'Root',0],[30,'Sacral',0]))===null,'a pattern carrying no charge has no seat, got '+patSeat(mk([1,'Root',0],[30,'Sacral',0])));
+ ok(patSeat(mk([1,'Root',7],[60,'Heart',2]))==='Root','and Root when Root carries it, got '+patSeat(mk([1,'Root',7],[60,'Heart',2])));
+ ok(patSeat({parts:[mk([1,'Root',1]),mk([80,'Crown',3],[1,'Root',1])]})==='Crown','an address shared by two parts counts once, got '+patSeat({parts:[mk([1,'Root',1]),mk([80,'Crown',3],[1,'Root',1])]}));
+ let n=0; const off=[];
+ PEOPLE.forEach(p=>{let r; try{r=load(p);}catch(e){return;}
+  [].concat(r.sabs||[],r.cxs||[],r.hys||[],r.sups||[]).forEach(o=>{n++;
+   const by={}; leaves(o).forEach(a=>{if(a.sq>0)by[a.b]=(by[a.b]||0)+a.sq;});
+   const top=BANDS.filter(b=>by[b]>0).sort((a,b)=>by[b]-by[a])[0]||null;
+   if(patSeat(o)!==top&&off.length<4)off.push(p.nm+' '+o.nm+': '+patSeat(o)+' not '+top);});});
+ ok(n>100&&off.length===0,'across the roster every pattern ('+n+') reads the seat holding most of its charge: '+off.join(' | '));
+}
+
 console.log('\n===== '+P+' passed, '+F+' failed =====');
 process.exit(F?1:0);
