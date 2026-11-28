@@ -5976,10 +5976,14 @@ console.log('\n=== the ritual plan cap is one number, not two ===');
 const rp=await page.evaluate(async()=>{
  loadP(PERSON('James')); setTab(TAB.RITUAL);
  await new Promise(r=>setTimeout(r,500));
- /* the builder no longer opens itself on a first visit, round QN (FT24 in
-    tests/flowtools.js), so it is opened the way a person opens it */
- if(!document.getElementById('ritwhen')){const a=document.querySelector('#lcol [data-act="add"]'); if(a)a.click();
-  await new Promise(r=>setTimeout(r,300));}
+ /* THE BUILDER NEEDS NO OPENING PRESS AT ALL, round SW: it is drawn on every
+    paint since 931b4090 (5 November), with the Cue and Where fields always
+    in it, so there has been nothing for this guard to wait for since then.
+    It used to read '#lcol [data-act="add"]', the pre-931b4090 "+ New"
+    button, which has not existed in this column since, so the guard's own
+    click never fired and this already read the fields unconditionally; the
+    dead branch is cut rather than kept pointing at a selector nothing has
+    matched in three weeks. */
  const w=document.getElementById('ritwhen'), e=document.getElementById('ritwhere');
  return {there:!!(w&&e), cap:(typeof RIT_PLAN_MAX==='number')?RIT_PLAN_MAX:null,
   when:w?w.maxLength:-1, where:e?e.maxLength:-1};});

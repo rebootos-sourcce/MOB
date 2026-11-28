@@ -109,6 +109,13 @@ var RIT={open:false, sel:{}, order:[], from:null, all:false, when:'', where:'',
     counts against so switching rituals cannot leave two ticking against one
     render, and never persisted, the same posture as hover and pin. */
  tags:[], on:null, tm:null, run:null, rang:null,
+ /* the key ritRender auto picked, if any, so it is never forced back on
+    after a person takes it off, and is taken back off by itself, never by a
+    person's own pick, the moment it no longer matches what is called for.
+    needPick is the one shot ritOpen hands the very next render, spent
+    whether or not it finds anything to pick, so no caller who repaints the
+    page by hand without reopening it ever triggers this. */
+ autoK:null, needPick:false,
  /* the repeat band's, 20 November (ritRecurOf): the time of day, Set days
     chosen while every day is lit, and which of When and Where is open. The
     last is a moment, like hover and pin, and never persisted. */
@@ -151,21 +158,31 @@ function ritFor(r){
  var called=first.length?lightest(first):lightest(fit);
  return {band:band, track:track, tier:tier, called:called,
   substituted:!first.length, actualTrack:called?called.track:track, all:fit};}
-/* OPENING THE PAGE DOES NOT PICK FOR THE PERSON ANY MORE. It used to write the
-   called practice into the selection on open, and the selection then outlived
-   a change of profile: measured on the shipped page, the blank profile's Box
-   Breathing was still the ritual below a card that called Active Listening
-   for Marcus. The called practice is read on every render now, and the
-   selection only holds what a person or a caller put there.
+/* OPENING THE PAGE PICKS FOR THE PERSON ONCE AGAIN, round SW, carefully. It
+   used to write the called practice into the selection on open, and the
+   selection then outlived a change of profile: measured on the shipped page,
+   the blank profile's Box Breathing was still the ritual below a card that
+   called Active Listening for Marcus. That is why the pick moved out of
+   here and into ritRender's own guard (RIT.needPick, below), which checks
+   what is called for against the profile actually loaded on every paint and
+   not only on the one that opened the tab: the key picked here is taken back
+   off, by itself, the moment it stops matching. Set here and read there so a
+   caller who repaints the page without reopening it, which is most of them,
+   never triggers a pick it did not ask for.
 
-   Two callers still hand a selection in. The release passes the log of what
-   it just released, and the page opens with a new ritual started. The avatar
-   sets RIT.sel to the practices it queued and RIT.all, then renders, and the
-   page opens with exactly those steps in the builder. */
+   Two callers still hand a selection in, which is why needPick is spent
+   before anything else runs this session, not only on the practice ritFor
+   would have called for: the release passes the log of what it just
+   released, and the page opens with a new ritual started. The avatar sets
+   RIT.sel to the practices it queued and RIT.all, then renders, and the page
+   opens with exactly those steps in the builder. */
 function ritOpen(fromLog){
  RIT.open=true; RIT.from=fromLog||null; RIT.sel={}; RIT.order=[]; RIT.all=false;
  RIT.when=''; RIT.where=''; RIT.edit=null; RIT.exp=null; RIT.days=7;
  RIT.tags=[]; RIT.on=null; RIT.tm=null; RIT.at=''; RIT.rown=false; RIT.wp=null;
+ /* a fresh open gets a fresh chance to auto pick, spent the very next paint
+    (ritRender's own guard), and a fresh autoK to track what it picked */
+ RIT.autoK=null; RIT.needPick=true;
  RIT.add=!!(fromLog&&fromLog.length);
  /* A CALLER OFF THE TAB GOES TO THE TAB. The builder is in Flow's right menu
     and that menu exists on Flow only, so the modal this used to draw over the
@@ -948,7 +965,12 @@ var RIT_IC={
     When is a calendar with a clock on its corner because it carries a time
     and a cue, not a date; Where is a pin */
  cal:'<path d="M11 18H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3 M4 9.5h14 M8 3v4 M14 3v4"/><circle cx="17" cy="17" r="4"/><path d="M17 15.2V17l1.3 1"/>',
- pin:'<path d="M12 21s-6-5.6-6-10.5a6 6 0 0 1 12 0C18 15.4 12 21 12 21z"/><circle cx="12" cy="10.5" r="2.2"/>'};
+ pin:'<path d="M12 21s-6-5.6-6-10.5a6 6 0 0 1 12 0C18 15.4 12 21 12 21z"/><circle cx="12" cy="10.5" r="2.2"/>',
+ /* HISTORY, round SW: clock's own ring and hands (what it tells, a moment in
+    time) plus a short back turned arrow at the top left (that it reaches
+    backward), so it reads as its own mark and not a second Timer, the clock
+    face alone already carries elsewhere on the builder's own timer control */
+ hist:'<circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2"/><path d="M9.3 3.6l-3 1 1 3"/>'};
 function ritIc(k,cls){
  return '<svg viewBox="0 0 24 24" class="'+(cls||'rv-ic')+'" aria-hidden="true">'+RIT_IC[k]+'</svg>';}
 
@@ -1183,23 +1205,28 @@ function ritBuildHtml(c,nAct,unread){
   out+='</ol>';}
  /* the tiles. Called first; then, one press on, every practice this state
     allows, by track, each tile the colour of its track. */
- var tile=function(p,big){
+ var tile=function(p,big,why){
   var on=!!RIT.sel[p.k];
   return '<button type="button" class="rv-tile'+(on?' rv-on':'')+(big?' rv-big':'')+'" data-act="pick" data-k="'+p.k
-   +'" aria-pressed="'+on+'" style="--c:'+(PTRACK[p.track]||'var(--accent)')+'">'
+   +'" aria-pressed="'+on+'"'+(why?' data-tip-t="'+esc(p.nm)+'" data-tip="'+esc(why)+'"':'')
+   +' style="--c:'+(PTRACK[p.track]||'var(--accent)')+'">'
    +'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/>'+(on?'<path d="M8 12l3 3 5-6"/>':'')+'</svg>'
    +'<span class="rv-tn">'+esc(p.nm)+'</span><span class="rv-tm">'+p.min+' min</span>'
    /* ", called for" is cut from the minutes, SV19, struck in red on the live
       page. The tile is first because its seat calls for it, and the Called
       for list under the builder says why, one press away, so the two words
-      were the third tier line he keeps striking. */
-   /* THE BIG TILE CARRIED p.d UNDER ITS NAME, and it is gone, SV17. His
-      reaction to the page: too much text, and the line read as one more
-      paragraph on a card whose job is one press. The line is what the
-      practice is, so it was not cut: it is the first line under each step in
-      the sash's popup (ritSashSheet, ui/ritcal.js), one press away. */
+      were the third tier line he keeps striking. THE WHY IS BACK, round SW,
+      but never pasted on the card: it is the tile's own tooltip now, so a
+      sighted reader sees the fact only on a hover or a press of the question
+      the card already answers for a screen reader (data-tip-t/data-tip, the
+      no caption rule). ritFor is the one source of it: the seat carrying the
+      most charge, or, nothing read yet, the honest line SV16 used to print
+      under the suggestion card for exactly that state (ritstage.js). */
    +'</button>';};
- if(c.called&&!RIT.all&&!RIT.sel[c.called.k])out+='<div class="rv-tiles">'+tile(c.called,true)+'</div>';
+ if(c.called&&!RIT.all&&!RIT.sel[c.called.k]){
+  var sugWhy=unread?'Nothing is read yet, so this is the lightest place to start.'
+   :ritCap(ritThe(c.band))+' carries the most charge in your field. This is the lightest practice there.';
+  out+='<div class="rv-tiles">'+tile(c.called,true,sugWhy)+'</div>';}
  if(RIT.all){
   ['Somatic','Body','Energy','Mind'].forEach(function(tr){
    var set=c.all.filter(function(p){return p.track===tr;}); if(!set.length)return;
@@ -1512,7 +1539,63 @@ function ritRender(){
  if(!h||!RIT.open)return;
  h.style.display='flex';
  var st=ritRead(), c=st.c, r=st.r, today=st.today, act=st.act;
- var drafting=Object.keys(RIT.sel).some(function(k){return RIT.sel[k];});
+ /* THE SUGGESTION PICKS ITSELF ON A FRESH OPEN, round SW, his review of the
+    live page: "+ New" was a real button once, case 'add' below, and pressing
+    it both opened the builder and ran ritPick(c.called.k) so Start worked on
+    the same press. 931b4090 (5 November) made the builder always open and
+    left that auto pick nowhere to run from, so a fresh arrival drew the
+    called practice as a big tile that LOOKED like the obvious first move and
+    did nothing on its own: Start stayed disabled until a press landed
+    somewhere, and the one press that looked like it (the tile itself) just
+    moved the practice into the step list, which read as nothing happening at
+    all. This restores the old effect without the old button.
+
+    GATED ON RIT.needPick, WHICH ONLY ritOpen SETS, so this runs exactly once
+    per real open and never on a caller's own repaint. A great many callers
+    simulate "the builder has nothing picked" by hand, RIT.sel={} and a bare
+    ritRender(), to set up their own check of something else entirely (Cancel
+    appearing, a tile's own press, an edit in progress), and none of them
+    reopen the tab to do it. Picking something they did not ask for on their
+    own repaint would be news to every one of those checks, for no gain: the
+    bug this fixes is a cold, first paint with Start disabled, which is
+    exactly what ritOpen alone can tell from a mid session reset.
+
+    ONLY ONCE, AND NEVER OVER A PERSON'S OWN PRESS. RIT.autoK remembers which
+    key was picked here, so a step taken off again (the 'x' on its row) is
+    not forced back on the next paint: needPick is already spent by then, and
+    autoK alone does not re-trigger it. A profile loaded while the tab stays
+    open (needPick already spent, same session) changes what is called for,
+    which is the bug ritOpen's own header comment names ("the blank profile's
+    Box Breathing was still the ritual for Marcus"): if the key picked here no
+    longer matches what the current profile's heaviest seat calls for, it is
+    taken back off by its own key, never a person's own picks, so a stale
+    suggestion does not sit in the draft arguing for a seat that is no longer
+    the heaviest one. */
+ var calledK=c.called?c.called.k:null;
+ if(RIT.autoK&&RIT.sel[RIT.autoK]&&RIT.autoK!==calledK){
+  RIT.sel[RIT.autoK]=false; RIT.order=RIT.order.filter(function(x){return x!==RIT.autoK;}); RIT.autoK=null;}
+ if(RIT.needPick){
+  RIT.needPick=false;
+  /* never for a practice already running: ritFor names the seat carrying the
+     most regardless of what is active, so a called practice already on the
+     Active list would otherwise be picked, and started again, on the first
+     visit after every single restart, which is ritStartPlan's "waking one
+     only ever lengthens it" quietly re-running on a press nobody meant as a
+     restart */
+  var calledOn=calledK&&act.some(function(p){return ritKey(p.steps)===ritKey([calledK]);});
+  if(!RIT.edit&&!RIT.add&&!(RIT.from&&RIT.from.length)&&calledK&&!calledOn
+    &&!Object.keys(RIT.sel).some(function(k){return RIT.sel[k];})){
+   ritPick(calledK); RIT.autoK=calledK;}}
+ /* A PICK NOBODY MADE DOES NOT COUNT AS BUILDING, round SW. drafting feeds
+    building, below, which brings the left column to the front on a phone
+    (ritbuild, the media rule in shell/head.html): a person who pressed
+    something asked for that column, and the one auto picked on arrival
+    (RIT.autoK, above) is a column nobody pressed anything on yet. Counting
+    it anyway reordered the phone stack on the same first paint the auto
+    pick was meant to make quieter, not louder: FT35 caught Week pushed
+    below the first screen by exactly this, on a seed with an active ritual
+    already running, where ritnone was false and only this flag decided it. */
+ var drafting=Object.keys(RIT.sel).some(function(k){return RIT.sel[k]&&k!==RIT.autoK;});
  /* THE BUILDER NO LONGER OPENS ITSELF ON A FIRST VISIT, round QN. It did, from
     round JQ, with the called practice picked, because then that was the only
     place the practice had a Start. Suggested carries it now, first, with the
@@ -1535,12 +1618,31 @@ function ritRender(){
  flowHead('Accountability','','check');
  /* THE STREAK IS THE TOP RIGHT OF THE PAGE, SV19, his words: "Move the streak
     to the upper right hand side and then accountability will be underneath
-    that." So the strip goes into the right menu's head, ahead of its name,
-    where the fold control already sits at the end of the same row. Written
-    after flowHead, which writes the head whole, and only on this tab: the
-    Compass, the release and the gate write their own heads and carry none. */
+    that." So the strip goes into the right menu's head, ahead of its name.
+    Written after flowHead, which writes the head whole, and only on this
+    tab: the Compass, the release and the gate write their own heads and
+    carry none.
+
+    HISTORY JOINED IT HERE, round SW, his words: "Move History to the
+    right-hand side of that menu, with the close, exactly where the
+    close-the-right-column icon is... get rid of the close-right-icon-column
+    and the left-icon-column." The fold control this row used to end on is
+    gone from this tab (shell/head.html hides #lfold and #rfold on
+    body.tab-ritual and forces both rails open regardless of what either was
+    left at elsewhere, ui/ui.js), and History takes the ground it leaves:
+    one row, the chip strip first, History last, margin-left:auto between
+    them. acctStreakHtml draws only the streak and the missed chips now; the
+    history press is this file's own, because it opens and shuts
+    acctSideHtml's own #rvhist and acctStreakHtml does not know that rail. */
  var fh=document.getElementById('flowhd');
- if(fh)fh.insertAdjacentHTML('afterbegin',acctStreakHtml(st));
+ if(fh){var histOpen=!!RIT.histOpen;
+  /* rv-more-t is the Rituals toggle's own class (ritBuildHtml, above): one
+     rule already turns its chevron on aria-expanded, so History's carries
+     the same state the same way rather than a second rule for one chevron */
+  fh.insertAdjacentHTML('afterbegin','<div class="acs-top">'+acctStreakHtml(st)
+   +'<button type="button" class="acs acs-hist rv-more-t" data-act="hist" aria-expanded="'+histOpen+'" aria-controls="rvhist"'
+   +' data-tip-t="History" data-tip="Every ritual you have run, and every entry.">'
+   +ritIc('hist')+'<span>History</span>'+ritIc('down')+'</button></div>');}
  /* THE INPUT AND WHAT IS SUGGESTED, BOTH, round QN. His words: "I not only want
     the input there but I want all the suggested ones." So Suggested sits under
     the input whether the builder is shut or open. The one time it goes is
@@ -1568,6 +1670,15 @@ function ritRender(){
   /* nothing active: starting one is the page's one job, so on a phone the
      column that starts one comes first, shell/head.html, round QN */
   document.body.classList.toggle('ritnone',!act.length);}
+ /* #flowhd NEEDS WIRING NOW TOO, round SW. It never did before: the streak
+    strip's chips are all cursor:help, nothing to press, and flowHead's own
+    name is plain text. History is the first real control ever put in this
+    head, and it is a sibling of #flowside, not a child, body.html, so the
+    click handler #flowside already carries from ritWire(side,c) below would
+    never see a press that lands on it. Wired through the same function and
+    not a handler of its own, so the one case ('hist', above) stays the one
+    writer whatever host carries the press. */
+ if(fh)ritWire(fh,c);
  ritWire(h,c); if(left)ritWire(left,c); if(side)ritWire(side,c);
  if(left&&typeof pracRitWire==='function')pracRitWire(left);
  [h,left,side].forEach(ritTell);
@@ -1614,9 +1725,9 @@ function ritWire(h,c){
   var a=b.getAttribute('data-act'), id=b.getAttribute('data-id');
   /* the offer to put a deletion back lasts until the next thing that writes
      or builds. Looking around the record does not spend it. */
-  if(['putback','view','day','mo','exp','more','hmore','hist','wk','rng','wsash','wday','bank','aff-set','chal-set','miss-why','pgoal'].indexOf(a)<0)RIT.gone=null;
+  if(['putback','view','day','mo','exp','more','hmore','hist','bars','wk','rng','wsash','wday','bank','aff-set','chal-set','miss-why','pgoal'].indexOf(a)<0)RIT.gone=null;
   /* a dismissed suggestion's Put back lasts the same way, round QX */
-  if(['sug-back','wk','rng','exp','view','day','mo','hist','wsash','wday','bank','aff-set','chal-set','miss-why','pgoal'].indexOf(a)<0)RIT.sgGone=null;
+  if(['sug-back','wk','rng','exp','view','day','mo','hist','bars','wsash','wday','bank','aff-set','chal-set','miss-why','pgoal'].indexOf(a)<0)RIT.sgGone=null;
   switch(a){
    case 'go-story': if(typeof setTab==='function')setTab(TAB.STORY); return;
    /* EDIT ON A MISSED RITUAL IS NOW ONE PRESS AND NO NAVIGATION, round QF.
@@ -1631,7 +1742,7 @@ function ritWire(h,c){
     /* the bank is the Imprints page since 27 November, and stBank opens it
        on the bank side of its switch */
     if(typeof stBank==='function')stBank(); return;
-   case 'add': RIT.add=true; RIT.edit=null; RIT.sel={}; RIT.order=[]; RIT.tags=[]; RIT.on=null; RIT.tm=null;
+   case 'add': RIT.add=true; RIT.edit=null; RIT.sel={}; RIT.order=[]; RIT.tags=[]; RIT.on=null; RIT.tm=null; RIT.autoK=null;
     if(c.called)ritPick(c.called.k); break;
    /* the repeat band's presses, ritRecurAct in ui/ritbank.js, the same
       function the pop-up's go through. The keyboard stays on the press that
@@ -1639,7 +1750,17 @@ function ritWire(h,c){
    case 'rc-d': case 'rc-pop': case 'rc-any': {var R=ritRecurOf(), v=b.getAttribute(a==='rc-d'?'data-d':'data-v');
     ritRecurAct(R,a,v); ritRecurPut(R); ritRender(); ritRefocus(a,v); return;}
    case 'timer': ritTimer(id); return;
-   case 'pick': ritPick(b.getAttribute('data-k')); break;
+   /* A PRESS ON THE AUTO PICKED KEY RETIRES IT, round SW. RIT.autoK marks a
+      key as "nobody has touched this yet", read by ritRender's own drafting
+      (so a silent pick does not move the phone column) and by ritSugHtml
+      (so the same practice still offers its card). The moment a person's own
+      press lands on that exact key, off or back on, it is no longer true of
+      either: this is now a choice someone made, the same as any other tile,
+      and treating it as the quiet one after that point would be the bug
+      FT4's "a pick brings it forward" caught, a manual re-pick of the exact
+      practice the page had already put there on its own not counting as a
+      pick at all. */
+   case 'pick': {var pk=b.getAttribute('data-k'); if(pk===RIT.autoK)RIT.autoK=null; ritPick(pk); break;}
    case 'step-up': {var k=b.getAttribute('data-k'), d=ritDraft(), i=d.indexOf(k);
     if(i>0){d.splice(i,1); d.splice(i-1,0,k); RIT.order=d;} break;}
    case 'all': RIT.all=!RIT.all; break;
@@ -1715,6 +1836,10 @@ function ritWire(h,c){
    case 'hmore': RIT.hh+=6; break;
    /* History opens and shuts in the right menu, SV19, ui/accountability.js */
    case 'hist': RIT.histOpen=!RIT.histOpen; break;
+   /* Kept by point, round SW, shut at rest so a profile with several points
+      kept does not push Avatar past the foot of the rail (ui/ritcal.js,
+      ritSuccessHtml; RW14 in tests/ritweek.js) */
+   case 'bars': RIT.barsOpen=!RIT.barsOpen; break;
    case 'go-avatar': if(typeof setTab==='function')setTab(TAB.INTAKE); return;
    case 'putback': ritPutBack(); return;
    case 'view': RIT.view=b.getAttribute('data-v'); break;

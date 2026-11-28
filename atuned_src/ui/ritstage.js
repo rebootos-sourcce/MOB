@@ -147,14 +147,24 @@ function ritCap(s){s=String(s||''); return s.charAt(0).toUpperCase()+s.slice(1);
 function ritSugHtml(st){
  /* a practice already picked in the builder above is that choice being made,
     so it is not offered a second time underneath. A release schedule is tied
-    to a place and is a different choice, so it stays. */
+    to a place and is a different choice, so it stays.
+    EXCEPT THE ONE ritRender PICKED FOR THE PERSON, round SW. RIT.autoK is
+    the key ritRender's own guard auto picked on a fresh open (ui/ritual.js),
+    never a choice the person made, and this list is exactly where they would
+    otherwise learn that practice exists and why: hiding its card the moment
+    it is auto picked would have made the very suggestion the fix exists to
+    put in front of them vanish from under it. Found as FT16's own regression,
+    a seat an avatar story lands on no longer offered because the practice
+    its track calls for happened to be what a fresh arrival had already
+    picked. A step the person themselves takes (any other key) still drops
+    its card, exactly as before. */
  /* ROUND QX: one saved for later or dismissed is not offered again here. A
     saved one is under Saved for later; a dismissed one comes back with Put
     back, or with Bring back dismissed at the foot of the list. */
  var MO=(typeof ritMore==='function')?ritMore():{save:[],gone:[]}, held={};
  MO.save.forEach(function(s){held[ritSugKey(s)]=1;}); MO.gone.forEach(function(k){held[k]=1;});
  var all0=ritSuggest(st), all=all0.filter(function(x){return !held[ritSugKey(x)];});
- var list=all.filter(function(x){return x.rel!=null||!RIT.sel[x.k];}); RIT.sug=list;
+ var list=all.filter(function(x){return x.rel!=null||x.k===RIT.autoK||!RIT.sel[x.k];}); RIT.sug=list;
  var saved=(typeof ritSavedHtml==='function')?ritSavedHtml():'';
  var undo=RIT.sgGone?'<div class="rv-gone" role="status"><span>Dismissed '+esc(RIT.sgGone.nm)+'.</span>'
   +'<button type="button" class="btn" data-act="sug-back">Put back</button></div>':'';
@@ -196,7 +206,13 @@ function ritSugHtml(st){
     asks for (the builder's tile prints it, ritFor names it), and From your
     story was not true of every card, since the field can carry charge from
     the quiz. Where the cards come from is said in the line under it. */
- return '<div class="rv-sec rv-sug rv-cfw"><div class="rv-hd"><span class="rv-h">Called for</span></div>'
+ /* THE HEADING READS TODAY NOW, round SW, his words: "Where it says Called
+    For, change that to Today." Called for is still the house's own word for
+    why a card is on the list, still true of every card and still said in
+    the line under this heading and on the builder's own tile, so nothing
+    below this line changed; only the word a person reads at the top of the
+    card did. */
+ return '<div class="rv-sec rv-sug rv-cfw"><div class="rv-hd"><span class="rv-h">Today</span></div>'
   /* the law card's source is named only while there is one, so the line is
      never true of a card that is not on the list */
   +'<p class="rv-mean">Read from your story, your avatar\'s stories'+(law?', the places you hold the most charge and the laws your intake has not measured. ':' and the places you hold the most charge. ')
@@ -545,7 +561,10 @@ function ritStageCss(){
   '.rv-c-ana .rv-chain{margin-bottom:14px}',
   '.rv-anag{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:16px}',
   '@container (max-width:560px){.rv .rv-anag{grid-template-columns:minmax(0,1fr)}}',
-  '.rv-ana1 .rv-lb{margin-bottom:8px}',
+  /* the Kept by point press is .rit-more .rv-more-t, shared with Rituals
+     and History (ui/ritual.js, ui/accountability.js), so only its own
+     box's gap to the list it opens is said here */
+  '.rv-ana1 .rv-more-t{margin-bottom:8px}',
   '.rv-sbars{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}',
   '.rv-sbars li{display:grid;grid-template-columns:72px minmax(0,1fr) 62px;align-items:center;gap:8px;font-size:13px}',
   '.rv-sbn{color:var(--mid)}',
