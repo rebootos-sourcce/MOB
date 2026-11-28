@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v3569 91c93842 2026-11-28 17:07"><head><meta charset="utf-8">
+<html lang="en" data-build="v3575 074802d7 2026-11-28 17:18"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -85128,7 +85128,12 @@ function relStep(){
      return;
     }
     RUN.timer=setTimeout(next,est);})){
-  RUN.timer=setTimeout(next,est+9000);
+  /* A missing audio-completion callback must never advance an Audiobook.
+     Guided may fall back to a readable timer; Audiobook holds the same line. */
+  RUN.timer=setTimeout(relListenMode()?function(){
+   if(tok!==RUN.tok||moved||RUN.paused)return;
+   relListenPause('Audiobook paused because narration did not finish. Press Play to retry this line.');
+  }:next,est+9000);
   // Pre-render one line ahead to minimize network gaps between spoken statements.
   if(relListenMode()&&typeof studioWarm==='function'){
    var soon=relSoon();
@@ -119172,5 +119177,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="008686453"></div>
+<div id="eof" hidden data-len="008686791"></div>
 </body></html>
