@@ -123,7 +123,25 @@ var RIT_TOP_SAY={
  chal:'One act against a pattern your reading shows running.'};
 function ritTopHtml(st){
  var C=ritChallenge(st), tiles=[ritGoalTile(st)].concat(C.map(function(c){return ritChalTile(c,st);}));
+ /* ALWAYS FOUR, round SW, his words: "At the very top, I want 4 fields
+    always consistent." ritChallenge offers at most three, and fewer than
+    that on a light reading, which used to centre the row on however many it
+    had (auto-fit, ritWeekCss below) and leave an asymmetric gap down one
+    side on every profile but the heaviest, the symmetry ruling by name:
+    nothing is laid out pressed to one edge with empty space answering to
+    nobody. A missing slot is padded with its own honest empty state, never
+    an invented challenge: no data, a dash, and the real reason on hover. */
+ while(tiles.length<4)tiles.push(ritChalEmptyTile());
  return '<section class="rv-sec rv-top" aria-label="Goal and challenges"><div class="rv-ttls">'+tiles.join('')+'</div></section>';}
+/* THE FOURTH SLOT WHEN NOTHING FILLS IT. Dimmed, because it is not a thing
+   a person can act on, only a seat waiting for a pattern a heavier reading
+   would name; the dash is the house's own mark for nothing measured
+   (COPY.md Value), and the meaning rides the header's tooltip, never a
+   pasted sentence, the same unpack rule every other tile on this row keeps. */
+function ritChalEmptyTile(){
+ return '<div class="rv-ttl rv-tchal rv-tempty" style="--c:var(--dim)">'
+  +ritTileHead('Challenge','Opens when your reading shows another pattern running.',ritKindIc('act','rv-tic'))
+  +'<span class="rv-tnm" aria-label="Challenge: none running">–</span><span class="rv-tact"></span></div>';}
 function ritTileHead(nm,says,ic){
  return '<span class="rv-tlab"'+rvTip(nm,says)+'>'+ic+esc(nm)+'</span>';}
 function ritGoalTile(st){
@@ -207,9 +225,13 @@ function ritWeekCss(){
   '.rv-affc .rv-bko{padding:0;border:0;background:none;font:inherit;font-size:14px;font-weight:650;line-height:1.3;color:var(--ink);text-align:left;cursor:pointer;min-height:48px}',
   '.rv-affc .rv-bko:hover{text-decoration:underline;text-underline-offset:3px}',
   '.rv-sg1 .rv-sgk .rv-kic{width:16px;height:16px;color:var(--c)}',
-  /* THE TOP ROW: four equal tiles, one even gap, centred when fewer */
+  /* THE TOP ROW: four equal tiles, one even gap, ALWAYS four now, round SW,
+     so the row is never shorter than four and never centred on a remainder:
+     ritTopHtml pads a missing challenge with its own dimmed tile rather
+     than leaving the grid to guess how to lay out three or two or one. */
   '.rv-top{padding:16px}',
-  '.rv-ttls{display:grid;grid-template-columns:repeat(auto-fit,calc((100% - 48px) / 4));gap:16px;justify-content:center}',
+  '.rv-ttls{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}',
+  '.rv-tempty{opacity:.55}',
   '.rv-ttl{box-sizing:border-box;display:flex;flex-direction:column;gap:8px;min-width:0;min-height:148px;padding:14px 16px;border-radius:14px;',
   ' background:color-mix(in srgb,var(--c) 14%,var(--panel-2))}',
   '.rv-tlab{display:inline-flex;align-items:center;gap:8px;align-self:flex-start;min-height:28px;font-size:12.5px;font-weight:600;color:var(--mid);cursor:help}',
