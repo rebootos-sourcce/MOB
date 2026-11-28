@@ -839,7 +839,12 @@ function relStep(){
      return;
     }
     RUN.timer=setTimeout(next,est);})){
-  RUN.timer=setTimeout(next,est+9000);
+  /* A missing audio-completion callback must never advance an Audiobook.
+     Guided may fall back to a readable timer; Audiobook holds the same line. */
+  RUN.timer=setTimeout(relListenMode()?function(){
+   if(tok!==RUN.tok||moved||RUN.paused)return;
+   relListenPause('Audiobook paused because narration did not finish. Press Play to retry this line.');
+  }:next,est+9000);
   // Pre-render one line ahead to minimize network gaps between spoken statements.
   if(relListenMode()&&typeof studioWarm==='function'){
    var soon=relSoon();
