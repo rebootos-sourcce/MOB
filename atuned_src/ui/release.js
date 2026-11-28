@@ -395,7 +395,7 @@ function relBegin(){
  /* the Insight well's funnel (ui/stksay.js): a card its voice opened, begun */
  if(typeof STK_SAY!=='undefined'&&STK_SAY.relId&&STK_SAY.relId===RUN.id){ STK_SAY.relId=''; stkSayNote('begin'); }
  if(typeof sfx==='function')sfx('begin',true);
- RUN.phase='welcome';RUN.line=0;RUN.idx=0;RUN.pass=0;RUN.halted=false;RUN.paused=false;
+ RUN.phase=relListenMode()?'opening':'welcome';RUN.line=0;RUN.idx=0;RUN.pass=0;RUN.halted=false;RUN.paused=false;
  RUN.t0=Date.now();RUN.tEnd=0;RUN.pauseAt=0;RUN.pausedMs=0;relTicker(true);relStep();}
 /* WHAT RERUN THESE RUNS. What was picked, when any of it has a line open. When
    none of it does, a story's addresses that were never released, the heaviest
@@ -687,7 +687,7 @@ function relStepSec(st){
 /* seconds of script from a point to the end, cooldown included. from is
    {phase,line,idx,pass}; with no from it is the whole run. */
 function relSecFrom(from){
- var f=from||{phase:'welcome',line:0,idx:0,pass:0}, s=0, i;
+ var f=from||{phase:relListenMode()?'opening':'welcome',line:0,idx:0,pass:0}, s=0, i;
  if(f.phase==='welcome'){var w=relWelcome();
   for(i=f.line;i<w.length;i++)s+=relSec({kind:'welcome',text:w[i]});}
  if(f.phase==='welcome'||f.phase==='opening')
