@@ -551,10 +551,29 @@ const lostOk = p => !(p.lost || []).length;
     const open1 = o => openLoaded(browser, o.w, o.h, { silenceMs: o.silence || 0, geometrySoak: true });
     // Chrome throttles background pages. Give each 50 ms sampler its
     // own foreground interval, with the same soak and sample requirements.
+    /* START RUNS BEFORE THE WATCH IS ARMED, NOT DURING IT. Found 28 November,
+       reproduced directly: at 390 four samples at 70-220ms always read
+       290,751 against a steady 290,778, a real eleven pixel measured
+       distance, max(0,27)=27 past the 4px margin, never at 1600 and never
+       on the page that presses nothing. #stapply sits beside #stmic in
+       .st-hdbtns, which wraps at 390 (head.html, the .st-colw,.st-hd>*
+       rule), and Talk's own label is longer once listening, so the one
+       press that turns Talk on reflows the row once, which moves Commit
+       down 27 pixels in the same frame, with __tr staying 0 throughout:
+       no transition fires, because nothing is animated, a layout jump
+       settled before the old order's own first tick. Starting the watch
+       first and pressing after measured that one-time, expected move as
+       if it were the bug his own report named, the button gliding to the
+       corner every ten seconds on a page already standing still. Pressing
+       first and watching only once the row has already taken its final
+       shape measures what the assertions below say they measure, Commit
+       while Talk is on, and still catches the known bad case: that page
+       presses nothing itself, so its own injected jump at the ten second
+       mark lands exactly as before. */
     const observe = async (p, start) => {
       await p.bringToFront();
-      await p.evaluate(WATCH);
       if (start) await start(p);
+      await p.evaluate(WATCH);
       await wait(SOAK * 1000);
       return analyse(await readWatch(p));
     };
