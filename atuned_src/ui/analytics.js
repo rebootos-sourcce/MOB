@@ -1,9 +1,12 @@
 
 /* ============================================================
-   ANALYTICS. Bubbles. Size is magnitude, colour is seat or tier. The
-   biggest circle is the biggest thing. Line charts answered nothing
-   about a single session; packed circles are what one snapshot looks
-   like.
+   ANALYTICS. Squares. Area is magnitude, colour is seat or tier, and
+   the biggest square is the biggest thing. Line charts answered nothing
+   about a single session; packed circles came next and read ratio by
+   radius, which a glance gets wrong. 27 November, his ruling on the
+   strip down: every chart on the page is the same squarified treemap,
+   seven equal boxes, and the hero, the seven stat boxes, the readings
+   row, the grid, the chain and the shut list are gone.
    ============================================================ */
 var ANA_PICK=null;
 /* THE TWO WAYS, 21 November, his own words on the decision: "add an option
@@ -18,7 +21,7 @@ var ANA_PICK=null;
    against the strongest, so they sum to 100% like a real competition. */
 var ANA_ARCHMODE='expr';
 /* ONE PLACE BUILDS THE TWELVE ITEMS FOR EITHER MODE, so the toggle changes
-   which figure is the headline and never changes which twelve bubbles are
+   which figure is the headline and never changes which twelve cells are
    drawn or how the heaviest one is picked out in gold. */
 function anaArchItems(r){
  var aff=r.aff||[], share=(typeof affinityShare==='function')?affinityShare():null;
@@ -33,124 +36,38 @@ function anaArchItems(r){
   /* 'expr' is exactly what this chart already drew: sized by the lean,
      which orders them, printing how fully each is expressed */
   return {k:'arch',nm:a.nm,v:Math.max(0.4,lean*10),f:fmtPct('archetype',ex),c:c};});}
-/* THE TOGGLE ITSELF, two labelled tabs and nothing more: his own "I'll
-   figure out which one I like better" is a request to compare the real
-   thing, not a brief for a finished control. Each carries its own tip, the
-   one sentence that says what it is without the chart's face having to say
-   it in words (16 November, symbol/header/body: a plain word label stands
-   in for the symbol here, there is no icon for "percent model"). */
+/* THE TOGGLE ITSELF. It went in on 21 November as two labelled tabs in a
+   row of their own, and lost its only caller when the treemap replaced the
+   archetype circle (46cfed63), so the choice he asked to compare could no
+   longer be made at all. Revived 27 November inside the Archetypes box's
+   own header row, as two 44 pixel icon presses, because a row of its own
+   made that one box taller than Masks and Domains beside it and the seven
+   boxes are square and equal. Symbol first, 16 November: a plain ring is
+   one archetype against itself, a ring cut into slices is the twelve as
+   one whole, and the name and its sentence are the tip (ui/tip.js). */
 var ANA_ARCHTAB=[
  ['expr','Each archetype','This archetype’s own expression, 100% with nothing held at its point. The twelve do not add up to 100.'],
  ['share','All twelve','Each archetype’s share of all twelve added together, so the twelve sum to 100%, the way a competition’s results do.']];
+var ANA_ARCHIC={expr:'<circle cx="12" cy="12" r="8"/>',
+ share:'<circle cx="12" cy="12" r="8"/><path d="M12 12V4M12 12l6.93 4M12 12l-6.93 4"/>'};
 function anaArchTabsHtml(){
  return '<div class="ana-seg" role="tablist" aria-label="How the archetype percent is read">'
   +ANA_ARCHTAB.map(function(v){var on=ANA_ARCHMODE===v[0];
    return '<button type="button" role="tab" aria-selected="'+on+'" class="ana-sg'+(on?' ana-on':'')+'" '
-    +'data-anamode="'+v[0]+'" data-tip-t="'+esc(v[1])+'" data-tip="'+esc(v[2])+'">'+esc(v[1])+'</button>';}).join('')
+    +'data-anamode="'+v[0]+'" data-tip-t="'+esc(v[1])+'" data-tip="'+esc(v[2])+'" aria-label="'+esc(v[1]+'. '+v[2])+'">'
+    +anaTmIconSvg(ANA_ARCHIC[v[0]],22)+'</button>';}).join('')
   +'</div>';}
 function anaHist(){
  var h=(CURP&&CURP.history)||[];
  return h.slice().sort(function(a,b){return new Date(a.t)-new Date(b.t);});}
-/* deterministic packing. biggest first, then spiral out until it fits. */
-function anaPack(items,w,h){
- var out=[],cx=w/2,cy=h/2;
- items=items.slice().sort(function(a,b){return b.v-a.v;});
- /* a cleared field has every value at zero. dividing by that maximum gives NaN
-    and the browser rejects the radius, so the floor is 1 and the circles come
-    out uniformly small, which is the correct reading of nothing held. */
- var max=(items.length&&items[0].v>0)?items[0].v:1;
- /* size by AREA BUDGET. radius goes as sqrt(value), and the constant comes from
-    how many circles must fit, not from the box. budget 46 percent of the field. */
- var sumS=items.reduce(function(a,x){return a+Math.max(0.05,x.v||0)/max;},0)||1;
- var K=Math.sqrt((w*h*0.46)/(Math.PI*sumS));
- items.forEach(function(it,i){
-  var r=Math.max(7,Math.min(Math.min(w,h)*0.30, Math.sqrt(Math.max(0.05,it.v||0)/max)*K));
-  var placed=false,ang=i*2.399,rad=0,tries=0;
-  while(!placed&&tries<800){
-   var x=cx+Math.cos(ang)*rad,y=cy+Math.sin(ang)*rad;
-   var ok=(x-r>2&&x+r<w-2&&y-r>2&&y+r<h-2);
-   if(ok)for(var k=0;k<out.length;k++){
-    if(Math.hypot(x-out[k].x,y-out[k].y)<r+out[k].r+2.5){ok=false;break;}}
-   if(ok){out.push({x:x,y:y,r:r,it:it});placed=true;}
-   else{ang+=0.34;rad+=1.1;tries++;}}
-  /* if it still will not fit, shrink rather than stack it on the pile */
-  if(!placed){var rr=r;
-   for(var s=0;s<14&&!placed;s++){
-    rr*=0.82; ang=i*2.399; rad=0;
-    for(var t=0;t<400&&!placed;t++){
-     var x2=cx+Math.cos(ang)*rad,y2=cy+Math.sin(ang)*rad;
-     var ok2=(x2-rr>2&&x2+rr<w-2&&y2-rr>2&&y2+rr<h-2);
-     if(ok2)for(var m=0;m<out.length;m++){
-      if(Math.hypot(x2-out[m].x,y2-out[m].y)<rr+out[m].r+2){ok2=false;break;}}
-     if(ok2){out.push({x:x2,y:y2,r:rr,it:it});placed=true;}
-     else{ang+=0.34;rad+=1.1;}}}
-   if(!placed)out.push({x:cx,y:cy,r:Math.max(5,rr),it:it});}});
- return out;}
-/* extra, 21 November: an optional block of real controls between the title
-   and the picture itself, for a chart that needs one and none before it
-   did (the archetype percent toggle below). Every existing caller leaves it
-   out and draws exactly as it did before this. */
-function anaField(title,sub,items,w,h,extra){
- extra=extra||'';
- items=(items||[]).filter(function(x){return x&&x.nm;});
- if(!items.length)
-  return '<div class="ab-f"><div class="pm-eye">'+title+'</div>'+extra
-   +'<div class="ab-none">nothing here</div></div>';
- var P=anaPack(items,w,h),top=P[0]?P[0].it.v:1, LMIN=13;
- /* NOTHING READ, SO NO FIGURE. The page says so in its first line and the
-    bubbles still printed 10.0 and 7.2 off the blueprint it had selected.
-    The bubbles keep their size, which is the blueprint, and lose the figure.
-    Round J13. */
- var UN=false; try{UN=!!computeSeen().unread;}catch(e){}
- var s='<div class="ab-f"><div class="pm-eye">'+title+'</div>'+extra
-  +'<svg viewBox="0 0 '+w+' '+h+'" class="ab-svg">';
- P.forEach(function(p){
-  var fit=p.r>=26, tiny=p.r<LMIN;
-  var on=(ANA_PICK&&ANA_PICK.k===p.it.k&&ANA_PICK.nm===p.it.nm);
-  /* EVERY BUBBLE IS A DOOR INTO THE TRAIL, round RB, and a keyboard can
-     reach it: focusable, named, and Enter or Space presses it (the handler
-     at the foot of this file). */
-  s+='<g class="ab-b'+(on?' on':'')+'" data-ana="'+esc((p.it.k||'')+'|'+p.it.nm)+'" tabindex="0" role="button" '
-   +'aria-label="'+esc('Open '+p.it.nm)+'">'
-   /* THE SIZE IS NOT THE FIGURE, 17 October, percent phase 2. A bubble is
-      sized by v, which carries a floor so a nought still draws (0.3 on the
-      nine, 0.4 on the archetypes), and it printed v to one decimal, so an
-      axis holding nothing read 0.3 and a domain read the constant 9.0 it is
-      drawn at. Each caller now names the figure, f, the registry's percent
-      or a count, and a bubble with no f (a domain, which is a selection and
-      not a measurement) prints none. */
-   /* h, 21 November: a second line for the hover alone, for a chart whose
-      headline figure is not the only real number on the item (the
-      archetype circle's own expression, read beside whichever percent is
-      the headline). Left out everywhere else, so no other chart's title
-      changes. */
-   +'<title>'+esc(p.it.nm+(UN?', not read yet':(p.it.f&&p.it.f!==PCT_DASH?', '+p.it.f:(p.it.f===undefined?'':', nothing held')))
-    +(!UN&&p.it.h?'. '+p.it.h+'.':''))+'</title>'
-   +'<circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="'+p.r.toFixed(1)
-   +'" fill="'+p.it.c+'" opacity="'+(0.26+0.56*(p.it.v/(top||1))).toFixed(2)+'"/>'
-   +'<circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="'+p.r.toFixed(1)
-   +'" fill="none" stroke="'+p.it.c+'" stroke-width="1.2" opacity=".85"/>';
-  if(!tiny){
-   var fs=Math.max(11,Math.min(14,p.r*0.30));
-   var room=Math.floor((p.r*1.7)/(fs*0.56));
-   /* A name cut to "Hyper-Ach\u2026" names nothing and still costs the ink.
-      A name that does not fit is dropped, and the bubble carries its value
-      instead. The full name is on hover and in the list beside the chart. */
-   var t=(p.it.nm.length<=room)?p.it.nm:'';
-   if(t){
-    s+='<text x="'+p.x.toFixed(1)+'" y="'+(p.y-(fit?3:-3)).toFixed(1)+'" text-anchor="middle" '
-     +'class="ab-t" style="font-size:'+fs.toFixed(1)+'px">'+esc(t)+'</text>';
-    if(fit&&p.it.f!==undefined)s+='<text x="'+p.x.toFixed(1)+'" y="'+(p.y+13).toFixed(1)+'" text-anchor="middle" '
-     +'class="ab-v" style="font-size:'+Math.max(11,p.r*0.24).toFixed(1)+'px">'+(UN?'\u2013':p.it.f)+'</text>';}}
-  s+='</g>';});
- return s+'</svg>'+(sub?'<div class="ab-s">'+sub+'</div>':'')+'</div>';}
 /* ============================================================
    THE SQUARIFIED TREEMAP. Masks, Domains and Archetypes, round
    <ana-squarified-treemap>, his approval on Mockup C (the version with a
    release afterglow and Source AI's own cross-linked receipts), replacing
-   anaField's circle packing above for these three charts only; every other
-   call to anaField on this page (the running-hot list is its own thing
-   entirely, see anaHot) is untouched.
+   the circle packing for these three charts. On 27 November What is
+   running, the nine axes, the seven points and the Laws of Moral Integrity
+   joined them, his ruling, so the circle packer and its field went with
+   their last callers. The running-hot list is its own thing, see anaHot.
 
    AREA IS THE FIGURE, NOT A RADIUS. anaPack sizes a circle by sqrt(value)
    against a fixed area budget, which is honest about ordering and dishonest
@@ -203,10 +120,18 @@ var ANA_TM_RO=null;
    document under a pointer before a click could land on it. The callback now
    repaints only when a box's measured size is not the one it was painted at. */
 var ANA_TM_SIZE={};
+/* SEVEN LENSES, NO SUBTITLE, 27 November. Each carried a grey line under
+   its header saying how to read it, which he struck with the rest of the
+   page's prose: what a cell is, is on that cell's own hover. The order is
+   the order the boxes are laid in, three, three and the laws across. */
 var ANA_TM_LENSES=[
- {k:'mask',nm:'Masks',sub:'average charge left at its own points, not a share of 100%'},
- {k:'dom',nm:'Domains',sub:'selected in your blueprint. Sized for contrast, not a measured charge.'},
- {k:'arch',nm:'Archetypes',sub:'how fully each is expressed, its own percent'}];
+ {k:'mask',nm:'Masks'},
+ {k:'dom',nm:'Domains'},
+ {k:'arch',nm:'Archetypes'},
+ {k:'chain',nm:'What is running'},
+ {k:'axis',nm:'The nine axes'},
+ {k:'seat',nm:'The seven assemblage points'},
+ {k:'law',nm:'Laws of Moral Integrity'}];
 /* the product's own tap floor, read off the page and not typed here a
    second time; 44 only if the token itself cannot be read at all */
 function anaTmFloor(){
@@ -270,29 +195,71 @@ function anaTmLayout(items,W,H){
  var out={};
  rects.forEach(function(rc){out[items[rc.i].nm]={x:rc.x,y:rc.y,w:rc.w,h:rc.h,floored:nat[rc.i]<floor*floor};});
  return out;}
-/* ---- the real items, one lens at a time. Exactly the three mappings
-   anaField's three calls carried above, moved here unchanged: masks read
-   r.maskRing's own average, domains read the blueprint's selection (9 for
-   in, 2 for out, never a charge), archetypes read archExpr. ---- */
+/* ---- the real items, one lens at a time. Masks read r.maskRing's own
+   average, domains read the blueprint's selection (9 for in, 2 for out,
+   never a charge), archetypes read whichever of the two ways the toggle
+   has. The four that were packed circles until 27 November carry exactly
+   the figure each circle was sized by, never a new metric: a pattern's
+   weight, an axis's held charge, a point's count of held addresses, and a
+   law's own reading. ---- */
 /* OPEN, NOT DECIDED HERE: masks and archetypes are not a true partition of
    one whole the way a share is, so area-by-value overstates that for those
    two lenses; whether they need an honest-geometry note is the owner's call. */
 function anaTmItems(r,k){
+ var out=anaTmItemsOf(r,k);
+ /* NOTHING READ, SO NO FIGURE, round J13, carried from the circles: the
+    cells keep the size the blueprint gives them and lose the figure. A
+    domain prints no figure at all, so it has none to lose. */
+ if(r.unread&&k!=='dom')out.forEach(function(it){it.f=PCT_DASH; it.un=true;});
+ return out;}
+function anaTmItemsOf(r,k){
  if(k==='mask')return (r.maskRing||[]).map(function(m){
   return {nm:m.nm,v:m.w,f:fmtPct('weight',m.w),c:seatCol((m.bands||['Heart'])[0]),bands:m.bands};});
  if(k==='dom')return S.doms.map(function(di){var d=DOMAINS[di];
    return {nm:d.nm,v:9,c:rootPlain(d.r),sel:true};})
   .concat(DOMAINS.filter(function(d,i){return S.doms.indexOf(i)<0;}).slice(0,9)
    .map(function(d){return {nm:d.nm,v:2,c:rootPlain(d.r),sel:false};}));
- return (r.aff||[]).map(function(a,i){return {nm:(ARCH[i]||{}).nm||'',
-  v:Math.max(0.4,a*10),f:fmtPct('archetype',archExpr(i)),c:(i===r.pi?GOLD:PAL['3rd Eye']),lead:(i===r.pi)};});}
-function anaTmIconPath(k,nm){
- if(k==='mask'){var m=MASKS.filter(function(x){return x.nm===nm;})[0]; return m?m.ic:'';}
- if(k==='dom'){var d=DOMAINS.filter(function(x){return x.nm===nm;})[0]; return d?d.ic:'';}
- var a=ARCH.filter(function(x){return x.nm===nm;})[0]; return a?a.ic:'';}
+ if(k==='arch')return anaArchItems(r).map(function(it,i){it.lead=(i===r.pi); return it;});
+ /* THE SIXTEEN HEAVIEST, NOT THE FIRST SIXTEEN, round RB: the list is in
+    ring order, so a cut at sixteen on a deep chain took no saboteur at all.
+    The kind's own colour at every weight, 17 October: a cell printing a
+    percent never takes the alarm. The table is built here and not once at
+    load, because PAL is the lighting in force and a lighting swaps it. */
+ if(k==='chain'){var T={sup:PAL.Root,hy:PAL.Sacral,cx:PAL.Solar,sab:PAL.Throat};
+  return [].concat(r.sups,r.hys,r.cxs,r.sabs).sort(function(a,b){return b.w-a.w;}).slice(0,16)
+   .map(function(o){return {nm:o.nm,v:o.w,f:fmtPct('chain',o.w),c:T[o.kind]||PAL.Throat,kind:o.kind};});}
+ if(k==='axis')return CHILD.map(function(c){var v=S.charge[c.nm]||0;
+  return {nm:c.nm,v:v,f:fmtPct('charge',v),c:seatCol(c.seat)};});
+ /* a count of held addresses, so it prints as a count */
+ if(k==='seat')return flSeats().map(function(s){var b=K2B[s.p.k];
+  return {nm:s.p.n,v:s.hot,f:s.hot?s.hot+' held':PCT_DASH,c:seatCol(b),band:b};});
+ /* SIZED BY ITS OWN READING, so the area is the percent the cell prints.
+    An unanswered law is drawn at nought and prints the dash: the seed 6 it
+    sits at is not an answer, and the unanswered count under the boxes says
+    how many there are. */
+ if(k==='law')return SI.map(function(l){var read=lawIn(l.nm), v=read?S.law[l.nm]:0;
+  return {nm:l.nm,v:v,f:read?fmtPct('law',v):PCT_DASH,c:seatCol(l.b),unans:!read,
+   say:(typeof lawMeaning==='function'&&lawMeaning(l.nm))||'',shut:read&&v<4};});
+ return [];}
+/* each lens's own mark for an item, read off the table that already owns
+   it: the chain's kind (CHAINGLYPH, ui/component.js), the axis's and the
+   law's own icon, and the seat's glyph (SEATGLYPH, engine/data/canon.js) */
+function anaTmIconPath(k,it){
+ var nm=it&&it.nm, of=function(T){var x=T.filter(function(y){return y.nm===nm;})[0]; return x?x.ic:'';};
+ if(k==='mask')return of(MASKS);
+ if(k==='dom')return of(DOMAINS);
+ if(k==='chain')return (it&&CHAINGLYPH[it.kind])||'';
+ if(k==='axis')return of(CHILD);
+ if(k==='seat')return (it&&SEATGLYPH[it.band])||'';
+ if(k==='law')return of(SI);
+ return of(ARCH);}
+/* SEATGLYPH holds finished markup and every other table holds a path's d,
+   so a mark that already starts with a tag goes in as it is. Wrapped in a
+   path it drew nothing: a d of "<path d=..." is not a path. */
 function anaTmIconSvg(d,size){
  if(!d)return '';
- return '<svg class="ana-tm-ic" style="width:'+size+'px;height:'+size+'px" viewBox="0 0 24 24" aria-hidden="true"><path d="'+d+'"/></svg>';}
+ return '<svg class="ana-tm-ic" style="width:'+size+'px;height:'+size+'px" viewBox="0 0 24 24" aria-hidden="true">'
+  +(d.charAt(0)==='<'?d:'<path d="'+d+'"/>')+'</svg>';}
 function anaTmFits(nm,fs,w){return nm.length*fs*0.56<=w;}
 /* symbol first, header second, body text third (16 November): the icon is
    never dropped before the name, and the figure is the last thing to go
@@ -300,7 +267,7 @@ function anaTmFits(nm,fs,w){return nm.length*fs*0.56<=w;}
 function anaTmLabel(it,k,w,h){
  var pad=6, iw=Math.max(0,w-2*pad), room=Math.min(iw,h-2*pad);
  if(room<15)return '';
- var d=anaTmIconPath(k,it.nm), out='';
+ var d=anaTmIconPath(k,it), out='';
  if(room>=56){
   out+=anaTmIconSvg(d,Math.max(16,Math.min(24,room*0.26)));
   if(anaTmFits(it.nm,12.5,iw))out+='<b class="ana-tm-nm">'+esc(it.nm)+'</b>';
@@ -308,7 +275,8 @@ function anaTmLabel(it,k,w,h){
  }else if(room>=32){
   out+=anaTmIconSvg(d,16);
   if(anaTmFits(it.nm,11,iw))out+='<b class="ana-tm-nm" style="font-size:11px">'+esc(it.nm)+'</b>';
-  else if(it.f!==undefined)out+='<i class="ana-tm-v" style="font-size:10.5px">'+esc(it.f)+'</i>';
+  /* 11, not 10.5: tests/design.js gate 4 holds every type at 11 or over */
+  else if(it.f!==undefined)out+='<i class="ana-tm-v" style="font-size:11px">'+esc(it.f)+'</i>';
  }else{
   out+=anaTmIconSvg(d,Math.max(12,Math.min(18,room*0.6)));
  }
@@ -317,9 +285,17 @@ function anaTmCellHtml(k,it,L){
  var box=L[it.nm]; if(!box)return '';
  var nil=!(it.v>0), on=!!(ANA_PICK&&ANA_PICK.k===k&&ANA_PICK.nm===it.nm);
  var dim=!!(ANA_PICK&&ANA_PICK.k===k&&!on);
- var tip=it.nm+(it.f!==undefined?', '+(it.f===PCT_DASH?'nothing held':it.f):'')
+ /* THE MEANING IS ON THE HOVER, NEVER ON THE FACE, 27 November: the key
+    row under the boxes and the colour key on What is running went with
+    the rest of the page's prose, so what a mark means rides here. A cell
+    with nothing read says so and not "nothing held", which is a reading. */
+ var tip=it.nm+(it.un?', not read yet':it.unans?', not answered yet'
+   :it.f!==undefined?', '+(it.f===PCT_DASH?'nothing held':it.f):'')
+  +(it.kind&&ANA_KIND[it.kind]?', '+ANA_KIND[it.kind][0]:'')
+  +(it.shut?', shut':'')
   +(it.lead?', your primary':'')+(it.sel?', selected in your blueprint':'')
-  +(box.floored?', drawn at the smallest pressable size':'');
+  +(box.floored?', drawn at the smallest pressable size':'')
+  +(!it.un&&it.h?'. '+it.h:'')+(it.say?'. '+it.say:'');
  return '<button type="button" class="ana-tm-cell'+(nil?' nil':'')+(on?' on':'')+(dim?' dim':'')
   +(box.floored?' floored':'')+'" aria-pressed="'+on+'" '
   +'style="left:'+box.x.toFixed(2)+'px;top:'+box.y.toFixed(2)+'px;width:'+box.w.toFixed(2)+'px;height:'+box.h.toFixed(2)+'px;--lc:'+it.c+'" '
@@ -339,41 +315,52 @@ function anaTmCellHtml(k,it,L){
    rather than an invented aggregate kind engine/insight.js has never heard
    of. A domain's own "heaviest" is whichever selected domain sorts first;
    domains carry no measured figure to be heavy by, so this is the clearest
-   true reading available for that lens's own door. */
+   true reading available for that lens's own door.
+
+   NO FIGURE ON THE HEADER, 27 November. "Masks 50%" read as a total for
+   the lens and was the heaviest item's own figure, which the cell itself
+   already prints. The header names the lens and says on its title which
+   item it opens. */
+function anaTmHeadHtml(lens,top,openCls){
+ return '<button type="button" class="ana-tm-head" aria-pressed="'+!!openCls+'" data-ana="'+esc(lens.k+'|'+top.nm)+'" '
+   +'title="'+esc('Open the largest in '+lens.nm+': '+top.nm)+'">'
+  +anaTmIconSvg(anaTmIconPath(lens.k,top),20)
+  +'<span class="ana-tm-nm2">'+esc(lens.nm)+'</span>'
+  +'<svg class="ana-tm-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>';}
 function anaTmLensHtml(r,lens,items){
  var top=items.reduce(function(a,x){return (x.v||0)>(a.v||0)?x:a;},items[0]||{v:0,nm:''});
  var openCls=(ANA_PICK&&ANA_PICK.k===lens.k)?' open':'';
- return '<div class="ana-tm-lens'+openCls+'" data-lens-panel="'+lens.k+'">'
-  +'<button type="button" class="ana-tm-head" aria-pressed="'+!!openCls+'" data-ana="'+esc(lens.k+'|'+top.nm)+'" '
-   +'title="'+esc('Open the heaviest in '+lens.nm+': '+top.nm+(top.f!==undefined?', '+top.f:''))+'">'
-  +anaTmIconSvg(anaTmIconPath(lens.k,top.nm),20)
-  +'<span class="ana-tm-nm2">'+esc(lens.nm)+'</span>'
-  +'<span class="ana-tm-fig2">'+(top.f!==undefined?esc(top.f):'')+'</span>'
-  +'<svg class="ana-tm-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>'
-  +'<div class="ana-tm-sub">'+esc(lens.sub)+'</div>'
+ var head=anaTmHeadHtml(lens,top,openCls);
+ /* the archetype toggle shares the header's row, so this box is exactly
+    as tall as the two beside it */
+ if(lens.k==='arch')head='<div class="ana-tm-hrow">'+head+anaArchTabsHtml()+'</div>';
+ return '<div class="ana-tm-lens'+openCls+'" data-lens-panel="'+lens.k+'">'+head
   +'<div class="ana-tm-box" data-lens-box="'+lens.k+'"></div></div>';}
+/* A LENS WITH NOTHING TO LAY OUT keeps its box at the same size as every
+   other, so the rows stay square and even. It carries no data-lens-box,
+   which is what keeps anaTmPaint and the ResizeObserver off it: an empty
+   box observed and never painted is measured as changed on every call. */
+function anaTmStillHtml(lens,body){
+ return '<div class="ana-tm-lens" data-lens-panel="'+lens.k+'"><div class="ana-tm-head ana-tm-still">'
+  +'<span class="ana-tm-nm2">'+esc(lens.nm)+'</span></div>'
+  +'<div class="ana-tm-box ana-tm-empty">'+body+'</div></div>';}
 function anaTmHtml(r){
- var rows=ANA_TM_LENSES.map(function(lens){
-  if(lens.k==='mask'&&!lockSees('mask'))
-   return '<div class="ana-tm-lens ana-tm-locked"><div class="ana-tm-head" style="cursor:default">'
-    +'<span class="ana-tm-nm2">Masks</span></div>'+lockPanelHtml('mask',{brief:true})+'</div>';
-  return anaTmLensHtml(r,lens,anaTmItems(r,lens.k));});
- /* ONE BLOCK, ACROSS THE WHOLE GRID. This sits inside .ab-grid, an auto-fit
-    grid of 220 pixel tracks, and its eyebrow, its row and its key went in as
-    three separate grid items: measured at 1600 the three lenses landed in a
-    track 228 pixels wide, every cell under 44 and all 27 drawn at the floor.
-    The wrapper spans every track (.ana-tm, shell/head.html). The paragraph
-    that explained the chart went with it, the 16 November rule: a symbol and
-    a hover say it, and the key below says what each mark means. */
- return '<div class="ana-tm"><div class="pm-eye plain" style="margin-top:4px">Masks, domains, archetypes</div>'
-  +'<div class="ana-tm-row">'+rows.join('')+'</div>'+anaTmKeyHtml()+'</div>';}
-function anaTmKeyHtml(){
- return '<div class="ana-tm-key">'
-  +'<span class="ana-tm-key-i"><span class="ana-tm-key-sw sel" aria-hidden="true"></span>selected in your blueprint</span>'
-  +'<span class="ana-tm-key-i"><span class="ana-tm-key-sw lead" aria-hidden="true"></span>your primary</span>'
-  +'<span class="ana-tm-key-i"><span class="ana-tm-key-sw hatch" aria-hidden="true"></span>drawn at the smallest pressable size</span>'
-  +'<span class="ana-tm-key-i"><span class="ana-tm-key-sw glow" aria-hidden="true"></span>where a cell ended before a release</span>'
-  +'</div>';}
+ var html={};
+ ANA_TM_LENSES.forEach(function(lens){
+  var k=lens.k;
+  if(k==='mask'&&!lockSees('mask')){html[k]=anaTmStillHtml(lens,lockPanelHtml('mask',{brief:true}));return;}
+  /* nothing of the chain is visible on this plan: the box says so rather
+     than drawing an empty chain over a chain somebody has */
+  if(k==='chain'&&r.locked&&r.locked.length===SEE_ORDER.length){html[k]=anaTmStillHtml(lens,lockPanelHtml('sab',{brief:true}));return;}
+  var items=anaTmItems(r,k);
+  if(k==='chain'&&!items.length){html[k]=anaTmStillHtml(lens,r.unread?'Not read yet.':'Nothing is running.');return;}
+  html[k]=anaTmLensHtml(r,lens,items);});
+ var row=function(ks,cls){return '<div class="ana-tm-row'+(cls||'')+'">'+ks.map(function(k){return html[k];}).join('')+'</div>';};
+ /* THREE ROWS, 27 November, his ruling: Masks, Domains and Archetypes
+    first, above the fold at 1600 by 1000, then the three that were
+    circles, then the laws across the whole width at the same height. One
+    column on a phone, every box still square (shell/head.html .ana-tm). */
+ return '<div class="ana-tm">'+row(['mask','dom','arch'])+row(['chain','axis','seat'])+row(['law'],' ana-tm-wide')+'</div>';}
 /* ---- paint: measures the real box, lays out, and (except on a plain
    resize) FLIPs every surviving cell from its last real rectangle to this
    one and draws the afterglow where one shrank. Ported timings, unchanged,
@@ -431,7 +418,9 @@ function anaTmAttachResize(){
     window.__anaTmRT2=setTimeout(function(){try{anaTmPaint(computeSeen(),false);}catch(e){}},80);});
    ANA_TM_RO={observe:function(){},disconnect:function(){}};}}
  try{ANA_TM_RO.disconnect();}catch(e){}
- document.querySelectorAll('.ana-tm-box').forEach(function(b){try{ANA_TM_RO.observe(b);}catch(e){}});}
+ /* only a box that is painted: an empty or locked one has no data-lens-box,
+    its size is never recorded, and observing it fired the callback forever */
+ document.querySelectorAll('.ana-tm-box[data-lens-box]').forEach(function(b){try{ANA_TM_RO.observe(b);}catch(e){}});}
 /* ---- the receipts: a mask or an archetype's headline in the Insight rail
    (ui/insightui.js's railInsight) carries data-src="kind:name" the same
    shape a treemap cell's own data-lens+data-nm makes; hovering or
@@ -454,272 +443,30 @@ addEventListener('mouseover',function(e){anaTmHover(e,true);});
 addEventListener('mouseout',function(e){anaTmHover(e,false);});
 addEventListener('focusin',function(e){anaTmHover(e,true);});
 addEventListener('focusout',function(e){anaTmHover(e,false);});
-/* ============================================================
-   THE SEVEN, ONE ROW. Round ana-treemap, the approved Analytics redesign:
-   the left rail comes off this page (shell/head.html, body.tab-analytics),
-   and the readings a person read off it come onto the page as one row of
-   seven equal presses, CQ, DQ, Shadow, Vitality, Flow, Radiance and Will, in
-   that order. Symbol first (16 November): each face is the rail's own icon
-   and its percent, nothing else. The name and its sentence are the one
-   tooltip (data-tip-k, data-tip, ui/tip.js) on hover and a held press, and
-   the spoken name carries all three, so nothing is pasted on as a paragraph
-   and nothing is left unpacked.
-
-   THE RAIL'S OWN WORDS AND DOORS, NOT A SECOND COPY. Name, icon, colour,
-   figure and the drill a press opens (data-q through ui/ui.js's one .kb
-   handler, runQDrill) are each read exactly as rbPair and rbRow read them in
-   ui/ui.js, so a press here opens what the same press on the rail opened,
-   and the sentence is rbSay's, the meaning table's rail context. Awareness
-   stood on the rail beside these and is not one of the seven named for this
-   row, so it is not added here: that is the brief's list, not a cut made in
-   this file. ============================================================ */
-var ANA_SEVEN=[
- {nm:'CQ',q:'cq',ic:'cq',kind:'cq',v:function(r){return r.CQ;},c:function(){return 'var(--accent)';}},
- {nm:'DQ',q:'dq',ic:'dq',kind:'dq',v:function(r){return r.DQ;},c:function(){return seatCol('Root');}},
- {nm:'Shadow',q:'cq',ic:'shadow',kind:'lawsq',v:function(r){return r.lawSQ;},c:function(){return seatCol('Root');}},
- {nm:'Vitality',q:'xyz',ic:'vitality',kind:'vitality',v:function(r){return r.X;},c:function(){return seatCol('Solar');}},
- {nm:'Flow',q:'flow',ic:'flow',kind:'flow',v:function(r){return r.flow;},c:function(){return 'var(--ink)';}},
- {nm:'Radiance',q:'xyz',ic:'rad',kind:'radiance',v:function(r){return r.radiance;},
-  c:function(){return 'color-mix(in srgb,var(--ink) 86%,'+seatCol('Solar')+')';}},
- {nm:'Will',q:'xyz',ic:'will',kind:'will',v:function(r){return r.Z;},c:function(){return seatCol('Throat');}}];
-function anaSevenHtml(r){
- var u={unread:r.unread};
- return '<div class="ana-seven" role="group" aria-label="Seven readings">'+ANA_SEVEN.map(function(M){
-  var v=M.v(r), none=r.unread||v===null||v===undefined, raw=none?'–':fmtPct(M.kind,v,u);
-  var say=(typeof rbSay==='function'?rbSay(M.nm):'')||M.nm;
-  return '<button type="button" class="kb ana-sv'+(none?' off':'')+'" data-q="'+M.q+'" style="--c:'+(none?'var(--dim)':M.c())+'"'
-   +' data-tip-k="'+esc(M.nm)+'" data-tip="'+esc(say+(r.unread?' Not read yet.':''))+'"'
-   +' aria-label="'+esc(M.nm+', '+(none?'not read yet':raw)+'. '+say)+'">'
-   +rbIcon(M.ic)+'<b class="ana-sv-v">'+esc(raw)+'</b></button>';}).join('')+'</div>';}
 function anaRender(){
  var el=document.getElementById('ana'); if(!el)return;
- /* the reading this plan may see, ui/lock.js: the biggest thing compounding,
-    the What is running chart and the masks chart are the tier's */
- var r=computeSeen(),H=anaHist(),prev=H.length>1?H[H.length-2]:null;
- var TIER={sup:PAL.Root,hy:PAL.Sacral,cx:PAL.Solar,sab:PAL.Throat};
- var seats=flSeats();
- var stop=null;seats.slice().reverse().forEach(function(s){if(!stop&&s.held)stop=s;});
- var loud=[].concat(r.sups,r.hys,r.cxs,r.sabs).sort(function(a,b){return b.w-a.w;})[0];
- var held=W.filter(function(n){return n.sq>=4;});
- var out='<div class="ana-wrap">';
- /* Every figure on this tab was bare except CQ, which carries a percent only
-    because cr() appends one. A number with no scale is not a reading, it is a
-    digit, and six of them sat here on six different scales. */
- var acc=accuracy(r);
- /* THIS SURFACE IS A DOOR OF ITS OWN AGAIN, round LV, unfolded from Summary
-    on the same rule that put Games back on the bar: an integer never
-    renumbers, so Analytics kept TAB.ANALYTICS and this renderer the whole
-    time it had no door, and TABREAL no longer answers it with Summary. A
-    tab in the bar is one click from a stranger who has entered nothing, the
-    same reach it had while it rendered folded under Summary's own opening
-    screen, so the guard below still has to hold. The eyebrow already knew
-    how to say "not read yet" and the ring beside it printed 36 percent
-    anyway once, which is the exact failure the ruling about the opening
-    screen exposed. The ring holds a dash and the arc holds nothing. Same
-    rule as everywhere else: a percentage is never printed off a default. */
- out+='<div class="ab-hero">'
-  /* the ring opens coherence in the trail, round RB: the laws that make it,
-     weakest first */
-  +cr(r.darkB,r.unread?0:r.CQ,{size:'lg',label:'Coherence',act:!r.unread,data:r.unread?'':'data-ana="met|cq"',
-    /* HIGH COHERENCE IS THE GOOD END, so it never prints red. cr reddens
-       anything past ninety, which is right for a charge and backwards for
-       every reading whose high end is the one a person is working toward. */
-    raw:r.unread?'\u2013':null, hot:false,
-    color:r.unread?'var(--dim)':null})
-  /* ONE SLOT, ONE LABEL. This read "Coherence, corrupt, 0 to 100" and it was
-     doing three jobs: naming the slot, printing the tier and stating the
-     range. The label changed identity with the data, which is the thing a
-     person has to re-parse every time the reading moves, and "0 to 100" is the
-     phrasing the owner struck: if you cannot use regular words to describe it,
-     do not describe it. The regular words for a coherence number are the tier
-     word itself, so the tier moves to the front of the reading where a value
-     belongs and the label stays put. */
-  +'<div><div class="pm-eye">Coherence</div>'
-  +'<div class="ab-say">'
-  +(r.unread?'Nothing has been entered, so none of this is measured yet. Every figure '
-    +'below is drawn from the '+unp('blueprint')+' you have selected and not from a reading.'
-   /* THE TIER WORD, which used to live in the label. It is the reading in
-      plain words and it goes first, because it is the one thing on this
-      surface a person reads before anything else.
-
-      It is attached and not left standing. "Corrupt." alone, bold, with a full
-      stop after it, is a band word with nothing on it, which is a judgement
-      and not a reading. The subject is the field, which is the right distance:
-      a person at level 3 who is defended reads a verdict in a bare label and
-      a measurement in a sentence about their field. */
-   /* and while CQ is still filling there is no word yet, so the sentence says
-      what is left rather than naming a band off laws nobody answered */
-   /* ROUND RG. The band word stood alone, bold, with nothing on it, which
-      is V9's judgement and not a reading. The tier's own first sentence
-      rides after it, the same one Clients carries on its tooltip. */
-   :(r.tier?'Your energy reads <b>'+esc(r.tier.toLowerCase())+'</b>. '+unpSay(r.tier,'tier')+' '
-     :'Coherence is still filling, with <b>'+esc(tierSay(r))+'</b>. ')
-   +(loud?'<b>'+esc(loud.nm)+'</b> is the biggest thing running. '
-     /* "Nothing is compounding" is a claim about somebody's chain, and a plan
-        that cannot see the chain has no grounds to make it */
-     :(r.locked&&r.locked.length===SEE_ORDER.length?'':'Nothing is compounding. '))
-   /* a count against a total is a score, and this is not a score */
-   +(stop?'Flow stops at the <b>'+stop.p.n.toLowerCase()+'</b>. ':'Every point is passing. ')
-   /* HELD, NOT CARRYING, round RB. The count is of addresses at 4 or more,
-      which this product calls held; carrying is anything above nothing
-      (engine/compute.js, CARRYING IS NOT THE SAME AS HELD), so the word was
-      wrong for the number beside it. And the shadow is a share of all 112,
-      not a weight those held addresses make between them, so the sentence
-      no longer says they make it. The Shadow tile below says what it is. */
-   +(held.length?'<b>'+held.length+'</b> address'+(held.length===1?' is':'es are')
-     +' held, and the shadow across all '+NODES.length+' reads <b>'+fmtPct('dq',r.DQ)+'</b>.'
-   /* Held above the line and carrying anything at all are two different facts
-      and this said the second when it only knew the first. A field with load
-      spread under the line reported "Nothing is carrying" beside a tier word
-      earned by that same load. It now says which of the two is true. */
-    /* the feeling and not the address's name, P0-3 of the inference audit:
-       words never name an address, and the address names are character
-       labels the node table chose. The place is left out with it, because
-       the place comes from the same table. */
-    :(r.heaviest?'Nothing is above '+unp('the line')+'. The heaviest address is carrying <b>'
-      +esc((typeof ritCfWord==='function')?ritCfWord(r.heaviest.cf):String(r.heaviest.cf||'').toLowerCase())
-      +'</b>.':'Nothing is carrying.'))
-   /* only against a row the same arithmetic wrote. A row from before 25
-      September holds It*Ig/Rz, and the gap to the laws over 210 is the
-      formula changing, not the person moving. */
-   /* a move that prints as 0.0 is no move, round RB: "CQ up 0.0" read as
-      a change and was a rounding. 16 October: and a move of 0.1 beside a
-      figure the page shows as a whole number is a decimal nobody can find on
-      the screen, which is the raw score the 14 October ruling took off every
-      daily surface. The change is said against the figure the person sees:
-      whole numbers, and "has not moved" until the shown figure has. */
-   /* AND IT IS SAID AS BEFORE AND AFTER, 17 October, percent phase 2: "CQ
-      up 3" was a move in a unit the person cannot see. pctMove reads both
-      ends off the registry, so "has not moved" is still the shown figure not
-      moving (engine/pct.js). */
-   +(prev&&prev.m===CQ_MODEL?(function(mv){return !mv?'':!mv.moved?' CQ has not moved since last session, at '+mv.to+'.'
-     :' CQ moved from '+mv.from+' to '+mv.to+' since last session.';}(pctMove('cq',prev.cq,r.CQ,{unread:r.unread}))):''))
-  +'</div>'
-  /* THE FIGURE STAYS ON THE TAB WHOSE JOB IS SAYING WHAT THE INSTRUMENT
-     KNOWS. The tolerance beside it does not. It printed "58% plus or minus
-     11" and then a line telling a person to compare their own movement
-     against that eleven, which is a lab readout and a conversion exercise.
-     Ruled: "100 plus minus 12, swing 11, that shit has to all go."
-
-     What the line owed was never the number, it was the warning. The
-     coverage facts underneath are what actually widen it, they are stated by
-     name, and they are the things a person can go and change. So the note
-     keeps the warning in plain words and drops the arithmetic.
-
-     AND THE EMPTY STATE IS SAID THE ONE WAY. This read "Nothing measured",
-     which is one of the five phrasings of one state the product was carrying,
-     and the copy seat's sweep names it. The wording is not read yet, as a
-     value, and "Nothing read yet, so what is absent" as a sentence. */
-  /* a press opens the identification drill that already exists
-     (ui/personas.js runAccDrill), round RB */
-  +'<div class="ab-acc"'+(r.unread?'':' data-ana="met|id" role="button" tabindex="0"')+'><span class="pm-eye">Identification</span>'
-  +'<b>'+fmtPct('accuracy',acc.pct,{unread:r.unread})+'</b>'
-  +'<span class="ab-note">'+(r.unread
-    ?'Nothing read yet. Write what happened and this fills in.'
-    /* the coverage as a fact and a remainder, not as a fraction of the person */
-    :acc.cov+' law'+(acc.cov===1?'':'s')+' measured'
-     +(acc.cov<21?', '+(21-acc.cov)+' still at the default':'')
-     /* held, round RB: accuracy() counts addresses at 4 or more */
-     +(acc.held?', '+acc.held+' address'+(acc.held===1?'':'es')+' held':'')
-     +'. The needle has play in it, so a small move is not a reading.')+'</span></div>'
-  +'</div></div>'+anaSevenHtml(r)+anaHot(r)+'<div class="ab-grid">';
- /* HS SWEEP. Every chart here carried a caption under it saying how to read
-    it: what the heading means and that a bigger mark is more. A bubble chart
-    says bigger is more by being one, and the heading names the set. The one
-    caption kept is the colour key on What is running, because four kinds
-    share one chart and colour is the only thing telling them apart. Its tail,
-    the bigger the mark, goes with the rest.
-
-    MASKS, DOMAINS AND ARCHETYPES ARE A SQUARIFIED TREEMAP NOW, not three
-    packed-circle charts, round <ana-squarified-treemap>, his approval on
-    Mockup C: area is the real figure and not a circle's radius, all three
-    lenses stand at once with no picker, and a real release moves a cell to
-    its new size with a fading outline at the old one. anaTmHtml below
-    builds all three; the tier gate on Masks that used to wrap its own
-    anaField call now lives inside it, per lens, so Domains and Archetypes
-    stay free to see exactly as they did before this round. Took main's
-    side whole here over the field-analytics branch's older packed-circle
-    calls (21 November merge): the treemap is the shipped, approved design
-    and supersedes them outright, not a case for a hybrid. */
- out+=anaTmHtml(r);
- out+=(r.locked&&r.locked.length===SEE_ORDER.length
-  /* nothing of the chain is visible on this plan: the chart's place says so
-     rather than printing "nothing here" over a chain somebody has */
-  ?'<div class="ab-f"><div class="pm-eye">What is running</div>'+lockPanelHtml('sab',{brief:true})+'</div>'
-  :anaField('What is running','blue saboteur, gold complex, orange hyper, red super',
-  /* THE SIXTEEN HEAVIEST, NOT THE FIRST SIXTEEN, round RB. The list is in
-     ring order, super complex first, so on a deep chain the cut at sixteen took
-     every super complex, hyper and complex and no saboteur at all: Gordon
-     drew sixteen bubbles and none in the blue the key names. Sorted by
-     weight, the chart shows what the eyebrow says, what is running hardest. */
-  [].concat(r.sups,r.hys,r.cxs,r.sabs).sort(function(a,b){return b.w-a.w;}).slice(0,16).map(function(o){
-   /* the kind's own colour at every weight, 17 October: a bubble printing a
-      percent never takes the alarm (DECISIONS.md, the default taken), and red
-      here was also the key's colour for a super complex */
-   return {k:'chain',nm:o.nm,v:o.w,f:fmtPct('chain',o.w),c:TIER[o.kind]||PAL.Throat};}),300,210));
- out+=anaField('The nine axes','',
-  CHILD.map(function(c){return {k:'axis',nm:c.nm,v:Math.max(0.3,S.charge[c.nm]||0),f:fmtPct('charge',S.charge[c.nm]||0),
-   c:seatCol(c.seat)};}),300,210);
- out+=anaField('The seven assemblage points','',
-  /* a count of held addresses, so it prints as a count */
-  seats.map(function(s){return {k:'seat',nm:s.p.n,v:Math.max(0.3,s.hot),f:anaN(s.hot),
-   c:seatCol(K2B[s.p.k])};}),300,210);
- out+='</div>';
- /* TELEMETRY, round RB, his words: "I want the analytics page to give me
-    telemetry and have that telemetry broken out in as many dimensions as we
-    can to see what's running and where." What follows is the engine's own
-    arithmetic and nothing new: the six readings compute() returns, every
-    address split by seat and by feeling, and the chain counted ring by ring. */
- out+=anaTele(r);
- var laws=SI.map(function(l){return {nm:l.nm,b:l.b,v:S.law[l.nm],ic:l.ic};});
- var shutL=laws.filter(function(l){return l.v<4;});
- /* 21 of the 76, and the 21 are the Laws of Moral Integrity. Saying "the 21
-    laws" with no frame reads as though there were only 21. */
- /* THE LABEL IS THE LABEL. This was a whole statement in an eyebrow, so it
-    printed "Moral Integrity, 21 Of The 76 Laws, Each 0 To 10, None Shut". The
-    frame is still owed to the person and it is prose, so it goes in the prose
-    class underneath. "each 0 to 10" is the struck phrasing and the plain words
-    for that scale are the ones the intake already uses: never to every time.
-
-    "scored" was the first word here and terms.py caught it: this product says
-    a reading is not a score, and drills.js tells a person in as many words
-    that nothing is scored. The intake already counts what a person has
-    answered, so answered is the word. */
- /* AND THE FRAME IS GONE TOO, round HS. "21 laws, each answered from never
-    to every time" was the section describing itself under its own heading.
-    The twenty one bars are the count, and the scale is said once, where it
-    is answered, in the intake's key. */
- out+='<div class="pm-eye" style="margin-top:20px">Laws of Moral Integrity</div>'
-  +'<div class="ana-laws">';
- laws.forEach(function(l){
-  /* ICON, NOT A NAME ON THE FACE, 20 November, his words: "I think we leave
-     the text off, focus on the size of the kind of icon, the symbol itself,
-     so people can recognize the symbol associated with the word. And then
-     we'll have a mouse over." The bar this replaced printed three letters of
-     the name on every face; now the law's own mark (SI[].ic, a distinct
-     glyph per law since the engine data carries one) is the only thing on
-     the button, and the full name plus its meaning live in the one tooltip
-     (ui/tip.js), reached by hover on a mouse and a held press on a phone,
-     the same mechanism the page's other tiles already use. A law with no
-     meaning on file still gets its name as the tip, never a blank one. */
-  var say=(typeof lawMeaning==='function'&&lawMeaning(l.nm))||'';
-  out+='<button type="button" class="ana-lw'+(l.v<4?' shut':'')+'" data-ana="'+esc('law|'+l.nm)+'" '
-   +'aria-label="'+esc(l.nm+', '+fmtPct('law',l.v)+(l.v<4?', shut':'')+(say?'. '+say:''))+'">'
-   +'<span class="ana-lw-l" data-tip-k="'+esc(l.nm)+'" data-tip="'+esc(say||l.nm)+'" style="color:'+seatCol(l.b)+'">'
-   +rbIcon('<path d="'+(l.ic||'M4 12a8 8 0 1116 0 8 8 0 01-16 0')+'"/>')+'</span></button>';});
- out+='</div>';
- /* AND THE SHUT COUNT, which the eyebrow used to carry. The none shut case
-    was said there too and would have been lost, so this line answers in both
-    directions rather than only when there is bad news. */
- out+='<p class="sum-p">'+(shutL.length?'Shut: <b>'
-  +shutL.map(function(l){return l.nm;}).join(', ')+'</b>.':'None shut.')+'</p>';
+ /* the reading this plan may see, ui/lock.js: the What is running box and
+    the masks box are the tier's */
+ var r=computeSeen(),H=anaHist();
+ /* THE PAGE IS THE SEVEN BOXES, 27 November, his ruling on the strip down.
+    Gone from above them: the coherence card and its sentence, the seven
+    stat boxes, the paragraph under those. Gone from below: the readings
+    row, Where it runs and its caption, The chain, and the list of shut
+    laws, which the laws' own box now shows by size. The six reading cards
+    (ANA_MET, anaMetCard) are still built and still tested, and no press on
+    this page opens them any more; whether they get a new door or go is a
+    later call, not made here. */
+ var out='<div class="ana-wrap">'+anaTmHtml(r);
+ /* THE COUNT IS lawIn's, the same test that puts the dash on a law's cell
+    above, so the number here and the dashes there cannot disagree */
+ var unm=SI.filter(function(l){return !lawIn(l.nm);}).length;
+ if(unm)out+='<p class="sum-p" style="margin-top:12px"><b>'+unm+'</b> law'+(unm===1?' is':'s are')
+  +' not answered yet. Answer them in Energetics.</p>';
+ out+=anaHot(r);
  if(H.length>1){
   out+='<div class="pm-eye" style="margin-top:20px">'+H.length+' sessions</div>'
-   /* the third printing of the same tolerance on one surface. Same ruling,
-      same treatment: the warning survives, the arithmetic does not. */
    /* HS sweep: a legend for the strip, and the needle warning said a second
-      time on this surface. Each bar names its CQ and seat on its title, and
-      the warning stands once, beside Identification. */
+      time on this surface. Each bar names its CQ and seat on its title. */
    +'<div class="ana-strip">';
   /* ESCAPED, ROUND RA: x.dark is a history row's own string, checked by the schema
      boundary for type only, not content (engine/schema.js); it lands in a title
@@ -730,20 +477,7 @@ function anaRender(){
    +'"><u style="height:'+Math.max(6,Math.round(x.cq/100*50))+'px;background:'
    +seatCol(x.dark)+'"></u></button>';});
   out+='</div>';}
- var meas=SI.filter(function(l){return CURP&&CURP.laws&&CURP.laws[l.nm]!=null;});
- /* HS SWEEP, AND PASS ONE BEFORE IT. "Every law is measured, so nothing here
-    is a default" said nothing a person acts on and is silent now. The other
-    two said an unanswered law "flatters the score", which has been untrue
-    since 25 September: engine/compute.js counts an unanswered law 0 against a
-    fixed 210, and the default 6 never enters CQ. What is true is that the
-    bars above draw an unanswered law at that 6, so that is what is said, and
-    the route names the section by the word on the button that opens it. */
- var unm=21-meas.length;
- out+=(unm?'<p class="sum-p" style="margin-top:18px">'
-    +(meas.length?'<b>'+unm+'</b> law'+(unm===1?' is':'s are')+' unmeasured, drawn above at the default 6.'
-      :'No law is measured yet. All 21 are drawn above at the default 6.')
-    +' Answer them in Energetics.</p>':'')
-  +'</div>';
+ out+='</div>';
  /* the record. every snapshot the profile carries, and the distance between
     any two of them. the data has been accruing since the rebuild. */
  out+='<div class="ab-f" id="rec"></div>';
@@ -769,13 +503,15 @@ function anaRender(){
    there is no camera on this surface. The row is the product's own address
    row, so it opens the same drill every other address row opens.
 
-   TWELVE ROWS AND A COUNT. A heavy field has fifty addresses past five, and
-   fifty rows is a spreadsheet of feelings, which the badge rule in
-   ui/component.js was written against. The count says how many there are
-   and how they split, and the Field draws every one.
+   TWELVE ROWS. A heavy field has fifty addresses past five, and fifty rows
+   is a spreadsheet of feelings, which the badge rule in ui/component.js
+   was written against. The Field draws every one.
 
-   Nothing on an unread field. The hero above already says nothing is
-   entered, and a list of none says it a second time.
+   THE ROWS AND NOTHING ELSE, 27 November, the junk text sweep: the count
+   sentence over the rows, the "twelve heaviest" line under them and the
+   "No address is past five" paragraph are gone. What past five means is
+   on the heading's hover. An unread field, or a field with nothing past
+   five, prints no list at all, because a list of none is not a reading.
    ============================================================ */
 const ANA_HOT_ROWS=12;
 /* THE THREE WORDS ARE NOT ONE COLOUR. Collapsing is the opposite going in,
@@ -786,32 +522,22 @@ const ANA_HOT_ROWS=12;
 function anaHotInk(d){return d==='collapsing'?seatCol('Heart'):(d==='steady'?'var(--dim)':'var(--ink)');}
 function anaHot(r){
  if(r.unread||typeof hotList!=='function')return '';
- var L=hotList(), t={expanding:0,collapsing:0,steady:0};
- L.forEach(function(n){t[hotDir(n)]++;});
- var s='<div class="pm-eye" style="margin-top:20px">Running hot</div>';
- if(!L.length)s+='<p class="sum-p">No address is past five. Past five an address pulls '
-  +'more than half as hard as it can, and the ring on the Field bends under it.</p>';
- else s+=anaHotRows(L,t);
- return '<div class="ana-hot">'+s+'</div>';}
+ var L=hotList(); if(!L.length)return '';
+ return '<div class="ana-hot"><div class="pm-eye" style="margin-top:20px" data-tip-k="Running hot" '
+  +'data-tip="Past five an address pulls more than half as hard as it can, and the ring on the Field bends under it.">'
+  +'Running hot</div>'+anaHotRows(L)+'</div>';}
 var ANA_DIRSAY={expanding:'Its charge rose on its last change.',
  collapsing:'Its charge fell on its last change.',
  steady:'It has not moved since this record was opened.'};
-function anaHotRows(L,t){
- var say=[], s='';
- ['expanding','collapsing','steady'].forEach(function(k){if(t[k])say.push('<b>'+t[k]+'</b> '+k);});
- s='<p class="sum-p"><b>'+L.length+'</b> address'+(L.length===1?' is':'es are')
-  +' past five, where an address pulls more than half as hard as it can and the ring on the '
-  +'Field bends under it. '+say.join(', ')+'.</p>'
+function anaHotRows(L){
+ return ''
   /* HS sweep: a three sentence legend for the three direction words sat
      between the count and the rows. Each word now carries its own meaning as
      its title, and the colour of the word already separates the three. */
   +'<div class="ad-rows">'+L.slice(0,ANA_HOT_ROWS).map(function(n){var d=hotDir(n);
    return '<button type="button" class="ad-r" data-addr="'+n.i+'" data-ana="addr|'+n.i+'" data-dir="'+d+'" '
     +'title="Open '+esc(n.k)+'">'+crbNode(n,'sm')
-    +'<span>'+esc(n.k)+'</span><em style="color:'+anaHotInk(d)+'" title="'+esc(ANA_DIRSAY[d]||'')+'">'+d+'</em></button>';}).join('')+'</div>';
- if(L.length>ANA_HOT_ROWS)s+='<p class="sum-p">The '+ANA_HOT_ROWS+' heaviest. '
-  +(L.length-ANA_HOT_ROWS)+' more are past five, and the Field draws every one.</p>';
- return s;}
+    +'<span>'+esc(n.k)+'</span><em style="color:'+anaHotInk(d)+'" title="'+esc(ANA_DIRSAY[d]||'')+'">'+d+'</em></button>';}).join('')+'</div>';}
 /* ============================================================
    THE TRAIL. Round RB, his words: "all the bubbles. I should be able to click
    on it and drill down deeper and trace all my patterns down to the fetters.
@@ -859,7 +585,7 @@ function anaAnd(a){return a.length<2?a.join(''):a.slice(0,-1).join(', ')+' and '
 function anaBySq(a,b){return b.sq-a.sq;}
 function anaChainOf(r){return [].concat(r.sups,r.hys,r.cxs,r.sabs);}
 function anaFind(r,nm){return anaChainOf(r).filter(function(x){return x.nm===nm;})[0]||null;}
-/* the seat bubbles are named by FLOWSEAT, where the 3rd Eye is Brow, and the
+/* the seat cells are named by FLOWSEAT, where the 3rd Eye is Brow, and the
    engine files an address by band. One lookup between the two. */
 function anaSeatNm(band){
  var s=flSeats().filter(function(x){return K2B[x.p.k]===band;})[0];
@@ -1109,36 +835,6 @@ function anaMaskCard(r,nm){
  h+='<p class="ad-p">'+unpSay('mask')+' This is the age the output takes on the way out. Its load is the average charge left across every address at those points.</p>'
   +'<div class="pm-eye">Underneath it</div>'+anaAddrRows(all.filter(function(n){return n.sq>0;}),10);
  return h+anaSplits(all)+anaRunning(r,all,'Running under it')+anaStories(sb);}
-/* one seat and one feeling, the cell of the grid */
-function anaCellCard(r,nm){
- var i=nm.indexOf(':'), b=nm.slice(0,i), f=nm.slice(i+1);
- var c=CHILD.filter(function(x){return x.nm===f;})[0]; if(!c||BANDS.indexOf(b)<0)return null;
- var list=W.filter(function(n){return n.b===b&&n.cf===f;}).sort(anaBySq);
- var h=anaHead('Point and feeling',f+' at the '+(b==='3rd Eye'?'3rd eye':b.toLowerCase()));
- h+='<p class="ad-p">'+(list.length?'<b>'+anaPl(list.length,'fetter','fetters')+'</b> at the '+anaSeatWord(b)
-   +' point hold '+esc(f.toLowerCase())+'. '+anaHeldSay(list)
-   :'No fetter at this point holds '+esc(f.toLowerCase())+', so nothing can gather here.')+'</p>';
- if(list.length)h+='<div class="pm-eye">Its fetters</div>'+anaAddrRows(list,12);
- h+='<div class="pm-eye" style="margin-top:12px">Under it</div><div class="ad-rows">'+anaAxisRow(f)+anaSeatRow(b)+'</div>';
- return h+(list.length?anaRunning(r,list,'Running here'):'');}
-/* one ring of the chain, every pattern on it */
-var ANA_RUNG={fet:['fetter','Fetters'],sab:['saboteur','Saboteurs'],cx:['complex','Complexes'],
- hy:['hyper complex','Hyper-complexes'],sup:['super complex','Super-complexes']};
-function anaRungCard(r,nm){
- var R=ANA_RUNG[nm]; if(!R)return null;
- var h=anaHead('The chain',R[1]);
- if(nm==='fet'){
-  var carry=W.filter(function(n){return n.sq>0;}).sort(anaBySq);
-  return h+'<p class="ad-p">'+unpSay('fetter')+' '+anaHeldSay(carry)+'</p>'
-   +'<div class="pm-eye">Heaviest first</div>'+anaAddrRows(carry,20)+anaSplits(carry);}
- if(!lockSees(nm))return h+lockPanelHtml(nm,{brief:true});
- var list=({sab:r.sabs,cx:r.cxs,hy:r.hys,sup:r.sups})[nm]||[];
- h+='<p class="ad-p">'+unpSay(R[0])+' '+(list.length?'<b>'+list.length+'</b> '+(list.length===1?'is':'are')+' running now.'
-  :'None is running now.')+'</p>';
- if(!list.length)return h;
- var all=[]; list.forEach(function(o){leaves(o).forEach(function(n){if(all.indexOf(n)<0)all.push(n);});});
- return h+'<div class="pm-eye">Heaviest first</div>'+anaPatRows(list.slice().sort(function(a,b){return b.w-a.w;}),20)
-  +'<div class="pm-eye" style="margin-top:14px">What they run on</div>'+anaAddrRows(all.sort(anaBySq),8)+anaSplits(all);}
 
 /* ---- the six readings ---- */
 /* WHAT EACH ONE IS, in words, and what the tile prints. Every figure is one
@@ -1282,17 +978,13 @@ function anaCard(r,P){
  if(P.k==='dom')return anaDomCard(r,P.nm);
  if(P.k==='arch')return anaArchCard(r,P.nm);
  if(P.k==='mask')return anaMaskCard(r,P.nm);
- if(P.k==='cell')return anaCellCard(r,P.nm);
- if(P.k==='rung')return anaRungCard(r,P.nm);
  if(P.k==='met')return anaMetCard(r,P.nm);
  if(P.k==='sess')return anaSessCard(r,P.nm);
  return null;}
 function anaStepName(P){
  if(P.k==='addr'){var n=BY[+P.nm]; return n?n.k:P.nm;}
  if(P.k==='met')return (ANA_MET[P.nm]||{}).nm||P.nm;
- if(P.k==='rung')return (ANA_RUNG[P.nm]||[])[1]||P.nm;
  if(P.k==='sess')return 'Session '+(+P.nm+1);
- if(P.k==='cell')return P.nm.replace(':',', ');
  return P.nm;}
 function anaCrumbs(){
  if(!ANA_TRAIL.length)return '';
@@ -1309,8 +1001,8 @@ function anaCrumbs(){
    own name for what engine/insight.js calls 'fet', the child emotion;
    'seat' here is keyed by the point's proper name where insight.js's own
    APC table is keyed by the band word, so that one needs the same lookup
-   anaSeatCard already does to get from one to the other. met, sess, rung
-   and cell have no equivalent a person can release, so they are left as
+   anaSeatCard already does to get from one to the other. met and sess
+   have no equivalent a person can release, so they are left as
    they were: no insDoor, Insight keeps whatever it already had or says
    nothing is selected, honestly, rather than guess at one. */
 function anaInsSelFor(P,r){
@@ -1349,7 +1041,6 @@ function anaDrill(){
    the card, which is what the bubbles always did. A press on a card adds a
    step. A press on a step goes back to it. */
 function anaGo(k,nm,fromPage){
- if(k==='met'&&nm==='id'){ANA_PICK=null;ANA_TRAIL=[];if(typeof runAccDrill==='function')runAccDrill();return;}
  if(fromPage){
   var same=ANA_PICK&&ANA_PICK.k===k&&ANA_PICK.nm===nm&&!ANA_TRAIL.length;
   ANA_TRAIL=[]; ANA_PICK=same?null:{k:k,nm:nm};}
@@ -1392,76 +1083,3 @@ addEventListener('click',function(e){
  if(!t||!t.closest('#ana'))return;
  var m=t.getAttribute('data-anamode'); if(!m||m===ANA_ARCHMODE)return;
  ANA_ARCHMODE=m; anaRender();});
-/* a bubble and the identification block are not buttons, so Enter and Space
-   press them the way they press a button */
-addEventListener('keydown',function(e){
- if(e.key!=='Enter'&&e.key!==' ')return;
- var t=e.target; if(!t||!t.getAttribute||t.tagName==='BUTTON')return;
- if(t.getAttribute('role')!=='button'||!t.hasAttribute('data-ana'))return;
- e.preventDefault(); t.dispatchEvent(new MouseEvent('click',{bubbles:true}));});
-
-/* ============================================================
-   TELEMETRY ON THE PAGE. Three views, each answering one question.
-
-     Readings       how the field reads, six figures, each a door
-     Where it runs  every address by seat and by feeling at once: the
-                    darker a square, the more charge is left on the fetters
-                    at that seat holding that feeling. The two edges add
-                    each row and each column up.
-     The chain      how many patterns sit on each ring, fetter to super complex
-
-   Nothing on an unread field, for the reason Running hot gives: the hero
-   already says nothing is entered, and six dashes say it six more times.
-   ============================================================ */
-function anaTele(r){
- if(r.unread)return '';
- var s='<div class="ana-tele"><div class="pm-eye" style="margin-top:20px">Readings</div>'
-  +'<div class="ana-tiles">'+['cq','dq','lawsq','pull','ex','jq','pole'].map(function(k){
-   var M=ANA_MET[k], f=M.fig(r);
-   return '<button type="button" class="ana-tile" data-ana="met|'+k+'">'
-    +cr(M.seat,f.p,{size:'md',raw:f.raw,text:M.txt,hot:false,title:M.nm})
-    +'<span class="ana-tile-l" data-tip-k="'+esc(M.nm)+'" data-tip="'+esc(M.tip)+'">'+esc(M.nm)+'</span></button>';}).join('')
-  +'</div>';
- s+='<div class="pm-eye" style="margin-top:20px">Where it runs</div>'+anaGrid(r);
- s+='<div class="pm-eye" style="margin-top:20px">The chain</div>'+anaRungs(r);
- return s+'</div>';}
-function anaGrid(r){
- var cols=BANDS, rows=CHILD, M={}, max=0, rowT={}, colT={}, rmax=0, cmax=0;
- W.forEach(function(n){if(!n.cf)return; var k=n.b+':'+n.cf;
-  if(!M[k])M[k]={n:0,h:0,v:0}; M[k].n++; M[k].v+=n.sq; if(n.sq>=4)M[k].h++;
-  rowT[n.cf]=(rowT[n.cf]||0)+n.sq; colT[n.b]=(colT[n.b]||0)+n.sq;});
- Object.keys(M).forEach(function(k){if(M[k].v>max)max=M[k].v;});
- Object.keys(rowT).forEach(function(k){if(rowT[k]>rmax)rmax=rowT[k];});
- Object.keys(colT).forEach(function(k){if(colT[k]>cmax)cmax=colT[k];});
- /* THE EDGES ARE THE DOORS. A seat's name over its column opens the seat,
-    a feeling's name at the start of its row opens the feeling, and the thin
-    bar under each name adds that whole column or row up. Same scale along
-    each edge, so the longest bar is the heaviest seat or feeling. */
- var s='<div class="ana-grid" role="group" aria-label="Charge left by point and feeling">'
-  +'<span class="ana-g-c"></span>'+cols.map(function(b){
-   var ch=colT[b]?Math.max(6,Math.round(colT[b]/(cmax||1)*100)):0;
-   return '<button type="button" class="ana-g-h" data-ana="'+anaKey('seat',anaSeatNm(b))+'" title="'+esc('The '+b.toLowerCase()+' point, every feeling. Open it.')+'">'
-    +'<span>'+anaSeatWord(b,true)+'</span><i style="width:'+ch+'%;background:'+seatCol(b)+'"></i></button>';}).join('');
- rows.forEach(function(c){
-  var rw=rowT[c.nm]?Math.max(6,Math.round(rowT[c.nm]/(rmax||1)*100)):0;
-  s+='<button type="button" class="ana-g-r" data-ana="'+anaKey('axis',c.nm)+'" title="'+esc(c.nm+' at every point. Open it.')+'">'
-   +'<span>'+esc(c.nm)+'</span><i style="width:'+rw+'%;background:'+seatCol(c.seat)+'"></i></button>';
-  cols.forEach(function(b){
-   var m=M[b+':'+c.nm];
-   if(!m){s+='<span class="ana-g-x" title="'+esc('No fetter at the '+b.toLowerCase()+' holds '+c.nm.toLowerCase())+'"></span>';return;}
-   var a=m.v>0?Math.round(14+76*m.v/(max||1)):0;
-   s+='<button type="button" class="ana-g'+(m.h?' held':'')+'" data-ana="'+anaKey('cell',b+':'+c.nm)+'" '
-    +'style="--c:'+seatCol(b)+';background:'+(a?'color-mix(in srgb,'+seatCol(b)+' '+a+'%,transparent)':'transparent')+'" '
-    +'title="'+esc(c.nm+' at the '+b.toLowerCase()+': '+anaPl(m.n,'fetter','fetters')+(m.h?', '+m.h+' held':'')+'. Open it.')+'" '
-    +'aria-label="'+esc(c.nm+' at the '+b.toLowerCase())+'"></button>';});});
- return s+'</div><p class="ab-s">Darker is more charge left. A ringed square has a held fetter in it, and a hatched one has no fetter that can hold that feeling there.</p>';}
-function anaRungs(r){
- var held=W.filter(function(n){return n.sq>=4;}).length;
- var items=[['fet',held]].concat(['sab','cx','hy','sup'].map(function(k){
-  return [k,lockSees(k)?({sab:r.sabs,cx:r.cxs,hy:r.hys,sup:r.sups})[k].length:null];}));
- return '<div class="ana-rungs">'+items.map(function(it,i){
-  var R=ANA_RUNG[it[0]];
-  return (i?'<span class="ana-rung-s" aria-hidden="true">\u203a</span>':'')
-   +'<button type="button" class="ana-rung" data-ana="rung|'+it[0]+'" title="'+esc(it[0]==='fet'?'Fetters held at 4 or more. Open them.':'Open every '+R[0]+' running')+'">'
-   +'<b>'+(it[1]==null?lockMarkHtml():(it[1]?it[1]:'\u2013'))+'</b>'
-   +'<span>'+unp(R[0],R[1])+'</span></button>';}).join('')+'</div>';}

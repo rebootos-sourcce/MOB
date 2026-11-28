@@ -120,20 +120,25 @@ async function stackNameGate(browser,FILE,ok,booted){
    return !!document.querySelector('.s-chain');});
   ok(!sum,'SN1: '+tag+'Summary\'s chain is retired and has not come back, '+JSON.stringify(sum));
 
-  /* ---- SN1, Analytics: the ring and its card ---- */
+  /* ---- SN1, Analytics: a super-complex square and its card. The ring
+     for the rung went with The chain, 27 November, his ruling, so the
+     word is read off the card a super-complex's own square opens ---- */
   await pg.evaluate(()=>{setTab(TAB.ANALYTICS); render();});
   await pg.waitForTimeout(250);
-  const ring=await pg.$('#ana .ana-rung[data-ana="rung|sup"]');
-  let ana={ring:null};
-  if(ring){
-   const lab=await ring.evaluate(e=>e.textContent.replace(/\s+/g,' ').trim());
-   await ring.scrollIntoViewIfNeeded(); await ring.click(); await pg.waitForTimeout(150);
-   ana=await pg.evaluate(lab=>{const s=(document.getElementById('rdrill').innerText||'').replace(/\s+/g,' ');
-    return {ring:lab, card:/\bsuper-complexes\b/i.test(s), meaning:s.indexOf(unpackOf('super complex'))>=0,
-     character:/\bcharacter\b/i.test(s), head:s.slice(0,90)};},lab);
+  const supNm=await pg.evaluate(()=>{const r=computeSeen(), on={};
+   r.sups.forEach(o=>{on[o.nm]=1;});
+   const c=[...document.querySelectorAll('#ana .ana-tm-cell[data-lens="chain"]')].filter(e=>on[e.getAttribute('data-nm')])[0];
+   return c?c.getAttribute('data-nm'):null;});
+  let ana={cell:null};
+  if(supNm){
+   const cell=await pg.$('#ana .ana-tm-cell[data-lens="chain"][data-nm="'+supNm.replace(/"/g,'\\"')+'"]');
+   await cell.scrollIntoViewIfNeeded(); await cell.click(); await pg.waitForTimeout(150);
+   ana=await pg.evaluate(nm=>{const s=(document.getElementById('rdrill').innerText||'').replace(/\s+/g,' ');
+    return {cell:nm, card:/super-complex/i.test(s), meaning:s.indexOf(unpackOf('super complex'))>=0,
+     character:/\bcharacter\b/i.test(s), head:s.slice(0,90)};},supNm);
    await pg.evaluate(()=>{try{rdClose();}catch(e){}});}
-  ok(!!ana.ring&&/super-complexes/i.test(ana.ring)&&ana.card&&ana.meaning&&!ana.character,
-   'SN1: '+tag+'Analytics\' ring for the rung and its card say super complex, with its meaning beside it, '+JSON.stringify(ana));
+  ok(!!ana.cell&&ana.card&&ana.meaning&&!ana.character,
+   'SN1: '+tag+'Analytics\' super-complex square opens a card that says super complex, with its meaning beside it, '+JSON.stringify(ana));
 
   /* ---- SN2, every tab TABDEF names ---- */
   const tabs=await pg.evaluate(()=>TABDEF.map(t=>({k:t.k,nm:t.nm})));

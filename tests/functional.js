@@ -1831,7 +1831,9 @@ const virgin=await blank.evaluate(()=>{
  o.profile=(document.getElementById('sheet-card').textContent||'').replace(/\s+/g,' ');
  sheetShut();
  setTab(TAB.ANALYTICS); anaRender();
- o.ana=(document.querySelector('.ab-hero .pm-eye')||{}).textContent||'';
+ /* the whole page, since the hero this read went with the strip down,
+    27 November: no word on Analytics may call a blank profile a band */
+ o.ana=(document.getElementById('ana')||{}).textContent||'';
  setTab(TAB.FIELD); render();
  /* the whole first screen, not only the surfaces I remembered to guard. The
     right rail was missed on the first pass and a screenshot caught it. This
@@ -1847,7 +1849,7 @@ ok(virgin.unread===true&&virgin.measured===0,'the reading knows it has not been 
 ok(!/Incoherent|Corrupt|Severe|Contracted/.test(virgin.tier),
  'the tier does not name a band, it reads: '+JSON.stringify(virgin.tier));
 ok(!/Incoherent/.test(virgin.profile),'nor does the profile sheet');
-ok(!/incoherent/.test(virgin.ana),'nor the analytics hero, which reads: '+JSON.stringify(virgin.ana));
+ok(!/incoherent/.test(virgin.ana),'nor Analytics, which reads: '+JSON.stringify(virgin.ana.slice(0,160)));
 /* CHANGED 25 SEPTEMBER. This asserted a band word here. One held address
    still makes it a reading, but CQ is the laws alone and this person has
    answered none, so the word waits for all 21 and the slot says what is left
@@ -8783,8 +8785,10 @@ console.log('\n=== GW: the glossary reaches the Psyche stack, Analytics and Comp
   const want={}; Object.keys(TERM).forEach(k=>{want[k]=unpackOf(TERM[k]);});
   stOpenPsyche('hy'); await new Promise(r=>setTimeout(r,60));
   const card=(document.getElementById('rdrill')||{}).textContent||'';
-  const r=compute(), tele=document.createElement('div'); tele.innerHTML=anaTele(r);
-  const tip=k=>{const b=tele.querySelector('[data-ana="met|'+k+'"] .ana-tile-l'); return b?b.getAttribute('data-tip'):null;};
+  /* the readings row that carried these tiles went with the strip down, 27
+     November, so the sentence is read off the reading table itself, which
+     the reading cards still print (ANA_MET, ui/analytics.js) */
+  const tip=k=>(ANA_MET[k]||{}).tip||null;
   const cps=document.createElement('div'); cps.innerHTML=stDashCompass();
   return {tiles,want,card,cq:tip('cq'),dq:tip('dq'),ucq:unpackOf('cq'),udq:unpackOf('dq'),
    ctop:(cps.querySelector('.st-cps-top')||{}).title,cbot:(cps.querySelector('.st-cps-bot')||{}).title};});
@@ -8792,7 +8796,7 @@ console.log('\n=== GW: the glossary reaches the Psyche stack, Analytics and Comp
  ok(gw.tiles.length===4&&gw.tiles.every(x=>gw.want[x.k]&&x.t.indexOf(gw.want[x.k])>=0&&x.a===x.t),
   'GW: each Psyche stack tile\'s tooltip and spoken name carry the glossary\'s sentence for its tier, '+JSON.stringify(gw.tiles.map(x=>x.t)));
  ok(gw.want.hy&&gw.card.indexOf(gw.want.hy)>=0,'GW: and the card the tile opens says the same sentence, read from the same key');
- ok(gw.cq===gw.ucq&&gw.dq===gw.udq&&!!gw.ucq&&!!gw.udq,'GW: the Analytics CQ and DQ tiles say the glossary\'s sentence, '+JSON.stringify([gw.cq,gw.dq]));
+ ok(gw.cq===gw.ucq&&gw.dq===gw.udq&&!!gw.ucq&&!!gw.udq,'GW: the Analytics CQ and DQ readings say the glossary\'s sentence, '+JSON.stringify([gw.cq,gw.dq]));
  ok(gw.ctop===gw.ucq&&gw.cbot===gw.udq&&!/\b112\b/.test(gw.cbot||''),'GW: the Compass\'s CQ and DQ titles are the glossary\'s, and no flat 112, '+JSON.stringify([gw.ctop,gw.cbot]));
  await page.evaluate(()=>{if(typeof rdClose==='function')rdClose();loadP(0);render();});
 }
