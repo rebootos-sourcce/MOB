@@ -679,7 +679,11 @@ function relSec(st){
 /* how long a step holds the card: its reading time, and on the list never
    less than the spacing */
 function relList(st){return !!st&&(st.kind==='head'||st.kind==='pass');}
-function relStepSec(st){var s=relSec(st); return relList(st)?Math.max(s,relSpace()):s;}
+function relStepSec(st){
+ var s=relSec(st);
+ // Listen follows the actual end of each spoken line; Guided preserves its four-second spacing.
+ return relList(st)&&!relListenMode()?Math.max(s,relSpace()):s;
+}
 /* seconds of script from a point to the end, cooldown included. from is
    {phase,line,idx,pass}; with no from it is the whole run. */
 function relSecFrom(from){
@@ -715,7 +719,7 @@ function relMMSS(sec){
    the estimate is waited out, so a browser with no real voice runs
    at reading pace instead of racing to the cooldown.
    ============================================================ */
-/* THE VOICE IS ELEVENLABS AND THERE IS NO OTHER. The owner, 9 October: "the
+/* THE VOICE IS OPENAI, WITH NO BROWSER OR ELEVENLABS FALLBACK. The owner, 9 October: "the
    audio is still defaulting to the Claude default voice, and I want that
    removed so that there's no fallback to it." A line is spoken by the studio
    voice (ui/sound.js, ui/auth.js authVoice, the Worker's /v1/voice/synthesize)
@@ -732,6 +736,11 @@ function relMMSS(sec){
    line and not one per line. A new run asks again. */
 function relVoiceWanted(){
  return !(typeof CURP!=='undefined'&&CURP&&CURP.ui&&CURP.ui.voice===false);}
+function relListenMode(){
+ return !!(typeof CURP!=='undefined'&&CURP&&CURP.ui&&CURP.ui.releaseMode==='listen');}
+function relVoiceName(){
+ var name=(typeof CURP!=='undefined'&&CURP&&CURP.ui&&CURP.ui.voiceName)||'marin';
+ return ['marin','cedar','coral','sage'].indexOf(name)>=0?name:'marin';}
 function relVoiceCan(){
  return typeof studioCan==='function'&&studioCan();}
 function relVoiceOn(){ return relVoiceWanted()&&relVoiceCan(); }
@@ -795,7 +804,8 @@ function relStep(){
     voice that finished early, so a spoken run keeps the same four seconds a
     read one does. Judging the voice against est would have called every short
     pass unspoken and thrown its measurement away. */
- var raw=relSec(st)*1000, est=relStepSec(st)*1000, gap=relList(st)?relSpace()*1000:0, moved=false;
+ var raw=relSec(st)*1000, est=relStepSec(st)*1000,
+      gap=relList(st)&&!relListenMode()?relSpace()*1000:0, moved=false;
  function next(){
   if(moved||tok!==RUN.tok)return; moved=true; clearTimeout(RUN.timer);
   if(!RUN.paused)relAdvance();}
@@ -811,8 +821,24 @@ function relStep(){
     /* the voice did not say the line. The run goes on at reading pace. */
     if(tok!==RUN.tok)return;
     clearTimeout(RUN.timer); RUN.timer=setTimeout(next,est);})){
-  RUN.timer=setTimeout(next,est+9000);}
+  RUN.timer=setTimeout(next,est+9000);
+  // Pre-render one line ahead to minimize network gaps between spoken statements.
+  if(relListenMode()&&typeof studioWarm==='function'){
+   var soon=relSoon();
+   if(soon)studioWarm(soon.text,(soon.kind==='head'||soon.kind==='pass')?'list':'frame');
+  }}
  else RUN.timer=setTimeout(next,est);}
+/* Prefetch only the next line without advancing the record or its meter. */
+function relSoon(){
+ if(RUN.phase==='opening'){
+  if(RUN.line+1<OPENING.length)return {kind:'open',text:OPENING[RUN.line+1]};
+  return relStepAt(relAt(0),0);
+ }
+ if(RUN.phase==='run'){
+  if(RUN.pass+1<RUN.dose)return relStepAt(relAt(RUN.idx),RUN.pass+1);
+  return relStepAt(relAt(RUN.idx+1),0);
+ }
+ return null;}
 function relAdvance(){
  if(RUN.phase==='welcome'){
   RUN.line++;
@@ -1910,8 +1936,18 @@ function relVoiceRow(){
  if(typeof accTog!=='function')return '';
  var note;
  if(typeof studioCan!=='function'||!studioCan())note='This browser cannot play the voice. The run reads on the screen.';
- else note='ElevenLabs, a voice company, over the network. It gets each line, and each line names one of your patterns.';
- return accTog('Voice','relvoice',relVoiceWanted(),note);}
+ else note='AI narration by OpenAI over the network. Each spoken line includes the pattern words shown on your screen.';
+ var pick=relVoiceName();
+ var choices=['marin','cedar','coral','sage'].map(function(v){
+  return '<option value="'+v+'"'+(v===pick?' selected':'')+'>'+v.charAt(0).toUpperCase()+v.slice(1)+'</option>';
+ }).join('');
+ return '<div class="rel-voice-box">'+accTog('Voice','relvoice',relVoiceWanted(),note)
+  +'<div class="rel-voice-tools">'
+  +'<label class="rel-voice-field"><span>Voice</span><select id="relvoicepick" aria-label="Narrator voice">'+choices+'</select></label>'
+  +'<label class="rel-voice-field"><span>Release mode</span><select id="relplaymode" aria-label="Release playback mode">'
+  +'<option value="guided"'+(!relListenMode()?' selected':'')+'>Guided</option>'
+  +'<option value="listen"'+(relListenMode()?' selected':'')+'>Audiobook</option>'
+  +'</select></label></div></div>';}
 function relBuzzRow(){
  if(typeof buzzCan!=='function'||!buzzCan()||typeof accTog!=='function')return '';
  return accTog('Vibration','relbuzz',relBuzzOn(),'');}
@@ -2353,6 +2389,11 @@ function relCss(){
      wanted out had nothing to press. relRender appends it first now, whichever
      phase it draws. The label is words beside the mark, because a ring with a
      square in it is not a word a person has been told means End. */
+  '.rel-voice-box{min-width:175px;max-width:100%;flex:1 1 240px}',
+  '.rel-voice-tools{display:flex;align-items:end;flex-wrap:wrap;gap:10px;margin:10px 0 2px}',
+  '.rel-voice-field{display:flex;flex:1 1 115px;flex-direction:column;gap:5px;min-width:0;font-size:11px;font-weight:600;letter-spacing:.03em;color:var(--dim)}',
+  '.rel-voice-field select{width:100%;min-height:44px;padding:9px 32px 9px 12px;border:1px solid var(--edge);border-radius:var(--r-xs);background:var(--panel-2);color:var(--ink);font:500 14px var(--sans);cursor:pointer;box-shadow:inset 0 1px rgba(255,255,255,.06)}',
+  '.rel-voice-field select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}',
   '.rel-act .rel-b{display:inline-flex;align-items:center;justify-content:center;gap:8px;',
   ' min-width:44px;min-height:44px;padding:0 16px}',
   '.rel-hd .rel-x{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;',
@@ -3863,7 +3904,7 @@ function relRender(){
     change over what is already drawn. */
  if((b=document.getElementById('reltone')))b.onclick=function(){
   var on=!relToneOn();uiSet('tone',on);
-  if(on&&relVoiceWanted()){
+  if(on&&relVoiceWanted()&&!relListenMode()){
    uiSet('voice',false);RUN.studioLost=false;
    var live=RUN.open&&!RUN.paused&&(RUN.phase==='welcome'||RUN.phase==='opening'||RUN.phase==='run'
      ||(RUN.phase==='done'&&RUN.cool<COOLING.length));
@@ -3879,9 +3920,24 @@ function relRender(){
     so nothing further is needed here for that half. */
  if((b=document.getElementById('relvoice')))b.onclick=function(){
   var on=!relVoiceWanted();uiSet('voice',on);
-  if(on)uiSet('tone',false);
+  if(on&&!relListenMode())uiSet('tone',false);
   RUN.studioLost=false;
   var live=RUN.open&&!RUN.paused&&(RUN.phase==='welcome'||RUN.phase==='opening'||RUN.phase==='run'
     ||(RUN.phase==='done'&&RUN.cool<COOLING.length));
   if(live)relStep(); else {if(!relVoiceWanted())speakStop(); relRender();}};
+ if((b=document.getElementById('relvoicepick')))b.onchange=function(){
+  var choice=this.value; if(['marin','cedar','coral','sage'].indexOf(choice)<0)return;
+  uiSet('voiceName',choice); RUN.studioLost=false;
+  var live=RUN.open&&!RUN.paused&&RUN.phase!=='idle'&&!(RUN.phase==='done'&&RUN.cool>=COOLING.length);
+  if(live){relHush();relStep();}else relRender();
+ };
+ if((b=document.getElementById('relplaymode')))b.onchange=function(){
+  var mode=this.value==='listen'?'listen':'guided';
+  uiSet('releaseMode',mode);
+  if(mode==='listen'&&!relVoiceWanted())uiSet('voice',true);
+  if(mode==='guided'&&relToneOn()&&relVoiceWanted())uiSet('tone',false);
+  RUN.studioLost=false;
+  var live=RUN.open&&!RUN.paused&&RUN.phase!=='idle'&&!(RUN.phase==='done'&&RUN.cool>=COOLING.length);
+  if(live){relHush();relStep();}else relRender();
+ };
  if((b=document.getElementById('relbuzz')))b.onclick=function(){uiSet('buzz',!relBuzzOn());relRender();};}
