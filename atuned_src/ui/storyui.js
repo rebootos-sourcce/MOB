@@ -4929,7 +4929,8 @@ function stRelPanel(){
  if((f=document.getElementById('strtone')))f.onclick=function(){
   if(typeof relToneOn!=='function'||typeof uiSet!=='function')return;
   var on=!relToneOn(); uiSet('tone',on);
-  if(on&&typeof relVoiceWanted==='function'&&relVoiceWanted())uiSet('voice',false);
+  if(on&&typeof relVoiceWanted==='function'&&relVoiceWanted()
+    &&!(typeof relListenMode==='function'&&relListenMode()))uiSet('voice',false);
   if(typeof relRender==='function')relRender();
   stRelPanel();};
  var reframe=document.getElementById('srcdraftreframe');
