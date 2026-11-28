@@ -525,7 +525,21 @@ var TIP=(function(){
    rs.forEach(function(r){var k=r.target;
     if(k.getAttribute('aria-expanded')==='true'){if(popped(k)===k)hold(k);}
     else unhold(k);});
-  }).observe(document.body,{subtree:true,attributes:true,attributeFilter:['aria-expanded']});}
+  }).observe(document.body,{subtree:true,attributes:true,attributeFilter:['aria-expanded']});
+  /* AN OPEN CARRIER CAN BE TAKEN OUT FROM UNDER THE PANEL. A renderer that
+     repaints its whole host on the carrier's own click, the way Talk's own
+     button does, replaces that element rather than restyling it, and the
+     browser raises no pointerout for a node that is simply gone, so hide()
+     was never called and the panel stood open on a title that belonged to
+     a dead node. Found 28 November on the Journal's own talk button,
+     tests/talksilence.js catching it the same way five times over, by the
+     panel's exact title text showing as real page text long after the
+     press. The fix does not special case that one button: any carrier's
+     removal, anywhere, closes its own panel the moment the DOM says the
+     carrier is no longer there. */
+  if(typeof MutationObserver==='function')new MutationObserver(function(){
+   if(CUR&&!document.contains(CUR))hide();
+  }).observe(document.body,{subtree:true,childList:true});}
 
  /* goFor is the carrier whose description put the door button in the panel,
     read only. A locked control's See tiers has to say which lock it belongs

@@ -604,10 +604,18 @@ function stRender(){
       srcThread). Still the same control that starts or stops the
       microphone (stMic); the word changed, not the wiring. The clock and
       the dot are unchanged. */
+   /* NO TITLE WHILE LISTENING, found 28 November chasing a real talksilence.js
+      failure: a title makes this button a hover carrier for TIP (ui/tip.js),
+      and a press that leaves the pointer resting here, the ordinary case for
+      a real click, reopened TIP's own panel on this exact text within its
+      380ms hover-intent window, which is the thing the title was already in
+      aria-label to replace for a screen reader. The icon's own 'on' class
+      and the live dot already say listening to a sighted eye; the hover
+      explanation of how to stop is only worth having before a person has
+      started, so it is only a carrier then. */
    +(show?'':'<button class="st-mic'+(ST_LISTEN?' on':'')+'" id="stmic" type="button" aria-label="'
-   +(ST_LISTEN?'Listening':'Talk')+'" title="'
-   +(ST_LISTEN?'Listening. Press to stop and keep what it heard.'
-     :'Talk by speaking instead of typing. What you say goes to your browser\'s speech service; typing does not leave this device.')+'">'
+   +(ST_LISTEN?'Listening':'Talk')+'"'
+   +(ST_LISTEN?'':' title="Talk by speaking instead of typing. What you say goes to your browser\'s speech service; typing does not leave this device."')+'>'
    +'<span class="st-dot"></span>'
    /* AN ACTUAL TALK BUBBLE, 10 November, his words: "the talk icon is an
       actual talk bubble icon." The capsule-and-stand microphone glyph

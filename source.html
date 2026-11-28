@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v3532 c62c48ba 2026-11-28 00:13"><head><meta charset="utf-8">
+<html lang="en" data-build="v3534 45553674 2026-11-28 05:47"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -58304,7 +58304,21 @@ var TIP=(function(){
    rs.forEach(function(r){var k=r.target;
     if(k.getAttribute('aria-expanded')==='true'){if(popped(k)===k)hold(k);}
     else unhold(k);});
-  }).observe(document.body,{subtree:true,attributes:true,attributeFilter:['aria-expanded']});}
+  }).observe(document.body,{subtree:true,attributes:true,attributeFilter:['aria-expanded']});
+  /* AN OPEN CARRIER CAN BE TAKEN OUT FROM UNDER THE PANEL. A renderer that
+     repaints its whole host on the carrier's own click, the way Talk's own
+     button does, replaces that element rather than restyling it, and the
+     browser raises no pointerout for a node that is simply gone, so hide()
+     was never called and the panel stood open on a title that belonged to
+     a dead node. Found 28 November on the Journal's own talk button,
+     tests/talksilence.js catching it the same way five times over, by the
+     panel's exact title text showing as real page text long after the
+     press. The fix does not special case that one button: any carrier's
+     removal, anywhere, closes its own panel the moment the DOM says the
+     carrier is no longer there. */
+  if(typeof MutationObserver==='function')new MutationObserver(function(){
+   if(CUR&&!document.contains(CUR))hide();
+  }).observe(document.body,{subtree:true,childList:true});}
 
  /* goFor is the carrier whose description put the door button in the panel,
     read only. A locked control's See tiers has to say which lock it belongs
@@ -69324,10 +69338,18 @@ function stRender(){
       srcThread). Still the same control that starts or stops the
       microphone (stMic); the word changed, not the wiring. The clock and
       the dot are unchanged. */
+   /* NO TITLE WHILE LISTENING, found 28 November chasing a real talksilence.js
+      failure: a title makes this button a hover carrier for TIP (ui/tip.js),
+      and a press that leaves the pointer resting here, the ordinary case for
+      a real click, reopened TIP's own panel on this exact text within its
+      380ms hover-intent window, which is the thing the title was already in
+      aria-label to replace for a screen reader. The icon's own 'on' class
+      and the live dot already say listening to a sighted eye; the hover
+      explanation of how to stop is only worth having before a person has
+      started, so it is only a carrier then. */
    +(show?'':'<button class="st-mic'+(ST_LISTEN?' on':'')+'" id="stmic" type="button" aria-label="'
-   +(ST_LISTEN?'Listening':'Talk')+'" title="'
-   +(ST_LISTEN?'Listening. Press to stop and keep what it heard.'
-     :'Talk by speaking instead of typing. What you say goes to your browser\'s speech service; typing does not leave this device.')+'">'
+   +(ST_LISTEN?'Listening':'Talk')+'"'
+   +(ST_LISTEN?'':' title="Talk by speaking instead of typing. What you say goes to your browser\'s speech service; typing does not leave this device."')+'>'
    +'<span class="st-dot"></span>'
    /* AN ACTUAL TALK BUBBLE, 10 November, his words: "the talk icon is an
       actual talk bubble icon." The capsule-and-stand microphone glyph
@@ -118230,5 +118252,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="008629164"></div>
+<div id="eof" hidden data-len="008630720"></div>
 </body></html>
