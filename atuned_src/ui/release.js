@@ -825,7 +825,14 @@ function relStep(){
     silence, whatever the voice switch says; see THE SCRIPT above. */
  if(st.kind!=='welcome'&&relVoiceOn()&&relSay(st,function(ms){
     if(tok!==RUN.tok)return;
-    if(ms<raw*0.25){ clearTimeout(RUN.timer); RUN.timer=setTimeout(next,Math.max(0,est-ms)); return; }
+    if(ms<raw*0.25){
+     // A near-instant audio completion is not enough to credit an Audiobook line.
+     // Guided retains its readable timing; Listen holds the exact current step.
+     if(relListenMode()){
+      relListenPause('Audiobook paused because the line ended too soon. Press Play to retry it.');
+      return;
+     }
+     clearTimeout(RUN.timer); RUN.timer=setTimeout(next,Math.max(0,est-ms)); return; }
     RUN.spokeMs+=ms; RUN.spokeW+=relWords(st.text);
     if(ms<gap){ clearTimeout(RUN.timer); RUN.timer=setTimeout(next,gap-ms); return; }
     next();},
