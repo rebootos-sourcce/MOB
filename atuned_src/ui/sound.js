@@ -1246,7 +1246,8 @@ function speakStop(){ studioStop(); }
    not.
 
    THE CONTRACT the walker in ui/release.js relies on: onend gets the milliseconds from the call to the end
-   of the sound, onfail is told once. The milliseconds include the
+   of the sound, with actual media playback milliseconds as its second argument.
+   onfail is told once. The first milliseconds include the
    wait for the server on purpose: the walker spaces lines start to
    start, and a wait it was not told about would push every line late
    by that much.
@@ -1298,7 +1299,7 @@ function studioCan(){
   &&typeof authVoice==='function'; }catch(e){ return false; }}
 function studioStop(){
  STUDIO.seq++;
- try{ if(STUDIO.el){ STUDIO.el.onended=STUDIO.el.onerror=null; STUDIO.el.pause(); } }catch(e){}
+ try{ if(STUDIO.el){ STUDIO.el.onended=STUDIO.el.onerror=STUDIO.el.onpause=STUDIO.el.onplaying=null; STUDIO.el.pause(); } }catch(e){}
  try{ if(STUDIO.url)URL.revokeObjectURL(STUDIO.url); }catch(e){}
  STUDIO.el=null; STUDIO.url='';}
 /* onfail gets the server's status when there was one (503 not set up, 429
@@ -1312,9 +1313,9 @@ function speakStudio(text,rate,style,onend,onfail){
  var wait=setTimeout(function(){ lose(0); },STUDIO_WAIT_MS);
  studioAsk(String(text),style).then(function(r){
   if(over||seq!==STUDIO.seq)return;
-  if(!r.ok){ clearTimeout(wait); lose(r.status); return; }
+  if(!r||!r.ok||!r.blob){ clearTimeout(wait); lose(r&&r.status); return; }
   var el, url;
-  try{ url=URL.createObjectURL(r.blob); el=new Audio(url); }catch(e){ clearTimeout(wait); lose(0); return; }
+  try{ url=URL.createObjectURL(r.blob); STUDIO.url=url; el=new Audio(url); }catch(e){ clearTimeout(wait); lose(0); return; }
   STUDIO.el=el; STUDIO.url=url;
   /* the server renders at the voice's own speed and pace is applied here,
      so one render serves
@@ -1322,8 +1323,12 @@ function speakStudio(text,rate,style,onend,onfail){
   el.playbackRate=Math.max(0.5,Math.min(1.8,rate||1));
   el.onplaying=function(){ clearTimeout(wait); };
   el.onended=function(){ if(over||seq!==STUDIO.seq)return; over=true;
-   var ms=Date.now()-t0; studioStop(); if(onend)onend(ms); };
+   var ms=Date.now()-t0, played=Number(el.currentTime)*1000/Number(el.playbackRate);
+   if(!Number.isFinite(played)||played<0)played=0;
+   studioStop(); if(onend)onend(ms,played); };
   el.onerror=function(){ clearTimeout(wait); lose(0); };
+  // An external pause is not completion. Intentional stops detach this handler.
+  el.onpause=function(){ if(!el.ended){ clearTimeout(wait); lose(0); } };
   /* a browser that refuses to play without a fresh press says so here, and
      that is a failure the run hears about rather than a silence */
   try{ var p=el.play(); if(p&&p.catch)p.catch(function(){ clearTimeout(wait); lose(0); }); }
