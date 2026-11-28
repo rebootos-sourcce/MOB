@@ -15,6 +15,8 @@ const CHROME=process.env.CHROME||chromium.executablePath();
   await page.waitForFunction(()=>document.body.classList.contains('booted'),null,{timeout:15000});
   const result=await page.evaluate(async()=>{
    loadP(0);
+   // The Release controls are offered only when this fixture has releasable charge.
+   CHARGES.forEach(c=>{S.charge[c]=7;});
    if(!CURP.ui)CURP.ui={};
    CURP.ui.voice=true; CURP.ui.tone=false;
    delete CURP.ui.voiceName; delete CURP.ui.releaseMode;
