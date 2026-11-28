@@ -34,8 +34,6 @@ jobs:
           ./atuned_src/BUILD-engine.sh
           ./atuned_src/BUILD.sh
           ./funnel/BUILD-single.sh
-      - name: Verify generated product consistency
-        run: node tools/products.js
       - name: Commit derived outputs to draft branch only
         run: |
           set -euo pipefail
@@ -45,3 +43,5 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git commit -m 'Regenerate audiobook timeout-safe app products'
           git push origin HEAD:feature/atuned-marin-listen-release-20261128
+      - name: Verify generated product consistency after committing outputs
+        run: node tools/products.js
