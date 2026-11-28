@@ -94,6 +94,45 @@ const CHROME=process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/ch
   if(!success)fail++;
   await page.close();
  }
+ // If the narrator stalls without calling back, the fallback timer must pause,
+ // not complete a line that was never spoken. Run the real scheduled callback.
+ {
+  const page=await browser.newPage({viewport:{width:390,height:960}});
+  await page.goto(SRC,{waitUntil:'load'});
+  await page.waitForFunction(()=>document.body.classList.contains('booted'),null,{timeout:15000});
+  const result=await page.evaluate(()=>{
+   loadP(0);
+   CHARGES.forEach(c=>{S.charge[c]=7;});
+   CURP.ui.voice=true; CURP.ui.tone=false; CURP.ui.releaseMode='listen';
+   relPick(compute().carrying.slice(0,1).map(n=>n.i));
+   const start=document.getElementById('relgo');
+   if(!start)return {error:'Release button missing'};
+   const oldSay=window.speakStudio,oldWarm=window.studioWarm,oldTimeout=window.setTimeout;
+   window.speakStudio=function(){return true;};
+   window.studioWarm=function(){};
+   start.click();
+   RUN.phase='opening';RUN.line=0;RUN.paused=false;
+   let held=null;
+   window.setTimeout=function(fn,ms,...args){
+    if(ms>=9000&&!held){held=()=>fn(...args);return 987654321;}
+    return oldTimeout(fn,ms,...args);
+   };
+   relStep();
+   window.setTimeout=oldTimeout;
+   const before={phase:RUN.phase,line:RUN.line,idx:RUN.idx,pass:RUN.pass,paused:RUN.paused};
+   if(held)held();
+   const after={phase:RUN.phase,line:RUN.line,idx:RUN.idx,pass:RUN.pass,paused:RUN.paused};
+   window.speakStudio=oldSay;window.studioWarm=oldWarm;relClose();
+   return {before,after,held:!!held};
+  });
+  const success=!result.error&&result.held&&result.before.paused===false&&
+   result.after.paused===true&&result.after.phase===result.before.phase&&
+   result.after.line===result.before.line&&result.after.idx===result.before.idx&&
+   result.after.pass===result.before.pass;
+  console.log((success?'ok':'FAIL')+' audiobook stalled speech timeout '+JSON.stringify(result));
+  if(!success)fail++;
+  await page.close();
+ }
  // A rejected network promise must produce exactly one audio failure callback.
  {
   const page=await browser.newPage({viewport:{width:390,height:960}});
