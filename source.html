@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v3536 81c5fdce 2026-11-28 01:48"><head><meta charset="utf-8">
+<html lang="en" data-build="v3537 58913989 2026-11-28 02:17"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -102212,13 +102212,18 @@ function mtBlock(c){
    has to reach at once rather than after a hold. Deal itself keeps its single
    tap for dealing; this is a second control and not a second way to do the
    first one. */
+/* data-gmrules, not a class: every class this build emits needs a CSS rule
+   (tests/design.js, CSS coverage) and this button borrows .vt's rule rather
+   than adding its own, so its hook is the attribute, the same convention the
+   rest of this file already wires its controls by (data-gm, data-lgc,
+   data-lg, data-mt, data-gmimp). */
 function gmRulesBtn(label,text){
- return '<button type="button" class="vt gm-rules" aria-label="Rules" '
+ return '<button type="button" class="vt" data-gmrules aria-label="Rules" '
   +'data-tip-t="'+esc(label)+'" data-tip="'+esc(text)+'">'
   +'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/>'
   +'<path d="M12 10.3v5.3M12 7.1v.01"/></svg></button>';}
 function gmWireRules(host){
- host.querySelectorAll('.gm-rules').forEach(function(b){
+ host.querySelectorAll('[data-gmrules]').forEach(function(b){
   b.onclick=function(){if(typeof TIP!=='undefined')TIP.show(b);};});}
 
 /* ---- the shell ---- */
@@ -118309,5 +118314,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="008635573"></div>
+<div id="eof" hidden data-len="008635921"></div>
 </body></html>
