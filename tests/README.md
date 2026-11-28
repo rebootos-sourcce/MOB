@@ -604,3 +604,32 @@ carry because they depend on whether the profile is unread: a percent on an
 unread profile or off zero, a bare number on an unread profile, a count against
 a total at any scale, and a zero where a dash belongs. Nothing here is a typed
 count. Run it after a change a person can see, and read `COPY-VERIFY.md`.
+
+## Running the browser gates under load
+
+This project's build sessions share one machine with no promise that only one
+build runs at a time. Any gate above that launches real Chromium
+(`functional.js`, `design.js`, `boot.js`, `tools/monitor.js`) competes with
+every other build's own Chromium for the same RAM. Found 28 November, the hard
+way: five to eight builds each running their own browser gate at once filled a
+15GB box, the kernel OOM-killed the Chrome processes mid-run, and every kill
+cost a full wasted retry that produced nothing, over and over, for hours.
+Checking `uptime`/`ps aux | grep chrome` by hand before each attempt, which is
+what every build did that night, is a convention a build can forget or lose a
+race against another build making the same check at the same moment; it is not
+a fix.
+
+    tools/gate-lock.sh node tests/functional.js
+    tools/gate-lock.sh node tests/design.js
+    tools/gate-lock.sh node tools/monitor.js
+    tools/gate-lock.sh node tests/boot.js
+
+A real `flock` on one shared lock file, so a second caller on this box blocks
+and waits rather than launching its own Chromium alongside the first; it runs
+the moment the first releases the lock, with no polling and no load-average
+guess. Proven 28 November on this exact machine: a two-second holder and a
+caller starting 0.3 seconds in measured a real 1.7 second wait, not two
+processes running side by side; a caller given a one-second timeout against a
+five-second holder measured exit code 1, read off the run, not assumed.
+Wrap every browser-driven gate invocation in it, in a build script or by hand,
+whenever more than one build might be running on this box at once.
