@@ -278,7 +278,9 @@ function ritChallenge(st){
  var sabs=(st.r.sabs||[]).slice().sort(function(a,b){return (b.w||0)-(a.w||0);});
  sabs.forEach(function(s){
   if(out.length>=3)return;
-  var b=(s.parts&&s.parts[0]&&BANDS.indexOf(s.parts[0].b)>=0)?s.parts[0].b:'';
+  /* the seat its charge sits in, patSeat, never its first listed address:
+     this one is printed as a place ("at the crown"), so it is a claim */
+  var b=patSeat(s)||'';
   var k=ritSabKey(s.nm), D=(typeof SABDEF!=='undefined')?SABDEF[k]:null;
   if(D){if(seen[k])return; seen[k]=1;
    out.push({id:'sab:'+k.replace(/\s+/g,'_'), nm:'The '+String(s.nm).replace(/\s+overshot$/i,''), act:D.i, when:D.t,

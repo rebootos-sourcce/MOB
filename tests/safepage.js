@@ -154,8 +154,10 @@ const look = p => p.evaluate(() => {
        disagree fail here too. */
     commitN: (() => { const b = document.getElementById('stapply'), c = b && b.querySelector('.st-sendn');
       return c ? c.textContent : null; })(),
+    /* the Journal lands in Full since 27 November, where #stapply is the
+       imprints card's Bank button and its word is its name */
     commitName: (() => { const b = document.getElementById('stapply');
-      return b ? b.getAttribute('aria-label') : null; })(),
+      return b ? (b.getAttribute('aria-label') || b.textContent.trim()) : null; })(),
     glow: rel ? rel.style.getPropertyValue('--glow') : null,
     /* textContent: at 390 the pending column is folded away and innerText cannot see it */
     pend: [...document.querySelectorAll('.st-none')].map(e => e.textContent).join(' | '),
@@ -184,8 +186,7 @@ const look = p => p.evaluate(() => {
     ok(!s.why && !s.pass && !s.qbtn && !s.ask, 'no why, no Move on, no question and no question buttons' + at + ': ' + JSON.stringify({ why: s.why, pass: s.pass, qbtn: s.qbtn, ask: s.ask }));
     ok(!/Why there|Both land|lands at/.test(s.page), 'no "why there" anywhere on the page' + at);
     ok(s.marks === 0, 'no word in the entry is lit as a feeling' + at + ', ' + s.marks + ' lit');
-    ok(s.commitN === null && s.commitName === 'Commit', 'Commit carries no count' + at + ': ' + JSON.stringify({ badge: s.commitN, name: s.commitName }));
-    ok(s.glow === 'var(--accent)', 'the release column is not lit by these words' + at + ': ' + JSON.stringify(s.glow));
+    ok(s.commitN === null && /^(Commit|Bank)$/.test(s.commitName || ''), 'Commit carries no count' + at + ': ' + JSON.stringify({ badge: s.commitN, name: s.commitName }));
     ok(!/write where you felt it|Keep writing|Keep going|My guess is it sits/.test(s.page), 'and nothing asks where it was felt, or guesses where it sits' + at);
     const m = s.ink && s.ink.match(/\d+/g).map(Number);
     ok(!!m && !(m[0] > 150 && m[0] > m[1] * 1.6 && m[0] > m[2] * 1.6), 'the line is not drawn red' + at + ': ' + s.ink);
@@ -196,6 +197,12 @@ const look = p => p.evaluate(() => {
        left to open; #crisis is never created at all now. */
     ok(await p.evaluate(() => !document.getElementById('crisis')), 'no panel host exists, nothing has ever created one' + at);
     await p.screenshot({ path: path.join(process.env.SHOTS || '/tmp', 'safe-typing-' + w + '.png') }).catch(() => {});
+    /* THE RELEASE IS THE IMPRINTS PAGE'S since 27 November, so it is read
+       there, with these words still in the Journal, and the Journal put back */
+    const glow = await p.evaluate(async () => { setTab(TAB.IMPRINTS); await new Promise(r => setTimeout(r, 120));
+      const e = document.getElementById('strel'), g = e ? e.style.getPropertyValue('--glow') : null;
+      setTab(TAB.STORY); await new Promise(r => setTimeout(r, 120)); return g; });
+    ok(glow === 'var(--accent)', 'the release on the Imprints page is not lit by these words' + at + ': ' + JSON.stringify(glow));
 
     console.log('\n=== 1, 4 · Commit keeps the words, moves nothing, makes no sound' + at + ' ===');
     const before = await p.evaluate(() => JSON.stringify({ c: S.charge, l: S.law, v: VERPMIX, m: LEANMIX }));
@@ -417,7 +424,7 @@ const look = p => p.evaluate(() => {
       ok(c.n === 1 && c.text === first + '\nI keep thinking about killing myself.' && c.imprints === 0 && !c.asked,
         'Commit keeps the spoken words exactly, with nothing read and nothing asked' + at + ': ' + JSON.stringify(c));
       ok(c.line === SAY.entry && p.net.length === 0, 'the line stays and no request left the page' + at + ': ' + JSON.stringify(p.net));
-      await p.evaluate(() => { STV.dash = false; stRender(); }); await p.waitForTimeout(200);
+      await p.evaluate(() => { stRender(); }); await p.waitForTimeout(200);
       await say(p, 'I was scared and my chest went tight.'); await p.waitForTimeout(300);
       const nx = await p.evaluate(() => ({ line: (document.querySelector('#stsafe p') || {}).textContent || null,
         mine: (() => { const t = document.getElementById('sttext'); return t ? t.value : (ST_TEXT || null); })() }));

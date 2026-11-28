@@ -485,6 +485,35 @@ async function gate(browser,file,ok){
  ok(tint.rows>100&&tint.rings>10&&tint.rootFirst>10&&tint.bad.length===0,
   'TINT: every pattern bar and Insight ring takes the seat its charge sits in, never its first address, and a pattern with no charge paints no seat colour, '
   +JSON.stringify({rows:tint.rows,rings:tint.rings,rootFirst:tint.rootFirst,n:tint.bad.length,bad:tint.bad.slice(0,4)}));
+ /* FIELD, 27 November, his words: "Colour Field saboteurs by charge, not
+    first address." TINT above holds the rail; this holds the wheel. Every
+    saboteur bead the Field draws is read back off HIT, which carries the
+    colour the bead was painted in, and the colour it should be is worked out
+    HERE, from its addresses' own charge summed by seat, never by calling
+    patSeat, so the check cannot agree with a wrong helper. A saboteur none
+    of whose addresses holds charge is painted the accent, never a seat. The
+    check must also find saboteurs whose first address is not where their
+    charge sits, or it proved nothing. */
+ const field=await pg.evaluate(async()=>{
+  const heavy=o=>{const by={}; leaves(o).forEach(n=>{const v=+n.sq||0; if(v>0)by[n.b]=(by[n.b]||0)+v;});
+   let best=null,bv=0; BANDS.forEach(b=>{if((by[b]||0)>bv){bv=by[b];best=b;}}); return best;};
+  const same=(a,b)=>a&&b&&a.length>=3&&a[0]===b[0]&&a[1]===b[1]&&a[2]===b[2];
+  const bad=[]; let beads=0, away=0;
+  for(let pi=0;pi<PEOPLE.length;pi++){
+   loadP(pi); S.view=1; LAYSET=null; setTab(TAB.FIELD); S.pin=null; rdClose(); render();
+   await new Promise(z=>setTimeout(z,450));
+   /* drawn and read in one tick off one reading: the address nodes are shared
+      and any later compute rewrites their charge, so a bead read back after a
+      frame the page drew on its own can be read against another moment's
+      charge. Measured under load, 27 November: 6 of 170 beads. */
+   draw(computeSeen());
+   HIT.filter(h=>h.k==='sab').forEach(h=>{const o=h.o, w=heavy(o), want=w?bc(w):hx(GOLD);
+    beads++; if(w&&o.parts[0].b!==w)away++;
+    if(!same(h.c,want))bad.push(PEOPLE[pi].nm+' '+o.nm+' painted '+JSON.stringify(h.c)+' charge in '+w+' first address '+o.parts[0].b);});}
+  return {beads,away,bad};});
+ ok(field.beads>50&&field.away>5&&field.bad.length===0,
+  'FIELD: every saboteur bead on the wheel takes the seat its charge sits in, never its first address, '
+  +JSON.stringify({beads:field.beads,away:field.away,n:field.bad.length,bad:field.bad.slice(0,4)}));
  await pg.evaluate(()=>{loadP(PERSON('Lance 15'));setTab(TAB.FIELD);S.pin=null;rdClose();render();});
 
  /* THE SAFETY LINE is the whole third paragraph and no Release is drawn */
@@ -588,6 +617,8 @@ const MUT=[
  ['nerve-mark-unexplained',"+' data-tip-k=\"'+esc('Nerve state: '+s.nm)+'\" data-tip=\"'+esc(s.def+' '+nm","+' data-tip-k=\"'+esc('Nerve state: '+s.nm)+'\" data-tip=\"'+esc(' '+nm",'NERVE: every mark unpacks'],
  ['bar-tint-first-address',"var b=patSeat(o), p=Math.max(","var b=(leaves(o)[0]||{}).b||'Heart', p=Math.max(",'TINT:'],
  ['ring-tint-first-address',"ob=patSeat(o); return ob?seatCol(ob):'var(--accent)';","ob=(leaves(o)[0]||{}).b||'Heart'; return seatCol(ob);",'TINT:'],
+ ['field-bead-first-address',"r.sabs.forEach(s=>bead(s,R.sab,5.4,patBc(s)));","r.sabs.forEach(s=>bead(s,R.sab,5.4,bc(s.parts[0].b)));",'FIELD:'],
+ ['field-bead-root-when-empty',"function patBc(o){var b=patSeat(o); return b?bc(b):hx(GOLD);}","function patBc(o){var b=patSeat(o); return bc(b||'Root');}",'FIELD:'],
  ['laws-lost-from-intake',"if(f.parentNode!==host)host.appendChild(f);}","}",'LAWS: and the fold'],
 ];
 

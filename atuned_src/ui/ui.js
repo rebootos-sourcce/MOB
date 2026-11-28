@@ -762,6 +762,14 @@ var LCOL_BESIDE='(min-width:1181px)';
    width, Flow's reason: a rail that arrives shut on the view that exists to
    show it is a control hidden with no affordance. Its own key, so a fold made
    here never moves the Field's and the Field's never moves this one. */
+/* THE JOURNAL'S RAIL STARTS SHUT ON EVERY LOAD, 27 November, his ruling on
+   the split of Discover: what a person sees first on the Journal is Source
+   AI and the imprints, every time. So 'lcols' no longer reads or writes the
+   store. A person who opens it has it open for the rest of that load, across
+   tab changes, and a reload shuts it again; remembering it across loads would
+   break "first thing seen every time". What this replaced is below, at the
+   OVERRIDDEN note in colShut. */
+var LCOLS_OPEN=false;
 function colKey(){
  if(typeof TAB==='undefined'||!S)return 'lcol';
  if(S.tab===TAB.COMPASS)return 'lcolc';
@@ -773,6 +781,7 @@ function colKey(){
 function colShut(){
  var beside=true; try{beside=matchMedia(LCOL_BESIDE).matches;}catch(e){}
  var k=colKey();
+ if(k==='lcols')return !LCOLS_OPEN;
  /* only a store with nothing in it defaults, and what it defaults to is the
     surface's own answer: shut where the column is a rail, open where it is
     the menu the surface is for, and shut at every width on Knowledge */
@@ -809,7 +818,8 @@ function colFold(){
  b.onclick=function(){
   var now=!document.body.classList.contains('lshut');
   colFoldPaint(now);
-  try{STORE.set(colKey(),now?'shut':'open');}catch(e){}
+  if(colKey()==='lcols')LCOLS_OPEN=!now;
+  else{ try{STORE.set(colKey(),now?'shut':'open');}catch(e){} }
   if(!now&&typeof fitGrids==='function')requestAnimationFrame(fitGrids);
   /* the column's first opening is the rail's first sight, ui/railmotion.js */
   if(!now)requestAnimationFrame(railOpened);};}
@@ -853,6 +863,11 @@ function railFold(){
  var p=$('rpanel');
  if(p)p.addEventListener('scroll',function(){p.classList.toggle('scrolled',p.scrollTop>2);},{passive:true});
  b.onclick=function(){
+  /* ON THE IMPRINTS PAGE THE RAIL IS THE DRILL'S AND NOTHING ELSE, 27
+     November: it comes beside the page while a Detail is open (imp-sel,
+     ui/drills.js), and its fold closes that drill rather than leaving a
+     shut strip beside a page that has no rail of its own */
+  if(typeof TAB!=='undefined'&&S.tab===TAB.IMPRINTS){ if(typeof rdClose==='function')rdClose(); return; }
   var now=!document.body.classList.contains('rshut');
   railFoldPaint(now);
   try{STORE.set(railKey(),now?'shut':'open');}catch(e){}
@@ -1514,7 +1529,11 @@ function render(){
     release column offers and what its vault holds, and none of them passes
     through the Story's own code. Without this the vault read nought after a
     run until the tab was left and entered again. */
- else if(S.tab===TAB.STORY&&typeof stFieldPaint==='function')stFieldPaint(stMoved);}
+ else if(S.tab===TAB.STORY&&typeof stFieldPaint==='function')stFieldPaint(stMoved);
+ /* and the Imprints page, since 27 November, which holds the release and the
+    vault: without this the vault's count read stale after a run until the
+    tab was left and entered again, the fault the line above was written for */
+ else if(S.tab===TAB.IMPRINTS&&typeof stImpsRender==='function')stImpsRender();}
  /* RITUAL, KNOWLEDGE AND GAMES HAD NO DISPATCH ANYWHERE FOR A PROFILE
     SWITCH, found by the profile-switch-audit workflow 14 November: sit on
     one of these three and switch profiles, and the whole tab kept showing

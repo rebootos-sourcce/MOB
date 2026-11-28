@@ -213,18 +213,24 @@ const FLOOR_CANVAS=60;
       pills:el?el.querySelectorAll('.st-pl').length:0,
       none:!!sl.querySelector('#st-energy-none')});};
     const t0=ST_TEXT, p0=ST_PARSED;
-    setTab(TAB.STORY); STV.dash=false; stRender(); await wait(); m('simple');
-    STV.dash=true; ST_TEXT=''; ST_PARSED=null; stRender(); await wait(); m('full');
+    /* SIMPLE AND FULL ARE ONE VIEW SINCE 27 November: the Journal always
+       lands in what Full was, with its left rail shut on every load. So it is
+       watched as it lands, then with the rail opened by its own fold, and the
+       rail is shut again on the way out so the walk leaves it as it found it.
+       The Imprints page is its own TABDEF entry and the walk above sees it. */
+    setTab(TAB.STORY); ST_TEXT=''; ST_PARSED=null; stRender(); await wait(); m('journal');
+    const fold=document.getElementById('lfold'), wasShut=document.body.classList.contains('lshut');
+    if(wasShut&&fold)fold.click(); await wait(); m('full');
     ST_TEXT='My chest was tight and I felt scared when he shouted at me.'; ST_PARSED=parseStory(ST_TEXT);
     stDashLeft(); m('full story');
-    ST_TEXT=t0; ST_PARSED=p0; STV.dash=false; stRender();
+    ST_TEXT=t0; ST_PARSED=p0; if(wasShut&&fold)fold.click(); stRender();
     return out;});
    jr.forEach(r=>{
     const bad=r.story<FLOOR
-     ||(r.nm==='simple'&&(r.shown||r.left>0))
+     ||(r.nm==='journal'&&r.shown)
      ||(r.nm==='full'&&(!r.shown||r.none||r.pills!==7))
      ||(r.nm==='full story'&&(!r.shown||r.pills!==7||r.left<FLOOR));
-    rows.push([wn,who,{simple:'jnl simple',full:'jnl full','full story':'jnl story'}[r.nm],bad?'EMPTY':'ok',r.story,r.text,
+    rows.push([wn,who,{journal:'jnl',full:'jnl rail','full story':'jnl story'}[r.nm],bad?'EMPTY':'ok',r.story,r.text,
      'Journal '+r.nm+': #story, #stleft '+(r.shown?'shown':'hidden')+' '+r.left+' markup, '+r.pills+' seats'+(r.none?', nothing read yet':'')]);
     if(bad)fails.push(wn+'/'+who+'/journal '+r.nm+' did not render as it should: '+JSON.stringify(r));});
    /* THE RELEASE IS NOT IN TABDEF, so this watch never saw it, and it is the

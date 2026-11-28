@@ -829,6 +829,11 @@ async function door(browser, SITE, cut, giftAt) {
     'no visible way to keep a story after ' + commitWaitMs + 'ms: ' + J(commitDiag));
   const kept = await Q.waitSaid(/^\|Committed\. \d+ imprints? written to the field\./, 5000);
   ok(!!kept, 'Commit says it kept the story, ' + J(kept));
+  /* the release is on the Imprints page since 27 November, Discover's
+     second door, and the Journal's status line names it */
+  ok(/on Imprints/.test(kept || ''), 'and it says where the banked imprints went, ' + J(kept));
+  await Q.tab(15);
+  ok(await page.evaluate(() => S.tab === TAB.IMPRINTS), 'the Imprints door opens the bank and the release');
   await page.evaluate(SHRINK);
   await page.evaluate(() => { const d = document.getElementById('strdose'); if (d) { d.value = '1'; d.dispatchEvent(new Event('change')); } });
   const sel = await page.evaluate(() => document.querySelectorAll('#strel [data-rq][aria-pressed="true"]').length);

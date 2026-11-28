@@ -888,10 +888,12 @@ function anaBands(list){var bs=[];list.forEach(function(n){if(n.b&&bs.indexOf(n.
 /* A pattern as a row: the badge carries its weight as a ring and a figure,
    which is the picture V22 asks for, and the kind word carries its meaning. */
 function anaPatRow(o){
- var lv=leaves(o), b=(lv[0]||{}).b||'Heart', K=ANA_KIND[o.kind]||['pattern','Pattern'];
+ /* the seat its charge sits in, patSeat, never its first address; none
+    held claims no seat and is drawn in the accent */
+ var b=patSeat(o), K=ANA_KIND[o.kind]||['pattern','Pattern'];
  return '<button type="button" class="ad-r" data-ana="'+anaKey('chain',o.nm)+'" title="'+esc('Open '+o.nm)+'">'
   /* a percent in the pattern's own colour; overshot is said in words */
-  +crBadge(b,pct('chain',o.w)||0,{size:'sm',raw:fmtPct('chain',o.w),
+  +crBadge(b,pct('chain',o.w)||0,{size:'sm',raw:fmtPct('chain',o.w),color:b?seatCol(b):'var(--accent)',
     title:o.nm+', '+K[1].toLowerCase()+(o.over?', overshot':'')})
   +'<span>'+esc(o.nm)+'</span><em>'+unp(K[0],K[1].toLowerCase()+(o.over?', overshot':''))+'</em></button>';}
 function anaAddrRows(list,max){

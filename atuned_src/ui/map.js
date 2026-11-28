@@ -224,12 +224,12 @@ function pmMarks(r){
  if(L==='nerves')return flSeats().map(function(s){
    return {o:s,kind:'seat',band:K2B[s.p.k],v:s.pass,nm:s.p.n,links:[]};});
  if(L==='sab')   return r.sabs.map(function(o){var lv=leaves(o);
-   return {o:o,kind:'bead',band:(lv[0]||{}).b,v:o.w/10,nm:o.nm,links:lv,
+   return {o:o,kind:'bead',band:patSeat(o),v:o.w/10,nm:o.nm,links:lv,
      sub:(o.named?o.score+'% match'+(o.exact?' exact':''):'inferred')};});
  if(L==='cx')    return r.cxs.map(function(o){var lv=leaves(o);
-   return {o:o,kind:'bead',band:(lv[0]||{}).b,v:o.w/10,nm:o.nm,links:lv,sub:'complex'};});
+   return {o:o,kind:'bead',band:patSeat(o),v:o.w/10,nm:o.nm,links:lv,sub:'complex'};});
  if(L==='hyper') return r.hys.concat(r.sups).map(function(o){var lv=leaves(o);
-   return {o:o,kind:'bead',band:(lv[0]||{}).b,v:o.w/10,nm:o.nm,links:lv,
+   return {o:o,kind:'bead',band:patSeat(o),v:o.w/10,nm:o.nm,links:lv,
      /* never o.sub. On a hyper-complex that is the clinical correspondence,
         "bipolar · ADHD", and ui.js keeps it off a person's screen by name:
         mapshelf.js recorded this row as the one place still printing it. */
@@ -2063,7 +2063,7 @@ function bmMaskRead(k,r){
  rd.cl=cl.map(function(c){var fam=HCX_LIB.filter(function(h){return h.nm===c.o.hcx;})[0];
   /* the colour its line runs in on this figure, bmSabRefresh, so a block
      and the line through the same addresses are read as one thing */
-  return {nm:c.o.nm,n:c.n,all:c.st.length,col:bmSeatC(fam?fam.b:((c.o.parts[0]||{}).b||'Root'))};});
+  return {nm:c.o.nm,n:c.n,all:c.st.length,col:bmSeatC(fam?fam.b:patSeat(c.o))};});
  rd.px.forEach(function(x,i){rd.at[x.p.q]=i;});
  return rd;}
 /* how many pixels a mask lights: one per story drawn under it. Nothing
@@ -2191,7 +2191,7 @@ function bmSabRefresh(r){
   var parts=o.parts.filter(function(n){return n&&BMG.byId[n.i];});
   var fam=HCX_LIB.filter(function(h){return h.nm===o.hcx;})[0];
   c.o=o; c.T=clamp(o.w,0,10); c.lane=i; c.fam=o.hcx;
-  c.col=bmSeatC(fam?fam.b:((parts[0]||{}).b||'Root'));
+  c.col=bmSeatC(fam?fam.b:patSeat(o));
   c.nids=parts.map(function(n){return n.i;}); c.ch=parts.map(function(n){return n.sq;});
   /* heaviest address last, so "toward the heaviest" is always forward */
   var hi=c.ch.indexOf(Math.max.apply(null,c.ch.concat([0])));

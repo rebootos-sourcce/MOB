@@ -277,7 +277,9 @@ require('./net.js').guardBrowser(browser);
     }
     /* the Imprints page's pending pills, through its own renderer */
     await type(p, 'I was furious.');
-    await p.evaluate(() => { const e = document.getElementById('stbank'); if (e) e.click(); });
+    /* the bank icon is gone since 27 November: the bank is the Imprints
+       page, and its door is the bar's Imprints button */
+    await p.evaluate(() => { const e = document.querySelector('.tabtop[data-tabk="15"]'); if (e) e.click(); });
     await p.waitForTimeout(300);
     const ip = await p.evaluate(() => [...document.querySelectorAll('.ip.ghost')].map(e => ({ text: e.textContent, title: e.getAttribute('title') || '' })));
     const c = judge(ADDR, 'I was furious.', ip.map(x => x.title).join(' '), ip);

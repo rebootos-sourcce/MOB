@@ -20,8 +20,11 @@ const booted=async p=>{ try{ await p.waitForFunction(()=>document.body.classList
 /* how each guide key is reached. A key with no route here is reported, not
    skipped in silence, so a new screen's guide cannot go untested unnoticed. */
 const ROUTE={
- dashboard:()=>{setTab(TAB.STORY); STV.dash=true; stRender(); render();},
- discover:()=>{setTab(TAB.STORY); STV.dash=false; stRender(); render();},
+ dashboard:()=>{setTab(TAB.STORY); stRender(); render();},
+ /* the mini view is unreachable since 27 November (STV.dash starts true and
+    its door is not drawn), so discover has no route; the Imprints page,
+    Discover's second door, is imps */
+ imps:()=>{setTab(TAB.IMPRINTS); render();},
  field:()=>{setTab(TAB.FIELD); render();},
  avatar:()=>{setTab(TAB.INTAKE); if(typeof avSub==='function')avSub('becoming'); render();}};
 (async()=>{

@@ -103,7 +103,8 @@ const read=p=>p.evaluate(()=>{
   send:(()=>{ const b=document.getElementById('stapply'); if(!b)return null;
    const n=b.querySelector('.st-sendn');
    return {arrow:b.querySelectorAll('svg').length, word:/commit/i.test(b.textContent),
-    badge:n?n.textContent:null, name:b.getAttribute('aria-label')}; })(),
+    badge:n?n.textContent:null, name:b.getAttribute('aria-label'),
+    bank:b.classList.contains('st-lsbank'), text:b.textContent.trim()}; })(),
   recOn:!!(rec&&rec.length&&rec[rec.length-1].on),
   me:SRC_CHAT.filter(x=>x.w==='me').map(x=>x.t),
   entries:((CURP&&CURP.story&&CURP.story.entries)||[]).length};});
@@ -163,7 +164,11 @@ async function typeInGate(browser,FILE,ok,booted){
    const errs=[]; p.on('pageerror',e=>errs.push(e.message.slice(0,160)));
    const s0=await read(p);
    ok(s0.chat===true&&!s0.box&&s0.fields===0,at+'voice works: the Journal lands with chat on and no text field, '+JSON.stringify({chat:s0.chat,box:s0.box,fields:s0.fields}));
-   ok(s0.types===1&&s0.ty&&s0.ty.exp==='false'&&s0.ty.ariaLabel==='Type instead',at+'and Type instead is there, closed, '+JSON.stringify(s0.ty));
+   /* THE JOURNAL LANDS ON THE DASHBOARD SINCE 27 November (STV.dash starts
+      true), where this control is named for its Dashboard job, "Your words",
+      and stands on screen beside Talk (the 14 November move to the upper
+      left). The hero view it was hidden on at rest has no door left. */
+   ok(s0.types===1&&s0.ty&&s0.ty.exp==='false'&&s0.ty.ariaLabel==='Your words',at+'and Type instead is there, closed, '+JSON.stringify(s0.ty));
    /* NOT ON SCREEN OF ITS OWN ANY MORE, AT REST, 10 November: his ruling
       that the hero view carries exactly two icons, the talk bubble and
       Dashboard, with Type instead folded into the talk bubble's own
@@ -175,7 +180,7 @@ async function typeInGate(browser,FILE,ok,booted){
       a turn lands, or the box opens by the held press, each checked
       further down this same file. */
    const sz=(await read(p)).ty;
-   ok(sz&&!sz.seen,at+'off screen at rest, folded into the talk bubble\'s own held press, '+JSON.stringify(sz));
+   ok(sz&&sz.seen&&sz.w>=44&&sz.h>=44,at+'on screen beside Talk on the Dashboard, a 44 pixel target, '+JSON.stringify(sz));
 
    await press(p,'#stmic',ok,at+'Chat');
    /* Chat asks for Source AI's greeting out loud, and its hold drops what
@@ -236,9 +241,13 @@ async function typeInGate(browser,FILE,ok,booted){
       elements left in it. Held here because this is the gate that types
       real keys. The count is read off the run, never typed in: the badge
       and the name are compared against the reading's own imprints. */
-   const want=s3.imprints
-    ?{arrow:1,word:false,badge:String(s3.imprints),name:'Commit, '+s3.imprints+' imprints'}
-    :{arrow:1,word:false,badge:null,name:'Commit'};
+   /* on the Dashboard, where the Journal lands since 27 November, Commit is
+      the imprints card's Bank button and its count rides in its word */
+   const want=s3.send&&s3.send.bank
+    ?{arrow:0,word:false,badge:null,name:null,bank:true,text:'Bank'+(s3.imprints?' '+s3.imprints:'')}
+    :s3.imprints
+    ?{arrow:1,word:false,badge:String(s3.imprints),name:'Commit, '+s3.imprints+' imprints',bank:false,text:String(s3.imprints)}
+    :{arrow:1,word:false,badge:null,name:'Commit',bank:false,text:''};
    ok(JSON.stringify(s3.send)===JSON.stringify(want),
     at+'the arrow and its count badge survive the keys, with the name in step, '+JSON.stringify({got:s3.send,want:want}));
    await press(p,'#stapply',ok,at+'Commit');

@@ -4676,8 +4676,17 @@ body.st-zshut .st-flow:not(.st-simple){grid-template-columns:1.64fr 1.64fr 58px!
    reading them; grid-template-columns on .st-flow itself is what actually
    places the three widths, in the same 1.64/1.64/1 and read/release
    proportions the flex rule carried. */
-.st-flow[data-focus="read"]{grid-template-columns:1fr 2.2fr 1fr}
-.st-flow[data-focus="release"]{grid-template-columns:1fr 1fr 1.8fr}
+/* THE READ AND RELEASE WIDTHS ARE RETIRED, 27 November: the Journal is two
+   equal cards since Discover split (the rule below), and no focus widens
+   either. data-focus is still written on the row and read by the phone
+   rules alone. */
+/* TWO EQUAL COLUMNS, ONE ROW, 27 November. Discover split into Journal and
+   Imprints: the Release column went to the Imprints page and the widget row
+   off Discover, so the Journal is Source AI's card and the imprints card side
+   by side, the same width each, the 10 November ruling that the Uni and
+   imprints columns match ("make the uni column and the imprint columns 2 and
+   3 the same width"), floor to ceiling. */
+.st-flow{grid-template-columns:1fr 1fr;grid-template-rows:1fr}
 /* SIMPLE ON LANDING, round of 29 October, his words: "when I land on this
    page, it starts off in simple mode." Imprints and Release are real
    panels, not removed, only shut until Dashboard opens them (STV.dash,
@@ -5151,7 +5160,12 @@ body.tab-story.st-full #stjr .st-type[aria-expanded="true"]{color:#fff}
    over them. max-height keeps the same flex:1 1 0/min-height:0 shrink
    behaviour (nothing above this breaks), only ever capping her growth
    on a window tall enough to spare it. */
-body.tab-story.st-full .st-chat .st-uni{max-height:min(42vh,380px)}
+/* THE CAP IS GONE, 27 November. With the widget row off the Journal, Source
+   AI's card runs floor to ceiling, and a capped well sat at the top of it with
+   the card's lower half empty. The base rule's flex:1 1 0 and min-height:0
+   still give the shrink this cap was written to keep on a short window, so
+   the face centres in the card it has. The phone keeps its own fixed height,
+   in the stacked block below. */
 /* SET INTO A DISH, 21 November. First his words on the Dashboard's Source AI
    circle: "a pillow emboss with a subtle bevel, making it feel like it's a
    ring inside of a raised surface with this kind of cloudy pattern around
@@ -5931,31 +5945,13 @@ body.tab-story.st-full #stsrc:empty{display:none}
   radial-gradient(120% 70% at 50% 0%,color-mix(in srgb,var(--glow) calc(var(--lux,.3) * 50%),transparent),transparent 70%),
   var(--sunk);
  box-shadow:0 0 0 1px color-mix(in srgb,var(--glow) 40%,transparent),0 18px 60px -18px color-mix(in srgb,var(--glow) 50%,transparent)}
-/* STANDS ON THE COLUMN'S FLOOR AND RISES, 22 November. Its own content's
-   height and not the whole column, anchored at the bottom so the top edge
-   is what moves when a pick lands; ui/storyui.js stRelSize sets the height
-   and carries the reason. Not on a phone, where the column stacks and the
-   phone rule below places it. */
-@media (min-width:721px){
- .st-flow:not(.st-simple) .st-rl{flex:0 0 auto;margin-top:auto;max-height:100%}
- /* MORE HEIGHT TO THE IMPRINTS, the same words. Row one is the Imprints
-    column and the room Release rises into; it was 1fr and nothing else, so
-    on a 1000 tall window it measured 675 and the Imprints list had the
-    least of any column. A 780 floor gives it about a sixth more there and
-    leaves taller windows exactly as they were. #story already scrolls
-    (overflow auto), so the widgets row under it is one scroll away rather
-    than squeezed, and its own fold still hands row one the whole page. */
- .st-flow:not(.st-simple){grid-template-rows:minmax(min(780px,calc(100% - 200px)),1fr) auto}}
-/* THE GRIP, the panel's top edge: a short bar on a full width strip, so the
-   whole edge takes the drag and only the bar is drawn. A ring of a bar,
-   outlined and not filled, the house rule for marks. */
-.st-rlgrip{position:absolute;left:44px;right:44px;top:0;height:14px;z-index:2;cursor:ns-resize;
- display:flex;align-items:center;justify-content:center;touch-action:none;border-radius:var(--r-xs)}
-.st-rlgrip i{display:block;width:36px;height:5px;border-radius:999px;border:1px solid var(--edge-2);
- transition:border-color var(--t-micro) var(--ease-out),width var(--t-micro) var(--ease-out)}
-.st-rlgrip:hover i,.st-rlgrip.on i{border-color:var(--glow);width:48px}
-.st-rlgrip:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-@media (prefers-reduced-motion:reduce){.st-rlgrip i{transition:none}}
+/* THE RISE, THE 780 FLOOR AND THE GRIP ARE GONE, 27 November. Release left
+   the Journal for the Imprints page, where it stands beside the bank, and a
+   Release standing short under empty air beside a full height bank is the
+   dead zone the Dashboard ruling forbids. So it fills its pane again
+   (flex:1 1 auto above) and Run sits level with the bank's foot bar because
+   both panes run floor to ceiling (#imps, below). The rules as they stood,
+   from 0ba711c8 on 22 November, are in git at bead7294. */
 /* the release's name is the .st-mk lockup above; this class keeps only the
    phone rule that folds it away until the column is in use */
 .st-rlhd{flex:0 0 auto}
@@ -6414,6 +6410,14 @@ body:not(.tab-story) .st-lrail,body.tab-story:not(.st-full) .st-lrail{display:no
     between its columns. Same gutter on every side of every card, the
     "symmetry in space" ruling of the same day. */
  body.tab-story.st-full:not(.lshut) #lpanel{padding:18px 12px 18px 18px;background:var(--panel);flex:1 1 auto;min-height:0}
+ /* AND SHUT, THE STRIP IS PART OF THE FRAME, 27 November. The Journal's rail
+    starts shut on every load now (LCOLS_OPEN, ui/ui.js), so the shut strip
+    is what a person sees first: it takes the same --panel ground floor to
+    ceiling rather than a 58 pixel box at the top over page ground, and
+    Source AI's card stands 12 pixels off it, the gap between every card on
+    this page. */
+ body.tab-story.st-full.lshut #lpanel{background:var(--panel);flex:1 1 auto;min-height:0;justify-content:flex-start}
+ body.tab-story.st-full.lshut #story{padding-left:12px}
  /* THE PANEL STOPPED SHORT OF THE OTHER TWO, 14 November, found on the real
     page while answering a different question: #lcol itself already
     stretches to match #stage and #rcol (a plain flex child of .mid with
@@ -6650,7 +6654,12 @@ body.snow #stleft,body.glasswhite #stleft{--rail-rest:var(--mid);--rail-rest-op:
  width:min(22px,70%);height:auto;aspect-ratio:1;transform:translateY(-2px);stroke-width:calc(1.7 + var(--b)*.35);
  stroke:color-mix(in srgb,var(--c) calc(40% + var(--b)*60%),var(--rail-rest));
  opacity:calc(var(--rail-rest-op) + var(--b)*(1 - var(--rail-rest-op)));
- transition:stroke .4s var(--ease-out),filter .4s var(--ease-out),stroke-width .4s var(--ease-out)}
+ transition:stroke var(--t-context) var(--ease-out),filter var(--t-context) var(--ease-out),stroke-width var(--t-context) var(--ease-out)}
+/* ON THE NAMED STEP, 27 November: these read .4s, off the four steps
+   tests/design.js holds, and the gate never saw it because the Journal
+   landed in Simple, where this rail was never drawn. It lands in Full since
+   Discover split, so the rail is in the document from the first paint;
+   --t-context is the 420ms step, the nearest one. */
 /* the pip. Opacity reaches full by --b .25 so a faint reading still shows
    a mark, while its size keeps rising with --b to say how much. */
 #stleft .st-pl-row .st-pl::after{content:"";position:absolute;left:50%;bottom:3px;
@@ -8493,6 +8502,69 @@ body.tab-questions #iqp{display:flex!important;z-index:5;overflow-y:auto}
 body:not(.tab-questions) #iqp{display:none!important}
 body.tab-story #story{display:flex!important;z-index:5;align-items:center;justify-content:center}
 body:not(.tab-story) #story{display:none!important}
+/* THE IMPRINTS PAGE, 27 November, Discover's second door (TAB.IMPRINTS,
+   host #imps, ui/storyui.js stImpsRender). Held to the two standing rulings
+   by name, "Symmetry in space" and "The Dashboard is clean, even,
+   symmetrical": one frame, the same 18 pixels on every side that .iq gives
+   every card on the stage, one 12 pixel gap between the two panes (the
+   Journal's own gap), and both panes running floor to ceiling on the same
+   --sunk ground, so the bank's foot bar and Run stand on one line and no
+   pane stops short under empty air. Neither rail belongs to this page: the
+   left is the Field's or the Journal's, and the right comes beside it only
+   while a Detail drill is open (imp-sel, ui/drills.js), with Selection
+   alone in it. */
+body.tab-imprints #imps{display:grid!important;z-index:5;grid-template-columns:1fr 1fr;
+ grid-template-rows:minmax(0,1fr);gap:12px;padding:18px;overflow:hidden}
+body:not(.tab-imprints) #imps{display:none!important}
+body.tab-imprints #lcol{display:none}
+body.tab-imprints:not(.imp-sel) #rcol{display:none}
+body.tab-imprints .lsec[data-rail="right"]:not([data-sec="sel"]){display:none}
+@media (min-width:1181px){
+ body.tab-imprints:has(#imps) .mid{grid-template-columns:minmax(0,1fr)}
+ body.tab-imprints.imp-sel:has(#imps) .mid{grid-template-columns:minmax(0,1fr) 336px}}
+.imps-l,.imps-r{display:flex;flex-direction:column;gap:12px;min-width:0;min-height:0}
+.imps-l{border-radius:var(--r-s);padding:14px 16px;background:var(--sunk);
+ box-shadow:0 0 0 1px var(--edge)}
+.imps-r>.st-rl{flex:1 1 auto;min-height:0}
+#impsmp:empty{display:none}
+#impsmp{flex:0 0 auto}
+/* the switch, Bank | Vault, his words: a plain two way toggle with its
+   words, not icons. One pill, the pressed half on the accent, the same
+   pressed reading .st-dash.on and .st-type carried. */
+.imps-sw{display:flex;flex:0 0 auto;align-self:flex-start;gap:4px;padding:3px;
+ border-radius:999px;border:1px solid var(--edge)}
+.imps-swb{min-height:var(--tap);min-width:88px;padding:0 18px;border:0;border-radius:999px;
+ background:transparent;color:var(--mid);font:inherit;font-size:14px;cursor:pointer;
+ display:inline-flex;align-items:center;justify-content:center;gap:8px;
+ transition:background-color var(--t-micro) var(--ease-out),color var(--t-micro) var(--ease-out)}
+.imps-swb:hover{color:var(--ink)}
+.imps-swb[aria-pressed="true"]{background:var(--accent);color:var(--on-accent)}
+.imps-swb:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.imps-swb b{font-weight:600;font-variant-numeric:tabular-nums}
+/* the list scrolls inside the pane and its foot bar stands on the pane's
+   floor: margin-top:auto takes it down on a short list, sticky holds it
+   there on a long one */
+#imp,#impvault{flex:1 1 auto;min-height:0;overflow-y:auto;display:flex;flex-direction:column;
+ scrollbar-width:thin;scrollbar-color:var(--edge-2) transparent}
+#imp[hidden],#impvault[hidden]{display:none}
+#imps .ip-bar{margin-top:auto;padding-top:12px;min-height:52px;position:sticky;bottom:0;
+ background:var(--sunk);flex:0 0 auto}
+#imps .imps-vl{flex:0 0 auto}
+/* the five groupings wrap rather than run off the pane, the rail's own
+   reason (.st-rail .ip-ctl, below) */
+#imps .ip-ctl{flex-wrap:wrap}
+@media (prefers-reduced-motion:reduce){.imps-swb{transition:none}}
+/* STACKED AT 1180 AND UNDER, the width the product stacks its columns at:
+   the switch, then the bank capped so Release, held at its 310 (the phone
+   rule further down), still lands with Run on the first screen, then
+   Release. 16 pixel gutters, the phone's. */
+@media (max-width:1180px){
+ body.tab-imprints #imps{display:flex!important;flex-direction:column;padding:12px 16px;overflow:visible;gap:12px}
+ /* 122 is the bar above the stage, measured at 390 by 844 (#stage's top);
+    36 is this page's own two gutters and its gap. So Run's foot lands
+    inside the first screen with the bank as tall as that allows. */
+ #imps .imps-l{flex:0 0 auto;max-height:calc(100svh - 122px - 310px - 36px);min-height:240px}
+ #imps .imps-r{flex:0 0 auto}}
 body.tab-energy #emap{display:flex!important;z-index:5}
 body:not(.tab-energy) #emap{display:none!important}
 /* the Character page keeps the Masks door's host and its terms: shown and
@@ -8951,9 +9023,11 @@ body.tab-ritual:not(.lshut) #rit .rv-addx{display:none}
  .st-flow:not([data-focus="write"]) .st-hl{min-height:96px}
  .st-cvw{flex:0 0 auto;height:230px;min-height:0}
  .st-flow:not([data-focus="read"]) .st-cvw{height:100px}
- .st-flow:not([data-focus="read"]) .st-sort,
- .st-flow:not([data-focus="read"]) .st-ls{display:none}
- .st-flow:not([data-focus="read"]) .st-open{display:inline-flex}
+ /* THE LIST IS SHOWN AT EVERY FOCUS NOW, 27 November. Sort and the list
+    were hidden here unless the imprints column had been touched, which on
+    the split Journal hid the sniffed list, one of its two cards, from a
+    phone entirely. .st-open, the door that stood in for it, is drawn by
+    nothing. */
  /* the list door carries the pending count, "List 12", so while it shows the
     tag beside the Imprints name steps aside. Round QB's name is set at the
     column size, and at 390 the name, "12 pending", the bank, the vault and
@@ -8974,15 +9048,14 @@ body.tab-ritual:not(.lshut) #rit .rv-addx{display:none}
     were not, and tests/stfull.js caught the column moving across a reload.
     The list scrolls inside the panel instead (.st-rlmid already carries the
     scroll), so the column is one size whatever it holds. */
- .st-flow:not([data-focus="release"]) .st-rl{gap:10px;padding:12px;height:310px}
- /* the grip is the desktop's: here the panel keeps this fixed height,
-    see stRelPhone in ui/storyui.js for why */
- .st-rlgrip{display:none}
- .st-flow:not([data-focus="release"]) .st-fields{display:none}
- .st-flow:not([data-focus="release"]) .zfold{top:6px}
- .st-flow:not([data-focus="release"]) .st-rings{margin:4px 0 0}
- .st-flow:not([data-focus="release"]) .st-rlfoot{padding:0;margin:0;border-top:0}
- .st-flow:not([data-focus="release"]) .st-go{margin:0;min-height:48px}
+ /* RE-KEYED TO THE IMPRINTS PAGE, 27 November: Release lives in #imps now
+    and is not in .st-flow, so the focus it read is gone with the column.
+    The fixed 310 holds for the reason above. Pace and Patterns stay shown,
+    because no focus is left to bring them back; the rings scroll in
+    .st-rlmid as they always have. */
+ #imps .st-rl{gap:10px;padding:12px;height:310px;min-height:310px;flex:0 0 auto}
+ #imps .st-rings{margin:4px 0 0}
+ #imps .st-go{margin:0;min-height:48px}
  .src-open,.src-q{font-size:18px}
  .pm-top{max-width:none;position:static;margin:12px;box-shadow:none}
  .pm-reg{position:static;margin:0 12px 12px;max-width:none}

@@ -692,16 +692,12 @@ function stRender(){
       are unchanged, STV.dash still decides what it does; only the word a
       person reads flips with the state it is already in, the same way
       this button's own .on class already does. */
-   +(show?'':'<button class="st-dash'+(STV.dash?' on':'')+'" id="stdash" type="button" aria-label="'
-    +(STV.dash?'Minimize':'Dashboard')+'" title="'
-    +(STV.dash?'Minimize, back to the conversation alone':'Show Imprints and Release beside the conversation')+'">'
-   +'<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8">'
-   +'<rect x="3.5" y="3.5" width="7" height="7" rx="1.4"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.4"/>'
-   +'<rect x="3.5" y="13.5" width="7" height="7" rx="1.4"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.4"/></svg>'
-   /* ICON ONLY, 9 November, his words: "I don't want the word dashboard,
-      I just want the icon." Same pattern as Talk beside it: the word moves
-      to aria-label and title, nothing a screen reader hears changes. */
-   +'</button>')
+   /* THE DASHBOARD DOOR IS NOT DRAWN, 27 November. Discover split into the
+      Journal and the Imprints page, and the Release column and the widget
+      row this door showed are gone from the Journal, so Simple and Full have
+      no difference left to toggle between. STV.dash starts true (STV, below)
+      and nothing sets it now; the Simple view's code is left in place, only
+      unreachable. The door as it stood is in git at bead7294. */
    +'</div>'
   /* SOURCE AI AND THE JOURNAL'S MENU CHANGED PLACES, round LO, his words: "I
      want you to swap the main journal menu with the source AI question." The
@@ -1022,9 +1018,6 @@ function stRender(){
     +(p&&p.imprints.length?'<b class="st-sendn">'+p.imprints.length+'</b>':'')
     +'</button>')
   +'</div>')+'</div>'
-  /* COMPASS AND BOUNDARY MOVED OUT, 13 November: see .st-mini6 below,
-     where all six mini pictures now sit in one real bottom row instead
-     of three narrow pairs squeezed into three unequal columns. */
   +'</div>'
   /* ---- the read column: the instrument, the list, then Commit ----
      SWAPPED BACK, round of 29 October, second pass. The round before this
@@ -1092,26 +1085,11 @@ function stRender(){
       plain flex column holding this scrollable half and the fixed bank
       row under it. */
    +'<div class="st-ls-scroll">'
-   +'<div class="st-lsico">'
-   /* THE BANK AND THE VAULT, round IG, his words: "We need to be able to see
-      the bank as an icon, which goes to the main imprints page. And the
-      vault, which is what's been released." Both were icons with their word
-      beside them at 1600 and the icon alone on a phone. Round LO took the
-      word off at every width, his words: "for the bank and the vault, I just
-      want their icons only, not the text." The word is still in the button,
-      clipped the way a folded tab's name is, so a screen reader still hears
-      it; .st-lb in the shell does it. The vault keeps its count, which is a
-      figure and not a label, as it always has on a phone. */
-   +'<button type="button" class="st-ico" id="stbank" aria-pressed="'+STV.bank+'" '
-    +'title="Imprints: every one you hold, to select what you release">'
-    +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9.5L12 4l9 5.5M5 10v8M9.7 10v8M14.3 10v8M19 10v8M3 20.5h18"/></svg>'
-    +'<span class="st-lb">Imprints</span></button>'
-   +'<button type="button" class="st-ico" id="stvault" aria-pressed="'+(STV.list==='vault')+'" '
-    +'title="Archive: what you have released">'
-    +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4.5h16v14H4zM7 18.5v2M17 18.5v2"/>'
-    +'<circle cx="12" cy="11.5" r="3.6"/><path d="M12 7.9v1.2M12 13.9v1.2"/></svg>'
-    +'<span class="st-lb">Archive</span><b id="stvn">\u2013</b></button>'
-   +'</div>'
+   /* THE BANK AND THE ARCHIVE ICONS LEFT THIS ROW, 27 November. They were
+      two separate doors, #stbank bringing the rail's bank back and #stvault
+      swapping this list to what was released; both are the Imprints page
+      now, as one switch reading Bank | Vault (stImpsSwitch, below). Sort
+      stays: it sorts this list. */
    /* SORT MOVED INTO THE BANK, round of 29 October, his words: "sort,
       weight, charge, etc., belongs in the bank menu." It sorts the list
       directly below it (and the chart with it, one lane model for both,
@@ -1129,134 +1107,28 @@ function stRender(){
       "Commit", since this rename is for this card specifically. Bottom
       right of this panel, pinned under .st-ls-scroll rather than
       inside it, 13 November, see the note on .st-lsico above. */
-   +(STV.chat&&STV.dash?'<div class="st-lsbankrow"><button type="button" class="btn pri st-lsbank" id="stapply"'+(p?'':' disabled')+'>'
+   /* AND NOT ON A WORKED EXAMPLE, 27 November. The Journal lands on this
+      view now, where the Simple bar's !show guard used to be the only one a
+      person met, so an example offered Bank and refused it at the press. */
+   +(STV.chat&&STV.dash&&!show?'<div class="st-lsbankrow"><button type="button" class="btn pri st-lsbank" id="stapply"'+(p?'':' disabled')+'>'
     +'Bank'+(p&&p.imprints.length?' '+p.imprints.length:'')+'</button></div>':'')
    +'</div>'
-  /* BODY AND FIELD MOVED OUT, 13 November, same reason and same place as
-     Compass and Boundary above: .st-mini6, below. */
   +'</div>'
-  +'<div class="st-colz">'
-  /* THE RELEASE COLUMN CLOSES, 17 November, his annotated screenshot on
-     the Full Dashboard's three corner boxes: "be able to minimize that
-     left panel... the release closes right." Same shape as the left
-     rail's own #lfold (ui/ui.js, colFold): a control in the column's
-     top right corner, a body class that hides every child but the
-     control, and the choice kept in STORE so a reload or a profile
-     switch does not reopen what was shut (zFoldWire, below in this
-     file). Its own key, separate from lcols and rcol, because this
-     column exists only inside the Journal's own three column flow, not
-     the shared #lcol/#rcol pair every other tab folds. The icon is
-     .rfold's own, unchanged: a panel with a divider near its right
-     third and a chevron, since this column collapses the same
-     direction the right rail already does. */
-  +'<button class="zfold" id="zfold" type="button" aria-controls="strel"'
-   +' aria-expanded="true" aria-label="Close the Release column">'
-   +'<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">'
-   +'<rect x="3.5" y="4.5" width="17" height="15" rx="2.5"/><path d="M15 4.5v15"/>'
-   +'<path class="lf-ch" d="M8.4 9.4L11 12l-2.6 2.6"/></svg></button>'
-  /* RULED 13 November, his words on a screenshot: "this should all be
-     release." Avatar and Masks (the .st-2row-1 pair that used to live
-     here) moved to .st-mini6 with their other four; .st-colz carries
-     nothing else now, so the space they leave is Release's to grow
-     into, the way #strel's own flex rules already size it against
-     whatever its column holds. */
-  +'<div class="st-rl" id="strel" aria-label="Release"></div>'
-  /* SOURCE AI'S OUTPUT AREA, 12 November, his words after "at least 10
-     times over the last month or two": select a parent (the same
-     S.pin the stack rail already sets) and see everything under it,
-     parent to the bottom of the real chain, impressions underneath,
-     release wired at every rung. Printed only when something is
-     picked; a hidden surface never sits in the document asserting a
-     stale reading, the rule Summary already keeps elsewhere. Placed
-     inside .st-colz, under Release and Avatar, a plain flex column
-     (confirmed before writing this), not a sibling of .st-flow's own
-     grid: a first attempt placed it after .st-flow closed and it
-     floated loose, overlapping the left rail instead of stacking
-     under anything, caught by a screenshot before this ever shipped. */
-  +(typeof summaryPanelHtml==='function'?summaryPanelHtml():'')
-  +'</div>'
-  /* THE SIX MINI PICTURES, ONE REAL ROW, ruled 13 November on a real
-     screenshot: "there's 6 widget locations, those are sacrosanct."
-     Compass, Boundary, Body and Field used to sit as three separate
-     pairs at the bottom of three columns of very unequal width (colw
-     and colb about 1.64 fr each, colz about 1 fr), so Avatar and Masks,
-     stuck in colz alongside Release, rendered visibly smaller than the
-     other four and read as cramped, close to the "almost blank" Masks
-     complaint logged against this same widget. A FOURTH CHILD OF
-     .ST-FLOW ITSELF, not a sibling placed after it closes: the comment
-     on summaryPanelHtml just above already named that exact mistake
-     once, a floating overlap caught by a screenshot before it shipped,
-     and this avoids it by staying inside the same flex container
-     Compass/Boundary/Body/Field's own column used to end in, with
-     flex-wrap added to .st-flow (shell/head.html) so a fourth item
-     wraps onto its own full-width row below the three columns rather
-     than squeezing beside them. All six are the same stMiniShell every
-     other mini picture already uses, so they are the same size as each
-     other here for the first time. Masks alone had no shell before
-     (stMiniMasks returned a bare .st-mask4 row, no label), so it got
-     one then; stMiniMasks itself was rebuilt 14 November onto the same
-     .st-mini-vis/.st-mini-cap pair every other card's own function
-     already returns, so its call site here now passes that value
-     straight through like the other five, rather than wrapping it in a
-     second .st-mini-vis the old bare-row version needed and the new one
-     does not: that second wrap put the real .st-mini-vis and
-     .st-mini-cap inside one shared element instead of side by side,
-     which read fine for a plain-text row but broke the centred picture
-     every other card draws in .st-mini-vis alone. */
-  /* THE WIDGET ROW CLOSES DOWN, 17 November, the same screenshot as
-     .zfold above: "the down panel with all the widgets closes down."
-     ONE CONTROL FOR THE WHOLE ROW, A JUDGEMENT CALL: his circle landed
-     near the Masks card, but his own sentence names "that down panel"
-     once, singular, the same way he said "that left panel" once for
-     seven different sections and "the release" once for one column.
-     Six separate controls, one per mini, would be six things to find
-     and six stored answers to keep straight for what reads as one
-     panel; checked against stMiniShell first, which gives every one of
-     the six the same shell with no header strip of its own to carry a
-     control, so a per-card button would have had to float inside
-     content a drill already makes a link (stMiniShell's own data-stgo).
-     The control sits in a strip above the row rather than over whichever
-     card happens to sit at the corner, because that corner card is
-     Masks at 1600 and a different one once the row wraps under 1181
-     (.st-mini6{flex-wrap:wrap}, shell/head.html): a button pinned to
-     one card's corner would have sat over Masks at one width and over
-     Boundary at another. The strip costs the row the same handful of
-     pixels every other folded surface already reserves for its own
-     control (.st-lrail .rblk, .lsec[data-rail=right] .lsec-hd), not a
-     new kind of gap. */
-  /* SEVEN CARDS, TWO EVEN ROWS, 19 November, his words: "if the super ego
-     button doesn't fit, use two rows and make sure that the rows are even,
-     so that the icons are symmetrical and fit." The six-sacrosanct row
-     (13 November, above) is still one flex row of equal-width cards, now
-     split into two: four on top, three below, each row its own flex line
-     that fills the same full width edge to edge, so neither row is
-     cramped against the other and nothing sits pressed against a
-     neighbour (the standing 16 November symmetry-in-space rule). One fold
-     control still closes the whole thing, not one per row. */
-  +'<div class="st-mini6" id="stmini6">'
-   +'<button class="rowfold" id="rowfold" type="button" aria-controls="stmini6"'
-    +' aria-expanded="true" aria-label="Close the widgets row">'
-    +'<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">'
-    +'<rect x="3.5" y="4.5" width="17" height="15" rx="2.5"/><path d="M3.5 13h17"/>'
-    +'<path class="lf-ch" d="M9.4 8.4L12 11l2.6-2.6"/></svg></button>'
-   +'<div class="st-mini6-row">'
-    +stMiniShell('stcompass','Compass',stMiniCompass(r),'stcompass')
-    +stMiniShell('stboundary','Boundary',stMiniBoundary(),'stboundary')
-    +stMiniShell('stbody','Body',stMiniBody(r),'stbody')
-    +stMiniShell('stfield','Field',stMiniField(r),'stfield')
-   +'</div>'
-   +'<div class="st-mini6-row">'
-    +stMiniShell('stavatar','Avatar',stMiniAvatar(r),'stavatar')
-    /* the Masks card stays on the row, which is ruled even and symmetrical.
-       It stopped being a link while Character was held off the bar (17
-       November), because a card that opened a page with no door would be the
-       hidden page by another way in. Since 21 November the masks are on the
-       Avatar page, so the card is a link again and STGO.stmasks sends it there
-       while Character is held, never to the held page. */
-    +stMiniShell('stmasks','Masks',stMiniMasks(r),'stmasks')
-    +stMiniShell('stsuperego','Superego',stMiniSuperego(r),null)
-   +'</div>'
-  +'</div>'
+  /* THE RELEASE COLUMN LEFT THE JOURNAL, 27 November, for the Imprints
+     page: #strel is a static child of #imps in shell/body.html now and
+     stRelPanel paints it there, and the Source AI output area that stood
+     under it went with it to #impsmp. Its fold, .zfold, did not move: on the
+     Imprints page folding Release would leave the bank alone in a half empty
+     frame, which the standing symmetry ruling forbids. zFoldWire and its
+     store key are left defined and uncalled. */
+  /* THE SEVEN CARDS LEFT DISCOVER, 27 November, his ruling on the split:
+     Compass, Boundary, Body, Field, Avatar, Masks and Superego are no
+     longer drawn here. Their code stays, stMiniShell, every stMini* and
+     stmk*, STGO and STMK_*, because he is placing these cards himself
+     later; only this call site stopped reaching for them. rowFoldWire and
+     the strowfold key are left with them, uncalled. The row's own history,
+     from "six widget locations" on 13 November to two even rows on 19
+     November, is in git at bead7294. */
   /* CLOSES .st-flow ITSELF, opened at the top of this function; lost for a
      moment in the 9 November edit that folded .st-colr's own closing div
      into .st-colx's, caught by BUILD.sh's own div-balance check. */
@@ -1267,7 +1139,6 @@ function stRender(){
      or the opener, and srcPaint writes it only when it changes. */
   +'<p class="src-say" id="srcsay" aria-live="polite"></p>';
  h.innerHTML=out;
- if(typeof summaryPanelWire==='function')summaryPanelWire(h);
  /* THE LANES AND THE BARS OUTLIVE A RENDER. This emptied both, so every
     arrival at the tab and every redraw of the page faded all seven lanes in
     and grew every bar again from the floor: motion that said a word had
@@ -1361,7 +1232,6 @@ function stRender(){
  var dash=document.getElementById('stdash');
  if(dash)dash.onclick=function(){STV.dash=!STV.dash; stRender();};
  srcChatWire();
- zFoldWire(); rowFoldWire();
  stUniSync(r);
  stHeroPlace();
  stMicAnnounce();}
@@ -1654,10 +1524,14 @@ function stHeroPlace(){
    page, it starts off in simple mode." Imprints and Release are real panels,
    not removed, only shut until Dashboard is pressed; see #stdash's onclick
    at the foot of stRender.
+   STARTS ON, 27 November, and nothing turns it off: the split of Discover
+   took the Release column and the widget row off this page, so the door
+   that toggled them is not drawn (see stRender) and the Journal is always
+   what Full was. The Simple view's code stays, unreachable.
    THE SORT OPENS ON WEIGHT, 6 November, his words on this exact screen:
    "for imprints, for a sort, just do it by weight." Was Seat. */
 var STV={sort:'weight',focus:'write',list:'entry',bank:false,lastFound:[],lastT:null,hot:null,view:'lanes',ana:false,chat:true,law:false,
- unsaved:null,draftT:null,draftFail:false,crisis:false,dash:false,novoice:false,typed:false,lastOpen:false};
+ unsaved:null,draftT:null,draftFail:false,crisis:false,dash:true,novoice:false,typed:false,lastOpen:false};
 /* THE IMPRINTS DETECTOR, PORTED TO THE LEFT RAIL, 9 November. His words:
    "the imprints detector, which takes up the top half of that column,
    now moves to the lower left... near the lower left bottom of the left
@@ -1723,19 +1597,17 @@ function stWire(){
     bubbles here after the button has already acted. */
  on('stch','click',function(){stFocus('read');});
  on('stls','click',function(){stFocus('read');});
- on('strel','click',function(e){if(!(e.target&&e.target.closest&&e.target.closest('#strun')))stFocus('release');});
+ /* #strel is a static host on the Imprints page since 27 November, and
+    this runs on every Journal render, so a listener added to it here would
+    pile up one more each time; the bank and vault icons it also wired are
+    the Imprints page's switch now (stImpsWire). */
  on('stlist','click',function(){stFocus('read');});
- on('stbank','click',stBank);
  /* the press bubbles on to #stch, which gives the imprints column the room.
     THE VIEW ICONS MOVED TO .st-chd, round of 29 October (see the ruling at
     stRender above): [data-view] on its own still finds the one group that
     exists on the page, wherever it stands. */
  document.querySelectorAll('[data-view]').forEach(function(b){
   b.addEventListener('click',function(){stView(b.getAttribute('data-view'));});});
- on('stvault','click',function(){
-  STV.list=STV.list==='vault'?'entry':'vault';
-  this.setAttribute('aria-pressed',STV.list==='vault');
-  stFocus('read'); stListPaint();});
  var cv=document.getElementById('stcv');
  if(cv){
   /* the hover reads the sorted lanes' rows, which only the Lanes view draws.
@@ -1752,32 +1624,78 @@ function stWire(){
   STC.ro.observe(w);}}
 
 /* ============================================================
-   THE BANK OPENS THE IMPRINTS PAGE, and the Imprints page is the one this
-   product already has: impRender's record in #imp, every imprint held, the
-   five groupings, the child patterns, and the pills a person selects to
-   release. It lives in the right rail's Imprints section, where it has been
-   since GO, beside Selection, where its Detail opens a drill. On the Story
-   that rail steps aside so the three columns get its width, and the bank
-   brings it back.
+   THE BANK OPENS THE IMPRINTS PAGE, and since 27 November that is a page:
+   TAB.IMPRINTS, Discover's second door. impRender's record in #imp, every
+   imprint held, the five groupings, the child patterns, and the pills a
+   person selects to release, beside the release itself. It was the right
+   rail's Imprints section from GO, brought back beside the Journal by the
+   bank icon; the split took it out of the rail and the icon off the page.
 
    WHAT IS PICKED THERE IS WHAT THE RELEASE RUNS. His words, round IG: "In
    that imprints I can select what I want to be released and then I've got
    my settings for release, then I can run release." So a pill pressed in the
-   bank feeds the release column directly, see stRelModel.
+   bank feeds the release beside it directly, see stRelModel.
+
+   ONE SWITCH, BANK | VAULT, his words. The bank is what is held, the vault
+   is what has been released (stVaultPaint, which the Journal's Archive icon
+   used to swap its own list to). STV.imps says which is up; it is page
+   state, kept across a return to the tab and never saved, like the rest of
+   STV.
+
+   #imps ITSELF IS NEVER WRITTEN. Its children are the hosts, static in
+   shell/body.html, and each is painted by the renderer that owns it, the
+   #know lesson: a tab host that carries a second surface cannot also be
+   one.
    ============================================================ */
 function stBank(){
- STV.bank=!STV.bank;
- document.body.classList.toggle('st-bank',STV.bank);
- var b=document.getElementById('stbank'); if(b)b.setAttribute('aria-pressed',STV.bank);
- if(STV.bank){
-  if(typeof OPENSEC==='object'&&OPENSEC&&OPENSEC.right)OPENSEC.right.simp=1;
-  if(typeof paintSections==='function')paintSections();
-  impRender();
-  /* stacked, the rail sits under the whole surface, so the bank is taken to
-     rather than left for a person to find four screens down */
-  var sec=document.querySelector('.lsec[data-sec="simp"]');
-  if(sec&&stPhone()&&sec.scrollIntoView)sec.scrollIntoView({block:'start'});}
- stFocus('read');}
+ setTab(TAB.IMPRINTS); stImpsSwitch('bank');}
+function stImpsSwitch(k){
+ STV.imps=(k==='vault')?'vault':'bank';
+ document.querySelectorAll('#impsw [data-impsw]').forEach(function(b){
+  b.setAttribute('aria-pressed',String(b.getAttribute('data-impsw')===STV.imps));});
+ var bk=document.getElementById('imp'), vt=document.getElementById('impvault');
+ if(bk)bk.hidden=STV.imps!=='bank';
+ if(vt)vt.hidden=STV.imps!=='vault';
+ if(S.tab!==TAB.IMPRINTS)return;
+ if(STV.imps==='vault')stImpsVault(); else impRender();}
+/* the vault's own pane: the list stVaultPaint has always drawn, under a
+   heading, with a foot bar the same height as the bank's so the two panes'
+   feet stay level whichever is up */
+function stImpsVault(){
+ var v=document.getElementById('impvault'); if(!v)return;
+ if(S.tab!==TAB.IMPRINTS){ if(v.innerHTML)v.innerHTML=''; return; }
+ var n=stVaultRows().length;
+ v.innerHTML='<div class="ip-hd"><span class="pm-eye" id="impvhd"></span>'
+  +'<span class="ip-n">'+(n||'\u2013')+'</span></div>'
+  +'<div class="imps-vl" id="impvl"></div>'
+  +'<div class="ip-bar"><span class="ip-sel">'+(n?n+(n===1?' point released':' points released'):'')+'</span></div>';
+ stVaultPaint(document.getElementById('impvhd'),document.getElementById('impvl'));}
+function stImpsWire(){
+ var w=document.getElementById('impsw'); if(!w||w.dataset.on)return; w.dataset.on='1';
+ w.addEventListener('click',function(e){
+  var b=e.target&&e.target.closest?e.target.closest('[data-impsw]'):null;
+  if(b)stImpsSwitch(b.getAttribute('data-impsw'));});}
+function stImpsRender(){
+ if(S.tab!==TAB.IMPRINTS)return;
+ /* a profile switched on this page is still a new person's page: the same
+    reset the Journal makes on its way in, so the release beside the bank
+    never offers the last person's entry */
+ stOwn();
+ stImpsWire();
+ if(!STV.imps)STV.imps='bank';
+ stImpsSwitch(STV.imps);
+ stVaultCount();
+ stRelPanel();
+ var sm=document.getElementById('impsmp');
+ if(sm){ sm.innerHTML=typeof summaryPanelHtml==='function'?summaryPanelHtml():'';
+  if(sm.innerHTML&&typeof summaryPanelWire==='function')summaryPanelWire(sm); }}
+/* EMPTIED ON THE WAY OUT, the rule Summary keeps: a hidden surface never
+   sits in the document asserting a stale reading. The drill's column goes
+   with it, since imp-sel is this page's alone. */
+function stImpsClear(){
+ ['imp','impvault','strel','impsmp'].forEach(function(id){
+  var e=document.getElementById(id); if(e&&e.innerHTML)e.innerHTML='';});
+ document.body.classList.remove('imp-sel');}
 
 /* ============================================================
    THE ONE READ. Every surface on this page reads the same marks off the
@@ -2008,11 +1926,11 @@ function stCommit(){
  ST_TEXT='';ST_PARSED=null;ST_HELLO_ON=false;SRC_PASSED=false;if(typeof srcFresh==='function')srcFresh();STV.lastFound=kept;STV.lastT=entT;STV.lastOpen=!!kept.length;
  /* the line stays where it was once the box empties, see stSafe */
  STV.safeSaid=safe;
- /* the release takes the room on a desktop. On a phone it stays the bar
-    with Run on it: widening it there would push Run off the first screen,
-    which is the one thing layout H exists to stop. Not after an entry
-    srcSafe stopped: the page does not walk a person to a release on it. */
- STV.focus=(stPhone()||safe)?'write':'release';
+ /* THE PERSON STAYS ON THE JOURNAL, 27 November. This line sent the focus
+    to the Release column so it took the room; the release is on the
+    Imprints page now, so nothing here moves, and the status line below
+    names where the banked imprints went. The Imprints page's release still
+    offers them, from STV.lastFound and STV.lastOpen above (stRelModel). */
  /* the crisis line has said what the box is for, and the box has been used.
     crisisTalk forced STV.chat false on the way in, deliberately, so a crisis
     is met in the plain box and not inside a chat bubble; nothing used to set
@@ -2035,6 +1953,7 @@ function stCommit(){
     beside it already says so, and "nothing read as charge" would be a claim
     about the words. And no sound, Emmy's ruling: a chime is a reward. */
  status((safe?'Kept.':k?'Committed. '+k+(k===1?' imprint':' imprints')+' written to the field.'
+  +' They are on Imprints, ready to release.'
   :'Kept. Nothing here read as charge, so nothing moved.')
   +(hid?' '+hid+(hid===1?' word':' words')+' hidden behind stars by dictation could not be read.':''));
  if(!safe&&typeof sfx==='function')sfx('kept');
@@ -3971,7 +3890,7 @@ function srcWire(h){
    already keeps. setTab calls this on every tab but Story. The bank closes
    with it, so the rail a person comes back to on another tab is that tab's. */
 function stRailClear(){
- var e=document.getElementById('imp'); if(e&&e.innerHTML)e.innerHTML='';
+ /* #imp is the Imprints page's since 27 November and stImpsClear empties it */
  STV.bank=false; document.body.classList.remove('st-bank');
  /* and the Full view's left rail goes with it, for the same reason: #stleft
     is a static host in #lcol, and the class that shows it is this tab's.
@@ -4677,11 +4596,18 @@ var ST_FLD_IC={speed:'<path d="M4.5 16a7.5 7.5 0 0 1 15 0"/><path d="M12 16l3.6-
  tone:'<path d="M4 12h1.5M8 8.5v7M12 5.5v13M16 9v6M20 11v2"/>'};
 function stRelPanel(){
  var e=document.getElementById('strel'); if(!e)return;
+ /* ONLY ON THE IMPRINTS PAGE, 27 November. #strel is a static host there,
+    and stPaintAll calls this on every keystroke on the Journal, so without
+    this it painted a release nobody could see. Emptied rather than left,
+    the rule Summary keeps. */
+ if(S.tab!==TAB.IMPRINTS){ if(e.innerHTML)e.innerHTML=''; return; }
  var M=stRelModel(), o='';
- /* THE GRIP, on the top edge, because the panel stands on the column's
-    floor and grows upward: see stRelSize below for why */
- o+='<div class="st-rlgrip" id="strelgrip" role="separator" aria-orientation="horizontal" tabindex="0" '
-  +'aria-label="Release height. Drag, or use the up and down arrows." title="Drag to make Release taller or shorter"><i></i></div>';
+ /* THE GRIP IS GONE, 27 November, and the rise with it. Beside the bank a
+    Release that stood short under empty air was the dead zone the
+    Dashboard ruling forbids, so the panel fills its pane and Run sits level
+    with the bank's own foot bar, the "button level with Bank" goal of
+    0ba711c8 held by the frame rather than by fitting. stRelSize and
+    stRelGripWire stay defined, uncalled; the strelh key is orphaned. */
  o+=stMark('r','Release','release','st-rlhd')
   +'<div class="st-rlmid">';
  /* THE SENTENCE IS GONE, round of 29 October, his words: "get rid of the text
@@ -4813,7 +4739,12 @@ function stRelPanel(){
      reaches the card that refuses it and says why. */
   /* and on a worked example it is the preview line, ruled 16 October: the
      rings above are the reading and stay, Run is the run and does not */
-  +(showOnly()?(STV.dash?'':showNote('release','st-show'))
+  /* THE LINE IS BACK ON EVERY VIEW, 27 November. The Dashboard dropped it
+     here (edf59b85) because its Journal carried one Example mark for the
+     whole page; the release is the Imprints page's now, which has no such
+     mark, so without the line the foot where Run was stood empty with no
+     reason given. */
+  +(showOnly()?showNote('release','st-show')
    /* RELEASE, not Run release, round of 29 October, his words: "change run
       release to just release." The card's own button (ui/release.js)
       renamed the same way, same reason the fields above stay matched. */
@@ -4870,8 +4801,7 @@ function stRelPanel(){
      heaviest held, none of which came from one entry */
   relPick(M.sel.map(function(n){return n.i;}),M.fromLast&&STV.lastT?{story_t:STV.lastT}:null);
   var begin=document.getElementById('relgo'); if(begin)begin.click();};
- stRelSize(e,M.take.length);
- stRelGripWire(e);}
+}
 
 /* ============================================================
    RELEASE RISES WITH WHAT IS ADDED, AND A PERSON CAN SET ITS HEIGHT.

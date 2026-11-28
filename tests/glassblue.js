@@ -92,15 +92,25 @@ const SURF = [
   /* name,        how it is found,                target in B,        Glass white at c2bf52a2 */
   ['top bar',      { rect: '.glass.top' },         [238, 243, 249],    [246, 246, 244]],
   ['middle panel', { rect: '#stls' },              [224, 229, 235],    [234, 232, 226]],
-  ['Release panel', { rect: '#strel' },            [224, 229, 235],    [234, 232, 226]],
-  ['card, Boundary', { rect: '#stboundary' },      [224, 229, 235],    [234, 232, 226]],
-  ['card, Path',   { rect: '#stcompass' },         [224, 229, 235],    [234, 232, 226]],
-  ['card, Avatar', { rect: '#stavatar' },          [224, 229, 235],    [234, 232, 226]],
-  ['sort row',     { rect: '.st-lsico' },          [221, 226, 232],    [231, 229, 223]],
-  ['stage between cards', { gap: ['#stcompass', '#stboundary'] }, [233, 238, 243], [242, 241, 236]],
+  /* DISCOVER SPLIT IN TWO, 27 November. Release and the bank are the
+     Imprints page's, so they are read there (imps: true); the Boundary,
+     Path and Avatar cards left Discover and are not drawn anywhere; the sort
+     row's sunk ground was the bank and archive icons' row, which went with
+     them, and the bank pane is that same --sunk ground now; and the stage
+     between cards is read between Source AI's card and the imprints card. */
+  ['Release panel', { rect: '#strel', imps: true }, [224, 229, 235],   [234, 232, 226]],
+  /* read off the run, 27 November: the bank pane paints the same pane ground
+     as Release beside it and the middle panel, which is the even frame the
+     Dashboard ruling asks for, and not the darker sunk row the icons sat on */
+  ['bank pane',    { rect: '#impsl', imps: true }, [224, 229, 235],    [234, 232, 226]],
+  ['stage between cards', { gap: ['#stjr', '#stls'] }, [233, 238, 243], [242, 241, 236]],
   ['page, top left', { page: 'top' },              [225, 230, 235],    [230, 229, 224]],
   ['page, left edge', { page: 'mid' },             [214, 219, 224],    [219, 218, 213]],
-  ['status dock',  { dock: true },                 [238, 242, 247],    [247, 246, 244]],
+  /* the dock is glass and shows what is under it. Since 27 November the
+     Journal's Source AI card runs to the floor, so on the Journal the dock
+     sits over that dark well; it is read on the Imprints page, where it sits
+     over the two light panes, the ground the dock's own fill was measured on */
+  ['status dock',  { dock: true, imps: true },                 [238, 242, 247],    [247, 246, 244]],
 ];
 /* the tokens Glass white declares, at c2bf52a2, to the character */
 const GW_TOKENS = {
@@ -137,15 +147,25 @@ async function open(browser, W, H, opts) {
    the text or the marks on it; the gap and the page are single pixels, found
    from the elements that bound them. */
 async function readSurfaces(pg) {
-  const geo = await pg.evaluate(() => {
-    const r = s => { const e = document.querySelector(s); if (!e) return null; const b = e.getBoundingClientRect();
-      return { x: b.x, y: b.y, w: b.width, h: b.height }; };
-    return { vw: innerWidth, vh: innerHeight, top: r('.glass.top'), stls: r('#stls'), strel: r('#strel'),
-      boundary: r('#stboundary'), compass: r('#stcompass'), avatar: r('#stavatar'), sort: r('.st-lsico'),
-      dock: r('#msgdock') };
-  });
-  const buf = await pg.screenshot();
-  const out = await pg.evaluate(async ([b64, geo, SURF]) => {
+  const shot = async () => {
+    const geo = await pg.evaluate(() => {
+      const r = s => { const e = document.querySelector(s); if (!e) return null; const b = e.getBoundingClientRect();
+        return b.width > 0 && b.height > 0 ? { x: b.x, y: b.y, w: b.width, h: b.height } : null; };
+      return { vw: innerWidth, vh: innerHeight, top: r('.glass.top'), stls: r('#stls'), stjr: r('#stjr'),
+        strel: r('#strel'), impsl: r('#impsl'), dock: r('#msgdock') };
+    });
+    return { geo, buf: await pg.screenshot() };
+  };
+  /* the Journal first, then the Imprints page for the two surfaces it holds,
+     and the Journal put back so a caller finds the page where it left it */
+  const J = await shot();
+  /* the dock is read here, so the line dashboard() raised is raised again on
+     arrival: a tab change and the wait would otherwise read it on its way out */
+  await pg.evaluate(() => { setTab(TAB.IMPRINTS); status('Committed. 4 imprints written to the field.', 'ok'); });
+  await pg.waitForTimeout(500); await settled(pg);
+  const I = await shot();
+  await pg.evaluate(() => setTab(TAB.STORY)); await pg.waitForTimeout(400); await settled(pg);
+  const read = (X, keep) => pg.evaluate(async ([b64, geo, SURF, keep]) => {
     const img = new Image(); img.src = 'data:image/png;base64,' + b64; await img.decode();
     const c = document.createElement('canvas'); c.width = img.width; c.height = img.height;
     const g = c.getContext('2d'); g.drawImage(img, 0, 0);
@@ -157,15 +177,16 @@ async function readSurfaces(pg) {
       return best.split(',').map(Number); };
     const res = {};
     for (const [name, how] of SURF) {
-      if (how.rect) { const key = { '.glass.top': 'top', '#stls': 'stls', '#strel': 'strel', '#stboundary': 'boundary', '#stcompass': 'compass', '#stavatar': 'avatar', '.st-lsico': 'sort' }[how.rect];
+      if (!!how.imps !== keep) continue;
+      if (how.rect) { const key = { '.glass.top': 'top', '#stls': 'stls', '#strel': 'strel', '#impsl': 'impsl' }[how.rect];
         res[name] = geo[key] ? mode(geo[key]) : null; }
-      else if (how.gap) { const a = geo.compass, b = geo.boundary; res[name] = a && b ? at((a.x + a.w + b.x) / 2, a.y + a.h / 2) : null; }
+      else if (how.gap) { const a = geo.stjr, b = geo.stls; res[name] = a && b ? at((a.x + a.w + b.x) / 2, a.y + a.h / 2) : null; }
       else if (how.page) { const t = geo.top; res[name] = t ? at(t.x / 2, how.page === 'top' ? 5 : geo.vh / 2) : null; }
       else if (how.dock) { res[name] = geo.dock && geo.dock.w > 0 ? mode(geo.dock) : null; }
     }
     return res;
-  }, [buf.toString('base64'), geo, SURF]);
-  return out;
+  }, [X.buf.toString('base64'), X.geo, SURF, keep]);
+  return Object.assign(await read(J, false), await read(I, true));
 }
 
 /* A SWITCH OF LIGHTING IS A TRANSITION, and in a Chromium with no GPU a frame
@@ -439,7 +460,7 @@ async function dashboard(pg, lighting) {
     const tok = async l => { await pg.evaluate(l => setLighting(l), l); await pg.waitForTimeout(300);
       return pg.evaluate(() => { const cs = getComputedStyle(document.body); const g = k => cs.getPropertyValue(k).trim(); return { '--ink': g('--ink'), '--mid': g('--mid'), '--dim': g('--dim'), '--accent': g('--accent') }; }); };
     const tw = await tok('glasswhite'), tb = await tok('glassblue'); await cx.close();
-    const rows = [['top bar', 'top bar'], ['middle panel', 'middle panel'], ['sort row', 'sort row'], ['stage between cards', 'stage'], ['page, top left', 'page']];
+    const rows = [['top bar', 'top bar'], ['middle panel', 'middle panel'], ['bank pane', 'bank pane'], ['stage between cards', 'stage'], ['page, top left', 'page']];
     console.log('  text on surface              ink      mid      dim      accent   (glass blue, with glass white beside)');
     rows.forEach(([name, label]) => {
       const sg = GWREAD[name], sb = GBREAD[name]; if (!sg || !sb) { ok(false, name + ' was not read'); return; }
@@ -571,7 +592,9 @@ async function dashboard(pg, lighting) {
       await pg.evaluate(([lt, loaded]) => { if (loaded) loadP(3); setLighting(lt); setTab(TAB.STORY); render(); }, [lt, loaded]);
       await pg.waitForTimeout(1800); await settled(pg);
       const geo = await pg.evaluate(() => { const b = document.getElementById('stage').getBoundingClientRect();
-        return { x: b.x, y: b.y, w: b.width, h: b.height, home: S.tab === TAB.STORY && !document.body.classList.contains('st-full') }; });
+        /* the home screen is the Journal in what was Full since 27 November:
+           STV.dash starts true and the hero view has no door left */
+        return { x: b.x, y: b.y, w: b.width, h: b.height, home: S.tab === TAB.STORY && document.body.classList.contains('st-full') }; });
       return Object.assign({ home: geo.home }, await scan(pg, geo));
     };
     for (const [W, H] of [[1600, 1000], [390, 844]]) for (const loaded of [false, true]) {
@@ -580,7 +603,7 @@ async function dashboard(pg, lighting) {
       const gw = await read(pg, 'glasswhite', loaded), gb = await read(pg, 'glassblue', loaded);
       const pct = r => (100 * r.warm / Math.max(1, r.lit)).toFixed(1) + '%';
       console.log('  info  ' + tag + ': light pixels leaning warm, Glass white ' + pct(gw) + ', Glass blue ' + pct(gb) + '; the Glass blue ground is ' + (gb.mode || []).join(','));
-      ok(gw.home && gb.home, tag + ': the screen read is the home screen, Discover with the Dashboard closed');
+      ok(gw.home && gb.home, tag + ': the screen read is the home screen, Discover\'s Journal as it lands');
       ok(gw.lit > gw.area * 0.2 && gw.warm > gw.lit * 0.5, tag + ': the probe sees the cream in Glass white\'s home screen, ' + pct(gw) + ' of its light pixels lean warm, so what is left below means something');
       ok(gb.lit > gb.area * 0.2, tag + ': Glass blue\'s home screen is a light surface, ' + gb.lit + ' of ' + gb.area + ' pixels');
       ok(gb.warm < gb.lit * 0.05, tag + ': and under five percent of it leans warm, ' + pct(gb));

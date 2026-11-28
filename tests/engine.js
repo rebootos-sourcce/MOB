@@ -7467,8 +7467,9 @@ g('LL · practitioner mode, the switch and its integer');
   'and it is a boolean on the way in, as every preference beside it is');
  /* THE INTEGER IS APPENDED AND NOTHING BEFORE IT MOVED. Written out in full
     rather than counted, because this is the one table in the product where a
-    changed value is the defect and not the product growing. */
- ok(JSON.stringify(E.TAB)==='{"STORY":0,"SUMMARY":1,"FIELD":2,"ENERGY":3,"ANALYTICS":4,"INTAKE":5,"KNOW":6,"GAMES":7,"COMPASS":8,"SETTINGS":9,"RITUAL":10,"MASKS":11,"PRACTITIONER":12,"QUESTIONS":13,"ACCOUNT":14}',
+    changed value is the defect and not the product growing. Imprints, 15,
+    appended 27 November when Discover split in two. */
+ ok(JSON.stringify(E.TAB)==='{"STORY":0,"SUMMARY":1,"FIELD":2,"ENERGY":3,"ANALYTICS":4,"INTAKE":5,"KNOW":6,"GAMES":7,"COMPASS":8,"SETTINGS":9,"RITUAL":10,"MASKS":11,"PRACTITIONER":12,"QUESTIONS":13,"ACCOUNT":14,"IMPRINTS":15}',
   'Practitioner is 12 and every integer before it holds its value, '+JSON.stringify(E.TAB));
 }
 
@@ -13090,6 +13091,66 @@ g('the Let Go list: its phrases found in a story (engine/letgo.js) and its packs
  ok(more.length===1&&more[0].lines.every(l=>{const w=normMap(l).s.trim().split(' ');return leadAll.indexOf(w[0])<0&&!(w[0]==='feeling'&&leadAll.indexOf(w[1])>=0);}),
   'the one pack with no words of its own takes only lines no other pack would');
  ok(['anxiety','worry'].every(id=>LP.packs.some(p=>p.id===id&&p.lines.length>0)),'the two packs he named, anxiety and worry, are there and not empty');
+}
+
+g('the Field colours a saboteur at the seat its charge sits in, not its first address (patSeat, 27 November)');
+{
+ /* his words: "Colour Field saboteurs by charge, not first address." The
+    seat is patSeat's (engine/insight.js, fe9d8268), the one the Insight rail
+    reads; this group holds the Field to it. Two saboteurs at different
+    charges, each listed with its LIGHT address first, which is how SAB_LIB's
+    fixed order hands the address route its parts. */
+ const ps=E.patSeat;
+ const A={kind:'sab',nm:'A',w:6.3,parts:[{i:1,b:'Root',sq:2},{i:2,b:'Crown',sq:9},{i:3,b:'Crown',sq:8}]};
+ const B={kind:'sab',nm:'B',w:4.0,parts:[{i:4,b:'Sacral',sq:1},{i:5,b:'Throat',sq:6},{i:6,b:'Heart',sq:5}]};
+ ok(ps(A)==='Crown'&&A.parts[0].b==='Root','the heavier saboteur sits at the crown, where 17 of its 19 points are, though its first address is the root');
+ ok(ps(B)==='Throat'&&B.parts[0].b==='Sacral','the lighter one sits at the throat, not the sacral it is listed from');
+ ok(ps({kind:'sab',parts:[{i:9,b:'Heart',sq:5},{i:10,b:'Sacral',sq:5}]})==='Sacral','a tie goes to the root end, in BANDS order, the tie rule sabSeatMain already rules');
+ ok(ps({kind:'sab',over:true,parts:[{i:11,b:'Root',sq:0,jq:1},{i:12,b:'Throat',sq:0,jq:7}]})===null,
+  'a saboteur none of whose addresses holds charge claims no seat, and the Field draws it in the accent');
+
+ /* the real case: every persona, every saboteur, seated where the most of
+    its charge is, and some of them are not where their first address is, or
+    this group proves nothing. A range match stands on its own band only. */
+ let moved=0; const bad=[];
+ PEOPLE.forEach(p=>{
+  S.doms=[p.dom];S.arcs=[p.a1,p.a2];S.roots=[];buildSoul();
+  CHARGES.forEach(c=>{S.charge[c]=(p.c&&p.c[c])||0;S.replace[c]=(p.rep&&p.rep[c])||0;});
+  const LS=LAWSET[p.nm]||{_:E.LAW_DEFAULT};
+  SINAMES.forEach(l=>S.law[l]=LS[l]!==undefined?LS[l]:LS._); lawsIn();
+  compute().sabs.forEach(s=>{const b=ps(s), at={};
+   s.parts.forEach(n=>{if(n.sq>0)at[n.b]=(at[n.b]||0)+n.sq;});
+   if(b!==null&&!BANDS.includes(b))bad.push(p.nm+' '+s.nm+' no such seat');
+   if(b===null&&Object.keys(at).length)bad.push(p.nm+' '+s.nm+' carries charge and claims no seat');
+   if(b&&Object.keys(at).some(x=>at[x]>at[b]))bad.push(p.nm+' '+s.nm+' a seat holds more than '+b);
+   if(b&&s.named&&!s.parts.every(n=>n.b===b))bad.push(p.nm+' '+s.nm+' range match moved off its band');
+   if(b&&b!==s.parts[0].b)moved++;});});
+ ok(bad.length===0,'every saboteur on the roster is seated at its heaviest seat: '+JSON.stringify(bad.slice(0,3)));
+ ok(moved>0,'and '+moved+' of them are not where their first address is, so the first address was the wrong colour for them');
+ const tm=ref('Tomas').sabs.filter(s=>s.nm==='Avoider')[0];
+ ok(tm&&tm.parts[0].b==='Root'&&ps(tm)==='Crown','Tomas\'s Avoider stands on the root first and carries the most at the crown, so it is coloured crown');
+
+ /* AND THE FIELD ASKS IT. Every renderer that paints a saboteur on the Field
+    reads patSeat, none takes the seat of parts[0] or of the first leaf, and
+    none falls back to a seat colour for a pattern with no charge. */
+ const fsx=require('fs'),px=require('path');
+ const FIELD=['ui/wheel.js','ui/rings.js','ui/fieldbar.js','ui/component.js','ui/insightui.js'];
+ const read=f=>fsx.readFileSync(px.join(__dirname,'..','atuned_src',f),'utf8');
+ const stale=FIELD.filter(f=>/parts\[0\](\]|\)|\s|&&\s*\w+\.parts\[0\])*\s*\.b\b|\(lv\[0\]\|\|\{\}\)\.b|patSeat\([^)]*\)\s*\|\|\s*'(Root|Heart)'/.test(read(f)));
+ ok(stale.length===0,'no Field renderer colours a pattern off its first address, or paints a seat for one with no charge: '+JSON.stringify(stale));
+ ok(FIELD.every(f=>/patSeat\(|patBc\(/.test(read(f))),'and every one of them asks patSeat');
+
+ /* AND OFF THE FIELD, his second ask the same day: "Seat patterns by charge
+    off the Field too." The Body page's pattern rings and its saboteur lines'
+    fallback, the Analytics pattern row, the release's reach rows and the
+    ritual's challenge, which prints the seat as a place ("at the crown"),
+    each took the first address. The Body page's family colour (fam.b) is a
+    ruling of its own and is left; only its fallback moved. */
+ const OFF=['ui/map.js','ui/analytics.js','ui/release.js','ui/ritcal.js'];
+ const FIRST=/parts\[0\](\]|\)|\s|&&\s*\w+\.parts\[0\])*\s*\.b\b|parts\[0\]\|\|\{\}\)\.b|\(lv\[0\]\|\|\{\}\)\.b|patSeat\([^)]*\)\s*\|\|\s*'(Root|Heart)'/;
+ const offStale=OFF.filter(f=>FIRST.test(read(f)));
+ ok(offStale.length===0,'no surface off the Field seats a pattern at its first address either: '+JSON.stringify(offStale));
+ ok(OFF.every(f=>/patSeat\(/.test(read(f))),'and each of them asks patSeat');
 }
 
 console.log('\n===== '+P+' passed, '+F+' failed, '+XF+' expected red =====');

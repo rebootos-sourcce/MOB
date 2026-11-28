@@ -600,7 +600,7 @@
         imprints, release (engine/data/gloss.js). engine/core.js has the
         ruling in full, at SECTIONS. -->
    <button type="button" class="secb" data-sec="discover" aria-pressed="true"
-    title="Discover. Write what happened, see where it lands in your body, and release it."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.8 12c2.4-4.2 5.5-6.3 9.2-6.3s6.8 2.1 9.2 6.3c-2.4 4.2-5.5 6.3-9.2 6.3S5.2 16.2 2.8 12z"/><circle cx="12" cy="12" r="2.9"/></svg><span class="sn">Discover</span></button>
+    title="Discover. Journal and Imprints."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.8 12c2.4-4.2 5.5-6.3 9.2-6.3s6.8 2.1 9.2 6.3c-2.4 4.2-5.5 6.3-9.2 6.3S5.2 16.2 2.8 12z"/><circle cx="12" cy="12" r="2.9"/></svg><span class="sn">Discover</span></button>
    <button type="button" class="secb" data-sec="play" aria-pressed="false"
     title="Play. Field, Body, Compass and Avatar."><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><path d="M10.2 8.6l5.2 3.4-5.2 3.4z"/></svg><span class="sn">Play</span></button>
    <button type="button" class="secb" data-sec="flow" aria-pressed="false"
@@ -635,18 +635,16 @@
        has. Discover's still listed four tabs after Analytics came back as a
        fifth. tests/tabtips.js holds both and fails by name. -->
   <div id="tabbar" style="display:flex;gap:5px;flex-wrap:wrap">
-   <!-- DISCOVER'S ONE DOOR, 23 October. Integer 0, the journal page, whose
-        three columns are the journal, the imprints and the release. The
-        section is the door (door:'section' in engine/core.js). Above the phone
-        width this button is not shown: the Discover button over it already
-        opens the page, and a second Discover under the first is one word
-        printed twice. On a phone the section buttons leave the bar and the
-        menu's groups are the doors, so here this is the one way in, the menu's
-        first line, wearing the section's own mark and word with no heading
-        over it. One drawing per named thing: the page mark Story wore went
-        with the word. -->
-   <div class="tabgrp" data-sec="discover" data-door="section" role="group" aria-label="Discover">
-    <button type="button" class="vt tabtop" data-tabk="0" data-door="section" aria-pressed="true" title="Discover. Write what happened, see where it lands in your body, and release it."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.8 12c2.4-4.2 5.5-6.3 9.2-6.3s6.8 2.1 9.2 6.3c-2.4 4.2-5.5 6.3-9.2 6.3S5.2 16.2 2.8 12z"/><circle cx="12" cy="12" r="2.9"/></svg><span class="n">Discover</span></button>
+   <!-- DISCOVER IS TWO DOORS, 27 November, his ruling: the page splits into
+        Journal and Imprints. Integer 0 is the Journal and keeps every stored
+        tab and every caller; integer 15 is the Imprints page, the bank, the
+        vault and the release (engine/core.js). The group had no heading and
+        a data-door while it held one door, and the section button was the
+        way in. With two it is laid out the way Play's group is: a heading,
+        then a button per door. -->
+   <div class="tabgrp" data-sec="discover" role="group" aria-label="Discover"><span class="tabgrp-hd" aria-hidden="true">Discover</span>
+    <button type="button" class="vt tabtop" data-tabk="0" aria-pressed="true" title="Journal. Talk or write about what happened, and see the imprints it holds."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.8 12c2.4-4.2 5.5-6.3 9.2-6.3s6.8 2.1 9.2 6.3c-2.4 4.2-5.5 6.3-9.2 6.3S5.2 16.2 2.8 12z"/><circle cx="12" cy="12" r="2.9"/></svg><span class="n">Journal</span></button>
+    <button type="button" class="vt tabtop" data-tabk="15" aria-pressed="false" title="Imprints. Everything you hold and what you have released, with the release beside it."><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="7.5" cy="8" r="3"/><circle cx="16.5" cy="8" r="3"/><circle cx="12" cy="16" r="3.6"/></svg><span class="n">Imprints</span></button>
    </div>
    <!-- PLAY IS EVERY OTHER TOOL, 23 October: "If I click on play, then I get
         all the other tools." His Play order first, then the four that left
@@ -1315,6 +1313,32 @@
    <div id="games" class="iq"></div>
    <div id="deck" class="rel"></div>
    <div id="story" class="iq"></div>
+   <!-- THE IMPRINTS PAGE, 27 November: Discover's second door, integer 15.
+        A static host whose children are the renderers' own hosts, and
+        nothing writes #imps itself: the lesson at #know above, a tab host
+        that carries a second surface cannot also be one. #imp came here from
+        the right rail, where it was the bank the Journal's bank icon opened
+        (impRender, ui/imprints.js), and #strel came from the Journal's third
+        column (stRelPanel, ui/storyui.js), both with the ids every renderer
+        and gate reads. The switch reads Bank | Vault, his words; the vault
+        is what the Journal called the Archive, stVaultPaint into #impvault.
+        #impsmp is the slot the Source AI output area stood in under Release
+        (summaryPanelHtml, ui/summarypanel.js). stImpsRender paints all of
+        it and stImpsClear empties it on the way out. -->
+   <div id="imps" class="iq">
+    <div class="imps-l" id="impsl">
+     <div class="imps-sw" id="impsw" role="group" aria-label="Bank or vault">
+      <button type="button" class="imps-swb" data-impsw="bank" aria-pressed="true" title="Bank: every imprint you hold, to select what you release">Bank</button>
+      <button type="button" class="imps-swb" data-impsw="vault" aria-pressed="false" title="Vault: what you have released, with how many points it holds">Vault<b id="stvn" title="How many points you have released">–</b></button>
+     </div>
+     <div id="imp"></div>
+     <div id="impvault" hidden></div>
+    </div>
+    <div class="imps-r" id="impsr">
+     <div class="st-rl" id="strel" aria-label="Release"></div>
+     <div id="impsmp"></div>
+    </div>
+   </div>
    <!-- SETTINGS IN THE CENTRE, NOT IN A MODAL.
 
         It was a sheet over the top of whatever a person was reading, which
@@ -1417,27 +1441,11 @@
         history of its name are at the head of #lpanel now, above Root
         Energetics, which is why the comment that used to stand here is gone
         rather than left to describe a section no longer in this file. -->
-   <!-- ON THE STORY, THIS RAIL IS THE IMPRINTS PAGE. GO in TASKS.md, his
-        words: "the information pane then becomes an imprints and the
-        protocol." The imprints came here whole, with the id every renderer and
-        gate reads. It is the rail's first section now that the summary has
-        moved to the left rail; nothing here held a fixed position on the
-        summary being first, only on the summary being hidden on the Story,
-        which never depended on where it sat.
-        Shown on the Story only, and the rail's other sections are hidden
-        there except Selection, which is where an imprint's Detail opens.
-
-        THE RAIL STEPS ASIDE ON THE STORY AND THE BANK BRINGS IT BACK. Round
-        IJ wired in the three column Story, and his ruling for it, round HY,
-        was "feel free to break that right navigation". The release that sat
-        under this section went into the Story's own third column with its id,
-        #strel, so its section is gone rather than left empty. ui/storyui.js
-        empties #imp on the way out, so a hidden rail never holds a stale
-        reading. -->
-   <div class="lsec st-rail" data-rail="right" data-sec="simp">
-    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="7.5" cy="8" r="3"/><circle cx="16.5" cy="8" r="3"/><circle cx="12" cy="16" r="3.6"/></svg>Imprints</span><i></i></button>
-    <div class="lsec-bd"><div id="imp"></div></div>
-   </div>
+   <!-- THE IMPRINTS LEFT THIS RAIL, 27 November. From round GO this was the
+        rail's Imprints section, #imp, which the Journal's bank icon brought
+        back beside the page. #imp is on the Imprints page now (#imps above),
+        which is a tab of its own, so the section went rather than staying as
+        an empty fold. -->
    <!-- TODAY LEFT THIS RAIL FOR THE SUMMARY'S CENTRE, 21 November. The daily
         summary, ui/daily.js, stood here as the Summary's side column on the
         funnel review's placement F24, and the Summary redesign's brief moved

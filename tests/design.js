@@ -1431,7 +1431,8 @@ console.log('\n=== the child treatment holds on every lighting LIGHTINGS names =
   for(const L of LIGHTINGS.map(x=>x[0])){
    setLighting(L);
    let gi=0; for(let i=0;i<PEOPLE.length;i++)if(PEOPLE[i].nm==='Gordon')gi=i;
-   loadP(gi); setTab(TAB.STORY); stRender();
+   /* the bank, #imp, is the Imprints page's since 27 November */
+   loadP(gi); setTab(TAB.IMPRINTS); render();
    await new Promise(r=>setTimeout(r,220));
    /* READ ONCE THE LIGHTING HAS ARRIVED. The body's background transitions
       between lightings, measured at 208 on its way to 232 on glasswhite 220ms

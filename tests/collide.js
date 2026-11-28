@@ -400,7 +400,9 @@ for(const w of [[1680,1020],[1440,960],[1280,900],[1180,820],[2560,1400]]){
    Measured as a press at each control's centre, the way a hand lands, and not
    as a rectangle compared with a rectangle.
    ============================================================ */
-/* the journal page, named Discover since 23 October; the integer is still TAB.STORY */
+/* the journal page, named Discover since 23 October and Journal since 27
+   November, when Discover split into Journal and Imprints; the integer is
+   still TAB.STORY, and the Imprints page is TAB.IMPRINTS */
 console.log('\n=== Discover: every visible control takes a press, short windows too ===');
 /* AND IN THE FULL VIEW, 2 November, his words: "use a left menu and the right
    menu." Dashboard brings back the left column with the Journal's own rail in
@@ -408,7 +410,12 @@ console.log('\n=== Discover: every visible control takes a press, short windows 
    press is measured three ways at every window: Simple, which is where a
    person lands and is the row this check always measured, Full, and Full
    with the bank open, which is the widest the row gets. */
-for(const w of [[1366,657],[1280,600],[1600,700],[1600,1000],[390,844]])for(const md of ['simple','full','full, bank open']){
+/* SPLIT, 27 November: Simple and Full are one view now (STV.dash starts true
+   and its door is not drawn), and the bank is a page of its own, so the press
+   is measured on the Journal and on the Imprints page at every window, the
+   Journal with its rail shut as it lands and opened by its fold, and the
+   Imprints page with a pick made so Detail is live. */
+for(const w of [[1366,657],[1280,600],[1600,700],[1600,1000],[390,844]])for(const md of ['journal','journal, rail open','imprints']){
  await p.setViewportSize({width:w[0],height:w[1]});await p.waitForTimeout(200);
  /* EACH WINDOW STARTS CLEAN, with no drill carried over from an earlier
     section of this file. The bank shows the rail's Selection section, where a
@@ -418,14 +425,17 @@ for(const w of [[1366,657],[1280,600],[1600,700],[1600,1000],[390,844]])for(cons
     drill opened on purpose in the bank, on main and on this branch, Simple
     and Full: Close takes the press every time. A carried over drill is state
     from another check, so it is shut here, the way loadP resets the person. */
- await p.evaluate(md=>{if(typeof rdClose==='function')rdClose();loadP(0);STV.dash=md!=='simple';setTab(TAB.STORY);render();
-  if((md==='full, bank open')!==!!STV.bank)stBank();},md);await p.waitForTimeout(400);
+ await p.evaluate(md=>{if(typeof rdClose==='function')rdClose();loadP(0);setTab(TAB.STORY);render();
+  var shut=document.body.classList.contains('lshut');
+  if((md==='journal, rail open')===shut){var f=document.getElementById('lfold'); if(f)f.click();}},md);await p.waitForTimeout(400);
  /* THE JOURNAL IS VOICE ONLY NOW, round of 29 October: there is no reply box
     or send to fill, only srcTurnCommit, the one door a turn lands through
     whether it is typed or spoken (see the ruling at stMic in ui/storyui.js).
     No real microphone in this check, so it calls the door directly. */
  await p.evaluate(()=>{srcTurnCommit('I keep replaying what she said and I am furious and ashamed.');});
  await p.waitForTimeout(500);
+ if(md==='imprints'){await p.evaluate(()=>{setTab(TAB.IMPRINTS);render();
+  var pill=document.querySelector('#imp [data-imp]'); if(pill)pill.click();});await p.waitForTimeout(400);}
  const r=await p.evaluate(()=>{
   const vw=innerWidth,vh=innerHeight,out={n:0,bad:[]};
   const clipped=(el,x,y)=>{for(let a=el.parentElement;a&&a!==document.documentElement;a=a.parentElement){
@@ -441,9 +451,9 @@ for(const w of [[1366,657],[1280,600],[1600,700],[1600,1000],[390,844]])for(cons
    if(h!==el&&!el.contains(h))out.bad.push((el.id?'#'+el.id:el.tagName.toLowerCase()+'.'+String(el.className).split(' ')[0])
     +' "'+(el.textContent||el.value||'').trim().slice(0,18)+'" at '+Math.round(y)+'px under '+(h?(h.id?'#'+h.id:h.tagName.toLowerCase()):'nothing'));});
   return out;});
- ok(r.n>0&&r.bad.length===0,'Discover'+(md==='simple'?'':', '+md+',')+' at '+w[0]+' by '+w[1]+': each of '+r.n+' visible controls takes a press at its centre'
+ ok(r.n>0&&r.bad.length===0,'Discover, '+md+', at '+w[0]+' by '+w[1]+': each of '+r.n+' visible controls takes a press at its centre'
   +(r.bad.length?': '+r.bad.join('; '):''));}
-await p.evaluate(()=>{if(STV.bank)stBank(); STV.dash=false; stRender();});
+await p.evaluate(()=>{setTab(TAB.STORY); render();});
 /* ============================================================
    THE CLIMB, 21 November. The board the Compass tab opens on, its two poles
    (first an up arrow and a down arrow, on his words "a distinct point on

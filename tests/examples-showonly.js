@@ -138,8 +138,12 @@ const TEXT='I was furious and ashamed and I could not stop going over it. I said
        #stuni, not hidden, and a box with real size */
     const fc=document.getElementById('srcface'), un=document.getElementById('stuni'), fb=fc&&fc.getBoundingClientRect();
     out.ctl.face=!!(fc&&un&&un.contains(fc)&&!fc.hidden&&fb.width>100&&fb.height>100);
+    /* the release is the Imprints page's since 27 November, so it is read
+       there and the Journal put back for the commit below */
+    setTab(TAB.IMPRINTS); await wait(30);
     out.ctl.strun=!document.getElementById('strun')
      &&((document.querySelector('#strel .show-note')||{}).textContent||'')===line('release');
+    setTab(TAB.STORY); await wait(30);
     /* 3 . the story commit, the way the button calls it */
     clear(); ST_TEXT=TEXT; ST_PARSED=parseStory(TEXT);
     const sc=stCommit(); out.refused.commit=!!sc&&sc.ok===false&&sc.why==='example'; heard('story','commit');

@@ -377,10 +377,9 @@ function setTab(i){
      nothing on the left opens by itself on the Field any more */
   WANT[TAB.FIELD]={left:[],right:['you']};
   WANT[TAB.COMPASS]={right:['you']};
-  /* the Story's rail is the imprints since GO, opened by the bank now. The
-     release went into the Story's own third column, round IJ, so it has no
-     rail section left to open. */
-  WANT[TAB.STORY]={right:['simp']};
+  /* the Story's rail carried the imprints from GO until 27 November, when
+     they became the Imprints page (TAB.IMPRINTS), so the Journal seeds
+     nothing in the rail any more. */
   /* the Character page's words are the right rail's own section, round PE */
   WANT[TAB.MASKS]={right:['chr']};
   /* the Summary seeded the rail's Today section open here until 21 November,
@@ -419,6 +418,10 @@ function setTab(i){
     once was. */
  if(i===TAB.PRACTITIONER&&typeof renderPrac==='function')renderPrac();
  if(i===TAB.GAMES){ if(!GAME)GAME='lg'; gmRender(); } else lgStop();
+ /* THE IMPRINTS PAGE, 27 November: drawn on the way in and emptied on the
+    way out, the rule Summary keeps, because #imp and #strel are static
+    hosts and stPaintAll reaches them on every keystroke on the Journal. */
+ if(i===TAB.IMPRINTS)stImpsRender(); else stImpsClear();
  if(i===TAB.STORY)stRender();
  else { if(typeof stRailClear==='function')stRailClear();
   /* round TF: she only runs where she is seen, same rule pause/resume
