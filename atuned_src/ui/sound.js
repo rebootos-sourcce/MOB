@@ -1327,5 +1327,10 @@ function speakStudio(text,rate,style,onend,onfail){
   /* a browser that refuses to play without a fresh press says so here, and
      that is a failure the run hears about rather than a silence */
   try{ var p=el.play(); if(p&&p.catch)p.catch(function(){ clearTimeout(wait); lose(0); }); }
-  catch(e){ clearTimeout(wait); lose(0); }});
+  catch(e){ clearTimeout(wait); lose(0); }
+ },function(){
+  // A rejected synthesis request is an audio failure, never an unhandled promise.
+  // lose checks the sequence so an expired request cannot interrupt a later line.
+  clearTimeout(wait); lose(0);
+ });
  return true;}
