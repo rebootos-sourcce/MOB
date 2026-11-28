@@ -3578,7 +3578,7 @@ console.log('\n=== practitioner mode: the switch, the fifth section and the sket
   const sn=$q('#secbar .secb[data-sec="practitioner"] .sn').getBoundingClientRect();
   const tn=$q('#tabbar .tabtop[data-tabk="'+TAB.PRACTITIONER+'"] .n').getBoundingClientRect();
   o.below=tn.top>=sn.bottom; o.dx=Math.round((tn.left-sn.left)*10)/10;
-  const lhost=$q('#prlist'), chost=$q('#prac'), cr=chost.getBoundingClientRect();
+  const chost=$q('#prac'), cr=chost.getBoundingClientRect();
   /* ROUND [PHASE 1]: THE LEFT RAIL CARRIES THE CLIENT LIST AGAIN, his own
      ruling, "bring back the left rail, and move the clients there." #prac
      is the centre now, name and body figure only, and auto-opens the first
@@ -3586,7 +3586,13 @@ console.log('\n=== practitioner mode: the switch, the fifth section and the sket
      js). Signed out, as this gate runs, there is no live roster, so the
      honest check here is the left rail's own "Sign in" button, replacing
      the old "nobody yet, send a link" copy this file used to read before
-     sharing moved the empty state onto the rail's own button. */
+     sharing moved the empty state onto the rail's own button.
+
+     OPENED FIRST, because the left column starts shut on his own ruling
+     (GO, ui/ui.js colFold), the same as every other tab: measuring its
+     width before opening it read 0 and failed on a true thing. */
+  if($q('body').classList.contains('lshut'))$q('#lfold').click();
+  const lhost=$q('#prlist');
   o.list={w:Math.round(lhost.getBoundingClientRect().width), len:lhost.innerHTML.length,
    clients:lhost.querySelectorAll('.pr-client').length,
    headings:[...lhost.querySelectorAll('.pr-rail-h span:first-child')].map(e=>e.textContent),
@@ -3596,15 +3602,18 @@ console.log('\n=== practitioner mode: the switch, the fifth section and the sket
   /* THE RIGHT RAIL NOW CARRIES THREE SECTIONS, What is running in front of
      Selection and Notes behind it, his words: "the right rail is our system
      information window." The left rail shows only its own Clients section,
-     opened first: the left column starts shut on his own ruling (GO,
-     ui/ui.js colFold), the same as every other tab, so this reads it after
-     its own fold control rather than assuming it arrives open. */
+     already opened above. */
   o.rails=[...document.querySelectorAll('.mid .col')].filter(c=>c.offsetParent).map(c=>c.id).join(',');
-  if($q('body').classList.contains('lshut'))$q('#lfold').click();
   o.leftSecs=[...document.querySelectorAll('#lpanel>.lsec')].filter(e=>getComputedStyle(e).display!=='none')
    .map(e=>e.getAttribute('data-sec')).join(',');
   o.railSecs=[...document.querySelectorAll('#rpanel>.lsec')].filter(e=>getComputedStyle(e).display!=='none')
    .map(e=>e.getAttribute('data-sec')).join(',');
+  /* THE WAY BACK TO THE SWITCH, round [Phase 1]: pracModeGroup, the in-page
+     "Open account" row with #pracacc, is deleted (the switch is already one
+     tap away in the profile menu, the gate earlier in this file walks that
+     route by name), so this goes to Account the plain way, through Settings. */
+  ACC_OPEN='account'; setTab(TAB.SETTINGS); await wait();
+  o.back=S.tab===TAB.SETTINGS&&ACC_OPEN==='account'&&!!$q('#acprac');
   return o;});
  ok(JSON.stringify(off0)==='["discover","play","flow","embody"]'&&o.grpOff==='none',
   'a new profile opens with practitioner mode off: four sections and the practitioner group shut, '+JSON.stringify(off0)+' '+o.grpOff);

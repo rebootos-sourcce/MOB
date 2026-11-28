@@ -11,7 +11,8 @@
 
      1  flip Practitioner mode: no message about saving, the switch reads on,
         the Practitioner section is in the bar, it opens, and its Clients tab
-        is the surface that opens.
+        (TAB.PRACTITIONER's own bar label, core.js) is the surface that opens,
+        with a real client already standing open in the centre.
      2  the profile itself was not written.
      3  a reload keeps it.
      4  a browser that will not keep the setting is told so, and the door
@@ -19,6 +20,17 @@
 
    Checked against the build from before the change, where step 1 fails.
    Called from tests/functional.js, and runnable alone.
+
+   Round [Phase 1] moved what step 1 checks inside #prac. Before the rebuild
+   the centre panel printed the word "Clients" itself, so the host check
+   below matched that text directly. After the rebuild #prac holds only the
+   open client's own name and their body map (practitioner.js, pracCentreHtml):
+   "Clients" now lives on the tab bar label and the left rail heading only,
+   never inside #prac, so matching /Clients/ against the host's own text is
+   checking a surface that no longer carries that word and failed for that
+   reason, not because anything broke. The host check now asks what #prac is
+   actually for: a real client auto opened with a name in its heading, per
+   pracAutoOpen, rather than the empty "Open a client to read it here" state.
    ============================================================ */
 const path=require('path');
 
@@ -46,12 +58,14 @@ async function deviceGate(browser,FILE,ok,booted){
   o.tab=S.tab===TAB.PRACTITIONER;
   const ct=$q('#tabbar .tabtop[data-tabk="'+TAB.PRACTITIONER+'"]');
   o.clients=!!ct&&!!ct.offsetParent&&/Clients/.test(ct.textContent);
-  const host=$q('#prac'); o.host=!!host&&host.getBoundingClientRect().height>200&&/Clients/.test(host.textContent);
+  const host=$q('#prac'); const h2=host&&host.querySelector('.pr-centre h2.kb-h');
+  o.host=!!host&&host.getBoundingClientRect().height>200&&!!h2
+   &&h2.textContent.trim().length>0&&h2.textContent.trim()!=='Open a client to read it here';
   return o;});
  ok(a.example&&a.has&&a.before==='false'&&a.after==='true'&&!/Nothing saved/.test(a.line)&&a.kind!=='fail',
   'on '+a.name+', a worked example, flipping Practitioner mode reads on and says nothing about saving, '+JSON.stringify({before:a.before,after:a.after,line:a.line,kind:a.kind}));
  ok(a.door&&a.tab&&a.clients&&a.host,
-  'and the Practitioner section is in the bar, opens, and its Clients tab is the surface that opens, '+JSON.stringify({door:a.door,tab:a.tab,clients:a.clients,host:a.host}));
+  'and the Practitioner section is in the bar, opens, its Clients tab is the surface that opens, and a real client stands open in the centre, '+JSON.stringify({door:a.door,tab:a.tab,clients:a.clients,host:a.host}));
  ok(a.dev===true&&a.profBefore===a.profAfter,'the setting is in the device store and the profile was not written, '+JSON.stringify({dev:a.dev,same:a.profBefore===a.profAfter}));
  /* the setting has left the page before the reload, tests/persist.js */
  ok(await require('./persist.js').persisted(pg,()=>{try{return JSON.parse(localStorage.getItem('source.profiles.device')||'{}').practitioner===true;}catch(e){return false;}}),
