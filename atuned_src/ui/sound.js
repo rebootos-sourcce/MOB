@@ -1273,17 +1273,26 @@ var STUDIO={seq:0, el:null, url:''}, STUDIO_WAIT_MS=5000;
    text, the key the server's own
    cache now includes the voice, so a voice change never replays another voice. Held
    for the visit only, the last STUDIO_KEEP_N, never written anywhere. */
-var STUDIO_KEEP=Object.create(null), STUDIO_KEEP_AT=[], STUDIO_KEEP_N=64;
+var STUDIO_KEEP=Object.create(null), STUDIO_KEEP_AT=[], STUDIO_KEEP_N=64,
+    STUDIO_INFLIGHT=Object.create(null);
 function studioAsk(text,style){
  var voice=(typeof CURP!=='undefined'&&CURP&&CURP.ui&&CURP.ui.voiceName)||'marin';
  if(['marin','cedar','coral','sage'].indexOf(voice)<0)voice='marin';
  var k=voice+'\n'+style+'\n'+text, b=STUDIO_KEEP[k];
  if(b)return Promise.resolve({ok:true, blob:b});
- return authVoice(text,style,voice).then(function(r){
+ if(STUDIO_INFLIGHT[k])return STUDIO_INFLIGHT[k];
+ var ask=authVoice(text,style,voice).then(function(r){
   if(r&&r.ok&&r.blob&&!STUDIO_KEEP[k]){
    STUDIO_KEEP[k]=r.blob; STUDIO_KEEP_AT.push(k);
    if(STUDIO_KEEP_AT.length>STUDIO_KEEP_N)delete STUDIO_KEEP[STUDIO_KEEP_AT.shift()];}
-  return r;});}
+  return r;});
+ STUDIO_INFLIGHT[k]=ask.then(function(r){delete STUDIO_INFLIGHT[k];return r;},
+  function(err){delete STUDIO_INFLIGHT[k];throw err;});
+ return STUDIO_INFLIGHT[k];}
+function studioWarm(text,style){
+ if(!studioCan()||!String(text||'').trim())return;
+ // Prefetch only one line ahead, deduplicated with the actual spoken request.
+ studioAsk(text,style).catch(function(){});}
 function studioCan(){
  try{ return typeof Audio==='function'&&typeof URL!=='undefined'&&!!URL.createObjectURL
   &&typeof authVoice==='function'; }catch(e){ return false; }}
