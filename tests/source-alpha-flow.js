@@ -192,6 +192,14 @@ async function main() {
       const loaded = validateProfile(persisted);
       if (!loaded.ok) throw Error(loaded.errs.join('; '));
       const reloaded = parseStoryEntry(loaded.profile.story.entries.at(-1)).imprints.map(i => i.band);
+      /* Release is the Imprints page's own panel since 27 November
+         (ec7a478e): stRelPanel empties #strel and never draws #strun
+         unless S.tab is TAB.IMPRINTS, so Run release has to be read there,
+         the same switch releasechain.js makes for the same reason. stOwn,
+         which stImpsRender calls on the way in, only resets when the open
+         profile changes, never on a tab switch alone, so the verdict and
+         the draft this test just committed are untouched by it. */
+      setTab(TAB.IMPRINTS);
       const run = document.getElementById('strun');
       if (!run || run.disabled) throw Error('Release is unavailable after Commit');
       run.click();
@@ -242,6 +250,10 @@ async function main() {
     await page.evaluate(() => {
       stType();
       document.getElementById('stapply').click();
+      /* "That fits. Draft a reframe" is stRelPanel's own button, painted
+         into #strel, which has been the Imprints page's panel and nobody
+         else's since 27 November (ec7a478e); see the Release switch above. */
+      setTab(TAB.IMPRINTS);
     });
 
     const draft = 'I know I can choose when to check every detail myself.';
