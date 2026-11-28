@@ -8785,18 +8785,18 @@ console.log('\n=== GW: the glossary reaches the Psyche stack, Analytics and Comp
   const want={}; Object.keys(TERM).forEach(k=>{want[k]=unpackOf(TERM[k]);});
   stOpenPsyche('hy'); await new Promise(r=>setTimeout(r,60));
   const card=(document.getElementById('rdrill')||{}).textContent||'';
-  /* the readings row that carried these tiles went with the strip down, 27
-     November, so the sentence is read off the reading table itself, which
-     the reading cards still print (ANA_MET, ui/analytics.js) */
-  const tip=k=>(ANA_MET[k]||{}).tip||null;
+  /* THE ANALYTICS CQ AND DQ READINGS ARE RETIRED, 28 November, with the
+     reading cards (ANA_MET, ui/analytics.js) that were the last thing to
+     print them; the Compass below is where CQ and DQ carry the glossary's
+     sentence now, and it is held against the same unpackOf key. */
   const cps=document.createElement('div'); cps.innerHTML=stDashCompass();
-  return {tiles,want,card,cq:tip('cq'),dq:tip('dq'),ucq:unpackOf('cq'),udq:unpackOf('dq'),
+  return {tiles,want,card,ucq:unpackOf('cq'),udq:unpackOf('dq'),
    ctop:(cps.querySelector('.st-cps-top')||{}).title,cbot:(cps.querySelector('.st-cps-bot')||{}).title};});
  ok(gw.tiles.length===4,'GW: the Psyche stack draws its four tiles on a loaded record, got '+gw.tiles.length);
  ok(gw.tiles.length===4&&gw.tiles.every(x=>gw.want[x.k]&&x.t.indexOf(gw.want[x.k])>=0&&x.a===x.t),
   'GW: each Psyche stack tile\'s tooltip and spoken name carry the glossary\'s sentence for its tier, '+JSON.stringify(gw.tiles.map(x=>x.t)));
  ok(gw.want.hy&&gw.card.indexOf(gw.want.hy)>=0,'GW: and the card the tile opens says the same sentence, read from the same key');
- ok(gw.cq===gw.ucq&&gw.dq===gw.udq&&!!gw.ucq&&!!gw.udq,'GW: the Analytics CQ and DQ readings say the glossary\'s sentence, '+JSON.stringify([gw.cq,gw.dq]));
+ ok(typeof ANA_MET==='undefined'&&!!gw.ucq&&!!gw.udq,'GW: the retired Analytics readings are gone and the glossary still holds a CQ and a DQ sentence for the Compass, '+JSON.stringify([gw.ucq,gw.udq].map(x=>String(x).slice(0,40))));
  ok(gw.ctop===gw.ucq&&gw.cbot===gw.udq&&!/\b112\b/.test(gw.cbot||''),'GW: the Compass\'s CQ and DQ titles are the glossary\'s, and no flat 112, '+JSON.stringify([gw.ctop,gw.cbot]));
  await page.evaluate(()=>{if(typeof rdClose==='function')rdClose();loadP(0);render();});
 }

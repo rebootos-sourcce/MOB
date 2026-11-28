@@ -1,5 +1,6 @@
 {
   "about": [
+    "Lowered 28 November, on retiring the Analytics reading cards (ANA_MET and anaMetCard, ui/analytics.js), which had had no door on any page since the 27 November strip down: unpack 916 to 896, pct 1876 to 1870. No check that holds something a person can reach was let off. unpack: its walk opened five of those cards by calling anaGo('met',...) directly, which is 10 checks per context and 20 across its two, measured by instrumenting that loop on the pre-retirement commit ceded706 (CARDWALK 10, twice, 916 passed). In their place each context adds one check that the cards and the met kind are gone, and the coverage line drops Pull and Self-read shadow, which nothing prints as a label any more, for one check that nothing does: 916 - 20 + 2 - 2 = 896. pct: the one check that opened all six cards and read their decimals is gone, once per person (Marcus, James, Diane) per width, 6 checks: 1876 - 6 = 1870. Read off green runs of each gate on this change, unpack 896 passed, 0 failed, and pct 1870 passed, 0 failed.",
     "Raised 28 November: ritweek 97 to 107, read off the real CI run on f2efe07c (the Ritual layout rebuild, the New/Start fix and the right-rail cleanup) that blocked deploy on an untouched floor. RW3/RW13 (always four tiles), RW6b (History never shows the Record's month) and RW14 (Avatar stays inside the rail's visible bottom with Kept by point shut) are the real new checks, plus three mutant proofs (pad3, heldback, monthback). Confirmed by a direct rerun on this exact commit, same 107.",
     "Lowered 27 November, on the owner's Analytics strip down (the coherence card, the seven stat boxes, the readings row, Where it runs, The chain and the shut list taken off the page, every chart a squarified treemap): unpack 966 to 916, pct 1974 to 1876. Not lowered to get green, and no check was let off. unpack: its walk held the reading cards at #ana, where the cards are never drawn (they render in #rdrill), so what it actually scanned was the readings row on the page, once per card; with the row gone it held nothing, and its coverage checks failed. The holds now read #rdrill, where the cards are, and the session card is opened on two real sessions instead of none, so its Overshoot and Installed are held for the first time. pct: every badge, ring and bubble figure the removed hero, tiles and bubbles printed was a check, per person per width; the treemap figures replace the bubbles one for one and the identification figure is gone with its block. Read off green local runs of each gate alone on the change, unpack 916 passed, 0 failed, and pct 1876 passed, 0 failed.",
     "Moved 27 November with Discover's split into Journal and Imprints, each read off this branch's own runs: safepage 105 to 104 (the held 390 Bank branch no longer runs, the list is on screen there), glassblue 245 to 239 (three Discover cards and the icon row left the page), guide 72 to 90 (the Imprints page's own guide), srcconvo 79 to 75 (the unreachable hero view is no longer walked), lightmenu 4564 to 4868, sniffpage 70 to 74 and design 195 to 206, each above its slack on this run.",
@@ -147,7 +148,7 @@
     "practitioner": 60,
     "release-screen": 153,
     "release-percent": 8,
-    "unpack": 916,
+    "unpack": 896,
     "layer-observatory": 45,
     "recordlink": 75,
     "golden": 150,
@@ -173,7 +174,7 @@
     "allowance": 84,
     "money": 71,
     "releasechain": 110,
-    "pct": 1876,
+    "pct": 1870,
     "srcintro": 122,
     "anatomy": 37,
     "avatarpurpose": 55,

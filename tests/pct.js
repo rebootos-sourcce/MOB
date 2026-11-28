@@ -234,13 +234,14 @@ const READ=`(function(){
     /* the treemap's own figures, 27 November: the bubbles and the
        identification figure went with the strip down */
     const bubbles=ana?Array.from(ana.querySelectorAll('.ana-tm-v')).map(e=>e.textContent.trim()):[];
-    /* every one of the six readings opened as a card, so the trail's figures are read too */
-    const cards=[];
-    for(const k of Object.keys(ANA_MET)){const h=anaMetCard(R,k); if(h)cards.push(h.replace(/<[^>]+>/g,' '));}
+    /* the six reading cards this opened and read are retired, 28 November
+       (ANA_MET, ui/analytics.js): no page could open them, so their figures
+       were checks on markup no person sees. The trail's cards that a press
+       can still reach are read by their own gates. */
     const rec=document.getElementById('rec');
     const recCells=rec?Array.from(rec.querySelectorAll('.rec-row')).map(x=>({k:(x.querySelector('.rec-k')||{}).textContent,
      a:(x.querySelector('.rec-a')||{}).textContent,b:(x.querySelector('.rec-b')||{}).textContent,d:(x.querySelector('.rec-d')||{}).textContent})):[];
-    return {unread:!!R.unread,badges,bubbles,t,cards,recCells};},who);
+    return {unread:!!R.unread,badges,bubbles,t,recCells};},who);
    /* a record with nothing past five has no Running hot badges, and since
       the strip down, 27 November, the treemap's figures are the rest of
       what Analytics prints, so either is something to check */
@@ -249,8 +250,6 @@ const READ=`(function(){
    ok(!s.badges.some(dec),'S3: '+tag+'no badge on Analytics prints a decimal, '+J(s.badges.filter(dec).slice(0,6)));
    ok(s.bubbles.length>0&&!s.bubbles.some(dec),'S3: '+tag+'no treemap square prints a decimal or its size floor, '+J(s.bubbles.filter(dec).slice(0,6)));
    ok(!/\bCQ (?:up|down) \d/.test(s.t)&&!/ per cent\b/.test(s.t),'S3: '+tag+'no change in CQ is a signed move and no figure says per cent');
-   const cardDec=s.cards.map(c=>(c.match(/(?<![\d.×])\b\d+\.\d{1,2}\b(?!\s*(?:Hz|×))/g)||[])).reduce((a,b)=>a.concat(b),[]);
-   ok(cardDec.length===0,'S3: '+tag+'the six reading cards print no decimal figure, '+J(cardDec.slice(0,6)));
    const kinded=s.recCells.filter(c=>/Coherence|Shadow|Carried|installed|Overshot/.test(c.k||''));
    ok(kinded.every(c=>/^(\d+%|–)$/.test((c.a||'').trim())&&/^(\d+%|–)$/.test((c.b||'').trim())&&!/[+−-]\d/.test(c.d||'')),
     'S3: '+tag+'the record prints each score as two percents and a word, '+J(kinded.slice(0,3)));

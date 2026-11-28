@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v3554 5d9ec292 2026-11-28 16:40"><head><meta charset="utf-8">
+<html lang="en" data-build="v3555 ceded706 2026-11-28 17:51"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -77951,7 +77951,8 @@ function anaTmHtml(r){
      than drawing an empty chain over a chain somebody has */
   if(k==='chain'&&r.locked&&r.locked.length===SEE_ORDER.length){html[k]=anaTmStillHtml(lens,lockPanelHtml('sab',{brief:true}));return;}
   var items=anaTmItems(r,k);
-  if(k==='chain'&&!items.length){html[k]=anaTmStillHtml(lens,r.unread?'Not read yet.':'Nothing is running.');return;}
+  /* an empty state, declared as one for tests/nocaption.js, 28 November */
+  if(k==='chain'&&!items.length){html[k]=anaTmStillHtml(lens,'<span data-say="empty">'+(r.unread?'Not read yet.':'Nothing is running.')+'</span>');return;}
   html[k]=anaTmLensHtml(r,lens,items);});
  var row=function(ks,cls){return '<div class="ana-tm-row'+(cls||'')+'">'+ks.map(function(k){return html[k];}).join('')+'</div>';};
  /* THREE ROWS, 27 November, his ruling: Masks, Domains and Archetypes
@@ -78051,15 +78052,21 @@ function anaRender(){
     stat boxes, the paragraph under those. Gone from below: the readings
     row, Where it runs and its caption, The chain, and the list of shut
     laws, which the laws' own box now shows by size. The six reading cards
-    (ANA_MET, anaMetCard) are still built and still tested, and no press on
-    this page opens them any more; whether they get a new door or go is a
-    later call, not made here. */
+    that row opened are retired with it, 28 November, below. */
  var out='<div class="ana-wrap">'+anaTmHtml(r);
  /* THE COUNT IS lawIn's, the same test that puts the dash on a law's cell
-    above, so the number here and the dashes there cannot disagree */
+    above, so the number here and the dashes there cannot disagree.
+    THE DOOR IS NAMED OFF THE BAR, 28 November. This said "Answer them in
+    Energetics", and the bar has printed Intake for the questions tab since
+    the menu rule renamed it, so the one line telling a person where to go
+    named a tab they cannot find. It reads TABDEF by .k now, the way every
+    other caller needing a tab's entry does, so a rename moves it too. And
+    it declares itself an empty state, the one thing the no caption rule
+    lets a surface say under a box, so tests/nocaption.js reads it as kept. */
  var unm=SI.filter(function(l){return !lawIn(l.nm);}).length;
- if(unm)out+='<p class="sum-p" style="margin-top:12px"><b>'+unm+'</b> law'+(unm===1?' is':'s are')
-  +' not answered yet. Answer them in Energetics.</p>';
+ var qtab=(TABDEF.filter(function(t){return t.k===TAB.QUESTIONS;})[0]||{}).nm||'Intake';
+ if(unm)out+='<p class="sum-p" style="margin-top:12px" data-say="empty"><b>'+unm+'</b> law'+(unm===1?' is':'s are')
+  +' not answered yet. Answer them in '+esc(qtab)+'.</p>';
  out+=anaHot(r);
  if(H.length>1){
   out+='<div class="pm-eye" style="margin-top:20px">'+H.length+' sessions</div>'
@@ -78434,111 +78441,18 @@ function anaMaskCard(r,nm){
   +'<div class="pm-eye">Underneath it</div>'+anaAddrRows(all.filter(function(n){return n.sq>0;}),10);
  return h+anaSplits(all)+anaRunning(r,all,'Running under it')+anaStories(sb);}
 
-/* ---- the six readings ---- */
-/* WHAT EACH ONE IS, in words, and what the tile prints. Every figure is one
-   compute() already returns; nothing is measured here that the engine did not
-   measure. Shadow, pull and expression are worked out from the addresses,
-   which is said on each, because a figure that is arithmetic must not read as
-   a second instrument. */
-/* EACH FIGURE IS THE REGISTRY'S, 17 October, percent phase 2: fig returns the
-   ring's fill and the pill's figure off one kind (engine/pct.js), so CQ and
-   expression print as percents beside the shadow and the pull, which already
-   did, and overshoot and installed stop printing a decimal over a fill ten
-   times its size. */
-function anaPctFig(kind,v,r){return {p:pct(kind,v)||0,raw:fmtPct(kind,v,{unread:r&&r.unread})};}
-/* CQ AND DQ ARE THE GLOSSARY'S, task #80. Both tips were typed here and
-   said each figure a second way beside the sentence engine/data/gloss.js
-   already gives it, which is the one table every other CQ and DQ tooltip
-   reads. A getter, so the table is asked when the tile is drawn and not
-   when this file loads. THE CONTENT GAP CLOSED, 18 November: Self-read
-   shadow, Pull, Overshoot and Installed kept their own words here because
-   the table had no sentence for them, which left every other screen that
-   prints those words (the session card, the axis card, the pole drill, the
-   release ledger) nothing to ask. Their sentences live in gloss.js now and
-   these read them the way CQ and DQ do. Expression keeps its own words: the
-   table's bare expression is the numerology number. */
-var ANA_MET={
- cq:{nm:'Coherence',seat:'Crown',txt:'CQ',
-  get tip(){return unpackOf('cq');},
-  fig:function(r){return anaPctFig('cq',r.CQ,r);}},
- dq:{nm:'Shadow',seat:'Root',txt:'DQ',
-  get tip(){return unpackOf('dq');},
-  fig:function(r){return anaPctFig('dq',r.DQ,r);}},
- lawsq:{nm:'Self-read shadow',seat:'Root',txt:'SQ',
-  get tip(){return unpackOf('self-read shadow');},
-  fig:function(r){return r.lawSQ===null?{p:0,raw:'–'}:anaPctFig('lawsq',r.lawSQ,r);}},
- pull:{nm:'Pull',seat:'Solar',txt:null,
-  get tip(){return unpackOf('pull');},
-  fig:function(r){return anaPctFig('pull',r.PULL,r);}},
- ex:{nm:'Expression',seat:'Throat',txt:null,
-  tip:'Expression is your coherence with the pull taken off it, so it is how much of it reaches what you do.',
-  fig:function(r){return anaPctFig('expression',r.EX,r);}},
- jq:{nm:'Overshoot',seat:'3rd Eye',txt:null,
-  get tip(){return unpackOf('overshoot');},
-  fig:function(r){return anaPctFig('overshoot',r.JQ,r);}},
- pole:{nm:'Installed',seat:'Heart',txt:null,
-  get tip(){return unpackOf('installed');},
-  fig:function(r){return anaPctFig('pole',r.poleMean,r);}}};
-function anaMetRow(r,k){
- var M=ANA_MET[k], f=M.fig(r);
- return '<button type="button" class="ad-r" data-ana="met|'+k+'" title="'+esc('Open '+M.nm)+'">'
-  +crBadge(M.seat,f.p,{size:'sm',raw:f.raw,title:M.nm})
-  /* the word carries its sentence the way the tile's does, a data-tip on the
-     label and no tabindex, because the row is already the focusable button */
-  +'<span data-tip-k="'+esc(M.nm)+'" data-tip="'+esc(M.tip)+'">'+esc(M.nm)+'</span><em>reading</em></button>';}
-function anaMetCard(r,k){
- var M=ANA_MET[k]; if(!M)return null;
- var f=M.fig(r), h=anaHead('Reading',M.nm);
- h+=anaKv([['Now',cr(M.seat,f.p,{size:'md',raw:f.raw,text:M.txt,hot:false,label:M.nm})]]);
- h+='<p class="ad-p">'+esc(M.tip)+'</p>';
- var bySeat=function(){return anaBySeat(W.filter(function(n){return n.sq>0;}));};
- if(k==='cq'){
-  var laws=SI.slice().sort(function(a,b){
-   var ia=lawIn(a.nm),ib=lawIn(b.nm); if(ia!==ib)return ia?-1:1; return S.law[a.nm]-S.law[b.nm];});
-  h+='<p class="ad-p">The '+SI.length+' laws, each answered from nothing to ten, added together. '
-   +(r.complete?'All '+SI.length+' are in. '+(r.tier?'The band is <b>'+esc(r.tier.toLowerCase())+'</b>.':'')
-    :'<b>'+(SI.length-r.answered)+'</b> are still to answer, and each counts nothing until it is.')
-   +' The shadow does not touch this number. It pulls on expression.</p>'
-   +'<div class="pm-eye">The laws, weakest first</div><div class="ad-rows">'+laws.map(function(l){
-    var read=lawIn(l.nm), v=S.law[l.nm];
-    return '<button type="button" class="ad-r" data-ana="'+anaKey('law',l.nm)+'" title="'+esc('Open '+l.nm)+'">'
-     +crBadge(l.b,read?pct('law',v)||0:0,{size:'sm',raw:read?fmtPct('law',v):'\u2013',title:l.nm+(read?'':', not read yet')})
-     +'<span>'+esc(l.nm)+'</span><em>'+(!read?'not read yet':v<4?'shut':v>=7?'open':'working')+'</em></button>';}).join('')+'</div>';}
- else if(k==='dq'){
-  h+='<p class="ad-p">It counts every one of your '+NODES.length+' addresses, under the line at 40% as well as over it. '
-   +'It is worked out from the addresses and is not measured on its own. It does not touch CQ. It feeds the pull.</p>'
-   +'<div class="pm-eye">Where it sits, by point</div>'+bySeat()
-   +'<div class="pm-eye" style="margin-top:12px">Heaviest fetters</div>'+anaAddrRows(W.filter(function(n){return n.sq>0;}).sort(anaBySq),8);}
- else if(k==='pull'){
-  /* the weights in the unit every address now prints, 17 October */
-  h+='<p class="ad-p">Each address drags by how heavy it is, on a curve. At 20% it barely drags, '
-   +'at 50% it drags half as hard as it can, and from 70% up it drags almost fully. Pull is the average drag across all '
-   +NODES.length+' addresses, so a few heavy places pull harder than many light ones.</p>'
-   +'<div class="pm-eye">Pulling hardest</div><div class="ad-rows">'
-   +W.filter(function(n){return n.sq>=2;}).sort(anaBySq).slice(0,10).map(function(n){
-    return addrRow(n,{ana:true,em:'drags '+fmtPct('pull',leverPull(n.sq))});}).join('')+'</div>'
-   +'<div class="pm-eye" style="margin-top:12px">By point</div>'+bySeat();}
- else if(k==='ex'){
-  var top=(typeof exCeiling==='function')?exCeiling():null;
-  h+='<p class="ad-p">Expression is CQ times what the pull leaves. CQ <b>'+fmtPct('cq',r.CQ)+'</b>, pull <b>'
-   +fmtPct('pull',r.PULL)+'</b>, expression <b>'+fmtPct('expression',r.EX)+'</b>.'
-   +(top!=null?' With every charge released it would read <b>'+fmtPct('expression',top)+'</b> on the laws as they stand.':'')+'</p>'
-   +'<div class="pm-eye">What makes it</div><div class="ad-rows">'+anaMetRow(r,'cq')+anaMetRow(r,'pull')+'</div>';}
- else if(k==='jq'){
-  var ex=W.filter(function(n){return n.jq>=4;}).sort(function(a,b){return b.jq-a.jq;});
-  h+='<p class="ad-p">The figure is the average across your addresses. '+(ex.length?'<b>'+ex.length+'</b> '
-   +(ex.length===1?'address is':'addresses are')+' overshot far enough to count, where the opposite will not let the fetter shut.'
-   :'No address is overshot far enough to count.')+'</p>'
-   +(ex.length?'<div class="pm-eye">Overshot</div>'+'<div class="ad-rows">'+ex.slice(0,10).map(function(n){
-    return addrRow(n,{ana:true,em:'overshot'});}).join('')+'</div>':'');}
- else if(k==='pole'){
-  var inn=W.filter(function(n){return n.pole>=4;}).sort(function(a,b){return b.pole-a.pole;});
-  h+='<p class="ad-p">The figure is the average across your addresses of how far the opposite has passed what is still held there.</p>'
-   +'<div class="pm-eye">Each opposite</div>'+anaBars(CHILD.map(function(c){
-    return {key:anaKey('axis',c.nm),lbl:esc(c.opp),v:S.replace[c.nm]||0,c:seatCol(c.seat),
-     fig:'for '+esc(c.nm.toLowerCase()),title:'Open '+c.nm+' toward '+c.opp};}).sort(function(a,b){return b.v-a.v;}))
-   +(inn.length?'<div class="pm-eye" style="margin-top:12px">Where it is in</div>'+anaAddrRows(inn,10):'');}
- return h;}
+/* THE SIX READING CARDS ARE RETIRED, 28 November. ANA_MET and anaMetCard
+   outlived the strip down of the day before with no press on any page left to
+   open them: the readings row was their only door and it went with the
+   coherence card. They were kept "for a later call", which left a drawer of
+   built, tested markup no person could reach, so a gate held words nobody
+   reads and the reading each card said was already said by the glossary
+   (engine/data/gloss.js) on every tooltip and in the Insight rail's drills.
+   The team's pick was to retire them rather than cut them a second door,
+   because a second route to the same reading is the defect the no caption
+   rule names. The 'met' kind goes with them, so anaCard returns null for it
+   and a stale pick draws the same Not running now card as any name the
+   reading no longer holds. */
 /* one row of the record, every figure the snapshot kept */
 function anaSessCard(r,nm){
  var H=anaHist(), i=+nm, x=H[i]; if(!x)return null;
@@ -78576,12 +78490,10 @@ function anaCard(r,P){
  if(P.k==='dom')return anaDomCard(r,P.nm);
  if(P.k==='arch')return anaArchCard(r,P.nm);
  if(P.k==='mask')return anaMaskCard(r,P.nm);
- if(P.k==='met')return anaMetCard(r,P.nm);
  if(P.k==='sess')return anaSessCard(r,P.nm);
  return null;}
 function anaStepName(P){
  if(P.k==='addr'){var n=BY[+P.nm]; return n?n.k:P.nm;}
- if(P.k==='met')return (ANA_MET[P.nm]||{}).nm||P.nm;
  if(P.k==='sess')return 'Session '+(+P.nm+1);
  return P.nm;}
 function anaCrumbs(){
@@ -102168,7 +102080,9 @@ function recRender(){
  if(H.length<2){
   /* HS sweep: the refusal says what is missing. The sentence on when a
      snapshot is written explained the mechanism and is cut. */
-  h+='<p class="sum-p">'+(H.length?'One snapshot on file. ':'No snapshots yet. ')
+  /* declared an empty state, 28 November: it names what puts the record in,
+     which is what tests/nocaption.js lets a surface say */
+  h+='<p class="sum-p" data-say="empty">'+(H.length?'One snapshot on file. ':'No snapshots yet. ')
    +'Two are needed before there is a distance to read.</p>';
   host.innerHTML=h; return;}
 
@@ -118569,5 +118483,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="008645506"></div>
+<div id="eof" hidden data-len="008639512"></div>
 </body></html>

@@ -11628,9 +11628,13 @@ console.log('\nGW · the glossary reaches every tooltip it should, task #80');
     type are gone, and the table is asked in their place. */
  const fs=require('fs'), path=require('path'), src=f=>fs.readFileSync(path.join(__dirname,'..','atuned_src','ui',f),'utf8');
  const ana=src('analytics.js'), sd=src('stdash.js');
+ /* THE TILES ARE RETIRED, 28 November, with the rest of the reading cards
+    (ANA_MET, ui/analytics.js), so there is no tip left to ask for. What
+    this held still holds: no typed CQ or DQ sentence is back in the file,
+    and no var ANA_MET with a getter of its own has crept back either. */
  ok(ana.indexOf("CQ is your coherence number, built only")<0&&ana.indexOf("Shadow is all the charge left")<0
-  &&/get tip\(\)\{return unpackOf\('cq'\);\}/.test(ana)&&/get tip\(\)\{return unpackOf\('dq'\);\}/.test(ana),
-  'the Analytics CQ and DQ tiles read their tip from the glossary, no typed copy left');
+  &&!/var ANA_MET\s*=/.test(ana)&&!/function anaMetCard\(/.test(ana),
+  'the Analytics CQ and DQ tiles are retired with no typed copy left behind');
  ok(sd.indexOf('across all 112 addresses')<0&&sd.indexOf('how well your 21 laws of moral integrity hold')<0
   &&/unpackOf\('cq'\)/.test(sd)&&/unpackOf\('dq'\)/.test(sd),
   'the rail Compass\'s CQ and DQ titles read the glossary, and the flat 112 is gone');

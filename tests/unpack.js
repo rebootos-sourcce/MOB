@@ -442,16 +442,19 @@ for(const [w,h,wn] of [[1600,1000,'1600'],[390,844,'390']]){
    'and the integrity probe sees "Your integrity is 62%" on the known bad line');
   await p.evaluate(()=>{document.getElementById('unp-bad').remove();});
 
-  /* every reading card with its name. THE CARDS ARE HELD WHERE THEY ARE
-     DRAWN, #rdrill, 27 November. This held '#ana', and the cards are never
-     in it: what it found was the readings row on the page, which carried
-     Pull, Self-read shadow, Overshoot and Installed, and which went with the
-     strip down. The cards themselves are what still prints those words. */
+  /* THE READING CARDS ARE RETIRED, 28 November (ui/analytics.js, ANA_MET).
+     This walked the five that printed Pull, Self-read shadow, Expression,
+     Overshoot and Installed, held at #rdrill where they were drawn, and they
+     had had no door on any page since the strip down of 27 November. With
+     them gone no surface prints Pull or Self-read shadow as a label, so the
+     walk below holds the cards that still print a reading word: the session
+     card, the axis card, the pole drill and the Compass. Overshoot and
+     Installed are still found there, and the coverage check at the end of
+     this block still asks for both. */
   await p.evaluate(()=>{try{rdClose();}catch(e){} ANA_PICK=null;ANA_TRAIL=[];setTab(TAB.ANALYTICS);});
   await p.waitForTimeout(500);
-  for(const k of ['lawsq','pull','ex','jq','pole']){
-   await p.evaluate(k=>{ANA_PICK=null;ANA_TRAIL=[];anaGo('met',k,true);},k); await p.waitForTimeout(200);
-   await hold('Analytics card '+k,'#rdrill');}
+  ok(await p.evaluate(()=>typeof ANA_MET==='undefined'&&typeof anaMetCard==='undefined'&&anaCard(computeSeen(),{k:'met',nm:'pull'})===null),
+   'the retired reading cards are gone: no ANA_MET, no anaMetCard, and the met kind draws no card');
   /* the session card, the axis card and a mask card. No roster record
      carries a session, so two are written first, or the session card opens
      on "Not running now" and holds nothing */
@@ -489,7 +492,11 @@ for(const [w,h,wn] of [[1600,1000,'1600'],[390,844,'390']]){
   const intg=await carrying(p,'#rdrill',T['integrity']);
   ok(cnt.indexOf(T['integrity'])>=0||intg.tip,'the Compass still says what integrity is, in the table\'s sentence, inline in the drill or as a tooltip');
   await p.evaluate(()=>{try{rdClose();}catch(e){}});
-  ['pull','overshoot','installed','self-read shadow'].forEach(t=>ok(seenW.has(t),'the walk finds '+t+' printed somewhere, so the gate has something to hold: saw '+Array.from(seenW)));
+  /* Pull and Self-read shadow left the walk with the reading cards, 28
+     November, and nothing prints either as a label now; if one comes back
+     the glossed check above holds it wherever it lands. */
+  ['overshoot','installed'].forEach(t=>ok(seenW.has(t),'the walk finds '+t+' printed somewhere, so the gate has something to hold: saw '+Array.from(seenW)));
+  ok(!seenW.has('pull')&&!seenW.has('self-read shadow'),'no walked surface prints Pull or Self-read shadow as a label since the reading cards were retired, saw '+Array.from(seenW));
 
   /* ONE SENTENCE EACH, across every carrier the walk opened */
   SEVEN.map(x=>x[0]).concat(TWO.map(x=>x[0])).forEach(w=>{

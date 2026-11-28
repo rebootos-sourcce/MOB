@@ -59,7 +59,9 @@ function recRender(){
  if(H.length<2){
   /* HS sweep: the refusal says what is missing. The sentence on when a
      snapshot is written explained the mechanism and is cut. */
-  h+='<p class="sum-p">'+(H.length?'One snapshot on file. ':'No snapshots yet. ')
+  /* declared an empty state, 28 November: it names what puts the record in,
+     which is what tests/nocaption.js lets a surface say */
+  h+='<p class="sum-p" data-say="empty">'+(H.length?'One snapshot on file. ':'No snapshots yet. ')
    +'Two are needed before there is a distance to read.</p>';
   host.innerHTML=h; return;}
 
