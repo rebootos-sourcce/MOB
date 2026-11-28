@@ -17857,7 +17857,7 @@ function blankProfile(name){
      voice (9 October, no fallback to a browser voice), so the one switch is
      voice above, and studio is kept only so a record written before the
      ruling still validates; nothing reads it. */
-  ui:{quiet:false, model:false, tone:false, voice:true, buzz:false, practitioner:false, sfx:false, sfxoff:false, onboarded:false, tutorialSeen:false, paidWelcomed:false, studio:false},
+  ui:{quiet:false, model:false, tone:false, voice:true, voiceName:'marin', releaseMode:'guided', buzz:false, practitioner:false, sfx:false, sfxoff:false, onboarded:false, tutorialSeen:false, paidWelcomed:false, studio:false},
   /* what the person said their type is, and what it wrote. null until stated. */
   seed:null,
   /* THE METER. One pattern is one release line delivered: one channel over
