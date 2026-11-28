@@ -395,7 +395,7 @@ function relBegin(){
  /* the Insight well's funnel (ui/stksay.js): a card its voice opened, begun */
  if(typeof STK_SAY!=='undefined'&&STK_SAY.relId&&STK_SAY.relId===RUN.id){ STK_SAY.relId=''; stkSayNote('begin'); }
  if(typeof sfx==='function')sfx('begin',true);
- RUN.phase='welcome';RUN.line=0;RUN.idx=0;RUN.pass=0;RUN.halted=false;RUN.paused=false;
+ RUN.phase=relListenMode()?'opening':'welcome';RUN.line=0;RUN.idx=0;RUN.pass=0;RUN.halted=false;RUN.paused=false;
  RUN.t0=Date.now();RUN.tEnd=0;RUN.pauseAt=0;RUN.pausedMs=0;relTicker(true);relStep();}
 /* WHAT RERUN THESE RUNS. What was picked, when any of it has a line open. When
    none of it does, a story's addresses that were never released, the heaviest
@@ -679,11 +679,15 @@ function relSec(st){
 /* how long a step holds the card: its reading time, and on the list never
    less than the spacing */
 function relList(st){return !!st&&(st.kind==='head'||st.kind==='pass');}
-function relStepSec(st){var s=relSec(st); return relList(st)?Math.max(s,relSpace()):s;}
+function relStepSec(st){
+ var s=relSec(st);
+ // Listen follows the actual end of each spoken line; Guided preserves its four-second spacing.
+ return relList(st)&&!relListenMode()?Math.max(s,relSpace()):s;
+}
 /* seconds of script from a point to the end, cooldown included. from is
    {phase,line,idx,pass}; with no from it is the whole run. */
 function relSecFrom(from){
- var f=from||{phase:'welcome',line:0,idx:0,pass:0}, s=0, i;
+ var f=from||{phase:relListenMode()?'opening':'welcome',line:0,idx:0,pass:0}, s=0, i;
  if(f.phase==='welcome'){var w=relWelcome();
   for(i=f.line;i<w.length;i++)s+=relSec({kind:'welcome',text:w[i]});}
  if(f.phase==='welcome'||f.phase==='opening')
@@ -715,7 +719,7 @@ function relMMSS(sec){
    the estimate is waited out, so a browser with no real voice runs
    at reading pace instead of racing to the cooldown.
    ============================================================ */
-/* THE VOICE IS ELEVENLABS AND THERE IS NO OTHER. The owner, 9 October: "the
+/* THE VOICE IS OPENAI, WITH NO BROWSER OR ELEVENLABS FALLBACK. The owner, 9 October: "the
    audio is still defaulting to the Claude default voice, and I want that
    removed so that there's no fallback to it." A line is spoken by the studio
    voice (ui/sound.js, ui/auth.js authVoice, the Worker's /v1/voice/synthesize)
@@ -732,6 +736,11 @@ function relMMSS(sec){
    line and not one per line. A new run asks again. */
 function relVoiceWanted(){
  return !(typeof CURP!=='undefined'&&CURP&&CURP.ui&&CURP.ui.voice===false);}
+function relListenMode(){
+ return !!(typeof CURP!=='undefined'&&CURP&&CURP.ui&&CURP.ui.releaseMode==='listen');}
+function relVoiceName(){
+ var name=(typeof CURP!=='undefined'&&CURP&&CURP.ui&&CURP.ui.voiceName)||'marin';
+ return ['marin','cedar','coral','sage'].indexOf(name)>=0?name:'marin';}
 function relVoiceCan(){
  return typeof studioCan==='function'&&studioCan();}
 function relVoiceOn(){ return relVoiceWanted()&&relVoiceCan(); }
@@ -765,6 +774,14 @@ function relBuzzOn(){
 function relHush(){
  clearTimeout(RUN.timer); RUN.tok++;
  if(typeof speakStop==='function')speakStop();}
+/* Audiobook must never silently count lines that were not narrated. Pausing
+   holds the current Release step; Play retries it from its beginning. */
+function relListenPause(reason){
+ RUN.paused=true; RUN.pauseAt=Date.now();
+ relHush();
+ if(typeof status==='function')status(reason,'fail');
+ relRender();
+}
 /* THE MARKS, at a boundary and never on a beat. They ride the seat tone's
    switch: it is the one switch for sound that is not words, and a run with it
    off opens no audio channel at all. The vibration doubles the same mark at
@@ -787,6 +804,10 @@ function relStep(){
  if(!RUN.open||RUN.paused)return;
  var st=relCur();
  if(!st){ if(RUN.phase==='run')relCoolDown(); return; }
+ if(relListenMode()&&(!relVoiceOn()||RUN.studioLost)){
+  relListenPause('Audiobook paused. Turn Voice on and press Play to hear this line.');
+  return;
+ }
  relBoundary();
  relRender();
  /* raw is how long the line takes to say, and is what the quarter test below
@@ -795,24 +816,63 @@ function relStep(){
     voice that finished early, so a spoken run keeps the same four seconds a
     read one does. Judging the voice against est would have called every short
     pass unspoken and thrown its measurement away. */
- var raw=relSec(st)*1000, est=relStepSec(st)*1000, gap=relList(st)?relSpace()*1000:0, moved=false;
+ var raw=relSec(st)*1000, est=relStepSec(st)*1000,
+      gap=relList(st)&&!relListenMode()?relSpace()*1000:0, moved=false;
  function next(){
   if(moved||tok!==RUN.tok)return; moved=true; clearTimeout(RUN.timer);
   if(!RUN.paused)relAdvance();}
  /* THE WELCOME IS NEVER SYNTHESISED. It is his recorded voice or it is
     silence, whatever the voice switch says; see THE SCRIPT above. */
- if(st.kind!=='welcome'&&relVoiceOn()&&relSay(st,function(ms){
+ if(st.kind!=='welcome'&&relVoiceOn()&&relSay(st,function(ms,played){
     if(tok!==RUN.tok)return;
-    if(ms<raw*0.25){ clearTimeout(RUN.timer); RUN.timer=setTimeout(next,Math.max(0,est-ms)); return; }
-    RUN.spokeMs+=ms; RUN.spokeW+=relWords(st.text);
+    // Network latency cannot count as heard narration in Audiobook.
+    var measured=relListenMode()?played:ms;
+    if(!Number.isFinite(measured)||measured<raw*0.25){
+     // A near-instant audio completion is not enough to credit an Audiobook line.
+     // Guided retains its readable timing; Listen holds the exact current step.
+     if(relListenMode()){
+      relListenPause('Audiobook paused because the line ended too soon. Press Play to retry it.');
+      return;
+     }
+     clearTimeout(RUN.timer); RUN.timer=setTimeout(next,Math.max(0,est-ms)); return; }
+    RUN.spokeMs+=measured; RUN.spokeW+=relWords(st.text);
     if(ms<gap){ clearTimeout(RUN.timer); RUN.timer=setTimeout(next,gap-ms); return; }
     next();},
    function(){
-    /* the voice did not say the line. The run goes on at reading pace. */
     if(tok!==RUN.tok)return;
-    clearTimeout(RUN.timer); RUN.timer=setTimeout(next,est);})){
-  RUN.timer=setTimeout(next,est+9000);}
+    clearTimeout(RUN.timer);
+    /* Guided keeps its readable timing. Audiobook pauses so missed audio
+       cannot silently progress or complete a Release. */
+    if(relListenMode()){
+     relListenPause('Audiobook paused because the voice stopped. Press Play to retry this line, or choose Guided to read it.');
+     return;
+    }
+    RUN.timer=setTimeout(next,est);})){
+  /* A missing audio-completion callback must never advance an Audiobook.
+     Guided may fall back to a readable timer; Audiobook holds the same line. */
+  RUN.timer=setTimeout(relListenMode()?function(){
+   if(tok!==RUN.tok||moved||RUN.paused)return;
+   relListenPause('Audiobook paused because narration did not finish. Press Play to retry this line.');
+  }:next,est+9000);
+  // Pre-render one line ahead to minimize network gaps between spoken statements.
+  if(relListenMode()&&typeof studioWarm==='function'){
+   var soon=relSoon();
+   if(soon)studioWarm(soon.text,(soon.kind==='head'||soon.kind==='pass')?'list':'frame');
+  }}
+ else if(relListenMode()&&st.kind!=='welcome')
+  relListenPause('Audiobook could not start this line. Press Play to retry it.');
  else RUN.timer=setTimeout(next,est);}
+/* Prefetch only the next line without advancing the record or its meter. */
+function relSoon(){
+ if(RUN.phase==='opening'){
+  if(RUN.line+1<OPENING.length)return {kind:'open',text:OPENING[RUN.line+1]};
+  return relStepAt(relAt(0),0);
+ }
+ if(RUN.phase==='run'){
+  if(RUN.pass+1<RUN.dose)return relStepAt(relAt(RUN.idx),RUN.pass+1);
+  return relStepAt(relAt(RUN.idx+1),0);
+ }
+ return null;}
 function relAdvance(){
  if(RUN.phase==='welcome'){
   RUN.line++;
@@ -1910,8 +1970,18 @@ function relVoiceRow(){
  if(typeof accTog!=='function')return '';
  var note;
  if(typeof studioCan!=='function'||!studioCan())note='This browser cannot play the voice. The run reads on the screen.';
- else note='ElevenLabs, a voice company, over the network. It gets each line, and each line names one of your patterns.';
- return accTog('Voice','relvoice',relVoiceWanted(),note);}
+ else note='AI narration by OpenAI over the network. Each spoken line includes the pattern words shown on your screen.';
+ var pick=relVoiceName();
+ var choices=['marin','cedar','coral','sage'].map(function(v){
+  return '<option value="'+v+'"'+(v===pick?' selected':'')+'>'+v.charAt(0).toUpperCase()+v.slice(1)+'</option>';
+ }).join('');
+ return '<div class="rel-voice-box">'+accTog('Voice','relvoice',relVoiceWanted(),note)
+  +'<div class="rel-voice-tools">'
+  +'<label class="rel-voice-field"><span>Voice</span><select id="relvoicepick" aria-label="Narrator voice">'+choices+'</select></label>'
+  +'<label class="rel-voice-field"><span>Release mode</span><select id="relplaymode" aria-label="Release playback mode">'
+  +'<option value="guided"'+(!relListenMode()?' selected':'')+'>Guided</option>'
+  +'<option value="listen"'+(relListenMode()?' selected':'')+'>Audiobook</option>'
+  +'</select></label></div></div>';}
 function relBuzzRow(){
  if(typeof buzzCan!=='function'||!buzzCan()||typeof accTog!=='function')return '';
  return accTog('Vibration','relbuzz',relBuzzOn(),'');}
@@ -2353,6 +2423,11 @@ function relCss(){
      wanted out had nothing to press. relRender appends it first now, whichever
      phase it draws. The label is words beside the mark, because a ring with a
      square in it is not a word a person has been told means End. */
+  '.rel-voice-box{min-width:175px;max-width:100%;flex:1 1 240px}',
+  '.rel-voice-tools{display:flex;align-items:end;flex-wrap:wrap;gap:10px;margin:10px 0 2px}',
+  '.rel-voice-field{display:flex;flex:1 1 115px;flex-direction:column;gap:5px;min-width:0;font-size:11px;font-weight:600;letter-spacing:.03em;color:var(--dim)}',
+  '.rel-voice-field select{width:100%;min-height:44px;padding:9px 32px 9px 12px;border:1px solid var(--edge);border-radius:var(--r-xs);background:var(--panel-2);color:var(--ink);font:500 14px var(--sans);cursor:pointer;box-shadow:inset 0 1px rgba(255,255,255,.06)}',
+  '.rel-voice-field select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}',
   '.rel-act .rel-b{display:inline-flex;align-items:center;justify-content:center;gap:8px;',
   ' min-width:44px;min-height:44px;padding:0 16px}',
   '.rel-hd .rel-x{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;',
@@ -3817,7 +3892,10 @@ function relRender(){
   RUN.paused=!RUN.paused;
   /* the elapsed clock stops with the run and does not count the pause */
   if(RUN.paused){RUN.pauseAt=Date.now();relHush();relRender();}
-  else {if(RUN.pauseAt)RUN.pausedMs+=Date.now()-RUN.pauseAt; RUN.pauseAt=0; relStep();}};
+  else {if(RUN.pauseAt)RUN.pausedMs+=Date.now()-RUN.pauseAt; RUN.pauseAt=0;
+   /* A deliberate Play press retries a failed voice at the current step. */
+   if(relListenMode())RUN.studioLost=false;
+   relStep();}};
  if((b=document.getElementById('relbook')))b.onclick=relBookToggle;
  if((b=document.getElementById('reldose')))b.onchange=function(){
   RUN.dose=Math.max(1,Math.min(REL_DOSES[REL_DOSES.length-1],Math.round(+this.value)||1));relRender();};
@@ -3863,7 +3941,7 @@ function relRender(){
     change over what is already drawn. */
  if((b=document.getElementById('reltone')))b.onclick=function(){
   var on=!relToneOn();uiSet('tone',on);
-  if(on&&relVoiceWanted()){
+  if(on&&relVoiceWanted()&&!relListenMode()){
    uiSet('voice',false);RUN.studioLost=false;
    var live=RUN.open&&!RUN.paused&&(RUN.phase==='welcome'||RUN.phase==='opening'||RUN.phase==='run'
      ||(RUN.phase==='done'&&RUN.cool<COOLING.length));
@@ -3879,9 +3957,24 @@ function relRender(){
     so nothing further is needed here for that half. */
  if((b=document.getElementById('relvoice')))b.onclick=function(){
   var on=!relVoiceWanted();uiSet('voice',on);
-  if(on)uiSet('tone',false);
+  if(on&&!relListenMode())uiSet('tone',false);
   RUN.studioLost=false;
   var live=RUN.open&&!RUN.paused&&(RUN.phase==='welcome'||RUN.phase==='opening'||RUN.phase==='run'
     ||(RUN.phase==='done'&&RUN.cool<COOLING.length));
   if(live)relStep(); else {if(!relVoiceWanted())speakStop(); relRender();}};
+ if((b=document.getElementById('relvoicepick')))b.onchange=function(){
+  var choice=this.value; if(['marin','cedar','coral','sage'].indexOf(choice)<0)return;
+  uiSet('voiceName',choice); RUN.studioLost=false;
+  var live=RUN.open&&!RUN.paused&&RUN.phase!=='idle'&&!(RUN.phase==='done'&&RUN.cool>=COOLING.length);
+  if(live){relHush();relStep();}else relRender();
+ };
+ if((b=document.getElementById('relplaymode')))b.onchange=function(){
+  var mode=this.value==='listen'?'listen':'guided';
+  uiSet('releaseMode',mode);
+  if(mode==='listen'&&!relVoiceWanted())uiSet('voice',true);
+  if(mode==='guided'&&relToneOn()&&relVoiceWanted())uiSet('tone',false);
+  RUN.studioLost=false;
+  var live=RUN.open&&!RUN.paused&&RUN.phase!=='idle'&&!(RUN.phase==='done'&&RUN.cool>=COOLING.length);
+  if(live){relHush();relStep();}else relRender();
+ };
  if((b=document.getElementById('relbuzz')))b.onclick=function(){uiSet('buzz',!relBuzzOn());relRender();};}

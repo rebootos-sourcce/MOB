@@ -1219,7 +1219,7 @@ function atmWire(){
 atmWire();
 
 /* ============================================================
-   THE VOICE IS ELEVENLABS AND THERE IS NO OTHER. The owner, 9 October:
+   THE VOICE IS OPENAI AND THERE IS NO BROWSER FALLBACK. The owner, 9 October:
    "fix the 11 Labs voice. The audio is still defaulting to the Claude
    default voice, and I want that removed so that there's no fallback to
    it." This file used to carry the browser's own built in speech as the
@@ -1237,7 +1237,7 @@ atmWire();
    ============================================================ */
 function speakStop(){ studioStop(); }
 /* ============================================================
-   THE STUDIO VOICE. One line, rendered by ElevenLabs on the server
+   THE STUDIO VOICE. One line, rendered by OpenAI on the server
    (ui/auth.js authVoice) and played here. It is the only voice. There
    is nothing behind it: when it cannot answer, the caller says so and
    the line is not spoken. The release's timing is the four second
@@ -1246,7 +1246,8 @@ function speakStop(){ studioStop(); }
    not.
 
    THE CONTRACT the walker in ui/release.js relies on: onend gets the milliseconds from the call to the end
-   of the sound, onfail is told once. The milliseconds include the
+   of the sound, with actual media playback milliseconds as its second argument.
+   onfail is told once. The first milliseconds include the
    wait for the server on purpose: the walker spaces lines start to
    start, and a wait it was not told about would push every line late
    by that much.
@@ -1271,23 +1272,34 @@ var STUDIO={seq:0, el:null, url:''}, STUDIO_WAIT_MS=5000;
    default run passes the day's ceiling inside its second address and "Today's
    voice lines are used up" reads the rest on the screen. Kept by style and
    text, the key the server's own
-   cache uses less the voice, which this page cannot change mid visit. Held
+   cache now includes the voice, so a voice change never replays another voice. Held
    for the visit only, the last STUDIO_KEEP_N, never written anywhere. */
-var STUDIO_KEEP=Object.create(null), STUDIO_KEEP_AT=[], STUDIO_KEEP_N=64;
+var STUDIO_KEEP=Object.create(null), STUDIO_KEEP_AT=[], STUDIO_KEEP_N=64,
+    STUDIO_INFLIGHT=Object.create(null);
 function studioAsk(text,style){
- var k=style+'\n'+text, b=STUDIO_KEEP[k];
+ var voice=(typeof CURP!=='undefined'&&CURP&&CURP.ui&&CURP.ui.voiceName)||'marin';
+ if(['marin','cedar','coral','sage'].indexOf(voice)<0)voice='marin';
+ var k=voice+'\n'+style+'\n'+text, b=STUDIO_KEEP[k];
  if(b)return Promise.resolve({ok:true, blob:b});
- return authVoice(text,style).then(function(r){
+ if(STUDIO_INFLIGHT[k])return STUDIO_INFLIGHT[k];
+ var ask=authVoice(text,style,voice).then(function(r){
   if(r&&r.ok&&r.blob&&!STUDIO_KEEP[k]){
    STUDIO_KEEP[k]=r.blob; STUDIO_KEEP_AT.push(k);
    if(STUDIO_KEEP_AT.length>STUDIO_KEEP_N)delete STUDIO_KEEP[STUDIO_KEEP_AT.shift()];}
-  return r;});}
+  return r;});
+ STUDIO_INFLIGHT[k]=ask.then(function(r){delete STUDIO_INFLIGHT[k];return r;},
+  function(err){delete STUDIO_INFLIGHT[k];throw err;});
+ return STUDIO_INFLIGHT[k];}
+function studioWarm(text,style){
+ if(!studioCan()||!String(text||'').trim())return;
+ // Prefetch only one line ahead, deduplicated with the actual spoken request.
+ studioAsk(text,style).catch(function(){});}
 function studioCan(){
  try{ return typeof Audio==='function'&&typeof URL!=='undefined'&&!!URL.createObjectURL
   &&typeof authVoice==='function'; }catch(e){ return false; }}
 function studioStop(){
  STUDIO.seq++;
- try{ if(STUDIO.el){ STUDIO.el.onended=STUDIO.el.onerror=null; STUDIO.el.pause(); } }catch(e){}
+ try{ if(STUDIO.el){ STUDIO.el.onended=STUDIO.el.onerror=STUDIO.el.onpause=STUDIO.el.onplaying=null; STUDIO.el.pause(); } }catch(e){}
  try{ if(STUDIO.url)URL.revokeObjectURL(STUDIO.url); }catch(e){}
  STUDIO.el=null; STUDIO.url='';}
 /* onfail gets the server's status when there was one (503 not set up, 429
@@ -1301,9 +1313,9 @@ function speakStudio(text,rate,style,onend,onfail){
  var wait=setTimeout(function(){ lose(0); },STUDIO_WAIT_MS);
  studioAsk(String(text),style).then(function(r){
   if(over||seq!==STUDIO.seq)return;
-  if(!r.ok){ clearTimeout(wait); lose(r.status); return; }
+  if(!r||!r.ok||!r.blob){ clearTimeout(wait); lose(r&&r.status); return; }
   var el, url;
-  try{ url=URL.createObjectURL(r.blob); el=new Audio(url); }catch(e){ clearTimeout(wait); lose(0); return; }
+  try{ url=URL.createObjectURL(r.blob); STUDIO.url=url; el=new Audio(url); }catch(e){ clearTimeout(wait); lose(0); return; }
   STUDIO.el=el; STUDIO.url=url;
   /* the server renders at the voice's own speed and pace is applied here,
      so one render serves
@@ -1311,10 +1323,19 @@ function speakStudio(text,rate,style,onend,onfail){
   el.playbackRate=Math.max(0.5,Math.min(1.8,rate||1));
   el.onplaying=function(){ clearTimeout(wait); };
   el.onended=function(){ if(over||seq!==STUDIO.seq)return; over=true;
-   var ms=Date.now()-t0; studioStop(); if(onend)onend(ms); };
+   var ms=Date.now()-t0, played=Number(el.currentTime)*1000/Number(el.playbackRate);
+   if(!Number.isFinite(played)||played<0)played=0;
+   studioStop(); if(onend)onend(ms,played); };
   el.onerror=function(){ clearTimeout(wait); lose(0); };
+  // An external pause is not completion. Intentional stops detach this handler.
+  el.onpause=function(){ if(!el.ended){ clearTimeout(wait); lose(0); } };
   /* a browser that refuses to play without a fresh press says so here, and
      that is a failure the run hears about rather than a silence */
   try{ var p=el.play(); if(p&&p.catch)p.catch(function(){ clearTimeout(wait); lose(0); }); }
-  catch(e){ clearTimeout(wait); lose(0); }});
+  catch(e){ clearTimeout(wait); lose(0); }
+ },function(){
+  // A rejected synthesis request is an audio failure, never an unhandled promise.
+  // lose checks the sequence so an expired request cannot interrupt a later line.
+  clearTimeout(wait); lose(0);
+ });
  return true;}

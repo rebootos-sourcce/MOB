@@ -304,6 +304,7 @@ jobs:
           - { gate: design, timeout: 20, command: node tests/design.js }
           - { gate: monitor, timeout: 20, command: node tools/monitor.js }
           - { gate: voice, timeout: 20, command: node tests/voice.js }
+          - { gate: audiobook, timeout: 20, command: node tests/audiobook.js }
           # Alpha acceptance gates: durability and the accepted quiz/release path.
           - { gate: alpha-journey, timeout: 20, command: ATUNED_ALPHA_QUIZ_ONLY=1 node tests/golden.js }
           - { gate: storage, timeout: 20, command: node tests/storage.js }

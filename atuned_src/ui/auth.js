@@ -876,8 +876,8 @@ function authPlanCheckout(tier){
   if(typeof url!=='string'||!url)
    return {ok:false, say:'The server answered without a checkout page. Nothing has changed.'};
   return {ok:true, url:url};});}
-/* THE VOICE, one line of audio from the reboot-os Worker's
-   POST /v1/voice/synthesize, which asks ElevenLabs with a key that lives only
+/* THE VOICE, one line of OpenAI audio from the reboot-os Worker's
+   POST /v1/voice/synthesize, which asks OpenAI with a key that lives only
    on the server. D17 in QUESTIONS.md is why it goes this way round: a key in
    this file is a key every person who opens the file can read and spend, so
    this side holds nothing but a random code of its own, plus the person's
@@ -911,8 +911,11 @@ function authVoiceDevice(){
  VOICE_DEV=v;
  try{ if(typeof STORE_BOUND!=='undefined'&&STORE_BOUND)STORE.set(VOICE_DEV_KEY,v); }catch(e){}
  return v;}
-function authVoice(text,style){
- var s=authSession(), b={text:text, style:style||'list'};
+function authVoice(text,style,voice){
+ // The UI offers four allowlisted OpenAI voices. Send only the name, not a model or key.
+ var pick=voice||(typeof CURP!=='undefined'&&CURP&&CURP.ui&&CURP.ui.voiceName)||'marin';
+ if(['marin','cedar','coral','sage'].indexOf(pick)<0)pick='marin';
+ var s=authSession(), b={text:text, style:style||'list', voice:pick};
  if(!s)b.device=authVoiceDevice();
  return authCall('POST','/v1/voice/synthesize',b,s?s.token:null,true).then(function(r){
   if(r.ok&&r.body&&typeof r.body.size==='number'&&r.body.size>0)return {ok:true, blob:r.body};

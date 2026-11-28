@@ -6149,8 +6149,8 @@ console.log('\n=== the welcome after paying shows once and says the loop ===');
  await tp.close();
 }
 
-console.log('\n=== the voice: ElevenLabs only, no sign in needed, and a failure is silence with a word, never another voice ===');
-/* The ElevenLabs path (ui/sound.js, THE STUDIO VOICE), which is the only voice
+console.log('\n=== the voice: OpenAI only, no sign in needed, and a failure is silence with a word, never another voice ===');
+/* The OpenAI path (ui/sound.js, THE STUDIO VOICE), which is the only voice
    there is: the owner ruled on 9 October that the audio must not default to
    the browser's own voice, and there is no fallback to it, and then that it
    must be automatic, with no sign in. The Worker is faked with a route, so the
@@ -6166,7 +6166,7 @@ console.log('\n=== the voice: ElevenLabs only, no sign in needed, and a failure 
  await tp.route('https://voice.stub.test/**',r=>{
   const b=JSON.parse(r.request().postData()||'{}');
   reqs.push({auth:r.request().headers()['authorization']||'', body:b});
-  if(b.text==='refused')return r.fulfill({status:503,contentType:'application/json',body:JSON.stringify({error:'the voice is not connected on this server yet: ELEVENLABS_API_KEY is not set'})});
+  if(b.text==='refused')return r.fulfill({status:503,contentType:'application/json',body:JSON.stringify({error:'the voice is not connected on this server yet: OPENAI_API_KEY is not set'})});
   return r.fulfill({status:200,contentType:'audio/mpeg',body:Buffer.from([0x49,0x44,0x33,4])});});
  const o=await tp.evaluate(async()=>{
   const wait=ms=>new Promise(r=>setTimeout(r,ms));
@@ -6206,20 +6206,20 @@ console.log('\n=== the voice: ElevenLabs only, no sign in needed, and a failure 
   out.ss=window.__ss;
   authVoice=av0; AUTH_API=api0; RUN.studioLost=false; authForget();
   return out;});
- ok(o.outOn===true&&/ElevenLabs, a voice company/.test(o.outRow),'signed out the voice is on and the switch says who speaks the line: no sign in is asked for');
+ ok(o.outOn===true&&/AI narration by OpenAI/.test(o.outRow),'signed out the voice is on and the switch says who speaks the line: no sign in is asked for');
  ok(o.outCall.ok===true&&o.outSize===4,'and a signed out request is answered with the audio bytes, '+JSON.stringify(o.outCall));
  const anon=reqs.filter(q=>!q.auth);
- ok(anon.length>=2&&anon.every(q=>typeof q.body.device==='string'&&/^[A-Za-z0-9_-]{16,64}$/.test(q.body.device)&&Object.keys(q.body).sort().join()==='device,style,text'),'it sends the line, its style and a device code and nothing else, with no session, '+JSON.stringify(anon.slice(0,1)));
+ ok(anon.length>=2&&anon.every(q=>typeof q.body.device==='string'&&/^[A-Za-z0-9_-]{16,64}$/.test(q.body.device)&&q.body.voice==='marin'&&Object.keys(q.body).sort().join()==='device,style,text,voice'),'it sends the line, its style and a device code and nothing else, with no session, '+JSON.stringify(anon.slice(0,1)));
  ok(anon.length>=2&&anon[0].body.device===anon[1].body.device&&o.dev===anon[0].body.device,'the same device code every time, and kept in the browser, '+o.dev);
- ok(o.inRow.indexOf('ElevenLabs')>=0&&o.blankOn===true,'signed in, the same switch, on until the person turns it off');
+ ok(/AI narration by OpenAI/.test(o.inRow)&&o.blankOn===true,'signed in, the same switch, on until the person turns it off');
  const inn=reqs.filter(q=>q.auth);
- ok(inn.length===1&&inn[0].auth==='Bearer tok_test'&&Object.keys(inn[0].body).sort().join()==='style,text','signed in it sends the session and no device code, '+JSON.stringify(inn[0]));
+ ok(inn.length===1&&inn[0].auth==='Bearer tok_test'&&inn[0].body.voice==='marin'&&Object.keys(inn[0].body).sort().join()==='style,text,voice','signed in it sends the session and no device code, '+JSON.stringify(inn[0]));
  ok(o.real.ok===true&&o.realSize===4,'a yes from the server comes back as the audio bytes, '+JSON.stringify(o.real));
  ok(o.refused.ok===false&&o.refused.status===503,'a refusal comes back as its status, '+JSON.stringify(o.refused));
  ok(o.offOn===false&&o.offSay===false,'switched off, nothing is said and nothing is asked');
  ok(o.chosenOn===true,'switched on again, the run uses it');
  ok(o.asked[0]==='list'&&o.failed===1,'a refused line is reported once and is not said by anything else, '+JSON.stringify(o));
- ok(o.lost===true&&/not switched on at the server/.test(o.status)&&/reads on the screen/.test(o.status)&&!/ELEVENLABS/.test(o.status),'the run says why in words, never the server setting, and says it reads on the screen, '+o.status);
+ ok(o.lost===true&&/not switched on at the server/.test(o.status)&&/reads on the screen/.test(o.status)&&!/OPENAI|API_KEY/.test(o.status),'the run says why in words, never the server setting, and says it reads on the screen, '+o.status);
  ok(o.second===false&&o.askedAfter===1,'and the rest of the run does not ask again');
  ok(o.frame==='frame','the words around the list ask for the frame style');
  ok(o.lateEl===null&&o.lateFired===0,'a line that arrives after a stop never plays and never reports');
