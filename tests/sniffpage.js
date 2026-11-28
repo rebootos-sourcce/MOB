@@ -298,10 +298,19 @@ require('./net.js').guardBrowser(browser);
       const GRIEF = 'My father died last year and I still cannot stop crying.';
       const commit = () => ps.evaluate(tt => { ST_TEXT = tt; ST_PARSED = parseStory(tt); const c = stCommit(); return !!(c && c.ok); }, GRIEF);
       ok(await commit(), 'a grief entry commits on a fresh profile');
-      const ana = await ps.evaluate(() => { setTab(TAB.ANALYTICS); render(); return (document.getElementById('ana') || {}).textContent || ''; });
-      const al = (ana.match(/The heaviest[^.]*\./) || [''])[0];
+      /* THE SENTENCE THIS READ, "The heaviest address is carrying ...", went
+         with the coherence card, 27 November, his ruling on the strip down.
+         The same fact is now the largest square in The nine axes: its name
+         is the feeling, its hover says it, and neither may name an address. */
+      const ana = await ps.evaluate(() => { setTab(TAB.ANALYTICS); render();
+        const cs = [...document.querySelectorAll('#ana .ana-tm-cell[data-lens="axis"]')]
+          .map(e => { const r = e.getBoundingClientRect(); return { nm: e.getAttribute('data-nm'), t: e.getAttribute('title') || '', a: r.width * r.height }; })
+          .sort((x, y) => y.a - x.a);
+        const top = cs[0] || null;
+        return top ? { nm: top.nm, t: top.t, feel: CHILD.some(c => c.nm === top.nm) } : null; });
+      const al = ana ? ana.nm + ' | ' + ana.t : '';
       const ac = foreignIn(GRIEF, al);
-      ok(!!al && ac.length === 0, 'Analytics names the feeling the heaviest address carries and no address: ' + JSON.stringify(al) + (ac.length ? ' ' + ac.join(', ') : ''));
+      ok(!!ana && ana.feel && ac.length === 0, 'Analytics\' largest nine axes square names a feeling and no address: ' + JSON.stringify(al) + (ac.length ? ' ' + ac.join(', ') : ''));
       ok(await commit() && await commit(), 'two more grief entries commit');
       /* THE "RELEASE THIS FIRST" CARD THIS BLOCK USED TO CHECK IS GONE
          OUTRIGHT, ruled 3 November (summary.js:1258 carries the owner's own

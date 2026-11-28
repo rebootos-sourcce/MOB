@@ -12,20 +12,26 @@
 
    What is held here, each as a fact read off the engine and never typed:
 
-     AT1  every bubble, tile, square, ring count, law bar and session bar on
-          the page is a door, and each one opens a card in Selection
+     AT1  every square on the page, in all seven treemap boxes, is a door,
+          and each kind opens a card in Selection. The nine axes, the seven
+          points and the laws draw one square for each of CHILD, BANDS and
+          SI (27 November: the bubbles, the readings row, Where it runs and
+          The chain were removed, his ruling, and the boxes replaced them)
      AT2  the chain is walked the engine's way, super-complex to hyper-complex
           to complex to saboteur, each card listing exactly its own parts, and
-          the top rung's ring and card call it a super complex (23 October)
+          the super-complex's card calls it a super complex (23 October). The
+          walk starts from the heaviest super-complex itself, since the rung
+          it used to start from went with The chain on 27 November
      AT3  the walk goes on past the saboteur to a fetter, and past the fetter
           to its feeling, with every step kept in the trail
      AT4  a step in the trail goes back to that step and drops the rest
      AT5  every count of held a card prints is the count of fetters at 4 or
           more, the line he read, and the old line is gone
      AT6  every door meets the 44 pixel tap floor, at 1600 and at 390
-     AT7  a second press on the same bubble puts the card down, as before
-     AT8  an unread field prints no telemetry, and a plan that cannot see the
-          chain is shown the lock and no pattern
+     AT7  a second press on the same square puts the card down, as before
+     AT8  an unread field prints a dash in every square that carries a figure,
+          and a plan that cannot see the chain is shown the lock in the What
+          is running box and no square
      AT9  an archetype card puts its primary saboteur where its own addresses
           sit, read off SAB_LIB, and never at the third column of ARCH18
           (systems audit SG-05, 24 October)
@@ -52,17 +58,14 @@ async function anaTrailGate(browser,FILE,ok,booted){
   await pg.evaluate(()=>{loadP(GORDON());setTab(TAB.ANALYTICS);render();});
   await pg.waitForTimeout(300);
   const page=await pg.evaluate(()=>{
-   const g=[...document.querySelectorAll('#ana .ab-svg g')];
-   return {bubbles:g.length, doors:g.filter(e=>e.getAttribute('data-ana')&&e.getAttribute('role')==='button'&&e.getAttribute('tabindex')==='0').length,
-    tiles:document.querySelectorAll('#ana .ana-tile[data-ana]').length,
-    cells:document.querySelectorAll('#ana .ana-g[data-ana]').length,
-    edges:document.querySelectorAll('#ana .ana-g-h[data-ana],#ana .ana-g-r[data-ana]').length,
-    rungs:document.querySelectorAll('#ana .ana-rung[data-ana]').length,
-    laws:document.querySelectorAll('#ana .ana-lw[data-ana]').length, nlaws:SI.length,
-    seats:BANDS.length, feel:CHILD.length, ntiles:Object.keys(ANA_MET).length};});
-  ok(page.bubbles>0&&page.doors===page.bubbles,'AT1: '+tag+'every bubble is a door a keyboard reaches, '+page.doors+' of '+page.bubbles);
-  ok(page.tiles===page.ntiles&&page.cells>0&&page.edges===page.seats+page.feel&&page.rungs===5&&page.laws===page.nlaws,
-   'AT1: '+tag+'the readings, the squares, both edges, the chain and every law are doors, '+JSON.stringify(page));
+   const c=k=>document.querySelectorAll('#ana .ana-tm-cell[data-lens="'+k+'"]').length;
+   const all=[...document.querySelectorAll('#ana .ana-tm-cell')];
+   return {cells:all.length, doors:all.filter(e=>e.tagName==='BUTTON'&&e.getAttribute('data-ana')).length,
+    law:c('law'),nlaws:SI.length, axis:c('axis'),feel:CHILD.length, seat:c('seat'),seats:BANDS.length,
+    chain:c('chain'), boxes:document.querySelectorAll('#ana .ana-tm-lens').length};});
+  ok(page.cells>0&&page.doors===page.cells&&page.boxes===7,'AT1: '+tag+'seven boxes, and every square in them is a door a keyboard reaches, '+page.doors+' of '+page.cells);
+  ok(page.law===page.nlaws&&page.axis===page.feel&&page.seat===page.seats&&page.chain>0,
+   'AT1: '+tag+'one square for each law, each axis and each point, and the chain drawn, '+JSON.stringify(page));
 
   /* ---- AT1: each kind of door opens a card ---- */
   const open=async(sel)=>{
@@ -71,13 +74,12 @@ async function anaTrailGate(browser,FILE,ok,booted){
    await el.scrollIntoViewIfNeeded(); await el.click(); await pg.waitForTimeout(120);
    return pg.evaluate(()=>({k:(ANA_PICK||{}).k,n:(document.getElementById('rdrill').innerText||'').trim().length,
     shown:document.getElementById('rdrill').style.display!=='none'}));};
-  for(const [sel,k] of [['#ana .ana-tile[data-ana="met|dq"]','met'],['#ana .ana-g','cell'],['#ana .ana-g-h','seat'],
-    ['#ana .ana-g-r','axis'],['#ana .ana-rung[data-ana="rung|sab"]','rung'],['#ana .ana-lw','law'],
-    ['#ana g[data-ana^="seat|"]','seat'],['#ana g[data-ana^="axis|"]','axis'],
-    /* masks, domains and archetypes are squarified treemap cells now, round
-       ana-treemap, buttons and not bubbles, so they are found by their lens */
+  /* every chart is a squarified treemap now, 27 November, so every door
+     is found by its lens */
+  for(const [sel,k] of [['#ana .ana-tm-cell[data-lens="law"]','law'],
+    ['#ana .ana-tm-cell[data-lens="seat"]','seat'],['#ana .ana-tm-cell[data-lens="axis"]','axis'],
     ['#ana .ana-tm-cell[data-lens="dom"]','dom'],['#ana .ana-tm-cell[data-lens="arch"]','arch'],
-    ['#ana .ana-tm-cell[data-lens="mask"]','mask'],['#ana g[data-ana^="chain|"]','chain']]){
+    ['#ana .ana-tm-cell[data-lens="mask"]','mask'],['#ana .ana-tm-cell[data-lens="chain"]','chain']]){
    const o=await open(sel);
    ok(o.k===k&&o.shown&&o.n>60,'AT1: '+tag+sel+' opens its '+k+' card in Selection, '+JSON.stringify(o));}
 
@@ -105,14 +107,20 @@ async function anaTrailGate(browser,FILE,ok,booted){
    ok(ds.length>0&&off.length===0,'AT9: '+tag+'every archetype card puts its primary saboteur where its own addresses sit, of '
     +ds.length+': '+off.slice(0,2).join(' | '));}
 
-  /* ---- AT7: the same bubble again puts it down ---- */
-  {const g=await pg.$('#ana g[data-ana^="seat|"]'); await g.click(); await pg.waitForTimeout(80);
-   const g2=await pg.$('#ana g.on'); if(g2)await g2.click(); await pg.waitForTimeout(80);
+  /* ---- AT7: the same square again puts it down ---- */
+  {await pg.evaluate(()=>{try{rdClose();}catch(e){} ANA_PICK=null;ANA_TRAIL=[];});
+   const g=await pg.$('#ana .ana-tm-cell[data-lens="seat"]'); await g.scrollIntoViewIfNeeded(); await g.click(); await pg.waitForTimeout(80);
+   const g2=await pg.$('#ana .ana-tm-cell.on'); if(g2)await g2.click(); await pg.waitForTimeout(80);
    const st=await pg.evaluate(()=>({pick:ANA_PICK,shown:document.getElementById('rdrill').style.display!=='none'}));
-   ok(st.pick===null&&!st.shown,'AT7: '+tag+'a second press on the same bubble puts the card down, '+JSON.stringify(st));}
+   ok(st.pick===null&&!st.shown,'AT7: '+tag+'a second press on the same square puts the card down, '+JSON.stringify(st));}
 
-  /* ---- AT2, AT3: walk the chain from the super-complex ring ---- */
-  await open('#ana .ana-rung[data-ana="rung|sup"]');
+  /* ---- AT2, AT3: walk the chain from the heaviest super-complex. The
+     rung that started this walk went with The chain, 27 November, so the
+     walk opens the super-complex the way its own square does. ---- */
+  await pg.evaluate(()=>{try{rdClose();}catch(e){} ANA_PICK=null;ANA_TRAIL=[];
+   const r=computeSeen(), top=r.sups.slice().sort((a,b)=>b.w-a.w)[0];
+   if(top)anaGo('chain',top.nm,true);});
+  await pg.waitForTimeout(120);
   const walk=[];
   for(let i=0;i<6;i++){
    const st=await pg.evaluate(()=>{
@@ -137,8 +145,8 @@ async function anaTrailGate(browser,FILE,ok,booted){
   ok(JSON.stringify(kinds)==='["sup","hy","cx","sab"]','AT2: '+tag+'the walk runs super-complex, hyper-complex, complex, saboteur, '+JSON.stringify(kinds));
   /* THE TOP RUNG'S WORD, ruled 23 October: the rung is the super complex and
      Character is the whole of it, so no card on the walk says Character */
-  const top=walk.filter(s=>s.k==='rung'||s.kind==='sup');
-  ok(top.length>=2&&top.every(s=>s.sup),'AT2: '+tag+'the ring and the card it opens call the rung a super complex, '+JSON.stringify(top.map(s=>({k:s.k,kind:s.kind,sup:s.sup}))));
+  const top=walk.filter(s=>s.kind==='sup');
+  ok(top.length>=1&&top.every(s=>s.sup),'AT2: '+tag+'the super-complex card calls the rung a super complex, '+JSON.stringify(top.map(s=>({k:s.k,kind:s.kind,sup:s.sup}))));
   ok(walk.every(s=>!s.character),'AT2: '+tag+'and no card on the walk says Character, '+JSON.stringify(walk.filter(s=>s.character).map(s=>s.k+' '+s.nm)));
   walk.filter(s=>s.want).forEach(s=>ok(JSON.stringify(s.rows.slice(0,s.want.length))===JSON.stringify(s.want),
    'AT2: '+tag+s.kind+' '+s.nm+' lists exactly its own parts, '+JSON.stringify({rows:s.rows,want:s.want})));
@@ -150,17 +158,17 @@ async function anaTrailGate(browser,FILE,ok,booted){
   const fet=await pg.evaluate(()=>({k:ANA_PICK.k,trail:ANA_TRAIL.length,n:BY[+ANA_PICK.nm],
    axis:!!document.querySelector('#rdrill .ad-r[data-ana^="axis|"]'),
    feeds:document.querySelectorAll('#rdrill .ad-r[data-ana^="chain|"]').length}));
-  ok(fet.k==='addr'&&fet.trail===5&&fet.axis&&fet.feeds>0,
+  ok(fet.k==='addr'&&fet.trail===4&&fet.axis&&fet.feeds>0,
    'AT3: '+tag+'the saboteur opens a fetter, which climbs back up through what it feeds and down to its feeling, '+JSON.stringify({k:fet.k,trail:fet.trail,axis:fet.axis,feeds:fet.feeds}));
   await pg.click('#rdrill .ad-r[data-ana^="axis|"]'); await pg.waitForTimeout(120);
   const ax=await pg.evaluate(()=>({k:ANA_PICK.k,nm:ANA_PICK.nm,trail:ANA_TRAIL.length,
    crumbs:document.querySelectorAll('#rdrill [data-anacrumb]').length}));
-  ok(ax.k==='axis'&&ax.trail===6&&ax.crumbs===6,'AT3: '+tag+'and the fetter opens its feeling, six steps down, every one in the trail, '+JSON.stringify(ax));
+  ok(ax.k==='axis'&&ax.trail===5&&ax.crumbs===5,'AT3: '+tag+'and the fetter opens its feeling, five steps down, every one in the trail, '+JSON.stringify(ax));
 
   /* ---- AT4: a step goes back ---- */
-  await pg.click('#rdrill [data-anacrumb="2"]'); await pg.waitForTimeout(120);
+  await pg.click('#rdrill [data-anacrumb="1"]'); await pg.waitForTimeout(120);
   const back=await pg.evaluate(()=>({k:ANA_PICK.k,trail:ANA_TRAIL.length}));
-  ok(back.k==='chain'&&back.trail===2,'AT4: '+tag+'the third step goes back to the hyper-complex and drops the rest, '+JSON.stringify(back));
+  ok(back.k==='chain'&&back.trail===1,'AT4: '+tag+'the second step goes back to the hyper-complex and drops the rest, '+JSON.stringify(back));
 
   /* ---- AT6: the tap floor on every door ---- */
   const small=await pg.evaluate(()=>[...document.querySelectorAll('#ana button[data-ana],#rdrill [data-ana],#rdrill [data-anacrumb]')]
@@ -170,19 +178,23 @@ async function anaTrailGate(browser,FILE,ok,booted){
 
   /* ---- AT8: unread, and a plan that cannot see the chain ---- */
   const un=await pg.evaluate(()=>{loadP(0);setTab(TAB.ANALYTICS);render();
-   return {unread:compute().unread,tele:!!document.querySelector('#ana .ana-tele')};});
-  ok(un.unread&&!un.tele,'AT8: '+tag+'an unread field prints no telemetry, '+JSON.stringify(un));
-  const lk=await pg.evaluate(()=>{const was=SIGHT_PLAN; SIGHT_PLAN=null;
+   const v=[...document.querySelectorAll('#ana .ana-tm-cell:not([data-lens="dom"]) .ana-tm-v')].map(e=>e.textContent);
+   const tips=[...document.querySelectorAll('#ana .ana-tm-cell[data-lens="law"],#ana .ana-tm-cell[data-lens="axis"],#ana .ana-tm-cell[data-lens="seat"]')]
+    .filter(e=>!/not read yet/.test(e.getAttribute('title')||'')).length;
+   return {unread:compute().unread,figs:v.length,dashes:v.filter(t=>t===PCT_DASH).length,tips};});
+  ok(un.unread&&un.figs>0&&un.dashes===un.figs&&un.tips===0,'AT8: '+tag+'an unread field prints a dash in every square, and each says not read yet, '+JSON.stringify(un));
+  /* the free tier, through the harness seam lock.js names: SIGHT_PLAN null
+     under FULL_SIGHT saw the whole chain, so the lock was never drawn here */
+  const lk=await pg.evaluate(()=>{const was=SIGHT_PLAN; SIGHT_PLAN={tier:'free',status:'active'};
    try{loadP(GORDON());setTab(TAB.ANALYTICS);render();
     const locked=SEE_ORDER.filter(k=>!lockSees(k));
-    const out={locked,marks:[...document.querySelectorAll('#ana .ana-rung')].filter(e=>e.querySelector('.lk-mk,svg')).length};
-    ANA_PICK={k:'rung',nm:'sab'};ANA_TRAIL=[];anaDrill();
-    out.panel=!!document.querySelector('#rdrill [data-lock-panel]');
-    out.pats=document.querySelectorAll('#rdrill .ad-r[data-ana^="chain|"]').length;
-    return out;}finally{SIGHT_PLAN=was;try{rdClose();}catch(e){}}});
-  if(lk.locked.indexOf('sab')>=0)
-   ok(lk.marks>=lk.locked.length&&lk.panel&&lk.pats===0,'AT8: '+tag+'a plan that cannot see saboteurs gets the lock and no pattern, '+JSON.stringify(lk));
-  else ok(true,'AT8: '+tag+'this record\'s plan sees saboteurs, nothing to lock');
+    const box=document.querySelector('#ana [data-lens-panel="chain"]');
+    return {locked,all:locked.length===SEE_ORDER.length,
+     panel:!!(box&&box.querySelector('.ana-tm-box [data-lock-panel]')),
+     cells:box?box.querySelectorAll('.ana-tm-cell').length:-1};}finally{SIGHT_PLAN=was;try{rdClose();}catch(e){}}});
+  if(lk.all)
+   ok(lk.panel&&lk.cells===0,'AT8: '+tag+'a plan that cannot see the chain gets the lock in What is running and no square, '+JSON.stringify(lk));
+  else ok(false,'AT8: '+tag+'the free tier was meant to lock the whole chain, '+JSON.stringify(lk));
   }catch(e){ok(false,'AT1: '+tag+'the trail group threw, '+String(e.message).split('\n')[0]);}
   ok(err.length===0,'AT1: '+tag+'no page errors on the trail, '+err.join(' | '));
   await pg.close();}}

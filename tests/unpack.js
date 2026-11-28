@@ -423,24 +423,33 @@ for(const [w,h,wn] of [[1600,1000,'1600'],[390,844,'390']]){
    'and the integrity probe sees "Your integrity is 62%" on the known bad line');
   await p.evaluate(()=>{document.getElementById('unp-bad').remove();});
 
-  /* the Analytics tiles, and every reading card with its name */
+  /* every reading card with its name. THE CARDS ARE HELD WHERE THEY ARE
+     DRAWN, #rdrill, 27 November. This held '#ana', and the cards are never
+     in it: what it found was the readings row on the page, which carried
+     Pull, Self-read shadow, Overshoot and Installed, and which went with the
+     strip down. The cards themselves are what still prints those words. */
   await p.evaluate(()=>{try{rdClose();}catch(e){} ANA_PICK=null;ANA_TRAIL=[];setTab(TAB.ANALYTICS);});
   await p.waitForTimeout(500);
-  await hold('Analytics readings','#ana .ana-tiles');
   for(const k of ['lawsq','pull','ex','jq','pole']){
    await p.evaluate(k=>{ANA_PICK=null;ANA_TRAIL=[];anaGo('met',k,true);},k); await p.waitForTimeout(200);
-   await hold('Analytics card '+k,'#ana');}
-  /* the session card, the axis card and a mask card */
-  await p.evaluate(()=>{ANA_PICK=null;ANA_TRAIL=[];anaGo('sess','0',true);}); await p.waitForTimeout(200);
-  const sess=await hold('session card','#ana');
+   await hold('Analytics card '+k,'#rdrill');}
+  /* the session card, the axis card and a mask card. No roster record
+     carries a session, so two are written first, or the session card opens
+     on "Not running now" and holds nothing */
+  await p.evaluate(()=>{CURP.history=(CURP.history||[]).concat([snapshot(CURP),snapshot(CURP)]);
+   ANA_PICK=null;ANA_TRAIL=[];anaGo('sess','1',true);}); await p.waitForTimeout(200);
+  const sess=await hold('session card','#rdrill');
   ok(['overshoot','installed'].every(t=>sess.found.some(f=>f.term===t)),'the session card prints Overshoot and Installed, so the gate has something to hold: '+JSON.stringify(sess.found.map(f=>f.term)));
   await p.evaluate(()=>{ANA_PICK=null;ANA_TRAIL=[];anaGo('axis',CHILD[0].nm,true);}); await p.waitForTimeout(200);
-  const ax=await hold('axis card','#ana');
+  const ax=await hold('axis card','#rdrill');
   ok(ax.found.some(f=>f.term==='installed'),'the axis card prints Installed');
   await p.evaluate(()=>{var r=compute();ANA_PICK=null;ANA_TRAIL=[];
    if(lockSees('mask')&&r.maskRing&&r.maskRing.length)anaGo('mask',r.maskRing[0].nm,true);}); await p.waitForTimeout(200);
   (await carriersOf()).forEach(c=>{(said[c.w]=said[c.w]||new Set()).add(c.say);});
-  await p.evaluate(()=>{ANA_PICK=null;ANA_TRAIL=[];anaGo('rung','sab',true);}); await p.waitForTimeout(200);
+  /* a saboteur's own card, where the saboteur ring's card stood until The
+     chain was removed, 27 November */
+  await p.evaluate(()=>{var r=computeSeen();ANA_PICK=null;ANA_TRAIL=[];
+   if(r.sabs&&r.sabs.length)anaGo('chain',r.sabs[0].nm,true);}); await p.waitForTimeout(200);
   (await carriersOf()).forEach(c=>{(said[c.w]=said[c.w]||new Set()).add(c.say);});
   /* the pole drill, the energy drill and the Compass with its record */
   await p.evaluate(()=>{ANA_PICK=null;ANA_TRAIL=[];setTab(TAB.FIELD);});

@@ -1,5 +1,6 @@
 {
   "about": [
+    "Lowered 27 November, on the owner's Analytics strip down (the coherence card, the seven stat boxes, the readings row, Where it runs, The chain and the shut list taken off the page, every chart a squarified treemap): unpack 966 to 916, pct 1974 to 1876. Not lowered to get green, and no check was let off. unpack: its walk held the reading cards at #ana, where the cards are never drawn (they render in #rdrill), so what it actually scanned was the readings row on the page, once per card; with the row gone it held nothing, and its coverage checks failed. The holds now read #rdrill, where the cards are, and the session card is opened on two real sessions instead of none, so its Overshoot and Installed are held for the first time. pct: every badge, ring and bubble figure the removed hero, tiles and bubbles printed was a check, per person per width; the treemap figures replace the bubbles one for one and the identification figure is gone with its block. Read off green local runs of each gate alone on the change, unpack 916 passed, 0 failed, and pct 1876 passed, 0 failed.",
     "Moved 27 November with Discover's split into Journal and Imprints, each read off this branch's own runs: safepage 105 to 104 (the held 390 Bank branch no longer runs, the list is on screen there), glassblue 245 to 239 (three Discover cards and the icon row left the page), guide 72 to 90 (the Imprints page's own guide), srcconvo 79 to 75 (the unreachable hero view is no longer walked), lightmenu 4564 to 4868, sniffpage 70 to 74 and design 195 to 206, each above its slack on this run.",
     "Raised 26 November: funnel 276 to 288 and added records 50, read off successful PR #235 run 45821173266 job 139913498270. The 12 additional quiz assertions hold the 0, 5 and all-but-one completion cases. The record gate checks 402-record ledger parity, not owner approval.",
     "The least number of passing checks each gate may report. tools/floors.js fails a gate whose log has no summary line, reports any failure, or counts fewer passes than its floor here. A gate that crashed, was cut off or was skipped therefore cannot pass.",
@@ -143,7 +144,7 @@
     "practitioner": 60,
     "release-screen": 153,
     "release-percent": 8,
-    "unpack": 966,
+    "unpack": 916,
     "layer-observatory": 45,
     "recordlink": 75,
     "golden": 150,
@@ -169,7 +170,7 @@
     "allowance": 84,
     "money": 71,
     "releasechain": 110,
-    "pct": 1974,
+    "pct": 1876,
     "srcintro": 122,
     "anatomy": 37,
     "avatarpurpose": 55,
