@@ -154,9 +154,13 @@ async function flowGate(browser,FILE,ok,booted){
      top row of the Goal and the challenges, the week, Called for under it,
      and Keep or delete while one ends. Today is gone, the Goal card is the
      top row's first tile, and Success over time is in the right rail (FT6). */
-  const wantNames=['Goal and challenges','Week','Called for'].concat(S6.ends?['Keep or delete']:[]);
+  /* THE HEADING IS TODAY NOW, round SW, his words: "Where it says Called
+     For, change that to Today." Not the card this same comment just said
+     was gone, the Active list's old one from before 21 November: this is
+     the suggestion card (ritSugHtml, ui/ritstage.js), renamed, not revived. */
+  const wantNames=['Goal and challenges','Week','Today'].concat(S6.ends?['Keep or delete']:[]);
   ok(!S6.av&&JSON.stringify(names)===JSON.stringify(wantNames),
-   'FT17: '+tag+'the centre is the Goal and challenges, the week, Called for, then Keep or delete only while one ends, and Avatar is not on it, '+JSON.stringify([names,S6.ends]));
+   'FT17: '+tag+'the centre is the Goal and challenges, the week, Today, then Keep or delete only while one ends, and Avatar is not on it, '+JSON.stringify([names,S6.ends]));
   const full=x=>S6.w&&x.l-S6.w.l<=2&&S6.w.r-x.r<=2;
   ok(S6.cards.length>0&&S6.cards.every((x,i,a)=>full(x)&&(i===0||a[i-1].b<=x.t+1)),
    'FT17: '+tag+'every card on the stage is full width and they stack, none side by side, '+JSON.stringify(S6));
@@ -173,13 +177,16 @@ async function flowGate(browser,FILE,ok,booted){
    'FT3: '+tag+'off Flow both menus are shut and empty and the rails have their sections back, '+JSON.stringify(off));
 
   /* ---- FT4 and FT5: inputting new is the left column, and only there ---- */
-  /* nothing active, and the builder is opened the way a person opens it, with
-     New ritual. It used to open itself here; round QN stopped that (FT24), and
-     this check had leaned on it to have a builder to look for. The group above
-     left one running on purpose and took it back here, because the two rules
-     want opposite states. */
+  /* nothing active, and the builder needs no press to exist: it is always
+     drawn now, round SW, and the one real press that used to open it,
+     "+ New", case 'add' in ui/ritual.js, has not existed in this column
+     since 931b4090 (5 November). This group had leaned on a press at
+     '#lcol [data-act="add"]' that only ever matched inside #rit's own
+     folded-left-column button (ritcal.js), never here, so the click this
+     line used to send was always silently skipped; the builder being
+     present at all is what the check below actually proves. */
   await pg.evaluate(()=>{loadP(0); CURP.rituals=[]; ritPlanPut([]); RIT.sel={}; RIT.order=[]; RIT.add=false; RIT.edit=null;
-   setTab(TAB.RITUAL); ritRender(); const a=document.querySelector('#lcol [data-act="add"]'); if(a)a.click();}); await wait(500);
+   setTab(TAB.RITUAL); ritRender();}); await wait(500);
   const nr=await pg.evaluate(()=>{
    const lc=document.getElementById('lcol'), rc=document.getElementById('rcol'), rit=document.getElementById('rit');
    const ctl='[data-act="tag"],[data-act="newtag"],[data-act="save"],[data-act="rc-rep"],[data-act="rc-for"],.rv-build,#ritwhen,#ritwhere';
@@ -264,39 +271,55 @@ async function flowGate(browser,FILE,ok,booted){
   ok(open.heads.length===2&&open.heads[0]==='Success over time'&&open.heads[1]==='Avatar'
     &&!['Thirty day loop','Done','Missed','Marks','History','Record','Goal','Ritual to avatar','Due today'].some(h=>open.heads.indexOf(h)>=0),
    'FT6: '+tag+'at rest the right column is Success over time with the thirty days, then Avatar, and nothing else, '+JSON.stringify(open.heads));
+  /* HISTORY MOVED INTO THE RAIL'S HEAD, round SW, beside the streak strip,
+     exactly where the right column's own fold control used to sit
+     (shell/head.html, ui/ritual.js), and it carries no second calendar any
+     more: acctSideHtml now renders acctHistHtml, every ritual ever run, and
+     ritListHtml, the plain record as a list, and never ritRecordHtml, which
+     was the month this rail drew a second time. So the press is read off
+     #flowhd now, not #flowside, and "Record" is not a heading that exists
+     on this page any more; "Rituals" (acctHistHtml's own) is what the press
+     carries under it. */
   const hp=await pg.evaluate(async()=>{
-   const t=document.querySelector('#flowside [data-act="hist"]'); if(!t)return {none:true};
-   const shut={exp:t.getAttribute('aria-expanded'), label:t.textContent.trim(), rec:!!document.querySelector('#flowside .rv-rec'),
-    cards:!!document.querySelector('#flowside .rv-hist')};
+   const t=document.querySelector('#flowhd [data-act="hist"]'); if(!t)return {none:true};
+   const shut={exp:t.getAttribute('aria-expanded'), label:t.textContent.trim(),
+    cards:!!document.querySelector('#flowside .rv-hist'), month:!!document.querySelector('#flowside .rv-rec')};
    t.click(); await new Promise(r=>setTimeout(r,200));
-   const t1=document.querySelector('#flowside [data-act="hist"]');
+   const t1=document.querySelector('#flowhd [data-act="hist"]');
    const heads=[...document.querySelectorAll('#flowside .rv-h')].map(x=>x.textContent);
-   const after=t1.nextElementSibling;
+   const after=document.getElementById('rvhist');
    const opened={exp:t1.getAttribute('aria-expanded'), heads, label:t1.textContent.trim(),
-    under:!!after&&after.id==='rvhist'&&!!after.querySelector('.rv-hist')&&!!after.querySelector('.rv-rec')};
+    under:!!after&&after.querySelector('.rv-hist')&&!after.querySelector('.rv-rec')};
    t1.click(); await new Promise(r=>setTimeout(r,200));
-   return {shut, opened, back:!document.querySelector('#flowside .rv-rec')};});
-  ok(!hp.none&&hp.shut.exp==='false'&&hp.shut.label==='History'&&!hp.shut.rec&&!hp.shut.cards
+   return {shut, opened, back:!document.querySelector('#flowside .rv-hist')&&!document.getElementById('rvhist')};});
+  ok(!hp.none&&hp.shut.exp==='false'&&hp.shut.label==='History'&&!hp.shut.cards&&!hp.shut.month
     &&hp.opened.exp==='true'&&hp.opened.label==='History'&&hp.opened.under
-    &&hp.opened.heads.indexOf('Rituals')>=0&&hp.opened.heads.indexOf('Record')>hp.opened.heads.indexOf('Rituals')
+    &&hp.opened.heads.indexOf('Rituals')>=0&&hp.opened.heads.indexOf('Record')<0
     &&hp.opened.heads[hp.opened.heads.length-1]==='Avatar'&&hp.back,
-   'FT6: '+tag+'History is one press that keeps its label, opens the rituals and the Record under itself in the same column, and shuts again, '+JSON.stringify(hp));
+   'FT6: '+tag+'History is one press in the rail\'s head, never a second record: it opens the rituals and the plain list under itself, with no Record month anywhere, and shuts again, '+JSON.stringify(hp));
   /* FT36, SV19, his words: "Move the streak to the upper right hand side and
      then accountability will be underneath that." The strip is the first
      thing in the right menu's head, above its name, and each figure is a mark
      with its word on the press */
-  const sk=await pg.evaluate(()=>{const h=document.getElementById('flowhd'), row=h&&h.firstElementChild;
-   const nm=h&&h.querySelector('.fl-nm');
-   return {first:!!row&&row.classList.contains('acs-row'), above:!!row&&!!nm&&row.getBoundingClientRect().bottom<=nm.getBoundingClientRect().top+1,
+  /* round SW: Practised and Marks are gone, his words "get rid of the
+     practice minutes you've put in... get rid of the marks that you've
+     earned", down to Streak and Missed, now the tap floor of 48 rather than
+     44. The row is .acs-top now, not .acs-row directly: History joined it,
+     his words "move History to the right-hand side of that menu, with the
+     close, exactly where the close-the-right-column icon is", margin-left
+     auto putting it in the corner the fold control left. */
+  const sk=await pg.evaluate(()=>{const h=document.getElementById('flowhd'), top=h&&h.firstElementChild;
+   const nm=h&&h.querySelector('.fl-nm'), row=top&&top.querySelector('.acs-row'), hist=top&&top.querySelector('.acs-hist');
+   return {first:!!top&&top.classList.contains('acs-top'), above:!!top&&!!nm&&top.getBoundingClientRect().bottom<=nm.getBoundingClientRect().top+1,
+    hasHist:!!hist, histAfterChips:!!row&&!!hist&&hist.getBoundingClientRect().left>=row.getBoundingClientRect().right-1,
+    histH:hist?Math.round(hist.getBoundingClientRect().height):0, histW:hist?Math.round(hist.getBoundingClientRect().width):0,
     chips:row?[...row.children].map(c=>({k:c.className, t:c.getAttribute('data-tip-t'), tip:(c.getAttribute('data-tip')||'').length,
      svg:!!c.querySelector('svg'), word:/[A-Za-z]{4,}/.test((c.querySelector('b')||{}).textContent.replace(/days?|min|marks?/g,'')),
      h:Math.round(c.getBoundingClientRect().height), top:Math.round(c.getBoundingClientRect().top)})):[]};});
-  /* and Marks, 18 November: the figures row under Success over time carried
-     the only count of marks, and it went on his word that the upper right
-     already had it, so the strip carries it now */
-  ok(sk.first&&sk.above&&JSON.stringify(sk.chips.map(c=>c.t))===JSON.stringify(['Streak','Missed','Practised','Marks'])
-    &&sk.chips.every(c=>c.svg&&c.tip>20&&!c.word&&c.h>=44)&&new Set(sk.chips.map(c=>c.top)).size===1,
-   'FT36: '+tag+'the streak strip is the first row of the right head, above Accountability, four marks on one row, each word on its press and none on the screen, '+JSON.stringify(sk));
+  ok(sk.first&&sk.above&&sk.hasHist&&sk.histAfterChips&&sk.histH>=48&&sk.histW>=48
+    &&JSON.stringify(sk.chips.map(c=>c.t))===JSON.stringify(['Streak','Missed'])
+    &&sk.chips.every(c=>c.svg&&c.tip>20&&!c.word&&c.h>=48)&&new Set(sk.chips.map(c=>c.top)).size===1,
+   'FT36: '+tag+'the streak strip is down to Streak and Missed, 48 tall, with History beside them at the tap floor on both sides, each word on its press and none on the screen, '+JSON.stringify(sk));
   }catch(e){ok(false,'FT6: '+tag+'the columns group threw, '+String(e.message).split('\n')[0]);}
   await pg.close();
   ok(err.length===0,tag+'no page errors across the Flow page, '+err.join(' | '));
@@ -423,8 +446,13 @@ async function flowGate(browser,FILE,ok,booted){
   /* 21 November, intended change: the Goal card is the top row's first tile
      and its pop-up now, and the tile's header carries the meaning on its
      press (tests/ritweek.js RW3), so Goal is not a section read here */
-  ok(['_month','Rituals','Record','Success over time','Avatar'].every(h=>mean[h]>30),
-   'FT14: the thirty days, Rituals, Record, Success over time and Avatar each carry a sentence saying what they mean, '+JSON.stringify(mean));
+  /* Record is gone, round SW: History carries the rituals ever run and the
+     plain list now (ui/accountability.js), never the Record's own month,
+     which was the same thirty days Success over time already draws, read
+     twice. "there's 2 accountability tracker records for some reason, we
+     only need 1." */
+  ok(['_month','Rituals','Success over time','Avatar'].every(h=>mean[h]>30)&&mean.Record===undefined,
+   'FT14: the thirty days, Rituals, Success over time and Avatar each carry a sentence saying what they mean, and Record is not a heading any more, '+JSON.stringify(mean));
 
   /* FT9: a mark is one press, through the one writer, and it says so. SV17:
      the press that was Due today's ring is the Done ring in today's sash's
@@ -497,20 +525,30 @@ async function flowGate(browser,FILE,ok,booted){
   ok(!ed.none&&ed.tab&&ed.edit&&ed.builder&&ed.build&&ed.head==='Edit',
    'FT9: Edit on a ritual\'s block opens that ritual in the left column and never leaves the page, '+JSON.stringify(ed));
 
-  /* FT13: both folds are the person's own, and they still work on Flow */
+  /* FT13: round SW, OVERRIDDEN. Both fold icons used to be the person's own
+     and work on Flow; his words now, "get rid of the close-right-icon-column
+     and the left-icon-column, get rid of both of those." Neither control is
+     on the page any more, and both rails stay open regardless of what either
+     store key reads, including the shared rcol a fold on the Field, the
+     Compass or the Journal also writes: colShut and railShut (ui/ui.js)
+     return false outright for S.tab===TAB.RITUAL, before either key is even
+     read, so a rail shut anywhere else cannot arrive shut here with no press
+     left to reopen it. */
   const fold=await pg.evaluate(async()=>{
-   const out={};
-   for(const [which,btn,cls,rail] of [['right','rfold','rshut','flowrail'],['left','lfold','lshut','flownew']]){
-    const b=document.getElementById(btn);
-    out[which+'Open0']=!document.body.classList.contains(cls);
-    b.click(); await new Promise(r=>setTimeout(r,150));
-    out[which+'Shut']=document.body.classList.contains(cls)&&getComputedStyle(document.getElementById(rail)).display==='none';
-    out[which+'Btn']=document.getElementById(btn).getBoundingClientRect().width>0;
-    b.click(); await new Promise(r=>setTimeout(r,150));
-    out[which+'Back']=!document.body.classList.contains(cls)&&getComputedStyle(document.getElementById(rail)).display!=='none';}
+   try{STORE.set('lcolf','shut'); STORE.set('rcol','shut');}catch(e){}
+   colTab(); railTab(); await new Promise(r=>setTimeout(r,150));
+   const vis=e=>{if(!e)return false; const r=e.getBoundingClientRect();
+    return getComputedStyle(e).display!=='none'&&r.width>0&&r.height>0;};
+   const out={lBtn:vis(document.getElementById('lfold')), rBtn:vis(document.getElementById('rfold')),
+    lShut:document.body.classList.contains('lshut'), rShut:document.body.classList.contains('rshut'),
+    lOpen:getComputedStyle(document.getElementById('flownew')).display!=='none',
+    rOpen:getComputedStyle(document.getElementById('flowrail')).display!=='none'};
+   try{STORE.set('lcolf','open'); STORE.set('rcol','open');}catch(e){}
+   colTab(); railTab();
    return out;});
-  ok(['right','left'].every(w=>fold[w+'Open0']&&fold[w+'Shut']&&fold[w+'Btn']&&fold[w+'Back']),
-   'FT13: both columns open on Flow, both shut to their one control, and both come back, '+JSON.stringify(fold));
+  ok(!fold.lBtn&&!fold.rBtn,'FT13: neither fold icon is drawn on the Ritual page, '+JSON.stringify(fold));
+  ok(!fold.lShut&&!fold.rShut&&fold.lOpen&&fold.rOpen,
+   'FT13: both rails stay open on Ritual even with shut stored under their own and the shared key, with no control left to reopen them, '+JSON.stringify(fold));
 
   }catch(e){ok(false,'FT7: the reads and writes group threw, '+String(e.message).split('\n')[0]);}
 
@@ -847,7 +885,7 @@ async function flowGate(browser,FILE,ok,booted){
   /* 21 November, intended change: the Goal card is a tile whose header
      carries its sentence (tests/ritweek.js RW3), and the thirty days are
      inside Success over time, headed by that name, not by their month */
-  ok(['Called for','Success over time','Avatar'].every(h=>tellNames.indexOf(h)>=0)
+  ok(['Today','Success over time','Avatar'].every(h=>tellNames.indexOf(h)>=0)
     &&tell.every(x=>x.tip&&x.focus&&!x.shown),
    'FT26: every part\'s sentence is on its heading\'s press, reachable by keyboard, and folded at rest, '+JSON.stringify(tell));
 
@@ -894,15 +932,19 @@ async function flowGate(browser,FILE,ok,booted){
    'FT28: there is no Marks shelf, the marks earned in the thirty are pinned on their day, and no next mark here, '+JSON.stringify(mk2));
 
   /* ---- FT22 ---- */
+  /* round SW: there is no month view to switch away from any more, so the
+     Ended and Again check reads #rvhist straight, which is always
+     acctHistHtml plus ritListHtml now (acctSideHtml, ui/accountability.js),
+     never ritRecordHtml's own month and list behind a view switch */
   const hi=await pg.evaluate(async()=>{RIT.histOpen=true; ritRender(); const cards=()=>[...document.querySelectorAll('#flowside .rv-hc')].map(c=>({nm:c.querySelector('.rv-hcn').textContent,
     act:!!c.querySelector('.rv-tag'), rot:!!c.querySelector('[data-act="rot"]')}));
-   const c0=cards(); const listAgain=(()=>{RIT.view='list'; ritRender(); const t=document.querySelector('#flowside .rv-rec').innerText;
-    const a=document.querySelectorAll('#flowside .rv-rec [data-act="again"]').length; RIT.view='month'; ritRender(); return {ended:/\bEnded\b/.test(t), a};})();
+   const c0=cards(); const listAgain=(()=>{const t=document.getElementById('rvhist').innerText;
+    const a=document.querySelectorAll('#rvhist [data-act="again"]').length; return {ended:/\bEnded\b/.test(t), a};})();
    const b=[...document.querySelectorAll('#flowside .rv-hc')].filter(c=>c.querySelector('.rv-hcn').textContent==='Candle Visualisation')[0].querySelector('[data-act="rot"]');
    b.click(); await new Promise(r=>setTimeout(r,300));
    return {c0, listAgain, said:(document.getElementById('status')||{}).textContent||'', c1:cards(),
     active:ritPlans().some(p=>ritName(p.steps)==='Candle Visualisation'&&ritActive(p,ritToday0())&&p.days===7&&p.band==='Crown'),
-    stillOpen:RIT.histOpen&&!!document.querySelector('#flowside .rv-rec'), _:(RIT.histOpen=false,ritRender(),0)};});
+    stillOpen:RIT.histOpen&&!!document.getElementById('rvhist'), _:(RIT.histOpen=false,ritRender(),0)};});
   const cv=hi.c0.filter(c=>c.nm==='Candle Visualisation')[0], cv1=hi.c1.filter(c=>c.nm==='Candle Visualisation')[0];
   ok(new Set(hi.c0.map(c=>c.nm)).size===hi.c0.length&&hi.c0.length>=4&&cv&&cv.rot&&!cv.act&&hi.c0.filter(c=>c.act).every(c=>!c.rot),
    'FT22: one card per ritual run, active ones say Active, an ended one offers Back in rotation, '+JSON.stringify(hi.c0));
@@ -958,19 +1000,48 @@ async function flowGate(browser,FILE,ok,booted){
      week (ritStageHtml), so it is read there and sits below the week, and the
      left column is the builder alone */
   const first=await pg.evaluate(()=>{const L=document.getElementById('lcol'), s=document.querySelector('#rit .rv-sug'), n=L.querySelector('.rv-build'), wk=document.querySelector('#rit .rv-week');
-   const called=ritRead().c.called, t=L.querySelector('.rv-tile');
+   const called=ritRead().c.called;
+   /* ROUND SW: THE CALLED PRACTICE IS PICKED HERE NOW, not drawn as a tile
+      waiting for a press. ritOpen's own needPick fires exactly once, on this
+      first paint, so Start works without a press of its own first; the old
+      bug (931b4090, 5 November) left the builder always open with nothing
+      picked, so the tile here looked like the obvious first move and Start
+      stayed disabled until something, anything, was pressed. A picked step
+      is a row in the ol list and never a tile, the same place any other
+      step a person chose would sit, so there is no tile to read here any
+      more; the save button's own state is read instead. */
+   const step=L.querySelector('.rv-steps .rv-st span'), save=L.querySelector('#ritsave');
    return {building:document.body.classList.contains('ritbuild'), builder:!!n, sug:!!s,
     head:s?(s.querySelector('.rv-h')||{}).textContent:'', empty:s?(s.querySelector('.rv-empty')||{}).textContent:'',
     cards:[...document.querySelectorAll('#rit .rv-sg1 .rv-sgn')].map(x=>x.textContent), called:called&&called.nm, leftSug:!!L.querySelector('.rv-sug'),
     law:document.querySelectorAll('#rit .rv-sug .rv-lawc').length,
-    tile:t?(t.querySelector('.rv-tn')||{}).textContent:'', tileSays:t?(t.querySelector('.rv-tm')||{}).textContent:'',
+    step:step?step.textContent:'', draft:ritDraft().length, saveDisabled:!!(save&&save.disabled),
     below:!!(s&&wk)&&s.getBoundingClientRect().top>=wk.getBoundingClientRect().bottom-1};});
   /* 22 November, intended change: a first visit has measured no law, so the
      law of the week (ui/ritlaw.js) is the one card, and the line under it
      says nothing ELSE is called for yet rather than contradicting it */
-  ok(!first.building&&first.builder&&first.sug&&first.head==='Called for'&&first.cards.length===0&&first.law===1
-    &&first.empty==='Nothing else called for yet. Record a story to fill it.'&&first.tile===first.called&&!/called for/.test(first.tileSays)&&first.below&&!first.leftSug,
-   'FT24: a first visit with nothing read shows the builder open, the lightest practice as its first tile and not called for, and Called for under the week with nothing in it, '+JSON.stringify(first));
+  /* the heading reads Today now, round SW; the line under it still says
+     called for, which is a different word for a different thing (ritstage.js).
+     building stays false here, unchanged from before: the auto pick does not
+     count toward it (ritRender's own drafting, which excludes RIT.autoK), so
+     a silent pick on arrival does not reorder the phone stack on its own;
+     ritnone already brings the column forward here regardless, because
+     nothing is active yet, which FT24's own phone group below still holds. */
+  ok(!first.building&&first.builder&&first.sug&&first.head==='Today'&&first.cards.length===0&&first.law===1
+    &&first.empty==='Nothing else called for yet. Record a story to fill it.'
+    &&first.draft===1&&first.step===first.called&&!first.saveDisabled&&first.below&&!first.leftSug,
+   'FT24: a first visit with nothing read already has the lightest practice picked, as a step and not a tile, so Start needs no press of its own, and Called for is under the week with nothing in it, '+JSON.stringify(first));
+  /* and the tile is back, with its reason, the moment that pick is taken off
+     again: the big suggested tile only ever stands for a choice not yet
+     made, so pressing its step's own x (never the tile itself, which does
+     not exist while the practice is picked) is what brings it back */
+  const tileBack=await pg.evaluate(async()=>{const L=document.getElementById('lcol');
+   const x=L.querySelector('.rv-steps .rv-st [data-act="pick"]'); if(x)x.click(); await new Promise(r=>setTimeout(r,200));
+   const t=L.querySelector('.rv-tile.rv-big');
+   return {draft:ritDraft().length, tile:t?(t.querySelector('.rv-tn')||{}).textContent:'',
+    why:t?t.getAttribute('data-tip'):null};});
+  ok(tileBack.draft===0&&tileBack.tile===first.called&&!!tileBack.why&&!/^\s*$/.test(tileBack.why||''),
+   'FT24: taking the picked step off brings the tile back with its own reason on hover, never pasted on the card, '+JSON.stringify(tileBack));
   /* the centre's own New ritual is for a folded left column only: open, the
      left column is the builder itself and carries no press at all */
   const dup=await pg.evaluate(async()=>{
@@ -1037,6 +1108,52 @@ async function flowGate(browser,FILE,ok,booted){
   await pg.evaluate(()=>{ritWrite(function(){CURP.rituals=[];return [];},null);});
   }catch(e){ok(false,'FT24: the group threw, '+String(e.message).split('\n')[0]);}
   ok(err.length===0,'FT24: no page errors, '+err.join(' | '));
+  await pg.close();
+ }
+ /* ---- FT4, THE REAL BUG, a genuinely fresh page load ----
+    Confirmed by direct reproduction in a real browser, round SW. "+ New" was
+    a real button once, case 'add' in ui/ritual.js, before 931b4090
+    (5 November): pressing it opened the builder and ran ritPick(c.called.k)
+    on the same press, so Start worked the moment the column appeared. That
+    commit made the builder always open and left the auto pick with nothing
+    to run from, so a page opened fresh landed on a disabled Start and a tile
+    that looked like the obvious first move and was not: pressing it moved
+    the practice into the step list rather than visibly checking the tile,
+    which read as the press doing nothing. This is a new page, not a reset
+    inside one the way the groups above and below simulate "nothing picked"
+    for their own, different checks, because the bug and the fix are both
+    scoped to what a real page load does (ritOpen's own RIT.needPick, spent
+    on the first paint only), and a mid session reset would not exercise
+    either. Run against the commit this round started from (checked out on
+    its own, `node tests/flowtools.js` against that build) this block failed
+    with enabled:false and wrote:false before anything in ui/ritual.js
+    changed; that is the known bad case the house rule asks this to be
+    checked against first. */
+ {
+  const pg=await newPage({viewport:{width:1600,height:1000}});
+  const err=[]; pg.on('pageerror',e=>err.push(e.message));
+  await pg.goto(FILE,{waitUntil:'load'}); await booted(pg); await pg.waitForTimeout(400);
+  try{
+  const r=await pg.evaluate(async()=>{
+   loadP(0); CURP.rituals=[]; ritPlanPut([]); setTab(TAB.RITUAL);
+   await new Promise(res=>setTimeout(res,300));
+   const save=document.getElementById('ritsave');
+   const draft0=ritDraft().length, enabled=!!save&&!save.disabled;
+   /* ritKey is the plan's own identity everywhere else in this file and the
+      product (ritKey, ui/ritual.js), so it is the signature read before and
+      after the press rather than a count, which a same-length swap could
+      pass by accident */
+   const p0=ritPlans().map(p=>ritKey(p.steps));
+   if(save&&!save.disabled)save.click();
+   await new Promise(res=>setTimeout(res,300));
+   const p1=ritPlans().map(p=>ritKey(p.steps));
+   return {hasSave:!!save, draft0, enabled, wrote:p1.length>p0.length&&p1.some(k=>p0.indexOf(k)<0), p0, p1};});
+  ok(r.hasSave&&r.draft0===1,
+   'FT4: a genuinely fresh page load, nothing active: the suggested practice is already picked, no press needed first, '+JSON.stringify(r));
+  ok(r.enabled,'FT4: and Start is not disabled on that same first paint, '+JSON.stringify(r));
+  ok(r.wrote,'FT4: pressing Start on that first paint writes a real plan, a new signature on the record, '+JSON.stringify(r));
+  }catch(e){ok(false,'FT4: the arrival group threw, '+String(e.message).split('\n')[0]);}
+  ok(err.length===0,'FT4: no page errors on arrival, '+err.join(' | '));
   await pg.close();
  }
  /* FT24 on a phone: with nothing active the column that starts one is first,
@@ -1601,11 +1718,21 @@ async function flowGate(browser,FILE,ok,booted){
   const ls=await pg.evaluate(async()=>{RIT.all=true; ritRender(); await new Promise(r=>setTimeout(r,150));
    const t=[...document.querySelectorAll('#flowleft .rv-tiles .rv-tile')], L=t.map(e=>e.getBoundingClientRect());
    const col=document.querySelector('#flowleft .rv-tiles').getBoundingClientRect();
+   const lp=document.getElementById('lpanel'), lr=lp.getBoundingClientRect();
+   const save=document.getElementById('ritsave'), sr=save?save.getBoundingClientRect():null;
    const out={n:t.length, lib:ritRead().c.all.length, oneCol:L.every(r=>Math.abs(r.left-col.left)<1.5&&Math.abs(r.right-col.right)<1.5),
-    stacked:L.every((r,i)=>i===0||L[i-1].bottom<=r.top+1||L[i-1].top>r.top), called:/called for/i.test(document.getElementById('flowleft').querySelector('.rv-build').innerText)};
+    stacked:L.every((r,i)=>i===0||L[i-1].bottom<=r.top+1||L[i-1].top>r.top), called:/called for/i.test(document.getElementById('flowleft').querySelector('.rv-build').innerText),
+    /* round SW: Rituals used to insert its whole grid above the tools row,
+       which pushed Save down the rail by however tall the grid was, far
+       enough on the full library to leave the fold at 1600. Save is pinned
+       to the foot of the rail's own scrollport now (shell/head.html,
+       body.tab-ritual #flowleft .rv-build>.rv-acts), so its box must sit
+       inside the rail's own box whatever Rituals opens to. */
+    saveReachable:!!sr&&sr.top>=lr.top-1&&sr.bottom<=lr.bottom+1};
    RIT.all=false; ritRender(); return out;});
   ok(ls.n===ls.lib&&ls.n>0&&ls.oneCol&&ls.stacked&&!ls.called,
    'FT35: '+tag+'Practices lists every practice the library offers one to a row, none side by side, and no tile says called for, '+JSON.stringify(ls));
+  ok(ls.saveReachable,'FT35: '+tag+'opening Rituals never pushes Start out of the visible rail, '+JSON.stringify(ls));
   }catch(e){ok(false,'FT35: '+tag+'the group threw, '+String(e.message).split('\n')[0]);}
   ok(err.length===0,'FT35: '+tag+'no page errors, '+err.join(' | '));
   await pg.close();
