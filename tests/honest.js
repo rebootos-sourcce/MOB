@@ -142,7 +142,13 @@ require('./net.js').guardBrowser(browser);
      presses #relgo itself, synchronously, so the dose field never sits on
      screen long enough for a later press to change it. Set RUN.dose directly,
      in the gap between that click returning and its first timer firing. */
-  await p.evaluate(() => { const g = document.getElementById('strun'); if (g && !g.disabled) g.click(); });
+  /* THE RELEASE PANEL IS THE IMPRINTS PAGE'S SINCE 27 NOVEMBER (the Discover
+     split), so #strun is not in the document at all while S.tab is still
+     Story: the click below silently no-opped, RUN was never created, and
+     every assertion after it either timed out at the 90 second mark or read
+     a RUN that did not exist. Found 28 November, same fix tests/releasechain.js
+     and tests/source-alpha-flow.js already carry for the same move. */
+  await p.evaluate(() => { setTab(TAB.IMPRINTS); const g = document.getElementById('strun'); if (g && !g.disabled) g.click(); });
   await p.evaluate(() => { RUN.dose = 1; });
   const done = await p.waitForFunction(() => typeof RUN !== 'undefined' && RUN.phase === 'done' && RUN.cool >= COOLING.length, null, { timeout: 90000 }).then(() => true, () => false);
   ok(done, 'the release runs to its end');
@@ -186,7 +192,8 @@ require('./net.js').guardBrowser(browser);
      release. */
   await send(p, STORY); await p.waitForTimeout(500);
   await press(p, '#stapply'); await p.waitForTimeout(500);
-  await p.evaluate(() => { const g = document.getElementById('strun'); if (g && !g.disabled) g.click(); });
+  /* same reason as the section above: #strun lives on the Imprints page now */
+  await p.evaluate(() => { setTab(TAB.IMPRINTS); const g = document.getElementById('strun'); if (g && !g.disabled) g.click(); });
   await p.evaluate(() => { RUN.dose = 1; });
   const done2 = await p.waitForFunction(() => typeof RUN !== 'undefined' && RUN.phase === 'done' && RUN.cool >= COOLING.length, null, { timeout: 90000 }).then(() => true, () => false);
   const run2 = await p.evaluate(() => { const g = document.getElementById('strun');
