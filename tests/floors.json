@@ -1,5 +1,6 @@
 {
   "about": [
+    "Raised 28 November: ritweek 97 to 107, read off the real CI run on f2efe07c (the Ritual layout rebuild, the New/Start fix and the right-rail cleanup) that blocked deploy on an untouched floor. RW3/RW13 (always four tiles), RW6b (History never shows the Record's month) and RW14 (Avatar stays inside the rail's visible bottom with Kept by point shut) are the real new checks, plus three mutant proofs (pad3, heldback, monthback). Confirmed by a direct rerun on this exact commit, same 107.",
     "Moved 27 November with Discover's split into Journal and Imprints, each read off this branch's own runs: safepage 105 to 104 (the held 390 Bank branch no longer runs, the list is on screen there), glassblue 245 to 239 (three Discover cards and the icon row left the page), guide 72 to 90 (the Imprints page's own guide), srcconvo 79 to 75 (the unreachable hero view is no longer walked), lightmenu 4564 to 4868, sniffpage 70 to 74 and design 195 to 206, each above its slack on this run.",
     "Raised 26 November: funnel 276 to 288 and added records 50, read off successful PR #235 run 45821173266 job 139913498270. The 12 additional quiz assertions hold the 0, 5 and all-but-one completion cases. The record gate checks 402-record ledger parity, not owner approval.",
     "The least number of passing checks each gate may report. tools/floors.js fails a gate whose log has no summary line, reports any failure, or counts fewer passes than its floor here. A gate that crashed, was cut off or was skipped therefore cannot pass.",
@@ -188,7 +189,7 @@
     "menutip": 76,
     "remind": 32,
     "avatarwhole": 9,
-    "ritweek": 97,
+    "ritweek": 107,
     "ritlaw": 64,
     "guide": 90,
     "dashavatar": 73,
