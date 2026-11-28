@@ -1219,7 +1219,7 @@ function atmWire(){
 atmWire();
 
 /* ============================================================
-   THE VOICE IS ELEVENLABS AND THERE IS NO OTHER. The owner, 9 October:
+   THE VOICE IS OPENAI AND THERE IS NO BROWSER FALLBACK. The owner, 9 October:
    "fix the 11 Labs voice. The audio is still defaulting to the Claude
    default voice, and I want that removed so that there's no fallback to
    it." This file used to carry the browser's own built in speech as the
@@ -1237,7 +1237,7 @@ atmWire();
    ============================================================ */
 function speakStop(){ studioStop(); }
 /* ============================================================
-   THE STUDIO VOICE. One line, rendered by ElevenLabs on the server
+   THE STUDIO VOICE. One line, rendered by OpenAI on the server
    (ui/auth.js authVoice) and played here. It is the only voice. There
    is nothing behind it: when it cannot answer, the caller says so and
    the line is not spoken. The release's timing is the four second
@@ -1271,13 +1271,15 @@ var STUDIO={seq:0, el:null, url:''}, STUDIO_WAIT_MS=5000;
    default run passes the day's ceiling inside its second address and "Today's
    voice lines are used up" reads the rest on the screen. Kept by style and
    text, the key the server's own
-   cache uses less the voice, which this page cannot change mid visit. Held
+   cache now includes the voice, so a voice change never replays another voice. Held
    for the visit only, the last STUDIO_KEEP_N, never written anywhere. */
 var STUDIO_KEEP=Object.create(null), STUDIO_KEEP_AT=[], STUDIO_KEEP_N=64;
 function studioAsk(text,style){
- var k=style+'\n'+text, b=STUDIO_KEEP[k];
+ var voice=(typeof CURP!=='undefined'&&CURP&&CURP.ui&&CURP.ui.voiceName)||'marin';
+ if(['marin','cedar','coral','sage'].indexOf(voice)<0)voice='marin';
+ var k=voice+'\n'+style+'\n'+text, b=STUDIO_KEEP[k];
  if(b)return Promise.resolve({ok:true, blob:b});
- return authVoice(text,style).then(function(r){
+ return authVoice(text,style,voice).then(function(r){
   if(r&&r.ok&&r.blob&&!STUDIO_KEEP[k]){
    STUDIO_KEEP[k]=r.blob; STUDIO_KEEP_AT.push(k);
    if(STUDIO_KEEP_AT.length>STUDIO_KEEP_N)delete STUDIO_KEEP[STUDIO_KEEP_AT.shift()];}
