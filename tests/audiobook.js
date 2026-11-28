@@ -158,6 +158,51 @@ const CHROME=process.env.CHROME||chromium.executablePath();
   if(!success)fail++;
   await page.close();
  }
+ // A near-instant audio completion must not credit a line in Audiobook mode.
+ // Play retries that same line rather than advancing the release cursor.
+ {
+  const page=await browser.newPage({viewport:{width:390,height:960}});
+  await page.goto(SRC,{waitUntil:'load'});
+  await page.waitForFunction(()=>document.body.classList.contains('booted'),null,{timeout:15000});
+  const result=await page.evaluate(async()=>{
+   loadP(0);
+   CHARGES.forEach(c=>{S.charge[c]=7;});
+   CURP.ui.voice=true;CURP.ui.tone=false;CURP.ui.releaseMode='listen';
+   relPick(compute().carrying.slice(0,1).map(n=>n.i));
+   const oldSay=window.speakStudio,oldWarm=window.studioWarm;
+   let attempts=0;
+   window.studioWarm=function(){};
+   window.speakStudio=function(text,rate,style,onend,onfail){
+    attempts++;setTimeout(()=>onend(1),0);return true;
+   };
+   try{
+    document.getElementById('relgo').click();
+    await new Promise(r=>setTimeout(r,75));
+    const before={paused:RUN.paused,phase:RUN.phase,line:RUN.line,
+     idx:RUN.idx,pass:RUN.pass,attempts};
+    window.speakStudio=function(text,rate,style,onend,onfail){
+     attempts++;setTimeout(()=>onend(10000),0);return true;
+    };
+    const button=document.getElementById('relpause');
+    if(button)button.click();
+    await new Promise(r=>setTimeout(r,65));
+    const after={paused:RUN.paused,phase:RUN.phase,line:RUN.line,
+     idx:RUN.idx,pass:RUN.pass,attempts};
+    return {before,after,play:!!button};
+   }finally{
+    relClose();
+    window.speakStudio=oldSay;window.studioWarm=oldWarm;
+   }
+  });
+  const success=result.play&&result.before.paused===true&&
+   result.before.phase==='opening'&&result.before.line===0&&
+   result.before.idx===0&&result.before.pass===0&&
+   result.after.attempts>result.before.attempts&&
+   (result.after.phase!==result.before.phase||result.after.line>result.before.line);
+  console.log((success?'ok':'FAIL')+' audiobook near-instant completion holds cursor '+JSON.stringify(result));
+  if(!success)fail++;
+  await page.close();
+ }
  // In-flight requests share one synthesis, cached speech is isolated by voice,
  // and a failed request can be retried. The words are synthetic test fixtures.
  {
