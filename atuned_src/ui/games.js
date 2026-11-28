@@ -135,13 +135,18 @@ function mtBlock(c){
    has to reach at once rather than after a hold. Deal itself keeps its single
    tap for dealing; this is a second control and not a second way to do the
    first one. */
+/* data-gmrules, not a class: every class this build emits needs a CSS rule
+   (tests/design.js, CSS coverage) and this button borrows .vt's rule rather
+   than adding its own, so its hook is the attribute, the same convention the
+   rest of this file already wires its controls by (data-gm, data-lgc,
+   data-lg, data-mt, data-gmimp). */
 function gmRulesBtn(label,text){
- return '<button type="button" class="vt gm-rules" aria-label="Rules" '
+ return '<button type="button" class="vt" data-gmrules aria-label="Rules" '
   +'data-tip-t="'+esc(label)+'" data-tip="'+esc(text)+'">'
   +'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/>'
   +'<path d="M12 10.3v5.3M12 7.1v.01"/></svg></button>';}
 function gmWireRules(host){
- host.querySelectorAll('.gm-rules').forEach(function(b){
+ host.querySelectorAll('[data-gmrules]').forEach(function(b){
   b.onclick=function(){if(typeof TIP!=='undefined')TIP.show(b);};});}
 
 /* ---- the shell ---- */
