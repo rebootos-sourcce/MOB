@@ -5,7 +5,7 @@ const path=require('path');
 const {chromium}=require('playwright');
 const ROOT=path.resolve(__dirname,'..');
 const SRC='file://'+path.resolve(process.env.AUDIOBOOK_HTML||path.join(ROOT,'source.html'));
-const CHROME=process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome';
+const CHROME=process.env.CHROME||chromium.executablePath();
 (async()=>{
  const browser=await chromium.launch({executablePath:CHROME});
  let fail=0;
@@ -155,6 +155,56 @@ const CHROME=process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/ch
   const success=result.started&&result.failures===1&&result.completed===0&&
    result.unhandled.length===0;
   console.log((success?'ok':'FAIL')+' audiobook rejected network promise '+JSON.stringify(result));
+  if(!success)fail++;
+  await page.close();
+ }
+ // In-flight requests share one synthesis, cached speech is isolated by voice,
+ // and a failed request can be retried. The words are synthetic test fixtures.
+ {
+  const page=await browser.newPage({viewport:{width:390,height:960}});
+  await page.goto(SRC,{waitUntil:'load'});
+  await page.waitForFunction(()=>document.body.classList.contains('booted'),null,{timeout:15000});
+  const result=await page.evaluate(async()=>{
+   loadP(0);
+   const original=window.authVoice, originalName=CURP.ui.voiceName;
+   const text='Audiobook cache isolation fixture.';
+   const calls=[];
+   let shared=false, cached=false, otherVoice=false, rejected=false, retried=false;
+   try{
+    window.authVoice=(line,style,voice)=>{
+     calls.push({line,style,voice});
+     return new Promise(resolve=>setTimeout(()=>
+      resolve({ok:true,blob:new Blob(['synthetic'],{type:'audio/mpeg'})}),20));
+    };
+    CURP.ui.voiceName='marin';
+    const pair=await Promise.all([studioAsk(text,'list'),studioAsk(text,'list')]);
+    shared=pair[0].ok&&pair[1].ok&&pair[0].blob===pair[1].blob&&calls.length===1;
+    await studioAsk(text,'list');
+    cached=calls.length===1;
+    CURP.ui.voiceName='cedar';
+    const alternate=await studioAsk(text,'list');
+    otherVoice=alternate.ok&&calls.length===2&&calls[0].voice==='marin'&&
+     calls[1].voice==='cedar'&&alternate.blob!==pair[0].blob;
+    let attempts=0;
+    window.authVoice=()=>{
+     attempts++;
+     return attempts===1?Promise.reject(new Error('synthetic transient failure')):
+      Promise.resolve({ok:true,blob:new Blob(['retry'],{type:'audio/mpeg'})});
+    };
+    const retryText='Audiobook failed cache request fixture.';
+    try{await studioAsk(retryText,'frame');}catch(e){rejected=true;}
+    const done=await studioAsk(retryText,'frame');
+    retried=done.ok&&attempts===2;
+   }finally{
+    window.authVoice=original;
+    if(originalName===undefined)delete CURP.ui.voiceName;
+    else CURP.ui.voiceName=originalName;
+   }
+   return {shared,cached,otherVoice,rejected,retried,calls:calls.length};
+  });
+  const success=result.shared&&result.cached&&result.otherVoice&&
+   result.rejected&&result.retried&&result.calls===2;
+  console.log((success?'ok':'FAIL')+' audiobook voice cache isolation and retry '+JSON.stringify(result));
   if(!success)fail++;
   await page.close();
  }
