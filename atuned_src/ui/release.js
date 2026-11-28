@@ -823,9 +823,11 @@ function relStep(){
   if(!RUN.paused)relAdvance();}
  /* THE WELCOME IS NEVER SYNTHESISED. It is his recorded voice or it is
     silence, whatever the voice switch says; see THE SCRIPT above. */
- if(st.kind!=='welcome'&&relVoiceOn()&&relSay(st,function(ms){
+ if(st.kind!=='welcome'&&relVoiceOn()&&relSay(st,function(ms,played){
     if(tok!==RUN.tok)return;
-    if(ms<raw*0.25){
+    // Network latency cannot count as heard narration in Audiobook.
+    var measured=relListenMode()?played:ms;
+    if(!Number.isFinite(measured)||measured<raw*0.25){
      // A near-instant audio completion is not enough to credit an Audiobook line.
      // Guided retains its readable timing; Listen holds the exact current step.
      if(relListenMode()){
@@ -833,7 +835,7 @@ function relStep(){
       return;
      }
      clearTimeout(RUN.timer); RUN.timer=setTimeout(next,Math.max(0,est-ms)); return; }
-    RUN.spokeMs+=ms; RUN.spokeW+=relWords(st.text);
+    RUN.spokeMs+=measured; RUN.spokeW+=relWords(st.text);
     if(ms<gap){ clearTimeout(RUN.timer); RUN.timer=setTimeout(next,gap-ms); return; }
     next();},
    function(){
@@ -857,6 +859,8 @@ function relStep(){
    var soon=relSoon();
    if(soon)studioWarm(soon.text,(soon.kind==='head'||soon.kind==='pass')?'list':'frame');
   }}
+ else if(relListenMode()&&st.kind!=='welcome')
+  relListenPause('Audiobook could not start this line. Press Play to retry it.');
  else RUN.timer=setTimeout(next,est);}
 /* Prefetch only the next line without advancing the record or its meter. */
 function relSoon(){
