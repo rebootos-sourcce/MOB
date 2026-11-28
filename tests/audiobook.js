@@ -48,6 +48,77 @@ const CHROME=process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/ch
   if(!success)fail++;
   await page.close();
  }
+ // Audio failure must pause Audiobook rather than silently complete a Release.
+ // The next Play press retries the identical step, never a new release record.
+ {
+  const page=await browser.newPage({viewport:{width:390,height:960}});
+  await page.goto(SRC,{waitUntil:'load'});
+  await page.waitForFunction(()=>document.body.classList.contains('booted'),null,{timeout:15000});
+  const result=await page.evaluate(async()=>{
+   loadP(0);
+   CHARGES.forEach(c=>{S.charge[c]=7;});
+   CURP.ui.voice=true;CURP.ui.tone=false;CURP.ui.releaseMode='listen';
+   relPick(compute().carrying.slice(0,1).map(n=>n.i));
+   const start=document.getElementById('relgo');
+   if(!start)return {error:'Release button missing'};
+   const oldSay=window.speakStudio,oldWarm=window.studioWarm;
+   let attempts=0;
+   window.studioWarm=function(){};
+   window.speakStudio=function(text,rate,style,onend,onfail){
+    attempts++;
+    setTimeout(()=>onfail(502),0);return true;
+   };
+   start.click();
+   await new Promise(r=>setTimeout(r,80));
+   const before={paused:RUN.paused,phase:RUN.phase,line:RUN.line,
+    idx:RUN.idx,pass:RUN.pass,attempts,studioLost:RUN.studioLost};
+   window.speakStudio=function(text,rate,style,onend,onfail){
+    attempts++;
+    setTimeout(()=>onend(10000),25);return true;
+   };
+   const play=document.getElementById('relpause');
+   if(play)play.click();
+   await new Promise(r=>setTimeout(r,45));
+   const after={paused:RUN.paused,phase:RUN.phase,line:RUN.line,
+    idx:RUN.idx,pass:RUN.pass,attempts,studioLost:RUN.studioLost};
+   relClose();
+   window.speakStudio=oldSay;window.studioWarm=oldWarm;
+   return {before,after,play:!!play};
+  });
+  const success=!result.error&&result.play&&result.before.paused===true&&
+   result.before.studioLost===true&&result.before.phase==='opening'&&
+   result.before.idx===0&&result.before.line===0&&result.before.pass===0&&
+   result.after.paused===false&&result.after.attempts>result.before.attempts&&
+   (result.after.line>result.before.line||result.after.phase!==result.before.phase);
+  console.log((success?'ok':'FAIL')+' audiobook narration failure and retry '+JSON.stringify(result));
+  if(!success)fail++;
+  await page.close();
+ }
+ // A rejected network promise must produce exactly one audio failure callback.
+ {
+  const page=await browser.newPage({viewport:{width:390,height:960}});
+  await page.goto(SRC,{waitUntil:'load'});
+  await page.waitForFunction(()=>document.body.classList.contains('booted'),null,{timeout:15000});
+  const result=await page.evaluate(async()=>{
+   const old=window.authVoice,unhandled=[];
+   const track=e=>{unhandled.push(String(e.reason));e.preventDefault();};
+   window.addEventListener('unhandledrejection',track);
+   window.authVoice=()=>Promise.reject(new Error('test network rejection'));
+   let failures=0,completed=0;
+   const started=speakStudio('Private network rejection fixture.',1,'list',
+    ()=>{completed++;},()=>{failures++;});
+   await new Promise(r=>setTimeout(r,90));
+   window.authVoice=old;
+   window.removeEventListener('unhandledrejection',track);
+   speakStop();
+   return {started,failures,completed,unhandled};
+  });
+  const success=result.started&&result.failures===1&&result.completed===0&&
+   result.unhandled.length===0;
+  console.log((success?'ok':'FAIL')+' audiobook rejected network promise '+JSON.stringify(result));
+  if(!success)fail++;
+  await page.close();
+ }
  await browser.close();
  if(fail)process.exit(1);
 })().catch(e=>{console.error(e);process.exit(1);});
