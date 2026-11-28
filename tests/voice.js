@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /* ============================================================
-   THE VOICE IS ELEVENLABS AND THERE IS NO FALLBACK. P0, 9 October.
+   THE VOICE IS OPENAI AND THERE IS NO BROWSER FALLBACK. P0, 9 October.
 
    env NODE_PATH=/opt/node22/lib/node_modules PLAYWRIGHT_BROWSERS_PATH=$PW_DIR \
      node tests/voice.js
@@ -150,11 +150,11 @@ const SPY = () => {
   const anonHeard = await runWay('signed out, the server answers with audio', { signed: false }, r =>
     r.fulfill({ status: 200, contentType: 'audio/wav', body: wav(60) }));
   ok(anonHeard.r.wantedOn === true && anonHeard.r.canNow === true && anonHeard.r.onNow === true, 'the switch is on and nothing else is asked of the person: no sign in');
-  ok(/ElevenLabs, a voice company/.test(anonHeard.r.row) && !/Sign in/.test(anonHeard.r.row), 'and the switch says who speaks the line and never asks for a sign in: ' + anonHeard.r.row.slice(0, 140));
+  ok(/AI narration by OpenAI/.test(anonHeard.r.row) && !/Sign in/.test(anonHeard.r.row), 'and the switch says who speaks the line and never asks for a sign in: ' + anonHeard.r.row.slice(0, 140));
   ok(anonHeard.asked.length > 1, 'every spoken line asked the server, ' + anonHeard.asked.length + ' requests');
   ok(anonHeard.asked.every(a => a.auth === ''), 'none of them carried a session');
   const bodies = anonHeard.asked.map(a => { try { return JSON.parse(a.body); } catch (e) { return {}; } });
-  ok(bodies.every(b => typeof b.text === 'string' && /^(list|frame)$/.test(b.style) && ID.test(b.device || '') && Object.keys(b).length === 3),
+  ok(bodies.every(b => typeof b.text === 'string' && /^(list|frame)$/.test(b.style) && ID.test(b.device || '') && b.voice === 'marin' && Object.keys(b).length === 4),
     'each sent the line, its style and a device code, and nothing else');
   ok(new Set(bodies.map(b => b.device)).size === 1 && anonHeard.r.devStored === bodies[0].device, 'the same device code every time, and kept in the browser');
   /* A LINE ALREADY RENDERED IS PLAYED AGAIN WITHOUT A REQUEST, 17 October
@@ -168,16 +168,16 @@ const SPY = () => {
   ok(anonHeard.r.lost === false, 'and the run never gave up on the voice: ' + anonHeard.r.status);
 
   const refused = await runWay('signed out, the server refuses', { signed: false }, r =>
-    r.fulfill({ status: 503, contentType: 'application/json', body: JSON.stringify({ error: 'the voice is not connected on this server yet: ELEVENLABS_API_KEY is not set' }) }));
+    r.fulfill({ status: 503, contentType: 'application/json', body: JSON.stringify({ error: 'the voice is not connected on this server yet: OPENAI_API_KEY is not set' }) }));
   ok(refused.asked.length === 1, 'a refusing server is asked once and not once per line, ' + refused.asked.length + ' requests');
-  ok(refused.r.lost === true && /reads on the screen/.test(refused.r.status) && !/ELEVENLABS|API_KEY/.test(refused.r.status),
+  ok(refused.r.lost === true && /reads on the screen/.test(refused.r.status) && !/OPENAI|API_KEY/.test(refused.r.status),
     'the screen says so in words and never the server setting: ' + refused.r.status);
   ok(refused.r.audios === 0, 'and no audio element was made');
 
   const signed = await runWay('signed in, the server answers with audio', { signed: true }, r =>
     r.fulfill({ status: 200, contentType: 'audio/wav', body: wav(60) }));
   ok(signed.asked.length > 1 && signed.asked.every(a => a.auth === 'Bearer tok_test'), 'signed in, each request carries the person\'s own session, ' + signed.asked.length + ' requests');
-  ok(signed.asked.every(a => { try { const b = JSON.parse(a.body); return Object.keys(b).sort().join() === 'style,text'; } catch (e) { return false; } }),
+  ok(signed.asked.every(a => { try { const b = JSON.parse(a.body); return Object.keys(b).sort().join() === 'style,text,voice' && b.voice === 'marin'; } catch (e) { return false; } }),
     'and sends no device code, only the line and its style');
 
   await browser.close();
