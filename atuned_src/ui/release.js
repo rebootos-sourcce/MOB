@@ -774,6 +774,14 @@ function relBuzzOn(){
 function relHush(){
  clearTimeout(RUN.timer); RUN.tok++;
  if(typeof speakStop==='function')speakStop();}
+/* Audiobook must never silently count lines that were not narrated. Pausing
+   holds the current Release step; Play retries it from its beginning. */
+function relListenPause(reason){
+ RUN.paused=true; RUN.pauseAt=Date.now();
+ relHush();
+ if(typeof status==='function')status(reason,'fail');
+ relRender();
+}
 /* THE MARKS, at a boundary and never on a beat. They ride the seat tone's
    switch: it is the one switch for sound that is not words, and a run with it
    off opens no audio channel at all. The vibration doubles the same mark at
@@ -796,6 +804,10 @@ function relStep(){
  if(!RUN.open||RUN.paused)return;
  var st=relCur();
  if(!st){ if(RUN.phase==='run')relCoolDown(); return; }
+ if(relListenMode()&&(!relVoiceOn()||RUN.studioLost)){
+  relListenPause('Audiobook paused. Turn Voice on and press Play to hear this line.');
+  return;
+ }
  relBoundary();
  relRender();
  /* raw is how long the line takes to say, and is what the quarter test below
@@ -818,9 +830,15 @@ function relStep(){
     if(ms<gap){ clearTimeout(RUN.timer); RUN.timer=setTimeout(next,gap-ms); return; }
     next();},
    function(){
-    /* the voice did not say the line. The run goes on at reading pace. */
     if(tok!==RUN.tok)return;
-    clearTimeout(RUN.timer); RUN.timer=setTimeout(next,est);})){
+    clearTimeout(RUN.timer);
+    /* Guided keeps its readable timing. Audiobook pauses so missed audio
+       cannot silently progress or complete a Release. */
+    if(relListenMode()){
+     relListenPause('Audiobook paused because the voice stopped. Press Play to retry this line, or choose Guided to read it.');
+     return;
+    }
+    RUN.timer=setTimeout(next,est);})){
   RUN.timer=setTimeout(next,est+9000);
   // Pre-render one line ahead to minimize network gaps between spoken statements.
   if(relListenMode()&&typeof studioWarm==='function'){
@@ -3858,7 +3876,10 @@ function relRender(){
   RUN.paused=!RUN.paused;
   /* the elapsed clock stops with the run and does not count the pause */
   if(RUN.paused){RUN.pauseAt=Date.now();relHush();relRender();}
-  else {if(RUN.pauseAt)RUN.pausedMs+=Date.now()-RUN.pauseAt; RUN.pauseAt=0; relStep();}};
+  else {if(RUN.pauseAt)RUN.pausedMs+=Date.now()-RUN.pauseAt; RUN.pauseAt=0;
+   /* A deliberate Play press retries a failed voice at the current step. */
+   if(relListenMode())RUN.studioLost=false;
+   relStep();}};
  if((b=document.getElementById('relbook')))b.onclick=relBookToggle;
  if((b=document.getElementById('reldose')))b.onchange=function(){
   RUN.dose=Math.max(1,Math.min(REL_DOSES[REL_DOSES.length-1],Math.round(+this.value)||1));relRender();};
