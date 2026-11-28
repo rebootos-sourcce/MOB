@@ -779,6 +779,17 @@ function colKey(){
  if(S.tab===TAB.SUMMARY)return 'lcolsum';
  return 'lcol'; }
 function colShut(){
+ /* RITUAL'S OWN RAIL NEVER SHUTS, round SW, his words: "get rid of the
+    close-right-icon-column and the left-icon-column, get rid of both of
+    those." lcolf already defaults open (dflt, below), but a default is
+    only what an EMPTY store answers: before this tab lost its fold icon a
+    press here could still write 'shut' under lcolf, and that answer would
+    still be read back below. Returned before the store is even opened, so
+    nothing this tab ever stored can shut it and nothing is written here
+    either: leaving Ritual restores whatever a person had wherever that
+    choice is actually made now, which is nowhere, because there is no
+    press left to make it. */
+ if(typeof TAB!=='undefined'&&S&&S.tab===TAB.RITUAL)return false;
  var beside=true; try{beside=matchMedia(LCOL_BESIDE).matches;}catch(e){}
  var k=colKey();
  if(k==='lcols')return !LCOLS_OPEN;
@@ -852,6 +863,16 @@ function railFoldPaint(shut){
 function railKey(){
  return (typeof TAB!=='undefined'&&S&&S.tab===TAB.KNOW)?'rcolk':'rcol';}
 function railShut(){
+ /* RITUAL'S OWN RAIL NEVER SHUTS EITHER, round SW, and this is the one that
+    actually mattered: rcol is the shared key above, Field's, Compass's,
+    Journal's and Ritual's alike, since only Knowledge carries its own. A
+    right rail shut on any one of those already reads back shut on every
+    other, Ritual included, so without this a rail someone shut on the
+    Field would arrive shut here too, with no press left on this tab to
+    open it again. Returned before the store is read, and nothing is
+    written to it from here, so leaving Ritual leaves that shared choice
+    exactly as whichever surface that still carries the fold left it. */
+ if(typeof TAB!=='undefined'&&S&&S.tab===TAB.RITUAL)return false;
  var k=railKey(), dflt=(k==='rcolk');
  try{var got=STORE.get(k); return got?(got==='shut'):dflt;}catch(e){return false;}}
 function railTab(){ railFoldPaint(railShut()); }

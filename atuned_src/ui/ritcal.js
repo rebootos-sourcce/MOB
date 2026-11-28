@@ -712,21 +712,42 @@ function ritSuccessHtml(st){
     pretend the record was empty there: those days are drawn hatched and never
     counted as missed, which is the arithmetic in ritSpanRead. */
  var note=S.rs===null?'<p class="rv-sparse">Nothing on your record yet. This fills in, a day at a time, as you keep rituals.</p>':'';
- var extra=[S.said?'Affirmations said on '+acctDays(S.said)+'.':'', S.did?'Challenges done '+S.did+(S.did===1?' time.':' times.'):'']
-  .filter(Boolean).join(' ');
- var held=S.then===null?''
-  :'<p class="rv-okf rv-shel">Held places: '+S.then+' at the start of this span, '+S.now+' now. A reading is taken each time you commit a story or finish a release.</p>';
+ /* THE AFFIRMATIONS AND HELD PLACES LINES ARE GONE, round SW, his words on
+    the right rail: "on the right-hand side there's a bunch of text I want
+    to get rid of." Both were plain prose over this card's own picture (a
+    count of days said and done, and a held-charge figure the rail already
+    shows nowhere else, since the Held strip went in an earlier round), the
+    third tier text the unpack rule and his own standing ruling on text over
+    symbol keep landing on. S.said, S.did, S.then and S.now still come back
+    from ritSpanRead (ui/ritcal.js), and are still real reads and not
+    invented, but nothing on this card prints them any more. */
  var top=Math.max.apply(null,S.bars.map(function(x){return x.n;}).concat([1]));
- var bars=!S.bars.length?'':'<div class="rv-ana1"><span class="rv-lb">Kept by point, '+esc(R.nm)+'</span><ul class="rv-sbars">'
-  +S.bars.map(function(x){
+ /* KEPT BY POINT IS SHUT AT REST, round SW. His own measure for the right
+    rail, "I want everything in that right rail above the fold": this list
+    grows one row a point a span's ever kept at, up to the whole seven, and
+    rendered open by default it was the one part of the cuts below that could
+    still push Avatar past the foot of the rail on a profile with several
+    points kept (RW14, measured, not assumed: a rail that scrolls on its own
+    at this width is not the same as nothing pushed out of sight). A summary
+    and a hover, the fallback this round's own brief named rather than
+    loosening the number: the count is always on the row, so the first
+    useful fact (how many points, at a glance) is not behind the press,
+    and the per point break down is, open or shut carried the house's own
+    toggle, rv-more-t, the Rituals and History presses already use. */
+ var barsOpen=!!RIT.barsOpen;
+ var bars=!S.bars.length?'':'<div class="rv-ana1">'
+  +'<button type="button" class="rit-more rv-more-t" data-act="bars" aria-expanded="'+barsOpen+'" aria-controls="rv-barsp"'
+  +' data-tip-t="Kept by point" data-tip="Which point on the body each kept day sat at, over '+esc(R.nm.toLowerCase())+'.">'
+  +'<span>Kept by point, '+S.bars.length+(S.bars.length===1?' point':' points')+'</span>'+ritIc('down')+'</button>'
+  +(barsOpen?'<ul class="rv-sbars" id="rv-barsp">'+S.bars.map(function(x){
    return '<li style="--c:'+(x.b?seatCol(x.b):'var(--dim)')+'"><span class="rv-sbn">'+esc(x.b?ritTagNm(x.b):'No point')+'</span>'
-    +'<span class="rv-sbt"><i style="width:'+(100*x.n/top).toFixed(1)+'%"></i></span><span class="rv-sbv">'+acctDays(x.n)+'</span></li>';}).join('')+'</ul></div>';
+    +'<span class="rv-sbt"><i style="width:'+(100*x.n/top).toFixed(1)+'%"></i></span><span class="rv-sbv">'+acctDays(x.n)+'</span></li>';}).join('')+'</ul>':'')+'</div>';
  var grid=cube?acctCubesHtml(st):ritSpanGrid(S)
   +'<div class="rv-key" aria-hidden="true"><span><i class="rv-k-cube"></i>Kept</span><span><i class="rv-k-cmiss"></i>Missed</span>'
   +'<span><i class="rv-k-pre"></i>Before your record</span></div>';
  return '<section class="rv-sec rv-c rv-c-ana rv-loopw"><div class="rv-hd"><span class="rv-h">Success over time</span>'+sel+'</div>'
   +'<p class="rv-mean">What you kept, over the span you pick. A solid square is a day you kept a ritual, in the colour of its point; an outline is planned; dashed is missed. A mark on a day is one you earned that day. Every figure is a count of days, never a grade.</p>'
-  +(extra?'<p class="rv-okf rv-sext">'+esc(extra)+'</p>':'')+note+grid+held+bars+'</section>';}
+  +note+grid+bars+'</section>';}
 
 function ritCalCss(){
  if(document.getElementById('ritcal-css'))return;
@@ -871,7 +892,6 @@ function ritCalCss(){
   '.rv-rgb:focus-visible,.rv-sc:focus-visible{outline:2px solid var(--accent);outline-offset:2px}',
   '.rv-c-ana .rv-fig{--k:var(--sec-discover)}',
   '.rv-sfigs{margin:0 0 10px}',
-  '.rv-sext{margin:0 0 10px}',
   '.rv-sparse{margin:0 0 10px;padding:8px 12px;border-radius:10px;font-size:13.5px;line-height:1.5;color:var(--ink);',
   ' background:color-mix(in srgb,var(--edge-2) 16%,transparent);border-left:3px solid var(--edge-2)}',
   '.rv-scal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;max-width:460px;margin:0 0 6px}',
@@ -896,7 +916,6 @@ function ritCalCss(){
   '.rv-syr .rv-sc.rv-now{box-shadow:0 0 0 1.5px var(--ink)}',
   '.rv-sym{grid-row:1;font-size:12px;color:var(--dim);white-space:nowrap;overflow:visible}',
   '.rv-syw{grid-column:1;font-size:12px;line-height:1;color:var(--dim);align-self:center}',
-  '.rv-shel{margin:10px 0 12px}',
   /* the left column: what it is, what it is for, your record, three answers */
   '.rv-sgd{margin:4px 0 0;font-size:13.5px;line-height:1.45;color:var(--ink)}',
   '.rv-sgo{display:flex;flex-wrap:wrap;gap:6px;margin:7px 0 0}',
@@ -958,9 +977,11 @@ function ritCalCss(){
      made for it. It keeps its width and its chevron, which carries open and
      shut. Practices in the builder keeps the dashed row, because he asked
      this of History only. */
-  '.rv-histt{margin:0 0 var(--rv-gap,14px);padding:9px 17px;background:var(--panel-2);border:1px solid var(--edge);border-style:solid;border-radius:999px;',
-  ' color:var(--ink);font-size:14px;font-weight:500}',
-  '.rv-histt:hover{background:var(--sunk);border-color:var(--edge-2);color:var(--ink)}',
+  /* THE PRESS ITSELF MOVED TO THE RAIL'S HEAD, round SW (acs-hist,
+     shell/head.html), so .rv-histt is gone: nothing in this file draws that
+     button any more. What is left of it here is only the open panel's own
+     spacing, which the press still controls by id (#rvhist, aria-controls,
+     ui/ritual.js). */
   '.rv-histp>.rv-sec:last-child{margin-bottom:0}'
  ].join('\n');
  document.head.appendChild(st);}

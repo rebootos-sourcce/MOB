@@ -8766,6 +8766,17 @@ body.tab-ritual #rit .rel-act{position:sticky;bottom:0;background:var(--bg);
 body.tab-ritual #lpanel>*:not(.lfold):not(.fl-rail){display:none!important}
 body.tab-ritual #rpanel>*:not(.rfold):not(.fl-rail){display:none!important}
 body:not(.tab-ritual) .fl-rail{display:none}
+/* BOTH FOLD ICONS ARE GONE ON RITUAL, round SW, his words: "get rid of the
+   close-right-icon-column and the left-icon-column, get rid of both of
+   those." #lfold and #rfold are shared across Field, Compass, Flow and
+   Journal (ui/ui.js, colFold and railFold), so this hides the control on
+   this tab alone; colShut and railShut carry the other half, forcing both
+   rails open here regardless of what either reads from the shared store,
+   so a rail someone shut on another surface cannot arrive shut here with
+   no way back. .fl-hd's own 52px of right padding, below, was room kept
+   for exactly this control; freed here, History takes it instead. */
+body.tab-ritual #lfold,body.tab-ritual #rfold{display:none}
+body.tab-ritual .fl-hd{padding-right:2px}
 /* 400 ON BOTH SIDES, measured rather than chosen, and measured twice. Both
    columns carry a row of seven presses at the 44 pixel floor: the builder's
    week on the left, the record's month on the right. That is 308 plus its
@@ -8777,6 +8788,26 @@ body:not(.tab-ritual) .fl-rail{display:none}
  body.lshut.tab-ritual .mid{grid-template-columns:58px minmax(0,1fr) 400px}
  body.rshut.tab-ritual .mid{grid-template-columns:400px minmax(0,1fr) 58px}
  body.lshut.rshut.tab-ritual .mid{grid-template-columns:58px minmax(0,1fr) 58px}}
+/* START NEVER LEAVES THE SCREEN, round SW. "Rituals" (ritBuildHtml,
+   ui/ritual.js) inserts a whole library of tiles between the picked steps
+   and the tools row, above Save, so opening it pushed Save and Cancel down
+   by however tall the library is, measured as far as a full scroll of
+   #lpanel away on the longest track. #lpanel scrolls on its own at this
+   width (.panel.sc, above), so nothing was ever truly unreachable, but a
+   control that moves out from under the finger on the one press that opens
+   the thing it sits beside is still a defect. Pinned to the bottom of the
+   rail's own scrollport instead, the same device .rel-act already uses for
+   the release's foot: the row stays exactly where it was pressed last,
+   whatever grows above it. var(--panel) and not transparent, so the tiles
+   scrolling under it do not show through the row sitting over them. */
+body.tab-ritual #flowleft .rv-build>.rv-acts{position:sticky;bottom:0;
+ background:var(--panel);padding-top:10px;margin-top:12px}
+/* AND ONLY HERE. Below 1181 the rail stops scrolling on its own (.panel.sc,
+   max-width:1180px below) and the page does, so a sticky row would pin
+   itself to the bottom of the whole screen instead of the rail's own foot,
+   floating over whatever tab content the phone stack put after it. .rfold
+   resets itself the same way at the same width, for the same reason. */
+@media (max-width:1180px){body.tab-ritual #flowleft .rv-build>.rv-acts{position:static;background:none;padding-top:0}}
 /* THE PHONE STACK IS THE CENTRE, THEN THE TRACKER, THEN NEW, and the order was
    measured rather than argued. Three columns side by side become three blocks
    in a scroll, and whichever goes first is the only one most people see.
@@ -8839,23 +8870,43 @@ body.tab-ritual:not(.lshut) #rit .rv-addx{display:none}
 /* THE STREAK STRIP, SV19, the first row of the right menu's head on the
    Ritual page (acctStreakHtml, ui/accountability.js): "the streak should be in
    the upper right hand side ... accountability will be underneath that". A
-   mark and its figure, three of them, each a flat chip in its own colour with
-   no outline, and each the one tooltip's carrier, so the 44 pixel floor is the
-   chip's own height. Rings, not fills, on the marks. */
-.acs-row{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 8px}
-/* sized to sit on one row beside the fold control at 1600, measured: at 12
-   pixels of padding the third chip wrapped under the first two */
-.acs{--c:var(--sec-play);display:inline-flex;align-items:center;gap:5px;min-height:44px;padding:0 9px 0 8px;border-radius:12px;
- background:color-mix(in srgb,var(--c) 16%,var(--panel));color:var(--ink);cursor:help}
-.acs-miss{--c:var(--dim)} .acs-mins{--c:var(--sec-flow)}
-/* Marks, 18 November, the fourth chip, in the accent the ladder's next mark
-   already wears on the Ongoing goal card */
-.acs-marks{--c:var(--accent)}
-.acs svg{width:19px;height:19px;flex:0 0 auto;fill:none;stroke:var(--c);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+   mark and its figure, each a flat chip in its own colour with no outline,
+   and each the one tooltip's carrier.
+
+   DOWN TO TWO CHIPS AND BIGGER, round SW, his words: "get rid of the
+   practice minutes you've put in... get rid of the marks that you've
+   earned... make the streak icon more obvious, make the mist icon more
+   obvious" (mist is missed, misheard). Practised and Marks went in
+   ui/accountability.js, each a number this same rail already carries a
+   picture of elsewhere (the ladder's minutes, the cubes' own pins), and
+   streak and missed grew to carry the row alone: 48 the tap floor and not
+   44, the mark at 24 and 2.2 of stroke rather than 19 and 2, the figure at
+   20 rather than 17. Size and contrast only, no words added: his ruling
+   reads "make more obvious", not "explain". Streak keeps the coloured tint
+   a measured value already wears everywhere on this product; missed moves
+   off it to a neutral ink tint, because a missed day is reported and not
+   graded, the TDD's own "investigation rather than punishment" (section 24)
+   and every calendar's own dashed-never-red grammar on this page. */
+.acs-top{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 8px}
+.acs-row{display:flex;flex-wrap:wrap;gap:6px;margin:0}
+.acs{--c:var(--sec-play);display:inline-flex;align-items:center;gap:5px;min-height:48px;padding:0 9px 0 8px;border-radius:12px;
+ color:var(--ink);cursor:help}
+.acs-streak{background:color-mix(in srgb,var(--c) 26%,var(--panel))}
+.acs-miss{--c:var(--mid);background:color-mix(in srgb,var(--ink) 10%,var(--panel));border:1px solid var(--edge)}
+.acs svg{width:24px;height:24px;flex:0 0 auto;fill:none;stroke:var(--c);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 .acs-miss svg{stroke:var(--mid)}
-.acs b{font-size:17px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1}
+.acs b{font-size:20px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1}
 .acs small{font-size:12.5px;font-weight:400;color:var(--mid)}
 .acs:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+/* HISTORY, SITTING WHERE THE FOLD CONTROL USED TO, round SW: "Move History
+   to the right-hand side of that menu, with the close, exactly where the
+   close-the-right-column icon is." margin-left:auto pushes it to that same
+   corner now that #rfold is gone from this tab (body.tab-ritual, below), 48
+   the tap floor on both axes, same as the chips beside it but a real press
+   and not a tooltip's carrier, so it takes a pointer cursor and a hover of
+   its own rather than .acs's cursor:help. */
+.acs-hist{--c:var(--mid);margin-left:auto;min-width:48px;background:var(--panel);border:1px solid var(--edge);cursor:pointer}
+.acs-hist:hover{background:var(--sunk);border-color:var(--edge-2);color:var(--ink)}
 #cone.tabmode{position:absolute;z-index:5;background:transparent;backdrop-filter:none}
 #cone.tabmode .cone-card{width:100%;max-height:none;border:0;background:transparent;
  box-shadow:none;padding:14px 18px 18px}

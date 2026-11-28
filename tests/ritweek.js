@@ -66,7 +66,24 @@ const MUTANTS={
  /* a drop elsewhere writing anyway */
  dropany:`(function(){var f=ritDayAt; ritDayAt=function(x,y){var d=f(x,y); return d==null?ritToday0()+1:d;};})();`,
  /* the plans left on the device, the state before 21 November */
- noadopt:`ritAdopt=function(){return false;};`};
+ noadopt:`ritAdopt=function(){return false;};`,
+ /* ROUND SW, three mutants, each checked against a known bad case first
+    before the real check is trusted on the real fix. */
+ /* only three of the top row's four slots filled, the bug round SW's RW3
+    would have missed had it only counted real challenges */
+ pad3:`ritTopHtml=function(st){var C=ritChallenge(st), tiles=[ritGoalTile(st)].concat(C.map(function(c){return ritChalTile(c,st);}));
+  while(tiles.length<3)tiles.push(ritChalEmptyTile());
+  return '<section class="rv-sec rv-top" aria-label="Goal and challenges"><div class="rv-ttls">'+tiles.join('')+'</div></section>';};`,
+ /* the held places line put back on Success over time, the text round SW
+    took off it */
+ heldback:`(function(){var f=ritSuccessHtml; ritSuccessHtml=function(st){
+  return f(st).replace('</section>','<p class="rv-okf rv-shel">Held places: 1 at the start of this span, 2 now.</p></section>');};})();`,
+ /* History carries the Record's month again, the second calendar round SW
+    took off the rail */
+ monthback:`(function(){var f=acctSideHtml; acctSideHtml=function(st,arrive){
+  var h=f(st,arrive); if(!RIT.histOpen)return h;
+  var i=h.lastIndexOf('</div>');
+  return h.slice(0,i)+ritRecordHtml(st.plans,st.today)+h.slice(i);};})();`};
 
 if(require.main===module)(async()=>{
  const {chromium}=require('playwright');
@@ -134,16 +151,21 @@ if(require.main===module)(async()=>{
   ok(!lay.ana,'RW2: '+tag+'Success over time is not in the centre');
   ok(!lay.leftSug,'RW2: '+tag+'Called for is not in the left column any more');
 
-  /* ---- RW3: the top row, Goal first, one tile per challenge, even ---- */
+  /* ---- RW3: the top row, Goal first, always four, even ---- */
   const top=await pg.evaluate(()=>{const t=[...document.querySelectorAll('#rit .rv-ttl')];
    const r=t.map(e=>e.getBoundingClientRect());
    return {n:t.length, first:t[0]&&t[0].classList.contains('rv-tgoal'), nm:t[0]&&t[0].querySelector('.rv-tnm').textContent,
-    chal:ritChallenge(ritRead()).length, w:r.map(x=>Math.round(x.width)),
+    chal:ritChallenge(ritRead()).length, empty:document.querySelectorAll('#rit .rv-ttl.rv-tempty').length, w:r.map(x=>Math.round(x.width)),
     gaps:r.slice(1).map((x,i)=>Math.abs(x.top-r[i].top)<2?Math.round(x.left-r[i].right):null).filter(g=>g!==null),
     heads:t.every(e=>{const h=e.querySelector('.rv-tlab'); return h&&h.getAttribute('data-tip');})};});
   ok(top.first,'RW3: '+tag+'the Goal tile is first');
   ok(/^I am /.test(top.nm||''),'RW3: '+tag+'the Goal tile says the avatar line as I am: '+top.nm);
-  ok(top.n===1+Math.min(3,top.chal),'RW3: '+tag+'one tile per challenge after the Goal: '+top.n+' for '+top.chal);
+  /* ALWAYS FOUR, round SW, his words: "At the very top, I want 4 fields
+     always consistent." Fewer than three real challenges is padded with the
+     dimmed empty tile (ritChalEmptyTile, ui/ritweek.js); RW13 below holds
+     the same count on a profile with no challenges at all. */
+  ok(top.n===4&&top.empty===3-Math.min(3,top.chal),
+   'RW3: '+tag+'always four tiles, the Goal, up to three real challenges and the rest padded empty: '+top.n+' tiles, '+top.chal+' real, '+top.empty+' empty');
   ok(Math.max(...top.w)-Math.min(...top.w)<=1,'RW3: '+tag+'every tile one width: '+top.w.join(','));
   ok(top.gaps.length>0&&top.gaps.every(g=>g>=12&&Math.abs(g-top.gaps[0])<=1),'RW3: '+tag+'one even gap of 12 or more: '+top.gaps.join(','));
   ok(top.heads,'RW3: '+tag+'every tile header carries its meaning');
@@ -187,6 +209,19 @@ if(require.main===module)(async()=>{
    cubes:!!document.querySelector('#flowside .rv-c-ana .rv-cubes')}));
   ok(r3.span==='3m'&&r3.grid&&!r3.cubes,'RW6: '+tag+'another span draws its own grid in the same card');
   await pg.selectOption('#flowside select[data-act="rng"]','1m'); await pg.waitForTimeout(200);
+
+  /* ---- RW6b: History carries the rituals and the plain list, never the
+     Record's month again, round SW: "there's 2 accountability tracker
+     records for some reason, we only need 1." acctSideHtml no longer calls
+     ritRecordHtml at all (ui/accountability.js); this is the mutant
+     monthback's own target, which reintroduces it, below. ---- */
+  const hs=await pg.evaluate(async()=>{RIT.histOpen=true; ritRender(); await new Promise(r=>setTimeout(r,150));
+   const h=document.getElementById('rvhist');
+   const out={rec:!!(h&&h.querySelector('.rv-rec')), cards:!!(h&&h.querySelector('.rv-hist')),
+    heads:[...document.querySelectorAll('#flowside .rv-h')].map(x=>x.textContent)};
+   RIT.histOpen=false; ritRender(); return out;});
+  ok(!hs.rec&&hs.cards&&hs.heads.indexOf('Record')<0,
+   'RW6b: '+tag+'History opens the rituals ever run and the plain list, never the Record month, '+JSON.stringify(hs));
 
   /* ---- RW7: the Today controls are in the pop-up ---- */
   const pop=await pg.evaluate((held)=>{
@@ -282,6 +317,70 @@ if(require.main===module)(async()=>{
 
   ok(err.length===0,'RW10: '+tag+'no page error: '+err.join(' | '));
   }catch(e){ok(false,'RW: '+tag+'threw: '+e.message);}
+  await pg.close();}
+
+ /* ---- RW13: always four tiles, blank included, held and extra gone ---- */
+ {const {pg,err}=await open(1600,1000), tag='blank ';
+  try{
+  const b=await pg.evaluate(()=>{loadP(0); CURP.rituals=[]; ritPlanPut([]); RIT.sel={}; RIT.order=[]; RIT.add=false; RIT.edit=null;
+   setTab(TAB.RITUAL); ritRender();
+   return {n:document.querySelectorAll('#rit .rv-ttl').length, empty:document.querySelectorAll('#rit .rv-ttl.rv-tempty').length,
+    chal:ritChallenge(ritRead()).length, shel:document.querySelectorAll('.rv-shel').length, sext:document.querySelectorAll('.rv-sext').length};});
+  ok(b.n===4&&b.empty===3-Math.min(3,b.chal),
+   'RW13: '+tag+'exactly four tiles on a genuinely blank profile, the rest padded empty: '+JSON.stringify(b));
+  /* the held places and the affirmations/challenges lines Success over time
+     used to print above the cubes are cut, round SW, his words on the right
+     rail's text: "get rid of." S.then, S.said and S.did are still real reads
+     off ritSpanRead; nothing on the card prints them any more. */
+  ok(b.shel===0&&b.sext===0,'RW13: '+tag+'the removed held and extra lines never draw: '+JSON.stringify(b));
+  ok(err.length===0,'RW13: '+tag+'no page error: '+err.join(' | '));
+  }catch(e){ok(false,'RW13: '+tag+'threw: '+e.message);}
+  await pg.close();}
+
+ /* ---- RW14: with several points kept, Avatar still fits inside the rail ----
+    Measured the review's own way, round SW: "I want everything in that
+    right rail above the fold." At 1600x1000 the rail scrolls on its own
+    (.panel.sc, shell/head.html), so nothing is ever truly unreachable, but
+    the cuts above (the two chips, the held and extra lines, the standalone
+    History button and its own Record month) were not enough on their own:
+    measured against a profile with a kept point at all seven seats, twelve
+    days each, Avatar's own bottom edge still sat past the foot of #rpanel,
+    the rail's own scrollport, with Kept by point (ritSuccessHtml, ui/
+    ritcal.js) drawn open the way it always used to be. The fallback this
+    round's own brief named is what actually ships: Kept by point is shut at
+    rest, a summary (its own count) and a hover, open only on its own press
+    (RIT.barsOpen, data-act="bars"). So the real floor is the one at rest,
+    checked first; opening it is a person's own choice and is checked next,
+    never required to also fit, which is the whole point of putting it
+    behind a press instead of loosening this number. ---- */
+ {const {pg,err}=await open(1600,1000), tag='kept ';
+  try{
+  const k=await pg.evaluate(()=>{loadP(0);
+   var DAY=86400000, off=new Date().getTimezoneOffset()*60000, today=Math.floor((Date.now()-off)/DAY);
+   var iso=function(d){return new Date(d*DAY+off+12*3600000).toISOString();};
+   var bands=['Root','Sacral','Solar','Heart','Throat','3rd Eye','Crown'];
+   var steps={Root:'box',Sacral:'sig',Solar:'slow',Heart:'noting',Throat:'onerule','3rd Eye':'candle',Crown:'escan'};
+   var rows=[];
+   bands.forEach(function(b,bi){for(var d=0;d<12;d++)rows.push({t:iso(today-d-bi),steps:[steps[b]],min:5,when:'',where:'',band:b,done:true});});
+   CURP.rituals=rows; pSave();
+   RIT.barsOpen=false; setTab(TAB.RITUAL); ritRender();
+   var rp=document.getElementById('rpanel'), rr=rp.getBoundingClientRect();
+   var av=document.querySelector('#flowside .rv-c-av'), ar=av?av.getBoundingClientRect():null;
+   var btn=document.querySelector('#flowside [data-act="bars"]');
+   var atRest={barsShut:document.querySelectorAll('#flowside .rv-sbars').length===0,
+    label:btn?btn.textContent.trim():'', rpBottom:rr.bottom, avBottom:ar?ar.bottom:null};
+   if(btn)btn.click();
+   var open={bars:document.querySelectorAll('#flowside .rv-sbars li').length};
+   RIT.barsOpen=false; ritRender();
+   return {atRest, open};});
+  ok(/Kept by point, 7 points/.test(k.atRest.label),
+   'RW14: '+tag+'all seven points are kept, so the press says seven before it is ever pressed: '+JSON.stringify(k.atRest));
+  ok(k.atRest.barsShut,'RW14: '+tag+'Kept by point is shut at rest, '+JSON.stringify(k.atRest));
+  ok(k.atRest.avBottom!=null&&k.atRest.avBottom<=k.atRest.rpBottom+1,
+   'RW14: '+tag+'at rest, at 1600x1000, Avatar\'s own bottom sits at or above the bottom of the visible rail: '+JSON.stringify(k.atRest));
+  ok(k.open.bars===7,'RW14: '+tag+'and pressed, it draws all seven bars: '+k.open.bars);
+  ok(err.length===0,'RW14: '+tag+'no page error: '+err.join(' | '));
+  }catch(e){ok(false,'RW14: '+tag+'threw: '+e.message);}
   await pg.close();}
 
  /* ---- RW11: RITUALS TRAVEL WITH THE RECORD, 21 November, his words:

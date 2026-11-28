@@ -95,15 +95,21 @@ var ACCT_IC={
  /* the streak is a run that keeps turning: the avatar page's own cycle arrow */
  streak:'<path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v4.5h-4.5"/>',
  /* a miss is the dashed ring every calendar on this page draws for one */
- miss:'<circle cx="12" cy="12" r="8" stroke-dasharray="3 3.3"/>',
- mins:'<circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2 M10 3h4"/>',
- /* a mark is a ring on a ribbon, ring not fill, 18 November */
- marks:'<circle cx="12" cy="9" r="6"/><path d="M9 14.5L7.5 21l4.5-2.5 4.5 2.5-1.5-6.5"/>'};
+ miss:'<circle cx="12" cy="12" r="8" stroke-dasharray="3 3.3"/>'};
+/* PRACTISED AND MARKS ARE GONE AS CHIPS, round SW, his words, naming the
+   strip directly: "get rid of the practice minutes you've put in" and "get
+   rid of the marks that you've earned." Both figures were counts this same
+   rail already carries elsewhere: minutes on the ladder's own read
+   (ladderRead, which the Summary also reads, so nothing here disagreed with
+   it, it was only ever a third place to print the same number), and marks
+   on the cubes themselves, each pinned to the day that earned it (rv-cbm,
+   acctCubeHtml). A chip that duplicates a picture already on the same
+   screen is the kind of text he keeps striking, not a second fact. The pin
+   icons on individual days stay: he named "the marks" as the chip, never
+   the cubes' own pins. */
 function acctStreakHtml(st){
- var L=st.L, s=L.streak||{}, run=s.run||0, best=s.best||0, kept=s.days||0, mins=(L.ledger&&L.ledger.minutes)||0;
+ var L=st.L, s=L.streak||{}, run=s.run||0, best=s.best||0, kept=s.days||0;
  var miss=acctCubeRead(st).days.filter(function(X){return X.st==='miss';}).length;
- var md=(typeof markDays==='function')?markDays(CURP,Date.now()):{};
- var marks=(L.earned||[]).filter(function(m){var d=md[m.k]; return d!=null&&d>st.today-ACCT_LOOP&&d<=st.today;}).length;
  /* A ZERO IS A DASH, COPY.md Value, and the unit rides on the figure (V17) */
  var fig=function(k,n,u,nm,tip,fl){
   return '<span class="acs acs-'+k+'"'+rvTip(nm,tip,fl)+' aria-label="'+esc(nm+', '+(n?n+' '+u:'none'))+'">'
@@ -115,14 +121,7 @@ function acctStreakHtml(st){
  return '<div class="acs-row" role="group" aria-label="Streak">'
   +fig('streak',run,run===1?'day':'days','Streak',STREAK_MEANS+' Best is your longest run with no gap. Kept is the days you marked a ritual done.',
     'Best|'+(best?acctDays(best):'\u2013')+';Kept|'+(kept?acctDays(kept):'\u2013'))
-  +fig('miss',miss,miss===1?'day':'days','Missed','Days in the last thirty a ritual was due and nothing was marked done: the dashed cubes below.')
-  +fig('mins',mins,'min','Practised','The minutes you have put in.')
-  /* MARKS, 18 November. His reason for cutting the figures row under
-     Success over time was "you already have that in the upper right-hand
-     panel", and for marks it was not true: this strip had no count of them,
-     so cutting the row would have taken the only one. Earned in the last
-     thirty days, the cubes' own span, off the ladder's own days. */
-  +fig('marks',marks,marks===1?'mark':'marks','Marks','Marks you earned in the last thirty days. A mark is earned by what you do, never bought.')+'</div>';}
+  +fig('miss',miss,miss===1?'day':'days','Missed','Days in the last thirty a ritual was due and nothing was marked done: the dashed cubes below.')+'</div>';}
 
 /* THE THIRTY DAY LOOP OF ROUND QN, one ring round thirty days, became the
    cubes in round QS, below, and its read, acctLoopRead, went in SV19 with the
@@ -324,38 +323,38 @@ function acctRotate(i){
    The worked example note is not repeated here, and since SV19 it is not on
    the page at all: the profile picker says "Ana, example", and a write on an
    example is refused by name through status() at the moment it is tried. */
-/* SV19 is the order now. The streak strip sits above the menu's name, in the
-   rail's head (ritRender). Under the name, the thirty days. Then History, one
-   press, his words: "Get rid of the history on the right-hand side. There
-   should be a button and if I press it, it shows me the history on my
-   right-hand menu." The press opens, in this same rail and under itself, the
-   rituals as cards and the Record, because the Record is the history too: the
-   month a day at a time, and every entry, with its delete.
+/* THE HISTORY PRESS MOVED INTO THE RAIL'S HEAD, round SW, his words: "Move
+   History to the right-hand side of that menu, with the close, exactly
+   where the close-the-right-column icon is." It sits beside the streak
+   strip in #flowhd now (ritRender, ui/ritual.js), one row, with the fold
+   icon it replaces gone from this tab entirely (shell/head.html). What
+   stays here is only what the press controls: #rvhist, shown or hidden by
+   the same RIT.histOpen the button in the header still reads and writes.
 
-   WHY THE RECORD WENT BEHIND THE SAME PRESS, his question: "You have
-   something called record, and 30-day loop. How are these different?" Read
-   off the code, both draw ritDaySegs, the one read of a day, as a calendar.
-   The thirty days are this month at a glance, one picture, with the marks
-   pinned on the days that earned them, and nothing on it to press but a
-   tooltip. The Record is the whole history: any month back, a list of every
-   entry, and a day opened to mark yesterday done or delete an entry. So they
-   differ in reach and not in what they say, and two calendars of one read
-   stacked in one rail was the page saying a thing twice. The glance stays;
-   the history is the press. The press keeps one label and its chevron
-   carries the state, the Practices press's rule (UX rule 2). */
+   AND IT NO LONGER CARRIES THE RECORD'S MONTH, round SW. His count: "there's
+   2 accountability tracker records for some reason, we only need 1." Read
+   off the code, the month grid that used to sit here (ritRecordHtml, ui/
+   ritual.js) and the thirty day cubes above (acctCubesHtml, this file, drawn
+   inside Success over time) were the same read, ritDaySegs, drawn twice: one
+   more glance at a month and one more full history with a view switch and a
+   delete, under one more press. The cubes already are the glance; what
+   belongs behind History is the rest of the history that is not a second
+   calendar, which is every ritual ever run (acctHistHtml) and the plain list
+   of every entry (ritListHtml, ui/ritual.js). Marking a day done or deleting
+   an entry is still reachable from the week's own sash (ritSashSheet, ui/
+   ritcal.js) exactly as it already was. Nothing that marked a day is lost,
+   only the duplicate picture of the days themselves. */
 function acctSideHtml(st,arrive){
  var open=!!RIT.histOpen;
  /* SUCCESS OVER TIME IS UNDER ACCOUNTABILITY NOW, 21 November, merged
     with the thirty days: one card, its span one dropdown, the cubes at one
     month and the span's own grid at every other (ritSuccessHtml) */
  return '<div class="rvr-wrap'+(arrive?' rv-arrive':'')+'">'+ritSuccessHtml(st)
-  /* PUT BACK IS OFFERED WHERE A PERSON CAN SEE IT. A delete from a sash's
-     sheet or the Record offers it in the Record (ritRecordHtml), and with
-     History shut the Record is not drawn, so the offer would be a status
-     nobody could reach. It sits over the press instead until History opens,
-     and then the Record carries it as it always did. */
-  +(!open&&RIT.gone&&RIT.goneAt!=='keep'?'<div class="rv-gone" role="status"><span>Deleted.</span>'
+  /* PUT BACK IS OFFERED WHERE A PERSON CAN SEE IT. The Record used to carry
+     this itself once History opened, and shut it had nowhere else to sit
+     but over the press, which is why it used to come and go with
+     RIT.histOpen. The Record is gone from here now, so this sits here
+     whole, whether History is shown or shut. */
+  +(RIT.gone&&RIT.goneAt!=='keep'?'<div class="rv-gone" role="status"><span>Deleted.</span>'
    +'<button type="button" class="btn" data-act="putback">Put back</button></div>':'')
-  +'<button type="button" class="rit-more rv-more-t rv-histt" data-act="hist" aria-expanded="'+open+'" aria-controls="rvhist">'
-  +'<span>History</span>'+ritIc('down')+'</button>'
-  +(open?'<div class="rv-histp" id="rvhist">'+acctHistHtml(st)+ritRecordHtml(st.plans,st.today)+'</div>':'')+'</div>';}
+  +(open?'<div class="rv-histp" id="rvhist">'+acctHistHtml(st)+ritListHtml(st.plans,st.today)+'</div>':'')+'</div>';}

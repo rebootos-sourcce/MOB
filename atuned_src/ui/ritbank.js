@@ -294,7 +294,9 @@ function ritBankCard(x,i,st){
    +' data-tip-t="Add" data-tip="Puts it on your week: every day, any time, for a week. Press the name to pick days and a time.">'
    +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></button>'
   +'<button type="button" class="rv-no" data-act="sug-x" data-i="'+i+'" aria-label="Dismiss '+esc(x.p.nm)+'"'
-   +' data-tip-t="Dismiss" data-tip="Takes it off Called for. Put back is offered in the same place.">'
+   /* "Takes it off Today", round SW: the card's own heading renamed
+      (ritstage.js), so its own tooltip reads the same word back */
+   +' data-tip-t="Dismiss" data-tip="Takes it off Today. Put back is offered in the same place.">'
    +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12 M18 6L6 18"/></svg></button></span></div>'
   +chips+'</li>';}
 
