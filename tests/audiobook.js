@@ -76,7 +76,7 @@ const CHROME=process.env.CHROME||chromium.executablePath();
     idx:RUN.idx,pass:RUN.pass,attempts,studioLost:RUN.studioLost};
    window.speakStudio=function(text,rate,style,onend,onfail){
     attempts++;
-    setTimeout(()=>onend(10000),25);return true;
+    setTimeout(()=>onend(10000,10000),25);return true;
    };
    const play=document.getElementById('relpause');
    if(play)play.click();
@@ -175,7 +175,7 @@ const CHROME=process.env.CHROME||chromium.executablePath();
    let attempts=0;
    window.studioWarm=function(){};
    window.speakStudio=function(text,rate,style,onend,onfail){
-    attempts++;setTimeout(()=>onend(1),0);return true;
+    attempts++;setTimeout(()=>onend(10000,1),0);return true;
    };
    try{
     document.getElementById('relgo').click();
@@ -183,7 +183,7 @@ const CHROME=process.env.CHROME||chromium.executablePath();
     const before={paused:RUN.paused,phase:RUN.phase,line:RUN.line,
      idx:RUN.idx,pass:RUN.pass,attempts};
     window.speakStudio=function(text,rate,style,onend,onfail){
-     attempts++;setTimeout(()=>onend(10000),0);return true;
+     attempts++;setTimeout(()=>onend(10000,10000),0);return true;
     };
     const button=document.getElementById('relpause');
     if(button)button.click();
@@ -201,7 +201,7 @@ const CHROME=process.env.CHROME||chromium.executablePath();
    result.before.idx===0&&result.before.pass===0&&
    result.after.attempts>result.before.attempts&&
    (result.after.phase!==result.before.phase||result.after.line>result.before.line);
-  console.log((success?'ok':'FAIL')+' audiobook near-instant completion holds cursor '+JSON.stringify(result));
+  console.log((success?'ok':'FAIL')+' audiobook short media after long request holds cursor '+JSON.stringify(result));
   if(success)pass++;else fail++;
   await page.close();
  }
@@ -252,6 +252,41 @@ const CHROME=process.env.CHROME||chromium.executablePath();
   const success=result.shared&&result.cached&&result.otherVoice&&
    result.rejected&&result.retried&&result.calls===2;
   console.log((success?'ok':'FAIL')+' audiobook voice cache isolation and retry '+JSON.stringify(result));
+  if(success)pass++;else fail++;
+  await page.close();
+ }
+ // A browser pause is a failure; intentional cancellation and late callbacks are silent.
+ {
+  const page=await browser.newPage({viewport:{width:390,height:960}});
+  await page.goto(SRC,{waitUntil:'load'});
+  await page.waitForFunction(()=>document.body.classList.contains('booted'),null,{timeout:15000});
+  const result=await page.evaluate(async()=>{
+   const oldAudio=window.Audio,oldAuth=window.authVoice;
+   let el=null,failed=0,completed=0,played=null;
+   window.authVoice=()=>Promise.resolve({ok:true,blob:new Blob(['fixture'],{type:'audio/mpeg'})});
+   window.Audio=function(){
+    el=this;this.currentTime=0;this.ended=false;this.playbackRate=1;
+    this.play=()=>{if(this.onplaying)this.onplaying();return Promise.resolve();};
+    this.pause=()=>{if(this.onpause)this.onpause();};
+   };
+   const tick=()=>new Promise(r=>setTimeout(r,20));
+   const end=(ms,media)=>{completed++;played=media;};
+   const fail=()=>{failed++;};
+   try{
+    speakStudio('Synthetic interruption fixture A.',1,'list',end,fail);
+    await tick();el.onpause();
+    const interrupted=failed===1&&completed===0&&STUDIO.el===null;
+    speakStudio('Synthetic interruption fixture B.',1,'list',end,fail);
+    await tick();const late=el.onended;speakStop();late();
+    const cancelled=failed===1&&completed===0&&STUDIO.el===null;
+    speakStudio('Synthetic media duration fixture.',2,'list',end,fail);
+    await tick();el.currentTime=1.8;el.ended=true;el.onended();
+    return {interrupted,cancelled,failed,completed,played};
+   }finally{speakStop();window.Audio=oldAudio;window.authVoice=oldAuth;}
+  });
+  const success=result.interrupted&&result.cancelled&&result.failed===1&&
+   result.completed===1&&Math.abs(result.played-1000)<0.001;
+  console.log((success?'ok':'FAIL')+' audiobook media duration, interruption and cancellation '+JSON.stringify(result));
   if(success)pass++;else fail++;
   await page.close();
  }
