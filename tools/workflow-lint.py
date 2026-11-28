@@ -107,6 +107,7 @@ BROWSER = {
     'landing':       ('node tests/landing.js', 20),
     'quit':          ('node tests/quit.js', 20),
     'voice':         ('node tests/voice.js', 20),
+    'audiobook':     ('node tests/audiobook.js', 20),
     'journey2':      ('node tests/journey2.js', 20),
     'onboarding2':   ('node tests/onboarding2.js', 20),
     'srcintro':      ('node tests/srcintro.js', 20),
@@ -230,7 +231,7 @@ BROWSER = {
 }
 # P0 Alpha acceptance: move to the blocking browser matrix, and mutation-test each
 # one so a future refactor cannot silently return it to report-only.
-ALWAYS_REQUIRED = ('boot', 'collide', 'funnel', 'functional', 'design', 'monitor', 'voice',
+ALWAYS_REQUIRED = ('boot', 'collide', 'funnel', 'functional', 'design', 'monitor', 'voice', 'audiobook',
                    'storage', 'firstrelease', 'journey2', 'onboarding2', 'release-screen',
                    'alpha-journey')
 GATE_JOBS = ['gates-fast', 'gates-browser']             # what gates-pass needs
