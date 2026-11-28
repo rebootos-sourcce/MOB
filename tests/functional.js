@@ -6149,8 +6149,8 @@ console.log('\n=== the welcome after paying shows once and says the loop ===');
  await tp.close();
 }
 
-console.log('\n=== the voice: ElevenLabs only, no sign in needed, and a failure is silence with a word, never another voice ===');
-/* The ElevenLabs path (ui/sound.js, THE STUDIO VOICE), which is the only voice
+console.log('\n=== the voice: OpenAI only, no sign in needed, and a failure is silence with a word, never another voice ===');
+/* The OpenAI path (ui/sound.js, THE STUDIO VOICE), which is the only voice
    there is: the owner ruled on 9 October that the audio must not default to
    the browser's own voice, and there is no fallback to it, and then that it
    must be automatic, with no sign in. The Worker is faked with a route, so the
@@ -6166,7 +6166,7 @@ console.log('\n=== the voice: ElevenLabs only, no sign in needed, and a failure 
  await tp.route('https://voice.stub.test/**',r=>{
   const b=JSON.parse(r.request().postData()||'{}');
   reqs.push({auth:r.request().headers()['authorization']||'', body:b});
-  if(b.text==='refused')return r.fulfill({status:503,contentType:'application/json',body:JSON.stringify({error:'the voice is not connected on this server yet: ELEVENLABS_API_KEY is not set'})});
+  if(b.text==='refused')return r.fulfill({status:503,contentType:'application/json',body:JSON.stringify({error:'the voice is not connected on this server yet: OPENAI_API_KEY is not set'})});
   return r.fulfill({status:200,contentType:'audio/mpeg',body:Buffer.from([0x49,0x44,0x33,4])});});
  const o=await tp.evaluate(async()=>{
   const wait=ms=>new Promise(r=>setTimeout(r,ms));
@@ -6206,7 +6206,7 @@ console.log('\n=== the voice: ElevenLabs only, no sign in needed, and a failure 
   out.ss=window.__ss;
   authVoice=av0; AUTH_API=api0; RUN.studioLost=false; authForget();
   return out;});
- ok(o.outOn===true&&/ElevenLabs, a voice company/.test(o.outRow),'signed out the voice is on and the switch says who speaks the line: no sign in is asked for');
+ ok(o.outOn===true&&/AI narration by OpenAI/.test(o.outRow),'signed out the voice is on and the switch says who speaks the line: no sign in is asked for');
  ok(o.outCall.ok===true&&o.outSize===4,'and a signed out request is answered with the audio bytes, '+JSON.stringify(o.outCall));
  const anon=reqs.filter(q=>!q.auth);
  ok(anon.length>=2&&anon.every(q=>typeof q.body.device==='string'&&/^[A-Za-z0-9_-]{16,64}$/.test(q.body.device)&&Object.keys(q.body).sort().join()==='device,style,text'),'it sends the line, its style and a device code and nothing else, with no session, '+JSON.stringify(anon.slice(0,1)));
