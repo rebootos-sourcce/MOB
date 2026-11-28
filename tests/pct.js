@@ -196,7 +196,11 @@ const READ=`(function(){
     loadP(PEOPLE.findIndex(x=>x.nm===who)); setTab(TAB.SUMMARY); render();
     await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
     const R=compute(), acc=accuracy(R), e=(R.X+R.Y+R.Z)/3, cov=accCover(R);
-    const plate=((document.querySelector('#sum .s-plate .cr[title^="Coherence"] .v')||{}).textContent||'').trim();
+    /* THE PLATE AND ITS 15 PERCENT RING ARE STRUCK, 27 November, his words
+       (DECISIONS.md, "The Summary is who I am today and what Source AI is
+       seeing"), so the page must carry none; the coherence word and figure
+       are held on the Field and Analytics, where they live. */
+    const plate=document.querySelectorAll('#sum .s-plate').length;
     const txt=(document.getElementById('sum')||{}).innerText||'';
     return {unread:!!R.unread,plate,complete:!!cov.complete,
      plateWant:cov.complete?fmtPct('cq',R.CQ):accCoverWord(cov),
@@ -217,8 +221,7 @@ const READ=`(function(){
       longer draws; slice 3 below covers Analytics, where the rest of this
       content now lives. Retired rather than re-pointed at content that
       was deliberately removed, not relocated within Summary. */
-   ok(s.plate===s.plateWant&&(s.complete?/^\d+%$/.test(s.plate):/^(early|partial)$/.test(s.plate)),
-    'S2: '+tag+'the plate prints the word while filling and CQ as a percent once every law is answered, '+J({plate:s.plate,want:s.plateWant,complete:s.complete}));
+   ok(s.plate===0,'S2: '+tag+'the Summary carries no plate and no coherence ring, found '+s.plate);
    ok(s.weightBare.length===0,'S2: '+tag+'no weight in the prose is printed bare, '+J(s.weightBare));
    ok(s.decimal.length===0,'S2: '+tag+'no decimal figure is left in the prose, '+J(s.decimal));
   }

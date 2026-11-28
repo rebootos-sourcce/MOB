@@ -1,5 +1,17 @@
 /* The Your patterns gate, ui/loopread.js, in a real Chromium.
 
+   OFF THE SUMMARY, 27 November. His words: the Summary is "who I am today and
+   what Source AI is seeing", and Your Patterns is struck from it by name. It
+   had no other home since the Field's copy went on 14 November, so no screen
+   draws it now and the Summary's gate for it asserts it is absent. The
+   renderer is still the product's (loopHtml, sumLoopSlot, ui/loopread.js) and
+   the engine's loopRead is untouched, so what the block says and how it is
+   labelled is still held here, on a stand-in host this gate mounts off screen
+   from sumLoopSlot, the way a surface that wants it back would. The two
+   checks that need the page to repaint it, Show all and the zone sitting
+   beside the daily slot, are retired by name: they were about a home that is
+   gone. Everything below that says "Summary carries" means the stand-in.
+
    ONE HOME NOW, 14 November. His words, looking at the Field's rail: "I'm
    not quite certain what that does or what it's for." The Field's own copy,
    #loopside, came off with loopPaint; Summary's zone, #sumloop, is a
@@ -96,9 +108,17 @@ require('./net.js').guardBrowser(b);
 
   /* 3. Summary's own zone carries everything the rail used to, with its
      meanings, its Next, and Show all, since that is the one home left */
+  /* THE PAGE ITSELF: no patterns block on the Summary, read or unread */
+  const gone=await p.evaluate(()=>{setTab(TAB.SUMMARY); render(); if(typeof sumRender==='function')sumRender();
+   return {zone:!!document.getElementById('sumloop'),
+    visible:[].slice.call(document.querySelectorAll('.lp')).filter(function(e){return e.getClientRects().length>0;}).length,
+    day:!!document.getElementById('sumday')};});
+  ok(gone.zone===false&&gone.visible===0,'the Summary carries no patterns zone and no .lp block, '+JSON.stringify(gone));
+  ok(gone.day===false,'and no Daily Summary slot either, both struck 27 November');
   const f=await p.evaluate(BARE_SRC=>{
    var BARE=eval('('+BARE_SRC+')');
    setTab(TAB.SUMMARY); render(); if(typeof sumRender==='function')sumRender();
+   var d0=document.createElement('div'); d0.innerHTML=sumLoopSlot(computeSeen()); var m0=d0.firstChild; m0.style.cssText='position:absolute;left:-99999px;top:0;width:700px'; document.body.appendChild(m0);
    var h=document.getElementById('sumloop');
    var vis=[].slice.call(document.querySelectorAll('.lp')).filter(function(e){return e.getClientRects().length>0;});
    /* the known bad case: a copy with one meaning taken off */
@@ -118,7 +138,6 @@ require('./net.js').guardBrowser(b);
   ok(f.next==='46','the Next names address 46, the one the words named, got '+f.next);
   ok(!/\bday\s*\d|\d+\s*days?\b|streak/i.test(f.text),'no day count and no streak in the block');
   ok(/from your words/.test(f.text)&&/not said yes or no to this pattern yet/.test(f.text),'the chain says where the pattern came from and that it is unanswered');
-  ok(f.day&&!f.inDay,'the Daily Summary slot is still there and the patterns zone is not inside it');
 
   /* 4. the Next acts on the address it names */
   const pressed=await p.evaluate(()=>{var got=null, keep=window.relPick;
@@ -127,12 +146,9 @@ require('./net.js').guardBrowser(b);
    return got;});
   ok(JSON.stringify(pressed)==='[46]','Run a release opens the run at 46, got '+JSON.stringify(pressed));
 
-  /* 5. Show all, and back */
-  const all=await p.evaluate(()=>{document.querySelector('#sumloop [data-lpall]').click();
-   var n=document.querySelectorAll('#sumloop .lp-p').length;
-   document.querySelector('#sumloop [data-lpall]').click();
-   return [n,document.querySelectorAll('#sumloop .lp-p').length];});
-  ok(all[0]===5&&all[1]===4,'Show all lists every pattern and the second press goes back to four, got '+all);
+  /* 5. Show all, and back: RETIRED BY NAME, 27 November. The press repaints
+     the Summary (loopRepaint), which no longer carries the block, so there
+     is nothing for it to repaint. */
 
   /* 6. a record with practice on it */
   await p.evaluate(SETUP,true); await p.waitForTimeout(300);
@@ -147,6 +163,8 @@ require('./net.js').guardBrowser(b);
      read 18 against the typed 1 at b2b7a03. SETUP resets practice and trace
      and leaves the log, which is the record a person sees on Angela. */
   const q=await p.evaluate(()=>{setTab(TAB.SUMMARY); render(); if(typeof sumRender==='function')sumRender();
+   var o0=document.getElementById('sumloop'); if(o0)o0.remove();
+   var d0=document.createElement('div'); d0.innerHTML=sumLoopSlot(computeSeen()); var m0=d0.firstChild; m0.style.cssText='position:absolute;left:-99999px;top:0;width:700px'; document.body.appendChild(m0);
    var h=document.getElementById('sumloop');
    var fig={}; h.querySelectorAll('.lp-f').forEach(function(x){fig[x.querySelector('.lp-fl').textContent.trim()]=x.querySelector('.lp-fv').textContent.trim();});
    var days=(CURP.rituals||[]).filter(function(x){return x&&typeof x==='object'&&x.done!==false;}).length;

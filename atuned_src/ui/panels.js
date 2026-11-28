@@ -204,7 +204,12 @@ function setTab(i){
  if(S.tab===TAB.SUMMARY&&i!==TAB.SUMMARY){
   var sb=$('sumbody'); if(sb)sb.innerHTML='';
   /* and its side column, today's sentences, for the same reason */
-  if(typeof sumDayClear==='function')sumDayClear();}
+  if(typeof sumDayClear==='function')sumDayClear();
+  /* the left rail's bars carry an archetype's figure, so they go with the
+     page for the same reason, and what Source AI was saying here ends and is
+     not kept (ui/sumtalk.js) */
+  if(typeof sumStackClear==='function')sumStackClear();
+  if(typeof sumTalkReset==='function')sumTalkReset();}
  if(S.tab===TAB.ANALYTICS&&i!==TAB.ANALYTICS){
   var ab=$('ana'); if(ab)ab.innerHTML='';}
  /* and Knowledge hands the drill panel back to the rail, which it lends to
@@ -428,9 +433,11 @@ function setTab(i){
     called both on entry to Summary, back when Analytics had no door of its
     own and rode in on Summary's arrival; now each tab renders only itself,
     the same shape as every other entry below. */
- /* and entering the Summary is the open that freezes today's summary, once
-    a local day, after the page is painted and never inside its render */
- if(i===TAB.SUMMARY){sumRender(); if(typeof sumDayOpen==='function')sumDayOpen();}
+ /* NO DAY IS SAVED HERE ANY MORE, 27 November. Entering the Summary used to
+    be the open that froze today's summary (sumDayOpen), once a local day.
+    Today's fields are struck from the page, and a day nobody sees is not a
+    record of a day, so nothing writes it from here. */
+ if(i===TAB.SUMMARY){sumRender();}
  else if(i===TAB.ANALYTICS)anaRender();
  /* THE COMPASS HAS A FRONT DOOR. It was three clicks deep: click one end of
     the cone marker on the Field stage, then a button inside the drill that

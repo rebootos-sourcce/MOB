@@ -207,7 +207,11 @@ function seatB(nm,band,tk,tc){return sumB(nm,band?seatCol(band):null,tk,tc);}
 function sumUn(term,ctx){
  var s=unpackOf(term,ctx);
  return s?'<span class="s-un">'+esc(s)+'</span>':'';}
-function sumStory(r){
+/* THE READING'S PARAGRAPHS, as an array, built once. sumStory prints them and
+   ui/sumtalk.js speaks them, so what Source AI says on the Summary and what
+   the page shows are one text and cannot drift. Each carries its meaning spans
+   (.s-un) as the page prints them; the voice strips those. */
+function sumStoryParts(r){
  /* the reading sumBirth holds, which is the person's own when they typed a
     birth. converge asked for the roster name alone, and only a reference case
     has one in BIRTH, so the blueprint paragraph never opened for anyone real. */
@@ -379,10 +383,12 @@ function sumStory(r){
     +' the opposite quality has been pushed past the point where it helps, so some of the work is now costing.':'')
   +gapLine).trim());
 
+ return p;}
+/* THE "WRITTEN FROM" LINE IS GONE, 27 November, his words: "Written from the
+   nine axes" is struck. The Reading is the heading and its paragraphs. */
+function sumStory(r){
  return '<div class="s-story"><div class="pm-eye">Reading</div>'
-  +p.map(function(t){return '<p class="s-p">'+t+'</p>';}).join('')
-  +'<p class="s-src">Written from the nine '+unp('axis','axes')+', the twenty one '+unp('law','laws')+', the '
-  +unp('blueprint')+' and the birth data. Nothing here is generated from anything the instrument has not measured.</p>'
+  +sumStoryParts(r).map(function(t){return '<p class="s-p">'+t+'</p>';}).join('')
   +'</div>';}
 
 /* ---- structures at a glance. the right hand panel. ---- */
@@ -693,23 +699,8 @@ function sumRender(){
  var r=computeSeen();
  h.innerHTML='<div class="sum-wrap">'+(r.unread?sumUnread(r):sumFull(r))+'</div>';
  sumWire();
- /* and its side column, today's summary, off the same reading. A paint and
-    never a write: the day is frozen by sumDayOpen, after this returns. */
- if(typeof sumDayPaint==='function')sumDayPaint(r);
- sumRunPaint(r);
- sumHelloWire();}
-
-/* THE RAIL'S TALK BUTTON (#sumhello, shell/body.html). It goes to the
-   Journal and presses the hello there, in that order: stHello mounts her into
-   #stuni, which only exists once the Journal has rendered, so pressing it
-   first from here would find no host and park her again (stUniSync's own
-   first branch). setTab renders the surface it lands on before it returns. */
-function sumHelloWire(){
- var b=document.getElementById('sumhello'); if(!b||b.dataset.wired)return;
- b.dataset.wired='1';
- b.addEventListener('click',function(){
-  setTab(TAB.STORY);
-  if(typeof stHello==='function')stHello();});}
+ /* the left rail's bars, off the same reading. A paint and never a write. */
+ if(typeof sumStackPaint==='function')sumStackPaint(r);}
 
 /* NOTHING READ YET IS ITS OWN PAGE.
 
@@ -720,7 +711,7 @@ function sumHelloWire(){
    page is the way in instead. The spiritual layer stays: it is derived from a
    birth date a person entered, not from a default, so it is real or absent. */
 function sumUnread(r){
- var B=sumBirth(), rc=sumDrivers(B,r);
+ var B=sumBirth();
  var hero='<div class="sum-hero">'
   +cr(r.darkB,0,{size:'lg',label:'Coherence',raw:'–',hot:false,color:'var(--dim)'})
   /* ONE SLOT, ONE LABEL, the same correction as the analytics hero. The
@@ -736,15 +727,12 @@ function sumUnread(r){
      doors underneath are the route. */
   +'<div class="sum-line">Nothing has been read yet.</div></div></div>'
   +'<div class="sum-start">'+startHTML('Four ways in.')+'</div>';
- /* A NAME OR A BIRTH WAS ENTERED. Then what it says stands on the right, the
-    first drivers, and the four doors stand on the left, so the way in is on the
-    first screen beside it and the page is two equal halves, not one half and a
-    hole. Nothing here is read off the field, so nothing here is a reading. */
- if(rc)return sumWho(r,B,false)
-  +'<div class="sg-two sg-lead"><section class="sg-card sg-start" data-grp="start">'+hero+'</section>'+rc+'</div>'
-  +sumMarks(B,r)
-  +(B.N?'<div class="sg-folds sg-one">'+sgFold('num','Numerology, in full',sumNum(r,true))+'</div>':'');
- return sumWho(r,B,false)+hero+sumSpirit(r)+sumNum(r);}
+ /* A NAME OR A BIRTH WAS ENTERED. Then the name stands at the head, with
+    Source AI's button, and the four doors under it. The first drivers card
+    that stood beside the doors is struck (27 November), and the birth's own
+    marks are the left rail's bars. Nothing here is read off the field, so
+    nothing here is a reading. */
+ return sumWho(r,B,false)+hero;}
 
 /* ============================================================
    THE SUMMARY, REBUILT. Named wrong four times and this is the correction.
@@ -831,137 +819,6 @@ function sgCap(t){t=String(t||'');return t.charAt(0).toUpperCase()+t.slice(1);}
 function sgRing(inner,col,tipT,tip){
  return '<span class="sg-c-g" style="--rc:'+(col||'var(--accent)')+'"'
   +(tip?' data-tip-t="'+esc(tipT)+'" data-tip="'+esc(tip)+'"':'')+'>'+inner+'</span>';}
-/* ============================================================
-   THE FIRST DRIVERS, ON THE RIGHT. Round OJ, his words: "for the summary, on
-   the right side, because this is information that won't change, we want the
-   root energetic meanings of their name... After you get your first root
-   energetics, after you are severed from your mother's umbilical cord, the
-   very next thing is your name... this is really kind of like a cascade of
-   drivers."
-
-   So the right hand card is the part of the person that does not move, in the
-   order it arrived: one, where they were born, the root energetics the four
-   systems give; two, what they were named, a meaning for each part of the
-   name; then everything else on the page, which is what those drivers are
-   running. A numbered ring on a line is the cascade, and nothing explains it.
-
-   THE ROOT OF A NAME HAS NO TABLE IN THIS PRODUCT, and this file does not
-   write one. NAME_MEANINGS below is the slot for it, read by name part, and it
-   holds the owner's three worked examples marked as his and nothing else. A
-   part with no entry says so and never shows a guess. DECISIONS.md, "No
-   etymology table", is the standing ruling this sits against, and DM and DZ in
-   TASKS.md found the references give other roots for the same three names,
-   which is held in each entry's note and not printed.
-   ============================================================ */
-const NAME_MEANINGS={
- /* RESEARCHED AGAIN, round OK, on his word: "Lance means to pierce, right?
-    It's a weapon that a knight uses. So you need to go do your research
-    again." The meaning of a name for this page is its root as a word, which is
-    what a person grows into, and not only the line of descent. Lance is the
-    lance, the knight's spear, from Latin lancea (a second line of descent runs
-    to Germanic land, which is the lesser one). O'Neill is the descendant of
-    Niall, which most authorities give as champion (also cloud, passionate).
-    Powell is ap Hywel, the son of Hywel, and Hywel is eminent, which is
-    exalted. Sources are Wikipedia's entries on Lance (given name), O'Neill
-    (surname) and Powell (surname), and Behind the Name. This is still a
-    stub of three, and the table that replaces it is vetted before it ships. */
- lance:{part:'Lance',says:'to pierce',
-  src:'Lance: Old French lance, Latin lancea, the knight\'s spear (Wikipedia, Lance given name; Ancestry; Behind the Name)',
-  note:'A second line runs to Germanic land. The weapon is the root as a word.'},
- oneill:{part:"O'Neill",says:'champion',
-  src:'O\'Neill: Ó Néill, descendant of Niall, champion (Wikipedia, O\'Neill surname; Library Ireland)',
-  note:'Niall is also given as cloud or passionate. Most authorities give champion.'},
- powell:{part:'Powell',says:'exalted',
-  src:'Powell: ap Hywel, son of Hywel, eminent (Wikipedia, Powell surname; Behind the Name)',
-  note:'Hywel is eminent, remarkable. Exalted is the same sense.'}};
-function nameKey(s){return String(s||'').toLowerCase().replace(/[^a-z]/g,'');}
-/* the parts of a name as the person entered them, first, middle and last. A
-   reference case has only a full name, so it is split the way numerology
-   splits it. An apostrophe stays inside its part. */
-function sumNameParts(B){
- var w=CURP&&CURP.who||{}, f=String(w.first||'').trim(), m=String(w.middle||'').trim(), l=String(w.last||'').trim();
- if(!(f||m||l)&&B.full){var ws=String(B.full).trim().split(/\s+/);
-  f=ws[0]||''; l=ws.length>1?ws[ws.length-1]:''; m=ws.slice(1,-1).join(' ');}
- var out=[]; if(f)out.push({role:'First',text:f}); if(m)out.push({role:'Middle',text:m}); if(l)out.push({role:'Last',text:l});
- return out;}
-function nameMeaning(text){
- var hit=NAME_MEANINGS[nameKey(text)]; if(hit)return hit;
- var ws=String(text).split(/\s+/);
- for(var i=0;i<ws.length;i++){if(NAME_MEANINGS[nameKey(ws[i])])return NAME_MEANINGS[nameKey(ws[i])];}
- return null;}
-/* one row of what a table says about a person, a mark in a ring, a label, a
-   title and the one line the table gives it */
-function sgMeet(src,glyph,k,t,say,tip,col,kh,th){
- /* ROUND PO. A row may carry its label and its title as markup, so each can be a
-    carrier of its own meaning, and it may carry several sentences, so the
-    meaning of the title and the meaning of what it came from both stand in the
-    row. Anything not given as markup is escaped, as it always was. */
- var says=(say instanceof Array?say:[say]).filter(Boolean);
- return '<div class="sg-m" data-src="'+esc(src)+'">'+sgRing(glyph,col,t,tip)
-  +'<div class="sg-m-t"><span class="sg-c-k">'+(kh||esc(k))+'</span><b>'+(th||esc(t))+'</b>'
-  +says.map(function(x){return '<p>'+esc(x)+'</p>';}).join('')+'</div></div>';}
-function sgStage(n,title,body){
- return '<div class="sg-st" data-stage="'+n+'"><div class="sg-st-h"><span class="sg-st-n">'+n+'</span>'
-  +'<b>'+esc(title)+'</b></div><div class="sg-st-b">'+body+'</div></div>';}
-/* the systems that met, in words, and how strongly only when it is more than
-   light, because most meetings are light and say so once under the stage */
-/* A SHARED ELEMENT NAMES TWO THINGS. Fire in the Western signs and Fire in the
-   Chinese calendar are one word for two systems, and a meeting between them is
-   about both, so the carrier says both. Wood and Metal are Chinese only. */
-function unpTheme(t){
- var k=String(t).toLowerCase(), w=unpackOf(k), c=unpackOf(k,'year');
- var say=[w,c].filter(function(x,i,a){return x&&a.indexOf(x)===i;}).join(' ');
- return say?'<span class="tipu" tabindex="0" data-tip-k="'+esc(t)+'" data-tip="'+esc(say)+'">'+esc(t)+'</span>':'';}
-function sgMeetRow(a){
- /* THE SYSTEMS ARE NAMED BY CARRIERS. "Western, Number" told a stranger nothing
-    about what Western or Number is, so each name carries its sentence. */
- var kh=a.sys.map(function(x){return unp(SYSNAME[x].toLowerCase(),SYSNAME[x]);}).join(', ')
-  +(a.strength==='light'?'':esc('. '+RS_STRENGTH[a.strength].replace(/\.$/,'')));
- return sgMeet('ROOT_SAYS',sgSvg(rsThemeIc(a)),'',a.t,ROOT_SAYS[a.t]||'',RS_BRIDGE[a.voc],null,kh,
-  a.voc==='el'?unpTheme(a.t):'');}
-/* STAGE ONE. Where they were born: the root the sun sign gives, then where the
-   four systems meet, led by the meeting least likely by chance, which is how
-   rootOverlap orders them. FV: "where they overlap, because that's the truth." */
-function sumBorn(B){
- var sp=B.sp, R=B.R, rows='', more=[];
- if(!sp)return sgStage(1,'Born',
-  '<p class="sg-note">No birth data on file. Date, time and place would put it in.</p>'
-  +'<button type="button" class="btn s-oact" data-sout="iq">Avatar</button>');
- /* ROUND PO. The stage says what a birth reading is before it reads one, and
-    the root names the sign it came from and the element it came through. The
-    old line, "Earth, fixed. Builds and holds.", described the root with two
-    words nobody had defined, and it said fixed of every Architect, though a
-    Capricorn is cardinal. */
- if(!sumSaid(unpackOf('symbolic reading')))rows+='<p class="sg-note">'+unpSay('symbolic reading')+'</p>';
- var elSay=unpackOf(sp.sunEl), sgSay=unpackOf(sp.sun,'sign');
- rows+=sgMeet('root',sgSvg(glyphPath(ROOTGLYPH[sp.root])),
-  'Root',sp.root,[unpackOf(sp.root.toLowerCase()),
-   sp.sun?unpackOf('sun sign'):'',sgSay,elSay].filter(function(x){return !sumSaid(x);}),'',rootPlain(sp.root),
-  unp('root','Root'),unp(sp.root.toLowerCase(),sp.root));
- var sh=R.shown||[], anyLight=sh.some(function(a){return a.strength==='light';});
- if(sh.length)rows+='<p class="sg-note"><span>'+unpSay('overlap')+'</span>'
-  +(anyLight?' A light one is shared by many people, and a strong one is rare.':'')+'</p>';
- sh.slice(0,2).forEach(function(a){rows+=sgMeetRow(a);});
- if(!sh.length)rows+='<p class="sg-note">These four do not land on the same thing.</p>';
- more=sh.slice(2).map(sgMeetRow).concat((R.range||[]).map(function(x){var say=rsSays(x); if(!say)return '';
-  return sgMeet('range',sgSvg(SYSGLYPH[x.sys]),'',rsName(x),[sgCap(say)+'.'].concat(rsMeans(x)),'',null,
-   unp(SYSNAME[x.sys].toLowerCase(),SYSNAME[x.sys]));}));
- return {stage:sgStage(1,'Born',rows),more:more.join('')};}
-/* STAGE TWO. What they were named: a root meaning for each part of the name,
-   from NAME_MEANINGS and from nowhere else, then the number the whole name
-   adds to. A part with no entry is said to have none. */
-function sumNamed(B){
- var parts=sumNameParts(B); if(!parts.length)return '';
- var any=false, rows='', N=B.N, c=N?NUM_CORE[N.expression]:null;
- parts.forEach(function(p){p.mn=nameMeaning(p.text); if(p.mn)any=true;});
- if(any)parts.forEach(function(p){
-  rows+=sgMeet('NAME_MEANINGS','<span class="s-num-g">'+esc(p.text.charAt(0).toUpperCase())+'</span>',
-   p.role,p.text,p.mn?sgCap(p.mn.says):'No meaning on file.',p.mn?'Source. '+p.mn.src+'.':'');});
- else rows+='<p class="sg-note">No root meaning on file for '
-  +parts.map(function(p){return esc(p.text);}).join(', ').replace(/, ([^,]*)$/,' or $1')+'.</p>';
- if(c)rows+=sgMeet('NUM_CORE','<span class="s-num-g">'+N.expression+'</span>','Expression',
-  String(N.expression),[sgCap(c.ex)+'.',unpackOf('expression')].filter(function(x){return !sumSaid(x);}),'',null,unp('expression','Expression'));
- return sgStage(2,'Named',rows);}
 /* the person's own name, or nothing. It knew one label the product gives a
    record, You, so "Web reading" printed as a person called Web on the first
    screen after the funnel, F3 of the 31 October walk. ownName in
@@ -985,59 +842,23 @@ function sumNameBlock(B,fallback){
    (engine/compute.js, accCoverWord), so a whole intake reads full whatever
    the answers were. */
 function accWord(c){return accCoverWord(c);}
-/* THE PLATE IS THE NAME, AND ALMOST NOTHING ELSE NOW. Ruled 3 November, his
-   words, reading Derek's own plate back to him: "versus Derek partial, get
-   rid of that, get rid of six laws to answer... All that belongs in the
-   information side of things." Two things sat crammed against the name: the
-   coherence ring's own pill (early, partial, or CQ's percent once every law
-   is in) and the band line under it, tierSay(r), which read a real tier name
-   once CQ was complete and "N laws to answer" while it was still filling.
-
-   The ring stays, small and quiet, because tests/pct.js and tests/dailyui.js
-   both read it at this exact path, #sum .s-plate .cr[title^="Coherence"]:
-   dailyui.js's plate percent count and pct.js's S2 slice both depend on a
-   live, real completion reading sitting inside .s-plate, and a ring that
-   stops being real the moment it is unflattering is exactly what rule 6
-   forbids. What moved is everything that was text beside it: the band name,
-   "where it goes" and the gift line are sumStatus() now, read once in the
-   information column (sg-side, next to What drives it) rather than fighting
-   the name for the first line a person reads. */
-function sumPlate(r,B){
- var cov=(typeof accCover==='function')?accCover(r):null, aw=cov?accWord(cov):'';
- /* THE FIGURE COMES BACK ONCE IT IS A READING, 17 October, percent phase 2.
-    The 14 October ruling took the bare score off this plate and it stands:
-    a percent of a defined maximum is not a raw score. While the laws are
-    still being answered most of the coherence figure is the default answer,
-    so the plate keeps the word (early, partial) and prints no figure that
-    claims a reading not taken. Once every law is answered (accCover complete,
-    where CQ stops moving) the pill prints CQ as the registry does and equals
-    its ring. Default taken by the team, DECISIONS.md, his to overrule. */
- var cqp=(cov&&cov.complete&&!r.unread)?fmtPct('cq',r.CQ):null;
- return '<div class="s-plate">'
-  +'<div class="s-pl-l">'+sumNameBlock(B,true)+'</div>'
-  +'<div class="s-pl-r">'
-   +cr(r.darkB,pct('cq',r.CQ)||0,{size:'sm',label:'Coherence',raw:cqp||aw||'–',hot:false,act:true,data:'data-gl="core"',
-      title:'Coherence, '+(cqp?cqp:(aw?aw+' reading':'not read yet'))+'. Opens the figure and its range.',
-      color:TIERCOL[r.tier]||undefined})
-  +'</div>'
-  +'</div>';}
-/* the head of the page: the plate. On a read profile it is the name and the
-   coherence ring alone. On an unread one it is what was entered and nothing
-   else, so a name and a birth date still read and a default never does. */
+/* THE HEAD OF THE PAGE, 27 November: the name on the left and Source AI's
+   button on the right, on one line, with the gift line under them. "Who this
+   is" and its icon are struck, so there is no zone heading any more and no
+   coherence ring. On a read profile it is the name and the button. On an
+   unread one it is what was entered and nothing else, so a name and a birth
+   date still read and a default never does. */
 function sumWho(r,B,full){
  /* A NAME IS ENTERED OR IT IS NOT. A blank profile carries the roster word
     You, which is a default and not somebody, so it never counts. */
  if(!full&&!(B.sp||B.N||sumRealName()))return '';
- /* THE GIFT SITS UNDER THE NAME AGAIN, 20 November, because the column it
-    moved to is gone. His words on the live page: "where it says oscillating
-    50%, just get rid of that entirely." That was sumStatus(), the band, its
-    state and "Where it goes", and the gift rode inside it, so deleting the
-    band without moving the gift would have taken the one line tests/gift.js
-    holds on a new person's first screen off the page with it. Under the plate
-    it is above the fold at 390 as well, where inside the side column it sat
-    at 918 on an 844 screen (TASKS.md #137). */
- return sgZone('who','Who this is',
-  full?sumPlate(r,B)+sumGift():'<div class="s-plate sg-plain"><div class="s-pl-l">'+sumNameBlock(B,false)+'</div></div>');}
+ /* THE GIFT SITS UNDER THE NAME, 20 November, his words on the live page:
+    "where it says oscillating 50%, just get rid of that entirely." That was
+    sumStatus(), the band, its state and "Where it goes", and the gift rode
+    inside it, so the gift stays under the name: tests/gift.js holds that line
+    on a new person's first screen, and it was not struck. */
+ return '<header class="sg-name" data-grp="who"><div class="s-pl-l">'+sumNameBlock(B,full)+'</div>'
+  +(typeof sumTalkBtn==='function'?sumTalkBtn(r):'')+'</header>'+(full?sumGift():'');}
 /* THE BAND AND THE GIFT, MOVED OFF THE NAME AND INTO THE INFORMATION COLUMN.
    Read once, at the top of the drivers card (sg-side), next to "What drives
    it" rather than crowding the plate. Both pieces are unchanged, only their
@@ -1079,16 +900,6 @@ function sumGift(){
  if(typeof lockGift!=='function'||!lockGift())return '';
  return '<p class="s-src" id="sumgift">Your gift: '+GIFT_N+' '+unp('pattern','patterns','gift')
   +', no card. Everything is open.</p>';}
-/* the first drivers card. Unread or read, it is only what a birth and a name
-   say, so it is real or it is absent. */
-function sumDrivers(B,r){
- var parts=sumNameParts(B);
- if(!(B.sp||B.N||parts.length))return '';
- var born=sumBorn(B), isObj=typeof born==='object';
- return '<section class="sg-card sg-drive" data-grp="drive">'+sgHead('drive','What drives it')
-  +(isObj?born.stage:born)+sumNamed(B)
-  +'<span class="sg-down" aria-hidden="true">'+sumIc('down','sg-ic')+'</span>'
-  +(isObj?sgFold('range','Other ways this shows up',born.more):'')+'</section>';}
 /* the birth marks, one strip across the page under the story and the roots, so
    neither card has to make room for them and a five or a seven stands level.
    LABELLED "THE CELESTIAL LAYER" now, ruled 3 November, his words: "the
@@ -1269,149 +1080,36 @@ function sumOutput(r){
     :m?card('Next marker','None left','Every marker is behind you',''):'')
   +'</div>';}
 
-/* ============================================================
-   ONE MEANING, PRINTED ONCE PER PAGE. Measured 2 October by the visual
-   review and again here: 111 to 130 words printed twice on every worked
-   example's Summary, three times for Sofia's root. The Reading unpacks every
-   term inline, as round PO ruled for exactly that sentence, and the drivers
-   card beside it then printed the same table sentences again as rows, under
-   titles that already carry them as tooltips. Both halves were following
-   the unpack rule, and between them the page said each meaning twice.
-
-   So the Reading is built first and its text is held for the length of one
-   render, and a row on the drivers card leaves out any sentence the Reading
-   already printed. The term on the card keeps its carrier, so the meaning is
-   still one hover or tap away in the same place, which is the rule's own
-   second shape. On a page with no Reading, the unread one, nothing is held
-   and the card prints in full. */
-var SUM_SAID=null;
+/* THE PAGE'S TEXT AS PLAIN WORDS: tags out and entities back. Read by the voice
+   (ui/sumtalk.js). It also held a once per page set of printed sentences until
+   27 November (SUM_SAID), for a drivers card that is gone. */
 function sumPlain(html){
  return String(html||'').replace(/<[^>]*>/g,' ').replace(/&quot;/g,'"').replace(/&#39;/g,"'")
   .replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&').replace(/\s+/g,' ');}
-function sumSaid(x){
- if(!SUM_SAID||!x)return false;
- return SUM_SAID.indexOf(String(x).replace(/\s+/g,' ').trim())>=0;}
 function sumFull(r){
  var B=sumBirth();
- var story=sumStory(r), drv;
- SUM_SAID=sumPlain(story);
- try{drv=sumDrivers(B,r);}finally{SUM_SAID=null;}
- /* THE ORDER IS THE ORDER A PERSON ASKS IN, and every group is one question.
-    Who is this. What is running, and what does it cost. What does the
-    celestial layer say. Then, folded away, where each of those comes from.
-    Every row is two equal halves or three equal thirds. */
- /* REDESIGNED 3 November, his own words reading Derek's page back to him:
-    the partial badge, "N laws to answer", the gift line, the raw "What you
-    told it" journal block, "the heaviest of the nine is sad at your weight
-    of 97" and the whole "What to do" column (Release this first, the
-    Protocol, Next marker) are all off this surface now. "All that belongs
-    in the information side of things": the band and the gift moved into
-    sumStatus() beside the
-    drivers card rather than vanishing, and What to do is gone outright
-    (sumOutput still exists, read directly by tests/record.js and free for
-    a future release-focused surface, just not rendered here).
-
-    WHAT REPLACED IT: "numerology, make sure that's exposed. The Eastern and
-    Western astrology, those need to be exposed as well... the summary needs
-    to show the celestial layer." Nothing here is new engineering: sumChips
-    (the sun, moon, rising, Chinese year and element, life path) and sumNum
-    (all six numerology numbers) already existed and already read real,
-    computed data (engine/astro.js, engine/numerology.js). sumChips was
-    rendered unlabelled through sumMarks, which now carries its own heading,
-    and sumNum sat collapsed in a closed <details> at the foot of the page;
-    both read the same way, just no longer hidden. */
+ /* WHO I AM TODAY AND WHAT SOURCE AI IS SEEING, 27 November, his words for
+    this page. The name on the left and her button on the right, the Reading
+    directly under them, and under the name only the conversation, which is
+    there while it has turns. Struck, each by his naming: Who this is and its
+    icon, the 15 percent ring, the three Today fields, What drives it, Your
+    Patterns, "Written from the nine axes", the right rail, What is running and
+    the masks. The conversation sits above the Reading and not below it,
+    because under a long Reading an answer would land off screen from the
+    button that asked for it. */
  return sumWho(r,B,true)
-  +sumToday()
-  /* THE CENTRE IS THE STORY. Ruled. The reading built from a person's own
-     words, in the instrument's voice. It stands on the first screen, left of
-     the roots, and the phone reads it before them. The drivers card and the
-     band/gift status sit beside it, the information side of the page. */
-  +'<div class="sg-two sg-lead sg-lead2">'
-   +'<div class="sg-col">'
-    +'<section class="sg-card sg-story" data-grp="story">'
-     +'<div class="s-readbox sg-flat">'+story+'</div></section>'
-   +'</div>'
-   +'<div class="sg-side">'+drv+'</div>'
-  +'</div>'
-  /* the patterns block follows the lead on every width. On a phone it was
-     lifted above the story by an order rule written before it existed. */
-  +(typeof sumLoopSlot==='function'?sumLoopSlot(r):'');}
- /* AND THE PAGE ENDS AT YOUR PATTERNS, 20 November, his words: "everything
-    beneath your patterns... what's running is moving to the left panel. And
-    then the rest of that looks like it's in analytics." Under it stood the
-    celestial strip (sumMarks), What is running, What it costs, Numerology and
-    the Four lenses and Birth comparison folds. Every one of them is still
-    drawn somewhere a person can reach: the celestial placements and every
-    numerology number are the left rail's Root Energetics, which this tab now
-    shows flat (shell/head.html, "THE SUMMARY'S LEFT RAIL IS ONE FLAT
-    READING"); the blueprint and the archetypes are the rail's own grids; the
-    masks are the rail's new What is running (sumRunPaint below); the nine,
-    the seats, the binds and integrity over time are Analytics. Only the calls
-    went. The functions stay, because Analytics, the unread page and the gates
-    still call sumNum, sumMarks, sumGlance and sumIg by name. sumLoopSlot
-    stays, because Your patterns has had no other home since 14 November and
-    deleting it here would delete it from the product. The converge() this
-    function opened with went too: the Birth comparison fold was its only
-    reader on this page. */
-
-/* ============================================================
-   TODAY, IN THE CENTRE, 21 November. The Summary redesign's brief asked for
-   the centre to open on a daily snapshot: today's date and a short read of
-   where the person's record stands today. That read already existed and was
-   already frozen once a day: engine/daily.js composes it and ui/daily.js
-   paints it into #sumday. It sat in the right rail's Today section, so the
-   centre opened on the blueprint, which is the one part of this page that
-   does not change from one day to the next.
-
-   So the host moves, and nothing about what fills it does. #sumday keeps its
-   id, its class and its painter (sumDayPaint, called from sumRender right
-   after this string lands), so the freeze, the aim, its marks and the past
-   days work exactly as they did in the rail. It is a move and not a copy:
-   the rail's section is gone (shell/body.html), because the same frozen
-   sentences printed twice on one screen is the duplicate the daily gate
-   already refuses.
-
-   The date is the engine's own day and word (dlyDay, dlyDayWord), the same
-   day a record freezes under, so the heading and the sentences under it can
-   never be about two different days. It is the only new string here, and it
-   is a label. An empty day takes the whole section with it (dl-empty,
-   sumDayPaint), the way the rail's section went, rather than leaving a date
-   over nothing.
-   ============================================================ */
-function sumToday(){
- var d=(typeof dlyDay==='function')?dlyDay(Date.now()):null;
- return '<section class="sg-z sg-today" data-grp="today" aria-labelledby="sg-h-today">'
-  +sgHead('today','Today')
-  +'<div class="sg-card sg-today-c">'
-   +(d?'<p class="sg-date"><time datetime="'+esc(d)+'">'+esc(dlyDayWord(d))+'</time></p>':'')
-   +'<div id="sumday" class="dl"></div>'
-  +'</div></section>';}
-
-/* ============================================================
-   WHAT IS RUNNING, IN THE LEFT RAIL. Moved off the foot of the Summary on
-   the same ruling. The rail's own grids already carry what that card printed
-   first, the blueprint (#roots, #doms) and the two archetypes (#ar1), so
-   copying sumBlueprint and sumArch across would print each of them twice on
-   one screen. The masks are the one part the rail did not carry, so that is
-   all that moves: the first three as the rows they always were, and the rest
-   one tap down under the fold they always had. sumChain is not carried. He
-   named the chain as junk on 18 November, in the Psyche ruling recorded at
-   shell/body.html, and this is that same chain.
-
-   Painted from sumRender, so it is always the reading this page holds, and
-   emptied on an unread page, where there is nothing running to show and a
-   stale list would be a reading of somebody else.
-   ============================================================ */
-function sumRunPaint(r){
- var h=document.getElementById('sumrun'); if(!h)return;
- var body=r&&!r.unread?sumMasks(r,0,3):'';
- h.innerHTML=body?body+sgFold('masks','All masks',sumMasks(r,3,99)||''):'';
- var sec=h.closest?h.closest('.lsec'):null;
- if(sec)sec.classList.toggle('sum-empty',!body);
- /* the rows keep data-mask, so the one listener the page body uses opens them
-    here too, rather than a second copy of its routing */
- if(!h.dataset.wired){h.dataset.wired='1'; h.addEventListener('click',sumClick);
-  h.addEventListener('toggle',sumFoldKeep,true);}}
+  +'<section id="sumtalk" class="sum-talkp" aria-live="polite">'+(typeof sumTalkPanel==='function'?sumTalkPanel():'')+'</section>'
+  +'<section class="sg-card sg-story" data-grp="story"><div class="s-readbox sg-flat">'+sumStory(r)+'</div></section>';}
+ /* WHERE EACH STRUCK PART WENT, 27 November. The celestial placements, every
+    numerology number, the roots, the domain and the two archetypes are the
+    left rail's bars now (ui/sumstack.js). The masks, the seats, the binds and
+    integrity over time are Analytics. The functions stay, because Analytics,
+    the unread page, personas and the gates still call sumNum, sumChips,
+    sumMarks, sumGlance, sumIg, sumConverge and sumOutput by name. Your
+    Patterns, which sumLoopSlot drew here, has no other home since the Field's
+    copy went on 14 November, so it is off the product's screens and the
+    engine's loopRead stays. Today's summary (#sumday) is no longer painted
+    here, so nothing saves a day on opening this page (panels.js, ui.js). */
 
 /* ============================================================
    "THE HEAVIEST OF THE NINE IS SAD AT YOUR WEIGHT OF 97" IS GONE. Ruled 3

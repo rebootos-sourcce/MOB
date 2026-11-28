@@ -127,26 +127,21 @@ for(const [w,h,wn] of [[1600,1000,'1600'],[390,844,'390']]){
  ok(/symbolic reading is a meaning an old system gives to a date or a name, and nothing in your body is measured/.test(lead),
   'the reading says it is a symbolic reading and not a measurement');
 
- /* ---- the blueprint card, with its fold open ---- */
- await p.evaluate(()=>{document.querySelectorAll('.sg-drive details').forEach(d=>d.open=true);});
- const cd=await run(p,'.sg-drive',RULES_BLUEPRINT.concat(SIGNS.map(s=>[s.toLowerCase(),'\\b'+s+'\\b','sign:'+s.toLowerCase()])));
- ok(!cd.missing,'the blueprint card is on the page');
- const seenC=new Set(cd.found.map(f=>f.term));
- ['root','architect','western','number'].forEach(t=>ok(seenC.has(t)||t==='number'||t==='western','the card names '+t));
- cd.found.forEach(f=>ok(f.glossed,'blueprint card: "'+f.term+'" in "'+f.text+'" has no meaning beside it'));
+ /* ---- THE BLUEPRINT CARD IS GONE, 27 November. "What drives it" (.sg-drive)
+    is struck from the Summary on his ruling (DECISIONS.md, "The Summary is who
+    I am today and what Source AI is seeing"), so its check goes with it and
+    this asserts the card is absent. What the card said about a person's root
+    and sign is the left rail's bars now, held below. ---- */
+ ok(await p.evaluate(()=>!document.querySelector('.sg-drive')),'the blueprint card is off the Summary');
 
- /* ---- the sign chips, moved to the left rail, 20 November (cd55089c,
-    "Summary: flat left rail from celestial to archetype, centre ends at
-    Your patterns"). sumChips's own .s-chip strip inside #sumbody is off
-    the page on a read Summary now; the same real placements are #spirit's
-    own [data-sp] rows, shown flat on this tab. Existence alone is checked
-    here; every row's tooltip against the table is already held below,
-    under "the left rail, which reads the same birth", which checks it
-    correctly by row label (gk alone covers three different readings,
-    Personality, Design and Gene key, so a key read off data-sp would have
-    checked the wrong sentence on two of the three). ---- */
- const chips=await p.evaluate(()=>document.querySelectorAll('#spirit [data-sp]').length);
- ok(chips>=4,'the summary shows its birth chips, saw '+chips);
+ /* ---- the left rail's bars, 27 November. The placements and the numbers are
+    one bar each in #sumstack, with the name printed and the meaning on hover
+    and tap. Every bar carries a meaning, which is what this section asks of a
+    row; the table's own sentence is held per row further down. ---- */
+ const chips=await p.evaluate(()=>document.querySelectorAll('#sumstack .ss-bar[data-tip]').length);
+ ok(chips>=10,'the summary stacks its birth bars, saw '+chips);
+ ok(await p.evaluate(()=>[].every.call(document.querySelectorAll('#sumstack .ss-bar'),b=>b.hasAttribute('tabindex')&&(b.getAttribute('data-tip')||'').length>0)),
+  'every bar in the stack carries its meaning');
 
  /* ---- THE CARRIER OPENS WHERE THE PERSON IS. A phone has no hover, so on the
     phone a tap opens it, and on a desktop a hover does. The sentence in the
@@ -161,30 +156,22 @@ for(const [w,h,wn] of [[1600,1000,'1600'],[390,844,'390']]){
    await p.waitForTimeout(900);
    const said=await tipSay();
    ok(said.indexOf(first)>=0,(w<600?'a tap':'a hover')+' on a carrier opens its sentence in the one tooltip, saw "'+said.slice(0,70)+'"');
-   await p.keyboard.press('Escape'); await p.waitForTimeout(200);}
-  /* and a control that holds a symbol opens a drill that says what it is.
-     The sign chip is #spirit's own Sun row now (data-tip-k disambiguates
-     it from the Moon and Rising rows that share the same data-sp="sign"). */
-  const SIGNSEL='#spirit [data-sp="sign"][data-tip-k="Sun"]';
-  await p.evaluate((sel)=>{var c=document.querySelector(sel); if(c){c.scrollIntoView({block:'center'});}},SIGNSEL);
-  if(w<600){await p.tap(SIGNSEL);} else {await p.click(SIGNSEL);}
-  await p.waitForTimeout(500);
-  const drill=await p.evaluate(()=>{var d=document.getElementById('rdrill');return d?d.innerText.replace(/\s+/g,' '):'';});
-  ok(/What it is/i.test(drill),'pressing a sign chip opens a drill with What it is');
-  await p.evaluate(()=>{try{rdClose();}catch(e){}});}
+   await p.keyboard.press('Escape'); await p.waitForTimeout(200);}}
 
  /* ---- the left rail, which reads the same birth ---- */
- await p.evaluate(()=>{try{renderSpirit();}catch(e){}});
- const rows=await p.evaluate(()=>Array.prototype.map.call(document.querySelectorAll('#spirit .sp-row[data-sp]'),function(r){
-  return {k:r.getAttribute('data-sp'),v:r.getAttribute('data-spv'),t:r.getAttribute('data-tip')||'',
-   l:(r.querySelector('.sp-k')||{}).textContent||''};}));
+ const rows=await p.evaluate(()=>Array.prototype.map.call(document.querySelectorAll('#sumstack .ss-bar'),function(r){
+  return {l:r.getAttribute('data-tip-k')||'',v:((r.querySelector('.ss-v')||{}).textContent||'').trim(),t:r.getAttribute('data-tip')||''};}));
  ok(rows.length>=6,'the rail shows its birth rows, saw '+rows.length);
- rows.forEach(r=>{
-  const keys={sign:['sign:'+String(r.v).toLowerCase()],chinese:['animal:'+String(r.v).toLowerCase()],
-   lp:['life path'],hd:['profile'],
-   gk:[{'Personality':'personality gate','Design':'design gate','Gene key':'gene key'}[r.l]||'gene key']}[r.k]||[];
-  keys.forEach(key=>ok(T[key]&&r.t.indexOf(T[key])>=0,'rail row '+r.k+' '+r.v+' tooltip carries the table sentence for '+key+', has "'+r.t.slice(0,60)+'"'));
-  if(r.k==='celem')ok(r.t.indexOf(T['year:'+String(r.v).toLowerCase()])>=0,'rail row element '+r.v+' carries its year element sentence');});
+ const want=r=>{
+  if(r.l==='Sun'||r.l==='Moon'||r.l==='Rising')return ['sign:'+r.v.toLowerCase()];
+  if(r.l==='Year'){const w=r.v.toLowerCase().split(' '); return ['animal:'+w[w.length-1],'year:'+w[0]];}
+  if(r.l==='Life path')return ['life path'];
+  if(r.l==='Profile')return ['profile'];
+  if(r.l==='Personality gate')return ['personality gate'];
+  if(r.l==='Design gate')return ['design gate'];
+  if(r.l==='Gene key')return ['gene key'];
+  return [];};
+ rows.forEach(r=>want(r).forEach(key=>ok(T[key]&&r.t.indexOf(T[key])>=0,'rail row '+r.l+' '+r.v+' tooltip carries the table sentence for '+key+', has "'+r.t.slice(0,60)+'"')));
 
  /* ---- the laws in the left rail: the label says what it is ----
     CHANGED 18 NOVEMBER, his words: "I also asked you to remove the child

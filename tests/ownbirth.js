@@ -69,14 +69,18 @@ function PERSON() {
    change also touched */
 function READ() {
  var h = document.getElementById('sumbody'); if (!h) return null;
- /* the strip is #spirit's own [data-sp] rows now, not sumMarks's .s-chip
-    markup inside #sumbody; see the file header, 20 November. */
- var spirit = document.getElementById('spirit');
- var marks = spirit ? spirit.querySelectorAll('[data-sp]') : [];
+ /* the strip is the left rail's stack now (#sumstack, 27 November): one bar
+    per fact with the name printed, the Born bar first. A person with no birth
+    has the Born bar alone, so the marks are every bar after it. */
+ var stack = document.getElementById('sumstack');
+ var all = stack ? stack.querySelectorAll('.ss-bar') : [];
+ var marks = Array.prototype.slice.call(all, 1);
+ var bar = function (k) { var x = Array.prototype.filter.call(all, function (e) { return e.getAttribute('data-tip-k') === k; })[0];
+  return x ? (x.querySelector('.ss-v') || {}).textContent || '' : ''; };
  var vis = function (e) { if (!e) return false; var r = e.getBoundingClientRect(); return r.width > 0 && r.height > 0; };
  return {
-  chips: marks.length, marksShown: marks.length > 0 && vis(spirit),
-  untipped: Array.prototype.filter.call(marks, function (c) {
+  chips: marks.length, marksShown: marks.length > 0 && vis(stack), born: bar('Born'), sun: bar('Sun'),
+  untipped: Array.prototype.filter.call(all, function (c) {
    return !(c.getAttribute('data-tip') || c.querySelector('[data-tip]')); }).length,
   nul: /\bnull\b|undefined|NaN/.test(h.textContent),
   unread: !!(computeSeen() || {}).unread };}
@@ -123,14 +127,17 @@ function READ() {
      /* the birth comparison (data-fold=conv) is not checked here any more:
         cd55089c cut it outright, 20 November, named in its own commit as
         one of the folds off a read Summary, with no new home. */
-     ok(s.chips > 0 && s.marksShown, tag + ': the celestial strip (now the left rail, #spirit) shows, ' + s.chips + ' marks');
-     ok(s.untipped === 0, tag + ': every mark on the strip carries its meaning, ' + s.untipped + ' without');
+     ok(s.chips > 0 && s.marksShown, tag + ': the stack in the left rail (#sumstack) shows, ' + s.chips + ' bars after Born');
+     ok(s.untipped === 0, tag + ': every bar carries its meaning, ' + s.untipped + ' without');
+     /* the Sun row carries the typed birth: 12 April is an Aries sun, and the
+        Born bar prints the day the person typed */
+     ok(/1988-04-12/.test(s.born) && /Aries/.test(s.sun), tag + ': the Born bar carries the typed day and the Sun bar its sign, ' + JSON.stringify({ born: s.born, sun: s.sun }));
     } else {
      ok(s.chips === 0, tag + ': no strip without a birth');
     }
     ok(!s.nul, tag + ': no line on the Summary reads null');
     if (SHOTS) {
-     const el = await p.$('#spirit');
+     const el = await p.$('#sumstack');
      if (el) await el.scrollIntoViewIfNeeded();
      await p.screenshot({ path: path.join(SHOTS, (typed ? 'typed' : 'none') + '-' + w + '.png') });
     }

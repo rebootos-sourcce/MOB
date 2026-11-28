@@ -2665,48 +2665,48 @@ const sum=await page.evaluate(()=>{
  loadP(PERSON('James')); setTab(TAB.SUMMARY);
  const q=s=>document.querySelectorAll(s).length;
  const body=document.getElementById('sumbody');
- /* every ring on this surface is the same object: icon, arc, pill */
- /* the page and its left rail, which since 20 November carries What is
-    running (#sumrun) and the celestial layer flat (#spirit): his words, "what's
-    running is moving to the left panel" */
- const rings=[...document.querySelectorAll('#sumbody .cr,#sumrun .cr')];
+ /* every ring on this surface is the same object: icon, arc, pill. The
+    Summary draws none on a read profile since 27 November (the coherence ring
+    is struck), so this holds the ones the unread page and the rail may draw
+    and passes with none. */
+ const rings=[...document.querySelectorAll('#sumbody .cr,#sumstack .cr')];
  const badRing=rings.filter(c=>!c.querySelector('svg.arc')||!c.querySelector('.gl svg'));
  /* a pill that is empty must not paint, or a colour marker grows a chip */
  const emptyPill=rings.filter(c=>{const v=c.querySelector('.v');
   return v&&!v.textContent.trim()&&getComputedStyle(v).display!=='none';});
+ const bars=[...document.querySelectorAll('#sumstack .ss-bar')];
  return {
   storyP:q('#sumbody .s-story .s-p'),
-  structRows:q('#sumrun .s-row'),
-  doms:q('#doms .ib:not(.rl-off)'),
-  chips:q('#spirit .sp-tile'),
-  /* no boxes around the spiritual glyphs, on the owner's ruling */
-  chipBox:[...document.querySelectorAll('#sumbody .s-chip')]
-   .filter(c=>getComputedStyle(c).borderTopWidth!=='0px').length,
-  numRows:q('#spirit .sp-line[data-sys=N] .sp-tile'),
+  bars:bars.length,
+  fills:q('#sumstack .ss-fill'),
+  /* every name printed, no hover needed: each bar's own text carries its value */
+  empty:bars.filter(b=>!(b.querySelector('.ss-v')||{}).textContent).length,
+  /* nothing he struck is still on the page */
+  struck:['sumday','sumrun','sumhello','sumloop'].filter(i=>document.getElementById(i)).length
+   +q('#sumbody .s-plate,#sumbody .sg-drive,#sumbody .sg-today,#sumbody .s-src'),
+  /* no birth suggestion in the rail */
+  sug:q('#sumstack .sp-sugs,#sumstack .sp-sug'),
   rings:rings.length, badRing:badRing.length, emptyPill:emptyPill.length,
   /* nothing may run wider than its own column */
   over:[...body.querySelectorAll('*')].filter(e=>e.scrollWidth>e.clientWidth+2
    &&getComputedStyle(e).overflowX==='visible').length,
   text:(body.textContent||'').replace(/\s+/g,' ')};});
-/* RE-POINTED AND RETIRED BY NAME, 20 November, his words: "everything
-   beneath your patterns... what's running is moving to the left panel. And
-   then the rest of that looks like it's in analytics... where it says
-   oscillating 50%, just get rid of that entirely." What moved is read where
-   it went: the masks as What is running in the left rail (#sumrun), the
-   blueprint as the rail's own lit domain, the spiritual layer and the
-   numerology numbers as the rail's flat Root Energetics (#spirit). Two are
-   retired, not moved: the glance strip was the What it costs card and the
-   name parts were the full numerology card, both off this page now, and
-   Analytics carries the readings. Every ring the page and its rail draw is
-   still held to icon, arc and pill; there are fewer of them on the page, so
-   the count asks for one or more, not nine. */
+/* RE-POINTED, 27 November, his words: the Summary is "who I am today and what
+   Source AI is seeing", and the left rail is the root energetics as bars with
+   the names printed. What the page and its rail carry is read where it lives
+   now: the Reading as three paragraphs, and the stack as one bar per fact in
+   #sumstack, with at least one filled (the archetypes, the only readings that
+   carry a percent). What was struck is asserted absent: today's fields, What
+   is running, the 15 percent ring, What drives it, "Written from" and the
+   right rail's talk button. Every ring the page draws is still held to icon,
+   arc and pill, and with none drawn the check passes. */
 ok(sum.storyP===3,'the story is three paragraphs, got '+sum.storyP);
-ok(sum.structRows>0,'What is running lists the masks in the left rail, got '+sum.structRows);
-ok(sum.doms>0,'and the rail lights the blueprint selection, got '+sum.doms);
-ok(sum.chips>=5,'the celestial layer is a row of glyphs in the rail, got '+sum.chips);
-ok(sum.chipBox===0,'with no boxes around them, got '+sum.chipBox);
-ok(sum.numRows>=5,'numerology prints its numbers in the rail, got '+sum.numRows);
-ok(sum.rings>0&&sum.badRing===0,
+ok(sum.bars>=10,'the left rail is a stack of bars, one per fact, got '+sum.bars);
+ok(sum.fills>=1,'the archetype bars fill, got '+sum.fills);
+ok(sum.empty===0,'every bar prints its value, got '+sum.empty+' empty');
+ok(sum.struck===0,'nothing he struck is on the page, got '+sum.struck);
+ok(sum.sug===0,'no birth suggestion in the rail, got '+sum.sug);
+ok(sum.badRing===0,
  sum.rings+' rings and every one is icon, arc and pill, bad '+sum.badRing);
 ok(sum.emptyPill===0,'an empty value paints no pill, got '+sum.emptyPill);
 
@@ -2783,8 +2783,7 @@ ok(/blueprint you were born on|no birth data/.test(sum.text),
 ok(/Your energy leans (?:positive|negative)\b/.test(sum.text)&&!/the field leans/i.test(sum.text),
  'and closes on which way your energy leans, never the field');
 ok(!/undefined|NaN|\[object/.test(sum.text),'and nothing leaked a placeholder');
-console.log(' ',JSON.stringify({glance:sum.glance,rows:sum.structRows,chips:sum.chips,
- num:sum.numRows,rings:sum.rings}));
+console.log(' ',JSON.stringify({bars:sum.bars,fills:sum.fills,rings:sum.rings}));
 
 /* every control on the surface opens something. a button that does nothing is
    the defect this product keeps finding in itself. */
@@ -2813,7 +2812,8 @@ const numUI=await page.evaluate(()=>{
  loadP(PERSON('James'));
  const N=numerologyOf('James',null);
  setTab(TAB.SUMMARY);
- const txt=(document.getElementById('sumbody').textContent||'');
+ /* the six numbers are the left rail's bars now (#sumstack), 27 November */
+ const txt=(document.getElementById('sumbody').textContent||'')+' '+(document.getElementById('sumstack').textContent||'');
  return {full:N.parts.join(' '), inPage:txt.indexOf('James Edward Cavanaugh')>=0,
   lp:N.lifePath, hasLp:txt.indexOf('Life path')>=0,
   /* THE CONVERGENCE SHOWS ITS BASIS, never a bare percentage.

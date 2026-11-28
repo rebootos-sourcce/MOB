@@ -3754,7 +3754,6 @@ body.punch .s-readbox,body.punch .s-out{background:var(--panel-2);border-color:t
     day slot and the output row to follow the story, the drivers and the birth
     marks, with the detail cards after them. */
  .sum-wrap{display:flex;flex-direction:column}
- .sum-wrap>.sg-today{order:1}
  .sum-wrap>.sg-lead{order:1}
  .sum-wrap>.sg-loop{order:2}
  .sum-wrap>.sg-marks{order:3}
@@ -6688,60 +6687,93 @@ body.snow #stleft,body.glasswhite #stleft{--rail-rest:var(--mid);--rail-rest-op:
  color:var(--mid);cursor:default}
 .st-cps-top{margin-bottom:2px}
 .st-cps-bot{margin-top:2px}
-/* ---------- today's summary, ui/daily.js ----------
-   The same step aside as the Story's: on the Summary the rail carries
-   Selection alone. Today stood beside it as .sum-rail until 21 November and
-   opens the centre now (sumToday, ui/summary.js), so the rail's other
-   sections still step aside here and nothing on the rail repeats the page.
-   AND INSIGHT STANDS ABOVE SELECTION HERE TOO, 21 November, the Summary
-   redesign's last item: "mount the real Insight panel plus a Source AI talk
-   button on the right." The rail held Selection alone, so the page's right
-   third was one header over an empty column on every first look. Insight is
-   the same section the Field shows, its id and its two painters unchanged
-   (railInsight, railStack, ui/insightui.js), which already paint on every
-   tab: this rule hid it, and nothing else had to move. The rest still step
-   aside, because each of them is a page of its own somewhere else. */
-body.tab-summary .lsec[data-rail="right"]:not([data-sec="sel"]):not([data-sec="you"]){display:none}
-/* THE HELLO, ON THE SUMMARY. The Journal's own control (.st-hello above),
-   drawn the same three circles in the same order so it reads as one control
-   and not a second design for the same act, set in the Insight section's
-   head with its name beside it: symbol first, the name second, and what it
-   does one hover or tap away in its tip. Shown on the Summary only; every
-   other tab with this rail either has the Journal itself or never asked. */
-.sum-hello{display:none}
-body.tab-summary .sum-hello{display:flex;align-items:center;gap:12px;width:100%;
- margin:0 0 16px;padding:8px 12px;border:1px solid var(--edge);border-radius:12px;
+/* ---------- the Summary's own column and talk button, 27 November ----------
+   His words: Summary is "who I am today and what Source AI is seeing", the
+   right rail is struck, and the left rail is the person's root energetics as
+   bars stacked on top of each other with the names printed. So on this tab the
+   left column shows its own host (#sumstack, .lown) and nothing else, the
+   right column is not drawn and the stage takes its width, the pattern the
+   Analytics tab already uses (search "NO LEFT RAIL ON ANALYTICS"). The id in
+   :has is what makes these outweigh every fold rule, body.lshut:not(.tab-settings)
+   .mid included; #sum is always in the document, so the :has only adds weight
+   and never decides. A folded left column still folds this rail, because the
+   first rule below sets no !important on its own display and
+   body.lshut #lpanel>*:not(.lfold) does.
+   The Body and Compass builds write the same rule for their own rails
+   (.lown); on whichever lands second the two lists fold into one :is(). */
+body.tab-summary #lpanel>*:not(.lfold):not(.lown){display:none!important}
+#sumstack{display:none}
+body.tab-summary:not(.lshut) #sumstack{display:block}
+body.tab-summary:has(#sum) #rcol{display:none}
+@media (min-width:1181px){
+ body.tab-summary:has(#sum) .mid{grid-template-columns:302px minmax(0,1fr)}
+ body.tab-summary.lshut:has(#sum) .mid{grid-template-columns:58px minmax(0,1fr)}}
+/* THE STACK, one bar per fact, every name printed. A bar is a row of three
+   cells, the mark, the name of the fact, and the value, so the value is the
+   biggest thing in it and a long one (Capricorn, Water Snake) wraps inside
+   its own cell and never under the mark. Equal 8 pixel gaps, the 16 November
+   symmetry ruling. Only the archetypes fill, because only they carry a
+   percent (ui/sumstack.js). */
+.ss-hd{margin:4px 52px 16px 0;font-size:14px;font-weight:600;color:var(--ink)}
+.ss-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.ss-bar{display:grid;grid-template-columns:20px auto minmax(0,1fr);align-items:center;column-gap:10px;
+ min-height:44px;padding:6px 12px;border:1px solid var(--edge);border-radius:var(--r-s);background:var(--sunk)}
+.ss-bar:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.ss-fill{background:linear-gradient(90deg,color-mix(in srgb,var(--c) 24%,var(--sunk)) calc(var(--v)*1%),var(--sunk) 0)}
+.ss-ic{display:flex;align-items:center;justify-content:center}
+.ss-ic svg{width:20px;height:20px;fill:none;stroke:var(--mid);stroke-width:1.6}
+.ss-g{font-size:18px;line-height:20px;color:var(--mid)}
+.ss-k{font-size:13px;color:var(--dim)}
+.ss-v{font-size:15px;font-weight:500;color:var(--ink);text-align:right;min-width:0;overflow-wrap:anywhere}
+.ss-x{display:block;font-size:12px;font-weight:400;color:var(--dim)}
+.ss-f{font-style:normal;font-variant-numeric:tabular-nums;margin-left:6px}
+.ss-miss{grid-column:2/4;font-size:12px;color:var(--dim)}
+/* ONE CENTRED COLUMN, so the space either side of the Reading is equal and a
+   line stays readable. The name sits left and the Source AI button right on
+   the first line. */
+.sum-wrap{max-width:720px;margin:0 auto}
+.sg-name{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:0 0 24px}
+.sg-name .s-pl-l{min-width:0}
+/* THE TALK BUTTON, ON THE SUMMARY. The Journal's own control (.st-hello above)
+   drawn the same three circles in the same order, ring not fill, so it reads as
+   one control and not a second design for the same act. Symbol first and the
+   name second; what it does is one hover or tap away in its tip. It talks in
+   place (ui/sumtalk.js) and never takes the person to another page. */
+.sum-talk{display:flex;align-items:center;gap:12px;flex:0 0 auto;min-height:44px;
+ padding:4px 14px 4px 8px;border:1px solid var(--edge);border-radius:12px;
  background:none;color:var(--ink);font:inherit;font-size:14px;font-weight:500;
- text-align:left;cursor:pointer;outline-offset:4px;
+ cursor:pointer;outline-offset:4px;
  transition:border-color var(--t-surface) var(--ease-out)}
-.sum-hello:hover,.sum-hello:focus-visible{border-color:var(--accent)}
-.sum-hello svg{flex:0 0 auto;width:36px;height:36px;overflow:visible}
-.sum-hello .sth-ring{fill:none;stroke:var(--dim);stroke-width:1.6;opacity:.55;
+.sum-talk:hover,.sum-talk:focus-visible{border-color:var(--accent)}
+.sum-talk svg{flex:0 0 auto;width:36px;height:36px;overflow:visible}
+.sum-talk .sth-ring{fill:none;stroke:var(--dim);stroke-width:1.6;opacity:.55;
  transform-origin:50% 50%;animation:sthBreathe 5.2s ease-in-out infinite}
-.sum-hello .sth-ring2{fill:none;stroke:var(--accent);stroke-width:1;opacity:0;
+.sum-talk .sth-ring2{fill:none;stroke:var(--accent);stroke-width:1;opacity:0;
  transform-origin:50% 50%;transition:opacity var(--t-surface) var(--ease-out)}
-.sum-hello .sth-dot{fill:var(--dim);transition:fill var(--t-surface) var(--ease-out)}
-.sum-hello:hover .sth-ring,.sum-hello:focus-visible .sth-ring{stroke:var(--accent);opacity:.85}
-.sum-hello:hover .sth-ring2,.sum-hello:focus-visible .sth-ring2{opacity:.4}
-.sum-hello:hover .sth-dot,.sum-hello:focus-visible .sth-dot{fill:var(--accent)}
-@media (prefers-reduced-motion:reduce){.sum-hello .sth-ring{animation:none}}
-/* TODAY, THE CENTRE'S FIRST ZONE. A silent day (nothing read yet, or a
-   record the moment before its day is frozen) takes the whole section with
-   it, so a date never stands over an empty card. */
-.sg-today.dl-empty{display:none}
-.sg-today-c{gap:0}
-.sg-date{margin:0 0 16px;font-family:var(--num);font-size:22px;font-weight:600;line-height:1.25;color:var(--ink)}
-/* THE BLOCKS STAND IN EVEN COLUMNS ACROSS THE CARD. The rail was a 300 pixel
-   column and every sentence here was set for it; across the centre's full
-   width at 1600 one line ran to about 120 characters, twice a readable
-   measure. Columns of at least 300 keep the rail's measure, balance to equal
-   heights so neither side stands longer (CLAUDE.md, "Symmetry in space,
-   everywhere, forever"), and fall to one column on a phone with no rule of
-   their own. The written-at line, the aim and the past days are one thought
-   each and span the card rather than break across a gutter. */
-.sg-today .dl{column-width:300px;column-gap:44px;padding:0}
-.sg-today .dl-blk{break-inside:avoid}
-.sg-today :is(.dl-when,.dl-aim,.dl-bank,.dl-quiet){column-span:all}
+.sum-talk .sth-dot{fill:var(--dim);transition:fill var(--t-surface) var(--ease-out)}
+.sum-talk:hover .sth-ring,.sum-talk:focus-visible .sth-ring{stroke:var(--accent);opacity:.85}
+.sum-talk:hover .sth-ring2,.sum-talk:focus-visible .sth-ring2{opacity:.4}
+.sum-talk:hover .sth-dot,.sum-talk:focus-visible .sth-dot{fill:var(--accent)}
+/* speaking: both rings in the accent. listening: the dot in the accent and the
+   outer ring pulses. Greyed: the rings dim and nothing breathes. */
+.sum-talk[data-talk=speak] .sth-ring,.sum-talk[data-talk=speak] .sth-ring2{stroke:var(--accent);opacity:.85}
+.sum-talk[data-talk=listen] .sth-dot{fill:var(--accent)}
+.sum-talk[data-talk=listen] .sth-ring2{stroke:var(--accent);animation:sumTalkPulse 1.6s ease-in-out infinite}
+.sum-talk[aria-disabled=true]{cursor:default}
+.sum-talk[aria-disabled=true] .sth-ring{stroke:var(--dim);opacity:.4;animation:none}
+.sum-talk[aria-disabled=true] .sth-ring2{opacity:0}
+.sum-talk[aria-disabled=true]:hover{border-color:var(--edge)}
+@keyframes sumTalkPulse{0%,100%{opacity:.2;transform:scale(1)}50%{opacity:.7;transform:scale(1.06)}}
+@media (prefers-reduced-motion:reduce){.sum-talk .sth-ring,.sum-talk[data-talk=listen] .sth-ring2{animation:none}}
+/* THE CONVERSATION, under the name and above the Reading, and only while there
+   are turns. Source AI's rows wear her mark (.src-ai, one concept, one mark);
+   the person's are upright and in the ink. */
+.sum-talkp{display:flex;flex-direction:column;gap:10px;max-height:260px;overflow:auto;margin:0 0 24px;
+ padding:16px;border:1px solid var(--edge);border-radius:var(--r)}
+.sum-talkp:empty{display:none}
+.sum-talkp p{margin:0;font-size:15px;line-height:1.5}
+.sum-talkp .me{align-self:flex-end;max-width:80%;text-align:right;color:var(--ink)}
+.sum-talkp .me.live{color:var(--dim)}
 .dl{padding:2px 2px 0}
 .dl-when{font-size:13px;line-height:1.6;color:var(--dim);margin:2px 0 16px}
 .dl-blk{margin:0 0 15px}
@@ -11640,85 +11672,15 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
    switch, and by the media query for a page whose script is late */
 .sx.sx-still *,.sx.sx-still *::after{transition:none!important;animation:none!important}
 @media (prefers-reduced-motion:reduce){.sx *,.sx *::after{transition:none!important;animation:none!important}}
-/* ============================================================
-   THE SUMMARY'S LEFT RAIL IS ONE FLAT READING, 20 November, his words: "On
-   the left side panel, I want a person's celestial information down to their
-   archetypes exposed with their percents. So no nested tables, everything's
-   just visible. The elements that they are not are dimmed out... get rid of
-   everything beneath Psyche."
-
-   Scoped to body.tab-summary and nothing else, because this rail is shared
-   by every tab: the Field keeps its folds, its Matrix, Superego and Action,
-   and its own choice of what is open.
-
-   FLAT. Root Energetics, Awareness and What is running stand open with no
-   fold on them, which overrides the EZ ruling that Root Energetics opens
-   closed on this tab only. The four systems' lines all show, so the four
-   system switches that hid them have nothing to switch and go. The folded
-   two line summary (#awsum) goes, because the grids it summarised are open.
-   The archetypes are one grid: #ar1 already marks the primary as pressed and
-   every secondary as data-r 2 (syncSoul, ui/panels.js), so #ar2 printed the
-   same twelve circles a second time to say what the first grid says.
-
-   FOUR LEVELS, FOUR NAMES. Celestial, Root, Domain, Archetype, the order the
-   reading runs from the sky down, on even spacing so no level sits flush on
-   the one above it (CLAUDE.md, "Symmetry in space, everywhere, forever").
-
-   LIT AND DIM (ui/railtiles.js, rlSumPaint). A dim mark keeps its row, its
-   ring size and its gutter, so the grid does not move when a choice does.
-   Nothing is faded with opacity: Sol measured ink at 40 percent on --panel
-   at 3.40, under the floor, where --dim holds 5.30. The ring mixes the seat
-   colour thirty percent into --dim, the mark inside it is --dim, and the
-   seat's dot beside a domain goes; the seat colour never goes on a name. A dim mark does not breathe, because breath on this rail says a
-   circle carries real weight and a dim one is not his.
-   ============================================================ */
-body:not(.tab-summary) #lcol .sum-only,body:not(.tab-summary) #lcol .sum-lvl{display:none}
-body.tab-summary #lcol .lsec[data-sec=matrix],
-body.tab-summary #lcol .lsec[data-sec=superego],
-body.tab-summary #lcol .lsec[data-sec=gates],
-body.tab-summary #lcol .lsec[data-sec=run].sum-empty{display:none}
-/* and on a page with nothing read, What is running is empty and is the only
-   thing under Psyche here, so the heading goes with it rather than stand over
-   nothing */
-body.tab-summary #lcol:has(.lsec[data-sec=run].sum-empty) .rblk[data-blk=psyche]{display:none}
-body.tab-summary #lcol .lsec:is([data-sec=energetics],[data-sec=soul],[data-sec=run]) .lsec-bd{display:block}
-body.tab-summary #lcol .lsec:is([data-sec=energetics],[data-sec=soul],[data-sec=run]) .lsec-hd{
- pointer-events:none;cursor:default;color:var(--ink)}
-body.tab-summary #lcol .lsec:is([data-sec=energetics],[data-sec=soul],[data-sec=run]) .lsec-hd i{display:none}
-body.tab-summary #lcol #awsum,
-body.tab-summary #lcol #ar2,
-body.tab-summary #lcol .ar-sec,
-body.tab-summary #lcol #rootlegend,
-body.tab-summary #lcol .lsec[data-sec=soul] .tier1:not(.sum-lvl),
-body.tab-summary #spirit .sp-sys{display:none}
-body.tab-summary #spirit .sp-line[hidden]{display:flex}
-/* with the four switches gone the birth's own mark was left alone at the far
-   end of an empty row; it stands where the tiles under it start, the line
-   mark's 16 and the line's gap of 10 in from the edge */
-body.tab-summary #spirit .sp-born{margin-left:26px}
-body.tab-summary #lcol .sum-lvl{display:block;margin:20px 0 10px;color:var(--dim)}
-body.tab-summary #lcol .lsec-bd>.sum-lvl:first-child{margin-top:4px}
-/* the caption under each grid names what is lit, in ink, and the archetype's
-   figure beside its name, in tabular figures so two of them stand level */
-body.tab-summary #lcol .cap{min-height:0;margin:10px 0 0}
-body.tab-summary #lcol #capD b{color:var(--ink)!important;font-weight:500}
-body.tab-summary #capA .rl-lit{display:inline-flex;align-items:baseline;gap:6px;margin-right:14px}
-body.tab-summary #capA .rl-lit b{color:var(--ink);font-weight:500}
-body.tab-summary #capA .rl-fig{font-style:normal;color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
-/* dim */
-body.tab-summary #lcol .ib.rl-off{cursor:default}
-body.tab-summary #lcol .ib.rl-off svg:not(.ib-arc){stroke:var(--dim)}
-body.tab-summary #lcol .ib.rl-off .rt{display:none}
-body.tab-summary #lcol .ib.rl-off .ib-arc .val{stroke:color-mix(in srgb,var(--c) 30%,var(--dim));opacity:1}
-body.tab-summary #lcol .ib.rl-off .ib-arc,
-body.tab-summary #lcol .ib.rl-off::after{animation:none}
-body.tab-summary #lcol .rootb.rl-off{color:var(--dim);font-weight:400;cursor:default;
- border-color:var(--edge);background:transparent}
-body.tab-summary #lcol .rootb.rl-off svg{stroke:color-mix(in srgb,var(--rc) 30%,var(--dim))}
-body.tab-summary #lcol .rootb.rl-off::after{display:none}
-body.tab-summary #lcol .rootb:not(.rl-off):not([aria-pressed=true]){color:var(--ink);font-weight:500}
-body.tab-summary #spirit .sp-tile.rl-off{color:var(--dim)}
-
+/* THE SUMMARY'S LEFT RAIL WAS ONE FLAT READING until 27 November, a run of
+   rules that dimmed what a person was not and opened Root Energetics, Awareness
+   and What is running with no fold on them. All of it went with the rail's
+   old content: the column shows #sumstack alone now (ui/sumstack.js, and
+   "the Summary's own column" above), so there is nothing left for those rules
+   to style. The one that stays is the level headings: they are still in the
+   document inside Root Energetics, and ui/railtiles.js reads them, so they
+   stay hidden everywhere. */
+#lcol .sum-lvl{display:none}
 /* THE CLIMB (ui/cone.js, clSvg). The board takes the canvas's own box; the
    canvas keeps its size underneath and is not shown, so "The figure" swaps
    back without a relayout. */

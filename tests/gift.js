@@ -278,18 +278,17 @@ async function arrive(browser,payload,W,H){
     return {sab:e?e.getAttribute('data-lock'):'missing', engine:compute().sabs.length, seen:computeSeen().sabs.length};});
    ok(back.sab==='sab'&&back.engine>0&&back.seen===0,tag+'afterwards the padlocks are back, and the engine still computes the chain it no longer draws, '+JSON.stringify(back));
    await pg.evaluate(()=>{setTab(TAB.SUMMARY);render();}); await pg.waitForTimeout(700);
-   /* RE-POINTED 20 November. The lock this read was the chain's, in the What
-      is running card at the foot of the page, and both left the Summary on
-      his ruling that day: "everything beneath your patterns... what's
-      running is moving to the left panel", and the chain was already junk in
-      his words of 18 November. What is running is the left rail's now
-      (#sumrun, ui/summary.js sumRunPaint) and its masks carry the same lock
-      line, so the page and its rail are read together: something says it is
-      locked, and nothing says nothing is running. */
-   const sm=await pg.evaluate(()=>{const t=['sumbody','sumrun'].map(i=>(document.getElementById(i)||{}).textContent||'').join(' ');
-    return {line:!!document.getElementById('sumgift'),
-    panels:document.querySelectorAll('#sumbody .lk-panel,#sumrun .lk-panel').length, nothing:/Nothing is running|Nothing running/.test(t)};});
-   ok(!sm.line&&sm.panels>0&&!sm.nothing,tag+'and Summary drops the gift line and says what is locked, never that nothing is running, '+JSON.stringify(sm));}
+   /* RE-POINTED 20 November, AND AGAIN 27 November. The lock this read was
+      the chain's, in the What is running card at the foot of the page, and
+      then the masks in the left rail (#sumrun). Both are struck from the
+      Summary (his words, DECISIONS.md "The Summary is who I am today and what
+      Source AI is seeing": "no What's Running or masks"), so there is no lock
+      panel left on this page to require. What is held is the part that was not
+      struck: the Summary drops the gift line, and never says nothing is
+      running. */
+   const sm=await pg.evaluate(()=>{const t=['sumbody','sumstack'].map(i=>(document.getElementById(i)||{}).textContent||'').join(' ');
+    return {line:!!document.getElementById('sumgift'), nothing:/Nothing is running|Nothing running/.test(t)};});
+   ok(!sm.line&&!sm.nothing,tag+'and Summary drops the gift line and never says that nothing is running, '+JSON.stringify(sm));}
 
   ok(err.length===0,tag+'no page errors, '+err.slice(0,2).join(' | '));
   await cx.close();}

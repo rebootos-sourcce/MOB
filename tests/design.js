@@ -969,22 +969,26 @@ console.log('\n=== the alarm law ===');
     like that it says I am 88 per cent embodied and the colour is not
     symbolic. We have got our ten tiers now, we should have colours that
     reflect those tiers." */
- /* RE-POINTED 20 November, off '.s-pband b' and onto the plate's own ring.
-    The band was sumStatus(), the "Oscillating / Searching / Where it goes"
-    block, and he ruled it off the Summary in his words: "where it says
-    oscillating 50%, just get rid of that entirely." The tier's colour did not
-    leave with it: sumPlate draws the Coherence ring in TIERCOL[r.tier]
-    (ui/summary.js), so the ruling this gate holds is held on the one mark
-    on the page that still carries it. Same assertion, same colour. */
+ /* RE-POINTED AGAIN, 27 November, off the plate's own ring and onto the Tier
+    row of the profile sheet. The first pointing was the Summary's band
+    (.s-pband b, struck 20 November), the second its plate's Coherence ring
+    (struck 27 November with the plate, his words, DECISIONS.md "The Summary is
+    who I am today and what Source AI is seeing"). The tier word still wears
+    its colour somewhere a person reads it: profileSheet's Tier row
+    (ui/panels.js), coloured TIERCOL[r.tier] on its own element. Same
+    assertion, same colour, read where the mark still lives. */
  const tc=await page.evaluate(()=>{
   const r=compute();
-  const e=document.querySelector('#sumbody .s-plate .cr .arc circle:last-child');
-  return {tier:r.tier, want:TIERCOL[r.tier]||null,
-    got:e?getComputedStyle(e).stroke:null};});
+  profileSheet();
+  const row=[...document.querySelectorAll('#sheet-card .sh-row')].find(x=>x.firstChild&&x.firstChild.textContent==='Tier');
+  const e=row&&row.querySelector('b');
+  const out={tier:r.tier, want:TIERCOL[r.tier]||null, got:e?getComputedStyle(e).color:null};
+  try{sheetShut();}catch(x){}
+  return out;});
  ok(tc.want!==null,'every tier has a colour, missing for '+tc.tier);
  const hex2rgb=h=>'rgb('+[1,3,5].map(i=>parseInt(h.substr(i,2),16)).join(', ')+')';
  ok(tc.got===hex2rgb(tc.want),
-   'and the ring on the plate wears it, wanted '+hex2rgb(tc.want)+' got '+tc.got);
+   'and the Tier row of the profile sheet wears it, wanted '+hex2rgb(tc.want)+' got '+tc.got);
 }
 
 /* ============================================================

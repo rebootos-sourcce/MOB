@@ -1512,6 +1512,7 @@ function relHvToggle(){
     stop through their own paths before this one opens */
  if(typeof stkSayCut==='function'&&stkSayCut()&&typeof stkSayPaint==='function')stkSayPaint();
  if(typeof stkSayJournalOff==='function')stkSayJournalOff();
+ if(typeof sumTalkCut==='function')sumTalkCut();
  var SR=window.SpeechRecognition||window.webkitSpeechRecognition, rec, seq=++REL_HV.seq;
  try{rec=new SR();}catch(e){relHvStop('The microphone could not start. Use the buttons.'); return;}
  rec.continuous=true; rec.interimResults=false; rec.lang='en-US';

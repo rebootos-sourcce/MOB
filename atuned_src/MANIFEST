@@ -149,5 +149,7 @@ ui/srcintro.js
 ui/valuefelt.js
 ui/insightui.js
 ui/stksay.js
+ui/sumstack.js
+ui/sumtalk.js
 ui/ui.js
 shell/foot.html

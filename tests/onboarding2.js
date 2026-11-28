@@ -453,7 +453,11 @@ console.log('=== onboarding reaches a real release, opened directly, on a fresh 
   if(typeof LP!=='undefined'){LP.all=true;}
   if(typeof sumRender==='function')sumRender();
   const L=loopRead(CURP), rows=L.patterns.filter(x=>q.indexOf(x.address)>=0);
-  const side=document.getElementById('sumloop');
+  /* Your Patterns is off the Summary since 27 November (no #sumloop on the
+     page), so the row is read where the renderer still produces it: the same
+     block sumLoopSlot drew, built off screen. The page's own absence is held
+     by tests/loopui.js. */
+  const side=document.createElement('div'); side.innerHTML=sumLoopSlot(computeSeen());
   return {rows:rows.map(x=>({a:x.address,said:x.said||null,evFor:x.evFor,evAgainst:x.evAgainst})),
    rail:side?side.textContent:'',
    evEdges:traceFromRecord(CURP,practiceTraceIntents(CURP.practice)).edges.filter(e=>/^evidence:/.test(e.from)).length};},said.q);

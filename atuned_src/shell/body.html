@@ -905,6 +905,14 @@
         Every id it draws carries the st- prefix, because the bare ids it
         could have borrowed already mean other things in this shell. -->
    <div class="st-lrail" id="stleft"></div>
+   <!-- THE SUMMARY'S OWN RAIL, .lown, ruled 27 November. His words: the left
+        rail is the person's whole root energetics as bars stacked on top of
+        each other, with the names printed (Virgo, Aries, Capricorn), no hover
+        needed to read one. Nothing else stands in this column on that tab:
+        no birth suggestion, no What is running, no masks (head.html, .lown).
+        Filled by sumStackPaint, ui/sumstack.js. The host outlives the stage,
+        which is rebuilt on every render, so nothing is bound on it. -->
+   <section class="lown" id="sumstack" aria-labelledby="ss-h"><h2 class="ss-hd" id="ss-h">Root Energetics</h2><ol class="ss-list" id="sumstackl"></ol></section>
    <!-- ENERGETIC SUMMARY, MOVED TO THIS RAIL AND KEPT AT ITS HEAD. 3 October,
         his own words: "For the core energetics that's on the right hand menu
         at the very top, move that to the left hand menu at the very top.
@@ -1145,16 +1153,6 @@
         said that is said nowhere else moved to the meaning table
         (engine/data/gloss.js) and shows on hover and tap. DECISIONS.md,
         18 November, records the earlier asks and why they never landed. -->
-   <!-- WHAT IS RUNNING, ON THE SUMMARY ONLY, 20 November, his words: "get
-        rid of everything beneath Psyche... everything beneath your patterns
-        ... what's running is moving to the left panel." On the Summary the
-        three sections below this one are taken off by head.html and this one
-        stands under the heading in their place; on every other tab it is
-        taken off and they stand as they did. ui/summary.js, sumRunPaint. -->
-   <div class="lsec sum-only" data-sec="run">
-    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.4"/><path d="M8.4 12h7.2M12.8 9l2.8 3-2.8 3"/></svg>What is running</span><i></i></button>
-    <div class="lsec-bd"><div id="sumrun"></div></div>
-   </div>
    <div class="lsec" data-sec="matrix">
     <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9.3 4v16M14.7 4v16M4 9.3h16M4 14.7h16"/></svg>Matrix</span><i></i></button>
     <div class="lsec-bd">
@@ -1461,19 +1459,6 @@
     <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3.6" width="14" height="16.8" rx="2"/><path d="M8.6 8.4h6.8M8.6 12h6.8M8.6 15.6h4"/></svg>Insight</span><i></i></button>
     <span class="ins-audio" id="insaudio"></span>
     <div class="lsec-bd">
-     <!-- TALK TO SOURCE AI, ON THE SUMMARY ONLY, 21 November. The Summary
-          redesign asked for a talk button beside the Insight panel. There is
-          one conversation in this product and it lives on the Journal, where
-          the microphone, the face and the reply all are, so this does not
-          build a second one in a rail too narrow to hold her: it takes the
-          person there and presses the Journal's own hello (stHello,
-          ui/storyui.js), which is the same act the ring there performs.
-          Wired by sumHelloWire, ui/summary.js. Hidden off the Summary,
-          head.html .sum-hello. -->
-     <button class="sum-hello" id="sumhello" type="button" aria-label="Talk to Source AI"
-      data-tip-k="Talk to Source AI" data-tip="Opens Source AI on Discover, where you speak and she answers.">
-      <svg viewBox="0 0 88 88" aria-hidden="true"><circle class="sth-ring2" cx="44" cy="44" r="40"></circle><circle class="sth-ring" cx="44" cy="44" r="30"></circle><circle class="sth-dot" cx="44" cy="44" r="3.2"></circle></svg>
-      <span>Talk to Source AI</span></button>
      <!-- Where to start. A field with nothing in it had a tooltip saying to
          write a story, which is rule 10 broken: a control with no affordance
          is the same as a missing feature. The two ways in are here, and only

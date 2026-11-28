@@ -5591,6 +5591,7 @@ function stMic(){
  /* the Insight well's button holds its own recogniser (ui/stksay.js); Talk
     pressed here takes the microphone back, so two never run at once */
  if(typeof stkSayCut==='function'&&stkSayCut()){ STK_SAY.line=''; try{ stkSayPaint(); }catch(e){} }
+ if(typeof sumTalkCut==='function')sumTalkCut();
  if(ST_REC&&ST_LISTEN){ ST_WANT_LISTEN=false; ST_REC.stop(); ST_LISTEN=false; ST_LISTEN_T0=null; stRender(); return; }
  /* Chat pressed from a box Type instead opened goes back to the
     conversation, so the two never both write the entry (see stType). Only

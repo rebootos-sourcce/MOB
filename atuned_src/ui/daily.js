@@ -196,7 +196,12 @@ function sumDayPaint(r){
  dlyWire(h);}
 function sumDayClear(){var h=document.getElementById('sumday'); if(h&&h.innerHTML)h.innerHTML=''; DLY_R=null;}
 
-/* ---- THE ONE WRITE. The first open of the Summary each local day. ---- */
+/* ---- THE ONE WRITE. The first open of the Summary each local day. ----
+   NO CALLER IN THE PAGE SINCE 27 NOVEMBER. The Summary no longer paints
+   today's fields (#sumday is struck, DECISIONS.md), and a day nobody sees is
+   not saved, so panels.js and ui.js stopped calling this on entry. Kept, with
+   the engine's day record and sumDayPaint, for a surface that wants the day
+   back; tests/dailyui.js calls it by name. */
 function sumDayOpen(){
  try{
   if(S.tab!==TAB.SUMMARY||!CURP||!dlyIsRec(CURP))return;

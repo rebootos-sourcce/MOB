@@ -4842,6 +4842,52 @@ changed and why, so a later seat reads it as the ruling and not a regression:
 takes on the real voice against the thirty second cut (`SRC_VOICE_MAX`); the
 longest is a few hundred characters, and the real voice's pace has not been
 timed.
+
+## The Summary is who I am today and what Source AI is seeing, with her button on the page. Ruled 27 November
+
+His words: "I also want my Source AI button here so I can press it and have
+Source AI talk to me about this stuff... that shouldn't take me to a brand new
+page. That should be a little button that activates source as a conversational
+AI on that page."
+
+**What it overrides, and how far.** "No two-way chat, anywhere, including the
+voice" (10 November) is overridden for the Summary, as it already is for the
+Insight well (17 November) and the Avatar page (18 November). Named once: the
+21 November Summary button that took a person to Discover and pressed the
+Journal's hello there (`sumHelloWire`) is gone, because it was exactly the
+jump to another page he has now ruled out.
+
+**What the page is.** His words: the Summary is "who I am today and what
+Source AI is seeing". So it is the name at the top left, the Source AI button
+at the top right, and the Reading directly under them. Struck, each by name:
+"Who this is" and its icon, the right rail, the 15 percent ring, the three
+Today fields, What drives it, Your Patterns and "Written from the nine axes".
+The left rail is the person's whole root energetics as bars stacked on top of
+each other with every name printed, so no hover is needed to read one: the
+birth, Sun, Moon, Rising, the Chinese year, the numbers, the Design profile
+and gates, the roots, the domain and the two archetypes. No birth suggestion,
+no What is running and no masks.
+
+**What the button does** (`ui/sumtalk.js`, a sibling of `ui/stksay.js`):
+
+- A press speaks the first sentence of each Reading paragraph through
+  `stSrcSpeak`, the one voice, then listens on its own recogniser.
+- What the person says is matched against a closed set: the stack, the body,
+  the energy, the blueprint, stop. Anything else gets one fixed line. Every
+  word is read off the Reading the page holds.
+- It never writes to the journal. Nothing reaches `ST_TEXT` or `SRC_CHAT`, and
+  the conversation is not kept: leaving the tab, or changing profile, ends it.
+  The Journal's conversation could not be reused for this, because every turn
+  of it is committed into the journal entry (`srcTurnCommit`).
+- The safety door comes first, as in the well. A worked example refuses the
+  press. One microphone at a time: the Journal's and the release's mic presses
+  cut this one.
+
+**Cost of the strike, named.** Today's summary (`#sumday`) and Your Patterns
+had no other home on the page. The day is no longer saved on opening the
+Summary, because a day nobody sees is not a record of a day. The engine's
+`loopRead` and `ui/daily.js` stay.
+
 ## Glass blue, an eighth lighting, from the palette board's variant B. Ruled 18 November.
 
 His words, verbatim, choosing between two pictures of the same screen on the
