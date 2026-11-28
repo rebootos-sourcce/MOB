@@ -8,7 +8,7 @@ const SRC='file://'+path.resolve(process.env.AUDIOBOOK_HTML||path.join(ROOT,'sou
 const CHROME=process.env.CHROME||chromium.executablePath();
 (async()=>{
  const browser=await chromium.launch({executablePath:CHROME});
- let fail=0;
+ let fail=0, pass=0;
  for(const width of [390,1600]){
   const page=await browser.newPage({viewport:{width,height:960}});
   await page.goto(SRC,{waitUntil:'load'});
@@ -47,7 +47,7 @@ const CHROME=process.env.CHROME||chromium.executablePath();
    result.listen.mode==='listen'&&result.listen.spacing<result.listen.guidedSpacing&&
    result.selected==='cedar'&&result.style==='list';
   console.log((success?'ok':'FAIL')+' audiobook '+width+'px '+JSON.stringify(result));
-  if(!success)fail++;
+  if(success)pass++;else fail++;
   await page.close();
  }
  // Audio failure must pause Audiobook rather than silently complete a Release.
@@ -93,7 +93,7 @@ const CHROME=process.env.CHROME||chromium.executablePath();
    result.after.paused===false&&result.after.attempts>result.before.attempts&&
    (result.after.line>result.before.line||result.after.phase!==result.before.phase);
   console.log((success?'ok':'FAIL')+' audiobook narration failure and retry '+JSON.stringify(result));
-  if(!success)fail++;
+  if(success)pass++;else fail++;
   await page.close();
  }
  // If the narrator stalls without calling back, the fallback timer must pause,
@@ -132,7 +132,7 @@ const CHROME=process.env.CHROME||chromium.executablePath();
    result.after.line===result.before.line&&result.after.idx===result.before.idx&&
    result.after.pass===result.before.pass;
   console.log((success?'ok':'FAIL')+' audiobook stalled speech timeout '+JSON.stringify(result));
-  if(!success)fail++;
+  if(success)pass++;else fail++;
   await page.close();
  }
  // A rejected network promise must produce exactly one audio failure callback.
@@ -157,7 +157,7 @@ const CHROME=process.env.CHROME||chromium.executablePath();
   const success=result.started&&result.failures===1&&result.completed===0&&
    result.unhandled.length===0;
   console.log((success?'ok':'FAIL')+' audiobook rejected network promise '+JSON.stringify(result));
-  if(!success)fail++;
+  if(success)pass++;else fail++;
   await page.close();
  }
  // A near-instant audio completion must not credit a line in Audiobook mode.
@@ -202,7 +202,7 @@ const CHROME=process.env.CHROME||chromium.executablePath();
    result.after.attempts>result.before.attempts&&
    (result.after.phase!==result.before.phase||result.after.line>result.before.line);
   console.log((success?'ok':'FAIL')+' audiobook near-instant completion holds cursor '+JSON.stringify(result));
-  if(!success)fail++;
+  if(success)pass++;else fail++;
   await page.close();
  }
  // In-flight requests share one synthesis, cached speech is isolated by voice,
@@ -252,9 +252,10 @@ const CHROME=process.env.CHROME||chromium.executablePath();
   const success=result.shared&&result.cached&&result.otherVoice&&
    result.rejected&&result.retried&&result.calls===2;
   console.log((success?'ok':'FAIL')+' audiobook voice cache isolation and retry '+JSON.stringify(result));
-  if(!success)fail++;
+  if(success)pass++;else fail++;
   await page.close();
  }
  await browser.close();
+ console.log('===== '+pass+' passed, '+fail+' failed =====');
  if(fail)process.exit(1);
 })().catch(e=>{console.error(e);process.exit(1);});
