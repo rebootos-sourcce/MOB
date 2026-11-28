@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v3547 1981fc16 2026-11-28 10:44"><head><meta charset="utf-8">
+<html lang="en" data-build="v3552 cc6b16de 2026-11-28 11:56"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -3865,11 +3865,6 @@ body.punch .gm-back{border-color:var(--panel);background:var(--panel)}
 .gm-src{margin-top:10px;font-size:11px;color:var(--dim);letter-spacing:.03em}
 .gm-note,.gm-shut{padding:13px 16px;border-radius:var(--r-s);background:var(--sunk);
  margin:0 0 12px;display:flex;flex-direction:column;gap:6px}
-.gm-gates{display:flex;flex-direction:column;gap:6px;margin:4px 0 2px}
-.gm-glist{display:flex;flex-wrap:wrap;gap:4px}
-.gm-gate{font-size:11px;color:var(--mid);background:var(--sunk);border-radius:var(--r-xs);
- padding:4px 9px;letter-spacing:.02em}
-body.punch .gm-gate{background:var(--panel-2)}
 .gm-chip em{display:block;font-style:normal;font-size:10px;opacity:.7;letter-spacing:.02em}
 /* a card line in the right rail. the release and the truth paired, because a
    release with nothing to install is half the protocol. */
@@ -20808,9 +20803,13 @@ try{window.__at&&window.__at('engine/data/intakemore.js');}catch(e){}
 
    A label, a sign, a number or a term of art never stands alone. This is the
    one table of what each one means, and it is the only place those sentences
-   are written. A surface asks it by name and prints the sentence beside the
-   term, either in the line itself or in the one tooltip the product already
-   has, so no surface keeps its own copy and none can say it differently.
+   are written. A surface asks it by name and the sentence reaches the person
+   as the term's tooltip, on hover, tap and keyboard focus, and is never
+   printed beside the term. OVERRIDDEN in part, 27 November (CO-33, CLAUDE.md
+   UNPACK EVERY SYMBOL): this said a term with room prints the sentence after
+   it, and that line was the junk he told the seats to strip everywhere. Only a
+   drill the person opened may say a sentence in its own text. No surface keeps
+   its own copy and none can say it differently.
 
    ONE SENTENCE EACH. Short, present tense, words a ten year old has. A
    sentence that is itself a claim says whose claim it is: numerology claims,
@@ -21044,6 +21043,22 @@ var UNPACK_BASE={
  /* DQ stood as a bare label on the release clock. Round RG. */
  'dq':'DQ is your shadow weight: all the charge you carry, on every address, against the most your body could hold.',
  'coherence':'Coherence is when what you mean, what you do and what your body does point the same way.',
+ /* THE CHARACTER RAIL'S OWN READINGS, 27 November, CO-33. Each of these was a
+    muted line printed under its label ("It lights the figure and sets how
+    wide, bright and whole the field is", "The bar is how closed the point
+    is"), which the owner struck as junk on every page. The sentence moved
+    here and the label carries it as a tooltip, so nothing a person could
+    learn there is gone. Read with the char context, because coherence and
+    the rest mean the same thing on every page but this one says what the
+    figure does with it. */
+ 'held places':'Held places are the places in your body holding a story, and a reading of them is taken each time you commit a story or finish a release.',
+ 'char:light and breath':'Coherence lights the field and vitality moves it, and the glow behind the figure is the colour your whole field gives off, mixed by how bright each point is.',
+ 'char:coherence':'Coherence is when what you mean, what you do and what your body does point the same way, and it sets how wide, bright and whole the figure and field are.',
+ 'char:vitality':'Vitality is how much energy the field has, and it sets how far and how fast the field breathes.',
+ 'char:decoherence':'Decoherence is your shadow, the charge on all your addresses against the most they could hold, and it opens the gaps in the field.',
+ 'char:assemblage points':'The bar shows how closed a point is, from the charge on its own addresses, and past about a third the field pinches there, runs slow and breaks up, while an open point swells.',
+ 'char:addresses':'Each point is one address, most sit round the body at the height of their point and go slowly round the spine, and size and brightness are the address\u2019s charge.',
+ 'char:rings':'A ring in a point\u2019s own colour marks a saboteur, the body under it dims with its weight, and a second ring outside a bold one marks a complex.',
  /* THE FIELD'S LEFT MENU, round RB and the P3 menu pass. Every reading on the
     rail is one bar with its mark and its one word inside it, and the word is a
     carrier of its sentence here, read with the rail context so a word that
@@ -21298,6 +21313,13 @@ function unpackAll(){
   ARCH.forEach(function(a){
    t['archetype:'+a.nm.toLowerCase()]=a.nm+' is one of '+ARCH.length+' kinds of character, the one that '+a.v+'.';});
  t['archetype']='An archetype is one of '+(typeof ARCH!=='undefined'?ARCH.length:'twelve')+' kinds of character you are born leaning toward.';
+ /* THE CREDIT WAS A LINE UNDER THE LIST. ARCH_CREDIT (canon.js) printed on the
+    Character rail and the Avatar card as a muted sentence, which is the
+    caption he struck on 27 November, CO-33. The data stays where it is and
+    the plural label carries it. Built here so the credit is read off the one
+    constant and never typed a second time. */
+ if(typeof ARCH_CREDIT!=='undefined')
+  t['archetypes']='Archetypes are patterns of how a person acts, and they are '+ARCH_CREDIT+'.';
  /* THE NINETEEN BLUEPRINT DOMAINS. UNPACK_DOM just above carries the short
     clear and distorted clause for each; this builds the sentence off
     DOMAINS so the count is read from the table and never typed, same
@@ -50252,15 +50274,19 @@ function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'
    way a renderer puts it on a screen, and it is not a new component: the
    product already has one tooltip, ui/tip.js, which opens on hover, on a tap
    and on keyboard focus, and the sheet sets the one class that says a word
-   carries something, .tipu, a dotted underline. So a term that has no room for
-   its sentence beside it becomes a carrier of that sentence, and a term that
-   has room is followed by the sentence itself.
+   carries something, .tipu, a dotted underline. So every term becomes a
+   carrier of its sentence. OVERRIDDEN in part, 27 November (CO-33): this said a
+   term that has room is followed by the sentence itself, and that printed line
+   is the caption he struck as junk on every page. The sentence is the
+   tooltip and is never set beside the term on a surface.
 
      unp(term,label,ctx)     the term as a carrier, or plain text when the table
                              has no sentence for it. Never a guess.
      unpAttr(term,ctx,label) the same three attributes, for an element a caller
                              already owns, such as a chip that is a button.
-     unpSay(term,ctx)        the sentence, escaped, for a line that prints it.
+     unpSay(term,ctx)        the sentence, escaped. FOR A DRILL THE PERSON OPENED
+                             (#rdrill) AND NEVER FOR A SURFACE: tests/nocaption.js
+                             fails a surface that prints it as a line.
 
    The meaning is always in the same element as the term or on the term itself,
    never behind a link to another page. The rule and its reason are in
@@ -68482,19 +68508,21 @@ function chArchHtml(r){
  var unread=!r||!!r.unread, emb=(!unread&&typeof avArchEmbodied==='function')?avArchEmbodied(r):{};
  var door=typeof AV_ARCH_SHOWN!=='undefined'&&AV_ARCH_SHOWN, tag=door?'button':'span';
  var on=ARCH.filter(function(a,i){return emb[i];}).map(function(a){return a.nm;});
- return '<div class="pm-eye chr-sp">Archetypes</div><div class="chr-arch" role="group" aria-label="Archetypes">'
+ return '<div class="pm-eye chr-sp">'+unp('archetypes','Archetypes')+'</div><div class="chr-arch" role="group" aria-label="Archetypes">'
   +ARCH.map(function(a,i){var e=!!emb[i], say=chSentence(a.v)+' '+a.d+(unread?'':e?' Embodied, one of the three your field reads strongest.':' Not embodied.');
    return '<'+tag+(door?' type="button"':' role="img" tabindex="0"')+' class="chr-ar'+(e?' on':'')+'" data-charch="'+esc(a.nm)+'" style="--ac:'+PAL[a.b]+'"'
     +' aria-label="'+esc(a.nm+'. '+say)+'" data-tip-t="'+esc(a.nm)+'" data-tip="'+esc(say)+'">'
     +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="'+a.ic+'"/></svg></'+tag+'>';}).join('')+'</div>'
-  +(on.length?'<p class="chr-note chr-arn">Embodied: '+esc(chAnd(on))+'</p>':'')
-  +'<p class="chr-note">'+esc(ARCH_CREDIT)+'</p>';}
+  +(on.length?'<p class="chr-note chr-arn" data-say="reading">Embodied: '+esc(chAnd(on))+'</p>':'');}
 function chRailHtml(r){
  var sc=CHV.sc, m=maskOf(CHV.pick), unread=!r||r.unread, w=sc.w, li=CHC.leadPat(w), a=CHILD[li], col='#'+'';
  var pc=CHC.PCOL[li], hexc='#'+pc.map(function(v){return ('0'+Math.round(v).toString(16)).slice(-2);}).join('');
  var SF=seatField(), AF=addrField();
  var h='<div class="chr">';
- if(unread)h+='<p class="chr-note">Nothing read yet, so the field is dark and the cloud is plain. Write what happened in Discover and it starts to answer.</p>';
+ /* AN EMPTY STATE NAMES WHAT PUTS IT IN AND NOTHING ELSE. It also said "so the
+    field is dark and the cloud is plain", which is how the screen is drawn and
+    not a fact about the person, the caption he struck on 27 November, CO-33. */
+ if(unread)h+='<p class="chr-note" data-say="empty">Nothing read yet. Write what happened in Discover.</p>';
  /* the leading pattern, what the mask does, and the one line the stage used to
     carry as a caption */
  /* AN UNREAD PROFILE LEADS WITH NOTHING. It printed "Leading pattern, Fear
@@ -68504,41 +68532,45 @@ function chRailHtml(r){
  if(!unread)h+='<div class="chr-lead" style="--lead:'+hexc+'"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="'+hexc+'" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="'+a.ic+'"/></svg>'
   +'<div><div class="pm-eye">Leading pattern</div><b>'+esc(a.nm)+'</b><span class="chr-fig"'+chPc('charge',w[a.nm]||0,false)+'>'+fmtPct('charge',w[a.nm]||0)+'</span></div></div>'
   +'<div class="chr-where">'+esc(chSentence(a.loc))+'</div>';
- h+='<div class="pm-eye">Mask</div><div class="ad-nm">'+esc(m.nm)+'</div><div class="ad-sub">Worn over the '+esc(chSeats(m))+'</div>'
-  +'<p class="ad-p">It '+esc(m.v)+'.</p>'
+ h+='<div class="pm-eye">Mask</div><div class="ad-nm">'+esc(m.nm)+'</div><div class="ad-sub" data-say="reading">Worn over the '+esc(chSeats(m))+'</div>'
+  +'<p class="ad-p" data-say="reading">It '+esc(m.v)+'.</p>'
   +'<button type="button" class="btn" id="chread">Read this mask</button>';
  h+=chArchHtml(r);
  if(CHV.sel>=0)h+=chTraceCard(r);
  h+='<div class="pm-eye chr-sp">Pointing at</div><div class="chr-hover" id="chhover" aria-live="polite" data-h="">'+chHoverText(CHV.hov,-1)+'</div>';
  /* the two readings that light and move the field */
  var cq=unread?0:Math.round(+r.CQ||0), dq=unread?0:Math.round(+r.DQ||0), vt=unread?0:(+r.X||0);
- h+='<div class="pm-eye chr-sp">Light and breath</div><div class="chr-read">'
-  +'<div class="chr-row"><span>Coherence</span><b'+chPc('cq',cq,unread)+'>'+fmtPct('cq',cq,{unread:unread})+'</b><i>'+esc(chSentence(charCohWord(unread?0:cq/100)))+' It lights the figure and sets how wide, bright and whole the field is.</i></div>'
-  +'<div class="chr-row"><span>Vitality</span><b'+chPc('vitality',vt,unread)+'>'+fmtPct('vitality',vt,{unread:unread})+'</b><i>'+esc(chVitWord(unread?0:vt))+' It sets how far and how fast the field breathes.</i></div>'
-  +'<div class="chr-row"><span>Decoherence</span><b'+chPc('dq',dq,unread)+'>'+fmtPct('dq',dq,{unread:unread})+'</b><i>The shadow, your 108 addresses and 4 field anchors against the most they could hold. It opens the gaps.</i></div></div>'
-  /* round RB: the glow behind the figure is a picture too, so it is said */
-  +(unread?'':'<p class="chr-note">The glow behind the figure is the colour your whole field gives off: every point\u2019s colour, mixed by how bright it is. It breathes with the field.</p>');
+ /* EACH DIAL KEEPS ITS LABEL, ITS FIGURE AND ITS WORD, AND NOTHING ELSE. The
+    three lines under them said what the dial does to the field, and the one
+    under the glow said what the glow is. That is how the picture is drawn, and
+    it was printed on the screen to somebody who asked for none of it, the
+    caption he struck on 27 November, CO-33. Each sentence is the label's
+    tooltip now (char:coherence, char:vitality, char:decoherence and
+    char:light and breath in engine/data/gloss.js). */
+ h+='<div class="pm-eye chr-sp">'+unp('light and breath','Light and breath','char')+'</div><div class="chr-read">'
+  +'<div class="chr-row"><span>'+unp('coherence','Coherence','char')+'</span><b'+chPc('cq',cq,unread)+'>'+fmtPct('cq',cq,{unread:unread})+'</b><i data-say="reading">'+esc(chSentence(charCohWord(unread?0:cq/100)))+'</i></div>'
+  +'<div class="chr-row"><span>'+unp('vitality','Vitality','char')+'</span><b'+chPc('vitality',vt,unread)+'>'+fmtPct('vitality',vt,{unread:unread})+'</b><i data-say="reading">'+esc(chVitWord(unread?0:vt))+'</i></div>'
+  +'<div class="chr-row"><span>'+unp('decoherence','Decoherence','char')+'</span><b'+chPc('dq',dq,unread)+'>'+fmtPct('dq',dq,{unread:unread})+'</b></div></div>';
  /* the seven seats: root first as everywhere, each a button that traces it */
- h+='<div class="pm-eye chr-sp plain">The seven assemblage points</div><div class="chr-seats">'
+ h+='<div class="pm-eye chr-sp plain">'+unp('assemblage points','The seven assemblage points','char')+'</div><div class="chr-seats">'
   +SF.map(function(s,k){var sh=charSmooth(CHAR_SEAT_LO,CHAR_SEAT_FULL,s.mean),word=sh<.25?'Open':sh<.6?'Loaded':'Closed';
    return '<button type="button" class="chr-seat" data-chtrace="'+k+'" aria-pressed="'+(CHV.sel===k)+'" title="'+word+'" style="--sc:'+PAL[s.seat]+'">'
     +'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="6.5" fill="none" stroke="'+PAL[s.seat]+'" stroke-width="1.7"/></svg>'
     +'<span class="chr-sn">'+esc(chSeatName(s.seat))+'</span><span class="chr-bar"><i style="width:'+Math.round(sh*100)+'%'+(chPcCol('closed',sh,false)?';background:'+chPcCol('closed',sh,false):'')+'"></i></span><span class="chr-sv"'+chPc('closed',sh,false)+'>'+fmtPct('closed',sh)+'</span></button>';}).join('')
-  +'</div><p class="chr-note">The bar is how closed the point is, from the charge on its own addresses. Past about a third the field pinches there, runs slow and breaks up. An open point swells.</p>';
- /* what the points are, which is the question the owner asked of the mockup */
- h+='<div class="pm-eye chr-sp">What the points are</div>'
-  /* NEVER THE LOWER COUNT. This printed the body's own share of the
-     addresses, which is the figure the house rule says is never put in front
-     of a person: the count stated is the whole set. Round RG. */
-  +'<p class="ad-p">Each point is one address, and there are '+AF.length
-  +'. Most sit round the body at the height of their point, going slowly round the spine. '
-  +'Four are field anchors, two above the head and two below the feet, drawn as rings. Size and brightness are the address’s charge, and a ring round a point is a charge above seven tenths.</p>'
-  /* round RB: the saboteur's ring, the complex's second ring, the dimmed body
-     and the line, each said where it is drawn, with what a saboteur and a
-     complex are taken from the one table of meanings */
-  +(CHV.who&&CHV.who.some(function(x){return x&&x.sab;})?'<p class="ad-p">A ring in the point\u2019s own colour marks a point where a saboteur runs. '+esc(unpackOf('saboteur'))
-   +' The body under a saboteur goes dark and grey by how heavy it is. The three heaviest saboteurs are drawn bold, each with a dotted line to the place on the body it dims, and a second ring outside a bold one means that saboteur is part of a complex. '+esc(unpackOf('complex'))+'</p>':'')
-  +'<div class="chr-counts">'+SF.map(function(s){return '<span style="--sc:'+PAL[s.seat]+'"><i></i>'+esc(chSeatName(s.seat))+' <b>'+s.n+'</b></span>';}).join('')+'<span class="chr-anc"><i></i>Anchors <b>4</b></span></div>';
+  +'</div>';
+ /* WHAT THE POINTS ARE WAS A PARAGRAPH, AND IS THE HEADING'S TOOLTIP. The owner
+    asked what the points are when he saw the mockup, and the answer was printed
+    as two paragraphs under the heading: how the points are placed, what size
+    and brightness mean, which are rings, and how a saboteur is drawn. All of
+    it is how the picture is drawn, so it moved to char:addresses and char:rings
+    in engine/data/gloss.js and the two labels carry it. It also printed the
+    whole count, "there are 112", as the first thing the section said, which
+    the 28 October ruling forbids on a screen that has not stated the 108 and 4
+    split first; the count is gone with the sentence. The Anchors chip carries
+    the field anchor's own meaning, which the paragraph had been saying for it. */
+ var rings=CHV.who?CHV.who.filter(function(x){return x&&x.sab;}).length:0;
+ h+='<div class="pm-eye chr-sp">'+unp('addresses','Addresses','char')+'</div>'
+  +'<div class="chr-counts">'+SF.map(function(s){return '<span style="--sc:'+PAL[s.seat]+'"><i></i>'+esc(chSeatName(s.seat))+' <b>'+s.n+'</b></span>';}).join('')+''+(rings?'<span class="chr-anc"><i></i>'+unp('rings','Rings','char')+' <b>'+rings+'</b></span>':'')+'<span class="chr-anc"><i></i>'+unp('field anchor','Anchors')+' <b>4</b></span></div>';
  h+='</div>';
  return h;}
 /* the words for a vitality, the left menu's own scale of 0 to 1 */
@@ -80820,12 +80852,15 @@ function avDetail(st,a){
  var rt=st.side.arch[a.nm]||0, A=AV_OF[a.b], e=!!avArchEmbodied(st.r)[a.i];
  var out='<div class="av-card av-det" style="--c:'+seatCol(a.b)+'">'
   +'<div class="av-ph"><span class="av-pic">'+avArchIc(a)+'</span><div>'
-  +'<p class="av-det-e"><b>'+A.nm+'</b>, '+AV_THE[a.b]+'</p><div class="av-pn">'+esc(a.nm)+'</div></div>'
+  +'<p class="av-det-e"><b>'+A.nm+'</b>, '+AV_THE[a.b]+'</p><div class="av-pn">'+unp('archetypes',a.nm)+'</div></div>'
   /* the one word, where the percent was. A slot keeps its label: the pill is
      always here, and only its value moves. */
   +'<span class="avx-emb'+(e?' avx-y':'')+'">'+(e?avSvg(AV_PIN):'')+(st.r.unread?'not read yet':e?'embodied':'not embodied')+'</span></div>'
-  +'<p class="av-def">'+esc(AV_DEF[a.nm]||'')+'</p>'
-  +'<div class="ad-sub">'+esc(ARCH_CREDIT)+'</div>';
+  /* THE CREDIT IS THE NAME'S TOOLTIP. It was a muted line under the
+     definition, "Jung-derived, after Carol Pearson and Margaret Mark", the
+     caption he struck on 27 November, CO-33. The data is still ARCH_CREDIT and
+     the name carries it through the archetypes entry in gloss.js. */
+  +'<p class="av-def">'+esc(AV_DEF[a.nm]||'')+'</p>';
  if(a.sab)
   out+='<div class="av-imp" style="--s:'+seatCol(a.sabB)+'"><div class="pm-eye">Impact</div>'
    +'<p class="av-imp-v"><b>'+esc(a.sab)+'</b><span>primary saboteur'
@@ -90880,7 +90915,7 @@ function ritSugHtml(st){
     would be the contradiction SV16 took off this list. */
  var law=(typeof ritLawCardHtml==='function')?ritLawCardHtml(st):'';
  if(!list.length&&all.length&&!undo&&!aff&&!law)return saved;
- var body=!list.length?(aff||law?'<ul class="rv-sugl">'+aff+law+'</ul>':'')+'<p class="rv-empty">'+(all0.length?'Nothing else called for. Each one is added, saved or dismissed.'
+ var body=!list.length?(aff||law?'<ul class="rv-sugl">'+aff+law+'</ul>':'')+'<p class="rv-empty" data-say="empty">'+(all0.length?'Nothing else called for. Each one is added, saved or dismissed.'
    :law?'Nothing else called for yet. Record a story to fill it.':'Nothing called for yet. Record a story to fill it.')+'</p>'
   /* THE CARD IS ritBankCard NOW, 20 November (ui/ritbank.js), so a Path or
      Avatar host draws this same card and not its own. This is its only
@@ -92127,7 +92162,11 @@ function ritSuccessHtml(st){
  /* THE HONEST PART. A span that reaches back before the record does not
     pretend the record was empty there: those days are drawn hatched and never
     counted as missed, which is the arithmetic in ritSpanRead. */
- var note=S.rs===null?'<p class="rv-sparse">Nothing on your record yet. This fills in, a day at a time, as you keep rituals.</p>':'';
+ /* AN EMPTY STATE SAYS WHAT IS MISSING AND STOPS. It went on to say "This fills
+    in, a day at a time, as you keep rituals", which is how the page behaves and
+    not a fact about the person, the caption he struck as junk on 27 November,
+    CO-33. */
+ var note=S.rs===null?'<p class="rv-sparse" data-say="empty">Nothing on your record yet.</p>':'';
  /* THE AFFIRMATIONS AND HELD PLACES LINES ARE GONE, round SW, his words on
     the right rail: "on the right-hand side there's a bunch of text I want
     to get rid of." Both were plain prose over this card's own picture (a
@@ -92803,7 +92842,7 @@ function ritMissOffer(r,st){var R=ritMissRun(r,st); return R.n>=RIT_MISS_AT?R:nu
    and nothing claims success before its writer answers. */
 function ritPopShell(col,head,sub,body,acts){
  return '<div class="rv-sh rv-pop" style="--c:'+col+'"><div class="rv-shh"><span class="rv-sht"><span class="sh-h plain">'+esc(head)+'</span>'
-  +(sub?'<span class="rv-shs">'+esc(sub)+'</span>':'')+'</span></div>'+body
+  +(sub?'<span class="rv-shs" data-say="value">'+esc(sub)+'</span>':'')+'</span></div>'+body
   +'<div class="sh-act rv-sha">'+acts+'<button type="button" class="btn rv-shx" data-sh="close">Close</button></div></div>';}
 function ritPopGone(t){return ritPopShell('var(--accent)',t,'','','');}
 function ritFold(nm,body){
@@ -93456,7 +93495,7 @@ function ritGoalTile(st){
  /* nothing read and no avatar line: the one press is the way in */
  if(!bc&&!last){
   if(st.r.unread)return '<div class="rv-ttl rv-tgoal" style="--c:var(--accent)">'+head()
-   +'<span class="rv-tnm">Not read yet</span><span class="rv-tact"><button type="button" class="btn pri" data-act="go-story">Write a story</button></span></div>';
+   +'<span class="rv-tnm" data-say="value">Not read yet</span><span class="rv-tact"><button type="button" class="btn pri" data-act="go-story">Write a story</button></span></div>';
   return '<div class="rv-ttl rv-tgoal" style="--c:var(--accent)">'+head()
    +'<button type="button" class="rv-tnm rv-tpr" data-act="pgoal" aria-label="Goal: none written yet. Open">–</button><span class="rv-tact"></span></div>';}
  var be=String((bc?bc.be:last.be)||'').trim().replace(/^"+|"+$/g,''), iam=ritIAm(be)||be;
@@ -93483,7 +93522,7 @@ function ritChalTile(c,st){
   /* IF I MISS stays the one neutral press, on the tile now (ritMissOfferHtml's
      rule), and opens the challenge with the why question first */
   +(off?'<button type="button" class="rv-mof" data-act="miss-why" data-id="'+esc('ch:'+c.id)+'">'+ritIc('ring')+'Why?</button>'
-   :'<span class="rv-tsub">'+(on?'Done today':'Not yet today')+'</span>')+'</span></div>';}
+   :'<span class="rv-tsub" data-say="value">'+(on?'Done today':'Not yet today')+'</span>')+'</span></div>';}
 
 /* ---------------- the affirmations' way in ----------------
    The Today card carried the affirmations and the clock that set their days,
@@ -93504,7 +93543,7 @@ function ritAffCardHtml(st){
   +'<div class="rv-sgh"><button type="button" class="rv-sgn rv-bko'+(on?' rv-on':'')+'" data-act="aff-set" aria-label="'
   +esc('Affirmations, '+(on?'on your week. Say them, change the days':'not on your week yet. Say them, set the days'))+'">Affirmations</button></div>'
   +'<div class="rv-sgo"><span class="rv-sgk"'+rvTip(K.nm,K.says)+'>'+ritKindIc('aff')+esc(K.nm)+'</span>'
-  +'<span class="rv-sgm">'+(on?esc(ritOften(ritSchedOf('aff').on)):'Not on your week yet')+'</span></div></li>';}
+  +'<span class="rv-sgm" data-say="value">'+(on?esc(ritOften(ritSchedOf('aff').on)):'Not on your week yet')+'</span></div></li>';}
 
 /* ---------------- the look ---------------- */
 function ritWeekCss(){
@@ -102883,6 +102922,30 @@ function mtBlock(c){
   +(live.length?'<button class="btn" data-gmimp="'+esc(c.nm)+'">See the '+live.length+' running you</button>':'')
   +'</div>';}
 
+/* A TAP TARGET OF ITS OWN FOR THE RULES, 27 November, addendum to CO-33. The
+   Deal button's own tooltip carries the rules, which a mouse reaches on hover
+   and a keyboard reaches on focus, but a touch carrier that is also a button
+   only opens on a press and hold (ui/tip.js, pressArm), so the one single
+   gesture a phone actually uses, a tap, never showed them. A ring icon beside
+   Deal gives touch its own plain tap: the button's onclick calls TIP.show
+   directly, the same route ui/lock.js already uses for a definition a press
+   has to reach at once rather than after a hold. Deal itself keeps its single
+   tap for dealing; this is a second control and not a second way to do the
+   first one. */
+/* data-gmrules, not a class: every class this build emits needs a CSS rule
+   (tests/design.js, CSS coverage) and this button borrows .vt's rule rather
+   than adding its own, so its hook is the attribute, the same convention the
+   rest of this file already wires its controls by (data-gm, data-lgc,
+   data-lg, data-mt, data-gmimp). */
+function gmRulesBtn(label,text){
+ return '<button type="button" class="vt" data-gmrules aria-label="Rules" '
+  +'data-tip-t="'+esc(label)+'" data-tip="'+esc(text)+'">'
+  +'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/>'
+  +'<path d="M12 10.3v5.3M12 7.1v.01"/></svg></button>';}
+function gmWireRules(host){
+ host.querySelectorAll('[data-gmrules]').forEach(function(b){
+  b.onclick=function(){if(typeof TIP!=='undefined')TIP.show(b);};});}
+
 /* ---- the shell ---- */
 function gmRender(){
  var host=document.getElementById('games'); if(!host)return;
@@ -102905,17 +102968,22 @@ function gmRender(){
 
  if(GAME==='lg'){
   if(!LG.cards.length){
-   h+='<div class="gm-intro"><p class="gm-p">Twenty four cards, face down, dealt from what you '
-    +'are carrying. Turn one, say the line and the truth under it, turn it back. The clock runs '
-    +'while you do it.</p>'
-    /* HS sweep: the rules above the deal button stay, because they are the
-       game and nothing else teaches it. "Time it once and you will believe
-       it" was the game selling itself, and is cut. */
-    +'<p class="gm-p">'+esc(CARD_OPEN)+'</p>'
-    +'<div class="gm-gates"><span class="pm-eye plain">One statement runs every channel at once</span>'
-    +'<div class="gm-glist">'+C3_VERB.map(function(v){
-      return '<span class="gm-gate">'+esc(v)+'</span>';}).join('')+'</div></div>'
-    +'<button class="btn pri" id="lggo">Deal twenty four</button></div>';}
+   /* THE RULES ARE THE DEAL BUTTON'S TOOLTIP, 27 November, CO-33. Four lines
+      stood above it: how many cards, what to do with one, that the clock runs,
+      the six channels a line runs, and the body scan that precedes reading.
+      All of it is what to do with the screen, printed without anyone asking,
+      the caption he struck as junk on every page. The game is still taught
+      from the same words, one hover or one focus away, and the six channels
+      are read off C3_VERB so the list is never typed a second time. The
+      earlier HS sweep kept these lines "because nothing else teaches it"; a
+      tooltip on the one control that starts the game is something else.
+      gmRulesBtn, added the same day as an addendum, gives a touch reader a
+      plain tap for the same sentence: see its own comment above gmRender. */
+   var lgRules='Twenty four cards, face down, dealt from what you are carrying. Turn one, say the line and the truth under it, turn it back. The clock runs while you do it. Each line runs every channel at once: '
+     +C3_VERB.join(', ').replace(/, ([^,]*)$/,' and $1')+'. '+CARD_OPEN;
+   h+='<div class="gm-intro"><div style="display:flex;align-items:center;gap:8px">'
+    +'<button class="btn pri" id="lggo" data-tip-t="The letting go run" data-tip="'+esc(lgRules)+'">Deal twenty four</button>'
+    +gmRulesBtn('The letting go run',lgRules)+'</div></div>';}
   else{
    h+='<div class="gm-bar"><div class="gm-chan"><span class="pm-eye">Pole</span>'
     +'<div class="gm-chips">'+C3_POLE.map(function(p){
@@ -102954,9 +103022,12 @@ function gmRender(){
 
  if(GAME==='mt'){
   if(!MT.cards.length){
-   h+='<div class="gm-intro"><p class="gm-p">Eight pairs of child emotion marks, face down. Match a pair '
-    +'and it opens: what it is, how it runs through you, and what the coherent opposite is.</p>'
-    +'<button class="btn pri" id="mtgo">Deal the marks</button></div>';}
+   /* the same cut as the letting go run above: the rules are the button's
+      tooltip, and gmRulesBtn gives a touch reader the same plain tap */
+   var mtRules='Eight pairs of child emotion marks, face down. Match a pair and it opens: what it is, how it runs through you, and what the coherent opposite is.';
+   h+='<div class="gm-intro"><div style="display:flex;align-items:center;gap:8px">'
+    +'<button class="btn pri" id="mtgo" data-tip-t="The match" data-tip="'+esc(mtRules)+'">Deal the marks</button>'
+    +gmRulesBtn('The match',mtRules)+'</div></div>';}
   else{
    h+='<div class="gm-bar"><div class="gm-of">'+MT.found+' of '+MT_PAIRS+' matched</div></div>'
     +'<div class="gm-grid mt">'+MT.cards.map(function(c,i){
@@ -102977,6 +103048,7 @@ function gmRender(){
     where a plan belongs. */
 
  host.innerHTML=h;
+ gmWireRules(host);
  host.querySelectorAll('[data-gm]').forEach(function(el){el.onclick=function(){
   GAME=el.getAttribute('data-gm'); lgStop(); gmRender();};});
  host.querySelectorAll('[data-lgc]').forEach(function(el){el.onclick=function(){
@@ -103852,12 +103924,13 @@ ROOTD.forEach(function(rn){
   buildSoul();S.pin=null;syncSoul();saveYou();render();
   railPick(b,'root');});
  $('roots').appendChild(b);});
-/* What the two states mean, in the rail, once. A legend is cheaper than a
-   person guessing, and there is nowhere else on this row to put it. */
-(function(){
- var r=$('roots'); if(!r||!r.parentNode)return;
- var d=document.createElement('div'); d.className='rootlegend'; d.id='rootlegend';
- r.parentNode.insertBefore(d,r.nextSibling);})();
+/* THE LEGEND IS GONE, 27 November, CO-33. A line under the row said "filled,
+   you added" and "pale, something you picked is in here", which is how the
+   buttons are drawn and not a fact about the person: the caption he struck as
+   junk on every page. Both states were already in each button's own title, set
+   a few lines above ("Filled means you added it. Pale means something you
+   picked is already in it."), and ui/tip.js opens a title on hover, tap and
+   focus, so the meaning is reachable and nothing is lost. */
 /* ESCAPED, ROUND RA: S.roots comes from soul.roots, which the schema boundary
    only checks is an array of strings, not their content (engine/schema.js);
    DOMAINS[i].nm is the fixed table and needs nothing. */
@@ -104002,13 +104075,6 @@ function syncSoul(){
   b.setAttribute('aria-pressed',on);
   /* added wins over lit, because a fill and a wash on one control is noise */
   if(!on&&lit[b.dataset.r]){b.dataset.lit='1';nlit++;}else delete b.dataset.lit;});
- var lg=$('rootlegend');
- if(lg)lg.textContent=(S.roots.length?'filled, you added':'')
-  +(S.roots.length&&nlit?' \u00b7 ':'')
-  +(nlit?'pale, something you picked is in here':'');
- /* HS sweep: with nothing added and nothing pale this printed "click a root
-    to add every domain under it", a how to line under a row of buttons. The
-    legend now speaks only when there is a state on the row to key. */
  capD();capA();awSum();}
 function rebuildSwatches(){
  /* every colour the rail's grids wear is per lighting now, so all three move
@@ -107084,13 +107150,13 @@ function accRow(label,value,o){
  o=o||{};
  return '<div class="ac-row'+(o.cls?' '+o.cls:'')+'">'
   +'<span class="ac-rl">'+esc(label)+'</span>'
-  +'<span class="ac-rv'+(o.num?' num':'')+'">'+(o.raw?value:esc(String(value)))+'</span></div>';}
+  +'<span class="ac-rv'+(o.num?' num':'')+'" data-say="value">'+(o.raw?value:esc(String(value)))+'</span></div>';}
 /* A stub row. Full opacity, real label, and the honest value in the value
    slot. aria-disabled and not a button, so nothing can press it. */
 function accStub(label,why){
  return '<div class="ac-row ac-stub" aria-disabled="true">'
   +'<span class="ac-rl">'+esc(label)+'</span>'
-  +'<span class="ac-rv">'+esc(why||'not built yet')+'</span></div>';}
+  +'<span class="ac-rv" data-say="value">'+esc(why||'not built yet')+'</span></div>';}
 function accAct(label,id,o){
  o=o||{};
  return '<div class="ac-row ac-act"><span class="ac-rl">'+esc(label)+'</span>'
@@ -107100,14 +107166,23 @@ function accAct(label,id,o){
    the switch carries no label of its own. col paints the note, for the one
    switch whose note is a seat's hertz: ruled, a hertz number is the seat's own
    colour. */
-function accTog(label,id,on,note,col){
+/* tip is what the switch does, as its tooltip on hover, tap and focus. It used
+   to be the note, a muted line under the label, which is the caption he struck
+   as junk on 27 November, CO-33. */
+function accTog(label,id,on,note,col,tip){
  return '<div class="ac-row ac-tog"><span class="ac-rl">'+esc(label)
   +(note?'<em'+(col?' style="color:'+col+'"':'')+'>'+esc(note)+'</em>':'')+'</span>'
   +'<button class="ac-sw'+(on?' on':'')+'" id="'+id+'" type="button" role="switch" '
-  +'aria-checked="'+(!!on)+'" aria-label="'+esc(label)+'"><i></i></button></div>';}
-function accGroup(title,rows,foot){
+  +'aria-checked="'+(!!on)+'" aria-label="'+esc(label)+'"'
+  +(tip?' data-tip-t="'+esc(label)+'" data-tip="'+esc(tip)+'"':'')+'><i></i></button></div>';}
+/* say declares what the footer is, for tests/nocaption.js. The default is a
+   disclosure, because the Settings sweep kept only those (what is held, where,
+   who has sight, what a delete does); a footer that is an empty state or a
+   refusal passes its own word, so the declaration is a claim that can be read
+   and not a blanket. */
+function accGroup(title,rows,foot,say){
  return '<div class="ac-grp">'+(title?'<div class="ac-gh">'+esc(title)+'</div>':'')
-  +rows+(foot?'<div class="ac-gf">'+foot+'</div>':'')+'</div>';}
+  +rows+(foot?'<div class="ac-gf" data-say="'+(say||'disclosure')+'">'+foot+'</div>':'')+'</div>';}
 
 /* ---------- 4.1 account ---------- */
 function accAccount(){
@@ -107220,8 +107295,8 @@ function accAccount(){
     see theirs, read off pracSightList and never typed. */
  var sightN=(typeof pracSightList==='function')?pracSightList().length:0;
  h+=accGroup('Practitioner',
-   accTog('Practitioner mode','acprac',pracOn(),
-    'adds Practitioner to the menu'),
+   accTog('Practitioner mode','acprac',pracOn(),'',null,
+    'Adds Practitioner to the menu.'),
    'Turning it on shares nothing of yours.'
    +(sightN?'':' Nobody has let you see their record yet.'));
  /* HS SWEEP, SETTINGS. A footer that only described the control above it is
@@ -109427,8 +109502,13 @@ function pracList(){
      system print here any more */
   /* the second sentence moved to Your clients above, round RB, which is
      where the real list now says it is empty and why */
-  +'<div class="ac-gf">Ten of the product’s worked examples, not clients, picked to cover the '
-  +'whole range from the heaviest field to the lightest. Open one to practise reading.</div>';}
+  /* WHAT THE LIST IS, IN FIVE WORDS. It said "Ten of the product's worked
+     examples, not clients, picked to cover the whole range from the heaviest
+     field to the lightest. Open one to practise reading", which is how the
+     list was chosen and what to do with it, the caption he struck as junk on
+     27 November, CO-33. Only the disclosure that these are not clients stays,
+     because a person reading them as their own clients would be misled. */
+  +'<div class="ac-gf" data-say="disclosure">Worked examples, not clients</div>';}
 /* ONE RING, SEVEN SEATS. Each arc is one of the seven seats (BANDS), equal
    angle so the shape never distorts, its colour at full strength and the
    rest dimmed by how much that seat actually holds against the heaviest
@@ -109711,7 +109791,7 @@ function pracModeGroup(){
 
 function pracDetail(){
  if(PRAC_SEL==null||!PEOPLE[PRAC_SEL])
-  return '<div class="pr-mid" id="prmid"><div class="ac-grp pr-head"><div class="pr-empty">'
+  return '<div class="pr-mid" id="prmid"><div class="ac-grp pr-head"><div class="pr-empty" data-say="empty">'
    +'Open a worked example on the left to read it.</div></div></div>';
  var p=PEOPLE[PRAC_SEL], snap=pracRead(p);
  pracSeenSet(p.nm,pracTierWord(snap));
@@ -109910,7 +109990,7 @@ function pracDrillClear(){
 function pracLeave(){pracDrillClear(); var h=$('prac'); if(h)h.innerHTML='';}
 function pracSelNone(open){
  var none=document.getElementById('rdrill-none'), d=document.getElementById('pr-selnone');
- if(!d&&none&&none.parentNode){d=document.createElement('div'); d.id='pr-selnone'; d.className='rel-note';
+ if(!d&&none&&none.parentNode){d=document.createElement('div'); d.id='pr-selnone'; d.className='rel-note'; d.setAttribute('data-say','empty');
   none.parentNode.insertBefore(d,none.nextSibling);}
  if(d)d.textContent=open
   ?'Nothing selected. Press a figure, a day, a pattern or a point on '+open.nm+'’s page to read it here.'
@@ -110106,9 +110186,9 @@ function plLevel(g){var t='Summary'; if(g.sight.body)t+=' +Body'; if(g.sight.fie
    name for it, the grant level, and the mini ring off its Summary. */
 function plClientsGrp(){
  if(!plSignedIn())return accGroup('Your clients',accRow('People who let you see their record','nobody yet'),
-  'Clients connect to an account, so this list fills once you are signed in. Account, at the top, signs you in.');
+  'Clients connect to an account, so this list fills once you are signed in. Account, at the top, signs you in.','empty');
  if(!PL.roster)return accGroup('Your clients',accRow('People who let you see their record','reading'),'');
- if(PL.roster.err)return accGroup('Your clients',accRow('People who let you see their record',PL.roster.off?'nobody yet':'could not read'),esc(PL.roster.err));
+ if(PL.roster.err)return accGroup('Your clients',accRow('People who let you see their record',PL.roster.off?'nobody yet':'could not read'),esc(PL.roster.err),'refusal');
  var live=pracLiveActive(), ended=pracLiveGrants().filter(function(g){return g.ended_by;});
  var rows=live.map(function(g){var on=PL.sel===g.id, sm=g.summary&&g.summary.sum;
   return '<button type="button" class="pr-client'+(on?' on':'')+'" data-plo="'+esc(g.id)+'" aria-pressed="'+on+'">'
@@ -118995,5 +119075,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="008674454"></div>
+<div id="eof" hidden data-len="008680969"></div>
 </body></html>
